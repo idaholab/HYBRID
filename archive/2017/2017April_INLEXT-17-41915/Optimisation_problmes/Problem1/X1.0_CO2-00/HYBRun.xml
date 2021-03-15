@@ -1,0 +1,221 @@
+<Simulation verbosity="debug">
+  <RunInfo>
+    <WorkingDir>.</WorkingDir>
+    <Sequence>read_ARMAprice,MCrun,printTOfile</Sequence>
+    <!-- <batchSize>32</batchSize>
+    <internalParallel>True</internalParallel> 
+    -->
+    <!-- <NumThreads>1</NumThreads> -->
+    <!-- <NumMPI>10</NumMPI> -->
+  </RunInfo>
+
+  <Files>
+    <Input name="f_ARMAprice" type="">ARMA_P.pk</Input>
+  </Files>
+
+  <VariableGroups>
+    <Group name="GRO_dispatch_in_scalar">
+      PriceH2,
+      BOP_capacity,
+      IP_capacity
+    </Group>
+    <Group name="GRO_dispatch_in_Time">
+      Price
+    </Group>
+    <Group name="GRO_dispatch_out_Time">
+      BOP_DYMO_productionEL, BOP_DYMO_productionBY, 
+      IP_DYMO_productionEL,  IP_DYMO_productionBY 
+    </Group>
+    <Group name="GRO_CashFlowPreP_in_scalar">
+      BOP_capacity, PriceH2,
+      IP_capacity
+    </Group>
+    <Group name="GRO_CashFlowPreP_in_Time">
+      BOP_DYMO_productionEL, Price,
+      IP_DYMO_productionBY, IP_DYMO_productionEL
+    </Group>
+    <Group name="GRO_CashFlowPreP_out_scalar">
+      BOP_TOT_revenueEL,
+      IP_TOT_revenueBY,
+      IP_TOT_productionBY,
+      IP_TOT_costEL,
+      IP_TOT_usedEL,
+      IPOMfix,
+      IP_capa_fact,
+      BOP_capa_fact
+    </Group> 
+    <Group name="GRO_CashFlow_in_scalar" >
+      BOP_capacity,
+      BOP_TOT_revenueEL,
+      IP_capacity,
+      IP_TOT_revenueBY,
+      IP_TOT_productionBY,
+      IP_TOT_costEL,
+      IPOMfix,
+      IP_TOT_usedEL
+    </Group> 
+    <Group name="GRO_CashFlow_out_scalar" >IRR, NPV, PI</Group>
+  </VariableGroups>
+
+  <Models>
+    <ROM name='ARMA_price' subType='pickledROM'/>
+    <ExternalModel ModuleToLoad="../../../../src/dispatch_2017April.py" name="dispatch" subType="">
+      <variables>GRO_dispatch_in_scalar, GRO_dispatch_in_Time, GRO_dispatch_out_Time</variables>
+      <!-- External XML node -->
+      <Dispatch verbosity="0"> <!-- “0” all debug output, “1” some output, “100” only errors  -->
+        
+      </Dispatch>
+    </ExternalModel>
+    <ExternalModel ModuleToLoad="../../../../src/CasFlowPreP_2017April.py" name="CashFlowPreP" subType="">
+      <variables>GRO_CashFlowPreP_in_scalar, GRO_CashFlowPreP_in_Time, GRO_CashFlowPreP_out_scalar</variables>
+      <!-- External XML node -->
+      <NPVPreP verbosity="0"> <!-- “0” all debug output, “1” some output, “100” only errors  -->
+        
+      </NPVPreP>
+    </ExternalModel>
+    <ExternalModel name="Cash_Flow" subType="CashFlow">
+      <variables>GRO_CashFlow_in_scalar, GRO_CashFlow_out_scalar</variables>
+      <ExternalXML node="Economics" xmlToLoad="../../Cash_Flow_input.xml"/>
+    </ExternalModel>
+
+    <EnsembleModel name="MyEnsemble" subType="">
+      <Model class="Models" type="ROM">
+        ARMA_price
+        <Input            class="DataObjects" type="PointSet">SET_ARMAprice_in</Input>
+        <TargetEvaluation class="DataObjects" type="HistorySet">SET_ARMAprice_out</TargetEvaluation>
+      </Model>
+      <Model class="Models" type="ExternalModel">
+        dispatch
+        <Input            class="DataObjects" type="PointSet">SET_dispatch_in</Input>
+        <TargetEvaluation class="DataObjects" type="DataSet" >SET_dispatch_out</TargetEvaluation>
+      </Model>
+      <Model class="Models" type="ExternalModel">
+        CashFlowPreP
+        <Input            class="DataObjects" type="PointSet">SET_CashFlowPreP_in</Input>
+        <TargetEvaluation class="DataObjects" type="DataSet" >SET_CashFlowPreP_out</TargetEvaluation>
+      </Model>
+      <Model class="Models" type="ExternalModel">
+        Cash_Flow
+        <Input            class="DataObjects" type="PointSet">SET_CashFlow_in</Input>
+        <TargetEvaluation class="DataObjects" type="PointSet">SET_CashFlow_out</TargetEvaluation>
+      </Model>
+    </EnsembleModel>
+  </Models>
+
+  <Distributions>
+    <Uniform name="capacities_distrib">
+      <!-- IP capacity is total combined TH and EL capacity in [W] -->
+      <upperBound>8000000000</upperBound>   <!-- total power [W] => 8GW -->
+      <lowerBound>0</lowerBound>    <!-- total power [W] =>   0MW -->
+    </Uniform>
+    <Uniform name="PriceH2_distrib">
+      <upperBound>3.0</upperBound>   <!-- $/kg -->
+      <lowerBound>1.0</lowerBound>   <!-- $/kg -->
+    </Uniform>
+  </Distributions>
+
+  <Samplers>
+    <MonteCarlo name="DYMOLA_MC">
+      <samplerInit>
+        <limit>2000</limit>
+      </samplerInit>
+      <variable name="IP_capacity">
+        <distribution>capacities_distrib</distribution>
+      </variable>
+      <variable name="PriceH2">
+        <distribution>PriceH2_distrib</distribution>
+      </variable>
+      <constant name="scaling_price"> 1.0 </constant>
+      <constant name="BOP_capacity">300000000.0</constant>  <!-- capacity in W(el)  300MW -->
+    </MonteCarlo>
+
+    <Grid name="DYMOLA_GRID">
+      <variable name="IP_capacity">
+        <distribution>capacities_distrib</distribution>
+        <grid type='value' construction='equal' steps='19'>1 8000000000</grid>
+      </variable>
+      <variable name="PriceH2">
+        <distribution>PriceH2_distrib</distribution>
+        <grid type='value' construction='equal' steps='19'>1 3</grid>
+      </variable>
+      <constant name="scaling_price"> 1.0 </constant>
+      <constant name="BOP_capacity">300000000.0</constant>  <!-- capacity in W(el)  300MW -->
+    </Grid>
+  </Samplers>
+
+  <DataObjects>
+    <PointSet name="SET_ARMAprice_in">
+      <Input>scaling_price</Input>
+      <Output>OutputPlaceHolder</Output>
+    </PointSet>
+    <HistorySet name="SET_ARMAprice_out">
+      <Input>scaling_price</Input>
+      <Output>Price</Output>
+      <options>
+        <pivotParameter>Time</pivotParameter>
+      </options>
+    </HistorySet>
+    <PointSet name="SET_dispatch_in">
+      <Input>GRO_dispatch_in_scalar</Input>
+      <Output>OutputPlaceHolder</Output>
+    </PointSet>
+    <DataSet name="SET_dispatch_out">
+      <Input>GRO_dispatch_in_scalar, GRO_dispatch_in_Time</Input>
+      <Output>GRO_dispatch_out_Time</Output>
+      <Index var="Time">GRO_dispatch_in_Time, GRO_dispatch_out_Time</Index>
+    </DataSet>
+    <PointSet name="SET_CashFlowPreP_in">
+      <Input>GRO_CashFlowPreP_in_scalar</Input>
+      <Output>OutputPlaceHolder</Output>
+    </PointSet>
+    <DataSet name="SET_CashFlowPreP_out">
+      <Input>GRO_CashFlowPreP_in_scalar, GRO_CashFlowPreP_in_Time</Input>
+      <Output>GRO_CashFlowPreP_out_scalar</Output>
+      <Index var="Time">GRO_CashFlowPreP_in_Time</Index>
+    </DataSet>
+    <PointSet name="SET_CashFlow_in">
+      <Input>GRO_CashFlow_in_scalar</Input>
+      <Output>OutputPlaceHolder</Output>
+    </PointSet>
+    <PointSet name="SET_CashFlow_out">
+      <Input>GRO_CashFlow_in_scalar</Input>
+      <Output>GRO_CashFlow_out_scalar</Output>
+    </PointSet>
+    <PointSet name="SET_All_out">
+      <Input>GRO_CashFlow_in_scalar</Input>
+      <Output>GRO_CashFlow_out_scalar</Output>
+    </PointSet>
+    <PointSet name="SET_IRR_out">
+      <Input>IP_capacity, PriceH2</Input>
+      <Output>IRR, NPV, PI, IP_capa_fact, BOP_capa_fact, BOP_TOT_revenueEL, IP_TOT_revenueBY, IP_TOT_productionBY, IP_TOT_costEL, IP_TOT_usedEL </Output>
+    </PointSet>
+  </DataObjects>
+
+  <Steps>
+    <IOStep name="read_ARMAprice">
+      <Input class="Files" type="">f_ARMAprice</Input>
+      <Output class="Models" type="ROM">ARMA_price</Output>
+    </IOStep>
+    <MultiRun name="MCrun" pauseAtEnd="True">
+      <Input          class="DataObjects"   type="PointSet">SET_ARMAprice_in</Input>
+      <Input          class="DataObjects"   type="PointSet">SET_dispatch_in</Input>
+      <Input          class="DataObjects"   type="PointSet">SET_CashFlowPreP_in</Input>
+      <Input          class="DataObjects"   type="PointSet">SET_CashFlow_in</Input>
+      <Model          class="Models"        type="EnsembleModel">MyEnsemble</Model>
+      <Sampler        class="Samplers"      type="Grid">DYMOLA_GRID</Sampler>
+      <Output         class="DataObjects"   type="PointSet">SET_All_out</Output>
+      <Output         class="DataObjects"   type="PointSet">SET_IRR_out</Output>
+    </MultiRun>
+    <IOStep name="printTOfile">
+     <Input          class="DataObjects"   type="PointSet">SET_IRR_out</Input>
+     <Output         class="OutStreams"    type="Print">dumpAll</Output>  
+    </IOStep>
+  </Steps>
+
+  <OutStreams>
+    <Print name="dumpAll">
+      <type>csv</type>
+      <source>SET_IRR_out</source>
+    </Print>
+  </OutStreams>
+</Simulation>

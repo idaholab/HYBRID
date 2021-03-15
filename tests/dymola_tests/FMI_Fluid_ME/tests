@@ -1,0 +1,12 @@
+[Tests]
+ [./]
+  #REQUIREMENT: R-SI-2
+  type = 'HYBRIDTester'
+  input = 'FlowReversalME.mos'
+  workingDir = '.'
+  output = 'FlowReversalME.mat'
+  dymola_mats = 'FlowReversalME.mat'
+  rel_err = 0.1
+  run_types = 'dymola'
+ [../]
+[]

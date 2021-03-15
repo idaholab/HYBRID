@@ -1,0 +1,31 @@
+\subsection{Balance of Plant}
+There are two main balance of plant models in the hybrid repository. The standard ideal turbine (with and without a condenser and feedwater heater) and step down turbines that allow turbine tap offtake.
+
+
+\subsubsection{Simple Balance of Plant}
+
+The balance of plant system consists of an ideal steam turbine model, a condenser, feedwater system for reheat, and a couple of valves that allow steam flow either to the turbine or as bypass to the condenser, Figure \ref{Top View SimpleBOP}. Additionally, piping exists to send condensate and rejected heat from ancillary processes directly to the condenser. The balance of plant model can handle supervisory control input for direct control of the turbine control valve and turbine bypass valve based on different sensor input. The main balance of plant system is designed to model Rankine systems.  
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.4]{pics/BOP.png}
+\caption{Top Level Depiction of the Balance of Plant in the NHES package}
+\label{Top View SimpleBOP}
+\end{figure}
+
+
+\subsubsection{Step Down Turbines}
+
+The step-down turbines consist of a series of an ideal steam turbines connected via a singular rotational inertia shaft with bypass tap lines coming off the turbines, Figure \ref{Top View Step Down Turbines}. The purpose of this model is to allow turbine tap offtake in a dynamic system. The data record within the model includes a series of inputs that allows the user to specify the turbine tap offtake pressures. Additionally, each individual offtake fraction can be input from the data record. The outlet of the stepdown turbines does not include a condenser; therefore, a condenser model would need to be included in a separate system model if the fluid is to be re-introduced into an overall system model.
+ 
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.3]{pics/HeaderStepdownturbines.png}
+\caption{Top Level Depiction of the StepDown Turbines in the NHES package}
+\label{Top View Step Down Turbines}
+\end{figure}
+
+% content
+
+
+%\input{Installation/clone.tex}

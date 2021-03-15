@@ -1,0 +1,1 @@
+simulateModel("NHES.Systems.EnergyStorage.SensibleHeatStorage.Examples.Twentypercentofnominal3400MWtPWR2", stopTime=50000, numberOfIntervals=0, outputInterval=20, method="Esdirk45a", resultFile="Twentypercentofnominal3400MWtPWR2");

@@ -1,0 +1,11 @@
+[Tests]
+ [./]
+  type = 'HYBRIDTester'
+  input = 'Thermocline_Insulation_Test.mos'
+  workingDir = '.'
+  output = 'Thermocline_Insulation_Test.mat'
+  dymola_mats = 'Thermocline_Insulation_Test.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

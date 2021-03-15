@@ -1,0 +1,8 @@
+simulateModel("NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.Examples.HTSE_TightlyCoupled_PowerCtrl_Test", stopTime=7200, numberOfIntervals=3600, method="Esdirk45a", resultFile="HTSE_TightlyCoupled_PowerCtrl_Test");
+
+createPlot(id=1, position={7, 8, 456, 312}, y={"IP.sensorBus.W_HTSE", "IP.sensorBus.W_SOEC"}, range={0.0, 8000.0, 25.0, 55.0}, grid=true, filename="HTSE_TightlyCoupled_PowerCtrl_Test.mat", colors={{28,108,200}, {238,46,47}});
+createPlot(id=2, position={482, 9, 456, 311}, y={"IP.CS.sensorBus.TNOut_cathodeGas", "IP.CS.TNOut_cathodeGas_set.y"}, range={0.0, 8000.0, 220.0, 300.0}, grid=true, colors={{28,108,200}, {238,46,47}});
+createPlot(id=3, position={957, 10, 450, 309}, y={"IP.sensorBus.m_flow_H2_prod"}, range={0.0, 8000.0, 0.24, 0.44}, grid=true, colors={{28,108,200}});
+createPlot(id=4, position={7, 355, 457, 304}, y={"IP.sensorBus.m_flow_in"}, range={0.0, 8000.0, 6.5, 9.5}, grid=true, colors={{28,108,200}});
+createPlot(id=5, position={481, 355, 457, 304}, y={"IP.controlledSOEC.SOECstack.SUfactor", "IP.controlledSOEC.SUfactor_set.y"}, range={0.0, 8000.0, 77.5, 81.0}, grid=true, colors={{28,108,200}, {238,46,47}});
+createPlot(id=6, position={955, 355, 454, 304}, y={"IP.sensorBus.m_flow_O2_prod"}, range={0.0, 8000.0, 1.8, 3.4000000000000004}, grid=true, colors={{28,108,200}});

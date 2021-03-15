@@ -1,0 +1,12 @@
+[Tests]
+ [./]
+  #REQUIREMENT: R-SI-2
+  type = 'HYBRIDTester'
+  input = 'HeatME.mos'
+  workingDir = '.'
+  output = 'GenerationOfFMUsME.mat'
+  dymola_mats = 'GenerationOfFMUsME.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

@@ -1,0 +1,3 @@
+translateModel("NHES.Systems.PrimaryHeatSystem.FourLoopPWR.Examples.NSSS_Test");
+importInitial("./gold/dsfinal.txt");
+simulateModel("NHES.Systems.PrimaryHeatSystem.FourLoopPWR.Examples.NSSS_Test", stopTime=10000, numberOfIntervals=250, method="Esdirk45a", resultFile="NSSS_Test");

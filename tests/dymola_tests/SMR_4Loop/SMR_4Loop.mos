@@ -1,0 +1,3 @@
+translateModel("NHES.Systems.Examples.SMR_Coupling_4_loop_control");
+importInitial("./gold/dsfinal.txt");
+simulateModel("NHES.Systems.Examples.SMR_Coupling_4_loop_control", stopTime=18000, outputInterval=50, method="Esdirk45a", resultFile="SMR_Coupling_4_loop_control");

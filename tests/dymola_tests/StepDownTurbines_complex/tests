@@ -1,0 +1,12 @@
+[Tests]
+ [./]
+  #REQUIREMENT: R-F-1
+  type = 'HYBRIDTester'
+  input = 'StepdownTurbinescomplex_Test.mos'
+  workingDir = '.'
+  output = 'Test3.mat'
+  dymola_mats = 'Test3.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

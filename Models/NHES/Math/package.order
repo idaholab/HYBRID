@@ -1,0 +1,14 @@
+ComplexMath
+Examples
+cubicRoots_Real
+cubicRoots_SingleReal
+spliceSigmoid
+Sigmoid
+spliceTanh
+spliceTanh_der
+smoothMax
+smoothMax_der
+logspace
+BesselJ
+gamma_Lanczos
+factorial

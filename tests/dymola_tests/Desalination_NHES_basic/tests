@@ -1,0 +1,12 @@
+[Tests]
+ [./]
+  #REQUIREMENT: R-F-1
+  type = 'HYBRIDTester'
+  input = 'RO_Desal_Test.mos'
+  workingDir = '.'
+  output = 'RO_Desal_Test.mat'
+  dymola_mats = 'RO_Desal_Test.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

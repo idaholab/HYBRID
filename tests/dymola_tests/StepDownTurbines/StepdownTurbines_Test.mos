@@ -1,0 +1,1 @@
+simulateModel("NHES.Systems.IndustrialProcess.HeaderTurbineCombo.Examples.Test2", stopTime=100, numberOfIntervals=100, method="Esdirk45a", resultFile="Test2");

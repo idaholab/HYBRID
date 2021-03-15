@@ -1,0 +1,123 @@
+<?xml version="1.0" ?>
+<Simulation verbosity="debug">
+  <RunInfo>
+    <WorkingDir>.</WorkingDir>
+    <Sequence>read_ARMAdemand,read_ARMAwind,Renewable_grid_run</Sequence>
+    <!-- <batchSize>24</batchSize>
+    <internalParallel>True</internalParallel>
+    <clusterParameters>-P nst </clusterParameters>
+    <mode> mpi  <runQSUB/> </mode>
+    <expectedTime>10:00:00</expectedTime>
+    -->
+    <!-- <NumThreads>1</NumThreads> -->
+    <!-- <NumMPI>10</NumMPI> -->
+  </RunInfo>
+
+  <Databases>
+    <HDF5 directory="1"  name="EXISTING_DATABASE" filename="Database_out1.h5" readMode="overwrite"/>
+  </Databases>
+
+  <Files>
+    <Input name="f_ARMAwind" type="">ARMA_W.pk</Input>
+    <Input name="f_ARMAdemand" type="">ARMA_D.pk</Input>
+  </Files>
+
+  <VariableGroups>
+    <Group name="GRO_ARMAPosP_in_scalar">scaling_demand, Renewable_capacity</Group>
+    <Group name="GRO_ARMAPosP_in_Time">Demand, Speed</Group>
+    <Group name="GRO_ARMAPosP_out_Time">Demand_time, Demand_time_net</Group>
+  </VariableGroups>
+
+  <Models>
+    <ROM name='demandARMA' subType='pickledROM'/>
+    <ROM name='windARMA' subType='pickledROM'/>
+    <ExternalModel ModuleToLoad="../../../src/ARMAPosP.py" name="ARMAPosP" subType="">
+      <variables>GRO_ARMAPosP_in_scalar, GRO_ARMAPosP_in_Time, GRO_ARMAPosP_out_Time</variables>
+      <!-- External XML node -->
+      <ARMAPosP verbosity="100"> <!-- “0” all debug output, “1” some output, “100” only errors  -->
+        <Demand  mean="scaling_demand">Demand</Demand>  <!-- The PosP is looking for "mean" for the mean demand and produces <Demand>_time (and <Demand>_time_net) using <Demand> data (from ARMA model) -->
+        <Renewable component="Renewable">Speed</Renewable> <!-- The PosP is looking for "component"_capacity for the Renewable capacity and produces "component"_productionEL using <Renewable> data (from ARMA model) -->
+      </ARMAPosP>
+    </ExternalModel>
+    <EnsembleModel name="ARMA_combined" subType="">
+      <settings>
+        <storeOutputFrom>ARMAPosP</storeOutputFrom>
+        <flushTargetEvaluation>true</flushTargetEvaluation>
+      </settings>
+      <Model class="Models" type="ROM">
+         windARMA
+        <Input            class="DataObjects" type="PointSet">SET_ARMAwind_in</Input>
+        <TargetEvaluation class="DataObjects" type="HistorySet">SET_ARMAwind_out</TargetEvaluation>
+      </Model>
+      <Model class="Models" type="ROM">
+         demandARMA
+        <Input            class="DataObjects" type="PointSet">SET_ARMAdemand_in</Input>
+        <TargetEvaluation class="DataObjects" type="HistorySet">SET_ARMAdemand_out</TargetEvaluation>
+      </Model>
+      <Model class="Models" type="ExternalModel">
+         ARMAPosP
+        <Input            class="DataObjects" type="PointSet">SET_ARMAPosP_in</Input>
+        <TargetEvaluation class="DataObjects" type="DataSet">SET_ARMAPosP_out</TargetEvaluation>
+      </Model>
+    </EnsembleModel>
+  </Models>
+
+  <Steps>
+    <IOStep name="read_ARMAdemand">
+      <Input class="Files" type="">f_ARMAdemand</Input>
+      <Output class="Models" type="ROM">demandARMA</Output>
+    </IOStep>
+    <IOStep name="read_ARMAwind">
+      <Input class="Files" type="">f_ARMAwind</Input>
+      <Output class="Models" type="ROM">windARMA</Output>
+    </IOStep>
+    <MultiRun name="Renewable_grid_run" pauseAtEnd="True">
+      <Input          class="DataObjects"   type="PointSet">SET_ARMAwind_in</Input>
+      <Input          class="DataObjects"   type="PointSet">SET_ARMAdemand_in</Input>
+      <Input          class="DataObjects"   type="PointSet">SET_ARMAPosP_in</Input>
+      <Model          class="Models"        type="EnsembleModel">ARMA_combined</Model>
+      <Sampler        class="Samplers"      type="EnsembleForward">Renewable_capacity_sampler</Sampler>
+      <Output         class="Databases"     type="HDF5">EXISTING_DATABASE</Output>
+    </MultiRun>
+  </Steps>
+
+  <Samplers>
+    <MonteCarlo name="Renewable_capacity_sampler">
+      <samplerInit> <limit>9999</limit> </samplerInit>
+      <constant name="scaling_demand">1000000</constant> <!-- The training data is in MW, with an  average of ~1000MW => The multiplier is 1E6 to go to W  -->
+      <constant name="Renewable_capacity">10</constant> <!-- Renewable capacity in % of demand -->
+      <constant name="scaling_wind">1.0</constant>
+    </MonteCarlo>
+  </Samplers>
+
+  <DataObjects>
+    <PointSet name="SET_ARMAdemand_in">
+      <Input>scaling_demand</Input>
+      <Output>OutputPlaceHolder</Output>
+    </PointSet>
+    <HistorySet name="SET_ARMAdemand_out">
+      <Input>scaling_demand</Input>
+      <Output>Demand,Time</Output>
+    </HistorySet>
+    <PointSet name="SET_ARMAwind_in">
+      <Input>scaling_wind</Input>
+      <Output>OutputPlaceHolder</Output>
+    </PointSet>
+    <HistorySet name="SET_ARMAwind_out">
+      <Input>scaling_wind</Input>
+      <Output>Speed</Output>
+      <options>
+        <pivotParameter>Time</pivotParameter>
+      </options>
+    </HistorySet>
+    <PointSet name="SET_ARMAPosP_in">
+      <Input>GRO_ARMAPosP_in_scalar, GRO_ARMAPosP_in_Time</Input>
+      <Output>OutputPlaceHolder</Output>
+    </PointSet>
+    <DataSet name="SET_ARMAPosP_out">
+      <Input>GRO_ARMAPosP_in_scalar, GRO_ARMAPosP_in_Time</Input>
+      <Output>GRO_ARMAPosP_out_Time</Output>
+      <Index var="Time">GRO_ARMAPosP_in_Time, GRO_ARMAPosP_out_Time</Index>
+    </DataSet>
+  </DataObjects>
+</Simulation>

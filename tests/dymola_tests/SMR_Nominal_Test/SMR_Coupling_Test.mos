@@ -1,0 +1,3 @@
+translateModel("NHES.Systems.Examples.SMR_Coupling_Test");
+importInitial("./gold/dsfinal.txt");
+simulateModel("NHES.Systems.Examples.SMR_Coupling_Test", stopTime=3600, numberOfIntervals=360, method="Esdirk45a", resultFile="SMR_Coupling_Test");

@@ -1,0 +1,29 @@
+\subsection{Secondary Energy Source}
+Secondary Energy Sources, or commonly known as peaking units, are an essential part of the energy grid. These systems provide "on-demand" energy during moments when the electrical demand is larger than what the rest of the grid can accomodate. A common feature of 
+
+\subsubsection{Natural Gas Fired Turbine}
+
+Recently, natural gas-fired turbines have found widespread use because of their higher efficiencies, lower capital costs, shorter installation times, abundance of natural gas supplies, lower greenhouse gas emissions compared to other energy sources; and fast start-up capability, which enables them to be used as peaking units that respond to peak demands \cite{GasTurbine2008}, \cite{GasTurbine2013}. Due to their special characteristics, natural gas fired turbines are installed in numerous places around the world and have become an important source for power generation. This section is dedicated to detailed process and control designs of the GTPP, whose primary role is to cover rapid dynamics in grid demand that cannot be met by the remainder of the N-R HES. Simulation results involving several case studies are also provided. Full system details are available in OSTI \cite{2016HTSE}.
+
+The natural gas turbine, Figure \ref{Top View Gas Turbine}, is designed with parameters embedded in each individual component. The top level variables can be edited directly within the GTTP\textunderscore PowerCtrl system. This component is where things such as pressure ratios, flow rates, mechanical efficiencies, and shaft inertia can be modified. The natural gas turbine is designed with a nominal electrical power generation capacity of 35MWe but has a specially designed capacityScaler variable that allows the user to scale the system to between 17 and 70MWe for a singular load. If more are desired then the deployment of several natural gas fired turbines would be required. 
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.4]{pics/GasTurbine.png}
+\caption{Top Level Depiction of the Natural Gas Fired Turbine in the NHES package}
+\label{Top View Gas Turbine}
+\end{figure}
+
+\subsubsection{Hydrogen Turbine}
+With the increase in hydrogen production technologies comes on the other end hydrogen burning technologies. To accommodate a hydrogen burning technology the HYBRID repository has been outfitted with a retrofit natural gas burner that is capable of handling pure hydrogen. 
+
+The hydrogen turbine, Figure \ref{Top View Hydrogen Turbine}, is designed with parameters embedded in each individual component. The top level variables can be edited directly within the Hydrogen\textunderscore PowerCtrl system. This component is where things such as pressure ratios, flow rates, mechanical efficiencies, and shaft inertia can be modified. The hydrogen turbine is designed with a nominal electrical power generation capacity of 35MWe but has a specially designed capacityScaler variable that allows the user to scale the system to between 17 and 70MWe for a singular load. If more are desired then the deployment of several hydrogen turbines would be required. 
+
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.4]{pics/Hydrogen_Turbine.png}
+\caption{Top Level Depiction of the Hydrogen Turbine in the NHES package}
+\label{Top View Hydrogen Turbine}
+\end{figure}
+%\input{Installation/clone.tex}

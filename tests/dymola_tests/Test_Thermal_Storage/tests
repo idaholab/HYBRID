@@ -1,0 +1,11 @@
+[Tests]
+ [./]
+  type = 'HYBRIDTester'
+  input = 'Two_Tank_Test.mos'
+  workingDir = '.'
+  output = 'Twentypercentofnominal3400MWtPWR2.mat'
+  dymola_mats = 'Twentypercentofnominal3400MWtPWR2.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

@@ -1,0 +1,11 @@
+[Tests]
+ [./TrainArmaOnData]
+  #REQUIREMENT: R-SI-1
+  type = 'RavenFramework'
+  input = 'HYBRun_trainARMA_1day.xml'
+  output = 'TrainArma/ARMA_D.pk TrainArma/ARMA_W.pk'
+  rel_err = 0.001
+  run_types = 'raven'
+ [../]
+
+[]

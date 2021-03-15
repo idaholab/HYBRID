@@ -1,0 +1,12 @@
+[Tests]
+ [./]
+  type = 'HYBRIDTester'
+  input = 'Tightly_Coupled_FY18_TES.mos'
+  workingDir = '.'
+  output = 'TightlyCoupled_SteamFlowCtrl_FY18_TES.mat'
+  dymola_mats = 'TightlyCoupled_SteamFlowCtrl_FY18_TES.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+  skip = "failing"
+ [../]
+[]

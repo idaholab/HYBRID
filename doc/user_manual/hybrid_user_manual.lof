@@ -1,0 +1,28 @@
+\contentsline {figure}{\numberline {1}{\ignorespaces a) Overall Modelica package, b) template structure for creating new subsystem categories and specific subsystem models within a category, c) example of a specific implementation of a primary heat system using the template approach. \relax }}{17}{figure.caption.2}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Exploded view of the NSSS\textunderscore Test example within the NHES library with control system options opened up \relax }}{18}{figure.caption.3}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Subsystem for the Westinghouse-4 Loop model.\relax }}{19}{figure.caption.4}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Control System (CS) for the Westinghouse 4 Loop model\relax }}{20}{figure.caption.5}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Creating a duplicate class for model runs.\relax }}{21}{figure.caption.6}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Initial Integrated Energy System Starting Point\relax }}{22}{figure.caption.7}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Rearrangement of Initial Energy System\relax }}{22}{figure.caption.8}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Creation of NuScale Energy System\relax }}{23}{figure.caption.9}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Primary System Controller Settings\relax }}{24}{figure.caption.10}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Turbine Control Settings\relax }}{25}{figure.caption.11}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Port a Boundary Values of the Energy Manifold\relax }}{26}{figure.caption.12}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Port b Nominal Values of the Energy Manifold \relax }}{27}{figure.caption.13}%
+\contentsline {figure}{\numberline {13}{\ignorespaces Settings to Create a proper mat file for a gold folder test\relax }}{28}{figure.caption.14}%
+\contentsline {figure}{\numberline {14}{\ignorespaces Simulation Setup\relax }}{29}{figure.caption.15}%
+\contentsline {figure}{\numberline {15}{\ignorespaces Import Initial conditions from a previously run simulation\relax }}{30}{figure.caption.16}%
+\contentsline {figure}{\numberline {16}{\ignorespaces Realign the Simulation Time\relax }}{31}{figure.caption.17}%
+\contentsline {figure}{\numberline {17}{\ignorespaces Top Level Depiction of the Westinghouse 4-Loop Plant\relax }}{33}{figure.caption.18}%
+\contentsline {figure}{\numberline {18}{\ignorespaces Top Level Depiction of the Generic Modular PWR in the NHES package.\relax }}{33}{figure.caption.19}%
+\contentsline {figure}{\numberline {19}{\ignorespaces Top Level Depiction of the NuScale System in the NHES package.\relax }}{34}{figure.caption.20}%
+\contentsline {figure}{\numberline {20}{\ignorespaces : Top Level Depiction of the Energy Manifold in the NHES package\relax }}{35}{figure.caption.21}%
+\contentsline {figure}{\numberline {21}{\ignorespaces Top Level Depiction of the High Temperature Steam Electrolysis Unit in the NHES package\relax }}{36}{figure.caption.22}%
+\contentsline {figure}{\numberline {22}{\ignorespaces Top Level Depiction of the Brackish Water Desalination Process in the NHES package\relax }}{37}{figure.caption.23}%
+\contentsline {figure}{\numberline {23}{\ignorespaces Top Level Depiction of the Balance of Plant in the NHES package\relax }}{38}{figure.caption.24}%
+\contentsline {figure}{\numberline {24}{\ignorespaces Top Level Depiction of the StepDown Turbines in the NHES package\relax }}{39}{figure.caption.25}%
+\contentsline {figure}{\numberline {25}{\ignorespaces Top Level Depiction of the Logical Battery in the NHES package\relax }}{40}{figure.caption.26}%
+\contentsline {figure}{\numberline {26}{\ignorespaces Top Level Depiction of the Two-Tank Sensible Heat Storage Unit in the NHES package\relax }}{41}{figure.caption.27}%
+\contentsline {figure}{\numberline {27}{\ignorespaces Top Level Depiction of the Single Tank Packed Bed Heat Storage Unit in the NHES package\relax }}{42}{figure.caption.28}%
+\contentsline {figure}{\numberline {28}{\ignorespaces Top Level Depiction of the Natural Gas Fired Turbine in the NHES package\relax }}{43}{figure.caption.29}%

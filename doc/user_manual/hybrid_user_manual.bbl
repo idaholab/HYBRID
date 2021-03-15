@@ -1,0 +1,84 @@
+\begin{thebibliography}{10}
+
+\bibitem{2017Report}
+C.~Rabiti, A.~Epiney, P.~Talbot, J.~Kim, S.~Bragg-Sitton, A.~Yigitoglu,
+  S.~Greenwood, S.~Cetiner, F.~Ganda, and G.~Maraonati, ``Status report on
+  modeling and simulation capabilities for nuclear-renewable hybrid energy
+  systems,'' Tech. Rep. INL/EXT-17-43441, Idaho National Laboratory, 2017.
+
+\bibitem{2016HTSE}
+J.~Kim, M.~Mckellar, S.~Bragg-Sitton, and R.~Boardman, ``Status report on the
+  component models developed in the modelica framework: High-temperature steam
+  electrolysis and gas turbine power plant,'' Tech. Rep. INL/EXT-16-40305,
+  Idaho National Laboratory, October 2016.
+
+\bibitem{2018ThermalStorage}
+J.~Kim and K.~Frick, ``Status report on the component models developed in the
+  modelica framework: Reverse osmosis desalination plant and thermal energy
+  storage.,'' Tech. Rep. INL/EXT-18-45505, Idaho National Laboratory, May 2018.
+
+\bibitem{2019NuScaleM4}
+K.~Frick, ``Status report on the nuscale module development in the modelica
+  framework,'' Tech. Rep. INL/EXT-19-55520, Idaho National Laboratory, August
+  2019.
+
+\bibitem{ModelicaAssociation}
+``Modelica standard library.'' https://github.com/modelica/Modelica.
+
+\bibitem{TRANSFORM}
+M.~Greenwood, ``Transform - transient simulation framework of reconfigurable
+  models,'' no.~doi.10.11578/dc.20171109.1, 2017.
+
+\bibitem{Westinghouse}
+``Westinghouse pwr manual,'' 1984.
+
+\bibitem{Udagawa}
+J.~Udagawa, P.~Aguiar, and N.~Brandon, ``Improved goodness-of-fit tests,'' {\em
+  Journal of Power Sources}, vol.~166, no.~1, pp.~127--136, 2007.
+
+\bibitem{JimObrien}
+J.~O'Brien, ``Thermodynamic considerations for thermal water splitting
+  processes and high-temperature electrolysis,'' {\em IMECE2008}, 2008.
+
+\bibitem{2017HTSE}
+J.~Kim, S.~Bragg-Sitton, and R.~Boardman, ``Status report on the
+  high-temperature steam electrolysis plant model developed in the modelica
+  framework (fy17),'' Tech. Rep. doi:10.2172/1408745, Idaho National
+  Laboratory, 2017.
+
+\bibitem{JongHydrogen}
+J.~Suk~Kim, R.~Boardman, and S.~Bragg-Sitton, ``Dynamic performance analysis of
+  a high temperature steam electrolysis plant integrated within
+  nuclear-renewable hybrid energy systems,'' {\em Applied Energy}, vol.~228,
+  pp.~2090--2110, 2018.
+
+\bibitem{JongDesalination}
+J.~Suk~Kim, J.~Chen, and H.~Garcia, ``Modeling, control, and dynamic
+  performance analysis of a reverse osmosis desalination plant integrated
+  within hybrid energy systems,'' {\em Energy}, vol.~112, pp.~52--66, 2016.
+
+\bibitem{FrickThermalStorage}
+K.~Frick, J.~Doster, and S.~Bragg-Sitton, ``Design and operation of a sensible
+  heat peaking unit for small modular reactors,'' {\em Nuclear Technology},
+  vol.~205, pp.~415--441, 2018.
+
+\bibitem{Schumann}
+J.~Lew, P.~Li, C.~Chan, W.~Karaki, and J.~Stephens, ``Analysis of heat storage
+  and delivery of a thermocline tank having solid filler,'' {\em Journal of
+  Solar Engineering}, vol.~133, 2011.
+
+\bibitem{specialHeattransfer}
+T.~Esence and et~al, ``Analysis of heat storage and delivery of a thermocline
+  tank having solid filler,'' {\em Solar Energy}, vol.~153, pp.~628--654, 2017.
+
+\bibitem{GasTurbine2008}
+S.~Yee, J.~Milanovic, and F.~Hughes, ``Overview and comparative analysis of gas
+  turbine models for system stability studies,'' {\em IEEE Transactions of
+  Power Systems}, vol.~23, pp.~108--118, 2008.
+
+\bibitem{GasTurbine2013}
+J.~Kim, K.~Powell, and T.~Edgar, ``Nonlinear model predictive control for a
+  heavy-duty gas turbine power plant,'' {\em American Control Conference},
+  vol.~23, pp.~2952--2957, 2013.
+
+\end{thebibliography}

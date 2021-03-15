@@ -1,0 +1,1 @@
+simulateModel("NHES.Systems.EnergyStorage.ThermoclineHeatStorage.Examples.Thermocline_Insulation_Test", stopTime=18000, outputInterval=100, method="Esdirk45a", resultFile="Thermocline_Insulation_Test");

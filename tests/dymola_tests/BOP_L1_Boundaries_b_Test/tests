@@ -1,0 +1,12 @@
+[Tests]
+ [./]
+  #REQUIREMENT: R-F-1
+  type = 'HYBRIDTester'
+  input = 'SteamTurbine_L1_boundaries_Test_b.mos'
+  workingDir = '.'
+  output = 'SteamTurbine_L1_boundaries_Test_b.mat'
+  dymola_mats = 'SteamTurbine_L1_boundaries_Test_b.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

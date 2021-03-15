@@ -1,0 +1,5 @@
+#Create a new virtual environment in directory raven_libs
+virtualenv raven_libs
+#Use the virtual environment
+source raven_libs/bin/activate
+#Use pip to install needed libraries

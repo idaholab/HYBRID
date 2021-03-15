@@ -1,0 +1,4 @@
+simulateModel("NHES.Systems.PrimaryHeatSystem.IRIS.Examples.IRIS_Test", stopTime=100, numberOfIntervals=100, method="Esdirk45a", resultFile="IRIS_Test");
+
+createPlot(id=1, position={15, 10, 584, 421}, y={"PHS.sensorBus.p_pressurizer"}, range={0.0, 100.0, 155.21, 155.3}, grid=true, colors={{28,108,200}});
+

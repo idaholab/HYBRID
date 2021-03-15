@@ -1,0 +1,37 @@
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Modelica Models}{1}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Individual Components}{1}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Hybrid Requirements}{2}{subsection.1.3}%
+\contentsline {section}{\numberline {2}HYBRID Installation Procedure}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Overview}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Cloning the Hybrid Repository}{3}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Install RAVEN and its plugins as a sub-module}{4}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}Inform the Framework Paths}{4}{subsubsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.3}Setup of Dymola for the Regression Testing System}{5}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Run Regression tests related to the HYBRID project}{5}{subsection.2.4}%
+\contentsline {section}{\numberline {3}Running and Creating New Code}{8}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Understanding and Running Existing Models}{8}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Modifying Existing Models for Specific Runs}{12}{subsubsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.2}Configuring Existing Models into Integrated Energy Systems}{13}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Test Creation}{16}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Advanced Test File Options utilized for complex models}{22}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Model Description}{25}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Primary Heat System}{25}{subsection.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}Four Loop Pressurized Water Reactor}{25}{subsubsection.4.1.1}%
+\contentsline {subsubsection}{\numberline {4.1.2}Generic Modular PWR}{25}{subsubsection.4.1.2}%
+\contentsline {subsubsection}{\numberline {4.1.3}Natural Circulation Small Modular Reactor}{26}{subsubsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.2}Energy Manifold}{27}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Industrial Process}{28}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}Hydrogen Production}{28}{subsubsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.2}Desalination}{30}{subsubsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.4}Balance of Plant}{30}{subsection.4.4}%
+\contentsline {subsubsection}{\numberline {4.4.1}Simple Balance of Plant}{31}{subsubsection.4.4.1}%
+\contentsline {subsubsection}{\numberline {4.4.2}Step Down Turbines}{31}{subsubsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.5}Energy Storage}{31}{subsection.4.5}%
+\contentsline {subsubsection}{\numberline {4.5.1}Electric Battery Storage}{32}{subsubsection.4.5.1}%
+\contentsline {subsubsection}{\numberline {4.5.2}Two-Tank Thermal Energy Storage}{32}{subsubsection.4.5.2}%
+\contentsline {subsubsection}{\numberline {4.5.3}Thermocline Packed Bed Thermal Energy Storage}{34}{subsubsection.4.5.3}%
+\contentsline {subsection}{\numberline {4.6}Secondary Energy Source}{35}{subsection.4.6}%
+\contentsline {subsubsection}{\numberline {4.6.1}Natural Gas Fired Turbine}{35}{subsubsection.4.6.1}%
+\contentsline {subsubsection}{\numberline {4.6.2}Hydrogen Turbine}{36}{subsubsection.4.6.2}%
+\contentsline {section}{References}{39}{section*.31}%

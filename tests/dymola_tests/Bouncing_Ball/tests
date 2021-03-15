@@ -1,0 +1,12 @@
+[Tests]
+ [./]
+  #REQUIREMENT: R-F-1
+  type = 'HYBRIDTester'
+  input = 'Bouncing_Ball.mos'
+  workingDir = '.'
+  output = 'Bouncing_Ball.mat'
+  dymola_mats = 'Bouncing_Ball.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

@@ -1,0 +1,1 @@
+simulateModel("NHES.Systems.SwitchYard.SimpleYard.Examples.SimpleBreakers_Test", stopTime=10, numberOfIntervals=100, method="dassl", resultFile="SimpleBreakers_Test");

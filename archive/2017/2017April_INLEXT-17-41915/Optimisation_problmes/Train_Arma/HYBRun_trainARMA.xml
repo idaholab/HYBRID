@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+<Simulation verbosity="debug">
+  <RunInfo>
+    <WorkingDir>.</WorkingDir>
+    <Sequence>readInP,prepTSP,ARMATrainP,PushROMIntoFileP</Sequence>
+  </RunInfo>
+
+  <Files>
+    <Input name="rawDataFilePri">EES.csv</Input>
+    <Input name="ARMA_price_pickle">ARMA_P.pk</Input>
+  </Files>
+
+  <Models>
+    <PostProcessor name = 'TypicalHistory' subType = 'InterfacedPostProcessor'>
+      <method>TypicalHistoryFromHistorySet</method>
+      <subseqLen>5292000</subseqLen>
+      <outputLen>31532600</outputLen> <!-- 1 year -->
+      <pivotParameter>Time</pivotParameter>
+    </PostProcessor>
+    <ROM name='ARMA_price' subType='ARMA'>
+      <reseedCopies>False</reseedCopies>
+      <Target>Price,Time</Target>
+      <Features>scaling_price</Features>
+      <pivotParameter>Time</pivotParameter>
+      <Pmax>6</Pmax>
+      <Pmin>6</Pmin>
+      <Qmax>1</Qmax>
+      <Qmin>1</Qmin>
+      <Fourier>31536000,604800,86400,10800</Fourier>
+      <FourierOrder>12, 2, 6, 3</FourierOrder>
+    </ROM>
+  </Models>
+
+  <DataObjects>
+    <HistorySet name="rawData">
+      <Input>year,scaling_price</Input>
+      <Output>Price</Output>
+      <options>
+        <pivotParameter>Time</pivotParameter>
+      </options>
+    </HistorySet>
+    <HistorySet name="typicalData">
+      <Input>year,scaling_price</Input>
+      <Output>Price</Output>
+      <options>
+        <pivotParameter>Time</pivotParameter>
+      </options>
+    </HistorySet>
+  </DataObjects>
+
+  <Steps>
+<!-- Synthetic Price  -->
+    <IOStep name='readInP' pauseAtEnd = 'True'>
+      <Input    class = 'Files'             type = ''              >rawDataFilePri</Input>
+      <Output   class = 'DataObjects'       type = 'HistorySet'       >rawData</Output>
+    </IOStep>
+    <PostProcess name='prepTSP' pauseAtEnd = 'True'>
+      <Input    class = 'DataObjects'       type = 'HistorySet'       >rawData</Input>
+      <Model   class='Models'               type = 'PostProcessor'    >TypicalHistory</Model>
+      <Output    class = 'DataObjects'       type = 'HistorySet'       >typicalData</Output>
+    </PostProcess>
+    <RomTrainer name='ARMATrainP'>
+      <Input    class = 'DataObjects'       type = 'History'       >typicalData</Input>
+      <Output   class='Models'              type ='ROM'            >ARMA_price</Output>
+    </RomTrainer>
+    <IOStep name='PushROMIntoFileP'>
+      <Input class = 'Models'               type = 'ROM'           >ARMA_price</Input>
+      <Output class = 'Files'               type = ''              >ARMA_price_pickle</Output>
+    </IOStep>
+  </Steps>
+</Simulation>

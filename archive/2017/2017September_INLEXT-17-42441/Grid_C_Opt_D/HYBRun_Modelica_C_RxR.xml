@@ -1,0 +1,574 @@
+<?xml version="1.0" ?>
+<Simulation verbosity="debug">
+  <RunInfo>
+    <WorkingDir>.</WorkingDir>
+    <Sequence> read_ARMAdemand,read_ARMAwind,GRIDrun,dumpOPT_sol </Sequence>
+    <!--
+    <batchSize>81</batchSize>
+    <internalParallel>True</internalParallel>
+    <mode>mpi</mode>
+    <RemoteRunCommand>raven_qsub_command_legacy.sh</RemoteRunCommand>
+    -->
+  </RunInfo>
+
+  <Files>
+    <Input name="f_ARMAwind" type="">ARMA_W.pk</Input>
+    <Input name="f_ARMAdemand" type="">ARMA_D.pk</Input>
+    <Input name="HYBRun_Modelica_D" type="raven">HYBRun_Modelica_D.xml</Input>
+    <Input name="Cash_Flow_input" type="">../common_files/Cash_Flow_input.xml</Input>
+    <Input name="penalty_function" type="">../../src/penalty_function.py</Input>
+  </Files>
+
+  <VariableGroups>
+    <Group name="GRO_ARMAPosP_in_scalar">scaling_demand,Renewable_capacity</Group>
+    <Group name="GRO_ARMAPosP_in_Time">Time,Speed,Demand</Group>
+    <Group name="GRO_ARMAPosP_out_scalar">time_delta</Group>
+    <Group name="GRO_ARMAPosP_out_Time">Demand_time, Demand_time_net</Group>
+
+    <Group name="GRO_DispatchInit_in_scalar">
+      DYMOLA_tot_time,BOP_eff,IP_EL,IP_TH,IP_KG,The_constant_one,
+      H2_price,SES_capacity,BOP_capacity,IP_capacity,ES_capacity,Pow2Capa_battery
+    </Group>
+    <Group name="GRO_DispatchInit_in_Time">Demand_time_net</Group>
+    <!-- outputs from DispatchInit used as first guess in inner loop -->>
+    <Group name="GRO_BOP_0000">
+      BOP_0001,
+      BOP_0002,
+      BOP_0003,
+      BOP_0004,
+      BOP_0005,
+      BOP_0006,
+      BOP_0007,
+      BOP_0008,
+      BOP_0009,
+      BOP_0010,
+      BOP_0011,
+      BOP_0012,
+      BOP_0013,
+      BOP_0014,
+      BOP_0015,
+      BOP_0016,
+      BOP_0017,
+      BOP_0018,
+      BOP_0019,
+      BOP_0020,
+      BOP_0021,
+      BOP_0022,
+      BOP_0023,
+      BOP_0024
+    </Group>
+    <Group name="GRO_SES_0000">
+      SES_0001,
+      SES_0002,
+      SES_0003,
+      SES_0004,
+      SES_0005,
+      SES_0006,
+      SES_0007,
+      SES_0008,
+      SES_0009,
+      SES_0010,
+      SES_0011,
+      SES_0012,
+      SES_0013,
+      SES_0014,
+      SES_0015,
+      SES_0016,
+      SES_0017,
+      SES_0018,
+      SES_0019,
+      SES_0020,
+      SES_0021,
+      SES_0022,
+      SES_0023,
+      SES_0024
+    </Group>
+    <Group name="GRO_ES_0000">
+      ES_0001,
+      ES_0002,
+      ES_0003,
+      ES_0004,
+      ES_0005,
+      ES_0006,
+      ES_0007,
+      ES_0008,
+      ES_0009,
+      ES_0010,
+      ES_0011,
+      ES_0012,
+      ES_0013,
+      ES_0014,
+      ES_0015,
+      ES_0016,
+      ES_0017,
+      ES_0018,
+      ES_0019,
+      ES_0020,
+      ES_0021,
+      ES_0022,
+      ES_0023,
+      ES_0024
+    </Group>
+    <Group name="GRO_IP_0000">
+      IP_0001,
+      IP_0002,
+      IP_0003,
+      IP_0004,
+      IP_0005,
+      IP_0006,
+      IP_0007,
+      IP_0008,
+      IP_0009,
+      IP_0010,
+      IP_0011,
+      IP_0012,
+      IP_0013,
+      IP_0014,
+      IP_0015,
+      IP_0016,
+      IP_0017,
+      IP_0018,
+      IP_0019,
+      IP_0020,
+      IP_0021,
+      IP_0022,
+      IP_0023,
+      IP_0024
+    </Group>
+    <Group name="GRO_DispatchInit_out_scalar" dependencies="GRO_ES_0000, GRO_SES_0000, GRO_BOP_0000, GRO_IP_0000" base="GRO_ES_0000">+GRO_SES_0000, +GRO_BOP_0000, +GRO_IP_0000 </Group>
+
+    <Group name="GRO_GRO_Modelica_add_scalar">Demand_time_net, scaling_demand, SES_capacity, IP_capacity, ES_capacity, BOP_capacity, IP_EL, IP_TH, BOP_eff, IP_KG, Start_time, DYMOLA_tot_time, H2_price, Penalty_mult, time_delta</Group>
+    <Group name="GRO_Modelica_in_scalar" dependencies="GRO_DispatchInit_out_scalar, GRO_GRO_Modelica_add_scalar" base="GRO_DispatchInit_out_scalar">+GRO_GRO_Modelica_add_scalar</Group>
+    <Group name="GRO_Modelica_out_scalar">Imbalance_Price, NPV_mult, cum_missed_demand</Group>
+  </VariableGroups>
+
+  <Models>
+    <ROM name='windARMA' subType='pickledROM'/>
+    <ROM name='demandARMA' subType='pickledROM'/>
+    <ExternalModel ModuleToLoad="../../src/ARMAPosP.py" name="ARMAPosP" subType=""> <!-- gross demand and wind speeds are preocessed into net demand -->
+      <variables>GRO_ARMAPosP_in_scalar, GRO_ARMAPosP_in_Time, GRO_ARMAPosP_out_scalar, GRO_ARMAPosP_out_Time, Time</variables>
+      <!-- External XML node -->
+      <ARMAPosP verbosity="100">
+        <Demand  mean="scaling_demand">Demand</Demand>  <!-- The PosP is looking for "component"_mean for the mean demand and produces "component"_time using <Demand> data (from ARMA model) -->
+        <Renewable component="Renewable">Speed</Renewable> <!-- The PosP is looking for "component"_capacity for the Renewable capacity and produces "component"_productionEL using <Renewable> data (from ARMA model) -->
+      </ARMAPosP>
+    </ExternalModel>
+    <ExternalModel ModuleToLoad="../../src/dispatch_2017September.py" name="DispatchInit" subType=""> <!-- The preconditioner model to compute the initial guess for the dispatch -->
+      <variables>GRO_DispatchInit_in_scalar, GRO_DispatchInit_in_Time, GRO_DispatchInit_out_scalar</variables>
+    </ExternalModel>
+    <Code name="RrR" subType="RAVEN">
+      <executable>../../../raven/raven_framework</executable>
+      <outputExportOutStreams>
+        Back_to_MASTER
+      </outputExportOutStreams>
+      <alias variable="scaling_demand" type="input">Optimizers|SPSA|constant@name:scaling_demand</alias>
+      <alias variable="SES_capacity" type="input">Optimizers|SPSA|constant@name:SES_capacity</alias>
+      <alias variable="IP_capacity" type="input">Optimizers|SPSA|constant@name:IP_capacity</alias>
+      <alias variable="ES_capacity" type="input">Optimizers|SPSA|constant@name:ES_capacity</alias>
+      <alias variable="BOP_capacity" type="input">Optimizers|SPSA|constant@name:BOP_capacity</alias>
+      <alias variable="IP_EL" type="input">Optimizers|SPSA|constant@name:IP_EL</alias>
+      <alias variable="IP_TH" type="input">Optimizers|SPSA|constant@name:IP_TH</alias>
+      <alias variable="BOP_eff" type="input">Optimizers|SPSA|constant@name:BOP_eff</alias>
+      <alias variable="IP_KG" type="input">Optimizers|SPSA|constant@name:IP_KG</alias>
+      <alias variable="Start_time" type="input">Optimizers|SPSA|constant@name:Start_time</alias>
+      <alias variable="DYMOLA_tot_time" type="input">Optimizers|SPSA|constant@name:DYMOLA_tot_time</alias>
+      <alias variable="H2_price" type="input">Optimizers|SPSA|constant@name:H2_price</alias>
+      <alias variable="Penalty_mult" type="input">Optimizers|SPSA|constant@name:Penalty_mult</alias>
+      <alias variable="time_delta" type="input">Optimizers|SPSA|constant@name:time_delta</alias>
+      <!-- ES -->
+      <alias variable="ES_0001" type="input">Optimizers|SPSA|constant@name:ES_0001</alias>
+      <alias variable="ES_0002" type="input">Optimizers|SPSA|constant@name:ES_0002</alias>
+      <alias variable="ES_0003" type="input">Optimizers|SPSA|constant@name:ES_0003</alias>
+      <alias variable="ES_0004" type="input">Optimizers|SPSA|constant@name:ES_0004</alias>
+      <alias variable="ES_0005" type="input">Optimizers|SPSA|constant@name:ES_0005</alias>
+      <alias variable="ES_0006" type="input">Optimizers|SPSA|constant@name:ES_0006</alias>
+      <alias variable="ES_0007" type="input">Optimizers|SPSA|constant@name:ES_0007</alias>
+      <alias variable="ES_0008" type="input">Optimizers|SPSA|constant@name:ES_0008</alias>
+      <alias variable="ES_0009" type="input">Optimizers|SPSA|constant@name:ES_0009</alias>
+      <alias variable="ES_0010" type="input">Optimizers|SPSA|constant@name:ES_0010</alias>
+      <alias variable="ES_0011" type="input">Optimizers|SPSA|constant@name:ES_0011</alias>
+      <alias variable="ES_0012" type="input">Optimizers|SPSA|constant@name:ES_0012</alias>
+      <alias variable="ES_0013" type="input">Optimizers|SPSA|constant@name:ES_0013</alias>
+      <alias variable="ES_0014" type="input">Optimizers|SPSA|constant@name:ES_0014</alias>
+      <alias variable="ES_0015" type="input">Optimizers|SPSA|constant@name:ES_0015</alias>
+      <alias variable="ES_0016" type="input">Optimizers|SPSA|constant@name:ES_0016</alias>
+      <alias variable="ES_0017" type="input">Optimizers|SPSA|constant@name:ES_0017</alias>
+      <alias variable="ES_0018" type="input">Optimizers|SPSA|constant@name:ES_0018</alias>
+      <alias variable="ES_0019" type="input">Optimizers|SPSA|constant@name:ES_0019</alias>
+      <alias variable="ES_0020" type="input">Optimizers|SPSA|constant@name:ES_0020</alias>
+      <alias variable="ES_0021" type="input">Optimizers|SPSA|constant@name:ES_0021</alias>
+      <alias variable="ES_0022" type="input">Optimizers|SPSA|constant@name:ES_0022</alias>
+      <alias variable="ES_0023" type="input">Optimizers|SPSA|constant@name:ES_0023</alias>
+      <alias variable="ES_0024" type="input">Optimizers|SPSA|constant@name:ES_0024</alias>
+      <!-- SES -->
+      <alias variable="SES_0001" type="input">Optimizers|SPSA|variable@name:SES_0001|initial</alias>
+      <alias variable="SES_0002" type="input">Optimizers|SPSA|variable@name:SES_0002|initial</alias>
+      <alias variable="SES_0003" type="input">Optimizers|SPSA|variable@name:SES_0003|initial</alias>
+      <alias variable="SES_0004" type="input">Optimizers|SPSA|variable@name:SES_0004|initial</alias>
+      <alias variable="SES_0005" type="input">Optimizers|SPSA|variable@name:SES_0005|initial</alias>
+      <alias variable="SES_0006" type="input">Optimizers|SPSA|variable@name:SES_0006|initial</alias>
+      <alias variable="SES_0007" type="input">Optimizers|SPSA|variable@name:SES_0007|initial</alias>
+      <alias variable="SES_0008" type="input">Optimizers|SPSA|variable@name:SES_0008|initial</alias>
+      <alias variable="SES_0009" type="input">Optimizers|SPSA|variable@name:SES_0009|initial</alias>
+      <alias variable="SES_0010" type="input">Optimizers|SPSA|variable@name:SES_0010|initial</alias>
+      <alias variable="SES_0011" type="input">Optimizers|SPSA|variable@name:SES_0011|initial</alias>
+      <alias variable="SES_0012" type="input">Optimizers|SPSA|variable@name:SES_0012|initial</alias>
+      <alias variable="SES_0013" type="input">Optimizers|SPSA|variable@name:SES_0013|initial</alias>
+      <alias variable="SES_0014" type="input">Optimizers|SPSA|variable@name:SES_0014|initial</alias>
+      <alias variable="SES_0015" type="input">Optimizers|SPSA|variable@name:SES_0015|initial</alias>
+      <alias variable="SES_0016" type="input">Optimizers|SPSA|variable@name:SES_0016|initial</alias>
+      <alias variable="SES_0017" type="input">Optimizers|SPSA|variable@name:SES_0017|initial</alias>
+      <alias variable="SES_0018" type="input">Optimizers|SPSA|variable@name:SES_0018|initial</alias>
+      <alias variable="SES_0019" type="input">Optimizers|SPSA|variable@name:SES_0019|initial</alias>
+      <alias variable="SES_0020" type="input">Optimizers|SPSA|variable@name:SES_0020|initial</alias>
+      <alias variable="SES_0021" type="input">Optimizers|SPSA|variable@name:SES_0021|initial</alias>
+      <alias variable="SES_0022" type="input">Optimizers|SPSA|variable@name:SES_0022|initial</alias>
+      <alias variable="SES_0023" type="input">Optimizers|SPSA|variable@name:SES_0023|initial</alias>
+      <alias variable="SES_0024" type="input">Optimizers|SPSA|variable@name:SES_0024|initial</alias>
+      <!-- BOP -->
+      <alias variable="BOP_0001" type="input">Optimizers|SPSA|constant@name:BOP_0001</alias>
+      <alias variable="BOP_0002" type="input">Optimizers|SPSA|constant@name:BOP_0002</alias>
+      <alias variable="BOP_0003" type="input">Optimizers|SPSA|constant@name:BOP_0003</alias>
+      <alias variable="BOP_0004" type="input">Optimizers|SPSA|constant@name:BOP_0004</alias>
+      <alias variable="BOP_0005" type="input">Optimizers|SPSA|constant@name:BOP_0005</alias>
+      <alias variable="BOP_0006" type="input">Optimizers|SPSA|constant@name:BOP_0006</alias>
+      <alias variable="BOP_0007" type="input">Optimizers|SPSA|constant@name:BOP_0007</alias>
+      <alias variable="BOP_0008" type="input">Optimizers|SPSA|constant@name:BOP_0008</alias>
+      <alias variable="BOP_0009" type="input">Optimizers|SPSA|constant@name:BOP_0009</alias>
+      <alias variable="BOP_0010" type="input">Optimizers|SPSA|constant@name:BOP_0010</alias>
+      <alias variable="BOP_0011" type="input">Optimizers|SPSA|constant@name:BOP_0011</alias>
+      <alias variable="BOP_0012" type="input">Optimizers|SPSA|constant@name:BOP_0012</alias>
+      <alias variable="BOP_0013" type="input">Optimizers|SPSA|constant@name:BOP_0013</alias>
+      <alias variable="BOP_0014" type="input">Optimizers|SPSA|constant@name:BOP_0014</alias>
+      <alias variable="BOP_0015" type="input">Optimizers|SPSA|constant@name:BOP_0015</alias>
+      <alias variable="BOP_0016" type="input">Optimizers|SPSA|constant@name:BOP_0016</alias>
+      <alias variable="BOP_0017" type="input">Optimizers|SPSA|constant@name:BOP_0017</alias>
+      <alias variable="BOP_0018" type="input">Optimizers|SPSA|constant@name:BOP_0018</alias>
+      <alias variable="BOP_0019" type="input">Optimizers|SPSA|constant@name:BOP_0019</alias>
+      <alias variable="BOP_0020" type="input">Optimizers|SPSA|constant@name:BOP_0020</alias>
+      <alias variable="BOP_0021" type="input">Optimizers|SPSA|constant@name:BOP_0021</alias>
+      <alias variable="BOP_0022" type="input">Optimizers|SPSA|constant@name:BOP_0022</alias>
+      <alias variable="BOP_0023" type="input">Optimizers|SPSA|constant@name:BOP_0023</alias>
+      <alias variable="BOP_0024" type="input">Optimizers|SPSA|constant@name:BOP_0024</alias>
+      <!-- IP -->
+      <alias variable="IP_0001" type="input">Optimizers|SPSA|variable@name:IP_0001|initial</alias>
+      <alias variable="IP_0002" type="input">Optimizers|SPSA|variable@name:IP_0002|initial</alias>
+      <alias variable="IP_0003" type="input">Optimizers|SPSA|variable@name:IP_0003|initial</alias>
+      <alias variable="IP_0004" type="input">Optimizers|SPSA|variable@name:IP_0004|initial</alias>
+      <alias variable="IP_0005" type="input">Optimizers|SPSA|variable@name:IP_0005|initial</alias>
+      <alias variable="IP_0006" type="input">Optimizers|SPSA|variable@name:IP_0006|initial</alias>
+      <alias variable="IP_0007" type="input">Optimizers|SPSA|variable@name:IP_0007|initial</alias>
+      <alias variable="IP_0008" type="input">Optimizers|SPSA|variable@name:IP_0008|initial</alias>
+      <alias variable="IP_0009" type="input">Optimizers|SPSA|variable@name:IP_0009|initial</alias>
+      <alias variable="IP_0010" type="input">Optimizers|SPSA|variable@name:IP_0010|initial</alias>
+      <alias variable="IP_0011" type="input">Optimizers|SPSA|variable@name:IP_0011|initial</alias>
+      <alias variable="IP_0012" type="input">Optimizers|SPSA|variable@name:IP_0012|initial</alias>
+      <alias variable="IP_0013" type="input">Optimizers|SPSA|variable@name:IP_0013|initial</alias>
+      <alias variable="IP_0014" type="input">Optimizers|SPSA|variable@name:IP_0014|initial</alias>
+      <alias variable="IP_0015" type="input">Optimizers|SPSA|variable@name:IP_0015|initial</alias>
+      <alias variable="IP_0016" type="input">Optimizers|SPSA|variable@name:IP_0016|initial</alias>
+      <alias variable="IP_0017" type="input">Optimizers|SPSA|variable@name:IP_0017|initial</alias>
+      <alias variable="IP_0018" type="input">Optimizers|SPSA|variable@name:IP_0018|initial</alias>
+      <alias variable="IP_0019" type="input">Optimizers|SPSA|variable@name:IP_0019|initial</alias>
+      <alias variable="IP_0020" type="input">Optimizers|SPSA|variable@name:IP_0020|initial</alias>
+      <alias variable="IP_0021" type="input">Optimizers|SPSA|variable@name:IP_0021|initial</alias>
+      <alias variable="IP_0022" type="input">Optimizers|SPSA|variable@name:IP_0022|initial</alias>
+      <alias variable="IP_0023" type="input">Optimizers|SPSA|variable@name:IP_0023|initial</alias>
+      <alias variable="IP_0024" type="input">Optimizers|SPSA|variable@name:IP_0024|initial</alias>
+      <!-- 
+          Time dummy pass throgh. RrR needs to know about it, but the variable is actually recreated in GenerateVectors.
+          This input was build before RAVEN MR 625. Vecort were not allowed as inputs, thats why all above variables are
+          expanded into scalars.
+          Past MR 625, all vector indexes need to be passed into the inner as well.
+      -->
+      <alias variable="Time" type="input">Optimizers|SPSA|constant@name:TimeDump</alias>
+      <alias variable="Demand_time_net" type="input">Optimizers|SPSA|constant@name:DemandDump</alias>
+      <conversion>
+        <module source="../common_files/RrR_transfer.py">
+          <variables>Optimizers|SPSA|constant@name:DemandDump</variables>
+        </module>
+      </conversion>
+    </Code>
+    <EnsembleModel name="Ensemble_DYMOLA" subType="">
+      <Model class="Models" type="ROM">
+        windARMA
+        <Input            class="DataObjects" type="PointSet"      >SET_ARMAwind_in</Input>
+        <TargetEvaluation class="DataObjects" type="HistorySet"    >SET_ARMAwind_out</TargetEvaluation>
+      </Model>
+      <Model class="Models" type="ROM">
+        demandARMA
+        <Input            class="DataObjects" type="PointSet"      >SET_ARMAdemand_in</Input>
+        <TargetEvaluation class="DataObjects" type="HistorySet"    >SET_ARMAdemand_out</TargetEvaluation>
+      </Model>
+      <Model class="Models" type="ExternalModel">
+        ARMAPosP
+        <Input            class="DataObjects" type="PointSet"      >SET_ARMAPosP_in</Input>
+        <TargetEvaluation class="DataObjects" type="DataSet"    >SET_ARMAPosP_out</TargetEvaluation>
+      </Model>
+      <Model class="Models" type="ExternalModel">
+        DispatchInit
+        <Input            class="DataObjects" type="PointSet"    >SET_DispatchInit_in</Input>
+        <TargetEvaluation class="DataObjects" type="DataSet"    >SET_DispatchInit_out</TargetEvaluation>
+      </Model>
+      <Model class="Models" type="Code">
+        RrR
+        <Input            class="Files"       type="raven"         >HYBRun_Modelica_D</Input>
+        <Input            class="Files"       type=""              >Cash_Flow_input</Input>
+        <Input            class="Files"       type=""              >penalty_function</Input>
+        <TargetEvaluation class="DataObjects" type="DataSet"      >SET_Modelica_out</TargetEvaluation>
+      </Model>
+    </EnsembleModel>
+  </Models>
+
+  <Distributions>
+    <Uniform name="capacities_distrib">
+      <upperBound>1000e6</upperBound>       <!-- in [W] => 1000MW -->
+      <lowerBound>1</lowerBound>            <!-- in [W] =>    1W -->
+    </Uniform>
+  </Distributions>
+
+  <Samplers>
+    <EnsembleForward name="metasamp">
+      <Grid name="DYMOLA_GRID">
+        <variable name="scaling_demand"> <!-- 200MW to 400MW -->
+          <distribution>capacities_distrib</distribution>
+          <grid type='value' construction='equal' steps='2'>200e3 400e3</grid> <!-- The training data is in MW, with an  average of ~1GW, => The multiplier is 1E6 to go to W -->
+        </variable>
+        <variable name="SES_capacity"> <!-- in [W] -->
+          <distribution>capacities_distrib</distribution>
+          <grid type='value' construction='equal' steps='2'>28e6 42e6</grid>
+        </variable>
+        <variable name="IP_capacity"> <!-- in [W] --> 
+          <distribution>capacities_distrib</distribution>
+          <grid type='value' construction='equal' steps='2'>48.58813e6 53.70267e6</grid> <!-- +- 5% of nominal IP capacity -->
+        </variable>
+        <variable name="ES_capacity"> <!-- in [Wh] -->
+          <distribution>capacities_distrib</distribution>
+          <grid type='value' construction='equal' steps='2'>15e6 25e6</grid>
+        </variable>
+
+        <!-- pseudo constants --> <!-- TODO: for some reason, these wariabes would generate an error if mobed to the constants block -->
+        <variable name="Renewable_capacity">  <!-- % VRE installed capacity -->
+          <distribution>capacities_distrib</distribution>
+          <grid type='value' construction='custom'>REPLACE_renewable</grid>
+        </variable>
+      </Grid>
+      <!-- this MC sampler on top of the Grid can be used to do de-noising, i.e. repetition of the same Grid point (the results of this can then be averaged in a post processor later [not in this input]) -->
+      <MonteCarlo name="mc">
+        <samplerInit>
+          <limit>1</limit>
+        </samplerInit>
+      </MonteCarlo>
+      <!-- Constants  -->
+      <constant name="BOP_capacity">300e6</constant>  <!-- capacity in W(el)  300MW -->
+      <constant name="H2_price">REPLACE_h2price</constant>  <!-- H2 price in $/kg -->
+      <constant name="The_constant_one">1.0</constant>  <!-- constant = 1.0 -->
+      <constant name="scaling_wind">1.0</constant>  <!-- constant = 1.0 -->
+      <constant name="Penalty_mult">1.0</constant>  <!-- multiplies the penalty function  -->
+      <constant name="Start_time">7200.0</constant>  <!-- steady state time in seconds (should be set to 2 hours = 7200s for production calcs) -->
+      <constant name="DYMOLA_tot_time">86400.0</constant>  <!-- Dymola maximum simulation time (23h * 3600) +> this need 24 set points from the ARMA -->  
+      <!-- Efficiency constants -->
+      <constant name="BOP_eff">0.31</constant>  <!-- BOP TH to EL conversion efficientcy --> 
+      <constant name="IP_EL">51.1452</constant>  <!-- IP nominal electricity usage [MWel] --> 
+      <constant name="IP_TH">18.4794</constant>  <!-- IP nominal steam usage [MWth] -->
+      <constant name="IP_KG">0.401461</constant>  <!-- IP nominal H2 production [kg/s] -->
+      <constant name="Pow2Capa_battery">0.25</constant>  <!-- Power/Capacity for battery, 0.25 => the battery can chaarge/discharge 25% of its capacity in 1 hour -->
+    </EnsembleForward>
+  </Samplers>
+
+  <Optimizers>
+    <SPSA name="opter">
+      <initialization>
+        <limit>10000</limit>
+        <type>min</type>
+        <initialSeed>1234</initialSeed>
+      </initialization>
+      <TargetEvaluation class="DataObjects" type="PointSet">optOutput</TargetEvaluation>
+      <convergence>
+        <relativeThreshold>0.0</relativeThreshold>
+        <absoluteThreshold>0.0</absoluteThreshold>
+        <gradientThreshold>0.0</gradientThreshold>
+        <gainGrowthFactor>5.0</gainGrowthFactor>
+        <gainShrinkFactor>1.1</gainShrinkFactor>
+      </convergence>
+      <parameter>
+        <numGradAvgIterations>12</numGradAvgIterations>
+        <!-- <stochasticDistribution>Bernoulli</stochasticDistribution> -->
+      </parameter>
+      <!-- VARIABLES -->
+      <variable name="scaling_demand">
+        <upperBound>600e3</upperBound> <!-- The training data is in MW, with an  average of ~1GW  -->
+        <lowerBound>100e3</lowerBound>  <!-- => The multiplier is 1E6 to go to W -->
+        <initial>REPLACE_demand</initial>
+      </variable>
+      <variable name="SES_capacity">
+        <upperBound>600e6</upperBound> <!-- in [W] -->
+        <lowerBound>100e6</lowerBound> <!-- in [W] -->
+        <initial>REPLACE_SES</initial>
+      </variable>
+      <variable name="IP_capacity">
+        <upperBound>300e6</upperBound> <!-- in [W] -->
+        <lowerBound>1</lowerBound>     <!-- in [W] -->
+        <initial>REPLACE_IP</initial>
+      </variable>
+      <variable name="ES_capacity">
+        <upperBound>300e6</upperBound> <!-- in [Wh] -->
+        <lowerBound>1</lowerBound>     <!-- in [Wh] -->
+        <initial>REPLACE_ES</initial>
+      </variable>
+      <!-- pseudo constants --> <!-- TODO: for some reason, these wariabes would generate an error if mobed to the constants block -->
+      <variable name="Renewable_capacity">  <!-- % VRE installed capacity -->
+        <upperBound>REPLACE_renewabl1</upperBound> <!-- in [%] installed capacity -->
+        <lowerBound>REPLACE_renewable</lowerBound> <!-- in [%] installed capacity -->
+        <initial>REPLACE_renewable</initial>
+      </variable>
+      <!-- additional constants -->
+      <constant name="BOP_capacity">300e6</constant>  <!-- capacity in W(el)  300MW -->
+      <constant name="H2_price">REPLACE_h2price</constant>  <!-- H2 price in $/kg -->
+      <constant name="The_constant_one">1.0</constant>  <!-- constant = 1.0 -->
+      <constant name="scaling_wind">1.0</constant>  <!-- constant = 1.0 -->
+      <constant name="Penalty_mult">1.0</constant>  <!-- multiplies the penalty function  -->
+      <constant name="Start_time">2.0</constant>  <!-- steady state time in seconds (should be set to 2 hours = 7200s for production calcs) -->
+      <constant name="DYMOLA_tot_time">86400.0</constant>  <!-- Dymola maximum simulation time (24h * 3600) --> 
+      <!-- Efficiency constants -->
+      <constant name="BOP_eff">0.31</constant>  <!-- BOP TH to EL conversion efficientcy -->
+      <constant name="IP_EL">51.1452</constant>  <!-- IP nominal electricity usage [MWel] -->
+      <constant name="IP_TH">18.4794</constant>  <!-- IP nominal steam usage [MWth] -->
+      <constant name="IP_KG">0.401461</constant>  <!-- IP nominal H2 production [kg/s] -->
+      <constant name="Pow2Capa_battery">0.25</constant>  <!-- Power/Capacity for battery, 0.25 => the battery can chaarge/discharge 25% of its capacity in 1 hour -->
+      <objectVar>NPV_mult</objectVar>
+    </SPSA>
+  </Optimizers>
+
+  <DataObjects>
+    <PointSet name="SET_ARMAwind_in">
+      <Input>scaling_wind</Input>
+      <Output>OutputPlaceHolder</Output>
+    </PointSet>
+    <HistorySet name="SET_ARMAwind_out">
+      <Input>scaling_wind</Input>
+      <Output>Speed</Output>
+      <options>
+        <pivotParameter>Time</pivotParameter>
+      </options>
+    </HistorySet>
+    <PointSet name="SET_ARMAdemand_in">
+      <Input>scaling_demand</Input>
+      <Output>OutputPlaceHolder</Output>
+    </PointSet>
+    <HistorySet name="SET_ARMAdemand_out">
+      <Input>scaling_demand</Input>
+      <Output>Demand</Output>
+      <options>
+        <pivotParameter>Time</pivotParameter>
+      </options>
+    </HistorySet>
+    <PointSet name="SET_ARMAPosP_in">
+      <Input>GRO_ARMAPosP_in_scalar</Input>
+      <Output>OutputPlaceHolder</Output>
+    </PointSet>
+    <DataSet name="SET_ARMAPosP_out">
+      <Input>GRO_ARMAPosP_in_scalar, GRO_ARMAPosP_in_Time</Input>
+      <Output>GRO_ARMAPosP_out_scalar, GRO_ARMAPosP_out_Time</Output>
+      <Index var="Time">GRO_ARMAPosP_in_Time, GRO_ARMAPosP_out_Time</Index>
+    </DataSet>
+    <PointSet name="SET_DispatchInit_in">
+      <Input>GRO_DispatchInit_in_scalar</Input>
+      <Output>OutputPlaceHolder</Output>
+    </PointSet>
+    <DataSet name="SET_DispatchInit_out">
+      <Input>GRO_DispatchInit_in_scalar,GRO_DispatchInit_in_Time</Input>
+      <Output>GRO_DispatchInit_out_scalar</Output>
+      <Index var="Time">GRO_DispatchInit_in_Time</Index>
+    </DataSet>
+    <DataSet name="SET_Modelica_out">
+      <Input>GRO_Modelica_in_scalar</Input>
+      <Output>GRO_Modelica_out_scalar</Output>
+      <Index var="Time">Demand_time_net</Index>
+    </DataSet>
+    <PointSet name="All_out">
+      <Input>Renewable_capacity, SES_capacity, IP_capcacity,  ES_capacity, scaling_demand</Input>
+      <Output>GRO_CashFlow_out</Output>
+    </PointSet>
+    <PointSet name="trainingSet">
+      <Input>Renewable_capacity, SES_capacity, IP_capacity,  ES_capacity, scaling_demand</Input>
+      <Output>Imbalance_Price,NPV_mult</Output>
+    </PointSet>
+    <PointSet name="optOutput">
+      <Input> Renewable_capacity, SES_capacity, IP_capacity,  ES_capacity, scaling_demand</Input>
+      <Output>Imbalance_Price,cum_missed_demand,NPV_mult</Output>
+    </PointSet>
+    <PointSet name="opt_export">
+      <Input>trajID</Input>
+      <Output> Renewable_capacity, SES_capacity, IP_capacity,  ES_capacity, scaling_demand, Imbalance_Price,cum_missed_demand, NPV_mult</Output>
+    </PointSet>
+  </DataObjects>
+
+  <Steps>
+    <IOStep name="read_ARMAwind">
+      <Input          class="Files"         type=""              >f_ARMAwind</Input>
+      <Output         class="Models"        type="ROM"           >windARMA</Output>
+    </IOStep>
+    <IOStep name="read_ARMAdemand">
+      <Input          class="Files"         type=""              >f_ARMAdemand</Input>
+      <Output         class="Models"        type="ROM"           >demandARMA</Output>
+    </IOStep>
+    <MultiRun name="OPTrun" pauseAtEnd="True">
+      <Input          class="DataObjects"   type="PointSet"      >SET_ARMAPosP_in</Input>
+      <Input          class="DataObjects"   type="HistorySet"    >SET_DispatchInit_in</Input>
+      <Input          class="Files"         type=""              >Cash_Flow_input</Input>
+      <Input          class="Files"         type=""              >penalty_function</Input>
+      <Input          class="Files"         type="raven"         >HYBRun_Modelica_D</Input>
+      <Model          class="Models"        type="EnsembleModel" >Ensemble_DYMOLA</Model>
+      <Optimizer      class="Optimizers"    type="SPSA"          >opter</Optimizer>
+      <SolutionExport class="DataObjects"   type="HistorySet"    >opt_export</SolutionExport>
+      <Output         class="DataObjects"   type="PointSet"      >optOutput</Output>
+    </MultiRun>
+    <MultiRun name="GRIDrun" pauseAtEnd="True" re-seeding="REPLACE_seed">
+      <Input          class="DataObjects"   type="PointSet"      >SET_ARMAPosP_in</Input>
+      <Input          class="DataObjects"   type="HistorySet"    >SET_DispatchInit_in</Input>
+      <Input          class="Files"         type=""              >Cash_Flow_input</Input>
+      <Input          class="Files"         type=""              >penalty_function</Input>
+      <Input          class="Files"         type="raven"         >HYBRun_Modelica_D</Input>
+      <Model          class="Models"        type="EnsembleModel" >Ensemble_DYMOLA</Model>
+      <Sampler        class="Samplers"      type="Grid"          >metasamp</Sampler>
+      <Output         class="DataObjects"   type="PointSet"      >optOutput</Output>
+      <Output         class="OutStreams"    type="Print"         >dumpOPT</Output>
+    </MultiRun>
+    <IOStep name="dumpTrain">
+      <Input          class="DataObjects"   type="PointSet"      >trainingSet</Input>
+      <Output         class="OutStreams"    type="Print"         >dumpTrain</Output>
+    </IOStep>
+    <IOStep name="dumpOPT">
+      <Input          class="DataObjects"   type="PointSet"      >optOutput</Input>
+      <Output         class="OutStreams"    type="Print"         >dumpOPT</Output>
+    </IOStep>
+    <IOStep name="dumpOPT_sol">
+      <Input          class="DataObjects"   type="HistorySet"    >opt_export</Input>
+      <Output         class="OutStreams"    type="Print"         >dumpOPT_sol</Output>
+    </IOStep>
+  </Steps>
+
+  <OutStreams>
+    <Print name="dumpTrain">
+      <filename>dumpTrain_case</filename>
+      <type>csv</type>
+      <source>trainingSet</source>
+    </Print>
+    <Print name="dumpCSV">
+      <filename>dumpCSV_case</filename>
+      <type>csv</type>
+      <source>All_out</source>
+    </Print>
+    <Print name="dumpOPT">
+      <filename>dumpOPT_case</filename>
+      <type>csv</type>
+      <source>optOutput</source>
+    </Print>
+    <Print name="dumpOPT_sol">
+      <filename>dumpSOL_case</filename>
+      <type>csv</type>
+      <source>opt_export</source>
+    </Print>
+  </OutStreams>
+</Simulation>

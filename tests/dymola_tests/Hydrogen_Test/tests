@@ -1,0 +1,12 @@
+[Tests]
+ [./]
+  #REQUIREMENT: R-F-1
+  type = 'HYBRIDTester'
+  input = 'Hydrogen_Burn_Test.mos'
+  workingDir = '.'
+  output = 'Hydrogen_Burn_Test.mat'
+  dymola_mats = 'Hydrogen_Burn_Test.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

@@ -1,0 +1,3 @@
+year,scaling_price,filename
+12,1,../../../Data/MISO/EES2012_collapsed.csv
+13,1,../../../Data/MISO/EES2013_collapsed.csv

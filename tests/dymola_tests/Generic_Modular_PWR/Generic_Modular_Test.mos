@@ -1,0 +1,1 @@
+simulateModel("NHES.Systems.PrimaryHeatSystem.GenericModular_PWR.Examples.Test", stopTime=1000, numberOfIntervals=300, method="Esdirk45a", resultFile="Test");

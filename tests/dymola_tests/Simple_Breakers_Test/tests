@@ -1,0 +1,12 @@
+[Tests]
+ [./]
+  #REQUIREMENT: R-IS-1
+  type = 'HYBRIDTester'
+  input = 'Simple_Breakers_Test.mos'
+  workingDir = '.'
+  output = 'SimpleBreakers_Test.mat'
+  dymola_mats = 'SimpleBreakers_Test.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

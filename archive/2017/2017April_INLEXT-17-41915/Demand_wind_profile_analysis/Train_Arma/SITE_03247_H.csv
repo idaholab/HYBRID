@@ -1,0 +1,4 @@
+x,scaling_wind,filename
+0,1,../../../Data/NREL/SITE_03247_2004_RAVEN_coll.csv
+0,1,../../../Data/NREL/SITE_03247_2005_RAVEN_coll.csv
+0,1,../../../Data/NREL/SITE_03247_2006_RAVEN_coll.csv

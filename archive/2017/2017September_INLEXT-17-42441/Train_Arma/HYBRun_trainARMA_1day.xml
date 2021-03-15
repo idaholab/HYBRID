@@ -1,0 +1,128 @@
+<?xml version="1.0" ?>
+<Simulation verbosity="debug">
+  <RunInfo>
+    <WorkingDir>.</WorkingDir>
+    <Sequence>readInD,prepTSD,ARMATrainD,PushROMIntoFileD,readInW,prepTSW,ARMATrainW,PushROMIntoFileW</Sequence>
+  </RunInfo>
+
+  <Files>
+    <Input name="rawDataFileDEM">./ercotWestDemand_RAVEN.csv</Input>
+    <Input name="demandTXARMA_pickle">ARMA_D.pk</Input>
+    <Input name="windRawDataFile">./SITE_03247_H.csv</Input>
+    <Input name="windARMA_pickle">ARMA_W.pk</Input>
+  </Files>
+
+  <Models>
+    <PostProcessor name="TypicalHistory" subType="InterfacedPostProcessor">
+      <method>TypicalHistoryFromHistorySet</method>
+      <subseqLen>86400</subseqLen>
+      <!-- 1 day-->
+      <!--
+        <subseqLen>2592000</subseqLen>
+         1 month
+      -->
+      <outputLen>86400</outputLen>
+      <!-- 1 day -->
+      <!--
+        <outputLen>604800</outputLen>
+         1 week
+      -->
+      <!--
+        <outputLen>31536000</outputLen>
+          1 year
+      -->
+      <pivotParameter>Time</pivotParameter>
+    </PostProcessor>
+    <ROM name="demandTXARMA" subType="ARMA">
+      <reseedCopies>False</reseedCopies>
+      <Target>Demand,Time</Target>
+      <Features>scaling_demand</Features>
+      <pivotParameter>Time</pivotParameter>
+      <outTruncation domain="positive">Demand</outTruncation>
+      <Fourier>31536000.000000, 15768000.000000, 10512000.000000, 7884000.000000, 6307200.000000, 5256000.000000, 4505142.857143, 3942000.000000, 3504000.000000, 3153600.000000, 2866909.090909, 2628000.000000, 604800.000000, 302400.000000, 86400.000000, 43200.000000, 28800.000000, 21600.000000, 17280.000000, 14400.000000, 10800.000000, 5400.000000, 3600.000000</Fourier>
+      <P>0</P>
+      <Q>1</Q>
+    </ROM>
+    <ROM name="windARMA" subType="ARMA">
+      <reseedCopies>False</reseedCopies>
+      <Target>Speed,Time</Target>
+      <Features>scaling_wind</Features>
+      <pivotParameter>Time</pivotParameter>
+      <outTruncation domain="positive">Speed</outTruncation>
+      <Fourier>31536000.000000, 15768000.000000, 10512000.000000, 7884000.000000, 6307200.000000, 5256000.000000, 4505142.857143, 3942000.000000, 3504000.000000, 3153600.000000, 2866909.090909, 2628000.000000, 604800.000000, 302400.000000, 86400.000000, 43200.000000, 28800.000000, 21600.000000, 17280.000000, 14400.000000, 10800.000000, 5400.000000, 3600.000000</Fourier>
+      <P>0</P>
+      <Q>1</Q>
+    </ROM>
+  </Models>
+
+  <DataObjects>
+    <HistorySet name="rawData">
+      <Input>year,scaling_demand</Input>
+      <Output>Demand</Output>
+      <options>
+        <pivotParameter>Time</pivotParameter>
+      </options>
+    </HistorySet>
+    <HistorySet name="typicalData">
+      <Input>year,scaling_demand</Input>
+      <Output>Demand</Output>
+      <options>
+        <pivotParameter>Time</pivotParameter>
+      </options>
+    </HistorySet>
+    <HistorySet name="windRawData">
+      <Input>x,scaling_wind</Input>
+      <Output>Speed</Output>
+      <options>
+        <pivotParameter>Time</pivotParameter>
+      </options>
+    </HistorySet>
+    <HistorySet name="windTypicalData">
+      <Input>x,scaling_wind</Input>
+      <Output>Speed</Output>
+      <options>
+        <pivotParameter>Time</pivotParameter>
+      </options>
+    </HistorySet>
+  </DataObjects>
+
+  <Steps>
+    <!-- Synthetic DEMAND  -->
+    <IOStep name="readInD" pauseAtEnd="True">
+      <Input class="Files" type="">rawDataFileDEM</Input>
+      <Output class="DataObjects" type="HistorySet">rawData</Output>
+    </IOStep>
+    <PostProcess name="prepTSD" pauseAtEnd="True">
+      <Input class="DataObjects" type="HistorySet">rawData</Input>
+      <Model class="Models" type="PostProcessor">TypicalHistory</Model>
+      <Output class="DataObjects" type="HistorySet">typicalData</Output>
+    </PostProcess>
+    <RomTrainer name="ARMATrainD">
+      <Input class="DataObjects" type="History">typicalData</Input>
+      <Output class="Models" type="ROM">demandTXARMA</Output>
+    </RomTrainer>
+    <IOStep name="PushROMIntoFileD">
+      <Input class="Models" type="ROM">demandTXARMA</Input>
+      <Output class="Files" type="">demandTXARMA_pickle</Output>
+    </IOStep>
+    <!-- Synthetic WIND  -->
+    <IOStep name="readInW" pauseAtEnd="True">
+      <Input class="Files" type="">windRawDataFile</Input>
+      <Output class="DataObjects" type="HistorySet">windRawData</Output>
+    </IOStep>
+    <PostProcess name="prepTSW" pauseAtEnd="True">
+      <Input class="DataObjects" type="HistorySet">windRawData</Input>
+      <Model class="Models" type="PostProcessor">TypicalHistory</Model>
+      <Output class="DataObjects" type="HistorySet">windTypicalData</Output>
+    </PostProcess>
+    <RomTrainer name="ARMATrainW">
+      <Input class="DataObjects" type="HistorySet">windTypicalData</Input>
+      <Output class="Models" type="ROM">windARMA</Output>
+    </RomTrainer>
+    <IOStep name="PushROMIntoFileW">
+      <Input class="Models" type="ROM">windARMA</Input>
+      <Output class="Files" type="">windARMA_pickle</Output>
+    </IOStep>
+  </Steps>
+
+</Simulation>
