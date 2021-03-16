@@ -1,0 +1,16 @@
+\subsection{Energy Manifold}
+The energy manifolds intention is be a diversion module to as many different subunits as needed for fluid diversion. It consists of a series of pipes that can be extended to “n” submodules, see Figure \ref{Top View Energy Manifold}. The unit has the capability of utilizing control schemes, however in many practical applications the control schemes are encapsulated within the subprocesses as opposed to within the energy manifold. There are currently four potential energy manifolds that can be used. For practical purposes only the model SteamManifold\textunderscore L1\textunderscore boundaries is used in integrated energy systems as it does not include control valves and supports “n” submodules going in and out. The other versions of the energy manifold exist for advanced users in the event the balance of plant or subprocess they are connecting to does not include sufficient valving and control to properly constrain the system. For example, simplified balance of plant systems that do not contain return flow would require the energy manifold to provide makeup water from the condenser, therefore for that scenario we would need to use the SteamManifold\textunderscore L1\textunderscore FWH\textunderscore Cond model which contains a condenser and feedwater heater.   
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.15]{pics/Energy_Manifold.png}
+\caption{: Top Level Depiction of the Energy Manifold in the NHES package}
+\label{Top View Energy Manifold}
+\end{figure}
+
+
+
+% content
+
+
+%\input{Installation/clone.tex}

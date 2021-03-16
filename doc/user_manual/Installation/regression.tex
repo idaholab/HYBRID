@@ -1,0 +1,120 @@
+% definitions
+\subsection{Setup of Dymola for the Regression Testing System}
+To properly setup the Hybrid repository to work with the regression system one needs to download Dymola as mentioned above and activate the license. Once those two steps are complete the dymola.mos file needs to be edited. The dymola.mos file is the file that tells Dymola what libraries to load when the application is opening and where the working directory is located. For the automatic regression test system to properly test the downloaded library the proper NHES library must be loaded automatically by dymola in the dymola.mos file located at C:/Program Files/Dymola 2020/insert/dymola.mos for example. To properly run the tests the NHES and the TRANSFORM libraries need to be automatically loaded by Dymola upon startup. This can be accomplished by adding to the Dymola.mos until it looks something like:
+\begin{lstlisting}[language=python, basicstyle=\small]
+RunScript("$DYMOLA/insert/displayunit.mos", true);
+definePostProcessing("SDF output", "Convert result file to SDF format", 
+"Modelica.Utilities.System.command(\"\\\"%DYMOLA%/bin/dsres2sdf\\\" 
+%RESULTFILE%.mat %RESULTFILE%.sdf\")");
+
+openModel("C:\Users\FRICKL\Desktop\TRANSFORM3_20_2020\TRANSFORM- 
+Library\TRANSFORM\package.mo"); //Loads Transform package.mo
+
+openModel("C:\msys64\home\FRICKL\hybrid_devel\hybrid\models 
+ \NHES\package.mo");//Loads NHES package from hybrid directory
+ 
+cd("C:\Users\FRICKL\Desktop\TESsystem"); 
+//Place where all the Dymola runs will occur.
+\end{lstlisting}
+
+Having the Dymola.mos file written like this will allow Dymola to automatically load all the needed libraries for Regression testing when conducted using the Regression Test Harness. It should be noted that typically the dymola.mos file will need its permissions to be changed to allow a user to write this. On a Windows machine this is done by running as an administrator on the system and changing the properties of the file to include “read and write” rights, as opposed to “read-only” rights. 
+
+\subsection{Run Regression tests related to the HYBRID project}
+
+Now that the dymola.mos file has been edited to automatically load the TRANSFORM and NHES packages one can run all tests associated with the HYBRID repository. To do this follow the instructions below. 
+
+\begin{lstlisting}[language=bash]
+cd <path to your hybrid repository>/hybrid
+./run_tests -jX -lY --only-run-types ZZ
+\end{lstlisting}
+where:
+\begin{itemize}
+\item "X" is the number of processors to use for testing
+\item "Y" is the maximum load to limit to execute tests
+\item "ZZ" is the subtype of tests to be run. Currently only "raven" and "dymola" are available.
+\end{itemize}
+
+If all tests need to be run, just execute the following command.
+\begin{lstlisting}[language=bash]
+cd <path to your hybrid repository>/hybrid
+./run_tests -jX -lY
+\end{lstlisting}
+The output will look like the following:
+
+\begin{lstlisting}[language=tex, basicstyle=\tiny ]
+######################################################################
+#
+#  Testing of Hybrid RAVEN Modules  (./run_tests)
+#
+######################################################################
+/c/msys64/home/FRICKL/cleaning_hybrid/hybrid
+Found $DYMOLA_PATH and set to C:/Program Files/Dymola 2021/Modelica/Library/python_interface/dymola.egg
+Loading raven_libraries conda environment ...
+CONDA
+... Run Options:
+... Mode: 1
+... Verbosity: 0
+... Clean: 0
+... Mode: CONDA
+... Conda Defs:
+... Loading RAVEN libraries ...
+... Detected OS as --os windows ...
+... Using Python command python
+... $RAVEN_LIBS_NAME set through raven/.ravenrc to raven_libraries
+... >> If this is not desired, then remove it from the ravenrc file before running.
+... >> RAVEN environment is named "raven_libraries"
+... found conda path in ravenrc: C:/Users/FRICKL/AppData/Local/Continuum/miniconda3/etc/profile.d/conda.sh
+... >> If this is not the desirable path, rerun with argument --conda-defs [path] or remove the entry from raven/.ravenrc file.
+... Found conda definitions at C:/Users/FRICKL/AppData/Local/Continuum/miniconda3/etc/profile.d/conda.sh
+conda 4.8.3
+raven_libraries          C:\Users\FRICKL\AppData\Local\Continuum\miniconda3\envs\raven_libraries
+... Found library environment ...
+... Activating environment ...
+... Activating environment ...
+... done!
+rook: loading init file "C:/msys64/home/FRICKL/cleaning_hybrid/hybrid/scripts/rook.ini"
+rook: ... loaded setting "add_non_default_run_types = dymola,raven"
+rook: ... loaded setting "add_run_types = dymola,raven"
+rook: ... loaded setting "test_dir = tests"
+rook: ... loaded setting "testers_dirs = scripts/testers,raven/scripts/TestHarness/testers/"
+rook: found 27 test dirs under "tests" ...
+rook: loading init file "C:/msys64/home/FRICKL/cleaning_hybrid/hybrid/scripts/rook.ini"
+rook: ... loaded setting "add_non_default_run_types = dymola,raven"
+rook: ... loaded setting "add_run_types = dymola,raven"
+rook: ... loaded setting "test_dir = tests"
+rook: ... loaded setting "testers_dirs = scripts/testers,raven/scripts/TestHarness/testers/"
+(1/27) Success( 40.44sec)tests\dymola_tests\BOP_L1_Boundaries_a_Test\
+(2/27) Success( 41.22sec)tests\dymola_tests\BOP_L1_Boundaries_b_Test\
+(3/27) Success( 15.27sec)tests\dymola_tests\Desalination_1_pass\
+(4/27) Success( 15.84sec)tests\dymola_tests\Desalination_2pass_mixing\
+(5/27) Success( 14.17sec)tests\dymola_tests\Desalination_2_pass\
+(6/27) Success( 24.64sec)tests\dymola_tests\Desalination_NHES_basic\
+(7/27) Success( 22.12sec)tests\dymola_tests\Desalination_ROmodule\
+(8/27) Success( 42.10sec)tests\dymola_tests\Desalination_NHES_complex\
+(9/27) Success( 17.21sec)tests\dymola_tests\GTTP_Test\
+(10/27) Success( 36.21sec)tests\dymola_tests\Generic_Modular_PWR\
+(11/27) Success( 23.93sec)tests\dymola_tests\HTSE_Power_Test\
+(12/27) Success( 32.00sec)tests\dymola_tests\HTSE_Steam_Test\
+(13/27) Success( 39.60sec)tests\dymola_tests\NSSS_test\
+(14/27) Success( 55.31sec)tests\dymola_tests\NuScale_4Loop\
+(15/27) Success( 36.51sec)tests\dymola_tests\NuScale_Nominal_Test\
+(16/27) Success( 15.14sec)tests\dymola_tests\Simple_Breakers_Test\
+(17/27) Success( 26.16sec)tests\dymola_tests\NuScale_primary_test\
+(18/27) Success( 15.70sec)tests\dymola_tests\StepDownTurbines\
+(19/27) Success( 16.61sec)tests\dymola_tests\StepDownTurbines_complex\
+(20/27) Success( 14.34sec)tests\dymola_tests\Supervisory_Control_Test\
+(21/27) Success( 14.31sec)tests\dymola_tests\Test_Battery_Storage\
+(22/27) Success( 34.01sec)tests\dymola_tests\Test_Thermal_Storage\
+(23/27) Success( 37.58sec)tests\dymola_tests\Thermocline_Cycling\
+"failing"
+(24/27) Skipped(  None!  )tests\dymola_tests\TightlyCoupled_FY18_Battery\
+"failing"
+(25/27) Skipped(  None!  )tests\dymola_tests\TightlyCoupled_FY18_TES\
+(26/27) Success( 25.44sec)tests\dymola_tests\Thermocline_Insulation\
+(27/27) Success( 31.37sec)tests\raven_tests\train\TrainArmaOnData
+
+PASSED: 25
+SKIPPED: 2
+FAILED: 0
+\end{lstlisting}
+

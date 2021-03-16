@@ -1,0 +1,9 @@
+last-generated=2017-05-25
+statistics-simulation=
+{
+  "numerical Jacobians": "0", 
+  "nonlinear": " ", 
+  "linear": " "
+}
+EG.portElec_a.W=[10000000., 10000000.]
+time=[0., 10.]

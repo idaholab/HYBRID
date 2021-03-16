@@ -1,0 +1,3 @@
+translateModel("NHES.Systems.PrimaryHeatSystem.SMR_Generic.Examples.SMR_Test");
+importInitial("./gold/dsfinal.txt");
+simulateModel("NHES.Systems.PrimaryHeatSystem.SMR_Generic.Examples.SMR_Test", stopTime=1800, numberOfIntervals=180, method="Esdirk45a", resultFile="SMR_Test");

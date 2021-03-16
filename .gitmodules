@@ -1,0 +1,6 @@
+[submodule "raven"]
+	path = raven
+	url =  https://github.com/idaholab/raven.git
+[submodule "TRANSFORM-Library"]
+	path = TRANSFORM-Library
+        url = https://github.com/ORNL-Modelica/TRANSFORM-Library.git

@@ -1,0 +1,4 @@
+importFMU(Modelica.Utilities.Files.loadResource("modelica://NHES/Resources/FMIs/FlowReversal_ME.fmu"), true, true, false, "");
+translateModel("NHES.Utilities.FMI_Templates.Adaptors.MSLFluidAdaptors.Examples.ReversingFlow.FMUTests.FlowReversalME");
+experimentSetupOutput(events=false);
+simulateModel("NHES.Utilities.FMI_Templates.Adaptors.MSLFluidAdaptors.Examples.ReversingFlow.FMUTests.FlowReversalME", stopTime=10, numberOfIntervals=5000, method="Cvode", tolerance=1e-05, resultFile="FlowReversalME");

@@ -1,0 +1,1 @@
+simulateModel("NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.Examples.HTSE_TightlyCoupled_PowerCtrl_Test", stopTime=7200, numberOfIntervals=1800, method="Esdirk45a", resultFile="HTSE_TightlyCoupled_PowerCtrl_Test");

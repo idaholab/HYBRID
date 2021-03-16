@@ -1,0 +1,76 @@
+\subsection{Microsoft Windows}
+\label{sec:install windows}
+
+The process of establishing the required environment for Windows is notably more involved than the other two
+systems; however, it is straightforward.  First, RAVEN has the following prerequisites on Windows:
+
+\begin{itemize}
+    \item A system running a 64-bit version of Microsoft Windows. Installation and operation
+        has been verified on Windows 7, 10, and Windows Server 2012 R2 Standard.
+    \item At least 9 Gigabytes of available disk space:
+    \begin{itemize}
+        \item 0.5 GB for GIT SCM, including supporting tools and git source code control
+        \item 1.5 GB for Python language and supporting packages
+        \item 1 GB for RAVEN framework
+        \item 5.0 GB for the Visual Studio compiler needed to build RAVEN
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{A Visual Guide}
+Note: An illustrated version of this procedure may be found on the \wiki.
+
+\subsubsection{GIT SCM for Windows}
+RAVEN currently works on Windows using basic tools freely available online. 
+The first software to be downloaded and installed is \textbf{Git SCM} available at \url{https://gitforwindows.org/}.
+\begin{enumerate}
+    \item Obtain the latest Git SCM for Windows installer from  \url{https://gitforwindows.org/} and install it. 
+    Install Git Bash and have 
+    the installer add Git Bash to your Windows \textit{PATH} environment variables. 
+    The \textit{PATH} can be updated either automatically (allowing the Git SCM installer to update it for you) or manually 
+    (Systems Properties - Environment Variables - Edit Environment Variables).
+\end{enumerate}
+
+\subsubsection{Install Python Language and Package Support}
+\begin{enumerate}
+	\item Download the latest 64-bit installer for Windows Python 3 from
+		\url{https://conda.io/miniconda.html} and install it.  \item The installer
+		will ask whether Python should be installed for only the logged in user or
+		for all users.  Either option will work for RAVEN.
+	\item 	have  the installer add \textit{conda} to your Windows \textit{PATH} environment variables.   
+	The \textit{PATH} can be updated either automatically (allowing the  \textit{conda} installer to update it for you) 
+	or manually (Systems Properties - Environment Variables - Edit Environment Variables).
+	\item Check the installation of Python and coda locating and testing the Python installation.   
+	Open a Windows command prompt and enter the
+		command "{\it where python}", which attempts to locate a the Python language interpreter
+		in the current system path.  This looks like:
+
+    \begin{lstlisting}[language=bash, basicstyle=\small]
+    C:\Users\USERID> where python
+    C:\Users\USERID\AppData\Local\Continuum\Miniconda3\python.exe
+    \end{lstlisting}
+
+\end{enumerate}
+
+
+\subsubsection{Compiler Installation and Configuration}
+\begin{enumerate}
+	\item Download and install Visual Studio.  A C++ language compiler that supports C++11 features
+		is needed to perform this step. Microsoft's Visual Studio Community Edition is free and
+		available from \url{https://www.visualstudio.com/downloads/}.
+
+		The current version (as of this writing) is 2017. The 2015 and 2017 versions have been
+		successfully used to build RAVEN. Professional and Enterprise versions of these will
+		also work. If one of these is already present on your system, it is not necessary to
+		obtain another one. Note that because C++11 language features are required, the
+		"Microsoft Visual C++ Compiler for Python 2.7 or 3.x" often used for building Python
+		add-ons will {\bf not} work.
+
+		After downloading and running the Visual Studio installer, it will ask what features
+		to install. For building RAVEN, "Desktop development with C++" is needed at a minimum.
+		Installation of other Visual Studio features should be fine.
+\end{enumerate}
+
+Once the compiler installation and configuration is complete, you are prepared to install the RAVEN libraries
+(see section \ref{sec:install conda}).
+
+

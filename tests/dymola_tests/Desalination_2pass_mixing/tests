@@ -1,0 +1,12 @@
+[Tests]
+ [./]
+  #REQUIREMENT: R-F-1
+  type = 'HYBRIDTester'
+  input = 'RO_2pass_mixing.mos'
+  workingDir = '.'
+  output = 'RO_twoPasses_mixing.mat'
+  dymola_mats = 'RO_twoPasses_mixing.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

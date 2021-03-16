@@ -1,0 +1,1 @@
+simulateModel("NHES.Systems.SupervisoryControl.Examples.InputSetpointData_Test", stopTime=10000, numberOfIntervals=1000, method="dassl", resultFile="InputSetpointData_Test");

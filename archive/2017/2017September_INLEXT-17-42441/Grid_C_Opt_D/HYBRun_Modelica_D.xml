@@ -1,0 +1,787 @@
+<?xml version="1.0" ?>
+<Simulation verbosity="debug">
+  <RunInfo>
+    <WorkingDir>.</WorkingDir>
+    <Sequence>OPTrun</Sequence>
+    <!--
+    <MPIExec>mpirun</MPIExec>
+    <batchSize>24</batchSize>
+    <internalParallel>True</internalParallel>
+    <mode> mpi  <runQSUB/> </mode>
+    <clusterParameters>-P nst </clusterParameters>
+    <expectedTime>200:00:00</expectedTime>
+    -->
+    <deleteOutExtension>csv,mat</deleteOutExtension>
+  </RunInfo>
+
+  <Files>
+    <Input name="dsin.txt" type="DymolaInitialisation">dsin.txt</Input>
+    <Input name="timeSeriesData.txt" type="DymolaVectors">timeSeriesData.txt</Input>
+  </Files>
+
+  <VariableGroups>
+    <!-- GenerateVectors -->
+    <Group name="GRO_GenerateVectors_in_scalar">
+      time_delta,
+      Demand_time_net_0001,
+      Demand_time_net_0002,
+      Demand_time_net_0003,
+      Demand_time_net_0004,
+      Demand_time_net_0005,
+      Demand_time_net_0006,
+      Demand_time_net_0007,
+      Demand_time_net_0008,
+      Demand_time_net_0009,
+      Demand_time_net_0010,
+      Demand_time_net_0011,
+      Demand_time_net_0012,
+      Demand_time_net_0013,
+      Demand_time_net_0014,
+      Demand_time_net_0015,
+      Demand_time_net_0016,
+      Demand_time_net_0017,
+      Demand_time_net_0018,
+      Demand_time_net_0019,
+      Demand_time_net_0020,
+      Demand_time_net_0021,
+      Demand_time_net_0022,
+      Demand_time_net_0023,
+      Demand_time_net_0024
+    </Group>
+    <Group name="GRO_GenerateVectors_out_Time">Demand_time_net</Group>
+    <!-- DymolaPreP -->
+    <Group name="GRO_BOP_0000">
+      BOP_0001,
+      BOP_0002,
+      BOP_0003,
+      BOP_0004,
+      BOP_0005,
+      BOP_0006,
+      BOP_0007,
+      BOP_0008,
+      BOP_0009,
+      BOP_0010,
+      BOP_0011,
+      BOP_0012,
+      BOP_0013,
+      BOP_0014,
+      BOP_0015,
+      BOP_0016,
+      BOP_0017,
+      BOP_0018,
+      BOP_0019,
+      BOP_0020,
+      BOP_0021,
+      BOP_0022,
+      BOP_0023,
+      BOP_0024
+    </Group>
+    <Group name="GRO_SES_0000">
+      SES_0001,
+      SES_0002,
+      SES_0003,
+      SES_0004,
+      SES_0005,
+      SES_0006,
+      SES_0007,
+      SES_0008,
+      SES_0009,
+      SES_0010,
+      SES_0011,
+      SES_0012,
+      SES_0013,
+      SES_0014,
+      SES_0015,
+      SES_0016,
+      SES_0017,
+      SES_0018,
+      SES_0019,
+      SES_0020,
+      SES_0021,
+      SES_0022,
+      SES_0023,
+      SES_0024
+    </Group>
+    <Group name="GRO_ES_0000">
+      ES_0001,
+      ES_0002,
+      ES_0003,
+      ES_0004,
+      ES_0005,
+      ES_0006,
+      ES_0007,
+      ES_0008,
+      ES_0009,
+      ES_0010,
+      ES_0011,
+      ES_0012,
+      ES_0013,
+      ES_0014,
+      ES_0015,
+      ES_0016,
+      ES_0017,
+      ES_0018,
+      ES_0019,
+      ES_0020,
+      ES_0021,
+      ES_0022,
+      ES_0023,
+      ES_0024
+    </Group>
+    <Group name="GRO_IP_0000">
+      IP_0001,
+      IP_0002,
+      IP_0003,
+      IP_0004,
+      IP_0005,
+      IP_0006,
+      IP_0007,
+      IP_0008,
+      IP_0009,
+      IP_0010,
+      IP_0011,
+      IP_0012,
+      IP_0013,
+      IP_0014,
+      IP_0015,
+      IP_0016,
+      IP_0017,
+      IP_0018,
+      IP_0019,
+      IP_0020,
+      IP_0021,
+      IP_0022,
+      IP_0023,
+      IP_0024
+    </Group>
+    <Group name="GRO_DymolaPreP_inADD_scalar">scaling_demand, BOP_capacity, SES_capacity, ES_capacity, IP_capacity, BOP_eff, IP_EL, IP_TH</Group>
+    <Group name="GRO_DymolaPreP_in_scalar" dependencies="GRO_ES_0000, GRO_SES_0000, GRO_BOP_0000, GRO_IP_0000, GRO_DymolaPreP_inADD_scalar" base="GRO_ES_0000">+GRO_SES_0000, +GRO_BOP_0000, +GRO_IP_0000, +GRO_DymolaPreP_inADD_scalar</Group>
+    <!-- selectted variables for output only  -->
+    <Group name="GRO_DymolaPreP_in_some_scalar" dependencies="GRO_ES_0000, GRO_SES_0000, GRO_BOP_0000, GRO_IP_0000" base="GRO_ES_0000">+GRO_SES_0000, +GRO_BOP_0000, +GRO_IP_0000</Group>
+    <Group name="GRO_DymolaPreP_out_Time">ES_SAMP_productionEL, SES_SAMP_productionEL, BOP_SAMP_productionEL, IP_SAMP_productionEL</Group>
+    <!-- Dymola -->
+    <Group name="GRO_Dymola_in_scalar">
+      SES_capacity, ES_capacity, IP_capacity
+    </Group>
+    <Group name="GRO_Dymola_in_Time">
+      ES_SAMP_productionEL, SES_SAMP_productionEL, BOP_SAMP_productionEL, IP_SAMP_productionEL, 
+      Demand_time_net
+    </Group>
+      <!-- the next line has to be uncommented, if dymola is not used, but the NHES placeholder is activated (called NHES.py)
+      , BOP_capacity, Start_time, DYMOLA_tot_time, IP_EL, IP_KG
+    </Group>
+    -->
+    <Group name="GRO_Dymola_out_DYMOTime"> 
+      BOP_DYMO_productionEL,
+      SES_DYMO_productionEL,
+      ES_DYMO_productionEL,
+      IP_DYMO_productionEL,
+      IP_DYMO_productionBY,
+      Grid_DYMO_productionEL
+    </Group>
+    <!-- CashFlowPreP -->>
+    <Group name="GRO_CashFlowPreP_in_DYMOTime">
+      BOP_DYMO_productionEL,
+      SES_DYMO_productionEL,
+      ES_DYMO_productionEL,
+      IP_DYMO_productionEL, IP_DYMO_productionBY,
+      Grid_DYMO_productionEL
+    </Group>
+    <Group name="GRO_CashFlowPreP_in_Time">
+      Demand_time_net
+    </Group>
+    <Group name="GRO_CashFlowPreP_in_scalar">BOP_capacity,SES_capacity,ES_capacity,IP_capacity,H2_price,Penalty_mult,Start_time,time_delta</Group>
+    <Group name="GRO_CashFlowPreP_out_scalar">
+      BOP_TOT_productionEL,
+      ES_TOT_productionEL,
+      SES_TOT_productionEL,
+      IP_TOT_productionEL,
+      IP_TOT_productionBY,
+      IP_TOT_revenueBY,
+      Imbalance_Price,
+      cum_missed_demand,
+      DEMAND_TOT_productionEL
+    </Group>
+    <!-- Cash flow -->
+    <Group name="GRO_BOP_scalar" >BOP_capacity, BOP_TOT_productionEL</Group>
+    <Group name="GRO_SES_scalar" >SES_capacity, SES_TOT_productionEL</Group>
+    <Group name="GRO_ES_scalar" >ES_capacity, ES_TOT_productionEL</Group>
+    <Group name="GRO_IP_scalar" >IP_capacity, IP_TOT_productionEL, IP_TOT_productionBY, IP_TOT_revenueBY</Group>
+    <Group name="GRO_CF_scalar" >The_constant_one, Imbalance_Price, DEMAND_TOT_productionEL</Group>
+    <Group name="GRO_CashFlow_out_scalar" >NPV_mult</Group>
+  </VariableGroups>
+
+  <Models>
+    <ExternalModel ModuleToLoad="../../src/GenerateVectors_2017September.py" name="GenerateVectors" subType="">
+      <variables>GRO_GenerateVectors_in_scalar, GRO_GenerateVectors_out_Time, Time</variables>
+    </ExternalModel>
+    <ExternalModel ModuleToLoad="../../src/DymolaPreP_2017September.py" name="DymolaPreP" subType="">
+      <variables>GRO_DymolaPreP_in_scalar, GRO_DymolaPreP_out_Time, Time </variables>
+      <!-- External XML node -->
+      <DymolaPreP verbosity="100"> <!-- “0” all debug output, “1” some output, “100” only errors  -->
+        <Components>BOP SES ES IP</Components> <!-- Scalar samples (utilisation) for these components will be transformed into Dymola vectors -->
+      </DymolaPreP>
+    </ExternalModel>
+    <Code name="NHES" subType="Dymola">
+      <!-- INPUTS -->
+      <alias type="input" variable='ES_capacity'>dataCapacity.ES_capacity</alias>
+      <alias type="input" variable='SES_capacity'>dataCapacity.SES_capacity</alias>
+      <alias type="input" variable='IP_capacity'>dataCapacity.IP_capacity</alias>
+      <alias type="input" variable='ES_SAMP_productionEL'>ES</alias>
+      <alias type="input" variable='SES_SAMP_productionEL'>SES</alias>
+      <alias type="input" variable='BOP_SAMP_productionEL'>BOP</alias>
+      <alias type="input" variable='IP_SAMP_productionEL'>IP</alias>
+      <alias type="input" variable='Demand_time_net'>NetDemand</alias>
+      <!-- OUTPUTS -->
+      <alias variable='BOP_DYMO_productionEL' type='output'>SY.sensorBus.subBus_SY.W_BOP</alias>
+      <alias variable='ES_DYMO_productionEL' type='output'>SY.sensorBus.subBus_SY.W_ES</alias>
+      <alias variable='SES_DYMO_productionEL' type='output'>SY.sensorBus.subBus_SY.W_SES</alias>
+      <alias variable='IP_DYMO_productionEL' type='output'>SY.sensorBus.subBus_SY.W_IP</alias>
+      <alias variable='IP_DYMO_productionBY' type='output'>IP.sensorBus.subBus_IP.HTSE.m_flow_H2_prod</alias>
+      <alias variable='Grid_DYMO_productionEL' type='output'>SY.sensorBus.subBus_SY.W_EG</alias>
+      <alias variable='DYMOTime' type='output'>Time</alias>
+      <!-- executable -->
+      <executable>../../../../DymolaModelExecutable/dymosim</executable>
+      <outputVariablesToLoad>SY.sensorBus.subBus_SY.W_BOP SY.sensorBus.subBus_SY.W_ES SY.sensorBus.subBus_SY.W_SES SY.sensorBus.subBus_SY.W_IP IP.sensorBus.subBus_IP.HTSE.m_flow_H2_prod SY.sensorBus.subBus_SY.W_EG</outputVariablesToLoad>
+    </Code>
+    <!--  This has to be included if Dymola is not run, but the initial disspatch is assumed to be the final one 
+    <ExternalModel ModuleToLoad="../../src/NHES_2017September.py" name="NHES" subType="">
+      <variables>GRO_Dymola_in_scalar, GRO_Dymola_in_Time, GRO_Dymola_out_DYMOTime, IP_KG, IP_EL, DYMOTime</variables>
+    </ExternalModel>
+    -->
+    <ExternalModel ModuleToLoad="../../src/CasFlowPreP_2017September.py" name="CashFlowPreP" subType="">
+      <variables>GRO_CashFlowPreP_in_scalar, GRO_CashFlowPreP_in_DYMOTime, GRO_CashFlowPreP_in_Time, GRO_CashFlowPreP_out_scalar, DYMOTime</variables>
+      <!-- External XML node -->
+      <NPVPreP verbosity="100"> <!-- “0” all debug output, “1” some output, “100” only errors  -->
+      </NPVPreP>
+    </ExternalModel>
+    <ExternalModel name="Cash_Flow" subType="CashFlow">
+      <variables> GRO_BOP_scalar, GRO_SES_scalar, GRO_ES_scalar, GRO_IP_scalar, GRO_CF_scalar, GRO_CashFlow_out_scalar</variables>
+      <ExternalXML node="Economics" xmlToLoad="Cash_Flow_input.xml"/>
+    </ExternalModel>
+    <EnsembleModel name="Ensemble_DYMOLA" subType="">
+      <Model class="Models" type="ExternalModel">
+        GenerateVectors
+        <Input            class="DataObjects" type="PointSet"             >SET_GenerateVectors_in</Input>
+        <TargetEvaluation class="DataObjects" type="HistorySet"           >SET_GenerateVectors_out</TargetEvaluation>
+      </Model>
+      <Model class="Models" type="ExternalModel">
+        DymolaPreP
+        <Input            class="DataObjects" type="PointSet"             >SET_DymolaPreP_in</Input>
+        <TargetEvaluation class="DataObjects" type="DataSet"           >SET_DymolaPreP_out</TargetEvaluation>
+      </Model>
+      <!-- This has to be included if Dymola is not run, but the initial disspatch is assumed to be the final one
+      <Model class="Models" type="ExternalModel">
+        NHES
+        <Input            class="DataObjects" type="PointSet"           >SET_Dymola_in</Input>
+        <TargetEvaluation class="DataObjects" type="DataSet"           >SET_Dymola_out</TargetEvaluation>
+      </Model>
+      -->
+      <Model class="Models" type="Code">
+        NHES
+        <Input            class="Files"       type="DymolaInitialisation" >dsin.txt</Input>
+        <Input            class="Files"       type="DymolaVectors"        >timeSeriesData.txt</Input>
+        <TargetEvaluation class="DataObjects" type="DataSet"              >SET_Dymola_out</TargetEvaluation>
+      </Model>
+      <Model class="Models" type="ExternalModel">
+        CashFlowPreP
+        <Input            class="DataObjects" type="PointSet"             >SET_CashFlowPreP_in</Input>
+        <TargetEvaluation class="DataObjects" type="DataSet"             >SET_CashFlowPreP_out</TargetEvaluation>
+      </Model>
+      <Model class="Models" type="ExternalModel">
+        Cash_Flow
+        <Input            class="DataObjects" type="PointSet"             >SET_CashFlow_in</Input>
+        <TargetEvaluation class="DataObjects" type="PointSet"             >SET_CashFlow_out</TargetEvaluation>
+      </Model>
+    </EnsembleModel>
+  </Models>
+
+  <Optimizers>
+    <SPSA name="opter">
+      <initialization>
+        <limit>20</limit>
+        <type>min</type>
+        <initialSeed>1234</initialSeed>
+      </initialization>
+      <TargetEvaluation class="DataObjects" type="PointSet">optOutput</TargetEvaluation>
+      <convergence>
+        <relativeThreshold>1e-5</relativeThreshold>
+        <absoluteThreshold>0.0</absoluteThreshold>
+        <gradientThreshold>1e-3</gradientThreshold>
+        <minStepSize>1e-5</minStepSize>
+        <gainGrowthFactor>1.5</gainGrowthFactor>
+        <gainShrinkFactor>3.0</gainShrinkFactor>
+      </convergence>
+      <parameter>
+        <numGradAvgIterations>1</numGradAvgIterations>
+      </parameter>
+      <!-- VARIABLES -->
+      <!-- SES -->
+      <variable name="SES_0001">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0002">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0003">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0004">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0005">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0006">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0007">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0008">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0009">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0010">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0011">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0012">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0013">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0014">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0015">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0016">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0017">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0018">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0019">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0020">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0021">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0022">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0023">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="SES_0024">
+        <upperBound>1</upperBound>
+        <lowerBound>0</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <!-- IP -->
+      <variable name="IP_0001">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0002">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0003">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0004">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0005">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0006">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0007">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0008">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0009">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0010">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0011">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0012">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0013">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0014">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0015">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0016">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0017">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0018">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0019">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0020">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0021">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0022">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0023">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <variable name="IP_0024">
+        <upperBound>1</upperBound>
+        <lowerBound>0.409737</lowerBound>
+        <initial>0.5</initial>
+      </variable>
+      <!-- Constants -->
+      <!-- The capacities go in here  -->
+      <constant name="SES_capacity">100</constant>
+      <constant name="IP_capacity">100</constant>
+      <constant name="ES_capacity">100</constant>
+      <constant name="BOP_capacity">100</constant>
+      <constant name="scaling_demand">1</constant>
+      <!-- General constants -->
+      <constant name="H2_price">0</constant>  <!-- H2 price in $/kg -->
+      <constant name="Penalty_mult">0</constant>  <!-- multiplies the penalty function  -->
+      <constant name="Start_time">1</constant>  <!-- steady state time in seconds (should be set to 2 hours = 7200s for production calcs) -->
+      <constant name="time_delta">0</constant> <!-- time step in seconds for MODELICA bypass (same as ARMA time step) -->
+      <constant name="DYMOLA_tot_time"> 7200</constant>  <!-- Dymola maximum simulation time (168h * 3600) -->
+      <constant name="The_constant_one">1.0</constant>  <!-- constant = 1.0 -->
+      <!-- Efficiency constants -->
+      <constant name="BOP_eff">1</constant>  <!-- BOP TH to EL conversion efficientcy -->
+      <constant name="IP_EL">1</constant>  <!-- IP nominal electricity usage [MWel] -->
+      <constant name="IP_TH">1</constant>  <!-- IP nominal steam usage [MWth] -->
+      <constant name="IP_KG">1</constant>  <!-- IP nominal H2 production [kg/s] -->
+      <!-- values passed in from outer loop -->
+      <!-- Demand_time_net -->
+      <constant name="Demand_time_net_0001">1.0</constant>
+      <constant name="Demand_time_net_0002">1.0</constant>
+      <constant name="Demand_time_net_0003">1.0</constant>
+      <constant name="Demand_time_net_0004">1.0</constant>
+      <constant name="Demand_time_net_0005">1.0</constant>
+      <constant name="Demand_time_net_0006">1.0</constant>
+      <constant name="Demand_time_net_0007">1.0</constant>
+      <constant name="Demand_time_net_0008">1.0</constant>
+      <constant name="Demand_time_net_0009">1.0</constant>
+      <constant name="Demand_time_net_0010">1.0</constant>
+      <constant name="Demand_time_net_0011">1.0</constant>
+      <constant name="Demand_time_net_0012">1.0</constant>
+      <constant name="Demand_time_net_0013">1.0</constant>
+      <constant name="Demand_time_net_0014">1.0</constant>
+      <constant name="Demand_time_net_0015">1.0</constant>
+      <constant name="Demand_time_net_0016">1.0</constant>
+      <constant name="Demand_time_net_0017">1.0</constant>
+      <constant name="Demand_time_net_0018">1.0</constant>
+      <constant name="Demand_time_net_0019">1.0</constant>
+      <constant name="Demand_time_net_0020">1.0</constant>
+      <constant name="Demand_time_net_0021">1.0</constant>
+      <constant name="Demand_time_net_0022">1.0</constant>
+      <constant name="Demand_time_net_0023">1.0</constant>
+      <constant name="Demand_time_net_0024">1.0</constant>
+      <!-- The battery is kept constant dunring the optimisation -->
+      <constant name="ES_0001">99.0</constant>
+      <constant name="ES_0002">99.0</constant>
+      <constant name="ES_0003">99.0</constant>
+      <constant name="ES_0004">99.0</constant>
+      <constant name="ES_0005">99.0</constant>
+      <constant name="ES_0006">99.0</constant>
+      <constant name="ES_0007">99.0</constant>
+      <constant name="ES_0008">99.0</constant>
+      <constant name="ES_0009">99.0</constant>
+      <constant name="ES_0010">99.0</constant>
+      <constant name="ES_0011">99.0</constant>
+      <constant name="ES_0012">99.0</constant>
+      <constant name="ES_0013">99.0</constant>
+      <constant name="ES_0014">99.0</constant>
+      <constant name="ES_0015">99.0</constant>
+      <constant name="ES_0016">99.0</constant>
+      <constant name="ES_0017">99.0</constant>
+      <constant name="ES_0018">99.0</constant>
+      <constant name="ES_0019">99.0</constant>
+      <constant name="ES_0020">99.0</constant>
+      <constant name="ES_0021">99.0</constant>
+      <constant name="ES_0022">99.0</constant>
+      <constant name="ES_0023">99.0</constant>
+      <constant name="ES_0024">99.0</constant>
+      <!-- The BOP is a function of the IP utilisation -->
+      <constant name="BOP_0001">99.0</constant>
+      <constant name="BOP_0002">99.0</constant>
+      <constant name="BOP_0003">99.0</constant>
+      <constant name="BOP_0004">99.0</constant>
+      <constant name="BOP_0005">99.0</constant>
+      <constant name="BOP_0006">99.0</constant>
+      <constant name="BOP_0007">99.0</constant>
+      <constant name="BOP_0008">99.0</constant>
+      <constant name="BOP_0009">99.0</constant>
+      <constant name="BOP_0010">99.0</constant>
+      <constant name="BOP_0011">99.0</constant>
+      <constant name="BOP_0012">99.0</constant>
+      <constant name="BOP_0013">99.0</constant>
+      <constant name="BOP_0014">99.0</constant>
+      <constant name="BOP_0015">99.0</constant>
+      <constant name="BOP_0016">99.0</constant>
+      <constant name="BOP_0017">99.0</constant>
+      <constant name="BOP_0018">99.0</constant>
+      <constant name="BOP_0019">99.0</constant>
+      <constant name="BOP_0020">99.0</constant>
+      <constant name="BOP_0021">99.0</constant>
+      <constant name="BOP_0022">99.0</constant>
+      <constant name="BOP_0023">99.0</constant>
+      <constant name="BOP_0024">99.0</constant>
+      <constant name="TimeDump"></constant>
+      <constant name="DemandDump"></constant>
+      <objectVar>NPV_mult</objectVar>
+    </SPSA>
+  </Optimizers>
+
+  <DataObjects>
+    <PointSet name="SET_GenerateVectors_in">
+      <Input>GRO_GenerateVectors_in_scalar</Input>
+      <Output> OutputPlaceHolder</Output>
+    </PointSet>
+    <HistorySet name="SET_GenerateVectors_out">
+      <Input>GRO_GenerateVectors_in_scalar</Input>
+      <Output>GRO_GenerateVectors_out_Time</Output>
+      <options>
+        <pivotParameter>Time</pivotParameter>
+      </options>
+    </HistorySet>
+
+    <PointSet name="SET_DymolaPreP_in">
+      <Input>scaling_demand</Input>
+      <Output>OutputPlaceHolder</Output>
+    </PointSet>
+    <DataSet name="SET_DymolaPreP_out">
+      <Input>GRO_DymolaPreP_in_scalar,Demand_time_net</Input> 
+           <!-- Demand_time_net not used by model. need to provide a variable that depends on Time, to get Time -->
+      <Output>GRO_DymolaPreP_out_Time</Output>
+      <Index var="Time">Demand_time_net, GRO_DymolaPreP_out_Time</Index>
+    </DataSet>
+
+    <PointSet name="SET_Dymola_in">
+      <Input>SES_capacity</Input>
+      <Output>OutputPlaceHolder</Output>
+    </PointSet>
+    <DataSet name="SET_Dymola_out">
+      <Input>GRO_Dymola_in_scalar, GRO_Dymola_in_Time</Input>
+      <Output>GRO_Dymola_out_DYMOTime</Output>
+      <Index var="Time">GRO_Dymola_in_Time</Index>
+      <Index var="DYMOTime">GRO_Dymola_out_DYMOTime</Index>
+    </DataSet>
+
+    <PointSet name="SET_CashFlowPreP_in">
+      <Input>GRO_CashFlowPreP_in_scalar</Input>
+      <Output>OutputPlaceHolder</Output>
+    </PointSet>
+    <DataSet name="SET_CashFlowPreP_out">
+      <Input>GRO_CashFlowPreP_in_scalar,GRO_CashFlowPreP_in_DYMOTime, GRO_CashFlowPreP_in_Time</Input>
+      <Output>GRO_CashFlowPreP_out_scalar</Output>
+      <Index var="DYMOTime">GRO_CashFlowPreP_in_DYMOTime</Index>
+      <Index var="Time">GRO_CashFlowPreP_in_Time</Index>
+    </DataSet>
+
+    <PointSet name="SET_CashFlow_in">
+      <Input> GRO_BOP_scalar, GRO_SES_scalar, GRO_ES_scalar, GRO_IP_scalar, GRO_CF_scalar</Input>
+      <Output>OutputPlaceHolder</Output>
+    </PointSet>
+    <PointSet name="SET_CashFlow_out">
+      <Input> GRO_BOP_scalar, GRO_SES_scalar, GRO_ES_scalar, GRO_IP_scalar, GRO_CF_scalar</Input>
+      <Output>GRO_CashFlow_out_scalar</Output>
+    </PointSet>
+
+    <PointSet name="All_out">
+      <Input> SES_capacity, IP_capcacity,  ES_capacity, scaling_demand</Input>
+      <Output>GRO_CashFlow_out_scalar</Output>
+    </PointSet>
+    <PointSet name="optOutput">
+      <Input> scaling_demand, SES_capacity, IP_capacity, ES_capacity, GRO_DymolaPreP_in_some_scalar</Input>
+      <Output>Imbalance_Price,NPV_mult, cum_missed_demand</Output>
+    </PointSet>
+    <PointSet name="backTOmast">
+      <Input> ES_capacity </Input>
+      <Output>Imbalance_Price,NPV_mult, cum_missed_demand</Output>
+    </PointSet>
+    <PointSet name="opt_export">
+      <Input>trajID</Input>
+      <Output>Imbalance_Price, NPV_mult, cum_missed_demand</Output>
+    </PointSet>
+  </DataObjects>
+
+  <Steps>
+    <MultiRun name="OPTrun" repeatFailureRuns="3" pauseAtEnd="True">
+      <Input          class="DataObjects"   type="PointSet"             >SET_GenerateVectors_in</Input>
+      <Input          class="DataObjects"   type="PointSet"             >SET_DymolaPreP_in</Input>
+      <Input          class="Files"         type="DymolaInitialisation" >dsin.txt</Input>
+      <Input          class="Files"         type="DymolaVectors"        >timeSeriesData.txt</Input>
+      <!-- to be used with the dymola bypass
+      <Input          class="DataObjects"   type="HistorySet"           >SET_Dymola_in</Input>
+      -->
+      <Input          class="DataObjects"   type="PointSet"             >SET_CashFlowPreP_in</Input>
+      <Input          class="DataObjects"   type="PointSet"             >SET_CashFlow_in</Input>
+      <Model          class="Models"        type="EnsembleModel"        >Ensemble_DYMOLA</Model>
+      <Optimizer      class="Optimizers"    type="SPSA"                 >opter</Optimizer>
+      <SolutionExport class="DataObjects"   type="HistorySet"           >opt_export</SolutionExport>
+      <Output         class="DataObjects"   type="PointSet"             >backTOmast</Output>
+      <Output         class="DataObjects"   type="PointSet"             >optOutput</Output>
+      <Output         class="OutStreams"    type="Print"                >Back_to_MASTER</Output>
+    </MultiRun>
+    <IOStep name="dumpCSV">
+      <Input          class="DataObjects"   type="PointSet"             >All_out</Input>
+      <Output         class="OutStreams"    type="Print"                >dumpCSV</Output>
+    </IOStep>
+    <IOStep name="dumpOPT">
+      <Input          class="DataObjects"   type="PointSet"             >optOutput</Input>
+      <Output         class="OutStreams"    type="Print"                >dumpOPT</Output>
+    </IOStep>
+    <IOStep name="dumpOPT_sol">
+      <Input          class="DataObjects"   type="HistorySet"           >opt_export</Input>
+      <Output         class="OutStreams"    type="Print"                >dumpOPT_sol</Output>
+    </IOStep>
+  </Steps>
+
+  <OutStreams>
+    <Print name="Back_to_MASTER">
+      <type>csv</type>
+      <source>backTOmast</source>
+    </Print>
+    <Print name="dumpCSV">
+      <type>csv</type>
+      <source>All_out</source>
+    </Print>
+    <Print name="dumpOPT">
+      <type>csv</type>
+      <source>optOutput</source>
+      <filename>convHist</filename>
+    </Print>
+    <Print name="dumpOPT_sol">
+      <type>csv</type>
+      <source>opt_export</source>
+      <filename>convHist</filename>
+    </Print>
+  </OutStreams>
+</Simulation>

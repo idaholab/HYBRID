@@ -1,0 +1,612 @@
+  <Economics verbosity="50"> <!-- “0” all debug output, “1” some output, “100” only errors  -->
+      <Global>
+          <DiscountRate>0.05</DiscountRate> <!-- %/100 -->
+          <tax>0.392</tax> <!-- %/100 -->
+          <inflation>0.03</inflation> <!-- %/100 -->
+          <Indicator name='NPV_search' target='0'>
+            DEM_RE
+            Penalty
+
+            BOP_CA
+            BOP_GRID
+            BOP_OMperCap
+            BOP_OMperProduction
+            BOP_OMperFuel
+            BOP_DA1
+            BOP_DA2
+            BOP_SV
+
+            MANI_CA
+            MANI_OMperCap
+            MANI_DA1
+            MANI_DA2
+            MANI_SV
+
+            IP_CA
+            IP_RE
+            IP_OMperCap
+            IP_OMperProduction
+            IP_DA1
+            IP_DA2
+            IP_SV
+
+            ES_CA
+            ES_OMperCap
+            ES_DA1
+            ES_DA2
+            ES_SV
+
+            SES_CA
+            SES_OMperCap
+            SES_OMperProduction
+            SES_OMperFuel
+            SES_DA1
+            SES_DA2
+            SES_SV
+          </Indicator> 
+      </Global>
+
+      <Component name="Demand">
+          <Life_time>1</Life_time>   <!-- years -->
+            <!-- Electric Revenue -->
+            <!-- ================ -->
+            <!-- alpha is 1.0 -->
+            <!-- this is all the electricity demanded by the grid -->
+            <CashFlow name="DEM_RE" driver="DEMAND_TOT_productionEL" tax="true" inflation="none" mult_target="true">
+              <alpha> 0.0 
+                      1.0
+                      </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+
+            <!-- Penalty for over or underproduction -->
+            <!-- ================ -->
+            <CashFlow name="Penalty" driver="Imbalance_Price" tax="false" inflation="none" mult_target="false">
+              <alpha> 0.0 
+                      1.0
+                      </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+      </Component>
+
+      <Component name="BOP">
+          <Life_time>60</Life_time>   <!-- years -->
+
+            <!-- Capital Cost -->
+            <!-- ============ -->
+            <!-- alpha in $ for the <reference> MW plant -->
+              <CashFlow name="BOP_CA" driver="BOP_capacity" tax="false" inflation="none" mult_target="false">
+              <alpha> -4510000000
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0</alpha>
+              <reference>1100000000</reference>
+              <X>0.64</X>
+            </CashFlow>
+            <!-- Grid connection: alpha in $ for the <reference> MW plant -->
+            <CashFlow name="BOP_GRID" driver="BOP_capacity" tax="false" inflation="none" mult_target="false">
+              <alpha> -13000000
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 </alpha>
+              <reference>400000000</reference>
+              <X>1.26</X>
+            </CashFlow>
+
+            <!-- O&M per capacity --> 
+            <!-- ================ -->
+            <!-- alpha in $ for the <reference> MW plant -->
+            <CashFlow name="BOP_OMperCap" driver="BOP_capacity" tax="true" inflation="none" mult_target="false">
+              <alpha> 0.0 
+                      -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000
+                      -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000
+                      -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000
+                      -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000
+                      -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000
+                      -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000 -93500000</alpha>
+              <reference>1100000000</reference>
+              <X>0.64</X>
+            </CashFlow>
+
+            <!-- O&M per production (the reactor operates always at full power) --> 
+            <!-- ================ -->
+            <!-- alpha is $/W(el)h * hours/year 0.5E-6*8760=0.00438 -->
+            <CashFlow name="BOP_OMperProduction" driver="BOP_capacity" tax="true" inflation="none" mult_target="false">
+              <alpha> 0.0 
+                      -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438
+                      -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438
+                      -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438
+                      -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438
+                      -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438
+                      -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438 -0.00438</alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- O&M per fuel (the reactor operates always at full power) --> 
+            <!-- ================ -->
+            <!-- alpha is $/W(el)h * hours/year 8.4E-6*8760=0.073584 -->
+            <CashFlow name="BOP_OMperFuel" driver="BOP_capacity" tax="true" inflation="none" mult_target="false">
+              <alpha> 0.0 
+                      -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584
+                      -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584
+                      -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584
+                      -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584
+                      -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584
+                      -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584 -0.073584</alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- Amortisation/Depreciation --> 
+            <!-- ================ -->
+            <!-- alpha is % * CAPEX [$ for 1100MW ref plant ]  = MACRS *  4510000000   -->
+            <CashFlow name="BOP_DA1" driver="BOP_capacity" tax="false" inflation="real" mult_target="false">
+              <alpha> 0.0 
+                225500000
+                405900000
+                385605000
+                347270000
+                312543000
+                280973000
+                266090000
+                266090000
+                266541000
+                266090000
+                266541000
+                266090000
+                266541000
+                266090000
+                266541000
+                133045000
+                      0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+              </alpha>
+              <reference>1100000000</reference>
+              <X>0.64</X>
+            </CashFlow>
+            <CashFlow name="BOP_DA2" driver="BOP_DA1" tax="true" inflation="real" mult_target="false">
+              <alpha> 0.0 
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- Salvage Value --> 
+            <!-- ================ -->
+            <!-- alpha is $/W(el) -->
+            <CashFlow name="BOP_SV" driver="BOP_capacity" tax="false" inflation="real" mult_target="false">
+              <alpha> 0.0 
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0</alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+
+        </Component>
+
+      <Component name="MANI">
+          <Life_time>40</Life_time>   <!-- years -->
+
+            <!-- Capital Cost -->
+            <!-- ============ -->
+            <!-- alpha is the CAPEX for fixed pipe lenght -->
+            <CashFlow name="MANI_CA" driver="The_constant_one" tax="false" inflation="none" mult_target="false">
+              <alpha> -55000000
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0</alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- O&M per capacity --> 
+            <!-- ================ -->
+            <!-- alpha in 1% of the capex -->
+            <CashFlow name="MANI_OMperCap" driver="The_constant_one" tax="true" inflation="none" mult_target="false">
+              <alpha> 0.0 
+                      -550000 -550000 -550000 -550000 -550000 -550000 -550000 -550000 -550000 -550000
+                      -550000 -550000 -550000 -550000 -550000 -550000 -550000 -550000 -550000 -550000
+                      -550000 -550000 -550000 -550000 -550000 -550000 -550000 -550000 -550000 -550000
+                      -550000 -550000 -550000 -550000 -550000 -550000 -550000 -550000 -550000 -550000
+                      </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- Amortisation/Depreciation --> 
+            <!-- ================ -->
+            <!-- alpha is % * CAPEX = MACRS *  55000000   -->
+            <CashFlow name="MANI_DA1" driver="The_constant_one" tax="false" inflation="real" mult_target="false">
+              <alpha> 0.0 
+                  2750000
+                  4950000
+                  4702500
+                  4235000
+                  3811500
+                  3426500
+                  3245000
+                  3245000
+                  3250500
+                  3245000
+                  3250500
+                  3245000
+                  3250500
+                  3245000
+                  3250500
+                  1622500
+                      0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+              </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+            <CashFlow name="MANI_DA2" driver="MANI_DA1" tax="true" inflation="real" mult_target="false">
+              <alpha> 0.0 
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- Salvage Value --> 
+            <!-- ================ -->
+            <!-- alpha is $/W(el) -->
+            <CashFlow name="MANI_SV" driver="The_constant_one" tax="false" inflation="real" mult_target="false">
+              <alpha> 0.0 
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0</alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+        </Component>
+
+      <Component name="IP">
+          <Life_time>40</Life_time>   <!-- years -->
+
+            <!-- Capital Cost -->
+            <!-- ============ -->
+            <!-- alpha in $/W(th)h -->
+            <!-- alpha in $ for the <reference> MW plant -->
+            <CashFlow name="IP_CA" driver="IP_capacity" tax="false" inflation="none" mult_target="false">
+              <alpha> -153000000
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 </alpha>
+              <reference>231000000</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- Non electric Revenue --> 
+            <!-- ================ -->
+            <!-- alpha is 1.0  -->
+            <CashFlow name="IP_RE" driver="IP_TOT_revenueBY" tax="true" inflation="none" mult_target="false">
+              <alpha> 0.0 
+                      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+                      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+                      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+                      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- O&M per capacity --> 
+            <!-- ================ -->
+            <!-- alpha in $ for the <reference> MW plant -->
+            <CashFlow name="IP_OMperCap" driver="IP_capacity" tax="true" inflation="none" mult_target="false">
+              <alpha> 0.0 
+                      -3500000 -3500000 -3500000 -3500000 -3500000 -3500000 -3500000 -3500000 -3500000 -3500000
+                      -3500000 -3500000 -3500000 -3500000 -3500000 -3500000 -3500000 -3500000 -3500000 -3500000
+                      -3500000 -3500000 -3500000 -3500000 -3500000 -3500000 -3500000 -3500000 -3500000 -3500000
+                      -3500000 -3500000 -3500000 -3500000 -3500000 -3500000 -3500000 -3500000 -3500000 -3500000
+                      </alpha>
+              <reference>231000000</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- O&M per production --> 
+            <!-- ================ -->
+            <!-- alpha is $/kgH2  --> 
+            <CashFlow name="IP_OMperProduction" driver="IP_TOT_productionBY" tax="true" inflation="none" mult_target="false">
+              <alpha> 0.0 
+                      -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800
+                      -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800
+                      -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800
+                      -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800 -0.04800</alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- O&M per fuel --> 
+            <!-- ================ -->
+            <!-- This is the cost of electricity bought from the grid  -->
+            <!-- The BOP electricity produced includes the electricity for the IP, therefore it has to be substratced here -->
+<!--
+              <CashFlow name="IP_OMelec" driver="IP_TOT_productionEL" tax="true" inflation="none" mult_target="true">
+              <alpha> 0.0 
+                      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0
+                      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0
+                      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0
+                      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0</alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+-->
+
+            <!-- Amortisation/Depreciation --> 
+            <!-- ================ -->
+            <!--   alpha is % * CAPEX [$ for 231MW ref plant ]  = MACRS * 153000000     --> 
+            <CashFlow name="IP_DA1" driver="IP_capacity" tax="false" inflation="real" mult_target="false">
+              <alpha> 0.0 
+                    7650000
+                    13770000
+                    13081500
+                    11781000
+                    10602900
+                    9531900
+                    9027000
+                    9027000
+                    9042300
+                    9027000
+                    9042300
+                    9027000
+                    9042300
+                    9027000
+                    9042300
+                    4513500
+                      0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0</alpha>
+              <reference>231000000</reference>
+              <X>1.0</X>
+            </CashFlow>
+            <CashFlow name="IP_DA2" driver="IP_DA1" tax="true" inflation="real" mult_target="false">
+              <alpha> 0.0 
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- Salvage Value --> 
+            <!-- ================ -->
+            <!-- alpha is $/W(el) -->
+            <CashFlow name="IP_SV" driver="IP_capacity" tax="false" inflation="real" mult_target="false">
+              <alpha> 0.0 
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+      </Component>
+
+      <Component name="ES">
+          <Life_time>10</Life_time>   <!-- years -->
+
+            <!-- Capital Cost -->
+            <!-- ============ -->
+            <!-- alpha in $/W(th)h -->
+            <!-- alpha in $ for the <reference> MW plant -->
+            <CashFlow name="ES_CA" driver="ES_capacity" tax="false" inflation="none" mult_target="false">
+              <alpha> -0.35
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- O&M per capacity --> 
+            <!-- ================ -->
+            <!-- alpha in  1% of the capex -->
+            <CashFlow name="ES_OMperCap" driver="ES_capacity" tax="true" inflation="none" mult_target="false">
+              <alpha> 0.0 
+                      -0.0035 -0.0035 -0.0035 -0.0035 -0.0035 -0.0035 -0.0035 -0.0035 -0.0035 -0.0035
+                      </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- Amortisation/Depreciation --> 
+            <!-- ================ -->
+            <!--   alpha is % * CAPEX [$ for 100MW ref plant ]  = MACRS * 196000000     --> 
+            <CashFlow name="ES_DA1" driver="ES_capacity" tax="false" inflation="real" mult_target="false">
+              <alpha> 0.0 
+              0.050015
+              0.085715
+              0.061215
+              0.043715
+              0.031255
+              0.03122
+              0.031255
+              0.01561
+              0.0
+              0.0
+                      </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+            <CashFlow name="ES_DA2" driver="ES_DA1" tax="true" inflation="real" mult_target="false">
+              <alpha> 0.0 
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
+                       </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- Salvage Value --> 
+            <!-- ================ -->
+            <!-- alpha is $/W(el) -->
+            <CashFlow name="ES_SV" driver="ES_capacity" tax="false" inflation="real" mult_target="false">
+              <alpha> 0.0 
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+      </Component>
+
+      <Component name="SES">
+          <Life_time>40</Life_time>   <!-- years -->
+
+            <!-- Capital Cost -->
+            <!-- ============ -->
+            <!-- alpha in $ for the <reference> MW plant -->
+            <CashFlow name="SES_CA" driver="SES_capacity" tax="false" inflation="none" mult_target="false">
+              <alpha> -386800000
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 </alpha>
+              <reference>400000000</reference>
+              <X>0.72</X>
+            </CashFlow>
+
+            <!-- Electric Revenue --> 
+            <!-- ================ -->
+            <!-- alpha is 1.0  -->
+<!--
+            <CashFlow name="SES_RE" driver="SES_TOT_productionEL" tax="true" inflation="none" mult_target="true">
+              <alpha> 0.0 
+                      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+                      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+                      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+                      1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+-->
+
+            <!-- O&M per capacity --> 
+            <!-- ================ -->
+            <!-- It is sugested not to scale the fixed O&M cost => its fixed 7.5M$/y -->
+            <CashFlow name="SES_OMperCap" driver="The_constant_one" tax="true" inflation="none" mult_target="false">
+              <alpha> 0.0 
+                      -7500000 -7500000 -7500000 -7500000 -7500000 -7500000 -7500000 -7500000 -7500000 -7500000
+                      -7500000 -7500000 -7500000 -7500000 -7500000 -7500000 -7500000 -7500000 -7500000 -7500000
+                      -7500000 -7500000 -7500000 -7500000 -7500000 -7500000 -7500000 -7500000 -7500000 -7500000
+                      -7500000 -7500000 -7500000 -7500000 -7500000 -7500000 -7500000 -7500000 -7500000 -7500000
+                      </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- O&M per production --> 
+            <!-- ================ -->
+            <!-- alpha is $/Wh  --> 
+            <CashFlow name="SES_OMperProduction" driver="SES_TOT_productionEL" tax="true" inflation="none" mult_target="false">
+              <alpha> 0.0 
+                      -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427
+                      -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427
+                      -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427
+                      -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427 -0.00000427
+                      </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- O&M per fuel -->
+            <!-- ================ -->
+            <!-- alpha is $/Wh * -->
+            <!-- its the heat rate * gas price, according to F Ganda, 10850 BTU/(kW_el*)  * 3.1 $/MMBTU (average all years Henry hub) -->  
+            <!--                                                      10850 * 3.1e-6 = 0.033636 $/kWh  => 0.000033636 $/Wh -->
+            <CashFlow name="SES_OMperFuel" driver="SES_TOT_productionEL" tax="true" inflation="none" mult_target="false">
+              <alpha> 0.0 
+                      -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636
+                      -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636
+                      -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636
+                      -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636 -0.000033636
+                      </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- Amortisation/Depreciation --> 
+            <!-- ================ -->
+            <!--   alpha is % * CAPEX [$ for 400MW ref plant ]  = MACRS * 386800000 -->
+            <CashFlow name="SES_DA1" driver="SES_capacity" tax="false" inflation="real" mult_target="false">
+              <alpha> 0.0 
+              19340000
+              34812000
+              33071400
+              29783600
+              26805240
+              24097640
+              22821200
+              22821200
+              22859880
+              22821200
+              22859880
+              22821200
+              22859880
+              22821200
+              22859880
+              11410600
+                      0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0</alpha>
+              <reference>400000000</reference>
+              <X>0.72</X>
+            </CashFlow>
+            <CashFlow name="SES_DA2" driver="SES_DA1" tax="true" inflation="real" mult_target="false">
+              <alpha> 0.0 
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0
+                      -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+            <!-- Salvage Value --> 
+            <!-- ================ -->
+            <!-- alpha is $/W(el) -->
+            <CashFlow name="SES_SV" driver="SES_capacity" tax="false" inflation="real" mult_target="false">
+              <alpha> 0.0 
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+                      0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 </alpha>
+              <reference>1.0</reference>
+              <X>1.0</X>
+            </CashFlow>
+
+      </Component>
+
+  </Economics>

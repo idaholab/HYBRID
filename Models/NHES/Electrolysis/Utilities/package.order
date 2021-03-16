@@ -1,0 +1,10 @@
+anodeExCurrentDensity
+cathodeExCurrentDensity
+cp_T
+GibbsEnergy
+h_T_NASA_ZeroAt25C
+integralGibbsEnergy
+massToMoleFractions
+moleToMassFractions
+OptionsGasSpecies
+OptionsInit

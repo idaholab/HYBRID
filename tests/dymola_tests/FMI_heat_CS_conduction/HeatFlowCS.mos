@@ -1,0 +1,4 @@
+importFMU(Modelica.Utilities.Files.loadResource("modelica://NHES/Resources/FMIs/MSLHeatAdaptors_Utilities_ConductionCSdymola.fmu"), true, false, false, "");
+translateModel("NHES.Utilities.FMI_Templates.Adaptors.MSLHeatAdaptors.Examples.GenerationOfFMUsCS");
+experimentSetupOutput(events=false);
+simulateModel("NHES.Utilities.FMI_Templates.Adaptors.MSLHeatAdaptors.Examples.GenerationOfFMUsCS",stopTime=1 , numberOfIntervals=0, outputInterval=0.001, resultFile="GenerationOfFMUsCS");

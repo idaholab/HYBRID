@@ -1,0 +1,27 @@
+Add the Dymola Cases here
+
+This test suite includes the tests of 6 modelica models.
+1. Gas Turbine
+2. NuScale Power Module - 4 Loop Test
+3. Westinghouse Power Module
+4. Infinite Grid
+5. Thermal Energy Storage System - Two Tank Sensible Heat
+6. Logical Battery Test
+7. Desalination 1 Pass - Single Stage Reverse Osmosis Component Check
+8. Desalination 2 Pass - Second State Reverse Osmosis Component Check
+9. Desalination 2 Pass Mixing - Two Stage Reverse Osmosis with mixing
+10. Desalination RO Module - Fully Encapsulated Two Stage Reverse Osmosis with mixing
+11. Desalination NHES Basic - Controlled Desalination NHES system
+12. Desalination NHES Complex -  Controlled with signal bus NHES RO system with parallel osmosis units.
+13. NuScale Primary Test - Testing of the Primary loop of the NuScale loop.
+14. NuScale Nominal Test - Addition of Nominal test
+15. HTSE Power Test - HTSE NHES system based on power input control
+16. HTSE Steam Test - HTSE NHES system based on steam and power input control.
+17. Generic Modular PWR - Small modular reactor of a NuScale size system with a pump
+18. BOP Boundaries Test a - Balance of plant system based on pressure difference
+19. BOP Boundaries Test b - Balance of plant system based on forced mass flow rate.
+20. Step Down Turbines - Basic set of Step down turbines
+21. Step Down Turbines Complex - Test of a more complex step down turbine system
+22. TightlyCoupled_FY18_Battery - Complex system of systems from the 2018 case (including Electric Battery Storage)
+23. Tightly Coupled_FY18_TES - Complex system of systems from the 2018 case (including thermal energy storage [two-tank sensible heat])
+24. Supervisory Control Test - Test of the Supervisory control system for input from external files.

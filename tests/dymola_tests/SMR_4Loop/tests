@@ -1,0 +1,13 @@
+[Tests]
+ [./]
+  #REQUIREMENT: R-F-1
+  type = 'HYBRIDTester'
+  input = 'SMR_4Loop.mos'
+  workingDir = '.'
+  output = 'SMR_Coupling_4_loop_control.mat'
+  dymola_mats = 'SMR_Coupling_4_loop_control.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+  #skip = "big gold file"
+ [../]
+[]

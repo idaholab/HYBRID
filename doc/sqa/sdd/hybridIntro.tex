@@ -1,0 +1,25 @@
+\section{Introduction}
+
+The HYBRID repository is a collection of models and workflows used to assess the technical and economic
+feasibility of different integrated energy systems. The repository includes a library of high fidelity
+Modelica models developed in Dymola that includes models of nuclear reactors, gas turbines, hydrogen
+production facilities, energy storage technology, and other integrated energy system technologies. Models
+have been developed since 2014 through a tri lab coordination between Idaho National Laboratory (INL),
+Oak Ridge National Laboratory (ORNL), and Argonne National Laboratory (ANL). With the models users can
+quickly create large scale integrated energy systems to test out the technical interoperability of systems and
+develop novel control strategies to best integrate systems together. In addition to the high fidelity modelica
+models the HYBRID repository provides workflows that allows direct integration with the Risk Analysis Virtual
+Environment (RAVEN) code (\url{https://github.com/idaholab/raven}) developed at INL and it’s plugins the Heuristic Energy Resource Optimization Network
+(HERON -  available at \url{https://github.com/idaholab/heron}) and the Tool for Economic AnaLysis (TEAL -  available at \url{https://github.com/idaholab/teal}) packages.
+
+
+\subsection{User Characteristics}
+
+The users of the HYBRID software are expected to be part of any of the following categories:
+\begin{itemize}
+  \item \textbf{Core developers (HYBRID core team)}: These are the developers of the HYBRID software. They will be responsible for following and enforcing the appropriate software development standards. They will be responsible for designing, implementing, and maintaining the software.
+  
+  \item \textbf{External developers}: A Scientist or Engineer that utilizes the HYBRID framework and wants to extend its capabilities (new modelica models, new workflow generation, etc).This user will typically have a background in modeling and simulation techniques and/or control systems but may only have a limited skill-set when it comes to repository structure, regression testing, and version control.
+  
+  \item \textbf{Analysts}:  These are users that will run the code and perform various analysis on the simulations they perform. These users may interact with developers of the system requesting new features and reporting bugs found and will typically make heavy use of the input file format.
+\end{itemize}

@@ -1,0 +1,229 @@
+<?xml version="1.0" ?>
+<Simulation verbosity="debug">
+  <RunInfo>
+    <WorkingDir>.</WorkingDir>
+    <Sequence>loadHDF5,stats,print</Sequence>
+    <batchSize>1</batchSize> 
+  </RunInfo>
+
+  <Databases>
+    <HDF5 directory="." filename="1/Database_out1.h5" name="Database_out1" readMode="read"/>
+    <HDF5 directory="." filename="2/Database_out2.h5" name="Database_out2" readMode="read"/>
+    <HDF5 directory="." filename="3/Database_out3.h5" name="Database_out3" readMode="read"/>
+    <HDF5 directory="." filename="4/Database_out4.h5" name="Database_out4" readMode="read"/>
+    <HDF5 directory="." filename="5/Database_out5.h5" name="Database_out5" readMode="read"/>
+    <HDF5 directory="." filename="6/Database_out6.h5" name="Database_out6" readMode="read"/>
+    <HDF5 directory="." filename="7/Database_out7.h5" name="Database_out7" readMode="read"/>
+    <HDF5 directory="." filename="8/Database_out8.h5" name="Database_out8" readMode="read"/>
+    <HDF5 directory="." filename="9/Database_out9.h5" name="Database_out9" readMode="read"/>
+    <HDF5 directory="." filename="10/Database_out10.h5" name="Database_out10" readMode="read"/>
+    <HDF5 directory="." filename="11/Database_out11.h5" name="Database_out11" readMode="read"/>
+    <HDF5 directory="." filename="12/Database_out12.h5" name="Database_out12" readMode="read"/>
+    <HDF5 directory="." filename="13/Database_out13.h5" name="Database_out13" readMode="read"/>
+    <HDF5 directory="." filename="14/Database_out14.h5" name="Database_out14" readMode="read"/>
+    <HDF5 directory="." filename="15/Database_out15.h5" name="Database_out15" readMode="read"/>
+    <HDF5 directory="." filename="16/Database_out16.h5" name="Database_out16" readMode="read"/>
+    <HDF5 directory="." filename="17/Database_out17.h5" name="Database_out17" readMode="read"/>
+    <HDF5 directory="." filename="18/Database_out18.h5" name="Database_out18" readMode="read"/>
+    <HDF5 directory="." filename="19/Database_out19.h5" name="Database_out19" readMode="read"/>
+    <HDF5 directory="." filename="20/Database_out20.h5" name="Database_out20" readMode="read"/>
+    <HDF5 directory="." filename="21/Database_out21.h5" name="Database_out21" readMode="read"/>
+    <HDF5 directory="." filename="22/Database_out22.h5" name="Database_out22" readMode="read"/>
+    <HDF5 directory="." filename="23/Database_out23.h5" name="Database_out23" readMode="read"/>
+    <HDF5 directory="." filename="24/Database_out24.h5" name="Database_out24" readMode="read"/>
+    <HDF5 directory="." filename="25/Database_out25.h5" name="Database_out25" readMode="read"/>
+    <HDF5 directory="." filename="26/Database_out26.h5" name="Database_out26" readMode="read"/>
+    <HDF5 directory="." filename="27/Database_out27.h5" name="Database_out27" readMode="read"/>
+    <HDF5 directory="." filename="28/Database_out28.h5" name="Database_out28" readMode="read"/>
+    <HDF5 directory="." filename="29/Database_out29.h5" name="Database_out29" readMode="read"/>
+    <HDF5 directory="." filename="30/Database_out30.h5" name="Database_out30" readMode="read"/>
+    <HDF5 directory="." filename="31/Database_out31.h5" name="Database_out31" readMode="read"/>
+    <HDF5 directory="." filename="32/Database_out32.h5" name="Database_out32" readMode="read"/>
+    <HDF5 directory="." filename="33/Database_out33.h5" name="Database_out33" readMode="read"/>
+    <HDF5 directory="." filename="34/Database_out34.h5" name="Database_out34" readMode="read"/>
+    <HDF5 directory="." filename="35/Database_out35.h5" name="Database_out35" readMode="read"/>
+    <HDF5 directory="." filename="36/Database_out36.h5" name="Database_out36" readMode="read"/>
+    <HDF5 directory="." filename="37/Database_out37.h5" name="Database_out37" readMode="read"/>
+    <HDF5 directory="." filename="38/Database_out38.h5" name="Database_out38" readMode="read"/>
+    <HDF5 directory="." filename="39/Database_out39.h5" name="Database_out39" readMode="read"/>
+    <HDF5 directory="." filename="40/Database_out40.h5" name="Database_out40" readMode="read"/>
+    <HDF5 directory="." filename="41/Database_out41.h5" name="Database_out41" readMode="read"/>
+    <HDF5 directory="." filename="42/Database_out42.h5" name="Database_out42" readMode="read"/>
+    <HDF5 directory="." filename="43/Database_out43.h5" name="Database_out43" readMode="read"/>
+    <HDF5 directory="." filename="44/Database_out44.h5" name="Database_out44" readMode="read"/>
+    <HDF5 directory="." filename="45/Database_out45.h5" name="Database_out45" readMode="read"/>
+    <HDF5 directory="." filename="46/Database_out46.h5" name="Database_out46" readMode="read"/>
+    <HDF5 directory="." filename="47/Database_out47.h5" name="Database_out47" readMode="read"/>
+    <HDF5 directory="." filename="48/Database_out48.h5" name="Database_out48" readMode="read"/>
+    <HDF5 directory="." filename="49/Database_out49.h5" name="Database_out49" readMode="read"/>
+    <HDF5 directory="." filename="50/Database_out50.h5" name="Database_out50" readMode="read"/>
+  </Databases>
+
+  <Files>
+    <Input name="statsfile" type="">stats.xml</Input>
+  </Files>
+
+  <VariableGroups>
+    <Group name="GRO_ARMAPosP_out_Time">Demand_time, Demand_time_net</Group>
+  </VariableGroups>
+
+  <Models>
+    <PostProcessor name="stats" subType="BasicStatistics">
+      <pivotParameter>Time</pivotParameter>
+      <percentile percent="95.0" prefix="per">Demand_time,Demand_time_net</percentile>
+      <percentile percent="5.0" prefix="per">Demand_time,Demand_time_net</percentile>
+      <percentile percent="0.001" prefix="per">Demand_time,Demand_time_net</percentile>
+      <percentile percent="99.999" prefix="per">Demand_time,Demand_time_net</percentile> 
+      <percentile percent="99.0" prefix="per">Demand_time,Demand_time_net</percentile> 
+      <percentile percent="1.0" prefix="per">Demand_time,Demand_time_net</percentile> 
+      <expectedValue prefix="mean">Demand_time,Demand_time_net</expectedValue>
+      <variance prefix="var">Demand_time,Demand_time_net</variance>
+    </PostProcessor>
+  </Models>
+
+  <Steps>
+    <IOStep name="loadHDF5">
+      <Input class="Databases" type="HDF5">Database_out1</Input>
+      <Input class="Databases" type="HDF5">Database_out2</Input>
+      <Input class="Databases" type="HDF5">Database_out3</Input>
+      <Input class="Databases" type="HDF5">Database_out4</Input>
+      <Input class="Databases" type="HDF5">Database_out5</Input>
+      <Input class="Databases" type="HDF5">Database_out6</Input>
+      <Input class="Databases" type="HDF5">Database_out7</Input>
+      <Input class="Databases" type="HDF5">Database_out8</Input>
+      <Input class="Databases" type="HDF5">Database_out9</Input>
+      <Input class="Databases" type="HDF5">Database_out10</Input>
+      <Input class="Databases" type="HDF5">Database_out11</Input>
+      <Input class="Databases" type="HDF5">Database_out12</Input>
+      <Input class="Databases" type="HDF5">Database_out13</Input>
+      <Input class="Databases" type="HDF5">Database_out14</Input>
+      <Input class="Databases" type="HDF5">Database_out15</Input>
+      <Input class="Databases" type="HDF5">Database_out16</Input>
+      <Input class="Databases" type="HDF5">Database_out17</Input>
+      <Input class="Databases" type="HDF5">Database_out18</Input>
+      <Input class="Databases" type="HDF5">Database_out19</Input>
+      <Input class="Databases" type="HDF5">Database_out20</Input>
+      <Input class="Databases" type="HDF5">Database_out21</Input>
+      <Input class="Databases" type="HDF5">Database_out22</Input>
+      <Input class="Databases" type="HDF5">Database_out23</Input>
+      <Input class="Databases" type="HDF5">Database_out24</Input>
+      <Input class="Databases" type="HDF5">Database_out25</Input>
+      <Input class="Databases" type="HDF5">Database_out26</Input>
+      <Input class="Databases" type="HDF5">Database_out27</Input>
+      <Input class="Databases" type="HDF5">Database_out28</Input>
+      <Input class="Databases" type="HDF5">Database_out29</Input>
+      <Input class="Databases" type="HDF5">Database_out30</Input>
+      <Input class="Databases" type="HDF5">Database_out31</Input>
+      <Input class="Databases" type="HDF5">Database_out32</Input>
+      <Input class="Databases" type="HDF5">Database_out33</Input>
+      <Input class="Databases" type="HDF5">Database_out34</Input>
+      <Input class="Databases" type="HDF5">Database_out35</Input>
+      <Input class="Databases" type="HDF5">Database_out36</Input>
+      <Input class="Databases" type="HDF5">Database_out37</Input>
+      <Input class="Databases" type="HDF5">Database_out38</Input>
+      <Input class="Databases" type="HDF5">Database_out39</Input>
+      <Input class="Databases" type="HDF5">Database_out40</Input>
+      <Input class="Databases" type="HDF5">Database_out41</Input>
+      <Input class="Databases" type="HDF5">Database_out42</Input>
+      <Input class="Databases" type="HDF5">Database_out43</Input>
+      <Input class="Databases" type="HDF5">Database_out44</Input>
+      <Input class="Databases" type="HDF5">Database_out45</Input>
+      <Input class="Databases" type="HDF5">Database_out46</Input>
+      <Input class="Databases" type="HDF5">Database_out47</Input>
+      <Input class="Databases" type="HDF5">Database_out48</Input>
+      <Input class="Databases" type="HDF5">Database_out49</Input>
+      <Input class="Databases" type="HDF5">Database_out50</Input>
+
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+      <Output class="DataObjects" type="HistorySet">All_out</Output>
+    </IOStep>
+    <PostProcess name="stats">
+      <Input class="DataObjects" type="HistorySet">All_out</Input>
+      <Model class="Models" type="PostProcessor">stats</Model>
+      <Output class="DataObjects" type="HistorySet">points</Output>
+    </PostProcess>
+    <IOStep name="print">
+      <Input class="DataObjects" type="HistorySet">points</Input>
+      <Output class="OutStreams" type="Print">point_dump</Output>
+    </IOStep>
+  </Steps>
+
+  <OutStreams>
+    <Print name="point_dump">
+      <type>csv</type>
+      <source>points</source>
+    </Print>
+  </OutStreams>
+
+  <DataObjects>
+    <HistorySet name="All_out">
+      <Input>Renewable_capacity, scaling_demand</Input>
+      <Output>GRO_ARMAPosP_out_Time</Output>
+      <options>
+        <pivotParameter>Time</pivotParameter>
+      </options>
+    </HistorySet>
+    <HistorySet name="points">
+      <Input>Time</Input>
+      <Output>mean_Demand_time, mean_Demand_time_net, var_Demand_time, var_Demand_time_net,
+              per_1.0_Demand_time, per_1.0_Demand_time_net, 
+              per_99.0_Demand_time, per_99.0_Demand_time_net, 
+              per_99.999_Demand_time, per_99.999_Demand_time_net, 
+              per_0.001_Demand_time, per_0.001_Demand_time_net, 
+              per_5.0_Demand_time, per_5.0_Demand_time_net, 
+              per_95.0_Demand_time, per_95.0_Demand_time_net, 
+      </Output>
+      <options>
+        <pivotParameter>Time</pivotParameter>
+      </options>
+    </HistorySet>
+  </DataObjects>
+</Simulation>

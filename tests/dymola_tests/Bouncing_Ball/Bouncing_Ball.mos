@@ -1,0 +1,3 @@
+translateModel("NHES.RAVEN_Interface.Examples.Bouncing_Ball");
+experimentSetupOutput(events=false);
+simulateModel("NHES.RAVEN_Interface.Examples.Bouncing_Ball", stopTime=10, numberOfIntervals=100, resultFile="Bouncing_Ball");

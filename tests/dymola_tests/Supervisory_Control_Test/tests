@@ -1,0 +1,12 @@
+[Tests]
+ [./]
+  #REQUIREMENT: R-F-2
+  type = 'HYBRIDTester'
+  input = 'InputSetpointData.mos'
+  workingDir = '.'
+  output = 'InputSetpointData_Test.mat'
+  dymola_mats = 'InputSetpointData_Test.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

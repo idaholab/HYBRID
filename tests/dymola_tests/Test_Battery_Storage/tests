@@ -1,0 +1,11 @@
+[Tests]
+ [./]
+  type = 'HYBRIDTester'
+  input = 'Electric_Battery.mos'
+  workingDir = '.'
+  output = 'Logical_Test.mat'
+  dymola_mats = 'Logical_Test.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

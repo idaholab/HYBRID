@@ -1,0 +1,12 @@
+[Tests]
+ [./]
+  #REQUIREMENT: R-SI-2
+  type = 'HYBRIDTester'
+  input = 'HeatFlowCS.mos'
+  workingDir = '.'
+  output = 'GenerationOfFMUsCS.mat'
+  dymola_mats = 'GenerationOfFMUsCS.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

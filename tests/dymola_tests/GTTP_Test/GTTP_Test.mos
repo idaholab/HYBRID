@@ -1,0 +1,1 @@
+simulateModel("NHES.Systems.SecondaryEnergySupply.NaturalGasFiredTurbine.Examples.GTPP_Test", stopTime=60, numberOfIntervals=600, method="Esdirk45a", resultFile="GTPP_Test");

@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: hybrid_user_manual.aux
+Reallocating 'name_of_file' (item size: 1) to 7 items.
+The style file: ieeetr.bst
+Reallocating 'name_of_file' (item size: 1) to 11 items.
+Database file #1: References.bib
+Warning--empty journal in TRANSFORM
+You've used 17 entries,
+            1876 wiz_defined-function locations,
+            584 strings with 6512 characters,
+and the built_in function-call counts, 3905 in all, are:
+= -- 376
+> -- 170
+< -- 5
++ -- 64
+- -- 47
+* -- 282
+:= -- 584
+add.period$ -- 17
+call.type$ -- 17
+change.case$ -- 17
+chr.to.int$ -- 0
+cite$ -- 18
+duplicate$ -- 191
+empty$ -- 361
+format.name$ -- 47
+if$ -- 933
+int.to.chr$ -- 0
+int.to.str$ -- 17
+missing$ -- 10
+newline$ -- 54
+num.names$ -- 15
+pop$ -- 49
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 120
+stack$ -- 0
+substring$ -- 224
+swap$ -- 72
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 1
+while$ -- 34
+width$ -- 19
+write$ -- 155
+(There was 1 warning)

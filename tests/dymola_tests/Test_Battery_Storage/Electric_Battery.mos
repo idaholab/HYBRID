@@ -1,0 +1,1 @@
+simulateModel("NHES.Systems.EnergyStorage.Battery.Examples.Logical_Test", stopTime=10, numberOfIntervals=100, method="Esdirk45a", resultFile="Logical_Test");

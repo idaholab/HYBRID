@@ -1,0 +1,3 @@
+translateModel("NHES.Systems.SecondaryEnergySupply.HydrogenTurbine.Examples.Hydrogen_Burn_Test");
+experimentSetupOutput(events=false);
+simulateModel("NHES.Systems.SecondaryEnergySupply.HydrogenTurbine.Examples.Hydrogen_Burn_Test", stopTime=60, numberOfIntervals=600, method="Esdirk45a", resultFile="Hydrogen_Burn_Test");

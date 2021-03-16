@@ -1,0 +1,46 @@
+\subsection{Energy Storage}
+Energy Storage is a large component of Integrated Energy Systems. Currently there are two models of Energy Storage in the repository. Electric Battery Storage, characterized largely as Li-ion battery technology, and two-tank sensible heat thermal energy storage that uses Therminol-66 as the working fluid. 
+
+
+\subsubsection{Electric Battery Storage}
+
+Electric Battery Storage, shown in Figure \ref{Top View Logical Battery}, is largely characterized as fast and expensive. Due to the speed with which battery storage systems operate, on the order milliseconds, the battery within the hybrid repository has been modeled as a simple logical battery system. The battery can both charge and discharge based upon the direction of electricity flow through the port. It is assumed to be a “perfect” battery and due to the speed of the system, subcomponents have not been modeled simply because they would operate faster than would be useful for the types of analysis utilized with the system. The battery has user-based inputs that control how fast or slow the system can charge and discharge as well as how much energy can be stored within the battery before it is considered full.   
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.4]{pics/Battery_Storage.png}
+\caption{Top Level Depiction of the Logical Battery in the NHES package}
+\label{Top View Logical Battery}
+\end{figure}
+
+
+\subsubsection{Two-Tank Thermal Energy Storage}
+
+Sensible heat storage involves the heating of a solid or liquid without phase change and can be deconstructed into two operating modes: charging and discharging. A two-tank TES system, shown in Figure \ref{Top View Two Tank Sensible Storage}, is a common configuration for liquid sensible heat systems. In the charging mode cold fluid is pumped from a cold tank through an Intermediate Heat Exchanger (IHX), heated, and stored in a hot tank while the opposite occurs in the discharge mode. Such systems have been successfully demonstrated in the solar energy field as a load management strategy. The configuration of the TES system held within the repository involves an outer loop interfaces with the energy manifold. Bypass steam is directed through an IHX and ultimately discharged to the main condenser of an Integrated system. An inner loop containing a TES fluid consists of two large storage tanks along with several pumps to transport the TES fluid between the tanks, the IHX and a steam generator. Flow Bypass Valves (FBVs) are included in the discharge lines of both the “hot” and “cold” tanks to prevent deadheading the pumps when the Flow Control Valves (FCVs) are closed. Therminol-66 is chosen as the TES fluid as it is readily available, can be pumped at low temperatures, and offers thermal stability over the range (-3°C–343°C) which covers the anticipated operating range of the light water reactor systems (203°C–260°C). Molten salts (e.g. 48 percent  NaNO3 – 52 percent KNO3) were not considered, as the anticipated operating temperatures fall below their 222°C freezing temperature. The TES system is designed to allow the power plant to run continuously at ~100 percent power over a wide range of operating conditions. During periods of excess capacity, bypass steam is directed to the TES unit through the auxiliary bypass valves where it condenses on the shell side of the IHX. TES fluid is pumped from the cold tank to the hot tank through the tube side of the IHX at a rate sufficient to raise the temperature of the TES fluid to some set point. The TES fluid is then stored in the hot tank at constant temperature. Condensate is collected in a hot well below the IHX and drains back to the main condenser or can be used for some other low pressure application such as chilled water production, desalination or feed-water heating. The system is discharged during periods of peak demand, or when process steam is desired, by pumping the TES fluid from the hot tank through a boiler (steam generator) to the cold tank. This process steam can then be reintroduced into the power conversion cycle for electricity production or directed to some other application through the PCV. A nitrogen cover gas dictates the tank pressures during charging and discharging operation. Full details of the model and its use within integrated energy systems can be found in report \cite{2018ThermalStorage}, \cite{FrickThermalStorage}. 
+
+The model itself is coded in a non-conventional manner compared to the rest of the modelica models. It is coded in an input, output sense rather than in a fluid-port, electric-port based modeling system. This is because the model was transferred over from a FORTRAN style code rather than initially coded in Modelica. To modify the two-tank thermal storage system the user will need to look at each individual model within the charging mode and the discharge mode. Base components within the models are fully commented within the code. Like the HTSE the thermal storage unit is finely tuned and thus use outside of its current state will take a bit of work. To help with this the thermal storage unit has been sized to be compatible for varying sizes of offtake from a power unit. One is sized to take 20 percent of nominal steam from a standard 3400MWt Westinghouse plant, and one is designed for 5 percent offtake. Both designed to provide energy back as a peaking unit. The peaking unit is held within the discharge side of the model and is assumed to have its own turbine or is sent back to the low-pressure turbine. Explicit modeling of the coupling back with the low-pressure turbine has not been done. Future updating of the two-tank thermal storage unit to be consistent with other models is planned.
+
+ 
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.3]{pics/Sensible_Heat_System.png}
+\caption{Top Level Depiction of the Two-Tank Sensible Heat Storage Unit in the NHES package}
+\label{Top View Two Tank Sensible Storage}
+\end{figure}
+
+% content
+\subsubsection{Thermocline Packed Bed Thermal Energy Storage}
+A thermocline storage system, shown in Figure \ref{Top View Thermocline}, stores heat via hot and cold fluid separated by a thin thermocline region that arises due to density differential between the fluid. Assuming low mixing via internal flow characteristics and structural design, this thermocline region can be kept relatively small in comparison with the size of the tank. Additionally, large buoyancy changes and low internal thermal conductivity are also extremely useful in maintaining small relative thermocline thickness.
+
+To increase the cost-effective nature of these designs, it is common to fill the tank with a low-cost filler material, such as concrete or quartzite. These filler materials are cheap, have high density, and high thermal conductivity. By using such material, a reduction in the amount of high cost thermal fluid can be achieved, thereby increasing the economic competitiveness of such designs.
+
+The thermocline system was modeled from a modified set of Schumann equations that were originally introduced in 1927 \cite{Schumann}. The equation set governs energy conservation of fluid flow through porous media. His equation set has been widely adopted in the analysis of thermocline storage tanks. The modified equations adopted a new version of the convective heat-transfer coefficient to incorporate low and no-flow conditions from Gunn in 1978 \cite{specialHeattransfer}. Additionally, a conductive heat-transfer term was added for the heat conduction through the walls of the tank. Self-degradation of the thermocline in the axial direction is neglected due to low relative values when during standard operation, this is a known limit of the model during times of no flow.
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.3]{pics/Thermocline_Test.png}
+\caption{Top Level Depiction of the Single Tank Packed Bed Heat Storage Unit in the NHES package}
+\label{Top View Thermocline}
+\end{figure}
+
+%\input{Installation/clone.tex}
