@@ -34,8 +34,8 @@ model CascadeCtrlVolume_yH2 "Joins two gas flows"
       Medium = MixtureGas, m_flow(min=0,start=wH2_start)) annotation (Placement(
         transformation(extent={{-90,40},{-70,60}}), iconTransformation(extent={{-90,40},
             {-70,60}})));
-  Modelica.Fluid.Interfaces.FluidPort_a steam_port_2(redeclare package Medium =
-        Steam, m_flow(min=0,start=wSteam_start)) annotation (Placement(transformation(extent={{-90,
+  Modelica.Fluid.Interfaces.FluidPort_a steam_port_2(redeclare package Medium
+      = Steam, m_flow(min=0,start=wSteam_start)) annotation (Placement(transformation(extent={{-90,
             -60},{-70,-40}}), iconTransformation(extent={{-90,-60},{-70,-40}})));
   Modelica.Fluid.Interfaces.FluidPort_b mixtureGas_port_3( redeclare package
       Medium = MixtureGas, m_flow(max=0)) annotation (Placement(

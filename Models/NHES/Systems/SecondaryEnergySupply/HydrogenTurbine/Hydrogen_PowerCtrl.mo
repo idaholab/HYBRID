@@ -139,8 +139,8 @@ model Hydrogen_PowerCtrl "Hydrogen Turbine Power Plant (GTPP)"
   Modelica.Fluid.Sensors.MassFractions X_CO2(redeclare package Medium =
         Media.FlueGas,             substanceName="Carbondioxide")
     annotation (Placement(transformation(extent={{-28,60},{-12,76}})));
-  GasTurbine.Sensors.MassFlowRateScalable wHydrogenGas(redeclare package Medium =
-        Media.Hydrogen, capacityScaler=capacityScaler) annotation (Placement(
+  GasTurbine.Sensors.MassFlowRateScalable wHydrogenGas(redeclare package Medium
+      = Media.Hydrogen, capacityScaler=capacityScaler) annotation (Placement(
         transformation(
         extent={{8,-8},{-8,8}},
         rotation=90,

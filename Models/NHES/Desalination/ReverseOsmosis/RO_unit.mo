@@ -83,8 +83,8 @@ model RO_unit
       Medium = Medium)
     annotation (Placement(transformation(extent={{100,30},{120,50}}),
         iconTransformation(extent={{100,30},{120,50}})));
-  Modelica.Fluid.Interfaces.FluidPort_b permeateFlange(redeclare package Medium =
-        Medium)
+  Modelica.Fluid.Interfaces.FluidPort_b permeateFlange(redeclare package Medium
+      = Medium)
     annotation (Placement(transformation(extent={{-10,-120},{10,-100}}),
         iconTransformation(extent={{-10,-120},{10,-100}})));
 equation

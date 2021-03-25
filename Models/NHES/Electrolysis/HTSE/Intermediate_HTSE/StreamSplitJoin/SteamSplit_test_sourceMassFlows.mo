@@ -136,8 +136,8 @@ model SteamSplit_test_sourceMassFlows
   Modelica.Fluid.Sensors.Temperature tempSteamCatthodeIn(redeclare package
       Medium =         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{30,82},{50,102}})));
-  Modelica.Fluid.Sensors.Temperature tempSteamCatOut(redeclare package Medium =
-               Modelica.Media.Water.StandardWater)
+  Modelica.Fluid.Sensors.Temperature tempSteamCatOut(redeclare package Medium
+      =        Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{30,28},{50,48}})));
   Modelica.Fluid.Sensors.Pressure valve_pCathodeIn(redeclare package Medium =
                Modelica.Media.Water.StandardWater)
@@ -165,11 +165,11 @@ model SteamSplit_test_sourceMassFlows
         extent={{10,-10},{-10,10}},
         rotation=0,
         origin={-6,-110})));
-  Modelica.Fluid.Sensors.Temperature tempSteamAnodeIn(redeclare package Medium =
-               Modelica.Media.Water.StandardWater)
+  Modelica.Fluid.Sensors.Temperature tempSteamAnodeIn(redeclare package Medium
+      =        Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{28,-88},{48,-68}})));
-  Modelica.Fluid.Sensors.Temperature tempSteamAnodeOut(redeclare package Medium =
-               Modelica.Media.Water.StandardWater)
+  Modelica.Fluid.Sensors.Temperature tempSteamAnodeOut(redeclare package Medium
+      =        Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{30,-44},{50,-24}})));
 equation
   connect(feedCathodeGas_signal.y, feedCathodeGas.m_flow_in) annotation (

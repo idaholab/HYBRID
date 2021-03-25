@@ -217,8 +217,7 @@ Real Tave=(Tcore_inlet.T+Tcore_exit.T)/2.0;
         rotation=90,
         origin={-76,-90})));
 
-  Modelica.Fluid.Sensors.MassFlowRate massFlowRate1(redeclare package
-      Medium =
+  Modelica.Fluid.Sensors.MassFlowRate massFlowRate1(redeclare package Medium =
         Modelica.Media.Water.StandardWater,
                                          allowFlowReversal=false)
     annotation (Placement(transformation(extent={{66,-82},{48,-64}})));
@@ -232,7 +231,7 @@ Real Tave=(Tcore_inlet.T+Tcore_exit.T)/2.0;
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{70,68},{90,88}})));
   Modelica.Fluid.Sensors.SpecificEnthalpy Steam_exit_enthalpy(redeclare package
-              Medium = Modelica.Media.Water.StandardWater)
+      Medium =         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{18,56},{36,74}})));
   Modelica.Fluid.Sensors.SpecificEnthalpy Feed_Enthalpy(redeclare package
       Medium = Modelica.Media.Water.StandardWater)

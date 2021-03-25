@@ -2,8 +2,8 @@ within NHES.Electrolysis.Fittings.Examples;
 model H2RecycleVolume_teeJunction_test
   extends Modelica.Icons.Example;
 
-  BaseClasses.MediumConverter mediumConverter(redeclare package Medium_port_b =
-        Electrolysis.Media.Electrolysis.CathodeGas, redeclare package
+  BaseClasses.MediumConverter mediumConverter(redeclare package Medium_port_b
+      = Electrolysis.Media.Electrolysis.CathodeGas, redeclare package
       Medium_port_a = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-36,-38},{-16,-18}})));
   Modelica.Fluid.Sources.Boundary_pT feedWaterSink(

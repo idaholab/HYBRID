@@ -42,7 +42,7 @@ import Modelica.Math;
 
 
 annotation (
-    uses(                      ThermoPower(version="3.1"),
+    uses(
     Modelica(version="4.0.0"),
     TRANSFORM(version="0.5")),
     version="2",
