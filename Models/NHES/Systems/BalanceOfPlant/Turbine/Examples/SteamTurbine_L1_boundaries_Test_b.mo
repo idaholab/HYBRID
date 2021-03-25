@@ -2,7 +2,7 @@ within NHES.Systems.BalanceOfPlant.Turbine.Examples;
 model SteamTurbine_L1_boundaries_Test_b
   import NHES;
   extends Modelica.Icons.Example;
-  NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries         BOP(
+  NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries BOP(
     nPorts_a3=1,
     port_a3_nominal_m_flow={10},
     port_a_nominal(
@@ -11,8 +11,9 @@ model SteamTurbine_L1_boundaries_Test_b
       h=BOP.Medium.specificEnthalpy_pT(BOP.port_a_nominal.p, 591)),
     port_b_nominal(p=1000000, h=BOP.Medium.specificEnthalpy_pT(BOP.port_b_nominal.p,
           318.95)),
-    redeclare NHES.Systems.BalanceOfPlant.Turbine.CS_PressureAndPowerControl CS(
-        p_nominal=BOP.port_a_nominal.p, W_totalSetpoint=sine.y))
+    redeclare
+      NHES.Systems.BalanceOfPlant.Turbine.ContolSystems.CS_PressureAndPowerControl
+      CS(p_nominal=BOP.port_a_nominal.p, W_totalSetpoint=sine.y))
     annotation (Placement(transformation(extent={{-30,-30},{30,30}})));
   TRANSFORM.Electrical.Sources.FrequencySource
                                      sinkElec(f=60)

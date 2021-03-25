@@ -331,7 +331,7 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.T_exit_SG, temperature3.T) annotation (Line(
-      points={{-30,100},{110,100},{110,45},{47.6,45}},
+      points={{-30,100},{100,100},{100,45},{47.6,45}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
