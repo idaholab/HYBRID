@@ -44,5 +44,18 @@ Note, the input signals must be consistent to each other
           extent={{-20,100},{20,-100}},
           lineColor={191,0,0},
           radius=10,
-          lineThickness=0.5)}));
+          lineThickness=0.5),
+        Text(
+          extent={{-18,-38},{18,-58}},
+          textString="%Name_fder",
+          textColor={0,0,0}),
+        Text(
+          extent={{-18,-10},{18,-30}},
+          textColor={0,0,0},
+          textString="%Name_fder2"),
+        Text(
+          extent={{-18,32},{18,12}},
+          visible=use_pder,
+          textString="%Name_pder2",
+          textColor={0,0,0})}));
 end GeneralTemperatureToHeatFlowAdaptor;
