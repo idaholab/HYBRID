@@ -41,8 +41,7 @@ model FlowReversal
     redeclare package Medium = Medium,
     a=1e5,
     b=1e5) annotation (Placement(transformation(extent={{-20,-10},{0,10}})));
-  Modelica.Fluid.Sensors.Temperature temperature(redeclare package
-      Medium =
+  Modelica.Fluid.Sensors.Temperature temperature(redeclare package Medium =
         Medium)
     annotation (Placement(transformation(extent={{-22,4},{-2,24}})));
   Modelica.Blocks.Sources.Constant T_source(k=293.15)

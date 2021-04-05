@@ -74,7 +74,6 @@ constant Modelica.Units.SI.MolarMass[:] MM_vec=cat(
     //  constant Real M_NaCl=0.058443 "molar mass in [kg/mol]";
   end dynamicViscosity_pTXd;
 
-
   redeclare replaceable partial function density_pTX
     "Return density from p, T, and X or Xi"
     extends Modelica.Icons.Function;

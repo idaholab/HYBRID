@@ -1,7 +1,7 @@
 within NHES.Desalination.Media.BrineProp;
 package BrineDriesner "NaCl solution using Driesner density and enthalpy function"
   extends BrineProp.PartialBrineMultiSaltOnePhase_TPv3_1(redeclare package
-      Salt_data = BrineProp.SaltDataDuan, final saltNames = {"sodium chloride"}, final MM_salt = {Salt_data.M_NaCl}, final nM_salt = {Salt_data.nM_NaCl});
+    Salt_data =   BrineProp.SaltDataDuan, final saltNames = {"sodium chloride"}, final MM_salt = {Salt_data.M_NaCl}, final nM_salt = {Salt_data.nM_NaCl});
 
   //redeclare record extends ThermodynamicState "Thermodynamic state variables"
   //end ThermodynamicState;
@@ -169,5 +169,4 @@ protected
     u := specificEnthalpy_pTX(state.p, state.T, state.X) - state.p/density_pTX(state.p, state.T, state.X);
     annotation(Inline=true,smoothOrder=2);
   end specificInternalEnergy;
-
 end BrineDriesner;
