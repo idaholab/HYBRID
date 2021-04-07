@@ -1,0 +1,32 @@
+within NHES.Systems.BalanceOfPlant.StagebyStageTurbine.BaseClasses.CylindricalSupport;
+model TurbineStageGeo
+  input Modelica.Units.SI.Length rs_inner[nV]=zeros(nV) "Inner radius"
+    annotation (Dialog(group="Inputs"));
+  input Modelica.Units.SI.Length rs_outer[nV]=ones(nV) "Outer radius"
+    annotation (Dialog(group="Inputs"));
+  input Modelica.Units.SI.Area A_flow[nV]=ones(nV) "Flow area"
+    annotation (Dialog(group="Inputs"));
+  input Modelica.Units.SI.Area A_surface[nV]=ones(nV) "Material area"
+    annotation (Dialog(group="Inputs"));
+  input Modelica.Units.SI.Angle alpha[nV]=0.5*ones(nV)
+    "Ideal exit rotational flow angle" annotation (Dialog(group="Inputs"));
+  Modelica.Units.SI.Angle kappa[nV] "Radial angle";
+
+  extends
+    TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.GenericPipe(
+    final figure=2,
+    final nSurfaces=1,
+    final crossAreas=A_flow,
+    final perimeters=A_surface./dlengths,
+    surfaceAreas=A_surface);
+equation
+  if
+    (nV>2) then
+  for i in 1:nV-1 loop
+    kappa[i+1] = atan((rs_outer[i+1]-rs_outer[i])/dlengths[i]);
+  end for;
+  else
+  end if;
+  annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+        coordinateSystem(preserveAspectRatio=false)));
+end TurbineStageGeo;

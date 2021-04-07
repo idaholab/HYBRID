@@ -1,0 +1,430 @@
+within NHES.Systems.BalanceOfPlant.Complete_Secondary.Examples;
+model NuScale_Test_Mikk_IES_Controls_TBVShim
+  extends Modelica.Icons.Example;
+   parameter Integer TES_nPipes=950;
+  parameter Modelica.Units.SI.Length TES_Length=175;
+  parameter Modelica.Units.SI.Length TES_Thick=0.6;
+  parameter Modelica.Units.SI.Length TES_Width=0.8;
+   parameter Real  LP_NTU=1.5;
+   parameter Real IP_NTU=20;
+   parameter Real HP_NTU=4;
+  parameter Modelica.Units.SI.Pressure P_Rise_DFV=860000;
+  parameter Modelica.Units.SI.Time Ramp_Stor=600;
+  parameter Modelica.Units.SI.Time Ramp_Dis=600;
+  parameter Modelica.Units.SI.Power Q_nom=52000000;
+  Modelica.Units.SI.Energy dEdCycle;
+  Modelica.Units.SI.Energy TES_E_Dep;
+  Modelica.Units.SI.Power Elec_Power;
+  Modelica.Units.SI.Temperature Feed_Temp;
+  Modelica.Units.SI.Temperature Conc_Hot_Temp;
+  Modelica.Units.SI.Temperature Conc_Mid_Temp;
+  Modelica.Units.SI.Temperature Conc_Cold_Temp;
+  Modelica.Units.SI.Temperature T_Ave_Conc;
+  Modelica.Units.SI.MassFlowRate m_dis;
+  Modelica.Units.SI.Pressure p_dis;
+   parameter Integer nPrices = 24*8;
+   parameter Real Interval=3600;
+   parameter Real[nPrices] PriceList = {17.02,16.04,15.3,14.7,13.68,14.41,15.69,15.27,14.48,17.75,19.04,23.11,
+27.52,42.28,48.49,70.03,80.62,53.17,40.12,36.83,27.73,22.93,21.63,20.74,2.05E+01,2.01E+01,1.98E+01,1.96E+01,2.05E+01,2.15E+01,2.69E+01,
+2.86E+01,2.59E+01,2.77E+01,3.12E+01,3.50E+01,4.98E+01,6.31E+01,7.17E+01,9.55E+01,9.11E+01,4.51E+01,4.39E+01,3.39E+01,2.63E+01,2.38E+01,2.18E+01,2.08E+01,
+1.84E+01,1.73E+01,1.64E+01,1.62E+01,1.66E+01,1.82E+01,2.41E+01,2.46E+01,2.39E+01,2.41E+01,2.05E+01,2.39E+01,2.25E+01,2.48E+01,2.66E+01,3.78E+01,3.94E+01,3.64E+01,3.16E+01,3.06E+01,2.37E+01,
+2.32E+01,2.20E+01,1.89E+01,1.94E+01,1.85E+01,1.81E+01,1.76E+01,1.81E+01,2.10E+01,2.43E+01,2.46E+01,2.37E+01,2.46E+01,2.53E+01,2.66E+01,2.72E+01,3.47E+01,3.37E+01,4.61E+01,4.80E+01,3.82E+01,
+3.21E+01,3.09E+01,2.61E+01,2.37E+01,2.22E+01,2.00E+01,1.96E+01,1.83E+01,1.71E+01,1.70E+01,1.75E+01,1.94E+01,2.29E+01,2.41E+01,2.59E+01,2.63E+01,2.77E+01,2.97E+01,3.52E+01,
+4.56E+01,5.15E+01,5.69E+01,6.13E+01,5.54E+01,5.09E+01,4.13E+01,3.03E+01,2.70E+01,2.42E+01,2.31E+01,2.14E+01,2.04E+01,1.88E+01,1.87E+01,1.99E+01,2.18E+01,3.24E+01,
+2.44E+01,2.19E+01,2.38E+01,2.33E+01,2.61E+01,2.74E+01,2.86E+01,2.87E+01,3.03E+01,3.41E+01,3.40E+01,3.80E+01,4.61E+01,3.19E+01,2.83E+01,2.61E+01,2.43E+01,2.87E+01,
+2.41E+01,2.14E+01,2.07E+01,2.08E+01,2.39E+01,2.95E+01,2.85E+01,3.15E+01,3.10E+01,3.12E+01,2.93E+01,2.90E+01,2.46E+01,2.37E+01,2.35E+01,2.52E+01,2.53E+01,
+2.60E+01,2.56E+01,2.42E+01,2.45E+01,2.37E+01,2.23E+01,2.03E+01,1.71E+01,1.60E+01,1.59E+01,1.59E+01,1.63E+01,1.67E+01,1.57E+01,1.76E+01,
+1.83E+01,1.94E+01,2.05E+01,2.17E+01,2.58E+01,2.85E+01,3.37E+01,3.24E+01,2.71E+01,2.71E+01,2.76E+01,2.29E+01,2.17E+01,1.98E+01,1.86E+01};
+  Modelica.Units.SI.Time Int_Track(start=0);
+   Integer value(start = 1);
+ //  Real Price(start = 17.02);
+   Real MoneyMade(unit = "1");
+   Real MoneyNominal;
+   Real Price;
+  Modelica.Units.SI.Temperature T_Feed_Ref=273.15 + 140;
+
+  PrimaryHeatSystem.SMR_Generic.Components.SMR_Taveprogram_No_Pump             Reactor(
+    redeclare PrimaryHeatSystem.SMR_Generic.CS_SMR_Tave_Enthalpy CS,
+    port_a_nominal(
+      m_flow=70,
+      p=3447380,
+      T(displayUnit="degC") = 421.15),
+    port_b_nominal(
+      p=3447380,
+      T(displayUnit="degC") = 579.25,
+      h=2997670))
+    annotation (Placement(transformation(extent={{-208,-102},{-38,74}})));
+  Modal_Controlled_Generic_PWR SecSide(
+    TES_nPipes=TES_nPipes,
+    TES_Length=TES_Length,
+    TES_Thick=TES_Thick,
+    TES_Width=TES_Width,
+    LP_NTU=LP_NTU,
+    IP_NTU=IP_NTU,
+    HP_NTU=HP_NTU,
+    P_Rise_DFV=P_Rise_DFV,
+    Ramp_Stor=Ramp_Stor,
+    Ramp_Dis=Ramp_Dis,
+    Q_nom=Q_nom)
+    annotation (Placement(transformation(extent={{76,-58},{180,32}})));
+  Modelica.Blocks.Math.Sum Charge_Sum(nin=7) annotation (Placement(
+        transformation(
+        extent={{6,-6},{-6,6}},
+        rotation=90,
+        origin={76,126})));
+  Modelica.Blocks.Sources.Trapezoid Dch1(
+    amplitude=12e6,
+    rising=Ramp_Dis,
+    width=8*3600 - Ramp_Dis,
+    falling=Ramp_Dis,
+    period=864000,
+    offset=0,
+    startTime=46800 - Ramp_Dis/2) annotation (Placement(transformation(
+        extent={{-3,-3},{3,3}},
+        rotation=0,
+        origin={99,129})));
+  Modelica.Blocks.Sources.Trapezoid Ch1(
+    amplitude=-0.45*Q_nom,
+    rising=Ramp_Stor,
+    width=3600*8 - Ramp_Stor,
+    falling=Ramp_Stor,
+    period=864000,
+    offset=0,
+    startTime=3600 - Ramp_Stor/2) annotation (Placement(transformation(
+        extent={{-3,-3},{3,3}},
+        rotation=0,
+        origin={57,163})));
+  Modelica.Blocks.Math.Sum Anticipatory_Signals(nin=7) annotation (Placement(
+        transformation(
+        extent={{6,-6},{-6,6}},
+        rotation=90,
+        origin={150,82})));
+  Modelica.Blocks.Sources.Constant NomPower(k=Q_nom)
+    annotation (Placement(transformation(extent={{40,84},{50,94}})));
+  Modelica.Blocks.Math.Sum Discharge_Sum(nin=7) annotation (Placement(
+        transformation(
+        extent={{6,-6},{-6,6}},
+        rotation=90,
+        origin={114,114})));
+  Modelica.Blocks.Math.Add3 Net_Demand
+    annotation (Placement(transformation(extent={{80,74},{100,94}})));
+  Modelica.Blocks.Sources.Trapezoid Ch2(
+    amplitude=-0.45*Q_nom,
+    rising=Ramp_Stor,
+    width=3600*3 - Ramp_Stor,
+    falling=Ramp_Stor,
+    period=864000,
+    offset=0,
+    startTime=90000 - Ramp_Stor/2) annotation (Placement(transformation(
+        extent={{-3,-3},{3,3}},
+        rotation=0,
+        origin={57,153})));
+  Modelica.Blocks.Sources.Trapezoid Ch3(
+    amplitude=-0.45*Q_nom,
+    rising=Ramp_Stor,
+    width=3600*1 - Ramp_Stor,
+    falling=Ramp_Stor,
+    period=864000,
+    offset=0,
+    startTime=255600 - Ramp_Stor/2) annotation (Placement(transformation(
+        extent={{-3,-3},{3,3}},
+        rotation=0,
+        origin={57,143})));
+  Modelica.Blocks.Sources.Trapezoid Ch4(
+    amplitude=-0.45*Q_nom,
+    rising=Ramp_Stor,
+    width=3600 - Ramp_Stor,
+    falling=Ramp_Stor,
+    period=864000,
+    offset=0,
+    startTime=270000 - Ramp_Stor/2) annotation (Placement(transformation(
+        extent={{3,-3},{-3,3}},
+        rotation=90,
+        origin={73,173})));
+  Modelica.Blocks.Sources.Trapezoid Ch5(
+    amplitude=-0.45*Q_nom,
+    rising=Ramp_Stor,
+    width=6*3600 - Ramp_Stor,
+    falling=Ramp_Stor,
+    period=864000,
+    offset=0,
+    startTime=342000 - Ramp_Stor/2) annotation (Placement(transformation(
+        extent={{3,-3},{-3,3}},
+        rotation=0,
+        origin={87,163})));
+  Modelica.Blocks.Sources.Trapezoid Ch6(
+    amplitude=-0.45*Q_nom,
+    rising=Ramp_Stor,
+    width=2*3600 - Ramp_Stor,
+    falling=Ramp_Stor,
+    period=864000,
+    offset=0,
+    startTime=439200 - Ramp_Stor/2) annotation (Placement(transformation(
+        extent={{3,-3},{-3,3}},
+        rotation=0,
+        origin={87,153})));
+  Modelica.Blocks.Sources.Trapezoid Ch7(
+    amplitude=-0.45*Q_nom,
+    rising=Ramp_Stor,
+    width=3*3600 - Ramp_Stor,
+    falling=Ramp_Stor,
+    period=864000,
+    offset=0,
+    startTime=612000 - Ramp_Stor/2) annotation (Placement(transformation(
+        extent={{3,-3},{-3,3}},
+        rotation=0,
+        origin={87,143})));
+  Modelica.Blocks.Sources.Trapezoid DCh2(
+    amplitude=12e6,
+    rising=Ramp_Dis,
+    width=5*3600 - Ramp_Dis,
+    falling=Ramp_Dis,
+    period=864000,
+    offset=0,
+    startTime=129600 - Ramp_Dis/2) annotation (Placement(transformation(
+        extent={{-3,-3},{3,3}},
+        rotation=0,
+        origin={99,139})));
+  Modelica.Blocks.Sources.Trapezoid DCh3(
+    amplitude=12e6,
+    rising=Ramp_Dis,
+    width=2*3600 - Ramp_Dis,
+    falling=Ramp_Dis,
+    period=864000,
+    offset=0,
+    startTime=226800 - Ramp_Dis/2) annotation (Placement(transformation(
+        extent={{-3,-3},{3,3}},
+        rotation=0,
+        origin={99,149})));
+  Modelica.Blocks.Sources.Trapezoid DCh4(
+    amplitude=12e6,
+    rising=Ramp_Dis,
+    width=2*3600 - Ramp_Dis,
+    falling=Ramp_Dis,
+    period=864000,
+    offset=0,
+    startTime=313200 - Ramp_Dis/2) annotation (Placement(transformation(
+        extent={{-3,-3},{3,3}},
+        rotation=270,
+        origin={103,157})));
+  Modelica.Blocks.Sources.Trapezoid DCh5(
+    amplitude=12e6,
+    rising=Ramp_Dis,
+    width=6*3600 - Ramp_Dis,
+    falling=Ramp_Dis,
+    period=864000,
+    offset=0,
+    startTime=396000 - Ramp_Dis/2) annotation (Placement(transformation(
+        extent={{-3,-3},{3,3}},
+        rotation=270,
+        origin={113,157})));
+  Modelica.Blocks.Sources.Trapezoid DCh6(
+    amplitude=12e6,
+    rising=Ramp_Dis,
+    width=1*3600 - Ramp_Dis,
+    falling=Ramp_Dis,
+    period=864000,
+    offset=0,
+    startTime=489600 - Ramp_Dis/2) annotation (Placement(transformation(
+        extent={{-3,-3},{3,3}},
+        rotation=270,
+        origin={123,157})));
+  Modelica.Blocks.Sources.Trapezoid DCh7(
+    amplitude=12e6,
+    rising=Ramp_Dis,
+    width=2*3600 - Ramp_Dis,
+    falling=Ramp_Dis,
+    period=864000,
+    offset=0,
+    startTime=655200 - Ramp_Dis/2) annotation (Placement(transformation(
+        extent={{3,-3},{-3,3}},
+        rotation=0,
+        origin={129,149})));
+  Modelica.Blocks.Sources.Trapezoid Ant7(
+    amplitude=1,
+    rising=Ramp_Dis,
+    width=1800,
+    falling=Ramp_Dis,
+    period=864000,
+    offset=0,
+    startTime=655200 - Ramp_Dis) annotation (Placement(transformation(
+        extent={{3,-3},{-3,3}},
+        rotation=0,
+        origin={169,113})));
+  Modelica.Blocks.Sources.Trapezoid Ant6(
+    amplitude=1,
+    rising=Ramp_Dis,
+    width=1800,
+    falling=Ramp_Dis,
+    period=864000,
+    offset=0,
+    startTime=489600 - Ramp_Dis) annotation (Placement(transformation(
+        extent={{-3,-3},{3,3}},
+        rotation=270,
+        origin={161,119})));
+  Modelica.Blocks.Sources.Trapezoid Ant5(
+    amplitude=1,
+    rising=Ramp_Dis,
+    width=1800,
+    falling=Ramp_Dis,
+    period=864000,
+    offset=0,
+    startTime=396000 - Ramp_Dis) annotation (Placement(transformation(
+        extent={{-3,-3},{3,3}},
+        rotation=270,
+        origin={151,119})));
+  Modelica.Blocks.Sources.Trapezoid Ant4(
+    amplitude=1,
+    rising=Ramp_Dis,
+    width=1800,
+    falling=Ramp_Dis,
+    period=864000,
+    offset=0,
+    startTime=313200 - Ramp_Dis) annotation (Placement(transformation(
+        extent={{-3,-3},{3,3}},
+        rotation=270,
+        origin={141,119})));
+  Modelica.Blocks.Sources.Trapezoid Ant3(
+    amplitude=1,
+    rising=Ramp_Dis,
+    width=1800,
+    falling=Ramp_Dis,
+    period=864000,
+    offset=0,
+    startTime=226800 - Ramp_Dis) annotation (Placement(transformation(
+        extent={{-3,-3},{3,3}},
+        rotation=0,
+        origin={135,113})));
+  Modelica.Blocks.Sources.Trapezoid Ant2(
+    amplitude=1,
+    rising=Ramp_Dis,
+    width=1800,
+    falling=Ramp_Dis,
+    period=864000,
+    offset=0,
+    startTime=129600 - Ramp_Dis) annotation (Placement(transformation(
+        extent={{-3,-3},{3,3}},
+        rotation=0,
+        origin={135,103})));
+  Modelica.Blocks.Sources.Trapezoid Ant1(
+    amplitude=1,
+    rising=Ramp_Dis,
+    width=1800,
+    falling=Ramp_Dis,
+    period=864000,
+    offset=0,
+    startTime=46800 - Ramp_Dis) annotation (Placement(transformation(
+        extent={{-3,-3},{3,3}},
+        rotation=0,
+        origin={135,93})));
+initial equation
+  MoneyMade = 0;
+  MoneyNominal = 0;
+equation
+  SecSide.dEdCycle = dEdCycle;
+  TES_E_Dep =SecSide.TES.E_store_daily;
+  Elec_Power =SecSide.generator.power;
+  Feed_Temp =SecSide.HP.Tex_t;
+  T_Ave_Conc = SecSide.TES.T_Ave_Conc;
+  Conc_Hot_Temp=SecSide.TES.Con_State[1, 1].T;
+  Conc_Mid_Temp=SecSide.TES.Con_State[5, 1].T;
+  Conc_Cold_Temp=SecSide.TES.Con_State[9, 1].T;
+  m_dis =SecSide.DFV.m_flow;
+  p_dis =SecSide.DFV.port_b.p;
+  der(Int_Track) = 1/Interval;
+  when
+      (Int_Track>=1.0) then
+    value = pre(value) + 1;
+    reinit(Int_Track,0);
+ //   reinit(Price,PriceList[value]);
+  end when;
+  //Prices are in cents/kWh, so: we divide Price/100 = Dollars/kWh, and we divide power by 1000 to make it kW, and divide by 3600 to cancel
+  //out and make it per hour.
+  der(MoneyMade) = (1/100)*(1/3600)*PriceList[value]*Elec_Power/1000;
+  Price = PriceList[value];
+  der(MoneyNominal) = (1/100)*(1/3600)*PriceList[value]*Q_nom/1000;
+  SecSide.Q_Rx_Total = Reactor.Q_total.y;
+
+  connect(SecSide.port_b, Reactor.port_a) annotation (Line(points={{76,-35.5},{
+          48,-35.5},{48,-26},{-34.9091,-26},{-34.9091,-24.8308}},
+                                                             color={0,127,255}));
+  connect(SecSide.port_a, Reactor.port_b) annotation (Line(points={{76,9.5},{44,
+          9.5},{44,19.8462},{-34.9091,19.8462}}, color={0,127,255}));
+  connect(NomPower.y,Net_Demand. u3) annotation (Line(points={{50.5,89},{64.25,89},
+          {64.25,76},{78,76}},     color={0,0,127}));
+  connect(Charge_Sum.y,Net_Demand. u2) annotation (Line(points={{76,119.4},{74,119.4},
+          {74,102},{68,102},{68,84},{78,84}},     color={0,0,127}));
+  connect(Discharge_Sum.y,Net_Demand. u1) annotation (Line(points={{114,107.4},{
+          114,98},{74,98},{74,92},{78,92}}, color={0,0,127}));
+  connect(Anticipatory_Signals.y, SecSide.DFV2_Antic) annotation (Line(points={{
+          150,75.4},{152,75.4},{152,50},{135.28,50},{135.28,22.1}}, color={0,0,127}));
+  connect(Net_Demand.y, SecSide.Demand) annotation (Line(points={{101,84},{108,84},
+          {108,62},{105.12,62},{105.12,22.1}}, color={0,0,127}));
+  connect(Ch1.y, Charge_Sum.u[1]) annotation (Line(points={{60.3,163},{72,163},
+          {72,133.2},{77.0286,133.2}},color={0,0,127}));
+  connect(Dch1.y, Discharge_Sum.u[1]) annotation (Line(points={{102.3,129},{
+          115.029,129},{115.029,121.2}},
+                                 color={0,0,127}));
+  connect(Ant1.y, Anticipatory_Signals.u[1]) annotation (Line(points={{138.3,93},
+          {151.029,93},{151.029,89.2}}, color={0,0,127}));
+  connect(Ch2.y, Charge_Sum.u[2]) annotation (Line(points={{60.3,153},{76.6857,
+          153},{76.6857,133.2}},
+                            color={0,0,127}));
+  connect(Ant2.y, Anticipatory_Signals.u[2]) annotation (Line(points={{138.3,
+          103},{150.686,103},{150.686,89.2}},
+                                         color={0,0,127}));
+  connect(DCh2.y, Discharge_Sum.u[2]) annotation (Line(points={{102.3,139},{
+          114.686,139},{114.686,121.2}},
+                                 color={0,0,127}));
+  connect(Ant3.y, Anticipatory_Signals.u[3]) annotation (Line(points={{138.3,
+          113},{150.343,113},{150.343,89.2}},
+                                         color={0,0,127}));
+  connect(DCh3.y, Discharge_Sum.u[3]) annotation (Line(points={{102.3,149},{
+          114.343,149},{114.343,121.2}},
+                                 color={0,0,127}));
+  connect(Ch4.y, Charge_Sum.u[4]) annotation (Line(points={{73,169.7},{73,158},{
+          76,158},{76,133.2}}, color={0,0,127}));
+  connect(DCh4.y, Discharge_Sum.u[4]) annotation (Line(points={{103,153.7},{103,
+          137.85},{114,137.85},{114,121.2}},         color={0,0,127}));
+  connect(Ant4.y, Anticipatory_Signals.u[4]) annotation (Line(points={{141,115.7},
+          {141,108},{150,108},{150,89.2}}, color={0,0,127}));
+  connect(Ch5.y, Charge_Sum.u[5]) annotation (Line(points={{83.7,163},{75.6571,
+          163},{75.6571,133.2}},
+                            color={0,0,127}));
+  connect(DCh5.y, Discharge_Sum.u[5]) annotation (Line(points={{113,153.7},{113,
+          137.85},{113.657,137.85},{113.657,121.2}}, color={0,0,127}));
+  connect(Ant5.y, Anticipatory_Signals.u[5]) annotation (Line(points={{151,
+          115.7},{151,101.85},{149.657,101.85},{149.657,89.2}},
+                                                         color={0,0,127}));
+  connect(Ch6.y, Charge_Sum.u[6]) annotation (Line(points={{83.7,153},{75.3143,
+          153},{75.3143,133.2}},
+                            color={0,0,127}));
+  connect(DCh6.y, Discharge_Sum.u[6]) annotation (Line(points={{123,153.7},{123,
+          150},{113.314,150},{113.314,121.2}}, color={0,0,127}));
+  connect(Ant6.y, Anticipatory_Signals.u[6]) annotation (Line(points={{161,
+          115.7},{161,110},{149.314,110},{149.314,89.2}},
+                                                   color={0,0,127}));
+  connect(Ch7.y, Charge_Sum.u[7]) annotation (Line(points={{83.7,143},{74.9714,
+          143},{74.9714,133.2}},
+                            color={0,0,127}));
+  connect(Ant7.y, Anticipatory_Signals.u[7]) annotation (Line(points={{165.7,
+          113},{148.971,113},{148.971,89.2}},
+                                         color={0,0,127}));
+  connect(DCh7.y, Discharge_Sum.u[7]) annotation (Line(points={{125.7,149},{
+          112.971,149},{112.971,121.2}},
+                                 color={0,0,127}));
+  connect(Ch3.y, Charge_Sum.u[3]) annotation (Line(points={{60.3,143},{76.3429,
+          143},{76.3429,133.2}},
+                            color={0,0,127}));
+  annotation (
+    Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-80},
+            {100,100}})),
+    experiment(
+      StopTime=10800,
+      __Dymola_NumberOfIntervals=193,
+      Tolerance=0.005,
+      __Dymola_Algorithm="Esdirk45a"),
+    __Dymola_experimentSetupOutput,
+    Icon(coordinateSystem(extent={{-100,-80},{100,100}})),
+    __Dymola_Commands(file="run.mos" "run", file="runnow.mos" "runnow"));
+end NuScale_Test_Mikk_IES_Controls_TBVShim;

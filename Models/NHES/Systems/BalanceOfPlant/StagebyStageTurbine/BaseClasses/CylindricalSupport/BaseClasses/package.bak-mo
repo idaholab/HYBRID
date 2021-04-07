@@ -1,0 +1,7 @@
+within NHES.Systems.BalanceOfPlant.StagebyStageTurbine.BaseClasses.CylindricalSupport;
+package BaseClasses "Base classes used in the Sources package (only of interest to build new component models)"
+  extends Modelica.Icons.BasesPackage;
+
+
+
+end BaseClasses;

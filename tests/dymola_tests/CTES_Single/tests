@@ -1,0 +1,11 @@
+[Tests]
+ [./]
+  type = 'HYBRIDTester'
+  input = 'CTES_Single.mos'
+  workingDir = '.'
+  output = 'CTES_Single.mat'
+  dymola_mats = 'CTES_Single.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

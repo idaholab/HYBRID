@@ -1,0 +1,310 @@
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[8, 2]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[8, 2]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[1, 1]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[1, 1]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[4, 1]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[4, 1]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[5, 2]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[5, 2]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[7, 1]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[7, 1]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[6, 1]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[6, 1]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[5, 1]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[5, 1]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[4, 2]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[4, 2]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[6, 2]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[6, 2]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[3, 1]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[3, 1]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[2, 1]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[2, 1]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[9, 2]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[9, 2]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[1, 2]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[1, 2]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[9, 1]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[9, 1]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[8, 1]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[8, 1]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[7, 2]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[7, 2]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[3, 2]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[3, 2]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[2, 2]) = (1) / (0)
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (1.0) / (CTES.hc[2, 2]) = (1) / (0)
+
+Non-linear solver will attempt to handle this problem.
+
+Model: NHES.Systems.EnergyStorage.Concrete_Solid_Media.Examples.Dual_Pipe_CTES
+Integration started at 0 using integration method:
+RK-method: esdirk45a
+Local extrapolation
+FSAL
+Continuous extension
+
+Error: The following error was detected at time: 710.2023963923078
+  Error in region computation of IF97 steam tables(p = 110000, h = 9.618e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(110000.0, CTES.h_f[9, 2], 0, 0)
+Modelica.Media.Water.IF97_Utilities.T_ph(CTES.p_in[2], CTES.h_f[9, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.temperature_ph_Unique6(CTES.p_in[2], CTES.h_f[9, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique3(CTES.p_in[2], CTES.h_f[9, 2], fill(0, 0), 0, 0)
+Modelica.Media.Water.WaterIF97_base.set...
+
+Error: The following error was detected at time: 1992.570225312091
+  Error in region computation of IF97 steam tables(p = 110000, h = -3.71653e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(110000.0, CTES.h_f[6, 2], 0, 0)
+Modelica.Media.Water.IF97_Utilities.T_ph(CTES.p_in[2], CTES.h_f[6, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.temperature_ph_Unique6(CTES.p_in[2], CTES.h_f[6, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique3(CTES.p_in[2], CTES.h_f[6, 2], fill(0, 0), 0, 0)
+Modelica.Media.Water.WaterIF97_base.set...
+
+Error: The following error was detected at time: 2623.528430295791
+  IF97 medium function visc_dTp: viscosity computed outside the range
+of validity of the IF97 formulation: p = 110000 Pa, Tc = 1581.79 K
+  Failed condition: p <= 500000000.0 and (Tc >= 0.0 and Tc <= 150) or p <= 350000000.0 and (Tc > 150.0 and Tc <= 600) or p <= 300000000.0 and (Tc > 600.0 and Tc <= 900)
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity(CTES.HTF_State[5, 2].d, CTES.HTF_State[5, 2].T, 110000.0, 0, true)
+Modelica.Media.Water.WaterIF97_ph.dynamicViscosity_Unique22(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = CTES.HTF_State[5, 2].phase, 
+h = CTES.HTF_State[5, 2].h, 
+d = CTES.HTF_State[5, 2].d, 
+T = CTES.HTF_State[5, 2].T, 
+p = CTES.HTF_State[5, 2].p
+))
+
+Error: The following error was detected at time: 4076.635939824082
+  Error in region computation of IF97 steam tables(p = 110000, h = -6.02282e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(110000.0, CTES.h_f[4, 2], 0, 0)
+Modelica.Media.Water.IF97_Utilities.T_ph(CTES.p_in[2], CTES.h_f[4, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.temperature_ph_Unique6(CTES.p_in[2], CTES.h_f[4, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique3(CTES.p_in[2], CTES.h_f[4, 2], fill(0, 0), 0, 0)
+Modelica.Media.Water.WaterIF97_base.set...
+
+Error: The following error was detected at time: 11068.86470764772
+  Error in region computation of IF97 steam tables(p = 110000, h = -2.18105e+08)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(110000.0, CTES.h_f[3, 2], 0, 0)
+Modelica.Media.Water.IF97_Utilities.T_ph(CTES.p_in[2], CTES.h_f[3, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.temperature_ph_Unique6(CTES.p_in[2], CTES.h_f[3, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique3(CTES.p_in[2], CTES.h_f[3, 2], fill(0, 0), 0, 0)
+Modelica.Media.Water.WaterIF97_base.set...
+
+Error: The following error was detected at time: 10779.92224559079
+  Error in region computation of IF97 steam tables(p = 110000, h = -5.90246e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(110000.0, CTES.h_f[3, 2], 0, 0)
+Modelica.Media.Water.IF97_Utilities.T_ph(CTES.p_in[2], CTES.h_f[3, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.temperature_ph_Unique6(CTES.p_in[2], CTES.h_f[3, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique3(CTES.p_in[2], CTES.h_f[3, 2], fill(0, 0), 0, 0)
+Modelica.Media.Water.WaterIF97_base.set...
+
+
+Integration terminated successfully at T = 86400
+   CPU-time for integration                  : 14.814 seconds
+   CPU-time for initialization               : 0.049 seconds
+   Number of result points                   : 196
+   Number of grid points                     : 196
+   Number of accepted steps                  : 448
+   Number of rejected steps                  : 163
+   Number of f-evaluations (dynamics)        : 8819
+   Number of crossing function evaluations   : 3954
+   Number of Jacobian-evaluations            : 273
+   Number of model time events               : 0
+   Number of state events                    : 42
+   Number of step events                     : 0
+
+SUCCESSFUL simulation of NHES.Systems.EnergyStorage.Concrete_Solid_Media.Examples.Dual_Pipe_CTES

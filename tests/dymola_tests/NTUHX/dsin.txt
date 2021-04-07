@@ -1,0 +1,1763 @@
+#1
+char Aclass(3,24)
+Adymosim
+1.4
+Modelica experiment file
+
+
+#    Experiment parameters
+double experiment(7,1)
+       0                   # StartTime    Time at which integration starts
+                           #              (and linearization and trimming time)
+     100                   # StopTime     Time at which integration stops
+       0                   # Increment    Communication step size, if > 0
+      35                   # nInterval    Number of communication intervals, if > 0
+  1.0000000000000000E-04   # Tolerance    Relative precision of signals for
+                           #              simulation, linearization and trimming
+       0                   # MaxFixedStep Maximum step size of fixed step size
+                           #              integrators, if > 0.0
+      18                   # Algorithm    Integration algorithm as integer (1...28)
+                           #
+                           #             | model|       |        | dense | state |
+                           # Algorithm   | typ  | stiff | order  | output| event |
+                           # ------------+------+-------+--------+-------+-------+
+                           #  1 | deabm  |  ode |   no  |  1-12  |  yes  |   no  |
+                           #  2 | lsode1 |  ode |   no  |  1-12  |  yes  |   no  |
+                           #  3 | lsode2 |  ode |  yes  |  1-5   |  yes  |   no  |
+                           #  4 | lsodar |  ode |  both |1-12,1-5|  yes  |  yes  |
+                           #  5 | dopri5 |  ode |   no  |   5    |   no  |   no  |
+                           #  6 | dopri8 |  ode |   no  |   8    |   no  |   no  |
+                           #  7 | grk4t  |  ode |  yes  |   4    |   no  |   no  |
+                           #  8 | dassl  |  dae |  yes  |  1-5   |  yes  |  yes  |
+                           #  9 | odassl | hdae |  yes  |  1-5   |  yes  |  yes  |
+                           # 10 | mexx   | hdae |   no  |  2-24  |   no  |   no  |
+                           # 11 | euler  |  ode |   no  |   1    |   no  |  yes  |
+                           # 12 | rkfix2 |  ode |   no  |   2    |   no  |  yes  |
+                           # 13 | rkfix3 |  ode |   no  |   3    |   no  |  yes  |
+                           # 14 | rkfix4 |  ode |   no  |   4    |   no  |  yes  |
+                           #>=14| others |  ode |yes/no |  2-5   |   yes |  yes  |
+                           # ---+--------+------+-------+--------+-------+-------+
+                           # euler and rkfix have fixed stepsize.
+
+
+#    Method tuning parameters
+double method(27,1)
+       1                   # grid     type of communication time grid, defined by
+                           #          = 1: equidistant points ("Increment/nInterval")
+                           #          = 2: vector of grid points ("tgrid")
+                           #          = 3: variable step integrator (automatically)
+                           #          = 4: model (call of "increment" in Dymola, e.g.
+                           #                      incr=Time > 2 then 0 else 0.1
+                           #                      dummy=increment(incr))
+                           #          grid = 1,3 is stopped by "StopTime"
+                           #          grid = 2   is stopped by "tgrid(last)"
+                           #          grid = 4   runs forever (stopped by model)
+       1                   # nt       Use every NT time instant, if grid = 3
+       3                   # dense    1/2/3 restart/step/interpolate GRID points
+       0                   # evgrid   0/1 do not/save event points in comm. time grid
+       1                   # evu      0/1 U-discontinuity does not/trigger events
+       0                   # evuord       U-discontinuity order to consider (0,1,...)
+       0                   # error    0/1/2 One message/warning/error messages
+       0                   # jac      0/1 Compute jacobian numerically/by BLOCKJ
+       0                   # xd0c     0/1 Compute/set XD0
+       0                   # f3       0/1 Ignore/use F3 of HDAE (= index 1)
+       0                   # f4       0/1 Ignore/use F4 of HDAE (= index 2)
+       0                   # f5       0/1 Ignore/use F5 of HDAE (= invar.)
+       0                   # debug    flags for debug information (1<<0 uses pdebug) 
+     100                   # pdebug       priority of debug information (1...100)
+       0                   # fmax     Maximum number of evaluations of BLOCKF, if > 0
+       0                   # ordmax   Maximum allowed integration order, if > 0
+       0                   # hmax     Maximum absolute stepsize, if > 0
+       0                   # hmin     Minimum absolute stepsize, if > 0 (use with care!)
+       0                   # h0       Stepsize to be attempted on first step, if > 0
+  2.0000000000000000E-14   # teps     Bound to check, if 2 equal time instants
+  1.0000000000000000E-10   # eveps    Hysteresis epsilon at event points
+      20                   # eviter   Maximum number of event iterations
+  9.9999999999999995E-07   # delaym   Minimum time increment in delay buffers
+       1                   # fexcep   0/1 floating exception crashes/stops dymosim
+       1                   # tscale   clock-time = tscale*simulation-time, if grid = 5
+                           #          > 1: simulation too slow
+                           #          = 1: simulation-time = real-time
+                           #          < 1: simulation too fast
+       1                   # shared   (not used)
+    2473                   # memkey   (not used)
+
+
+#    Output parameters
+int settings(13,1)
+ 0                         # lprec    0/1 do not/store result data in double
+ 1                         # lx       0/1 do not/store x  (state variables)
+ 1                         # lxd      0/1 do not/store xd (derivative of states)
+ 1                         # lu       0/1 do not/store u  (input     signals)
+ 1                         # ly       0/1 do not/store y  (output    signals)
+ 0                         # lz       0/1 do not/store z  (indicator signals)
+ 1                         # lw       0/1 do not/store w  (auxiliary signals)
+ 1                         # la       0/1 do not/store a  (alias     signals)
+ 0                         # lperf    0/1 do not/store performance indicators
+ 0                         # levent   0/1 do not/store event point
+ 1                         # lres     0/1 do not/store results on result file
+ 0                         # lshare   0/1 do not/store info data for shared memory on dsshare.txt
+ 1                         # lform    0/1 ASCII/Matlab-binary storage format of results
+                           #              (for simulation/linearization; not for trimming)
+
+
+#    Names of initial variables
+char initialName(401,94)
+HX.Q
+HX.der(Q)
+HX.Q_max
+HX.Q_max_s
+HX.Q_max_t
+HX.Q_min
+HX.Cr
+HX.NTU
+HX.K_tube
+HX.K_shell
+HX.V_Tube
+HX.V_Shell
+HX.V_buffers
+HX.dh_Tube
+HX.dh_Shell
+HX.p_start_tube
+HX.h_start_tube_inlet
+HX.h_start_tube_outlet
+HX.p_start_shell
+HX.h_start_shell_inlet
+HX.h_start_shell_outlet
+HX.dp_init_tube
+HX.dp_init_shell
+HX.dp_general
+HX.Q_init
+HX.Cr_init
+HX.deltaX_t_init
+HX.deltaX_s_init
+HX.tau
+HX.m_start_tube
+HX.m_start_shell
+HX.xchange_t
+HX.xchange_s
+HX.Tin_t
+HX.Tin_s
+HX.Tex_t
+HX.Tex_s
+HX.hin_t
+HX.hin_s
+HX.hex_t
+HX.hex_s
+HX.hf_t
+HX.hf_s
+HX.hg_t
+HX.hg_s
+HX.Tube.nPorts_a
+HX.Tube.nPorts_b
+HX.Tube.port_a[1].p
+HX.Tube.port_b[1].m_flow
+HX.Tube.V
+HX.Tube.energyDynamics
+HX.Tube.massDynamics
+HX.Tube.substanceDynamics
+HX.Tube.traceDynamics
+HX.Tube.p_start
+HX.Tube.use_T_start
+HX.Tube.T_start
+HX.Tube.h_start
+HX.Tube.X_start[1]
+HX.Tube.medium.p
+HX.Tube.medium.der(p)
+HX.Tube.medium.h
+HX.Tube.medium.der(h)
+HX.Tube.medium.d
+HX.Tube.medium.der(d)
+HX.Tube.medium.T
+HX.Tube.medium.X[1]
+HX.Tube.medium.u
+HX.Tube.medium.der(u)
+HX.Tube.medium.R_s
+HX.Tube.medium.MM
+HX.Tube.medium.state.phase
+HX.Tube.medium.preferredMediumStates
+HX.Tube.medium.standardOrderComponents
+HX.Tube.medium.T_degC
+HX.Tube.medium.p_bar
+HX.Tube.medium.sat.Tsat
+_GlobalScope.Modelica.Media.Water.waterConstants[1].molarMass
+_GlobalScope.Modelica.Media.Water.waterConstants[1].criticalTemperature
+_GlobalScope.Modelica.Media.Water.waterConstants[1].criticalPressure
+_GlobalScope.Modelica.Media.Water.waterConstants[1].criticalMolarVolume
+_GlobalScope.Modelica.Media.Water.waterConstants[1].acentricFactor
+_GlobalScope.Modelica.Media.Water.waterConstants[1].triplePointTemperature
+_GlobalScope.Modelica.Media.Water.waterConstants[1].triplePointPressure
+_GlobalScope.Modelica.Media.Water.waterConstants[1].meltingPoint
+_GlobalScope.Modelica.Media.Water.waterConstants[1].normalBoilingPoint
+_GlobalScope.Modelica.Media.Water.waterConstants[1].dipoleMoment
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasIdealGasHeatCapacity
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasCriticalData
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasDipoleMoment
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasFundamentalEquation
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasLiquidHeatCapacity
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasSolidHeatCapacity
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasAccurateViscosityData
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasAccurateConductivityData
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasVapourPressureCurve
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasAcentricFactor
+_GlobalScope.Modelica.Media.Water.waterConstants[1].HCRIT0
+_GlobalScope.Modelica.Media.Water.waterConstants[1].SCRIT0
+_GlobalScope.Modelica.Media.Water.waterConstants[1].deltah
+_GlobalScope.Modelica.Media.Water.waterConstants[1].deltas
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].molarMass
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].criticalTemperature
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].criticalPressure
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].criticalMolarVolume
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].acentricFactor
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].triplePointTemperature
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].triplePointPressure
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].meltingPoint
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].normalBoilingPoint
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].dipoleMoment
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasIdealGasHeatCapacity
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasCriticalData
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasDipoleMoment
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasFundamentalEquation
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasLiquidHeatCapacity
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasSolidHeatCapacity
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasAccurateViscosityData
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasAccurateConductivityData
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasVapourPressureCurve
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasAcentricFactor
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].HCRIT0
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].SCRIT0
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].deltah
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].deltas
+HX.Tube.m
+HX.Tube.der(m)
+HX.Tube.U
+HX.Tube.der(U)
+HX.Tube.initialize_p
+HX.Tube.geometry.angle
+HX.Tube.geometry.dheight
+HX.Tube.geometry.height_a
+HX.Tube.g_n
+HX.Tube.H_flows_a[1]
+HX.Tube.H_flows_b[1]
+HX.Tube.use_HeatPort
+HX.Tube.use_TraceMassPort
+HX.Tube.showName
+HX.Tube.Q_flow_internal
+HX.Tube_out.m_flow
+HX.Tube_out.p
+HX.Tube_in.m_flow
+HX.Shell_in.m_flow
+HX.Shell_out.m_flow
+HX.Shell_out.p
+HX.Shell.nPorts_a
+HX.Shell.nPorts_b
+HX.Shell.port_a[1].m_flow
+HX.Shell.port_a[1].p
+HX.Shell.port_b[1].p
+HX.Shell.V
+HX.Shell.energyDynamics
+HX.Shell.massDynamics
+HX.Shell.substanceDynamics
+HX.Shell.traceDynamics
+HX.Shell.p_start
+HX.Shell.use_T_start
+HX.Shell.T_start
+HX.Shell.h_start
+HX.Shell.X_start[1]
+HX.Shell.medium.p
+HX.Shell.medium.der(p)
+HX.Shell.medium.h
+HX.Shell.medium.der(h)
+HX.Shell.medium.d
+HX.Shell.medium.der(d)
+HX.Shell.medium.T
+HX.Shell.medium.X[1]
+HX.Shell.medium.u
+HX.Shell.medium.der(u)
+HX.Shell.medium.R_s
+HX.Shell.medium.MM
+HX.Shell.medium.state.phase
+HX.Shell.medium.preferredMediumStates
+HX.Shell.medium.standardOrderComponents
+HX.Shell.medium.T_degC
+HX.Shell.medium.p_bar
+HX.Shell.medium.sat.Tsat
+HX.Shell.m
+HX.Shell.der(m)
+HX.Shell.U
+HX.Shell.der(U)
+HX.Shell.initialize_p
+HX.Shell.geometry.angle
+HX.Shell.geometry.dheight
+HX.Shell.geometry.height_a
+HX.Shell.g_n
+HX.Shell.H_flows_a[1]
+HX.Shell.H_flows_b[1]
+HX.Shell.use_HeatPort
+HX.Shell.use_TraceMassPort
+HX.Shell.showName
+HX.Shell.Q_flow_internal
+HX.Tube_dp.port_a.h_outflow
+HX.Tube_dp.port_b.p
+HX.Tube_dp.state.phase
+HX.Tube_dp.state.d
+HX.Tube_dp.state.T
+HX.Tube_dp.dp
+HX.Tube_dp.showName
+HX.Tube_dp.dp_init
+HX.Shell_dp.port_a.m_flow
+HX.Shell_dp.port_b.m_flow
+HX.Shell_dp.port_b.h_outflow
+HX.Shell_dp.state.phase
+HX.Shell_dp.state.h
+HX.Shell_dp.state.d
+HX.Shell_dp.state.T
+HX.Shell_dp.dp
+HX.Shell_dp.m_flow
+HX.Shell_dp.showName
+HX.Shell_dp.dp_init
+Tube_Feed.showName
+Tube_Feed.nPorts
+Tube_Feed.medium.h
+Tube_Feed.medium.d
+Tube_Feed.medium.T
+Tube_Feed.medium.X[1]
+Tube_Feed.medium.u
+Tube_Feed.medium.R_s
+Tube_Feed.medium.MM
+Tube_Feed.medium.state.phase
+Tube_Feed.medium.state.h
+Tube_Feed.medium.preferredMediumStates
+Tube_Feed.medium.standardOrderComponents
+Tube_Feed.medium.T_degC
+Tube_Feed.medium.p_bar
+Tube_Feed.medium.sat.Tsat
+Tube_Feed.ports[1].m_flow
+Tube_Feed.ports[1].p
+Tube_Feed.ports[1].h_outflow
+Tube_Feed.flowDirection
+Tube_Feed.use_m_flow_in
+Tube_Feed.use_h_in
+Tube_Feed.use_X_in
+Tube_Feed.use_C_in
+Tube_Feed.m_flow
+Tube_Feed.h
+Tube_Feed.X[1]
+Tube_Feed.m_flow_in_internal
+Tube_Feed.h_in_internal
+Tube_Feed.X_in_internal[1]
+Shell_Feed.showName
+Shell_Feed.nPorts
+Shell_Feed.medium.h
+Shell_Feed.medium.d
+Shell_Feed.medium.T
+Shell_Feed.medium.X[1]
+Shell_Feed.medium.u
+Shell_Feed.medium.R_s
+Shell_Feed.medium.MM
+Shell_Feed.medium.state.phase
+Shell_Feed.medium.state.h
+Shell_Feed.medium.preferredMediumStates
+Shell_Feed.medium.standardOrderComponents
+Shell_Feed.medium.T_degC
+Shell_Feed.medium.p_bar
+Shell_Feed.medium.sat.Tsat
+Shell_Feed.ports[1].m_flow
+Shell_Feed.ports[1].p
+Shell_Feed.ports[1].h_outflow
+Shell_Feed.flowDirection
+Shell_Feed.use_m_flow_in
+Shell_Feed.use_h_in
+Shell_Feed.use_X_in
+Shell_Feed.use_C_in
+Shell_Feed.m_flow
+Shell_Feed.h
+Shell_Feed.X[1]
+Shell_Feed.m_flow_in_internal
+Shell_Feed.h_in_internal
+Shell_Feed.X_in_internal[1]
+Tube_Downstream.showName
+Tube_Downstream.nPorts
+Tube_Downstream.medium.p
+Tube_Downstream.medium.h
+Tube_Downstream.medium.d
+Tube_Downstream.medium.T
+Tube_Downstream.medium.X[1]
+Tube_Downstream.medium.u
+Tube_Downstream.medium.R_s
+Tube_Downstream.medium.MM
+Tube_Downstream.medium.state.phase
+Tube_Downstream.medium.state.h
+Tube_Downstream.medium.state.p
+Tube_Downstream.medium.preferredMediumStates
+Tube_Downstream.medium.standardOrderComponents
+Tube_Downstream.medium.T_degC
+Tube_Downstream.medium.p_bar
+Tube_Downstream.medium.sat.psat
+Tube_Downstream.medium.sat.Tsat
+Tube_Downstream.ports[1].p
+Tube_Downstream.ports[1].h_outflow
+Tube_Downstream.flowDirection
+Tube_Downstream.use_p_in
+Tube_Downstream.use_h_in
+Tube_Downstream.use_X_in
+Tube_Downstream.use_C_in
+Tube_Downstream.p
+Tube_Downstream.h
+Tube_Downstream.X[1]
+Tube_Downstream.p_in_internal
+Tube_Downstream.h_in_internal
+Tube_Downstream.X_in_internal[1]
+Shell_Downstream.showName
+Shell_Downstream.nPorts
+Shell_Downstream.medium.p
+Shell_Downstream.medium.h
+Shell_Downstream.medium.d
+Shell_Downstream.medium.T
+Shell_Downstream.medium.X[1]
+Shell_Downstream.medium.u
+Shell_Downstream.medium.R_s
+Shell_Downstream.medium.MM
+Shell_Downstream.medium.state.phase
+Shell_Downstream.medium.state.h
+Shell_Downstream.medium.state.p
+Shell_Downstream.medium.preferredMediumStates
+Shell_Downstream.medium.standardOrderComponents
+Shell_Downstream.medium.T_degC
+Shell_Downstream.medium.p_bar
+Shell_Downstream.medium.sat.psat
+Shell_Downstream.medium.sat.Tsat
+Shell_Downstream.ports[1].p
+Shell_Downstream.ports[1].h_outflow
+Shell_Downstream.flowDirection
+Shell_Downstream.use_p_in
+Shell_Downstream.use_h_in
+Shell_Downstream.use_X_in
+Shell_Downstream.use_C_in
+Shell_Downstream.p
+Shell_Downstream.h
+Shell_Downstream.X[1]
+Shell_Downstream.p_in_internal
+Shell_Downstream.h_in_internal
+Shell_Downstream.X_in_internal[1]
+sensor_h.allowFlowReversal
+sensor_h.showName
+sensor_h.port_a.p
+sensor_h.port_b.p
+sensor_h.port_b.h_outflow
+sensor_h.m_flow_small
+sensor_h.precision
+sensor_h.var
+sensor_h1.allowFlowReversal
+sensor_h1.showName
+sensor_h1.port_a.m_flow
+sensor_h1.port_b.m_flow
+sensor_h1.port_b.h_outflow
+sensor_h1.m_flow_small
+sensor_h1.precision
+sensor_h1.var
+sensor_h2.allowFlowReversal
+sensor_h2.showName
+sensor_h2.port_a.p
+sensor_h2.port_a.h_outflow
+sensor_h2.port_b.p
+sensor_h2.m_flow_small
+sensor_h2.precision
+sensor_h2.var
+sensor_h3.allowFlowReversal
+sensor_h3.showName
+sensor_h3.port_a.m_flow
+sensor_h3.port_a.h_outflow
+sensor_h3.port_b.m_flow
+sensor_h3.m_flow_small
+sensor_h3.precision
+sensor_h3.var
+sensor_p.allowFlowReversal
+sensor_p.showName
+sensor_p.port.m_flow
+sensor_p.port.p
+sensor_p.port.h_outflow
+sensor_p.precision
+sensor_p.var
+sensor_p.y
+sensor_p.p
+sensor_p1.allowFlowReversal
+sensor_p1.showName
+sensor_p1.port.m_flow
+sensor_p1.port.h_outflow
+sensor_p1.precision
+sensor_p2.allowFlowReversal
+sensor_p2.showName
+sensor_p2.port.m_flow
+sensor_p2.port.h_outflow
+sensor_p2.precision
+sensor_p3.allowFlowReversal
+sensor_p3.showName
+sensor_p3.port.m_flow
+sensor_p3.port.p
+sensor_p3.port.h_outflow
+sensor_p3.precision
+sensor_p3.var
+sensor_p3.y
+sensor_p3.p
+stateSelect.set1.x[1]
+stateSelect.set1.der(x[1])
+stateSelect.set1.P[1, 1]
+stateSelect.set1.P[1, 2]
+
+double initialValue(401,6)
+ -1       0                       0                       0                
+  2   272   # HX.Q
+  0       0                       0                       0                
+  3   256   # HX.der(Q)
+  0       0                       0                       0                
+  6   256   # HX.Q_max
+  0       0                       0                       0                
+  6   256   # HX.Q_max_s
+  0       0                       0                       0                
+  6   256   # HX.Q_max_t
+  0       0                       0                       0                
+  6   256   # HX.Q_min
+  0       0                       0                       0                
+  6   256   # HX.Cr
+ -1  3.6000000000000001E+00       0                       0                
+  1   280   # HX.NTU
+ -1   17000                       0                       0                
+  1   280   # HX.K_tube
+ -1       5                       0                       0                
+  1   280   # HX.K_shell
+ -1       4                       0                       0                
+  1   280   # HX.V_Tube
+ -1       4                       0                       0                
+  1   280   # HX.V_Shell
+ -1  1.0000000000000001E-01       0                       0                
+  1   280   # HX.V_buffers
+ -1       0                       0                       0                
+  1   280   # HX.dh_Tube
+ -1       0                       0                       0                
+  1   280   # HX.dh_Shell
+ -1  2.3400000000000000E+06       0                       0                
+  1   280   # HX.p_start_tube
+ -1  1.8400000000000000E+05       0                       0                
+  1   280   # HX.h_start_tube_inlet
+ -1  1.8400000000000000E+05       0                       0                
+  1   280   # HX.h_start_tube_outlet
+ -1   58000                       0                       0                
+  1   280   # HX.p_start_shell
+ -1  2.0550000000000000E+05       0                       0                
+  1   280   # HX.h_start_shell_inlet
+ -1  2.0550000000000000E+05       0                       0                
+  1   280   # HX.h_start_shell_outlet
+ -1  5.0000000000000000E+05       0                       0                
+  1   280   # HX.dp_init_tube
+ -1   10000                       0                       0                
+  1   280   # HX.dp_init_shell
+ -1     100                       0                       0                
+  1   280   # HX.dp_general
+ -1       0                       0                       0                
+  1   280   # HX.Q_init
+ -1  8.0000000000000004E-01       0                       0                
+  1   280   # HX.Cr_init
+ -1       0                       0                       0                
+  1   280   # HX.deltaX_t_init
+ -1       0                       0                       0                
+  1   280   # HX.deltaX_s_init
+ -1       1                       0                       0                
+  1   280   # HX.tau
+ -1  6.6299999999999997E+01       0                       0                
+  1   280   # HX.m_start_tube
+ -1      10                       0                       0                
+  1   280   # HX.m_start_shell
+  0       0                       0                       0                
+  6   256   # HX.xchange_t
+  0       0                       0                       0                
+  6   256   # HX.xchange_s
+  0  2.8814999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # HX.Tin_t
+  0  2.8814999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # HX.Tin_s
+  0  2.8814999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # HX.Tex_t
+  0  2.8814999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # HX.Tex_s
+  0       0                       0                       0                
+  6   256   # HX.hin_t
+  0  1.0158000000000000E+06       0                       0                
+  6   256   # HX.hin_s
+  0       0                       0                       0                
+  6   256   # HX.hex_t
+  0       0                       0                       0                
+  6   256   # HX.hex_s
+  0       0                       0                       0                
+  6   256   # HX.hf_t
+  0       0                       0                       0                
+  6   256   # HX.hf_s
+  0       0                       0                       0                
+  6   256   # HX.hg_t
+  0       0                       0                       0                
+  6   256   # HX.hg_s
+  0       1                       0                       0                
+  6   258   # HX.Tube.nPorts_a
+  0       1                       0                       0                
+  6   258   # HX.Tube.nPorts_b
+  0  5.0000000000000000E+06  6.1165700000000004E+02  1.0000000000000000E+08
+  6   260   # HX.Tube.port_a[1].p
+  0  6.6299999999999997E+01 -100000                  100000                
+  6   388   # HX.Tube.port_b[1].m_flow
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # HX.Tube.V
+  0       1                       1                       4                
+  6   258   # HX.Tube.energyDynamics
+  0       1                       1                       4                
+  6   258   # HX.Tube.massDynamics
+  0       1                       1                       4                
+  6   258   # HX.Tube.substanceDynamics
+  0       1                       1                       4                
+  6   258   # HX.Tube.traceDynamics
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # HX.Tube.p_start
+  0       0                       0                       0                
+  6   257   # HX.Tube.use_T_start
+  0  2.9314999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # HX.Tube.T_start
+  0       0                       0                       0                
+  6   256   # HX.Tube.h_start
+ -1       1                       0                       1                
+  1   280   # HX.Tube.X_start[1]
+ -1  100000                  6.1165700000000004E+02  1.0000000000000000E+08
+  2   272   # HX.Tube.medium.p
+  0       0                       0                       0                
+  3   256   # HX.Tube.medium.der(p)
+ -1  8.4013058152596903E+04 -1.0000000000000000E+10  1.0000000000000000E+10
+  2   280   # HX.Tube.medium.h
+  0       0                       0                       0                
+  3   256   # HX.Tube.medium.der(h)
+  0       0                       0                  100000                
+  6   256   # HX.Tube.medium.d
+  0       0                       0                       0                
+  6   256   # HX.Tube.medium.der(d)
+  0     500                  2.7314999999999998E+02  2.2731500000000001E+03
+  6   256   # HX.Tube.medium.T
+  0       1                       0                       1                
+  6   256   # HX.Tube.medium.X[1]
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # HX.Tube.medium.u
+  0       0                       0                       0                
+  6   256   # HX.Tube.medium.der(u)
+  0  4.6152311573456689E+02       0                  1.0000000000000000E+07
+  6   256   # HX.Tube.medium.R_s
+  0  1.8015268000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6   256   # HX.Tube.medium.MM
+  0       1                       0                       2                
+  6   322   # HX.Tube.medium.state.phase
+  0       1                       0                       0                
+  6   257   # HX.Tube.medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # HX.Tube.medium.standardOrderComponents
+  0       0                       0                       0                
+  6   256   # HX.Tube.medium.T_degC
+  0       0                       0                       0                
+  6   256   # HX.Tube.medium.p_bar
+  0     500                  2.7314999999999998E+02  2.2731500000000001E+03
+  6   256   # HX.Tube.medium.sat.Tsat
+  0  1.8015268000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].molarMass
+  0  6.4709600000000000E+02       1                   10000                
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].criticalTemperature
+  0  2.2064000000000000E+07       0                  1.0000000000000000E+08
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].criticalPressure
+  0  5.5948037267080745E-05  9.9999999999999995E-07  1.0000000000000000E+06
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].criticalMolarVolume
+  0  3.4399999999999997E-01       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].acentricFactor
+  0  2.7316000000000003E+02       1                   10000                
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].triplePointTemperature
+  0  6.1165700000000004E+02       0                  1.0000000000000000E+08
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].triplePointPressure
+  0  2.7314999999999998E+02       1                   10000                
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].meltingPoint
+  0  3.7312400000000002E+02       1                   10000                
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].normalBoilingPoint
+  0  1.8000000000000000E+00       0                       2                
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].dipoleMoment
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasIdealGasHeatCapacity
+  0       1                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasCriticalData
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasDipoleMoment
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasFundamentalEquation
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasLiquidHeatCapacity
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasSolidHeatCapacity
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasAccurateViscosityData
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasAccurateConductivityData
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasVapourPressureCurve
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasAcentricFactor
+  0       0                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].HCRIT0
+  0       0                 -1.0000000000000000E+07  1.0000000000000000E+07
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].SCRIT0
+  0       0                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].deltah
+  0       0                 -1.0000000000000000E+07  1.0000000000000000E+07
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].deltas
+  0  1.8015268000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].molarMass
+  0  6.4709600000000000E+02       1                   10000                
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].criticalTemperature
+  0  2.2064000000000000E+07       0                  1.0000000000000000E+08
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].criticalPressure
+  0  5.5948037267080745E-05  9.9999999999999995E-07  1.0000000000000000E+06
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].criticalMolarVolume
+  0  3.4399999999999997E-01       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].acentricFactor
+  0  2.7316000000000003E+02       1                   10000                
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].triplePointTemperature
+  0  6.1165700000000004E+02       0                  1.0000000000000000E+08
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].triplePointPressure
+  0  2.7314999999999998E+02       1                   10000                
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].meltingPoint
+  0  3.7312400000000002E+02       1                   10000                
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].normalBoilingPoint
+  0  1.8000000000000000E+00       0                       2                
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].dipoleMoment
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasIdealGasHeatCapacity
+  0       1                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasCriticalData
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasDipoleMoment
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasFundamentalEquation
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasLiquidHeatCapacity
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasSolidHeatCapacity
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasAccurateViscosityData
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasAccurateConductivityData
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasVapourPressureCurve
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasAcentricFactor
+  0       0                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].HCRIT0
+  0       0                 -1.0000000000000000E+07  1.0000000000000000E+07
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].SCRIT0
+  0       0                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].deltah
+  0       0                 -1.0000000000000000E+07  1.0000000000000000E+07
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].deltas
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # HX.Tube.m
+  0       0                       0                       0                
+  6   256   # HX.Tube.der(m)
+  0       0                       0                       0                
+  6   256   # HX.Tube.U
+  0       0                       0                       0                
+  6   256   # HX.Tube.der(U)
+ -1       1                       0                       0                
+  1  1305   # HX.Tube.initialize_p
+  0       0                 -1.5807963267948966E+00  1.5807963267948966E+00
+  6   256   # HX.Tube.geometry.angle
+  0       0                       0                       0                
+  6   256   # HX.Tube.geometry.dheight
+  0       0                       0                       0                
+  6   256   # HX.Tube.geometry.height_a
+  0  9.8066499999999994E+00       0                       0                
+  6   256   # HX.Tube.g_n
+  0       0                       0                       0                
+  6   256   # HX.Tube.H_flows_a[1]
+  0  1.2219090000000000E+07       0                       0                
+  6   256   # HX.Tube.H_flows_b[1]
+  0       0                       0                       0                
+  6   257   # HX.Tube.use_HeatPort
+  0       0                       0                       0                
+  6   257   # HX.Tube.use_TraceMassPort
+ -1       1                       0                       0                
+  1   281   # HX.Tube.showName
+  0       0                       0                       0                
+  6  1280   # HX.Tube.Q_flow_internal
+  0       0                 -100000                  100000                
+  6   420   # HX.Tube_out.m_flow
+  0  2.3400000000000000E+06  6.1165700000000004E+02  1.0000000000000000E+08
+  6   260   # HX.Tube_out.p
+  0  6.6299999999999997E+01 -100000                  100000                
+  6   388   # HX.Tube_in.m_flow
+  0  1.3300000000000001E+01 -100000                  100000                
+  6   388   # HX.Shell_in.m_flow
+  0       0                 -100000                  100000                
+  6   388   # HX.Shell_out.m_flow
+  0   58000                  6.1165700000000004E+02  1.0000000000000000E+08
+  6   260   # HX.Shell_out.p
+  0       1                       0                       0                
+  6   258   # HX.Shell.nPorts_a
+  0       1                       0                       0                
+  6   258   # HX.Shell.nPorts_b
+  0  1.3300000000000001E+01 -100000                  100000                
+  6   388   # HX.Shell.port_a[1].m_flow
+  0  5.0000000000000000E+06  6.1165700000000004E+02  1.0000000000000000E+08
+  6   260   # HX.Shell.port_a[1].p
+  0   58000                  6.1165700000000004E+02  1.0000000000000000E+08
+  6   260   # HX.Shell.port_b[1].p
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # HX.Shell.V
+  0       1                       1                       4                
+  6   258   # HX.Shell.energyDynamics
+  0       1                       1                       4                
+  6   258   # HX.Shell.massDynamics
+  0       1                       1                       4                
+  6   258   # HX.Shell.substanceDynamics
+  0       1                       1                       4                
+  6   258   # HX.Shell.traceDynamics
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # HX.Shell.p_start
+  0       0                       0                       0                
+  6   257   # HX.Shell.use_T_start
+  0  2.9314999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # HX.Shell.T_start
+  0       0                       0                       0                
+  6   256   # HX.Shell.h_start
+ -1       1                       0                       1                
+  1   280   # HX.Shell.X_start[1]
+  0  100000                  6.1165700000000004E+02  1.0000000000000000E+08
+  6   256   # HX.Shell.medium.p
+  0       0                       0                       0                
+  6   288   # HX.Shell.medium.der(p)
+  0  8.4013058152596903E+04 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   296   # HX.Shell.medium.h
+  0       0                       0                       0                
+  6   288   # HX.Shell.medium.der(h)
+  0       0                       0                  100000                
+  6   256   # HX.Shell.medium.d
+  0       0                       0                       0                
+  6   256   # HX.Shell.medium.der(d)
+  0     500                  2.7314999999999998E+02  2.2731500000000001E+03
+  6   256   # HX.Shell.medium.T
+  0       1                       0                       1                
+  6   256   # HX.Shell.medium.X[1]
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # HX.Shell.medium.u
+  0       0                       0                       0                
+  6   256   # HX.Shell.medium.der(u)
+  0  4.6152311573456689E+02       0                  1.0000000000000000E+07
+  6   256   # HX.Shell.medium.R_s
+  0  1.8015268000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6   256   # HX.Shell.medium.MM
+  0       1                       0                       2                
+  6   354   # HX.Shell.medium.state.phase
+  0       1                       0                       0                
+  6   257   # HX.Shell.medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # HX.Shell.medium.standardOrderComponents
+  0       0                       0                       0                
+  6   256   # HX.Shell.medium.T_degC
+  0       0                       0                       0                
+  6   256   # HX.Shell.medium.p_bar
+  0     500                  2.7314999999999998E+02  2.2731500000000001E+03
+  6   256   # HX.Shell.medium.sat.Tsat
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # HX.Shell.m
+  0       0                       0                       0                
+  6   256   # HX.Shell.der(m)
+  0       0                       0                       0                
+  6   256   # HX.Shell.U
+  0       0                       0                       0                
+  6   256   # HX.Shell.der(U)
+ -1       1                       0                       0                
+  1  1305   # HX.Shell.initialize_p
+  0       0                 -1.5807963267948966E+00  1.5807963267948966E+00
+  6   256   # HX.Shell.geometry.angle
+  0       0                       0                       0                
+  6   256   # HX.Shell.geometry.dheight
+  0       0                       0                       0                
+  6   256   # HX.Shell.geometry.height_a
+  0  9.8066499999999994E+00       0                       0                
+  6   256   # HX.Shell.g_n
+  0  1.3510140000000000E+07       0                       0                
+  6   256   # HX.Shell.H_flows_a[1]
+  0       0                       0                       0                
+  6   256   # HX.Shell.H_flows_b[1]
+  0       0                       0                       0                
+  6   257   # HX.Shell.use_HeatPort
+  0       0                       0                       0                
+  6   257   # HX.Shell.use_TraceMassPort
+ -1       1                       0                       0                
+  1   281   # HX.Shell.showName
+  0       0                       0                       0                
+  6  1280   # HX.Shell.Q_flow_internal
+  0  3.6400000000000000E+05 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # HX.Tube_dp.port_a.h_outflow
+  0  2.3400000000000000E+06  6.1165700000000004E+02  1.0000000000000000E+08
+  6   260   # HX.Tube_dp.port_b.p
+  0       0                       0                       2                
+  6   258   # HX.Tube_dp.state.phase
+  0     150                       0                  100000                
+  6   256   # HX.Tube_dp.state.d
+  0     500                  2.7314999999999998E+02  2.2731500000000001E+03
+  6   256   # HX.Tube_dp.state.T
+  0       0                       0                       0                
+  6   256   # HX.Tube_dp.dp
+ -1       1                       0                       0                
+  1   281   # HX.Tube_dp.showName
+  0       0                       0                       0                
+  6   256   # HX.Tube_dp.dp_init
+  0  1.3300000000000001E+01 -100000                  100000                
+  6   388   # HX.Shell_dp.port_a.m_flow
+  0 -1.3300000000000001E+01 -100000                  100000                
+  6   388   # HX.Shell_dp.port_b.m_flow
+  0  1.0158000000000000E+06 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # HX.Shell_dp.port_b.h_outflow
+  0       0                       0                       2                
+  6   258   # HX.Shell_dp.state.phase
+  0  1.0158000000000000E+06 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   256   # HX.Shell_dp.state.h
+  0     150                       0                  100000                
+  6   256   # HX.Shell_dp.state.d
+  0     500                  2.7314999999999998E+02  2.2731500000000001E+03
+  6   256   # HX.Shell_dp.state.T
+  0       0                       0                       0                
+  6   256   # HX.Shell_dp.dp
+  0  1.3300000000000001E+01       0                       0                
+  6   256   # HX.Shell_dp.m_flow
+ -1       1                       0                       0                
+  1   281   # HX.Shell_dp.showName
+  0       0                       0                       0                
+  6   256   # HX.Shell_dp.dp_init
+ -1       1                       0                       0                
+  1   281   # Tube_Feed.showName
+  0       1                       0                       0                
+  6   258   # Tube_Feed.nPorts
+  0  1.8430000000000000E+05       0                       0                
+  6   256   # Tube_Feed.medium.h
+  0     150                       0                  100000                
+  6   256   # Tube_Feed.medium.d
+  0     500                  2.7314999999999998E+02  2.2731500000000001E+03
+  6   256   # Tube_Feed.medium.T
+  0       1                       0                       1                
+  6   256   # Tube_Feed.medium.X[1]
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # Tube_Feed.medium.u
+  0  4.6152311573456689E+02       0                  1.0000000000000000E+07
+  6   256   # Tube_Feed.medium.R_s
+  0  1.8015268000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6   256   # Tube_Feed.medium.MM
+  0       1                       0                       2                
+  6   322   # Tube_Feed.medium.state.phase
+  0  1.8430000000000000E+05 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   256   # Tube_Feed.medium.state.h
+  0       0                       0                       0                
+  6   257   # Tube_Feed.medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # Tube_Feed.medium.standardOrderComponents
+  0       0                       0                       0                
+  6   256   # Tube_Feed.medium.T_degC
+  0       0                       0                       0                
+  6   256   # Tube_Feed.medium.p_bar
+  0     500                  2.7314999999999998E+02  2.2731500000000001E+03
+  6   256   # Tube_Feed.medium.sat.Tsat
+  0 -6.6299999999999997E+01 -9.9999999999999995E+59  9.9999999999999995E+59
+  6   388   # Tube_Feed.ports[1].m_flow
+  0  5.0000000000000000E+06  6.1165700000000004E+02  1.0000000000000000E+08
+  6   260   # Tube_Feed.ports[1].p
+  0  1.8430000000000000E+05 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # Tube_Feed.ports[1].h_outflow
+  0       3                       1                       3                
+  6  1282   # Tube_Feed.flowDirection
+  0       0                       0                       0                
+  6   769   # Tube_Feed.use_m_flow_in
+  0       0                       0                       0                
+  6   769   # Tube_Feed.use_h_in
+  0       0                       0                       0                
+  6   769   # Tube_Feed.use_X_in
+  0       0                       0                       0                
+  6   769   # Tube_Feed.use_C_in
+  0  6.6299999999999997E+01 -100000                  100000                
+  6   256   # Tube_Feed.m_flow
+  0  1.8430000000000000E+05 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   256   # Tube_Feed.h
+  0       1                       0                       1                
+  6   256   # Tube_Feed.X[1]
+  0  6.6299999999999997E+01       0                       0                
+  6  1280   # Tube_Feed.m_flow_in_internal
+  0  1.8430000000000000E+05       0                       0                
+  6  1280   # Tube_Feed.h_in_internal
+  0       1                       0                       0                
+  6  1280   # Tube_Feed.X_in_internal[1]
+ -1       1                       0                       0                
+  1   281   # Shell_Feed.showName
+  0       1                       0                       0                
+  6   258   # Shell_Feed.nPorts
+  0  1.0158000000000000E+06       0                       0                
+  6   256   # Shell_Feed.medium.h
+  0     150                       0                  100000                
+  6   256   # Shell_Feed.medium.d
+  0     500                  2.7314999999999998E+02  2.2731500000000001E+03
+  6   256   # Shell_Feed.medium.T
+  0       1                       0                       1                
+  6   256   # Shell_Feed.medium.X[1]
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # Shell_Feed.medium.u
+  0  4.6152311573456689E+02       0                  1.0000000000000000E+07
+  6   256   # Shell_Feed.medium.R_s
+  0  1.8015268000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6   256   # Shell_Feed.medium.MM
+  0       1                       0                       2                
+  6   322   # Shell_Feed.medium.state.phase
+  0  1.0158000000000000E+06 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   256   # Shell_Feed.medium.state.h
+  0       0                       0                       0                
+  6   257   # Shell_Feed.medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # Shell_Feed.medium.standardOrderComponents
+  0       0                       0                       0                
+  6   256   # Shell_Feed.medium.T_degC
+  0       0                       0                       0                
+  6   256   # Shell_Feed.medium.p_bar
+  0     500                  2.7314999999999998E+02  2.2731500000000001E+03
+  6   256   # Shell_Feed.medium.sat.Tsat
+  0 -1.3300000000000001E+01 -9.9999999999999995E+59  9.9999999999999995E+59
+  6   388   # Shell_Feed.ports[1].m_flow
+  0  5.0000000000000000E+06  6.1165700000000004E+02  1.0000000000000000E+08
+  6   292   # Shell_Feed.ports[1].p
+  0  1.0158000000000000E+06 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # Shell_Feed.ports[1].h_outflow
+  0       3                       1                       3                
+  6  1282   # Shell_Feed.flowDirection
+  0       0                       0                       0                
+  6   769   # Shell_Feed.use_m_flow_in
+  0       0                       0                       0                
+  6   769   # Shell_Feed.use_h_in
+  0       0                       0                       0                
+  6   769   # Shell_Feed.use_X_in
+  0       0                       0                       0                
+  6   769   # Shell_Feed.use_C_in
+  0  1.3300000000000001E+01 -100000                  100000                
+  6   256   # Shell_Feed.m_flow
+  0  1.0158000000000000E+06 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   256   # Shell_Feed.h
+  0       1                       0                       1                
+  6   256   # Shell_Feed.X[1]
+  0  1.3300000000000001E+01       0                       0                
+  6  1280   # Shell_Feed.m_flow_in_internal
+  0  1.0158000000000000E+06       0                       0                
+  6  1280   # Shell_Feed.h_in_internal
+  0       1                       0                       0                
+  6  1280   # Shell_Feed.X_in_internal[1]
+ -1       1                       0                       0                
+  1   281   # Tube_Downstream.showName
+  0       1                       0                       0                
+  6   258   # Tube_Downstream.nPorts
+  0  2.3400000000000000E+06       0                 1.0000000000000000E+100
+  6   256   # Tube_Downstream.medium.p
+  0  3.6400000000000000E+05       0                       0                
+  6   256   # Tube_Downstream.medium.h
+  0     150                       0                  100000                
+  6   256   # Tube_Downstream.medium.d
+  0     500                  2.7314999999999998E+02  2.2731500000000001E+03
+  6   256   # Tube_Downstream.medium.T
+  0       1                       0                       1                
+  6   256   # Tube_Downstream.medium.X[1]
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # Tube_Downstream.medium.u
+  0  4.6152311573456689E+02       0                  1.0000000000000000E+07
+  6   256   # Tube_Downstream.medium.R_s
+  0  1.8015268000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6   256   # Tube_Downstream.medium.MM
+  0       1                       0                       2                
+  6   258   # Tube_Downstream.medium.state.phase
+  0  3.6400000000000000E+05 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   256   # Tube_Downstream.medium.state.h
+  0  2.3400000000000000E+06  6.1165700000000004E+02  1.0000000000000000E+08
+  6   256   # Tube_Downstream.medium.state.p
+  0       0                       0                       0                
+  6   257   # Tube_Downstream.medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # Tube_Downstream.medium.standardOrderComponents
+  0       0                       0                       0                
+  6   256   # Tube_Downstream.medium.T_degC
+  0  2.3400000000000002E+01       0                       0                
+  6   256   # Tube_Downstream.medium.p_bar
+  0  2.3400000000000000E+06  6.1165700000000004E+02  1.0000000000000000E+08
+  6   256   # Tube_Downstream.medium.sat.psat
+  0  4.9361530717212963E+02  2.7314999999999998E+02  2.2731500000000001E+03
+  6   256   # Tube_Downstream.medium.sat.Tsat
+  0  2.3400000000000000E+06  6.1165700000000004E+02  1.0000000000000000E+08
+  6   260   # Tube_Downstream.ports[1].p
+  0  3.6400000000000000E+05 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # Tube_Downstream.ports[1].h_outflow
+  0       3                       1                       3                
+  6  1282   # Tube_Downstream.flowDirection
+  0       0                       0                       0                
+  6   769   # Tube_Downstream.use_p_in
+  0       0                       0                       0                
+  6   769   # Tube_Downstream.use_h_in
+  0       0                       0                       0                
+  6   769   # Tube_Downstream.use_X_in
+  0       0                       0                       0                
+  6   769   # Tube_Downstream.use_C_in
+  0  2.3400000000000000E+06  6.1165700000000004E+02  1.0000000000000000E+08
+  6   256   # Tube_Downstream.p
+  0  3.6400000000000000E+05 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   256   # Tube_Downstream.h
+  0       1                       0                       1                
+  6   256   # Tube_Downstream.X[1]
+  0  2.3400000000000000E+06       0                       0                
+  6  1280   # Tube_Downstream.p_in_internal
+  0  3.6400000000000000E+05       0                       0                
+  6  1280   # Tube_Downstream.h_in_internal
+  0       1                       0                       0                
+  6  1280   # Tube_Downstream.X_in_internal[1]
+ -1       1                       0                       0                
+  1   281   # Shell_Downstream.showName
+  0       1                       0                       0                
+  6   258   # Shell_Downstream.nPorts
+  0   58000                       0                 1.0000000000000000E+100
+  6   256   # Shell_Downstream.medium.p
+  0  2.0500000000000000E+05       0                       0                
+  6   256   # Shell_Downstream.medium.h
+  0     150                       0                  100000                
+  6   256   # Shell_Downstream.medium.d
+  0     500                  2.7314999999999998E+02  2.2731500000000001E+03
+  6   256   # Shell_Downstream.medium.T
+  0       1                       0                       1                
+  6   256   # Shell_Downstream.medium.X[1]
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # Shell_Downstream.medium.u
+  0  4.6152311573456689E+02       0                  1.0000000000000000E+07
+  6   256   # Shell_Downstream.medium.R_s
+  0  1.8015268000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6   256   # Shell_Downstream.medium.MM
+  0       1                       0                       2                
+  6   258   # Shell_Downstream.medium.state.phase
+  0  2.0500000000000000E+05 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   256   # Shell_Downstream.medium.state.h
+  0   58000                  6.1165700000000004E+02  1.0000000000000000E+08
+  6   256   # Shell_Downstream.medium.state.p
+  0       0                       0                       0                
+  6   257   # Shell_Downstream.medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # Shell_Downstream.medium.standardOrderComponents
+  0       0                       0                       0                
+  6   256   # Shell_Downstream.medium.T_degC
+  0  5.8000000000000007E-01       0                       0                
+  6   256   # Shell_Downstream.medium.p_bar
+  0   58000                  6.1165700000000004E+02  1.0000000000000000E+08
+  6   256   # Shell_Downstream.medium.sat.psat
+  0  3.5820836499927316E+02  2.7314999999999998E+02  2.2731500000000001E+03
+  6   256   # Shell_Downstream.medium.sat.Tsat
+  0   58000                  6.1165700000000004E+02  1.0000000000000000E+08
+  6   260   # Shell_Downstream.ports[1].p
+  0  2.0500000000000000E+05 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # Shell_Downstream.ports[1].h_outflow
+  0       3                       1                       3                
+  6  1282   # Shell_Downstream.flowDirection
+  0       0                       0                       0                
+  6   769   # Shell_Downstream.use_p_in
+  0       0                       0                       0                
+  6   769   # Shell_Downstream.use_h_in
+  0       0                       0                       0                
+  6   769   # Shell_Downstream.use_X_in
+  0       0                       0                       0                
+  6   769   # Shell_Downstream.use_C_in
+  0   58000                  6.1165700000000004E+02  1.0000000000000000E+08
+  6   256   # Shell_Downstream.p
+  0  2.0500000000000000E+05 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   256   # Shell_Downstream.h
+  0       1                       0                       1                
+  6   256   # Shell_Downstream.X[1]
+  0   58000                       0                       0                
+  6  1280   # Shell_Downstream.p_in_internal
+  0  2.0500000000000000E+05       0                       0                
+  6  1280   # Shell_Downstream.h_in_internal
+  0       1                       0                       0                
+  6  1280   # Shell_Downstream.X_in_internal[1]
+  0       1                       0                       0                
+  6   257   # sensor_h.allowFlowReversal
+ -1       1                       0                       0                
+  1   281   # sensor_h.showName
+  0  2.3400000000000000E+06  6.1165700000000004E+02  1.0000000000000000E+08
+  6   260   # sensor_h.port_a.p
+  0  2.3400000000000000E+06  6.1165700000000004E+02  1.0000000000000000E+08
+  6   260   # sensor_h.port_b.p
+  0  3.6400000000000000E+05 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # sensor_h.port_b.h_outflow
+ -1  1.0000000000000000E-04       0                  100000                
+  1   280   # sensor_h.m_flow_small
+ -1       0                       0                 1.0000000000000000E+100
+  1   282   # sensor_h.precision
+  0       0                       0                       0                
+  6   256   # sensor_h.var
+  0       1                       0                       0                
+  6   257   # sensor_h1.allowFlowReversal
+ -1       1                       0                       0                
+  1   281   # sensor_h1.showName
+  0  1.3300000000000001E+01 -9.9999999999999995E+59  100000                
+  6   388   # sensor_h1.port_a.m_flow
+  0 -1.3300000000000001E+01 -100000                  9.9999999999999995E+59
+  6   388   # sensor_h1.port_b.m_flow
+  0  1.0158000000000000E+06 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # sensor_h1.port_b.h_outflow
+ -1  1.0000000000000000E-04       0                  100000                
+  1   280   # sensor_h1.m_flow_small
+ -1       0                       0                 1.0000000000000000E+100
+  1   282   # sensor_h1.precision
+  0       0                       0                       0                
+  6   256   # sensor_h1.var
+  0       1                       0                       0                
+  6   257   # sensor_h2.allowFlowReversal
+ -1       1                       0                       0                
+  1   281   # sensor_h2.showName
+  0   58000                  6.1165700000000004E+02  1.0000000000000000E+08
+  6   260   # sensor_h2.port_a.p
+  0  2.0500000000000000E+05 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # sensor_h2.port_a.h_outflow
+  0   58000                  6.1165700000000004E+02  1.0000000000000000E+08
+  6   260   # sensor_h2.port_b.p
+ -1  1.0000000000000000E-04       0                  100000                
+  1   280   # sensor_h2.m_flow_small
+ -1       0                       0                 1.0000000000000000E+100
+  1   282   # sensor_h2.precision
+  0       0                       0                       0                
+  6   256   # sensor_h2.var
+  0       1                       0                       0                
+  6   257   # sensor_h3.allowFlowReversal
+ -1       1                       0                       0                
+  1   281   # sensor_h3.showName
+  0 -6.6299999999999997E+01 -9.9999999999999995E+59  100000                
+  6   388   # sensor_h3.port_a.m_flow
+  0  1.8430000000000000E+05 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # sensor_h3.port_a.h_outflow
+  0  6.6299999999999997E+01 -100000                  9.9999999999999995E+59
+  6   388   # sensor_h3.port_b.m_flow
+ -1  1.0000000000000000E-04       0                  100000                
+  1   280   # sensor_h3.m_flow_small
+ -1       0                       0                 1.0000000000000000E+100
+  1   282   # sensor_h3.precision
+  0       0                       0                       0                
+  6   256   # sensor_h3.var
+  0       1                       0                       0                
+  6   257   # sensor_p.allowFlowReversal
+ -1       1                       0                       0                
+  1   281   # sensor_p.showName
+  0       0                 -9.9999999999999995E+59  100000                
+  6   388   # sensor_p.port.m_flow
+  0  2.3400000000000000E+06  6.1165700000000004E+02  1.0000000000000000E+08
+  6   260   # sensor_p.port.p
+  0  8.4013058152596903E+04 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # sensor_p.port.h_outflow
+ -1       0                       0                 1.0000000000000000E+100
+  1   282   # sensor_p.precision
+  0  2.3400000000000000E+06       0                       0                
+  6   256   # sensor_p.var
+  0  2.3400000000000000E+06       0                       0                
+  6   256   # sensor_p.y
+  0  2.3400000000000000E+06       0                 1.0000000000000000E+100
+  6   256   # sensor_p.p
+  0       1                       0                       0                
+  6   257   # sensor_p1.allowFlowReversal
+ -1       1                       0                       0                
+  1   281   # sensor_p1.showName
+  0       0                 -9.9999999999999995E+59  100000                
+  6   388   # sensor_p1.port.m_flow
+  0  8.4013058152596903E+04 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # sensor_p1.port.h_outflow
+ -1       0                       0                 1.0000000000000000E+100
+  1   282   # sensor_p1.precision
+  0       1                       0                       0                
+  6   257   # sensor_p2.allowFlowReversal
+ -1       1                       0                       0                
+  1   281   # sensor_p2.showName
+  0       0                 -9.9999999999999995E+59  100000                
+  6   388   # sensor_p2.port.m_flow
+  0  8.4013058152596903E+04 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # sensor_p2.port.h_outflow
+ -1       0                       0                 1.0000000000000000E+100
+  1   282   # sensor_p2.precision
+  0       1                       0                       0                
+  6   257   # sensor_p3.allowFlowReversal
+ -1       1                       0                       0                
+  1   281   # sensor_p3.showName
+  0       0                 -9.9999999999999995E+59  100000                
+  6   388   # sensor_p3.port.m_flow
+  0   58000                  6.1165700000000004E+02  1.0000000000000000E+08
+  6   260   # sensor_p3.port.p
+  0  8.4013058152596903E+04 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # sensor_p3.port.h_outflow
+ -1       0                       0                 1.0000000000000000E+100
+  1   282   # sensor_p3.precision
+  0   58000                       0                       0                
+  6   256   # sensor_p3.var
+  0   58000                       0                       0                
+  6   256   # sensor_p3.y
+  0   58000                       0                 1.0000000000000000E+100
+  6   256   # sensor_p3.p
+ -1       0                       0                       0                
+  2   272   # stateSelect.set1.x[1]
+  0       0                       0                       0                
+  3   256   # stateSelect.set1.der(x[1])
+  0       0                       0                       0                
+  6   256   # stateSelect.set1.P[1, 1]
+  0       0                       0                       0                
+  6   256   # stateSelect.set1.P[1, 2]
+
+
+# Matrix with 6 columns defining the initial value calculation
+# (columns 5 and 6 are not utilized for the calculation but are
+#  reported by dymosim via dymosim -i for user convenience):
+#
+# column 1: Type of initial value
+#           = -2: special case: for continuing simulation (column 2 = value)
+#           = -1: fixed value (column 2 = fixed value)
+#           =  0: free value, i.e., no restriction (column 2 = initial value)
+#           >  0: desired value (column 1 = weight for optimization
+#                                column 2 = desired value)
+#                 use weight=1, since automatic scaling usually
+#                 leads to equally weighted terms
+# column 2: fixed, free or desired value according to column 1.
+# column 3: Minimum value (ignored, if Minimum >= Maximum).
+# column 4: Maximum value (ignored, if Minimum >= Maximum).
+#           Minimum and maximum restrict the search range in initial
+#           value calculation. They might also be used for scaling.
+# column 5: Category of variable.
+#           = 1: parameter.
+#           = 2: state.
+#           = 3: state derivative.
+#           = 4: output.
+#           = 5: input.
+#           = 6: auxiliary variable.
+# column 6: Data type of variable and flags according to dsBaseType
+#  <value>&3= 0: real.
+#  <value>&3= 1: boolean.
+#  <value>&3= 2: integer.
+#
+# Initial values are calculated according to the following procedure:
+#
+# - If parameters, states and inputs are FIXED, and other variables
+#   are FREE, no special action takes place (default setting).
+#
+# - If there are only FIXED and FREE variables and the number of
+#   FREE parameters, states and inputs is IDENTICAL to the number of
+#   FIXED state derivatives, outputs and auxiliary variables, a non-linear
+#   equation is solved to determine a consistent set of initial conditions.
+#
+# - In all other cases the following optimization problem is solved:
+#      min( sum( weight(i)*( (value(i) - DESIRED(i))/scale(i) )^2 ) )
+#   under the constraint that the differential equation is fulfilled
+#   at the initial time. In most cases weight(i)=1 is sufficient, due
+#   to the automatic scaling (if DESIRED(i) is not close to zero,
+#   scale(i) = DESIRED(i). Otherwise, the scaling is based on the
+#   nominal value (and maybe minimum and maximum values given in 
+#   column 3 and 4). If these values are zero, scale(i)=1 is used).
+#
+char initialDescription(401,131)
+Power source/sink in each of the heat transfer volumes [W]
+der(Power source/sink in each of the heat transfer volumes) [W/s]
+Minimum of Q_max_s and Q_max_t [W]
+Max Q of shell side assuming reaches inlet tube temperature [W]
+Max Q of tube side assuming reaches inlet shell temperature [W]
+This value is used in Cr calculations [W]
+Mass*heatcapacity ratio of the HX, minimum divided by maximum. In this model, it's calculated using massflow*deltaEnthalpy [1]
+Characteristic NTU of HX
+Pressure loss coefficient. Units make this value equal to a typical local loss coefficient divided by the flow area squared. [1/m4]
+Same as K_tube but for the shell side. [1/m4]
+Total tube-side volume [m3]
+Total shell-side volume [m3]
+Volume of buffers [m3]
+Total tube-side change in height [m]
+Total shell-side change in height [m]
+[Pa|bar]
+[J/kg]
+[J/kg]
+[Pa|bar]
+[J/kg]
+[J/kg]
+[Pa|bar]
+[Pa|bar]
+[Pa|bar]
+[W]
+[1]
+
+
+[s]
+[kg/s]
+[kg/s]
+Change in quality on the tube side
+Change in quality on the shell side
+Inlet temperature based on mass flow direction at midpoint of NTUHX [K|degC]
+Inlet shell temp based on mass flow direction at midpoint of NTUHX [K|degC]
+[K|degC]
+[K|degC]
+[J/kg]
+[J/kg]
+[J/kg]
+[J/kg]
+[J/kg]
+[J/kg]
+[J/kg]
+[J/kg]
+Number of port_a connections [:#(type=Integer)]
+Number of port_b connections [:#(type=Integer)]
+Thermodynamic pressure in the connection point [Pa|bar]
+Mass flow rate from the connection point into the component [kg/s]
+Volume [m3]
+Formulation of energy balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of mass balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of substance balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of trace substance balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Pressure [Pa|bar]
+Use T_start if true, otherwise h_start [:#(type=Boolean)]
+Temperature [K|degC]
+Specific enthalpy [J/kg]
+Mass fraction [1]
+Absolute pressure of medium [Pa|bar]
+der(Absolute pressure of medium) [Pa/s]
+Specific enthalpy of medium [J/kg]
+der(Specific enthalpy of medium) [m2/s3]
+Density of medium [kg/m3|g/cm3]
+der(Density of medium) [Pa.m-2.s]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+der(Specific internal energy of medium) [m2/s3]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+Phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use [:#(type=Integer)]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+If true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+Saturation temperature [K|degC]
+Molar mass [kg/mol]
+Critical temperature [K|degC]
+Critical pressure [Pa|bar]
+Critical molar Volume [m3/mol]
+Pitzer acentric factor
+Triple point temperature [K|degC]
+Triple point pressure [Pa|bar]
+Melting point at 101325 Pa [K|degC]
+Normal boiling point (at 101325 Pa) [K|degC]
+Dipole moment of molecule in Debye (1 debye = 3.33564e10-30 C.m) [debye]
+True if ideal gas heat capacity is available [:#(type=Boolean)]
+True if critical data are known [:#(type=Boolean)]
+True if a dipole moment known [:#(type=Boolean)]
+True if a fundamental equation [:#(type=Boolean)]
+True if liquid heat capacity is available [:#(type=Boolean)]
+True if solid heat capacity is available [:#(type=Boolean)]
+True if accurate data for a viscosity function is available [:#(type=Boolean)]
+True if accurate data for thermal conductivity is available [:#(type=Boolean)]
+True if vapour pressure data, e.g., Antoine coefficients are known [:#(type=Boolean)]
+True if Pitzer acentric factor is known [:#(type=Boolean)]
+Critical specific enthalpy of the fundamental equation [J/kg]
+Critical specific entropy of the fundamental equation [J/(kg.K)]
+Difference between specific enthalpy model (h_m) and f.eq. (h_f) (h_m - h_f) [J/kg]
+Difference between specific enthalpy model (s_m) and f.eq. (s_f) (s_m - s_f) [J/(kg.K)]
+Molar mass [kg/mol]
+Critical temperature [K|degC]
+Critical pressure [Pa|bar]
+Critical molar Volume [m3/mol]
+Pitzer acentric factor
+Triple point temperature [K|degC]
+Triple point pressure [Pa|bar]
+Melting point at 101325 Pa [K|degC]
+Normal boiling point (at 101325 Pa) [K|degC]
+Dipole moment of molecule in Debye (1 debye = 3.33564e10-30 C.m) [debye]
+True if ideal gas heat capacity is available [:#(type=Boolean)]
+True if critical data are known [:#(type=Boolean)]
+True if a dipole moment known [:#(type=Boolean)]
+True if a fundamental equation [:#(type=Boolean)]
+True if liquid heat capacity is available [:#(type=Boolean)]
+True if solid heat capacity is available [:#(type=Boolean)]
+True if accurate data for a viscosity function is available [:#(type=Boolean)]
+True if accurate data for thermal conductivity is available [:#(type=Boolean)]
+True if vapour pressure data, e.g., Antoine coefficients are known [:#(type=Boolean)]
+True if Pitzer acentric factor is known [:#(type=Boolean)]
+Critical specific enthalpy of the fundamental equation [J/kg]
+Critical specific entropy of the fundamental equation [J/(kg.K)]
+Difference between specific enthalpy model (h_m) and f.eq. (h_f) (h_m - h_f) [J/kg]
+Difference between specific enthalpy model (s_m) and f.eq. (s_f) (s_m - s_f) [J/(kg.K)]
+Mass [kg]
+der(Mass) [kg/s]
+Internal energy [J]
+der(Internal energy) [W]
+= true to set up initial equations for pressure [:#(type=Boolean)]
+Vertical angle from the horizontal (-pi/2 <= x <= pi/2) [rad|deg]
+Height(port_b) - Height(port_a) [m]
+Elevation at port_a: Reference value only. No impact on calculations. [m]
+Gravitational acceleration [m/s2]
+Enthalpy flow rates at port_a [W]
+Enthalpy flow rates at port_b [W]
+=true to toggle heat port [:#(type=Boolean)]
+=true to toggle trace mass port [:#(type=Boolean)]
+[:#(type=Boolean)]
+[W]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Mass flow rate from the connection point into the component [kg/s]
+Mass flow rate from the connection point into the component [kg/s]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Number of port_a connections [:#(type=Integer)]
+Number of port_b connections [:#(type=Integer)]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Thermodynamic pressure in the connection point [Pa|bar]
+Volume [m3]
+Formulation of energy balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of mass balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of substance balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of trace substance balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Pressure [Pa|bar]
+Use T_start if true, otherwise h_start [:#(type=Boolean)]
+Temperature [K|degC]
+Specific enthalpy [J/kg]
+Mass fraction [1]
+Absolute pressure of medium [Pa|bar]
+der(Absolute pressure of medium) [Pa/s]
+Specific enthalpy of medium [J/kg]
+der(Specific enthalpy of medium) [m2/s3]
+Density of medium [kg/m3|g/cm3]
+der(Density of medium) [Pa.m-2.s]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+der(Specific internal energy of medium) [m2/s3]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+Phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use [:#(type=Integer)]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+If true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+Saturation temperature [K|degC]
+Mass [kg]
+der(Mass) [kg/s]
+Internal energy [J]
+der(Internal energy) [W]
+= true to set up initial equations for pressure [:#(type=Boolean)]
+Vertical angle from the horizontal (-pi/2 <= x <= pi/2) [rad|deg]
+Height(port_b) - Height(port_a) [m]
+Elevation at port_a: Reference value only. No impact on calculations. [m]
+Gravitational acceleration [m/s2]
+Enthalpy flow rates at port_a [W]
+Enthalpy flow rates at port_b [W]
+=true to toggle heat port [:#(type=Boolean)]
+=true to toggle trace mass port [:#(type=Boolean)]
+[:#(type=Boolean)]
+[W]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Thermodynamic pressure in the connection point [Pa|bar]
+Phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use [:#(type=Integer)]
+Density [kg/m3|g/cm3]
+Temperature [K|degC]
+[Pa|bar]
+[:#(type=Boolean)]
+[Pa|bar]
+Mass flow rate from the connection point into the component [kg/s]
+Mass flow rate from the connection point into the component [kg/s]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use [:#(type=Integer)]
+Specific enthalpy [J/kg]
+Density [kg/m3|g/cm3]
+Temperature [K|degC]
+[Pa|bar]
+[kg/s]
+[:#(type=Boolean)]
+[Pa|bar]
+[:#(type=Boolean)]
+Number of ports [:#(type=Integer)]
+Specific enthalpy of medium [J/kg]
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+Phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use [:#(type=Integer)]
+Specific enthalpy [J/kg]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+If true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+Saturation temperature [K|degC]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Allowed flow direction [:#(type=Modelica.Fluid.Types.PortFlowDirection)]
+Get the mass flow rate from the input connector [:#(type=Boolean)]
+Get the specific enthalpy from the input connector [:#(type=Boolean)]
+Get the composition from the input connector [:#(type=Boolean)]
+Get the trace substances from the input connector [:#(type=Boolean)]
+Fixed mass flow rate going out of the fluid port [kg/s]
+Fixed value of specific enthalpy [J/kg]
+Fixed value of composition [kg/kg]
+Needed to connect to conditional connector [kg/s]
+Needed to connect to conditional connector [J/kg]
+Needed to connect to conditional connector [1]
+[:#(type=Boolean)]
+Number of ports [:#(type=Integer)]
+Specific enthalpy of medium [J/kg]
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+Phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use [:#(type=Integer)]
+Specific enthalpy [J/kg]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+If true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+Saturation temperature [K|degC]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Allowed flow direction [:#(type=Modelica.Fluid.Types.PortFlowDirection)]
+Get the mass flow rate from the input connector [:#(type=Boolean)]
+Get the specific enthalpy from the input connector [:#(type=Boolean)]
+Get the composition from the input connector [:#(type=Boolean)]
+Get the trace substances from the input connector [:#(type=Boolean)]
+Fixed mass flow rate going out of the fluid port [kg/s]
+Fixed value of specific enthalpy [J/kg]
+Fixed value of composition [kg/kg]
+Needed to connect to conditional connector [kg/s]
+Needed to connect to conditional connector [J/kg]
+Needed to connect to conditional connector [1]
+[:#(type=Boolean)]
+Number of ports [:#(type=Integer)]
+Absolute pressure of medium [Pa|bar]
+Specific enthalpy of medium [J/kg]
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+Phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use [:#(type=Integer)]
+Specific enthalpy [J/kg]
+Pressure [Pa|bar]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+If true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+Saturation pressure [Pa|bar]
+Saturation temperature [K|degC]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Allowed flow direction [:#(type=Modelica.Fluid.Types.PortFlowDirection)]
+Get the pressure from the input connector [:#(type=Boolean)]
+Get the specific enthalpy from the input connector [:#(type=Boolean)]
+Get the composition from the input connector [:#(type=Boolean)]
+Get the trace substances from the input connector [:#(type=Boolean)]
+Fixed value of pressure [Pa|bar]
+Fixed value of specific enthalpy [J/kg]
+Fixed value of composition [kg/kg]
+Needed to connect to conditional connector [Pa]
+Needed to connect to conditional connector [J/kg]
+Needed to connect to conditional connector [1]
+[:#(type=Boolean)]
+Number of ports [:#(type=Integer)]
+Absolute pressure of medium [Pa|bar]
+Specific enthalpy of medium [J/kg]
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+Phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use [:#(type=Integer)]
+Specific enthalpy [J/kg]
+Pressure [Pa|bar]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+If true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+Saturation pressure [Pa|bar]
+Saturation temperature [K|degC]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Allowed flow direction [:#(type=Modelica.Fluid.Types.PortFlowDirection)]
+Get the pressure from the input connector [:#(type=Boolean)]
+Get the specific enthalpy from the input connector [:#(type=Boolean)]
+Get the composition from the input connector [:#(type=Boolean)]
+Get the trace substances from the input connector [:#(type=Boolean)]
+Fixed value of pressure [Pa|bar]
+Fixed value of specific enthalpy [J/kg]
+Fixed value of composition [kg/kg]
+Needed to connect to conditional connector [Pa]
+Needed to connect to conditional connector [J/kg]
+Needed to connect to conditional connector [1]
+= true to allow flow reversal, false restricts to design direction (port_a -> port_b) [:#(type=Boolean)]
+= false to hide component name [:#(type=Boolean)]
+Thermodynamic pressure in the connection point [Pa|bar]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Regularization for zero flow:|m_flow| < m_flow_small [kg/s]
+Number of decimals displayed [:#(type=Integer)]
+Variable to be converted [J/kg]
+= true to allow flow reversal, false restricts to design direction (port_a -> port_b) [:#(type=Boolean)]
+= false to hide component name [:#(type=Boolean)]
+Mass flow rate from the connection point into the component [kg/s]
+Mass flow rate from the connection point into the component [kg/s]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Regularization for zero flow:|m_flow| < m_flow_small [kg/s]
+Number of decimals displayed [:#(type=Integer)]
+Variable to be converted [J/kg]
+= true to allow flow reversal, false restricts to design direction (port_a -> port_b) [:#(type=Boolean)]
+= false to hide component name [:#(type=Boolean)]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Thermodynamic pressure in the connection point [Pa|bar]
+Regularization for zero flow:|m_flow| < m_flow_small [kg/s]
+Number of decimals displayed [:#(type=Integer)]
+Variable to be converted [J/kg]
+= true to allow flow reversal, false restricts to design direction (port_a -> port_b) [:#(type=Boolean)]
+= false to hide component name [:#(type=Boolean)]
+Mass flow rate from the connection point into the component [kg/s]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Mass flow rate from the connection point into the component [kg/s]
+Regularization for zero flow:|m_flow| < m_flow_small [kg/s]
+Number of decimals displayed [:#(type=Integer)]
+Variable to be converted [J/kg]
+= true to allow flow reversal, false restricts to design direction (port_a -> port_b) [:#(type=Boolean)]
+= false to hide component name [:#(type=Boolean)]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Number of decimals displayed [:#(type=Integer)]
+Variable to be converted [Pa]
+Icon display
+Pressure at port [Pa|bar]
+= true to allow flow reversal, false restricts to design direction (port_a -> port_b) [:#(type=Boolean)]
+= false to hide component name [:#(type=Boolean)]
+Mass flow rate from the connection point into the component [kg/s]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Number of decimals displayed [:#(type=Integer)]
+= true to allow flow reversal, false restricts to design direction (port_a -> port_b) [:#(type=Boolean)]
+= false to hide component name [:#(type=Boolean)]
+Mass flow rate from the connection point into the component [kg/s]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Number of decimals displayed [:#(type=Integer)]
+= true to allow flow reversal, false restricts to design direction (port_a -> port_b) [:#(type=Boolean)]
+= false to hide component name [:#(type=Boolean)]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Number of decimals displayed [:#(type=Integer)]
+Variable to be converted [Pa]
+Icon display
+Pressure at port [Pa|bar]
+
+
+
+
+

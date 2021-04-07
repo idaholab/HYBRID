@@ -1,0 +1,57 @@
+Log-file of program ./dymosim
+(generated: Tue Apr  6 17:03:44 2021)
+
+dymosim started
+... "NHES.Systems.BalanceOfPlant.StagebyStageTurbine.Examples.Eight_Stage_Turbine" simulating
+... "dsin.txt" loading (dymosim input file)
+... "StageTurbine.mat" creating (simulation result file)
+
+Integration started at T = 0 using integration method DASSL
+(DAE multi-step solver (dassl/dasslrt of Petzold modified by Dassault Systemes))
+Error: The following error was detected at time: 0.01569255484531462
+  IF97 medium function tsat called with too low pressure
+p = -56367.9 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(Stator3.states[2].p, Stator3.states[2].h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(Stator3.p[2], Stator3.h[2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique9(Stator3.p[2], Stator3.h[2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique15(Stator3.p[2], Stator3.h[2], {1.0}, 0, 0)
+
+Solver will attempt to handle this problem.
+
+
+... Warning message from dymosim
+At time T = 2.272178e-02 in current integration interval
+T_interval = 0.000000e+00 ... 8.888889e+00
+a large amount of work has been expended
+(about 500 steps) in the integrator. Probably the communication
+interval is too large or the system is stiff.
+
+
+Integration terminated successfully at T = 400
+   CPU-time for integration                : 24.7 seconds
+   CPU-time for one grid interval          : 550 milliseconds
+   CPU-time for initialization             : 0.038 seconds
+   Number of result points                 : 46
+   Number of grid points                   : 46
+   Number of accepted steps                : 1857
+   Number of f-evaluations (dynamics)      : 3903
+   Number of crossing function evaluations : 1907
+   Number of Jacobian-evaluations          : 198
+   Number of model time events             : 2
+   Number of input time events             : 0
+   Number of state events                  : 0
+   Number of step events                   : 0
+   Minimum integration stepsize            : 0.00129
+   Maximum integration stepsize            : 54.6
+   Maximum integration order               : 3
+Calling terminal section
+... "dsfinal.txt" creating (final states)
+
+SUCCESSFUL simulation of NHES.Systems.BalanceOfPlant.StagebyStageTurbine.Examples.Eight_Stage_Turbine

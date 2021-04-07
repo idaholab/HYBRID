@@ -44,7 +44,8 @@ import Modelica.Math;
 annotation (
     uses(
     Modelica(version="4.0.0"),
-    TRANSFORM(version="0.5")),
+    TRANSFORM(version="0.5"),
+    MikkelsonModeling(version="1")),
     version="2",
     Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
   Documentation(info="<html>
