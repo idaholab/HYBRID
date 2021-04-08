@@ -3,8 +3,6 @@ model Dual_Pipe_CTES
   extends Modelica.Icons.Example;
   parameter Modelica.Units.SI.MassFlowRate shell_flow_shim=1.5;
   parameter Modelica.Units.SI.MassFlowRate tube_flow_shim=1.5;
-//  Modelica.SIunits.Power Q_tube;
-//  Modelica.SIunits.Power Q_shell;
   Dual_Pipe_Model CTES(
     nY=7,
     nX=9,
@@ -74,8 +72,7 @@ model Dual_Pipe_CTES
     h=500e3,
     nPorts=1) annotation (Placement(transformation(extent={{152,-4},{132,16}})));
 equation
-//  Q_tube =sum(concreteStoreFromScratch_Connectable_Double.tube.heatTransfer.Q_flows);
-//  Q_shell =sum(concreteStoreFromScratch_Connectable_Double.shell.heatTransfer.Q_flows);
+
   connect(Charge_Valve.port_a, Charge_Source.ports[1]) annotation (Line(points=
           {{-78,16},{-88,16},{-88,14},{-96,14}}, color={0,127,255}));
   connect(Charge_Signal.y, Charge_Valve.opening)

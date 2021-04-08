@@ -14,10 +14,10 @@ public
   TES_Med.ThermodynamicState Con_State[nX,nY];
 
   Modelica.Units.SI.MassFlowRate m_flow "Internal (constant) mass flow rate";
-  Modelica.Units.SI.Energy E_store_daily;
+  Modelica.Units.SI.Energy E_store_daily "A daily (86400 second) resetting value to calculate energy stored";
 
   Modelica.Units.SI.CoefficientOfHeatTransfer hc[nX];
-  Modelica.Units.SI.Power[nX] Q_Exch;
+  Modelica.Units.SI.Power[nX] Q_Exch "Heat transfer through concrete surface to the HTF";
  // Modelica.SIunits.Mass ms[nX,2];
   Modelica.Units.SI.SpecificEnthalpy h_f[nX];
   Modelica.Units.SI.Temperature T_sat_HTF;
@@ -28,25 +28,26 @@ public
   Modelica.Units.SI.Area ConAs[nY];
   parameter Integer nY = 5 "Concrete discretization nodes";
   parameter Integer nX = 9 "Discretizations in pipe direction";
-  parameter Modelica.Units.SI.Time tau=250;
+  parameter Modelica.Units.SI.Time tau=0.250
+                                            "Time constant delay for heat transfer coefficient, greatly increases simulation time";
   constant Real pi = Modelica.Constants.pi;
-  parameter Boolean restrict = false;
-  constant Modelica.Units.SI.ThermalConductivity k_steel=50;
-  parameter Modelica.Units.SI.MassFlowRate m_flow_zero=1e-3;
-  parameter Modelica.Units.SI.MassFlowRate m_flow_small=0.25;
+  constant Modelica.Units.SI.ThermalConductivity k_steel=15;
   parameter Integer nPipes= 750;
   parameter Modelica.Units.SI.Length dX=150
     "Total pipe and heat transfer area length";
+    parameter Real Pipe_to_Concrete_Length_Ratio = 3 "Pipe length to concrete length ratio";
+
+  Modelica.Units.SI.Length dxc = dX/Pipe_to_Concrete_Length_Ratio/nX "Concrete length per node";
   parameter Modelica.Units.SI.Length dY=0.2 "Total Concrete thickness";
   parameter Modelica.Units.SI.Length dZ=d_out+dY "Total Concrete height";
   parameter Modelica.Units.SI.Length d_in=0.07 "Pipe inner diameter";
   parameter Modelica.Units.SI.Length d_out=0.079 "Pipe outer diameter";
   Modelica.Units.SI.Volume V_Concrete;
-  Modelica.Units.SI.Time t_track;
+  Modelica.Units.SI.Time t_track "This is a daily (86400) resetting time variable. It can be very useful for plotting variables against time when it is desirable to adjust said time back to 0";
   replaceable package HTF =Modelica.Media.Water.StandardWater
-  constrainedby Modelica.Media.Interfaces.PartialMedium;
+  constrainedby Modelica.Media.Interfaces.PartialMedium annotation(choicesAllMatching=true);
 
-  Modelica.Units.SI.Energy E_stor;
+  Modelica.Units.SI.Energy E_stor "Begins at 0 and never resets.";
   HTF.ThermodynamicState HTF_State_a "State at charge inlet or discharge outlet";
   HTF.ThermodynamicState HTF_State_b "State at charge outlet or discharge inlet";
   HTF.ThermodynamicState HTF_satliq;
@@ -56,7 +57,6 @@ public
   constrainedby TRANSFORM.Media.Interfaces.Solids.PartialAlloy
     "Material properties" annotation (choicesAllMatching=true);
 
-  parameter Modelica.Units.SI.MassFlowRate m_flow_total=34.2;
 
   Modelica.Units.SI.Power[nX,nY] QC_Flow;
   Modelica.Units.SI.Power[nX,nY] Q_Ax;
@@ -72,9 +72,6 @@ public
   Modelica.Units.SI.SpecificEnthalpy h_in[nX];
   Modelica.Units.SI.SpecificEnthalpy h_out[nX];
 
-  TRANSFORM.HeatAndMassTransfer.Interfaces.HeatPort_Flow Con_BC_1[nX] annotation (
-      Placement(transformation(extent={{-10,-108},{10,-88}}),
-        iconTransformation(extent={{-10,-108},{10,-88}})));
   TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.GenericPipe
     Pipe(
     nV=nX,
@@ -86,16 +83,16 @@ public
     Concrete(
     nX=nX,
     nY=nY,
-    length_x=dX,
+    length_x=dxc*nX,
     length_y=dY,
     length_z=dZ)
     annotation (Placement(transformation(extent={{-10,-66},{10,-46}})));
   Modelica.Units.SI.ThermalConductivity kave[nX,nY - 1];
   Modelica.Units.SI.ThermalConductivity kaveax[nX - 1,nY];
 
-  parameter Modelica.Units.SI.SpecificEnthalpy HTF_h_start=300e3;
-  parameter Modelica.Units.SI.Temperature Hot_Con_Start=500;
-  parameter Modelica.Units.SI.Temperature Cold_Con_Start=407;
+  parameter Modelica.Units.SI.SpecificEnthalpy HTF_h_start=300e3 "Initial HTF enthalpy" annotation(dialog(tab = "Initialization"));
+  parameter Modelica.Units.SI.Temperature Hot_Con_Start=500 "Initial concrete hot temperature" annotation(dialog(tab = "Initialization"));
+  parameter Modelica.Units.SI.Temperature Cold_Con_Start=407 "Initial concrete cold temperature" annotation(dialog(tab = "Initialization"));
   Modelica.Units.SI.TemperatureDifference dT_Con[nX,nY - 1];
   Modelica.Units.SI.PrandtlNumber Pr[nX];
   Modelica.Units.SI.NusseltNumber Nu[nX];
@@ -147,7 +144,7 @@ equation
   T_Ave_Conc = sum(Con_State[:,:].T)/(nX*nY);
   T_sat_HTF = HTF.saturationTemperature(p_in);
   der(t_track) = 1;
-  der(E_store_daily) = nPipes*sum(Q_Exch)+nPipes*sum(Con_BC_1.Q_flow);
+  der(E_store_daily) = nPipes*sum(Q_Exch);
   when t_track>=86400 then
     reinit(t_track,0);
     reinit(E_store_daily,0);
@@ -180,7 +177,7 @@ equation
   Discharge_Inlet.h_outflow = h_f[nX];
   for j in 1:nY loop
     ds[j] = d_out + dY*(j-1)/nY;
-    ConAs[j] = pi*ds[j+1]*dx;
+    ConAs[j] = pi*ds[j+1]*dxc;
   end for;
   ds[nY+1] = d_out+dY;
   if (Charge_Inlet.m_flow - Discharge_Inlet.m_flow > 0) then
@@ -217,24 +214,14 @@ equation
       Net_Q_Through[i] = sum(QC_Flow[:,i]);
   end for;
   for i in 1:nX loop
-    Con_State[i,nY].T=Con_BC_1[i].T;
+
 
     h_out[i] = HTF_State[i].h;
-    if not restrict then
+
       Q_Exch[i] = UA[i]*(HTF_State[i].T-Con_State[i,1].T);
 
       Pipe.Vs[i]*HTF_State[i].d*der(h_f[i]) + abs(m_flow)*(h_out[i]-h_in[i]) + Q_Exch[i] = 0;
-      else
-    if abs(m_flow*nPipes) > 1e-4 then
-      Q_Exch[i] = UA[i]*(HTF_State[i].T-Con_State[i,1].T);
-
-      Pipe.Vs[i]*HTF_State[i].d*der(h_f[i])+abs(m_flow)*(h_out[i]-h_in[i]) + Q_Exch[i]=0;
-    else
-      Q_Exch[i] = TRANSFORM.Math.spliceTanh(0,UA[i]*(HTF_State[i].T-Con_State[i,1].T),m_flow*nPipes,1e-4);
-      der(h_f[i]) = 0;
-    end if;
-    end if;
-      HTF_State[i] = HTF.setState_ph(p_in,h_f[i]);
+       HTF_State[i] = HTF.setState_ph(p_in,h_f[i]);
     UA[i] = pi*d_in*dx/(1/hc[i]+d_in*log(d_out/d_in)/(2*k_steel));
     //UA[i] = pi*d_in*dx*hc[i];
 
@@ -245,7 +232,7 @@ equation
     for j in 1:nY loop
       if
         (j == nY) then
-        QC_Flow[i,j] = -kave[i,j-1]*ConAs[j-1]*(Con_State[i,j].T-Con_State[i,j-1].T)/dy+Con_BC_1[i].Q_flow;
+        QC_Flow[i,j] = -kave[i,j-1]*ConAs[j-1]*(Con_State[i,j].T-Con_State[i,j-1].T)/dy;
         Concrete.Vs[i,j]*TES_Med.density_T(Con_State[i,j].T)*TES_Med.specificHeatCapacityCp_T(Con_State[i,j].T)*der(Con_State[i,j].T) = QC_Flow[i,j]+Q_Ax[i,j];
       elseif
             (j == 1) then
@@ -269,11 +256,11 @@ equation
     for i in 1:nX loop
     for j in 1:nY loop
     if i == 1 then
-      Q_Ax[i,j] = -kaveax[i,j]*(pi/4*(ds[j+1]*ds[j+1]-ds[j]*ds[j]))*(Con_State[i+1,j].T-Con_State[i,j].T)/dx;
+      Q_Ax[i,j] = -kaveax[i,j]*(pi/4*(ds[j+1]*ds[j+1]-ds[j]*ds[j]))*(Con_State[i+1,j].T-Con_State[i,j].T)/dxc;
     elseif i==nX then
-      Q_Ax[i,j] = -kaveax[i-1,j]*(pi/4*(ds[j+1]*ds[j+1]-ds[j]*ds[j]))*(Con_State[i,j].T-Con_State[i-1,j].T)/dx;
+      Q_Ax[i,j] = -kaveax[i-1,j]*(pi/4*(ds[j+1]*ds[j+1]-ds[j]*ds[j]))*(Con_State[i,j].T-Con_State[i-1,j].T)/dxc;
     else
-      Q_Ax[i,j] = kaveax[i,j]*(pi/4*(ds[j+1]*ds[j+1]-ds[j]*ds[j]))/dx*(Con_State[i+1,j].T-Con_State[i,j].T)-kaveax[i-1,j]*(pi/4*(ds[j+1]*ds[j+1]-ds[j]*ds[j]))/dx*(Con_State[i,j].T-Con_State[i-1,j].T);
+      Q_Ax[i,j] = kaveax[i,j]*(pi/4*(ds[j+1]*ds[j+1]-ds[j]*ds[j]))/dxc*(Con_State[i+1,j].T-Con_State[i,j].T)-kaveax[i-1,j]*(pi/4*(ds[j+1]*ds[j+1]-ds[j]*ds[j]))/dxc*(Con_State[i,j].T-Con_State[i-1,j].T);
     end if;
     end for;
     end for;
@@ -363,5 +350,14 @@ equation
     experiment(
       StopTime=777600,
       __Dymola_NumberOfIntervals=20007,
-      __Dymola_Algorithm="Esdirk45a"));
+      __Dymola_Algorithm="Esdirk45a"),
+    Documentation(info="<html>
+<p>This is the base built model for CTES. There are 2 main assumptions that exist within the model, and their justifications are discussed here. </p>
+<p>Assumption #1: Incompressible flow assumption. An incompressible flow assumption enforces a single mass flow rate across the entire concrete system. This is imposed on the system in 2 ways: no density derivative is used as in a full fluid modeling system and a single m_flow value is dedicated to each fluid node. </p>
+<p>Assumption #2: No pressure gradient in the direction of fluid flow. This assumption is somewhat a byproduct of assumption #1. </p>
+<p>These assumptions were imposed on the system in large part due to the cyclical transition from no-flow to low-flow to nominal-flow changes. These are computationally difficult transitions especially when combined with local heat transfer correlation calculations and resulting heat transfer. Because the pressure equation is non-linear, there are too many communicating non-linear equations for reasonable solving times (and sometimes, the solutions were impossible, even with the stiffest solvers). The pressure within the fluid however is not expected to impact the characteristics of CTES operation that much. While the pressure change would impact any saturation temperature of the fluid, there are no phenomena that should exist that would be altered due to the pressure change. Design considerations must be adjusted for actual high pressures, but otherwise no key information is expected to be lost. </p>
+<p>To impose the assumptions, conservatism is applied to the CTES. Conservatism for a storage technology should mean that the ability to insert or remove heat is modelled as smaller than it may be in reality. There are no decisions in modeling for how to conservatively apply the mass flow conservation. The pressure however can be taken in the system to be either the inlet or the outlet pressure. To apply a conservative assumption then, the cold end pressure is used. This should be the lower pressure during charging, lowering the saturation temperature and thus the available heat to input into the CTES. Conversely, during discharge this would be the higher pressure meaning that the saturation temperature is higher and thus, again, the available heat from the CTES to put into the HTF is lowered. </p>
+<p>This model does not impose on the user a requirement that only 1 set of the fluid ports is used at a time. This means that for Charge_m_flow &gt;= Discharge_m_flow, assumed operation is charging. This also means that the mass flow rate is the <b>difference </b>between the two flow rates. Care should be taken by the user to never use this model when both charging and discharging are allowed. The difference is used to avoid discontinuities in the model that may cause model crashing. (To check for this, a user would simply compare the port mass flow rates, as they are separately set). </p>
+<p>The concrete portion of the model default medium is based on HeatCrete data, but any TRANSFORM&hellip;.PartialAlloy compliant medium would be appropriate to use instead. 2-D conduction is imposed, and adiabatic boundary conditions currently exist on the non-pipe boundaries. Adding heat losses on the ends would likely be an advisable future addition, but would certainly require more knowledge of the application. The adiabatic radial boundary condition is imposed as an assumption that a typical internal concrete pipe would radially see similar, if not identical, conditions. Therefore, an adiabatic BC imposes this reflection. </p>
+</html>"));
 end Single_Pipe_CS_ED_Enabled;

@@ -23,24 +23,25 @@ public
   Modelica.Units.SI.ThermalConductance UA[nX,2];
   parameter Integer nY = 5 "Concrete discretization nodes";
   parameter Integer nX = 9 "Discretizations in pipe direction";
-  parameter Modelica.Units.SI.Time tau=250;
+ parameter Modelica.Units.SI.Time tau=0.250
+                                          "Time constant delay for heat transfer coefficient, greatly increases simulation time";
+
   constant Real pi = Modelica.Constants.pi;
-  parameter Boolean restrict = false;
-  constant Modelica.Units.SI.ThermalConductivity k_steel=50;
-  parameter Modelica.Units.SI.MassFlowRate m_flow_zero=1e-3;
-  parameter Modelica.Units.SI.MassFlowRate m_flow_small=0.25;
+  constant Modelica.Units.SI.ThermalConductivity k_steel=15;
   parameter Integer nPipes= 750;
   parameter Modelica.Units.SI.Length dX=150
     "Total pipe and heat transfer area length";
+    parameter Real Pipe_to_Concrete_Length_Ratio = 3 "Pipe length to concrete length ratio";
+
+  Modelica.Units.SI.Length dxc = dX/Pipe_to_Concrete_Length_Ratio/nX "Concrete length per node";
   parameter Modelica.Units.SI.Length dY=0.2 "Total Concrete thickness";
   parameter Modelica.Units.SI.Length dZ=d_out + dY "Total Concrete height";
   parameter Modelica.Units.SI.Length d_in=0.07 "Charge inner diameter";
   parameter Modelica.Units.SI.Length d_out=0.079 "Charge outer diameter";
   Modelica.Units.SI.Volume V_Concrete;
   Modelica.Units.SI.Time t_track;
-  //Modelica.SIunits.Mass ms[nX,2];
   replaceable package HTF = Modelica.Media.Water.StandardWater
-  constrainedby Modelica.Media.Interfaces.PartialMedium;
+  constrainedby Modelica.Media.Interfaces.PartialMedium annotation(choicesAllMatching=true);
 
   Modelica.Units.SI.Energy E_stor;
   HTF.ThermodynamicState HTF_State_a[2] "State at charge inlet or discharge outlet";
@@ -77,17 +78,17 @@ public
     Concrete(
     nX=nX,
     nY=nY,
-    length_x=dX,
+    length_x=dxc*nX,
     length_y=dY,
     length_z=dZ)
     annotation (Placement(transformation(extent={{-10,-66},{10,-46}})));
   Modelica.Units.SI.ThermalConductivity kave[nX,nY - 1];
   Modelica.Units.SI.ThermalConductivity kaveax[nX - 1,nY];
 
-  parameter Modelica.Units.SI.SpecificEnthalpy HTF_h_start_hot=300e3;
-  parameter Modelica.Units.SI.SpecificEnthalpy HTF_h_start_cold=300e3;
-  parameter Modelica.Units.SI.Temperature Hot_Con_Start=500;
-  parameter Modelica.Units.SI.Temperature Cold_Con_Start=407;
+  parameter Modelica.Units.SI.SpecificEnthalpy HTF_h_start_hot=300e3 "Initial hot side enthalpy" annotation(dialog(tab = "Initialization"));
+  parameter Modelica.Units.SI.SpecificEnthalpy HTF_h_start_cold=300e3 "Initial cold side enthalpy" annotation(dialog(tab = "Initialization"));
+  parameter Modelica.Units.SI.Temperature Hot_Con_Start=500 "Initial hot side concrete temperature" annotation(dialog(tab = "Initialization"));
+  parameter Modelica.Units.SI.Temperature Cold_Con_Start=407 "Initial cold side concrete temperature" annotation(dialog(tab = "Initialization"));
   Modelica.Units.SI.TemperatureDifference dT_Con[nX,nY - 1];
   Modelica.Units.SI.PrandtlNumber Pr[nX,2];
   Modelica.Units.SI.NusseltNumber Nu[nX,2];
@@ -262,24 +263,24 @@ equation
 
     for j in 1:nY loop
     if i == 1 then
-      Q_Ax[i,j] = -kaveax[i,j]*dy*dZ/dx*(Con_State[i+1,j].T-Con_State[i,j].T);
+      Q_Ax[i,j] = -kaveax[i,j]*dy*dZ/dxc*(Con_State[i+1,j].T-Con_State[i,j].T);
     elseif i==nX then
-      Q_Ax[i,j] = -kaveax[i-1,j]*dy*dZ/dx*(Con_State[i,j].T-Con_State[i-1,j].T);
+      Q_Ax[i,j] = -kaveax[i-1,j]*dy*dZ/dxc*(Con_State[i,j].T-Con_State[i-1,j].T);
     else
-      Q_Ax[i,j] = kaveax[i,j]*dy*dZ/dx*(Con_State[i+1,j].T-Con_State[i,j].T)-kaveax[i-1,j]*dZ*dy/dx*(Con_State[i,j].T-Con_State[i-1,j].T);
+      Q_Ax[i,j] = kaveax[i,j]*dy*dZ/dxc*(Con_State[i+1,j].T-Con_State[i,j].T)-kaveax[i-1,j]*dZ*dy/dxc*(Con_State[i,j].T-Con_State[i-1,j].T);
     end if;
     end for;
     for j in 1:nY loop
       if
         (j == nY) then
-        QC_Flow[i,j] = -kave[i,j-1]*dZ/dy*dx*(Con_State[i,j].T-Con_State[i,j-1].T);
+        QC_Flow[i,j] = -kave[i,j-1]*dZ/dy*dxc*(Con_State[i,j].T-Con_State[i,j-1].T);
         Concrete.Vs[i,j]*TES_Med.density_T(Con_State[i,j].T)*TES_Med.specificHeatCapacityCp_T(Con_State[i,j].T)*der(Con_State[i,j].T) = QC_Flow[i,j]+Q_Exch[nX+1-i,2]+Q_Ax[i,j];
       elseif
             (j == 1) then
-        QC_Flow[i,j] = kave[i,j]*dZ/dy*dx*(Con_State[i,j+1].T-Con_State[i,j].T);
+        QC_Flow[i,j] = kave[i,j]*dZ/dy*dxc*(Con_State[i,j+1].T-Con_State[i,j].T);
         Concrete.Vs[i,j]*TES_Med.density_T(Con_State[i,j].T)*TES_Med.specificHeatCapacityCp_T(Con_State[i,j].T)*der(Con_State[i,j].T) = QC_Flow[i,j]+Q_Exch[i,1]+Q_Ax[i,j];
       else
-        QC_Flow[i,j] = kave[i,j]*dZ*dx/dy*(Con_State[i,j+1].T-Con_State[i,j].T)-kave[i,j-1]*dZ*dx/dy*(Con_State[i,j].T-Con_State[i,j-1].T);
+        QC_Flow[i,j] = kave[i,j]*dZ*dxc/dy*(Con_State[i,j+1].T-Con_State[i,j].T)-kave[i,j-1]*dZ*dxc/dy*(Con_State[i,j].T-Con_State[i,j-1].T);
         Concrete.Vs[i,j]*TES_Med.density_T(Con_State[i,j].T)*TES_Med.specificHeatCapacityCp_T(Con_State[i,j].T)*der(Con_State[i,j].T) = QC_Flow[i,j]+Q_Ax[i,j];
       end if;
     end for;
@@ -417,5 +418,8 @@ end for;
       StopTime=777600,
       __Dymola_NumberOfIntervals=20007,
       Tolerance=0.001,
-      __Dymola_Algorithm="Esdirk45a"));
+      __Dymola_Algorithm="Esdirk45a"),
+    Documentation(info="<html>
+<p>This model is built on the Single Pipe model, operating the two pipes on the same characteristic equations, merely in 2 dimensions. It is important to note though that the numbering for the <b>discharging pipe</b> is consistent with its direction of fluid motion. That is, the discharge inlet connects with node 1 and the discharge outlet connects with node N. To obtain a radial path then, a user should compare charging node n with concrete nodes n with discharging node N-n+1 due to the counterflow nature. &nbsp; </p>
+</html>"));
 end Dual_Pipe_Model_CS_ED_Enabled;

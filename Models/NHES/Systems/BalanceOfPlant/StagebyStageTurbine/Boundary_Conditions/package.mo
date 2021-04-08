@@ -1,3 +1,0 @@
-within NHES.Systems.BalanceOfPlant.StagebyStageTurbine;
-package Boundary_Conditions
-end Boundary_Conditions;
