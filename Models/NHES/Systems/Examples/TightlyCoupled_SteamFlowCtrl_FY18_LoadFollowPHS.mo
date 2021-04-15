@@ -12,7 +12,7 @@ model TightlyCoupled_SteamFlowCtrl_FY18_LoadFollowPHS
   //Real demandChange = min(1.05, max(EM.port_b2.m_flow/(EM.port_b2_nominal.m_flow+sum(EM.port_b3_nominal_m_flow)) + sum(EM.port_b3.m_flow)/(EM.port_b2_nominal.m_flow+sum(EM.port_b3_nominal_m_flow)),  0.5));
 
   extends BaseClasses.PartialExample_A(
-    redeclare PrimaryHeatSystem.FourLoopPWR.NSSS PHS(redeclare
+    redeclare PrimaryHeatSystem.FourLoopPWR.Components.NSSS PHS(redeclare
         PrimaryHeatSystem.FourLoopPWR.CS_LoadFollow CS(
         delayStart_SGpump=500,
         delayStart_CR=200,
@@ -35,8 +35,10 @@ model TightlyCoupled_SteamFlowCtrl_FY18_LoadFollowPHS
       port_a3_nominal_h={IP.port_b_nominal.h},
       nPorts_a3=1,
       port_a3_nominal_m_flow={-IP.port_b_nominal.m_flow},
-      redeclare NHES.Systems.BalanceOfPlant.Turbine.CS_PressureAndPowerControl
+      redeclare
+        NHES.Systems.BalanceOfPlant.Turbine.ContolSystems.CS_PressureAndPowerControl
         CS(p_nominal=BOP.port_a_nominal.p, W_totalSetpoint=SC.W_totalSetpoint_BOP)),
+
     redeclare EnergyStorage.Battery.Logical ES(
       capacity_max=dataCapacity.ES_capacity,
       capacity_min=0.2*dataCapacity.ES_capacity,
@@ -65,6 +67,7 @@ model TightlyCoupled_SteamFlowCtrl_FY18_LoadFollowPHS
       flowSplit(port_2(h_outflow(start=2.95398e6, fixed=false))),
       returnPump(PR0=62.7/51.3042, pstart_out=6270000),
       hEX_nuclearHeatCathodeGasRecup_ROM(hShell_out(start=962881, fixed=false))),
+
     redeclare SupervisoryControl.InputSetpointData SC(
       delayStart=delayStart.k,
       W_nominal_IP(displayUnit="MW") = 53303300,

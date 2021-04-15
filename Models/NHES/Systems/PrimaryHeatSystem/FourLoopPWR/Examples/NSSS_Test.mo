@@ -3,8 +3,7 @@ model NSSS_Test
   import TRANSFORM;
   extends TRANSFORM.Icons.Example;
 
-  NSSS                                                       PHS(redeclare
-      CS_SteadyNominalPower CS)
+  Components.NSSS PHS(redeclare CS_SteadyNominalPower CS)
     annotation (Placement(transformation(extent={{-40,-42},{40,38}})));
 
   Modelica.Fluid.Sources.Boundary_ph sink1(
@@ -33,5 +32,8 @@ equation
       StopTime=10000,
       __Dymola_NumberOfIntervals=250,
       __Dymola_Algorithm="Esdirk45a"),
-    __Dymola_experimentSetupOutput(events=false));
+    __Dymola_experimentSetupOutput(events=false),
+    Documentation(info="<html>
+<p>This example is showing the initialization of the 4 loop PWR reactor. Nominal Power is </p>
+</html>"));
 end NSSS_Test;

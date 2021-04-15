@@ -39,5 +39,18 @@ This adaptor has heatflow as input and temperature and derivative of temperature
           extent={{-20,100},{20,-100}},
           lineColor={191,0,0},
           radius=10,
-          lineThickness=0.5)}));
+          lineThickness=0.5),
+        Text(
+          extent={{-18,28},{18,8}},
+          visible=use_pder,
+          textColor={0,0,0},
+          textString="%Name_pder2"),
+        Text(
+          extent={{-18,-40},{18,-60}},
+          textColor={0,0,0},
+          textString="%Name_fder"),
+        Text(
+          extent={{-18,-10},{18,-30}},
+          textString="%Name_fder2",
+          textColor={0,0,0})}));
 end GeneralHeatFlowToTemperatureAdaptor;

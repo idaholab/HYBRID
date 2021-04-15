@@ -1,8 +1,8 @@
-within NHES.Systems.BalanceOfPlant.Turbine.Examples;
+within NHES.Systems.BalanceOfPlant.Turbine.Examples.Example_FMU_construction;
 model SteamTurbine_L1_FMU
   import NHES;
   extends Modelica.Icons.Example;
-  NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries         BOP(
+  NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries BOP(
     nPorts_a3=1,
     port_a_nominal(
       m_flow=67,
@@ -11,7 +11,7 @@ model SteamTurbine_L1_FMU
     port_b_nominal(p=1000000, h=BOP.Medium.specificEnthalpy_pT(BOP.port_b_nominal.p,
           318.95)),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.CS_OTSG_TCV_Pressure_TBV_Power_Control
+      NHES.Systems.BalanceOfPlant.Turbine.ContolSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
       CS(
       delayStartTCV=20,
       p_nominal=3447400,
@@ -116,5 +116,10 @@ equation
   annotation (experiment(
       StopTime=1000,
       __Dymola_NumberOfIntervals=1000,
-      __Dymola_Algorithm="Esdirk45a"));
+      __Dymola_Algorithm="Esdirk45a"), Documentation(info="<html>
+<p>Created by: Konor Frick </p>
+<p>Date: 9/28/2020</p>
+<p>Adaptation of the balance of plant model to become an FMI/FMU. This model can be exported as in either model exchange or co-simulation mode. </p>
+<p>Reference: K. Frick, A. Alfonsi, C. Rabiti. &quot;Flexible Modelica/RAVEN Framework for IES&quot;. Idaho National Laboratory. INL/EXT-20-00419.</p>
+</html>"));
 end SteamTurbine_L1_FMU;

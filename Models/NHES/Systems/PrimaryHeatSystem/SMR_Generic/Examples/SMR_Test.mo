@@ -15,7 +15,7 @@ model SMR_Test
       p=3447380,
       T(displayUnit="degC") = 579.25,
       h=2997670))
-    annotation (Placement(transformation(extent={{-74,-52},{22,64}})));
+    annotation (Placement(transformation(extent={{-76,-52},{20,64}})));
   Modelica.Fluid.Sources.Boundary_pT boundary2(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     T(displayUnit="K") = 421.15,
@@ -30,10 +30,10 @@ model SMR_Test
     annotation (Placement(transformation(extent={{74,18},{50,40}})));
 equation
   connect(boundary2.ports[1],nuScale_Tave_enthalpy. port_a) annotation (
-      Line(points={{52,-2},{36,-2},{36,-1.13846},{23.7455,-1.13846}}, color=
+      Line(points={{52,-2},{36,-2},{36,-1.13846},{21.7455,-1.13846}}, color=
          {0,127,255}));
   connect(boundary3.ports[1],nuScale_Tave_enthalpy. port_b) annotation (
-      Line(points={{50,29},{36,29},{36,28.3077},{23.7455,28.3077}}, color={
+      Line(points={{50,29},{36,29},{36,28.3077},{21.7455,28.3077}}, color={
           0,127,255}));
   annotation (
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-80},

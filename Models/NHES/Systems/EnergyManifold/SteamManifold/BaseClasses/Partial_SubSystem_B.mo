@@ -30,13 +30,15 @@ partial model Partial_SubSystem_B
     annotation (Placement(transformation(extent={{90,30},{110,50}}),
         iconTransformation(extent={{90,30},{110,50}})));
 
-  Modelica.Fluid.Interfaces.FluidPort_a port_a3[nPorts_a3](redeclare package Medium =
+  Modelica.Fluid.Interfaces.FluidPort_a port_a3[nPorts_a3](redeclare package
+      Medium =
         Medium_3, m_flow(each min=if allowFlowReversal then -Constants.inf else 0))
     "Fluid connector a (positive design flow direction is from port_a_3 to port_b_3)"
     annotation (Placement(transformation(extent={{-50,-110},{-30,-90}}),
         iconTransformation(extent={{-50,-110},{-30,-90}})));
 
-  Modelica.Fluid.Interfaces.FluidPort_b port_b3[nPorts_b3](redeclare package Medium =
+  Modelica.Fluid.Interfaces.FluidPort_b port_b3[nPorts_b3](redeclare package
+      Medium =
         Medium_3, m_flow(each max=if allowFlowReversal then +Constants.inf else 0))
     "Fluid connector b (positive design flow direction is from port_a_3 to port_b_3)"
     annotation (Placement(transformation(extent={{30,-110},{50,-90}}),

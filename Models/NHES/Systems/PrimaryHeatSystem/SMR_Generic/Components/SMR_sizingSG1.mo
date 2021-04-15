@@ -245,5 +245,8 @@ equation
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,
             -100},{160,120}})),                                  Diagram(
         coordinateSystem(preserveAspectRatio=false, extent={{-160,-100},{160,
-            120}})));
+            120}})),
+    Documentation(info="<html>
+<p>This model is here to show the basics of how to develop the natural circulation reactor devoid of the outside couplings to the fluid adaptors. </p>
+</html>"));
 end SMR_sizingSG1;

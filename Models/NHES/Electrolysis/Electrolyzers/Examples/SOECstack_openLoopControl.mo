@@ -82,8 +82,8 @@ model SOECstack_openLoopControl "Open-loop control for SOEC stack operation"
   Modelica.Fluid.Sensors.MassFlowRate cathodeFlowIn(redeclare package Medium =
                Electrolysis.Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-16,-4},{4,16}})));
-  Modelica.Fluid.Sensors.MassFlowRate cathodeFlowOut(redeclare package Medium =
-               Electrolysis.Media.Electrolysis.CathodeGas)
+  Modelica.Fluid.Sensors.MassFlowRate cathodeFlowOut(redeclare package Medium
+      =        Electrolysis.Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{52,-2},{72,18}})));
   Electrolysis.Sources.PrescribedPowerFlow prescribedPowerFlow
     annotation (Placement(transformation(extent={{-22,40},{-2,60}})));

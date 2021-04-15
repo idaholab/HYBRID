@@ -1,8 +1,7 @@
 within NHES.Desalination.Media.BrineProp;
 package BrineDuan "NaCl solution using Duan density"
-  extends BrineProp.PartialBrineMultiSaltOnePhase(redeclare package
-      Salt_data =
-        BrineProp.SaltDataDuan,                                                                         final saltNames = {"sodium chloride"}, final MM_salt = {Salt_data.M_NaCl}, final nM_salt = {Salt_data.nM_NaCl});
+  extends BrineProp.PartialBrineMultiSaltOnePhase(redeclare package Salt_data
+    =   BrineProp.SaltDataDuan,                                                                         final saltNames = {"sodium chloride"}, final MM_salt = {Salt_data.M_NaCl}, final nM_salt = {Salt_data.nM_NaCl});
 
   redeclare function extends dynamicViscosity_pTX
       //  constant Real M_NaCl=0.058443 "molar mass in [kg/mol]";
