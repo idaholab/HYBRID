@@ -1,0 +1,12 @@
+Examples
+PartialFlowHeatTransfer
+IdealFlowHeatTransfer
+ConstantFlowHeatTransfer
+ConstantNusseltNumber
+PartialPipeFlowHeatTransfer
+LocalPipeFlowHeatTransfer
+Chen
+DittusBoelter
+Grimson_FlowAcrossTubeBundels
+Partial_TwoPhaseHeatTransfer
+Overall_Evaporation
