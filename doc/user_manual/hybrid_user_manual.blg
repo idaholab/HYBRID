@@ -1,9 +1,7 @@
-This is BibTeX, Version 0.99d
-Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+This is BibTeX, Version 0.99d (TeX Live 2016)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: hybrid_user_manual.aux
-Reallocating 'name_of_file' (item size: 1) to 7 items.
 The style file: ieeetr.bst
-Reallocating 'name_of_file' (item size: 1) to 11 items.
 Database file #1: References.bib
 Warning--empty journal in TRANSFORM
 You've used 17 entries,
