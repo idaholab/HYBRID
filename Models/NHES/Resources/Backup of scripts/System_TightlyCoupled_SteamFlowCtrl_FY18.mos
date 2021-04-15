@@ -1,0 +1,4 @@
+simulateModel("NHES.Systems.Examples.TightlyCoupled_SteamFlowCtrl_FY18", stopTime=11000, numberOfIntervals=1100, method="Esdirk45a", tolerance=1e-004, resultFile="TightlyCoupled_SteamFlowCtrl_FY18");
+
+createPlot(id=1, position={95, 90, 584, 421}, y={"BOP.sensorBus.W_total"}, grid=true, colors={{28,108,200}});
+

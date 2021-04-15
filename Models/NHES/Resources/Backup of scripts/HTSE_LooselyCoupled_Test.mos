@@ -1,0 +1,8 @@
+simulateModel("NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.Examples.HTSE_LooselyCoupled_Test", stopTime=4000, numberOfIntervals=4000, method="Esdirk45a", resultFile="HTSE_LooselyCoupled_Test");
+
+createPlot(id=1, position={4, 6, 451, 298}, y={"IP.sensorBus.W_HTSE", "IP.W_HTSE.port_a.W"}, range={0.0, 4000.0, 58000000.0, 70000000.0}, grid=true, filename="HTSE_LooselyCoupled_Test.mat", colors={{28,108,200}, {238,46,47}});
+createPlot(id=2, position={475, 6, 460, 296}, y={"IP.controlledSOEC.TCoutSensor.y", "IP.controlledSOEC.TCout_set.y"}, range={0.0, 4000.0, 743.0, 751.0}, grid=true, colors={{28,108,200}, {238,46,47}});
+createPlot(id=3, position={955, 7, 451, 294}, y={"IP.sensorBus.m_flow_H2_prod", "IP.mH2_sec"}, range={0.0, 4000.0, 0.32, 0.41000000000000003}, grid=true, colors={{28,108,200}, {238,46,47}});
+createPlot(id=4, position={955, 340, 452, 308}, y={"IP.CS.capacityScaler"}, range={0.0, 4000.0, 0.8500000000000001, 1.1500000000000001}, grid=true, colors={{28,108,200}});
+createPlot(id=5, position={2, 341, 452, 307}, y={"IP.sensorBus.W_SOEC", "IP.W_SOEC.port_a.W"}, range={0.0, 4000.0, 34.0, 46.0}, grid=true, colors={{28,108,200}, {238,46,47}});
+createPlot(id=6, position={476, 340, 460, 308}, y={"IP.controlledSOEC.SOECstack.SUfactor", "IP.controlledSOEC.SUfactor_set.y"}, range={0.0, 4000.0, 62.0, 82.0}, grid=true, colors={{28,108,200}, {238,46,47}});

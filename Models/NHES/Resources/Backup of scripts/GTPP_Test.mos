@@ -1,0 +1,6 @@
+simulateModel("NHES.Systems.SecondaryEnergySupply.NaturalGasFiredTurbine.Examples.GTPP_Test", stopTime=60, numberOfIntervals=600, method="Esdirk45a", resultFile="GTPP_Test");
+
+createPlot(id=1, position={9, 7, 649, 332}, y={"SES.generator.P_flow", "SES.multiSensor.power"}, range={0.0, 65.0, 10000000.0, 80000000.0}, grid=true, filename="GTPP_Test.mat", colors={{28,108,200}, {238,46,47}});
+createPlot(id=2, position={8, 377, 650, 334}, y={"SES.CS.sensorBus.m_flow_fuel", "SES.wNatGas.port_a.m_flow"}, range={0.0, 65.0, 1.0, 5.0}, grid=true, colors={{28,108,200}, {238,46,47}});
+createPlot(id=3, position={674, 7, 410, 332}, y={"SES.capacity", "SES.capacity_nom"}, range={0.0, 70.0, 30.0, 75.0}, grid=true, colors={{28,108,200}, {238,46,47}});
+createPlot(id=4, position={675, 377, 412, 334}, y={"SES.capacityScaler"}, range={0.0, 70.0, 1.75, 2.25}, grid=true, colors={{28,108,200}});

@@ -1,0 +1,13 @@
+AnnualMassFlowRate
+Area_cm2
+AreaSpecificResistance_cm2
+MassFlowRate_kg_hr
+CurrentDensity_cm2
+ElecConductivity
+ElectrolysisEfficiency
+GibbsIntegral
+HydraulicConductanceSquared
+SteamUtilization
+TemperatureGradient
+ThetaIGV
+ThermoInitMeth

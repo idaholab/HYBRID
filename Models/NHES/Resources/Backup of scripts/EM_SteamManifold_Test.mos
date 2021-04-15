@@ -1,0 +1,4 @@
+simulateModel("NHES.Systems.EnergyManifold.SteamManifold.Examples.SteamManifold_Test", stopTime=100, numberOfIntervals=100, method="Esdirk45a", resultFile="SteamManifold_Test");
+
+createPlot(id=1, position={55, 50, 584, 421}, y={"EM.sensorBus.h_toIP"}, range={0.0, 100.0, 2953500.0, 2953700.0}, grid=true, colors={{28,108,200}});
+
