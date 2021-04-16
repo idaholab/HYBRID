@@ -1,7 +1,7 @@
 within NHES.Desalination.Media.BrineProp;
 package Brine5salts "One-phase (liquid) multisalt brine solution"
-  extends BrineProp.PartialBrineMultiSaltOnePhase(redeclare package Salt_data
-    =   BrineProp.SaltDataDuan,                                                                         final saltNames = {"sodium chloride", "potassium chloride", "calcium chloride", "magnesium chloride", "strontium chloride"}, final MM_salt = Salt_data.MM_salt, final nM_salt = Salt_data.nM_salt);
+  extends BrineProp.PartialBrineMultiSaltOnePhase(redeclare package Salt_data =
+        BrineProp.SaltDataDuan,                                                                         final saltNames = {"sodium chloride", "potassium chloride", "calcium chloride", "magnesium chloride", "strontium chloride"}, final MM_salt = Salt_data.MM_salt, final nM_salt = Salt_data.nM_salt);
 
   redeclare function extends density_pTX
       /*redeclare function density_pTX

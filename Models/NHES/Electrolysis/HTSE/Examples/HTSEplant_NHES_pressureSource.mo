@@ -260,8 +260,8 @@ model HTSEplant_NHES_pressureSource
         extent={{10,-10},{-10,10}},
         rotation=180,
         origin={-100,-78})));
-  Modelica.Fluid.Fittings.TeeJunctionIdeal flowSplit(redeclare package Medium
-      =        Modelica.Media.Water.StandardWater, port_2(m_flow(start=
+  Modelica.Fluid.Fittings.TeeJunctionIdeal flowSplit(redeclare package Medium =
+               Modelica.Media.Water.StandardWater, port_2(m_flow(start=
             9.09421)))                             annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},

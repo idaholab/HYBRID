@@ -23,8 +23,8 @@ model ControlledSOEC "SOEC with its regulatory control scheme"
   Modelica.Fluid.Sensors.MassFlowRate cathodeFlowIn(redeclare package Medium =
         Electrolysis.Media.Electrolysis.CathodeGas, allowFlowReversal=false)
     annotation (Placement(transformation(extent={{-68,6},{-48,26}})));
-  Modelica.Fluid.Sensors.MassFlowRate cathodeFlowOut(redeclare package Medium
-      = Electrolysis.Media.Electrolysis.CathodeGas, allowFlowReversal=false)
+  Modelica.Fluid.Sensors.MassFlowRate cathodeFlowOut(redeclare package Medium =
+        Electrolysis.Media.Electrolysis.CathodeGas, allowFlowReversal=false)
     annotation (Placement(transformation(extent={{24,8},{44,28}})));
   Modelica.Blocks.Sources.Ramp TCout_set(
     duration=0,
@@ -36,8 +36,8 @@ model ControlledSOEC "SOEC with its regulatory control scheme"
         extent={{8,-8},{-8,8}},
         rotation=-90,
         origin={80,-80})));
-  Modelica.Fluid.Interfaces.FluidPort_a ctrlCathodeIn(redeclare package Medium
-      =        Electrolysis.Media.Electrolysis.CathodeGas) annotation (
+  Modelica.Fluid.Interfaces.FluidPort_a ctrlCathodeIn(redeclare package Medium =
+               Electrolysis.Media.Electrolysis.CathodeGas) annotation (
       Placement(transformation(extent={{-110,50},{-90,70}}),
         iconTransformation(extent={{-84,20},{-64,40}})));
   Modelica.Blocks.Interfaces.RealOutput c_wCathode annotation (Placement(
@@ -56,12 +56,12 @@ model ControlledSOEC "SOEC with its regulatory control scheme"
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={-8,-74})));
-  Modelica.Fluid.Interfaces.FluidPort_b ctrlAnodeOut(redeclare package Medium
-      = Electrolysis.Media.Electrolysis.AnodeGas_air) annotation (Placement(
+  Modelica.Fluid.Interfaces.FluidPort_b ctrlAnodeOut(redeclare package Medium =
+        Electrolysis.Media.Electrolysis.AnodeGas_air) annotation (Placement(
         transformation(extent={{90,-70},{110,-50}}), iconTransformation(
           extent={{64,-44},{84,-24}})));
-  Modelica.Fluid.Interfaces.FluidPort_b ctrlCathodeOut(redeclare package Medium
-      =        Electrolysis.Media.Electrolysis.CathodeGas) annotation (
+  Modelica.Fluid.Interfaces.FluidPort_b ctrlCathodeOut(redeclare package Medium =
+               Electrolysis.Media.Electrolysis.CathodeGas) annotation (
       Placement(transformation(extent={{90,50},{110,70}}), iconTransformation(
           extent={{64,40},{84,60}})));
   Modelica.Fluid.Interfaces.FluidPort_a ctrlAnodeIn(redeclare package Medium =
