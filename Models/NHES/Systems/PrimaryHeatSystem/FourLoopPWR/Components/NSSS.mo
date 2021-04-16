@@ -371,8 +371,8 @@ public
         origin={64,54.5},
         extent={{5.5,-5},{-5.5,5}},
         rotation=180)));
-  TRANSFORM.Fluid.Sensors.MassFlowRate massFlowRate1(redeclare package Medium
-      = Medium)
+  TRANSFORM.Fluid.Sensors.MassFlowRate massFlowRate1(redeclare package Medium =
+        Medium)
     annotation (Placement(transformation(extent={{74,48},{86,60}})));
   TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump_SimpleMassFlow(
     redeclare package Medium = Medium,
