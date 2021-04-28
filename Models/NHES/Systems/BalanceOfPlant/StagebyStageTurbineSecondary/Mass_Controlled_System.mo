@@ -486,8 +486,8 @@ model Mass_Controlled_System
         origin={-12,-21})));
   TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance2(R=3500)
     annotation (Placement(transformation(extent={{22,-26},{30,-14}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package
-      Medium = Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package Medium
+      =        Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{34,-12},{46,-26}})));
   TRANSFORM.Fluid.Volumes.IdealCondenser
                          condenser1(
@@ -512,34 +512,34 @@ model Mass_Controlled_System
     V_liquid_start=2,
     set_m_flow=false,V_total=100)
     annotation (Placement(transformation(extent={{138,-4},{148,6}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow4(redeclare package
-      Medium = Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow4(redeclare package Medium
+      =        Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{54,16},{60,6}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow5(redeclare package
-      Medium = Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow5(redeclare package Medium
+      =        Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{6,7},{-6,-7}},
         rotation=180,
         origin={110,9})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow6(redeclare package
-      Medium = Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow6(redeclare package Medium
+      =        Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{6,7},{-6,-7}},
         rotation=90,
         origin={138,15})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow7(redeclare package
-      Medium = Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow7(redeclare package Medium
+      =        Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{78,18},{86,10}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow8(redeclare package
-      Medium = Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow8(redeclare package Medium
+      =        Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{6,7},{-6,-7}},
         rotation=90,
         origin={120,-11})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow9(redeclare package
-      Medium = Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow9(redeclare package Medium
+      =        Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{-6,-7},{6,7}},
         rotation=270,
         origin={146,-19})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow10(redeclare package
-      Medium = Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow10(redeclare package Medium
+      =        Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{-6,7},{6,-7}},
         rotation=0,
         origin={72,-7})));
@@ -776,8 +776,8 @@ model Mass_Controlled_System
     annotation (Placement(transformation(extent={{-2,2},{2,-2}},
         rotation=90,
         origin={-126,-12})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package
-      Medium = Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium
+      =        Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{6,7},{-6,-7}},
         rotation=90,
         origin={-130,3})));
@@ -823,8 +823,8 @@ model Mass_Controlled_System
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-188,-18})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow12(redeclare package
-      Medium = Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow12(redeclare package Medium
+      =        Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{-154,44},{-146,52}})));
   Modelica.Blocks.Sources.Constant const5(k=32)
     annotation (Placement(transformation(extent={{-4,4},{4,-4}},
@@ -881,20 +881,19 @@ model Mass_Controlled_System
         extent={{5,5},{-5,-5}},
         rotation=180,
         origin={163,-43})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package
-      Medium =
-        Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium
+      = Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{-4,4},{4,-4}},
         rotation=90,
         origin={176,-36})));
   Modelica.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium =
         Modelica.Media.Examples.TwoPhaseWater) annotation (Placement(
-        transformation(extent={{-110,-60},{-90,-40}}), iconTransformation(
-          extent={{-110,-60},{-90,-40}})));
+        transformation(extent={{-212,-28},{-192,-8}}), iconTransformation(
+          extent={{-212,-28},{-192,-8}})));
   Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium =
         Modelica.Media.Examples.TwoPhaseWater) annotation (Placement(
-        transformation(extent={{-110,40},{-90,60}}), iconTransformation(extent={
-            {-110,40},{-90,60}})));
+        transformation(extent={{-214,74},{-194,94}}),iconTransformation(extent={{-214,74},
+            {-194,94}})));
   NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.ValveLinearTotal
     DFV1(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
@@ -1220,10 +1219,12 @@ equation
     annotation (Line(points={{163,-34.3},{163,-39}}, color={0,0,127}));
   connect(sensor_m_flow2.port_b, TES.Discharge_Inlet) annotation (Line(
         points={{176,-32},{176,71.8},{165.8,71.8}}, color={0,127,255}));
-  connect(sensor_m_flow1.port_b, port_b) annotation (Line(points={{-130,-3},{-138,
-          -3},{-138,-50},{-100,-50}}, color={0,127,255}));
-  connect(port_a, volume5.port_a[1]) annotation (Line(points={{-100,50},{-202,50},
-          {-202,-18},{-194,-18}}, color={0,127,255}));
+  connect(sensor_m_flow1.port_b, port_b) annotation (Line(points={{-130,-3},{
+          -138,-3},{-138,-18},{-202,-18}},
+                                      color={0,127,255}));
+  connect(port_a, volume5.port_a[1]) annotation (Line(points={{-204,84},{-202,
+          84},{-202,-18},{-194,-18}},
+                                  color={0,127,255}));
   connect(DFV1.port_b, turbine_Inlet1.Pipe_flow) annotation (Line(points={{80,61},
           {72,61},{72,66},{22,66}},                 color={0,127,255}));
   connect(sensor_T.port_b, DFV1.port_a) annotation (Line(points={{120,60},{114,60},
@@ -1274,43 +1275,29 @@ equation
           127,255}));
   connect(LPTapValveUpper.port_b, volume1.port_a[3]) annotation (Line(
         points={{-20,2},{-20,-8},{6.66667,-8}}, color={0,127,255}));
-  annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
-                              Bitmap(extent={{-98,-100},{102,100}},  fileName=
+  annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-200,
+            -120},{180,160}}),                                  graphics={
+                              Bitmap(extent={{-162,-120},{120,160}}, fileName=
               "modelica://NHES/Resources/Images/Systems/subSystem.jpg"),
         Polygon(
-          points={{24,26},{24,-4},{32,-18},{32,40},{24,26}},
-          lineColor={0,0,0},
-          fillColor={0,114,208},
-          fillPattern=FillPattern.Solid),
-        Polygon(
-          points={{40,26},{40,-4},{48,-20},{48,42},{40,26}},
-          lineColor={0,0,0},
-          fillColor={0,114,208},
-          fillPattern=FillPattern.Solid),
-        Polygon(
-          points={{-12,26},{-12,-4},{-2,-18},{-2,42},{-12,26}},
-          lineColor={0,0,0},
-          fillColor={0,114,208},
-          fillPattern=FillPattern.Solid),
-        Polygon(
-          points={{8,26},{8,-4},{16,-20},{16,40},{8,26}},
+          points={{-22,58},{-22,30},{-6,14},{-6,74},{-22,58}},
           lineColor={0,0,0},
           fillColor={0,114,208},
           fillPattern=FillPattern.Solid),
         Rectangle(
-          extent={{-2.55993,3},{93.4405,-3}},
+          extent={{-3.41323,3},{124.587,-3}},
           lineColor={0,0,0},
-          origin={-31.4405,3},
+          origin={-34.5873,35},
           rotation=0,
           fillColor={135,135,135},
           fillPattern=FillPattern.HorizontalCylinder),
         Ellipse(
-          extent={{60,18},{88,-8}},
+          extent={{90,48},{118,22}},
           lineColor={0,0,0},
           fillColor={255,255,255},
           fillPattern=FillPattern.Solid),
         Text(
-          extent={{69,-2},{79,12}},
+          extent={{97,28},{107,42}},
           lineColor={0,0,0},
           fillColor={255,255,255},
           fillPattern=FillPattern.Solid,
@@ -1318,67 +1305,67 @@ equation
         Rectangle(
           extent={{-1.06666,3.0002},{38.9329,-3.0002}},
           lineColor={0,0,0},
-          origin={61,-46.933},
+          origin={91,-14.933},
           rotation=90,
           fillColor={0,128,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
           extent={{-0.4,3},{15.5,-3}},
           lineColor={0,0,0},
-          origin={48.427,-11},
+          origin={78.427,23},
           rotation=0,
           fillColor={0,128,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
           extent={{-0.341457,2},{13.6584,-2}},
           lineColor={0,0,0},
-          origin={8,-44.342},
+          origin={4,-12.342},
           rotation=-90,
           fillColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
-          extent={{-1.12002,2},{40.8804,-2}},
+          extent={{-1.76001,2},{64.2403,-2}},
           lineColor={0,0,0},
-          origin={11.1197,-56},
+          origin={7.75969,-24},
           rotation=0,
           fillColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
           extent={{-0.578156,2.1722},{23.1262,-2.1722}},
           lineColor={0,0,0},
-          origin={5.422,-45.828},
+          origin={1.422,-13.828},
           rotation=180,
           fillColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Ellipse(
-          extent={{-26,-42},{-14,-54}},
+          extent={{-30,-10},{-18,-22}},
           lineColor={0,0,0},
           fillPattern=FillPattern.Sphere,
           fillColor={0,100,199}),
         Polygon(
-          points={{-19,-45},{-19,-51},{-24,-48},{-19,-45}},
+          points={{-23,-13},{-23,-19},{-28,-16},{-23,-13}},
           lineColor={0,0,0},
           pattern=LinePattern.None,
           fillPattern=FillPattern.HorizontalCylinder,
           fillColor={255,255,255}),
         Rectangle(
-          extent={{-1.81329,5},{66.1867,-5}},
+          extent={{-4.42652,5},{161.574,-5}},
           lineColor={0,0,0},
-          origin={-92.1867,-49},
+          origin={-191.573,-17},
           rotation=0,
           fillColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
-          extent={{-2.09756,2},{83.9024,-2}},
+          extent={{-5.99999,2},{240.001,-2}},
           lineColor={0,0,0},
-          origin={-11.9024,-78},
+          origin={-148,-48},
           rotation=360,
           fillColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
           extent={{-0.243902,2},{9.7562,-2}},
           lineColor={0,0,0},
-          origin={70,-68.244},
+          origin={90,-36.244},
           rotation=-90,
           fillColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder),
@@ -1387,40 +1374,40 @@ equation
           lineColor={0,0,0},
           fillColor={66,200,200},
           fillPattern=FillPattern.HorizontalCylinder,
-          origin={-12,42},
+          origin={-20,74},
           rotation=-90),
         Rectangle(
-          extent={{-38,58},{-12,46}},
+          extent={{-42,90},{-16,78}},
           lineColor={0,0,0},
           fillColor={66,200,200},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
-          extent={{-94,58},{-46,46}},
+          extent={{-196,90},{-50,78}},
           lineColor={0,0,0},
           fillColor={66,200,200},
           fillPattern=FillPattern.HorizontalCylinder),
         Ellipse(
-          extent={{-48,61},{-30,43}},
+          extent={{-52,93},{-34,75}},
           lineColor={95,95,95},
           fillColor={175,175,175},
           fillPattern=FillPattern.Sphere),
         Ellipse(
-          extent={{-37,61},{-41,43}},
+          extent={{-41,93},{-45,75}},
           lineColor={0,0,0},
           fillPattern=FillPattern.VerticalCylinder,
           fillColor={162,162,0}),
         Rectangle(
-          extent={{-38,59},{-40,71}},
+          extent={{-42,91},{-44,103}},
           lineColor={0,0,0},
           fillColor={95,95,95},
           fillPattern=FillPattern.VerticalCylinder),
         Rectangle(
-          extent={{-48,73},{-30,71}},
+          extent={{-52,105},{-34,103}},
           lineColor={0,0,0},
           fillColor={181,0,0},
           fillPattern=FillPattern.HorizontalCylinder),
         Polygon(
-          points={{-24,-52},{-28,-56},{-12,-56},{-16,-52},{-24,-52}},
+          points={{-28,-20},{-32,-24},{-16,-24},{-20,-20},{-28,-20}},
           lineColor={0,0,255},
           pattern=LinePattern.None,
           fillColor={0,0,0},
@@ -1428,31 +1415,31 @@ equation
         Rectangle(
           extent={{-0.244084,1},{9.76422,-1}},
           lineColor={0,0,0},
-          origin={-1.7642,23},
+          origin={-5.7642,55},
           rotation=360,
           fillColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
           extent={{-0.195303,1},{7.8128,-1}},
           lineColor={0,0,0},
-          origin={16.1872,23},
+          origin={12.1872,55},
           rotation=360,
           fillColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
-          extent={{-0.195308,1},{7.813,-1}},
+          extent={{-0.341636,1},{13.6666,-1}},
           lineColor={0,0,0},
-          origin={32.187,23},
+          origin={20.3334,55},
           rotation=360,
           fillColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Ellipse(
-          extent={{46,-46},{74,-72}},
+          extent={{72,-12},{100,-38}},
           lineColor={0,0,0},
           fillColor={255,255,255},
           fillPattern=FillPattern.Solid),
         Text(
-          extent={{55,-66},{65,-52}},
+          extent={{83,-30},{93,-16}},
           lineColor={0,0,0},
           fillColor={255,255,255},
           fillPattern=FillPattern.Solid,
@@ -1460,53 +1447,76 @@ equation
         Rectangle(
           extent={{-1.06666,3.0002},{38.9329,-3.0002}},
           lineColor={0,0,0},
-          origin={-53,-66.933},
+          origin={-57,-34.933},
           rotation=90,
           fillColor={0,128,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
-          extent={{-2.61619,3},{101.384,-3}},
+          extent={{-3.52181,3},{136.478,-3}},
           lineColor={0,0,0},
-          origin={-53.3838,-27},
+          origin={-56.4784,5},
           rotation=0,
           fillColor={0,128,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
-          extent={{-0.37333,1.00001},{13.6262,-1}},
+          extent={{-0.373325,2.00001},{13.626,-2}},
           lineColor={0,0,0},
-          origin={29,-25.626},
+          origin={48,8.37399},
           rotation=90,
           fillColor={0,128,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
-          extent={{-0.37333,1.00001},{13.6262,-1}},
+          extent={{-0.373325,2.00001},{13.626,-2}},
           lineColor={0,0,0},
-          origin={13,-25.626},
+          origin={18,8.37399},
           rotation=90,
           fillColor={0,128,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
-          extent={{-0.37333,1.00001},{13.6262,-1}},
+          extent={{-0.373325,2.00001},{13.626,-2}},
           lineColor={0,0,0},
-          origin={-5,-25.626},
+          origin={-8,6.37399},
           rotation=90,
           fillColor={0,128,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
-          extent={{-0.37333,1.00001},{13.6262,-1}},
+          extent={{-0.373325,2.00001},{13.626,-2}},
           lineColor={0,0,0},
-          origin={45,-25.626},
+          origin={78,8.37399},
           rotation=90,
           fillColor={0,128,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
-          extent={{-2.61619,3},{101.384,-3}},
+          extent={{-3.42122,3},{132.579,-3}},
           lineColor={0,0,0},
-          origin={-53.384,-65},
+          origin={-56.5792,-33},
           rotation=0,
           fillColor={0,128,255},
+          fillPattern=FillPattern.HorizontalCylinder),
+        Polygon(
+          points={{64,60},{64,32},{80,16},{80,76},{64,60}},
+          lineColor={0,0,0},
+          fillColor={0,114,208},
+          fillPattern=FillPattern.Solid),
+        Polygon(
+          points={{34,60},{34,32},{50,16},{50,76},{34,60}},
+          lineColor={0,0,0},
+          fillColor={0,114,208},
+          fillPattern=FillPattern.Solid),
+        Polygon(
+          points={{4,58},{4,30},{20,14},{20,74},{4,58}},
+          lineColor={0,0,0},
+          fillColor={0,114,208},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-0.341636,1},{13.6666,-1}},
+          lineColor={0,0,0},
+          origin={50.3334,55},
+          rotation=360,
+          fillColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder)}),         Diagram(
-        coordinateSystem(preserveAspectRatio=false)),
+        coordinateSystem(preserveAspectRatio=false, extent={{-200,-120},{180,
+            160}})),
     experiment(
       StartTime=88000,
       StopTime=89600,

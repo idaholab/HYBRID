@@ -96,7 +96,7 @@ model Eight_Stage_Turbine
     p(displayUnit="Pa") = 8000,
     h=2383e3,
     nPorts=1)
-    annotation (Placement(transformation(extent={{176,-2},{156,18}})));
+    annotation (Placement(transformation(extent={{158,-40},{138,-20}})));
 
   NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.StagebyStageTurbine.MS
     MoistSep3(eta=0.2)
@@ -197,7 +197,7 @@ model Eight_Stage_Turbine
     m_flow=68.404,
     h=2999e3,
     nPorts=1)
-    annotation (Placement(transformation(extent={{-154,-4},{-134,16}})));
+    annotation (Placement(transformation(extent={{-136,-4},{-116,16}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary3(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
     p=pr6out,
@@ -213,9 +213,8 @@ model Eight_Stage_Turbine
     dp_nominal=10,
     m_flow_nominal=40)
     annotation (Placement(transformation(extent={{58,-2},{64,-8}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package
-      Medium =
-        Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium
+      = Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{42,0},{50,-12}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary7(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
@@ -294,9 +293,8 @@ model Eight_Stage_Turbine
     dp_nominal=10,
     m_flow_nominal=50)
     annotation (Placement(transformation(extent={{-10,0},{-4,-6}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package
-      Medium =
-        Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium
+      = Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{-30,4},{-18,-10}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary6(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
@@ -403,9 +401,8 @@ model Eight_Stage_Turbine
         extent={{-5,-5},{5,5}},
         rotation=270,
         origin={-63,-23})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package
-      Medium =
-        Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
+      = Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{-6,-6},{6,6}},
         rotation=270,
         origin={-64,-6})));
@@ -421,7 +418,9 @@ model Eight_Stage_Turbine
     duration=200,
     offset=68.4,
     startTime=100)
-    annotation (Placement(transformation(extent={{-200,2},{-180,22}})));
+    annotation (Placement(transformation(extent={{10,-10},{-10,10}},
+        rotation=90,
+        origin={-130,50})));
 equation
   connect(generator.shaft, turbine_Editable.Generator_torque) annotation (Line(
         points={{25.9,67.9},{9.95,67.9},{9.95,67.8},{-2,67.8}},       color={0,0,
@@ -430,7 +429,8 @@ equation
           7.8},{142.08,7.6},{138,7.6}},
                             color={28,108,200}));
   connect(Rotor8.Outlet, boundary.ports[1]) annotation (Line(points={{149.92,8},
-          {156,8}},             color={28,108,200}));
+          {156,8},{156,-14},{128,-14},{128,-30},{138,-30}},
+                                color={28,108,200}));
   connect(Rotor8.torque, turbine_Editable.Fluidtorques[1]) annotation (Line(
         points={{144.64,12.6},{144.64,26},{144,26},{144,38},{-12.4,38},{
           -12.4,57.925}},                                        color={28,108,200}));
@@ -538,8 +538,8 @@ equation
   connect(PI1.y, valveLineartanh.opening) annotation (Line(points={{-51,
           -8.3},{-51,-17.15},{-59,-17.15},{-59,-23}},
                                                    color={0,0,127}));
-  connect(boundary1.ports[1], Stator1.Inlet) annotation (Line(points={{-134,6},
-          {-109.94,6},{-109.94,5.8}},
+  connect(boundary1.ports[1], Stator1.Inlet) annotation (Line(points={{-116,6},
+          {-109.94,5.8}},
         color={28,108,200}));
   connect(Rotor3.torque, turbine_Editable.Fluidtorques[6]) annotation (Line(
         points={{-43.36,10.6},{-44,10.6},{-44,38},{-12.4,38},{-12.4,59.175}},
@@ -551,12 +551,14 @@ equation
   connect(Rotor1.torque, turbine_Editable.Fluidtorques[8]) annotation (Line(
         points={{-97.36,10.6},{-97.36,38},{-12.4,38},{-12.4,59.675}},
                     color={28,108,200}));
-  connect(boundary1.m_flow_in, ramp.y) annotation (Line(points={{-154,14},{-166,
-          14},{-166,12},{-179,12}}, color={0,0,127}));
+  connect(boundary1.m_flow_in, ramp.y) annotation (Line(points={{-136,14},{-136,
+          34},{-130,34},{-130,39}}, color={0,0,127}));
   connect(PI.y, valveLineartanh2.opening)
     annotation (Line(points={{60.3,-17},{61,-17},{61,-7.4}}, color={0,0,127}));
-  annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-        coordinateSystem(preserveAspectRatio=false)),
+  annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-140,
+            -100},{160,100}})),                                  Diagram(
+        coordinateSystem(preserveAspectRatio=false, extent={{-140,-100},{160,
+            100}})),
     experiment(StopTime=40, __Dymola_Algorithm="Esdirk45a"),
     Documentation(info="<html>
 <p>This example is a primary reference for anyone looking to use the individual stage turbine models. It shows taps, moisture separators, and many stages all linked to a physical turbine model and to the generator model. Special attention should be paid to the amount of initialization data required in the models. It is highly advised that someone trying to use a many-stage turbine should build their turbine stage-by-stage to establish appropriate design angles and initialization values. Further, it is recommended that a user builds from one end to the other. </p>

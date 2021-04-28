@@ -53,7 +53,7 @@ model Energy_Arbitrage_Modal
       p=3447380,
       T(displayUnit="degC") = 579.25,
       h=2997670))
-    annotation (Placement(transformation(extent={{-208,-102},{-38,74}})));
+    annotation (Placement(transformation(extent={{-114,-40},{-14,64}})));
   Modal_CS_ED_Enabled_SMR SecSide(
     redeclare CS_Modal CS,
     TES_nPipes=TES_nPipes,
@@ -66,9 +66,9 @@ model Energy_Arbitrage_Modal
     HP_NTU=HP_NTU,
     P_Rise_DFV=P_Rise_DFV,
     Q_nom=Q_nom)
-    annotation (Placement(transformation(extent={{76,-58},{180,32}})));
+    annotation (Placement(transformation(extent={{20,-36},{100,54}})));
   Components.Economic_Sim_1 Econ_Sim
-    annotation (Placement(transformation(extent={{72,80},{108,116}})));
+    annotation (Placement(transformation(extent={{-16,64},{20,100}})));
 initial equation
   MoneyMade = 0;
   MoneyNominal = 0;
@@ -99,15 +99,13 @@ equation
   Econ_Sim.Net_Demand.y = SecSide.Demand_Internal;
   Econ_Sim.Anticipatory_Signals.y = SecSide.DFV_Ancticipatory_Internal;
 
-  connect(SecSide.port_b, Reactor.port_a) annotation (Line(points={{72.88,
-          -25.6},{48,-25.6},{48,-26},{-34.9091,-26},{-34.9091,-24.8308}},
-                                                             color={0,127,255}));
-  connect(SecSide.port_a, Reactor.port_b) annotation (Line(points={{72.88,
-          4.1},{44,4.1},{44,19.8462},{-34.9091,19.8462}},
-                                                 color={0,127,255}));
+  connect(SecSide.port_b, Reactor.port_a) annotation (Line(points={{17.6,-3.6},
+          {17.6,2},{-4,2},{-4,5.6},{-12.1818,5.6}},          color={0,127,255}));
+  connect(SecSide.port_a, Reactor.port_b) annotation (Line(points={{17.6,26.1},
+          {-4,26.1},{-4,32},{-12.1818,32}},      color={0,127,255}));
   annotation (
-    Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-80},
-            {100,100}})),
+    Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-80},{100,
+            100}})),
     experiment(
       StopTime=30,
       __Dymola_NumberOfIntervals=193,

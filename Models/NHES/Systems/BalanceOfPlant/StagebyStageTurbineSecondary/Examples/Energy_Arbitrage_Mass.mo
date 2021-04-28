@@ -34,7 +34,7 @@ protected
       p=3447380,
       T(displayUnit="degC") = 579.25,
       h=2997670))
-    annotation (Placement(transformation(extent={{-160,-88},{10,88}})));
+    annotation (Placement(transformation(extent={{-104,-42},{-10,68}})));
   Mass_Controlled_System_CS_ED_Enabled                      SecSide(
     TES_nPipes=TES_nPipes,
     TES_Length=TES_Length,
@@ -48,7 +48,7 @@ protected
     Ramp_Stor=Ramp_Stor,
     Ramp_Dis=Ramp_Dis,
     Q_nom=Q_nom, redeclare CS_Nominal_New CS)
-    annotation (Placement(transformation(extent={{62,-76},{240,62}})));
+    annotation (Placement(transformation(extent={{14,-32},{98,52}})));
 equation
   SecSide.dEdCycle = dEdCycle;
   TES_E_Dep =SecSide.TES.E_store_daily;
@@ -60,12 +60,10 @@ equation
   m_dis =SecSide.DFV.m_flow;
   p_dis =SecSide.DFV.port_b.p;
 
-  connect(SecSide.port_b, Reactor.port_a) annotation (Line(points={{62,
-          -41.5},{24,-41.5},{24,-10.8308},{13.0909,-10.8308}},
-                                                      color={0,127,255}));
-  connect(SecSide.port_a, Reactor.port_b) annotation (Line(points={{62,27.5},
-          {24,27.5},{24,33.8462},{13.0909,33.8462}},
-                                                   color={0,127,255}));
+  connect(SecSide.port_b, Reactor.port_a) annotation (Line(points={{14,-11},{0,
+          -11},{0,6.23077},{-8.29091,6.23077}},       color={0,127,255}));
+  connect(SecSide.port_a, Reactor.port_b) annotation (Line(points={{14,31},{0,
+          31},{0,34.1538},{-8.29091,34.1538}},     color={0,127,255}));
   annotation (
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-80},
             {100,100}})),

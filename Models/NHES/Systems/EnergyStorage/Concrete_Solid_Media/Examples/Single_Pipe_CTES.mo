@@ -98,5 +98,7 @@ equation
   annotation (experiment(
       StopTime=864000,
       __Dymola_NumberOfIntervals=1957,
-      __Dymola_Algorithm="Esdirk45a"));
+      __Dymola_Algorithm="Esdirk45a"),
+    Diagram(coordinateSystem(extent={{-120,-100},{160,100}})),
+    Icon(coordinateSystem(extent={{-120,-100},{160,100}})));
 end Single_Pipe_CTES;
