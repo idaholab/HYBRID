@@ -1,10 +1,10 @@
 [Tests]
  [./]
   type = 'HYBRIDTester'
-  input = 'CTES_Dual.mos'
+  input = 'CTES_Double.mos'
   workingDir = '.'
-  output = 'CTES_Dual.mat'
-  dymola_mats = 'CTES_Dual.mat'
+  output = 'CTES_Double.mat'
+  dymola_mats = 'CTES_Double.mat'
   rel_err = 0.001
   run_types = 'dymola'
  [../]

@@ -755,11 +755,11 @@ model Mass_Controlled_System_CS_ED_Enabled
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow12(redeclare package
       Medium = Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{-154,44},{-146,52}})));
-  NHES.Systems.EnergyStorage.Concrete_Solid_Media.Single_Pipe            TES(
+  NHES.Systems.EnergyStorage.Concrete_Solid_Media.Single_Pipe_CS_ED_Enabled_NewGeom
+                                                                         TES(
     nPipes=TES_nPipes,
     dX=TES_Length,
     dY=TES_Width,
-    dZ=TES_Thick,
     HTF_h_start=300e3,
     Hot_Con_Start=473.15,
     Cold_Con_Start=423.15)

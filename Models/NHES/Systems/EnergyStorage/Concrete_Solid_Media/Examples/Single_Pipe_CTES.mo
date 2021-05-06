@@ -4,7 +4,8 @@ model Single_Pipe_CTES
   parameter Modelica.Units.SI.MassFlowRate shell_flow_shim=1.5;
   parameter Modelica.Units.SI.MassFlowRate tube_flow_shim=1.5;
 
-  Single_Pipe CTES(
+  Single_Pipe_CS_ED_Enabled_NewGeom
+              CTES(
     nY=7,
     nX=9,
     tau=0.05,

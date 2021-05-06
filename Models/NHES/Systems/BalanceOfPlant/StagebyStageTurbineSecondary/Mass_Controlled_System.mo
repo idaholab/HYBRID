@@ -486,8 +486,8 @@ model Mass_Controlled_System
         origin={-12,-21})));
   TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance2(R=3500)
     annotation (Placement(transformation(extent={{22,-26},{30,-14}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package Medium
-      =        Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package Medium =
+               Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{34,-12},{46,-26}})));
   TRANSFORM.Fluid.Volumes.IdealCondenser
                          condenser1(
@@ -512,34 +512,34 @@ model Mass_Controlled_System
     V_liquid_start=2,
     set_m_flow=false,V_total=100)
     annotation (Placement(transformation(extent={{138,-4},{148,6}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow4(redeclare package Medium
-      =        Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow4(redeclare package Medium =
+               Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{54,16},{60,6}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow5(redeclare package Medium
-      =        Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow5(redeclare package Medium =
+               Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{6,7},{-6,-7}},
         rotation=180,
         origin={110,9})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow6(redeclare package Medium
-      =        Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow6(redeclare package Medium =
+               Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{6,7},{-6,-7}},
         rotation=90,
         origin={138,15})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow7(redeclare package Medium
-      =        Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow7(redeclare package Medium =
+               Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{78,18},{86,10}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow8(redeclare package Medium
-      =        Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow8(redeclare package Medium =
+               Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{6,7},{-6,-7}},
         rotation=90,
         origin={120,-11})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow9(redeclare package Medium
-      =        Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow9(redeclare package Medium =
+               Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{-6,-7},{6,7}},
         rotation=270,
         origin={146,-19})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow10(redeclare package Medium
-      =        Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow10(redeclare package Medium =
+               Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{-6,7},{6,-7}},
         rotation=0,
         origin={72,-7})));
@@ -776,8 +776,8 @@ model Mass_Controlled_System
     annotation (Placement(transformation(extent={{-2,2},{2,-2}},
         rotation=90,
         origin={-126,-12})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium
-      =        Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium =
+               Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{6,7},{-6,-7}},
         rotation=90,
         origin={-130,3})));
@@ -823,8 +823,8 @@ model Mass_Controlled_System
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-188,-18})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow12(redeclare package Medium
-      =        Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow12(redeclare package Medium =
+               Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{-154,44},{-146,52}})));
   Modelica.Blocks.Sources.Constant const5(k=32)
     annotation (Placement(transformation(extent={{-4,4},{4,-4}},
@@ -839,12 +839,12 @@ model Mass_Controlled_System
         origin={-149,59})));
   Modelica.Blocks.Math.Product product4
     annotation (Placement(transformation(extent={{-162,66},{-156,72}})));
-  NHES.Systems.EnergyStorage.Concrete_Solid_Media.Single_Pipe            TES(
+  NHES.Systems.EnergyStorage.Concrete_Solid_Media.Single_Pipe_CS_ED_Enabled_NewGeom
+                                                                         TES(
     nPipes=TES_nPipes,
     dX=TES_Length,
     Pipe_to_Concrete_Length_Ratio=PipConcLRat,
     dY=TES_Width,
-    dZ=TES_Thick,
     HTF_h_start=300e3,
     Hot_Con_Start=473.15,
     Cold_Con_Start=423.15)
@@ -881,8 +881,8 @@ model Mass_Controlled_System
         extent={{5,5},{-5,-5}},
         rotation=180,
         origin={163,-43})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium
-      = Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium =
+        Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{-4,4},{4,-4}},
         rotation=90,
         origin={176,-36})));

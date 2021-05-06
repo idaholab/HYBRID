@@ -3,7 +3,8 @@ model Dual_Pipe_CTES
   extends Modelica.Icons.Example;
   parameter Modelica.Units.SI.MassFlowRate shell_flow_shim=1.5;
   parameter Modelica.Units.SI.MassFlowRate tube_flow_shim=1.5;
-  Dual_Pipe_Model CTES(
+  Dual_Pipe_Model_CS_ED_Enabled_NewGeom
+                  CTES(
     nY=7,
     nX=9,
     tau=0.05,

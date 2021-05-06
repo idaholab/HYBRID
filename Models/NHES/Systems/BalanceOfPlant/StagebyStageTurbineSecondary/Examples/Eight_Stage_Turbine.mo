@@ -111,7 +111,7 @@ model Eight_Stage_Turbine
   NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.StagebyStageTurbine.Turbine_Physical
     turbine_Editable(nSt=8)
     annotation (Placement(transformation(extent={{-22,52},{-2,72}})));
-  TRANSFORM.Electrical.PowerConverters.Generator_Basic generator(omega_nominal=50
+  StagebyStageTurbine.Generator_Basic                  generator(omega_nominal=50
         *3.14)
     annotation (Placement(transformation(extent={{26,58},{46,78}})));
   NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.StagebyStageTurbine.Rotor_Stage
@@ -213,8 +213,8 @@ model Eight_Stage_Turbine
     dp_nominal=10,
     m_flow_nominal=40)
     annotation (Placement(transformation(extent={{58,-2},{64,-8}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium
-      = Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium =
+        Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{42,0},{50,-12}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary7(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
@@ -293,8 +293,8 @@ model Eight_Stage_Turbine
     dp_nominal=10,
     m_flow_nominal=50)
     annotation (Placement(transformation(extent={{-10,0},{-4,-6}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium
-      = Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium =
+        Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{-30,4},{-18,-10}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary6(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
@@ -401,8 +401,8 @@ model Eight_Stage_Turbine
         extent={{-5,-5},{5,5}},
         rotation=270,
         origin={-63,-23})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Modelica.Media.Examples.TwoPhaseWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{-6,-6},{6,6}},
         rotation=270,
         origin={-64,-6})));
