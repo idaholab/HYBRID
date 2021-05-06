@@ -44,10 +44,11 @@ import Modelica.Math;
 annotation (
     uses(
     Modelica(version="4.0.0"),
-    TRANSFORM(version="0.5"),
-    MikkelsonModeling(version="1")),
+    TRANSFORM(version="0.5")),
     version="2",
-    Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
+    Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
+      graphics={Bitmap(extent={{-92,-76},{86,92}}, fileName=
+            "modelica://NHES/../../../HYBRID/Models/NHES/Resources/Images/Systems/Icon/IES_logo.png")}),
   Documentation(info="<html>
 <p><span style=\"font-family: MS Shell Dlg 2;\">Package <b>NHES</b> is a <b>standardized</b> and <b>free</b> package that is developed with the Modelica&reg; language, see <a href=\"https://www.Modelica.org\">https://www.Modelica.org</a>. It provides model components in many domains that are based on standardized interface definitions.</span></p>
 <ul>
