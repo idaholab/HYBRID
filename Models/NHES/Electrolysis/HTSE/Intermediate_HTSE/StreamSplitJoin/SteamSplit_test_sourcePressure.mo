@@ -90,8 +90,8 @@ model SteamSplit_test_sourcePressure
         extent={{10,-10},{-10,10}},
         rotation=0,
         origin={30,100})));
-  Modelica.Fluid.Sensors.Temperature tempSteamCatOut(redeclare package Medium
-      =        Modelica.Media.Water.StandardWater)
+  Modelica.Fluid.Sensors.Temperature tempSteamCatOut(redeclare package Medium =
+               Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{30,32},{50,52}})));
   Modelica.Fluid.Valves.ValveLinear TCV_anodeGas(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -114,8 +114,8 @@ model SteamSplit_test_sourcePressure
         extent={{10,-10},{-10,10}},
         rotation=0,
         origin={30,-80})));
-  Modelica.Fluid.Sensors.Temperature tempSteamAnodeOut(redeclare package Medium
-      =        Modelica.Media.Water.StandardWater)
+  Modelica.Fluid.Sensors.Temperature tempSteamAnodeOut(redeclare package Medium =
+               Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{28,-40},{48,-20}})));
   Modelica.Fluid.Sources.Boundary_pT steamPressureIn(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -124,8 +124,8 @@ model SteamSplit_test_sourcePressure
     p=5800000,
     T=591.15)
     annotation (Placement(transformation(extent={{-124,0},{-104,20}})));
-  Modelica.Fluid.Fittings.TeeJunctionIdeal flowSplit(redeclare package Medium
-      =        Modelica.Media.Water.StandardWater, port_2(m_flow(start=
+  Modelica.Fluid.Fittings.TeeJunctionIdeal flowSplit(redeclare package Medium =
+               Modelica.Media.Water.StandardWater, port_2(m_flow(start=
             9.09416)))                             annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},

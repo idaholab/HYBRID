@@ -15,8 +15,7 @@ model Temp_flashDrum
   Modelica.Fluid.Interfaces.FluidPort_b vaporOutlet(redeclare package Medium = Medium) annotation (Placement(
         transformation(extent={{-10,80},{10,100}}), iconTransformation(extent={{
             -10,80},{10,100}})));
-  Modelica.Fluid.Interfaces.FluidPort_b liquidOutlet(redeclare package Medium
-      =                                                                         Medium) annotation (Placement(
+  Modelica.Fluid.Interfaces.FluidPort_b liquidOutlet(redeclare package Medium = Medium) annotation (Placement(
         transformation(extent={{-10,-100},{10,-80}}), iconTransformation(extent=
            {{-10,-100},{10,-80}})));
   Modelica.Fluid.Sources.Boundary_pT cathodeGasShellSink(

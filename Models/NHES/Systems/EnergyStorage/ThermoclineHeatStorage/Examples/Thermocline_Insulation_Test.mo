@@ -28,16 +28,15 @@ model Thermocline_Insulation_Test
     testerofwall_extender(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
-    redeclare package InsulationMaterial =
-        TRANSFORM.Media.Solids.FiberGlassGeneric,
+    redeclare package InsulationMaterial = TRANSFORM.Media.Solids.FOAMGLAS,
     redeclare package WallMaterial = TRANSFORM.Media.Solids.SS316,
     geometry(
-      Radius_Tank=7.6,
-      Porosity=0.6,
+      Radius_Tank=0.438,
+      Porosity=0.5,
       dr=0.00317,
-      Insulation_thickness=0.051*4,
-      Wall_Thickness=0.051,
-      Height_Tank=14.6,
+      Insulation_thickness=0.051*3,
+      Wall_Thickness=0.019,
+      Height_Tank=4.435,
       T_amb=293.15))
     annotation (Placement(transformation(extent={{-20,-28},{24,24}})));
 

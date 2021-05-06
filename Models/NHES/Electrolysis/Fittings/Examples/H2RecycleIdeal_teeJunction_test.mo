@@ -2,8 +2,8 @@ within NHES.Electrolysis.Fittings.Examples;
 model H2RecycleIdeal_teeJunction_test
   extends Modelica.Icons.Example;
 
-  BaseClasses.MediumConverter mediumConverter(redeclare package Medium_port_b
-      = Electrolysis.Media.Electrolysis.CathodeGas, redeclare package
+  BaseClasses.MediumConverter mediumConverter(redeclare package Medium_port_b =
+        Electrolysis.Media.Electrolysis.CathodeGas, redeclare package
       Medium_port_a = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-38,-38},{-18,-18}})));
   Modelica.Fluid.Sources.MassFlowSource_T feedWaterIn(
@@ -33,8 +33,8 @@ model H2RecycleIdeal_teeJunction_test
   Modelica.Fluid.Fittings.TeeJunctionIdeal teeJunctionIdeal(redeclare package
       Medium =         Electrolysis.Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{52,-38},{72,-18}})));
-  Modelica.Fluid.Sensors.MassFractions cathode_XH2_in(redeclare package Medium
-      =        Electrolysis.Media.Electrolysis.CathodeGas, substanceName=
+  Modelica.Fluid.Sensors.MassFractions cathode_XH2_in(redeclare package Medium =
+               Electrolysis.Media.Electrolysis.CathodeGas, substanceName=
         "H2")
     annotation (Placement(transformation(extent={{72,-6},{92,14}})));
   Controllers.FFcontroller_XH2 FFctrl_yH2(initialOutput=0.055756419)
