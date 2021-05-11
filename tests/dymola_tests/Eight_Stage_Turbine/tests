@@ -1,0 +1,11 @@
+[Tests]
+ [./]
+  type = 'HYBRIDTester'
+  input = 'EightStageTurbine.mos'
+  workingDir = '.'
+  output = 'StageTurbine.mat'
+  dymola_mats = 'StageTurbine.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

@@ -1,0 +1,3 @@
+translateModel("NHES.Systems.EnergyStorage.Concrete_Solid_Media.Examples.Single_Pipe_CTES");
+experimentSetupOutput(events=false);
+simulateModel("NHES.Systems.EnergyStorage.Concrete_Solid_Media.Examples.Single_Pipe_CTES", stopTime=86400, numberOfIntervals=195, resultFile="CTES_Single");

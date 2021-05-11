@@ -2,6 +2,7 @@ Examples
 CS_Dummy
 CS_SMR_Tave
 CS_SMR_Tave_Enthalpy
+CS_SMR_Tave_Enthalpy_RXPower
 ED_Dummy
 Components
 BaseClasses

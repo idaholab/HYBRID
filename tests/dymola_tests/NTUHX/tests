@@ -1,0 +1,11 @@
+[Tests]
+ [./]
+  type = 'HYBRIDTester'
+  input = 'NTUHX.mos'
+  workingDir = '.'
+  output = 'NTUHX.mat'
+  dymola_mats = 'NTUHX.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

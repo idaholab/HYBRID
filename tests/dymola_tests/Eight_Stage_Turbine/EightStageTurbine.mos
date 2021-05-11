@@ -1,0 +1,3 @@
+translateModel("NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Examples.Eight_Stage_Turbine");
+experimentSetupOutput(events=false);
+simulateModel("NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Examples.Eight_Stage_Turbine", stopTime=400, numberOfIntervals=45, resultFile="StageTurbine");
