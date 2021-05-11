@@ -26,6 +26,7 @@
 #COMPLETENESS, OR USEFULNESS OR ANY INFORMATION, APPARATUS, PRODUCT, OR
 #PROCESS DISCLOSED, OR REPRESENTS THAT ITS USE WOULD NOT INFRINGE PRIVATELY
 #OWNED RIGHTS.
+
 SCRIPT_NAME=`readlink $0`
 if test -x "$SCRIPT_NAME";
 then
@@ -47,6 +48,22 @@ do
 done
 
 rm -Rvf pdfs
+
+# add custom, collective inputs to TEXINPUTS
+#
+# Since on Windows we use MikTeX (which is a native Windows program), the TEXTINPUTS variable used i
+#   to tell the LaTeX processor where to look for .sty files must be set using Windows-style paths
+#   (not the Unix-style ones used on other platforms).  This also means semi-colons need to be used
+#   to separate terms instead of the Unix colon.
+#
+if [ "$(uname)" == "Darwin" ] || [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]
+then
+  export TEXINPUTS=.:$SCRIPT_DIR/tex_inputs/:$TEXINPUTS
+elif [ "$(expr substr $(uname -s) 1 5)" == "MINGW" ]  || [  "$(expr substr $(uname -s) 1 4)" == "MSYS" ]
+then
+  export TEXINPUTS=.\;`cygpath -w $SCRIPT_DIR/tex_inputs`\;$TEXINPUTS
+fi
+
 
 if git describe
 then
@@ -90,12 +107,12 @@ for DIR in  user_manual; do
     cd $SCRIPT_DIR
 done
 
-#cd sqa
-#./make_docs.sh
-#cd ..
+cd sqa
+./make_docs.sh
+cd ..
 mkdir pdfs
-for DOC in user_manual/hybrid_user_manual.pdf; do
-    cp $DOC pdfs/
+for DOC in user_manual/hybrid_user_manual.pdf sqa/sqa_built_documents/; do
+    cp $DOC* pdfs/
 done
 
 

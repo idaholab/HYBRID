@@ -1,0 +1,64 @@
+<?xml version="1.0" ?>
+<requirements_specification application="Hybrid">
+
+    <requirement_group id="Minimum Requirements">
+
+      <requirement_set caption="Minimum Requirements">
+          <requirement id_code="R-M-1">
+              <description>Dymola 2020x or higher</description>
+              <source>K. Frick, A. Alfonsi, C. Rabiti, ``HYBRID User Manual'', INL/MIS-20-60624</source>
+          </requirement>
+          <requirement id_code="R-M-2">
+              <description>Visual Studio 2017 or higher with associated 64-bit Intel Compiler</description>
+              <source>K. Frick, A. Alfonsi, C. Rabiti, ``HYBRID User Manual'', INL/MIS-20-60624</source>
+          </requirement>
+          <requirement id_code="R-M-3">
+              <description>Python 3 or higher to be able to execute RAVEN-based workflows</description>
+              <source>K. Frick, A. Alfonsi, C. Rabiti, ``HYBRID User Manual'', INL/MIS-20-60624</source>
+          </requirement>
+       </requirement_set>
+
+    </requirement_group>
+
+
+    <requirement_group id="Functional Requirements">
+      <requirement_set caption="Modeling">
+          <requirement id_code="R-F-1">
+              <description>HYBRID shall allow the user the leverage and use compoment models developed in Modelica language</description>
+          </requirement>
+          <requirement id_code="R-F-2">
+              <description>HYBRID shall provide models to simulate component/system control in Modelica language</description>
+          </requirement>
+      </requirement_set>
+      
+      <requirement_set caption="Framework, I/O, Execution Control">
+          <requirement id_code="R-F-3">
+              <description>HYBRID shall allow the user the ability to interact with modelica models via the Dymola GUI.</description>
+              <source>https://github.com/idaholab/hybrid/wiki</source>
+          </requirement>
+      </requirement_set>
+
+    </requirement_group>
+
+    <requirement_group id="Regression Requirements">
+      <requirement_set caption="Infrastructure Support">
+          <requirement id_code="R-IS-1">
+              <description>HYBRID shall have regression tests to perform checks on modelica models.</description>
+          </requirement>
+      </requirement_set>
+    </requirement_group>
+
+    <requirement_group id="System Interfaces">
+      <requirement_set caption="Interface with external applications">
+          <requirement id_code="R-SI-1">
+              <description>HYBRID-based models shall be able to be coupled with external applications via input files</description>
+          </requirement>
+          <requirement id_code="R-SI-2">
+              <description>HYBRID-based models shall be able to be coupled with standardized interface (FMI and FMU)</description>
+          </requirement>
+      </requirement_set>
+    </requirement_group>
+
+</requirements_specification>
+
+
