@@ -25,6 +25,24 @@ The step-down turbines consist of a series of an ideal steam turbines connected 
 \label{Top View Step Down Turbines}
 \end{figure}
 
+
+\subsubsection{Stage by Stage Turbine}
+The stage by stage turbine package is designed to allow for detailed design of a Rankine cycle: including all turbine taps, moisture separators, reheaters, fluid junctions, and peaking capabilities. The model uses geometric design rather than system design (pressure ratios, setpoints, efficiencies). The primary design values are cross sectional and design flow deflection angles. Pressure, mass flow rate, and entropic efficiency are all uncontrolled and unspecified. 
+
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.3]{pics/StagebyStageTurbine.png}
+\caption{Top Level Stage by Stage Turbine Section With Stators, Rotors, a Tap, and a Moisture Separator}
+\label{Top View Stage by Stage Turbines}
+\end{figure}
+
+
+There are 8 primary components used to develop a full stage by stage turbine system. Multiple are shown in Figure \ref{Top View Stage by Stage Turbines} The first are the turbine inlet and turbine outlet components which allow for transition between 1D axial fluid components and 3D velocity cylindrical fluid flow components. The next components are the stator and rotor stages. Stator stages deflect incoming flow to better impinge and deposit energy on rotating rotor stages. Rotor stages additionally have torque connectors to connect to a physical turbine model which is responsible for linking the rotor stage torque to the electrical generator. T-junction components setup for cylindrical flow connectors allow for overpowering a rated turbine flow. The final two components deal with removing flow from the turbine. One is a turbine tap, which sets pressures equal between stages. The other is a moisture separator that removes a specific fraction of liquid flow quality. 
+
+The stage by stage turbine has been tested from 50-100 percent steam flow. 
+
+
 % content
 
 
