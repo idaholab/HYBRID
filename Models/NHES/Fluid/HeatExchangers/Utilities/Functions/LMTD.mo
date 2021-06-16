@@ -26,7 +26,7 @@ algorithm
                    else (DT_1 - DT_2)/log(max(0.000001,DT_1/DT_2)));
 
   annotation (Documentation(info="<html>
-<p>The Peclet numver is defined to be the ratio of the rate of&nbsp;advection&nbsp;of a physical quantity by the flow to the rate of&nbsp;diffusion&nbsp;of the same quantity driven by an appropriate gradient.</p>
+<p>The Peclet number is defined to be the ratio of the rate of&nbsp;advection&nbsp;of a physical quantity by the flow to the rate of&nbsp;diffusion&nbsp;of the same quantity driven by an appropriate gradient.</p>
 <p> In the context of species or&nbsp;mass transfer, the P&eacute;clet number is the product of the&nbsp;Reynolds number&nbsp;and the&nbsp;Schmidt number. </p>
 <ul>
 <li>Pe = Re*Sc</li>
