@@ -1,0 +1,16 @@
+within NHES.Media.Interfaces.Types;
+record SolidConstants
+  extends Modelica.Icons.Record;
+  constant String chem;
+  constant Density rho;
+  constant ThermalConductivity k;
+  constant Integer r;
+  constant Integer n;
+  constant MolarHeatCapacity R_U;
+  constant MolarMass MW;
+  constant SpecificHeatCapacity R_m;
+  constant MolarEnthalpy h_f_298_15;
+  constant Real[:,7] a;
+  constant Real[:,2] b;
+  constant Real[:,2] T_lims(unit="K");
+end SolidConstants;

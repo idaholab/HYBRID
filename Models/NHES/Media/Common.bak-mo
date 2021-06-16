@@ -1,0 +1,337 @@
+within NHES.Media;
+package Common
+  "Data structure and fundametal functions for fluid properties"
+  extends Modelica.Icons.Package;
+
+  type DerPressureByTemperature = Real (final quantity="DerPressureByTemperature",
+        final unit="Pa/K");
+
+  type DerPressureByDensity = Real (final quantity="DerPressureByDensity",
+        final unit="Pa.m3/kg");
+
+  record PhaseBoundaryProperties
+    "Thermodynamic base properties on the phase boundary"
+    extends Modelica.Icons.Record;
+    Density d "Density";
+    SpecificEnthalpy h "Specific enthalpy";
+    SpecificEnergy u "Inner energy";
+    SpecificEntropy s "Specific entropy";
+    SpecificHeatCapacity cp
+      "Heat capacity at constant pressure";
+    SpecificHeatCapacity cv
+      "Heat capacity at constant volume";
+    DerPressureByTemperature pt "Derivative of pressure w.r.t. temperature";
+    DerPressureByDensity pd "Derivative of pressure w.r.t. density";
+  end PhaseBoundaryProperties;
+
+  record SaturationProperties "Properties in the two phase region"
+    extends Modelica.Icons.Record;
+    Temperature T "Temperature";
+    Density d "Density";
+    AbsolutePressure p "Pressure";
+    MassFraction[:] X "Component mass fractions";
+    SpecificEnergy u "Specific inner energy";
+    SpecificEnthalpy h "Specific enthalpy";
+    SpecificEntropy s "Specific entropy";
+    SpecificHeatCapacity cp
+      "Heat capacity at constant pressure";
+    SpecificHeatCapacity cv
+      "Heat capacity at constant volume";
+    //Modelica.Units.SI.SpecificHeatCapacity R "Gas constant";
+    RatioOfSpecificHeatCapacities kappa
+      "Isentropic expansion coefficient";
+    PhaseBoundaryProperties liq
+      "Thermodynamic base properties on the boiling curve";
+    PhaseBoundaryProperties vap
+      "Thermodynamic base properties on the dew curve";
+    Real dpT(unit="Pa/K")
+      "Derivative of saturation pressure w.r.t. temperature";
+    MassFraction x "Vapour mass fraction";
+  end SaturationProperties;
+
+  record LiBrWBaseTwoPhase
+    extends Modelica.Icons.Record;
+    Integer phase(start=0)
+      "Phase: 2 for two-phase, 1 for one phase, 0 if unknown";
+    Integer region(min=1, max=7);
+    AbsolutePressure p "Pressure";
+    Temperature T "Temperature";
+    MassFraction X[2];
+    SpecificEnthalpy h "Specific enthalpy";
+    SpecificHeatCapacity R_s "Gas constant";
+    SpecificHeatCapacity cp "Specific heat capacity";
+    SpecificHeatCapacity cv "Specific heat capacity";
+    Density rho "Density";
+    SpecificEntropy s "Specific entropy";
+    DerPressureByTemperature pt "Derivative of pressure w.r.t. temperature";
+    DerPressureByDensity pd "Derivative of pressure w.r.t. density";
+    Real vt "Derivative of specific volume w.r.t. temperature";
+    Real vp "Derivative of specific volume w.r.t. pressure";
+    Real vx "Derivative of specific volume w.r.t. mass fraction of LiBr";
+    Real hp "Derivative of specific enthalpy w.r.t. pressure";
+    Real hx "Derivative of specific enthalpy w.r.t. mass fraction of LiBr";
+    Real sx "Derivative of specific entropy w.r.t. mass fraction of LiBr";
+    Real tp "Derivative of temperature w.r.t. pressure";
+    Real th "Derivative of temperature w.r.t. specific enthalpy";
+    Real tx "Derivative of temperature w.r.t. mass fraction of LiBr";
+    Real x "Dryness fraction";
+    Real dpT "dp/dT derivative of saturation curve";
+  end LiBrWBaseTwoPhase;
+
+  record GibbsDerivs
+    "Derivatives of Gibbs-function w.r.t. pressure and temperature"
+    extends Modelica.Icons.Record;
+    AbsolutePressure p(min=100, max=100e6) "Pressure";
+    Temperature T(min=268, max=573.15) "Temperature";
+    MassFraction X[2] "Mass Fraction";
+    SpecificHeatCapacity R_s "Gas constant";
+    MolarMass MM "Molar mass";
+    SpecificGibbsFreeEnergy g "Gibbs-function";
+    SpecificVolume dgdp;
+    Real dgdpdT(unit="m3/(kg.K)");
+    SpecificVolume dgdpdX;
+    SpecificEntropy dgdT;
+    Real d2gdT2(unit="J/(kg.K2)");
+    SpecificEntropy dgdTdX;
+    SpecificGibbsFreeEnergy dgdX;
+    SpecificEntropy dudT;
+    SpecificEnthalpy dhdX;
+    Real dhdp(unit="J/(kg.Pa)");
+  end GibbsDerivs;
+
+  record LiBrWData
+    extends Modelica.Icons.Record;
+    constant MolarMass[2] MW={0.086845,0.01801528};
+    constant Real A[5](unit="J/g") = {5.506219979E+3,5.213228937E+2,7.774930356,
+      -4.575233382E-2,-5.792935726E+2};
+    constant Real B[5](unit="J/(g.K)") = {1.452749674E+2,-4.984840771E-1,8.83691918E-2,
+      -4.870995781E-4,-2.905161205};
+    constant Real C[5](unit="J/(g.K2)") = {2.648364473E-2,-2.311041091E-3,7.55973662E-6,
+      -3.763934193E-8,1.176240649E-3};
+    constant Real D[5](unit="J/(g.K3)") = {-8.526516950E-6,1.320154794E-6,2.791995438E-11,
+      0,-8.511514931E-7};
+    constant Real E[2](unit="J/(g.K4)") = {-3.840447174E-11,2.625469387E-11};
+    constant Real F[2](unit="J.K/g") = {-5.159906276E+1,1.114573398};
+    constant Real L[5](unit="J/g") = {-2.183429482E+3,-1.266985094E+2,-2.364551372,
+      1.389414858E-2,1.583405426E+2};
+    constant Real M[5](unit="J/(g.K)") = {-2.267095847E+1,2.983764494E-1,-1.259393234E-2,
+      6.849632068E-5,2.767986853E-1};
+    constant Real V[8](unit={"J/(g.kPa)","J/(g.kPa)","J/(g.kPa)","J/(g.kPa.K)","J/(g.kPa.K)",
+          "J/(g.kPa.K)","J/(g.kPa.K2)","J/(g.kPa.K2)"}) = {1.176741611E-3,-1.002511661E-5,
+      -1.695735875E-8,-1.497186905E-6,2.538176345E-8,5.815811591E-11,3.057997846E-9,
+      -5.129589007E-11};
+    constant Temperature T_0=220;
+    constant Temperature T_norm=1;
+    constant Real C_g2kg(unit="kg/g") = 1/1000;
+    constant Real C_kpa2pa(unit="Pa/kPa") = 1000;
+
+    constant Real muA1[:](unit="1") = {-494.122,16.3967,-0.14511};
+    constant Modelica.Units.SI.Temperature muA2[:]={28606.4,-934.568,8.52755};
+    constant Real muA3[:](unit="1") = {70.3848,-2.35014,0.0207809};
+    constant Modelica.Units.SI.DynamicViscosity muC=1/1000;
+
+    constant ThermalConductivity K1[:]={-0.3081,0.62979};
+    constant ThermalConductivity K2[:]={-0.3191795,0.65388};
+    constant ThermalConductivity K3[:]={-0.291897,0.59821};
+    constant Temperature kT_0=313;
+    constant Temperature kT_F=1/20;
+
+    Temperature T_num "T_num/T_den";
+    Temperature T_den "F_0 +F_1*x/T_den";
+    Real x_per(unit="1", min=0);
+    Real p_kpa(unit="kPa");
+    Real x_po[5](unit="1");
+    Real xT_po[8](unit={"1","1","1","K","K","K","K2","K2"});
+    Real x_po_dgdX[4](unit="1");
+    Real xT_po_dgdT[5](unit={"1","1","1","K","K"});
+    Real xT_po_dgdX[5](unit={"1","1","K","K","K2"});
+    Real xT_po_dudT[5](unit={"1","1","1","K","K"});
+    Real V_dgdX[5](unit={"J/(g.kPa)","J/(g.kPa)","J/(g.kPa.K)","J/(g.kPa.K)","J/(g.kPa.K2)"});
+    Real C_F(unit="1");
+
+    Real mux_po[3](unit={"1","1","1"});
+    Real muB(unit="1");
+
+    Real kx_po[2](unit={"1","1"});
+    Real kD12(unit="1");
+    Real kD13(unit="1");
+
+  end LiBrWData;
+
+  record R6Data "Ideal gas steam for low pressure calculations"
+    extends Modelica.Icons.Record;
+    constant SpecificEntropy s_os=-1163.2672155;
+    constant SpecificEnthalpy h_0=1997638.12889;
+  end R6Data;
+
+  record TabDerAssums
+    extends Modelica.Icons.Record;
+    constant AbsolutePressure dp=1;
+    constant Temperature dT=0.1;
+    constant MassFraction dX=1e-5;
+    constant SpecificEnthalpy dh=10;
+  end TabDerAssums;
+
+  //   record TabDerVals
+  //     extends Modelica.Icons.Record;
+  //     Real da;
+  //     Real a_minus;
+  //     Real a_plus;
+  //   end TabDerVals;
+  //
+  //   function TableDerApprox
+  //    extends Modelica.Icons.Function;
+  //    input TabDerVals v;
+  //    output Real deriv;
+  //   algorithm
+  //    deriv :=((v.a_plus - v.a_minus)/v.da);
+  //   end TableDerApprox;
+
+  record PropTable_2 "Generic 2D property table"
+    Real[:,:] table;
+    Real[:] pr_1;
+    Real[:] pr_2;
+  end PropTable_2;
+
+  record PropTable_3 "Generic 3D property table"
+    Real[:,:,:] table;
+    Real[:] pr_1;
+    Real[:] pr_2;
+    Real[:] pr_3;
+  end PropTable_3;
+
+  record TableSolverVars_2 "Iterative solver algorithm matricies"
+    Real[2] x_ul;
+    Real[2] y_ul;
+    Integer[2] x_i;
+    Integer[2] y_i;
+    Real[4] xm;
+    Real[4] ym;
+    Real[4] zm;
+    Real[4,4] xy;
+    Real[4] a;
+    Real[4] c;
+  end TableSolverVars_2;
+
+  record TableSolverVars_3 "Iterative solver algorithm matricies"
+    Real[2] x_ul;
+    Real[2] y_ul;
+    Real[2] z_ul;
+    Integer[2] x_i;
+    Integer[2] y_i;
+    Integer[2] z_i;
+    Real[8] xm;
+    Real[8] ym;
+    Real[8] zm;
+    Real[8,8] xyz;
+    Real[8] a;
+    Real[8] c;
+  end TableSolverVars_3;
+
+  function find_indexi
+    input Real x;
+    input Real v[:];
+    output Integer ind[2];
+
+  protected
+    Integer v_sz=size(v, 1);
+    Integer i=integer(v_sz/2) + 1;
+    Integer i_max=v_sz;
+  algorithm
+    while x < v[i - 1] or x > v[i + 1] or i <= 1 or i >= v_sz loop
+      if x < v[i] then
+        i_max := i;
+        i := integer(i/2) + 1;
+      else
+        i := integer((i + i_max)/2);
+      end if;
+    end while;
+
+    ind := if x < v[i] then {i - 1,i} else {i,i + 1};
+  end find_indexi;
+
+  function bilinearInterp
+    input Real x;
+    input Real y;
+    input PropTable_2 I;
+    output Real C;
+  protected
+    TableSolverVars_2 T;
+  algorithm
+    T.x_i := find_indexi(x, I.pr_1);
+    T.y_i := find_indexi(y, I.pr_2);
+    T.x_ul := {I.pr_1[T.x_i[1]],I.pr_1[T.x_i[2]]};
+    T.y_ul := {I.pr_2[T.y_i[1]],I.pr_2[T.y_i[2]]};
+    T.xm := {T.x_ul[1],T.x_ul[1],T.x_ul[2],T.x_ul[2]};
+    T.ym := {T.y_ul[1],T.y_ul[2],T.y_ul[1],T.y_ul[2]};
+    T.xy := transpose({ones(4),T.xm,T.ym,T.xm .* T.ym});
+    T.c := {I.table[T.x_i[1], T.y_i[1]],I.table[T.x_i[1], T.y_i[2]],I.table[T.x_i[
+      2], T.y_i[1]],I.table[T.x_i[2], T.y_i[2]]};
+    T.a := Modelica.Math.Matrices.solve(T.xy, T.c);
+    C := T.a*{1,x,y,x*y};
+  end bilinearInterp;
+
+  function trilinearInterp
+    input Real x;
+    input Real y;
+    input Real z;
+    input PropTable_3 I;
+    output Real C;
+  protected
+    TableSolverVars_3 T;
+  algorithm
+    T.x_i := find_indexi(x, I.pr_1);
+    T.y_i := find_indexi(y, I.pr_2);
+    T.z_i := find_indexi(z, I.pr_3);
+    T.x_ul := {I.pr_1[T.x_i[1]],I.pr_1[T.x_i[2]]};
+    T.y_ul := {I.pr_2[T.y_i[1]],I.pr_2[T.y_i[2]]};
+    T.z_ul := {I.pr_3[T.z_i[1]],I.pr_3[T.z_i[2]]};
+    T.xm := {T.x_ul[1],T.x_ul[2],T.x_ul[1],T.x_ul[2],T.x_ul[1],T.x_ul[2],T.x_ul[
+      1],T.x_ul[2]};
+    T.ym := {T.y_ul[1],T.y_ul[1],T.y_ul[2],T.y_ul[2],T.y_ul[1],T.y_ul[1],T.y_ul[
+      2],T.y_ul[2]};
+    T.zm := {T.z_ul[1],T.z_ul[1],T.z_ul[1],T.z_ul[1],T.z_ul[2],T.z_ul[2],T.z_ul[
+      2],T.z_ul[2]};
+
+    T.xyz := transpose({ones(8),T.xm,T.ym,T.zm,T.xm .* T.ym,T.xm .* T.zm,T.ym .*
+      T.zm,T.xm .* T.ym .* T.zm});
+
+    T.c := {I.table[T.x_i[1], T.y_i[1], T.z_i[1]],I.table[T.x_i[2], T.y_i[1],
+      T.z_i[1]],I.table[T.x_i[1], T.y_i[2], T.z_i[1]],I.table[T.x_i[2], T.y_i[
+      2], T.z_i[1]],I.table[T.x_i[1], T.y_i[1], T.z_i[2]],I.table[T.x_i[2], T.y_i[
+      1], T.z_i[2]],I.table[T.x_i[1], T.y_i[2], T.z_i[2]],I.table[T.x_i[2], T.y_i[
+      2], T.z_i[2]]};
+    T.a := Modelica.Math.Matrices.solve(T.xyz, T.c);
+    C := T.a*{1,x,y,z,x*y,x*z,y*z,x*y*z};
+  end trilinearInterp;
+
+  record NASABase
+    AbsolutePressure p "Pressure";
+    Temperature T "Temperature";
+    SpecificEnthalpy h "Specific enthalpy";
+    SpecificEnthalpy h_f "Specific enthalpy of formation";
+    SpecificHeatCapacity R "Gas constant";
+    SpecificHeatCapacity cp "Specific heat capacity";
+    SpecificHeatCapacity cv "Specific heat capacity";
+    Density rho "Density";
+    SpecificEntropy s "Specific entropy";
+  end NASABase;
+
+  record single_species_data
+    "chem, r, n, MW, h_f @ 298.15, as, bs, T_lims[n,2]"
+    extends Modelica.Icons.Record;
+    constant String chem;
+    constant Density rho;
+    constant ThermalConductivity k;
+    constant Integer r;
+    constant Integer n;
+    constant MolarHeatCapacity R_U;
+    constant MolarMass MW;
+    constant SpecificHeatCapacity R_m;
+    constant MolarEnthalpy h_f_298_15;
+    constant Real[:,7] a;
+    constant Real[:,2] b;
+    constant Real[:,2] T_lims(unit="K");
+  end single_species_data;
+
+end Common;
