@@ -10,7 +10,7 @@ algorithm
   if ssd.n == 1 then
     n_i := ssd.n;
   else
-    while (T < ssd.T_lims[i, 1]) or (T >= ssd.T_lims[i, 2]) loop
+    while (T >= ssd.T_lims[i, 2]) loop
       i := i + 1;
     end while;
   end if;

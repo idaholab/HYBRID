@@ -10,7 +10,7 @@ record SolidConstants
   constant MolarMass MW;
   constant SpecificHeatCapacity R_m;
   constant MolarEnthalpy h_f_298_15;
-  constant Real[:,7] a;
-  constant Real[:,2] b;
-  constant Real[:,2] T_lims(unit="K");
+  constant Real[4,7] a;
+  constant Real[4,2] b;
+  constant Real[4,2] T_lims(unit="K");
 end SolidConstants;
