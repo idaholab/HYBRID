@@ -44,7 +44,6 @@ partial package LithiumBromideWater_base "Lithium Bromide-Water Mixture properti
       AbsolutePressure p "Pressure";
       MassFraction[nX] X(start=reference_X) "Mass Fraction";
     end ThermodynamicState;
-
     constant MolarMass[nX] MMX={fluidConstants[1].molarMass,fluidConstants[2].molarMass};
     constant Integer Region=0
       "Region of solution or water if known, zero otherwise";
@@ -655,7 +654,6 @@ partial package LithiumBromideWater_base "Lithium Bromide-Water Mixture properti
               Region);
       annotation (Inline=true);
     end density_derp_h;
-
     //   redeclare function extends density_derT_p
     //     "Density derivative by temperature"
     //   algorithm
@@ -921,5 +919,4 @@ partial package LithiumBromideWater_base "Lithium Bromide-Water Mixture properti
               phase=0);
       annotation (Inline=true);
     end setSmoothState;
-
 end LithiumBromideWater_base;

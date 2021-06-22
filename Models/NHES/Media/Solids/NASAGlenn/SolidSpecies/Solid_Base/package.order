@@ -3,8 +3,6 @@ ssd
 BaseProperties
 molarMass
 specificEnthalpyOfFormation_298_15
-specificEnthalpy_T
-specificEntropy_T
 thermalConductivity
 temperature
 density

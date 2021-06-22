@@ -6,14 +6,14 @@ package Solid_Base
     "Thermodynamic state"
     Temperature T "Temperature";
   end ThermodynamicState;
-  constant MyMedia.Interfaces.Types.SolidConstants ssd;
+  constant Common.SingleSpeciesData ssd;
 
   redeclare replaceable model extends BaseProperties(T)
   equation
     MM = ssd.MW;
     R = ssd.R_m;
     T = state.T;
-    h = specificEnthalpy(state);
+    h = NASA_Utilities.h_T(T, ssd);
     d = ssd.rho;
   end BaseProperties;
 
@@ -26,24 +26,23 @@ package Solid_Base
   algorithm
     h_f :=ssd.h_f_298_15/ssd.MW;
   end specificEnthalpyOfFormation_298_15;
+//   redeclare function specificEnthalpy_T
+//     extends Modelica.Icons.Function;
+//     input Temperature T "Temperature";
+//     output SpecificEnthalpy h;
+//   algorithm 
+//     h := NASA_Utilities.h_T(T, ssd);
+//     annotation (Inline=true);
+//   end specificEnthalpy_T;
 
-  redeclare function specificEnthalpy_T
-    extends Modelica.Icons.Function;
-    input Temperature T "Temperature";
-    output SpecificEnthalpy h;
-  algorithm
-    h := NASA_Utilities.h_T(T, ssd);
-    annotation (Inline=true);
-  end specificEnthalpy_T;
-
-  redeclare function specificEntropy_T
-    extends Modelica.Icons.Function;
-    input Temperature T "Temperature";
-    output SpecificEntropy s;
-  algorithm
-    s := NASA_Utilities.s_T(T, ssd);
-    annotation (Inline=true);
-  end specificEntropy_T;
+//   redeclare function specificEntropy_T
+//     extends Modelica.Icons.Function;
+//     input Temperature T "Temperature";
+//     output SpecificEntropy s;
+//   algorithm 
+//     s := NASA_Utilities.s_T(T, ssd);
+//     annotation (Inline=true);
+//   end specificEntropy_T;
 
   redeclare function extends thermalConductivity
   algorithm
@@ -63,7 +62,7 @@ package Solid_Base
 
   redeclare function extends specificEnthalpy
   algorithm
-    h := specificEnthalpy_T(state.T);
+    h := NASA_Utilities.h_T(state.T, ssd);
     annotation (Inline=true);
   end specificEnthalpy;
 
@@ -75,7 +74,7 @@ package Solid_Base
 
   redeclare function extends specificEntropy
   algorithm
-    s := specificEntropy_T(state.T);
+    s := NASA_Utilities.s_T(state.T, ssd);
     annotation (Inline=true);
   end specificEntropy;
 

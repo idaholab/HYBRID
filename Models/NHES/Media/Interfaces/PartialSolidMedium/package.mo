@@ -55,7 +55,6 @@ partial package PartialSolidMedium "Partial solid medium properties based on tem
     input Temperature T "Temperature";
     output ThermodynamicState state "Thermodynamic state record";
   end setState_T;
-
   // replaceable partial function setState_h
   //   "Return thermodynamic state as function of p, h and composition X or Xi"
   //   extends Modelica.Icons.Function;
@@ -107,7 +106,6 @@ partial package PartialSolidMedium "Partial solid medium properties based on tem
     input ThermodynamicState state "Thermodynamic state record";
     output SpecificEnthalpy h "Specific enthalpy";
   end specificEnthalpy;
-
   // replaceable partial function specificInternalEnergy
   //   "Return specific internal energy"
   //   extends Modelica.Icons.Function;
@@ -137,7 +135,6 @@ partial package PartialSolidMedium "Partial solid medium properties based on tem
       "Specific heat capacity at constant pressure";
   end specificHeatCapacityCp;
 
-
   replaceable partial function specificHeatCapacityCv
     "Return specific heat capacity at constant volume"
     extends Modelica.Icons.Function;
@@ -145,8 +142,6 @@ partial package PartialSolidMedium "Partial solid medium properties based on tem
     output SpecificHeatCapacity cv
       "Specific heat capacity at constant volume";
   end specificHeatCapacityCv;
-
-
   //   // explicit derivative functions for finite element models
   //   replaceable partial function density_derh_p
   //     "Return density derivative w.r.t. specific enthalpy at constant pressure"
@@ -194,7 +189,6 @@ partial package PartialSolidMedium "Partial solid medium properties based on tem
     input ThermodynamicState state;
     output SpecificEnthalpy h_f;
   end specificEnthalpyOfFormation_298_15;
-
   //   replaceable function temperature_h
   //     "Return temperature from p, h, and X or Xi"
   //     extends Modelica.Icons.Function;

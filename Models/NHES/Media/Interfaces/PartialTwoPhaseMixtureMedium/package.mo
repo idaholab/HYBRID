@@ -28,8 +28,6 @@ partial package PartialTwoPhaseMixtureMedium "Base class for two phase medium of
     output Modelica.Units.SI.SpecificHeatCapacity R_s "Mixture gas constant";
   end gasConstant;
 
-
-
   redeclare replaceable partial model extends BaseProperties
     "Base properties (p, d, T, h, u, R, MM, sat) of two phase medium"
     SaturationProperties sat "Saturation properties at the medium pressure";
@@ -413,5 +411,4 @@ protected
     input ThermodynamicState state;
     output MassFraction[nX] X;
   end massfraction;
-
 end PartialTwoPhaseMixtureMedium;
