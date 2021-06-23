@@ -5,16 +5,16 @@ function tsat
   input MassFraction X[:] "Mass Fraction";
   output Temperature tsat "Saturation Pressure";
 protected
-  constant Common.PropTable_2 T_data(
+  constant Math.Interpolation.PropTable_2 T_data(
     table=Tsat_pX_PropTable.T_table,
     pr_1=Tsat_pX_PropTable.p_range,
     pr_2=Tsat_pX_PropTable.X_range);
 algorithm
   if X[1] > 0 then
-    tsat := Common.BilinearInterp(
-                max(p, 200),
-                X[1],
-                T_data);
+    tsat :=Math.Interpolation.BilinearInterp(
+      max(p, 200),
+      X[1],
+      T_data);
   elseif p < IFU.BaseIF97.triple.ptriple then
     tsat := IFU.BaseIF97.triple.Ttriple;
   else

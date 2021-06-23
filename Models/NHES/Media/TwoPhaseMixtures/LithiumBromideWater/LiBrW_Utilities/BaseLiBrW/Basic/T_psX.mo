@@ -5,7 +5,7 @@ function T_psX
   input MassFraction X[:];
   output Temperature T;
 protected
-  constant Common.PropTable_3 T_data(
+  constant Math.Interpolation.PropTable_3 T_data(
     table=T_psX_PropTable.T_table,
     pr_1=T_psX_PropTable.p_range,
     pr_2=T_psX_PropTable.s_range,
@@ -13,11 +13,11 @@ protected
   SpecificEntropy s_os=-1163.2672155;
 algorithm
   if X[1] > 0 then
-    T := Common.TrilinearInterp(
-                p,
-                s,
-                X[1],
-                T_data);
+    T :=Math.Interpolation.TrilinearInterp(
+      p,
+      s,
+      X[1],
+      T_data);
   elseif (p < IFU.BaseIF97.triple.ptriple) then
     T := Modelica.Media.Water.IdealSteam.T_ps(p, s - s_os);
   else
