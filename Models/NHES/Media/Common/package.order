@@ -7,12 +7,6 @@ GibbsDerivs
 LiBrWData
 R6Data
 TabDerAssums
-PropTable_2
-PropTable_3
-TableSolverVars_2
-TableSolverVars_3
 FindIndexI
-BilinearInterp
-TrilinearInterp
 NASABase
 SingleSpeciesData
