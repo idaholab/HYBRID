@@ -43,4 +43,20 @@ The thermocline system was modeled from a modified set of Schumann equations tha
 \label{Top View Thermocline}
 \end{figure}
 
+\subsubsection{Concrete Solid Media Storage}
+
+Three different models exist for concrete solid media storage, shown in Figure \ref{CTES}. Concrete solid media storage uses inexpensive materials to charge and discharge heat from a fluid system. The models within the Hybrid system use HeatCrete as the concrete material, the properties of which are found in literature. The initial development has been done with energy arbitrage for a Rankine system in mind. However, there are not limitations on the heat transfer fluid that can be used in conjunction with the concrete system. Two design modalities exist with the three developed models. One is a single pipe model and the other is a dual pipe model. All models use simplified flow models: a single pressure and mass flow rate is imposed within a pipe (which allows for significantly improved performance at low and no flow rate conditions) leaving the dynamics of the system to primarily be described by the conservation of energy equation. Within the concrete model, heat conducts both radially and axially in a 2-D nodalized vector. All models calculate values for an average pipe and the system behavior is then scaled by the number of pipes. 
+
+The single pipe model is so called because it only models one fluid pipe within a concrete system. This modeling choice imposes a restriction that heat transfer fluid only flows in one direction or the other (note, no error signals are sent by this, m\textunderscore flow\textunderscore internal = m\textunderscore flow\textunderscore ch-m\textunderscore flow\textunderscore dis). The behavior of this system lends itself better to batch energy applications. The power level during quenching (HTF quenching during charging or concrete quenching during discharging) is an order of magnitude higher than the steady power level. The pressure of the system is taken at the cold end, and defaults to the charging pressure. This model can operate in charging, discharging, OR standby mode. The single pipe model operates with an established axial thermocline and a reversing radial thermal gradient depending on operation. 
+
+The dual pipe and dual pipe two HTFs model contain separate pipes for the charging and discharging flow. This model operates more steadily over long periods of time. Heat is always conducted within the CTES and between the concrete and the HTFs. The dual pipe CTES can operate in charging, discharging, standby, or thermal buffer (both charging and discharging) modes. The dual pipe system operates with mono-directional thermal gradients in both axial and radial directions in all operating modes. 
+
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.8]{pics/CTES.png}
+\caption{Top Level Depiction of Concrete Thermal Energy Storage System}
+\label{CTES}
+\end{figure}
+
 %\input{Installation/clone.tex}
