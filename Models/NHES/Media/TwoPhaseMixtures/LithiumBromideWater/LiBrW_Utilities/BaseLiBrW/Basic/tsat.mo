@@ -15,11 +15,15 @@ algorithm
       max(p, 200),
       X[1],
       T_data);
+
   elseif p < IFU.BaseIF97.triple.ptriple then
     tsat := IFU.BaseIF97.triple.Ttriple;
+
   else
     IFU.BaseIF97.Basic.tsat(max(p, 612));
+    Modelica.Utilities.Streams.print(String(tsat));
   end if;
+
   //annotation (derivative=tsat_der);
   annotation (Inline=true, smoothOrder=2);
 end tsat;

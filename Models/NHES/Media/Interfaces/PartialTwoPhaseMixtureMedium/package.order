@@ -42,5 +42,6 @@ density_psX
 specificEnthalpy_psX
 pressure_dTX
 specificEnthalpy_dTX
+specificEnthalpyOfFormation_std
 vapourQuality
 massfraction

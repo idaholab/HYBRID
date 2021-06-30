@@ -8,7 +8,7 @@ partial package LithiumBromideWater_base "Lithium Bromide-Water Mixture properti
         start=1e3,
         nominal=1e3,
         min=-10000,
-        max=1e6),
+        max=5e6),
       Density(
         start=1500,
         nominal=1500,
@@ -120,7 +120,7 @@ partial package LithiumBromideWater_base "Lithium Bromide-Water Mixture properti
                 X,
                 phase,
                 Region);
-        sat.Tsat = T;
+        sat.Tsat = saturationTemperature(p, X);
         sat.psat = saturationPressure(T, X);
         sat.Xsat = saturationMassFraction(p, T);
       elseif phX_explicit then
@@ -137,8 +137,7 @@ partial package LithiumBromideWater_base "Lithium Bromide-Water Mixture properti
                 phase,
                 Region);
         sat.Tsat = saturationTemperature(p, X);
-        sat.psat = p;
-        // Why not use psat function here?
+        sat.psat = saturationPressure(T, X);
         sat.Xsat = saturationMassFraction(p, T);
       else
         h = specificEnthalpy_pTX(
@@ -151,8 +150,7 @@ partial package LithiumBromideWater_base "Lithium Bromide-Water Mixture properti
                 T,
                 X,
                 Region);
-        sat.psat = p;
-        // Why not use psat function here?
+        sat.psat = saturationPressure(T, X);
         sat.Tsat = saturationTemperature(p, X);
         sat.Xsat = saturationMassFraction(p, T);
       end if;
@@ -491,6 +489,22 @@ partial package LithiumBromideWater_base "Lithium Bromide-Water Mixture properti
               Region);
       annotation (Inline=true);
     end specificEntropy;
+
+    redeclare function extends specificEnthalpyOfFormation_std
+protected
+      Integer region=0;
+    algorithm
+      region :=LiBrW_Utilities.BaseLiBrW.Regions.region_phX(
+          state.p,
+          state.h,
+          state.X);
+      h_f :=if (region == 7) then
+              -351160*86.845
+            elseif (region == 1) then
+              NHES.Media.IdealSteam.data.Hf[1]
+            else
+              NHES.Media.Liquids.Water.ssd.h_f_298_15/NHES.Media.Liquids.Water.ssd.MW;
+    end specificEnthalpyOfFormation_std;
 
     redeclare function extends specificHeatCapacityCp
       "Specific heat capacity at constant pressure of water"

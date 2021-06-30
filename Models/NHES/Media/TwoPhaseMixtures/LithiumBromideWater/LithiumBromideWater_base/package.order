@@ -29,6 +29,7 @@ specificInternalEnergy
 specificGibbsEnergy
 specificHelmholtzEnergy
 specificEntropy
+specificEnthalpyOfFormation_std
 specificHeatCapacityCp
 specificHeatCapacityCv
 isentropicExponent

@@ -392,6 +392,28 @@ partial package PartialTwoPhaseMixtureMedium "Base class for two phase medium of
           X,
           phase));
   end specificEnthalpy_dTX;
+//   replaceable function specificEnthalpyOfFormation_298_15_phX
+//     "Returns specific enthalpy, dependent on phase and composition"
+//     extends Modelica.Icons.Function;
+//     input AbsolutePressure p "Pressure";
+//     input SpecificEnthalpy h "Specific enthalpy";
+//     input MassFraction X[:] "Mass fractions";
+//     input FixedPhase phase=0
+//       "2 for two-phase, 1 for one-phase, 0 if not known";
+//     output SpecificEnthalpy h_f;
+//   protected 
+//     Integer region = 1;
+//   algorithm 
+//     h_f :=if (X[1] > 0) then -351160*86.845 elseif (region == 1) then -241
+//        else -285;
+//   end specificEnthalpyOfFormation_298_15_phX;
+
+  replaceable partial function specificEnthalpyOfFormation_std
+    "Returns specific enthalpy of formation at 298.15 K"
+    extends Modelica.Icons.Function;
+    input ThermodynamicState state "Thermodynamic state record";
+    output SpecificEnthalpy h_f "Specific enthalpy of formation";
+  end specificEnthalpyOfFormation_std;
 
   replaceable function vapourQuality "Return vapour quality"
     extends Modelica.Icons.Function;
