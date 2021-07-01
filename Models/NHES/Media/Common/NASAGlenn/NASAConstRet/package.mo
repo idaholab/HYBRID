@@ -9,9 +9,9 @@ package NASAConstRet
     r=0,
     n=1,
     R_U=8.31451,
-    MW=1e-9,
+    MW=1e-2,
     R_m = 1,
-    h_f_298_15=0,
+    h_f_298_15=-10000,
     a=zeros(4,7),
     b=zeros(4,2),
     T_lims=zeros(4,2));

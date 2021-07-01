@@ -12,3 +12,4 @@ specificEntropy
 specificHeatCapacityCp
 specificHeatCapacityCv
 setState_T
+setState_h

@@ -55,12 +55,13 @@ partial package PartialSolidMedium "Partial solid medium properties based on tem
     input Temperature T "Temperature";
     output ThermodynamicState state "Thermodynamic state record";
   end setState_T;
-  // replaceable partial function setState_h
-  //   "Return thermodynamic state as function of p, h and composition X or Xi"
-  //   extends Modelica.Icons.Function;
-  //   input SpecificEnthalpy h "Specific enthalpy";
-  //   output ThermodynamicState state "Thermodynamic state record";
-  // end setState_h;
+
+  replaceable partial function setState_h
+   "Return thermodynamic state as function of p, h and composition X or Xi"
+   extends Modelica.Icons.Function;
+   input SpecificEnthalpy h "Specific enthalpy";
+   output ThermodynamicState state "Thermodynamic state record";
+  end setState_h;
 
   // replaceable partial function setState_s
   //   "Return thermodynamic state as function of p, s and composition X or Xi"

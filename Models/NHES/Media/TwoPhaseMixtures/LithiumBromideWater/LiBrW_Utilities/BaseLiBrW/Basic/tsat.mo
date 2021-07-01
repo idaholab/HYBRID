@@ -21,7 +21,7 @@ algorithm
 
   else
     IFU.BaseIF97.Basic.tsat(max(p, 612));
-    Modelica.Utilities.Streams.print(String(tsat));
+    //Modelica.Utilities.Streams.print(String(tsat));
   end if;
 
   //annotation (derivative=tsat_der);

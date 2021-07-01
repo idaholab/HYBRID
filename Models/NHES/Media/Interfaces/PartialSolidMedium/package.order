@@ -8,6 +8,7 @@ h_default
 ThermodynamicState
 BaseProperties
 setState_T
+setState_h
 setSmoothState
 thermalConductivity
 temperature
