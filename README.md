@@ -7,6 +7,8 @@ The system that is studied is modular and made of an assembly of components. For
 
 To assess the economics of the system, an optimization procedure is varying different parameters of the system and tries to find the minimal cost of electricity production. 
 
+HYBRID is a collection of a transient process models developed in the Modelica langauage capable of representing the physical dynamics of various integrated energy systems and processes. The models are developed in a modular way so as to allow users to quickly assemble and test various configurations and control systems. 
+
 Currently,the HYBRID repository is based on:
 
 RAVEN : RAVEN v 1.1 (and newer). See [GITHUB WEBSITE](https://github.com/idaholab/raven)
