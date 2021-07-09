@@ -6,3 +6,5 @@ CS_SMR_Tave_Enthalpy_RXPower
 ED_Dummy
 Components
 BaseClasses
+CS_SMR_highfidelity
+Control_Rod_Model_Simple
