@@ -72,7 +72,7 @@ model CS_SMR_highfidelity "Primary System Control System."
     annotation (Placement(transformation(extent={{-192,-50},{-172,-30}})));
   Modelica.Blocks.Logical.Switch switch_CR1
     annotation (Placement(transformation(extent={{-36,-10},{-16,-30}})));
-  Control_Rod_Model_Simple control_Rod_Model_Simple(rho_Boron=-1000,
+  Components.Control_Rod_Model control_Rod_Model_Simple(rho_Boron=-1000,
       Position_Inserted(start=30))
     annotation (Placement(transformation(extent={{54,104},{74,124}})));
 equation

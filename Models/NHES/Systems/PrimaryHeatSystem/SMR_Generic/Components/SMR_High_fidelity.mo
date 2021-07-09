@@ -225,18 +225,13 @@ Real Tave=(Tcore_inlet.T+Tcore_exit.T)/2.0;
     Ts_start(displayUnit="degC") = dataInitial.T_start_core_coolantSubchannel,
     ps_start=dataInitial.p_start_core_coolantSubchannel,
     Ts_start_1(displayUnit="K") = dataInitial.Ts_start_core_fuelModel_region_1,
-
     Ts_start_2(displayUnit="K") = dataInitial.Ts_start_core_fuelModel_region_2,
-
     Ts_start_3(displayUnit="K") = dataInitial.Ts_start_core_fuelModel_region_3,
-
     fissionProductDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     redeclare record Data_DH =
         TRANSFORM.Nuclear.ReactorKinetics.Data.DecayHeat.decayHeat_11_TRACEdefault,
-
     redeclare record Data_FP =
         TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
-
     redeclare package Material_1 = TRANSFORM.Media.Solids.UO2,
     rho_input=CR_reactivity.y,
     redeclare package Medium = Medium,
