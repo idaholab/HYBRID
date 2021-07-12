@@ -490,5 +490,11 @@ equation
     experiment(
       StopTime=18000,
       Interval=1,
-      __Dymola_Algorithm="esdirk45a"));
+      __Dymola_Algorithm="esdirk45a"),
+    Documentation(revisions="<html>
+</html>", info="<html>
+<p>Based on non-proprietary opensource data. </p>
+<p>Model is consistent with the model found in:</p>
+<p>1. <b><span style=\"font-family: Open Sans; color: #333333; background-color: #ffffff;\">Konor Frick &amp; Shannon Bragg-Sitton&nbsp;(2021)&nbsp;Development of the NuScale Power Module in the INL Modelica Ecosystem,&nbsp;Nuclear Technology,&nbsp;207:4,&nbsp;521-542,&nbsp;DOI:&nbsp;<a href=\"https://doi.org/10.1080/00295450.2020.1781497\">10.1080/00295450.2020.1781497</a></span></b></p>
+</html>"));
 end SMR_High_fidelity;
