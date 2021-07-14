@@ -1,0 +1,3 @@
+translateModel("NHES.Systems.Examples.SMR_highfidelity");
+importInitial("./gold/dsfinal.txt");
+simulateModel("NHES.Systems.Examples.SMR_highfidelity", stopTime=14400, outputInterval=100, method="Esdirk45a", resultFile="SMR_highfidelity");
