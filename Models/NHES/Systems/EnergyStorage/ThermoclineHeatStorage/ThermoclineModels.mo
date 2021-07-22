@@ -5203,7 +5203,6 @@ Thermocline System"),
           thermocline_fluidprops_heaters_newHC.nodes,
           thermocline_fluidprops_heaters_newHC.nodes),
       r_inner=fill(geometry.Radius_Tank + geometry.Wall_Thickness, geometry.nodes),
-
       r_outer=fill(geometry.Radius_Tank + geometry.Wall_Thickness + geometry.Insulation_thickness
           /3, geometry.nodes),
       redeclare package Material = InsulationMaterial,
@@ -5241,12 +5240,12 @@ Thermocline System"),
           geometry.nodes),
       r_outer=fill((geometry.Insulation_thickness*2/3) + Insulation1[
           thermocline_fluidprops_heaters_newHC.nodes].r_inner, geometry.nodes),
-
       redeclare package Material = InsulationMaterial,
       T_start=598.15)
       annotation (Placement(transformation(extent={{-10,-10},{10,10}},
           rotation=90,
           origin={-90,18})));
+
     TRANSFORM.HeatAndMassTransfer.Volumes.SimpleWall_Cylinder Insulation2
                                                                         [
       thermocline_fluidprops_heaters_newHC.nodes](
