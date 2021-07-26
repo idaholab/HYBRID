@@ -1,0 +1,1 @@
+simulateModel("NHES.Systems.EnergyStorage.Latent_Heat_TES.Examples.Test2_Dimensions", stopTime=100, tolerance = 1e-4, numberOfIntervals=25, method="Esdirk45a", resultFile="LHTES_Test");
