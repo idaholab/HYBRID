@@ -13,18 +13,6 @@ Currently,the HYBRID repository is based on:
 * TRANSFORM-Library : TRANsient Simulation Framework of Reconfigurable Models. See [GITHUB WEBSITE](https://github.com/ORNL-Modelica/TRANSFORM-Library)
 * DYMOLA: DYMOLA 2020x. See [Dymola Website](https://www.3ds.com/products-services/catia/products/dymola/?woc=%7B%22category%22%3A%5B%22category%2Fdymola%22%5D%7D&wockw=card_content_cta_1_url%3A%22https%3A%2F%2Fblogs.3ds.com%2Fcatia%2F%22)
 
- 
-### Other Software
-Idaho National Laboratory is a cutting edge research facility which is a constantly producing high quality research and software. Feel free to take a look at our other software and scientific offerings at:
-
-[Primary Technology Offerings Page](https://www.inl.gov/inl-initiatives/technology-deployment)
-
-[Supported Open Source Software](https://github.com/idaholab)
-
-[Raw Experiment Open Source Software](https://github.com/IdahoLabResearch)
-
-[Unsupported Open Source Software](https://github.com/IdahoLabCuttingBoard)
-
 ### License
 
 Copyright 2020 Battelle Energy Alliance, LLC
@@ -69,3 +57,15 @@ Authors
 * Yu Tang
 * Daniel Mikkelson (Maintainer)
 * Amey Shigrekar
+
+
+### Other Software
+Idaho National Laboratory is a cutting edge research facility which is a constantly producing high quality research and software. Feel free to take a look at our other software and scientific offerings at:
+
+[Primary Technology Offerings Page](https://www.inl.gov/inl-initiatives/technology-deployment)
+
+[Supported Open Source Software](https://github.com/idaholab)
+
+[Raw Experiment Open Source Software](https://github.com/IdahoLabResearch)
+
+[Unsupported Open Source Software](https://github.com/IdahoLabCuttingBoard)
