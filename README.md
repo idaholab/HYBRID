@@ -9,9 +9,9 @@ To assess the economics of the system, an optimization procedure varying differe
 
 Currently,the HYBRID repository is based on:
 
-RAVEN : RAVEN v 1.1 (and newer). See [GITHUB WEBSITE](https://github.com/idaholab/raven)
-TRANSFORM-Library : TRANsient Simulation Framework of Reconfigurable Models. See [GITHUB WEBSITE](https://github.com/ORNL-Modelica/TRANSFORM-Library)
-DYMOLA: DYMOLA 2020x. See [Dymola Website](https://www.3ds.com/products-services/catia/products/dymola/?woc=%7B%22category%22%3A%5B%22category%2Fdymola%22%5D%7D&wockw=card_content_cta_1_url%3A%22https%3A%2F%2Fblogs.3ds.com%2Fcatia%2F%22)
+* RAVEN : RAVEN v 1.1 (and newer). See [GITHUB WEBSITE](https://github.com/idaholab/raven)
+* TRANSFORM-Library : TRANsient Simulation Framework of Reconfigurable Models. See [GITHUB WEBSITE](https://github.com/ORNL-Modelica/TRANSFORM-Library)
+* DYMOLA: DYMOLA 2020x. See [Dymola Website](https://www.3ds.com/products-services/catia/products/dymola/?woc=%7B%22category%22%3A%5B%22category%2Fdymola%22%5D%7D&wockw=card_content_cta_1_url%3A%22https%3A%2F%2Fblogs.3ds.com%2Fcatia%2F%22)
 
  
 ### Other Software
@@ -56,15 +56,16 @@ You agree your contributions are submitted under the Apache-2 license. You repre
 
 Authors
 -----
-Andrea Alfonsi
-Aaron Epiney
-Cristian Rabiti
-Jonk Suk Kim
-Konor Frick
-Paul Talbot
-Robert Kinoshita
-Derek Stucki
-Michael Greenwood
-Roberto Ponciroli
-Yu Tang
-Daniel Mikkelson
+* Andrea Alfonsi
+* Aaron Epiney
+* Cristian Rabiti 
+* Jong Suk Kim
+* Konor Frick (Technical Lead/ Owner)
+* Paul Talbot
+* Robert Kinoshita
+* Derek Stucki
+* Michael Greenwood
+* Roberto Ponciroli
+* Yu Tang
+* Daniel Mikkelson (Maintainer)
+* Amey Shigrekar
