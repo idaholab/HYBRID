@@ -4,7 +4,7 @@ HYBRID is a collection of a transient process models developed in the Modelica l
 
 The systems studied are modular and made of an assembly of components. For example, a system could contain a hybrid nuclear reactor, a gas turbine, a battery and some renewables. This system would correspond to the size of a balance area, but in theory any size of system is imaginable. The system is modeled in the ‘Modelica/Dymola’ language.
 
-To assess the economics of the system, an optimization procedure varying different parameters can be run using the INL FORCE platform that combines HYBRID with HERON and RAVEN. 
+To assess the economics of the system, an optimization procedure varying different parameters can be run using the INL [FORCE](https://ies.inl.gov/SitePages/Technology%20-%20System%20Simulation.aspx) platform that combines HYBRID with HERON and RAVEN. 
 
 
 Currently,the HYBRID repository is based on:
