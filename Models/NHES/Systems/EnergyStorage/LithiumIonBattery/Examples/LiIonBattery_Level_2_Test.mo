@@ -12,24 +12,28 @@ model LiIonBattery_Level_2_Test
     annotation (Placement(transformation(extent={{-20,-22},{24,22}})));
   Electrical.Sources.FrequencySource      boundary
     annotation (Placement(transformation(extent={{80,-60},{60,-40}})));
-  Modelica.Blocks.Sources.Ramp  ramp(
-    height=5,
-    duration=0,
-    offset=0,
+  Modelica.Blocks.Sources.Trapezoid
+                                trapezoid(
+    amplitude=10,
+    rising=1,
+    width=5000,
+    falling=1,
+    period=10000,
+    offset=-5,
     startTime=1000)
     annotation (Placement(transformation(extent={{-80,40},{-60,60}})));
 equation
   connect(battery.powerConnection,boundary. portElec_b)
     annotation (Line(points={{24,0},{54,0},{54,-50},{60,-50}},
                                              color={255,0,0}));
-  connect(ramp.y, battery.pSetPoint) annotation (Line(points={{-59,50},{-30,50},
-          {-30,0},{-20,0}}, color={0,0,127}));
+  connect(trapezoid.y, battery.pSetPoint) annotation (Line(points={{-59,50},{-30,
+          50},{-30,0},{-20,0}}, color={0,0,127}));
   annotation (
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
             100,100}})),
     experiment(
-      StopTime=10000,
-      Interval=1,
+      StopTime=30000,
+      Interval=10,
       __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput(events=false),
     Documentation(info="<html>

@@ -27,8 +27,8 @@ equation
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
             100,100}})),
     experiment(
-      StopTime=10000,
-      Interval=1,
+      StopTime=20000,
+      Interval=10,
       __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput(events=false),
     Documentation(info="<html>

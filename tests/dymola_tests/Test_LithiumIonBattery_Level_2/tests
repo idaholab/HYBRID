@@ -1,0 +1,11 @@
+[Tests]
+ [./]
+  type = 'HYBRIDTester'
+  input = 'LiIonBattery_Level_2_Test.mos'
+  workingDir = '.'
+  output = 'LiIonBattery_Level_2_Test.mat'
+  dymola_mats = 'LiIonBattery_Level_2_Test.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]
