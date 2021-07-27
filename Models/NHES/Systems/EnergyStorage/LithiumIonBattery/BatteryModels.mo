@@ -45,7 +45,16 @@ package BatteryModels
           Line(points={{50,30},{70,30}}, color={0,0,127}),
           Line(points={{60,20},{60,40}}, color={0,0,127}),
           Line(points={{60,-40},{60,-20}}, color={0,0,127})}),
-      Diagram(coordinateSystem(preserveAspectRatio=false)));
+      Diagram(coordinateSystem(preserveAspectRatio=false)),
+      Documentation(info="<html>
+    <p>Developer: Roberto Ponciroli, Thanh Hua, Yu Tang, Richard Vilim, Argonne National Laboratory</p>
+    <p>Date: 2016-September-30</p>
+    
+    <p>This model shows a ideal battery whose output power echoes the input demand. </p>
+    <p>No integration features are implemented in this model.</p>
+
+
+</html>"));
   end BatteryLevel_0;
 
   model BatteryLevel_1
@@ -172,7 +181,19 @@ package BatteryModels
           Line(points={{50,30},{70,30}}, color={0,0,127}),
           Line(points={{60,20},{60,40}}, color={0,0,127}),
           Line(points={{60,-40},{60,-20}}, color={0,0,127})}),
-      Diagram(coordinateSystem(preserveAspectRatio=false)));
+      Diagram(coordinateSystem(preserveAspectRatio=false)),
+      Documentation(info="<html>
+    <p>Developer: Roberto Ponciroli, Thanh Hua, Yu Tang, Richard Vilim, Argonne National Laboratory</p>
+    <p>Date: 2016-September-30</p>
+    
+    <p>This model shows a simple input/output power regulator. </p>
+    <p>The constraints of max charging power and max discharging power can be specified in the battery model. </p>
+    <p>In addition to the hard constraints, </p>
+    <p>When charging, the input power will gradually decrease when the charging level is approaching the max capacity. </p>
+    <p>When discharging, the output power will gradually decrease when the capacity is approaching the emptyness. </p>
+
+
+</html>"));
   end BatteryLevel_1;
 
   model BatteryLevel_2
