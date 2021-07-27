@@ -9,14 +9,14 @@ model Turbine_Outlet
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow Pipe_flow(redeclare package
       Medium =                                                                   medium)
     annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-      Modelica.Blocks.Interfaces.RealOutput v_rout if
-                                                     Vels_out annotation (Placement(transformation(
+      Modelica.Blocks.Interfaces.RealOutput v_rout
+                                                  if Vels_out annotation (Placement(transformation(
           extent={{-32,32},{8,72}}), iconTransformation(
         extent={{-20,-20},{20,20}},
         rotation=270,
         origin={58,-46})));
-  Modelica.Blocks.Interfaces.RealOutput v_theout if
-                                                   Vels_out annotation (Placement(transformation(
+  Modelica.Blocks.Interfaces.RealOutput v_theout
+                                                if Vels_out annotation (Placement(transformation(
           extent={{-32,32},{8,72}}), iconTransformation(
         extent={{20,-20},{-20,20}},
         rotation=270,
