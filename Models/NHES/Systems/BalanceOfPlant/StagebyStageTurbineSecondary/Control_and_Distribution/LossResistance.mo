@@ -13,7 +13,7 @@ initial equation
 equation
   d = Medium.density(state);
 
- port_a.p-port_b.p = port_a.m_flow*sqrt(port_a.m_flow*port_a.m_flow + 0.1*0.1)*K/state.d;
+ port_a.p-port_b.p = port_a.m_flow*sqrt(port_a.m_flow*port_a.m_flow + 0.1*0.1)*K/d;
 
   annotation (defaultComponentName="resistance",
         Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(

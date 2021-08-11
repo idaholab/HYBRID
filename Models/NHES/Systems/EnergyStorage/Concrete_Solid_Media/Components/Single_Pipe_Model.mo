@@ -1,14 +1,11 @@
-within NHES.Systems.EnergyStorage.Concrete_Solid_Media;
-model Single_Pipe_CS_ED_Enabled_NewGeom
+within NHES.Systems.EnergyStorage.Concrete_Solid_Media.Components;
+model Single_Pipe_Model
   //We are going to assume 2 things here: 1) the outlet discharge pressure or the inlet charging pressure is a constant pressure value throughout
   //the liquid portion (which I know is wrong, but let's just go with it for now). 2) The mass flow rate is constant throughout the model. We can
   //use connectors to indicate what the net mass flow rate should be, and then use boundary nodes to initialize the outlet conditions.
  // extends BaseClasses.Partial_SubSystem_A(redeclare replaceable CS_Dummy=CS,
  // redeclare replaceable ED_Dummy = ED, redeclare replaceable Data.Data_Dummy = data);
-   extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable CS_Dummy CS,
-    redeclare replaceable ED_Dummy ED,
-    redeclare Data.Data_Dummy data);
+
 public
     HTF.ThermodynamicState HTF_State[nX];
   TES_Med.ThermodynamicState Con_State[nX,nY];
@@ -170,7 +167,6 @@ equation
   dx = dX/nX;
   dy = dY/nY;
 
-
   //Connect the ports. Also, indicate the donor variables for the conservation of energy equation later by changing the h_in and h_out variables based on the flow direction.
   Charge_Inlet.h_outflow = h_f[1];
   Discharge_Outlet.h_outflow = h_f[1];
@@ -212,9 +208,6 @@ equation
 
       Net_Q_Through[i] = sum(QC_Flow[:,i]);
   end for;
-
-
-
 
   for i in 1:nX loop
 
@@ -329,21 +322,7 @@ equation
         end if;
 
   end for;
-  connect(sensorBus.Condensate_Temp, Cold_Fluid_Temp.y) annotation (Line(
-      points={{-30,100},{-60,100},{-60,116},{-75,116}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorBus.Discharge_Temp, Hot_Fluid_Temp.y) annotation (Line(
-      points={{-30,100},{-77,100}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorBus.Concrete_Ave_Temp, Conc_Temp.y) annotation (Line(
-      points={{-30,100},{-60,100},{-60,84},{-75,84}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
+
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
                              Bitmap(extent={{-106,-74},{100,82}}, fileName="modelica://NHES/Icons/EnergyStoragePackage/Concreteimg.jpg")}),
                                                                  Diagram(
@@ -361,4 +340,4 @@ equation
 <p>This model does not impose on the user a requirement that only 1 set of the fluid ports is used at a time. This means that for Charge_m_flow &gt;= Discharge_m_flow, assumed operation is charging. This also means that the mass flow rate is the <b>difference </b>between the two flow rates. Care should be taken by the user to never use this model when both charging and discharging are allowed. The difference is used to avoid discontinuities in the model that may cause model crashing. (To check for this, a user would simply compare the port mass flow rates, as they are separately set). </p>
 <p>The concrete portion of the model default medium is based on HeatCrete data, but any TRANSFORM&hellip;.PartialAlloy compliant medium would be appropriate to use instead. 2-D conduction is imposed, and adiabatic boundary conditions currently exist on the non-pipe boundaries. Adding heat losses on the ends would likely be an advisable future addition, but would certainly require more knowledge of the application. The adiabatic radial boundary condition is imposed as an assumption that a typical internal concrete pipe would radially see similar, if not identical, conditions. Therefore, an adiabatic BC imposes this reflection. </p>
 </html>"));
-end Single_Pipe_CS_ED_Enabled_NewGeom;
+end Single_Pipe_Model;

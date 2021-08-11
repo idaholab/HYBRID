@@ -4,3 +4,4 @@ tests/dymola_tests/**/*.exe
 tests/dymola_tests/**/*.obj
 tests/dymola_tests/**/*.mo
 tests/dymola_tests/*/*.mat
+**/*.bak-mo

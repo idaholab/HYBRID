@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Components;
-model Economic_Sim_1
+model Economic_Sim_Profile
   extends BaseClasses.Partial_ControlSystem;
 
   extends NHES.Icons.DummyIcon;
@@ -269,16 +269,15 @@ equation
   connect(Discharge_Sum.y,Net_Demand. u1) annotation (Line(points={{-20,25.4},{-20,
           12},{-22,12},{-22,-12},{-30,-12},{-30,-16},{-36,-16}},
                                             color={0,0,127}));
-  connect(Ch1.y,Charge_Sum. u[1]) annotation (Line(points={{-73.7,81},{-62,
-          81},{-62,51.2},{-56.9714,51.2}},
-                                      color={0,0,127}));
+  connect(Ch1.y,Charge_Sum. u[1]) annotation (Line(points={{-73.7,81},{-62,81},
+          {-62,51.2},{-56.9714,51.2}},color={0,0,127}));
   connect(Dch1.y,Discharge_Sum. u[1]) annotation (Line(points={{-31.7,47},{
           -18.9714,47},{-18.9714,39.2}},
                                  color={0,0,127}));
   connect(Ant1.y,Anticipatory_Signals. u[1]) annotation (Line(points={{4.3,11},
           {17.0286,11},{17.0286,7.2}},  color={0,0,127}));
-  connect(Ch2.y,Charge_Sum. u[2]) annotation (Line(points={{-73.7,71},{
-          -57.3143,71},{-57.3143,51.2}},
+  connect(Ch2.y,Charge_Sum. u[2]) annotation (Line(points={{-73.7,71},{-57.3143,
+          71},{-57.3143,51.2}},
                             color={0,0,127}));
   connect(Ant2.y,Anticipatory_Signals. u[2]) annotation (Line(points={{4.3,21},
           {16.6857,21},{16.6857,7.2}},   color={0,0,127}));
@@ -296,32 +295,30 @@ equation
           {-20,55.85},{-20,39.2}},                   color={0,0,127}));
   connect(Ant4.y,Anticipatory_Signals. u[4]) annotation (Line(points={{7,33.7},{
           7,26},{16,26},{16,7.2}},         color={0,0,127}));
-  connect(Ch5.y,Charge_Sum. u[5]) annotation (Line(points={{-50.3,81},{
-          -58.3429,81},{-58.3429,51.2}},
+  connect(Ch5.y,Charge_Sum. u[5]) annotation (Line(points={{-50.3,81},{-58.3429,
+          81},{-58.3429,51.2}},
                             color={0,0,127}));
-  connect(DCh5.y,Discharge_Sum. u[5]) annotation (Line(points={{-21,71.7},{
-          -21,55.85},{-20.3429,55.85},{-20.3429,39.2}},
-                                                     color={0,0,127}));
+  connect(DCh5.y,Discharge_Sum. u[5]) annotation (Line(points={{-21,71.7},{-21,
+          55.85},{-20.3429,55.85},{-20.3429,39.2}},  color={0,0,127}));
   connect(Ant5.y,Anticipatory_Signals. u[5]) annotation (Line(points={{17,33.7},
           {17,19.85},{15.6571,19.85},{15.6571,7.2}},     color={0,0,127}));
-  connect(Ch6.y,Charge_Sum. u[6]) annotation (Line(points={{-50.3,71},{
-          -58.6857,71},{-58.6857,51.2}},
+  connect(Ch6.y,Charge_Sum. u[6]) annotation (Line(points={{-50.3,71},{-58.6857,
+          71},{-58.6857,51.2}},
                             color={0,0,127}));
-  connect(DCh6.y,Discharge_Sum. u[6]) annotation (Line(points={{-11,71.7},{
-          -11,68},{-20.6857,68},{-20.6857,39.2}},
-                                               color={0,0,127}));
+  connect(DCh6.y,Discharge_Sum. u[6]) annotation (Line(points={{-11,71.7},{-11,
+          68},{-20.6857,68},{-20.6857,39.2}},  color={0,0,127}));
   connect(Ant6.y,Anticipatory_Signals. u[6]) annotation (Line(points={{27,33.7},
           {27,28},{15.3143,28},{15.3143,7.2}},     color={0,0,127}));
-  connect(Ch7.y,Charge_Sum. u[7]) annotation (Line(points={{-50.3,61},{
-          -59.0286,61},{-59.0286,51.2}},
+  connect(Ch7.y,Charge_Sum. u[7]) annotation (Line(points={{-50.3,61},{-59.0286,
+          61},{-59.0286,51.2}},
                             color={0,0,127}));
   connect(Ant7.y,Anticipatory_Signals. u[7]) annotation (Line(points={{31.7,31},
           {14.9714,31},{14.9714,7.2}},   color={0,0,127}));
   connect(DCh7.y,Discharge_Sum. u[7]) annotation (Line(points={{-8.3,67},{
           -21.0286,67},{-21.0286,39.2}},
                                  color={0,0,127}));
-  connect(Ch3.y,Charge_Sum. u[3]) annotation (Line(points={{-73.7,61},{
-          -57.6571,61},{-57.6571,51.2}},
+  connect(Ch3.y,Charge_Sum. u[3]) annotation (Line(points={{-73.7,61},{-57.6571,
+          61},{-57.6571,51.2}},
                             color={0,0,127}));
   connect(actuatorBus.Demand, Net_Demand.y) annotation (Line(
       points={{30,-100},{28,-100},{28,-54},{-48,-54},{-48,-39},{-44,-39}},
@@ -339,4 +336,4 @@ annotation(defaultComponentName="SC", experiment(StopTime=3600,
           fillColor={255,255,237},
           fillPattern=FillPattern.Solid,
           textString="Input Setpoints: Modelica Path")}));
-end Economic_Sim_1;
+end Economic_Sim_Profile;

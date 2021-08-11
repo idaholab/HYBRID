@@ -1,5 +1,5 @@
-within NHES.Systems.EnergyStorage.Concrete_Solid_Media;
-model Dual_Pipe_Model_CS_ED_Enabled_NewGeom
+within NHES.Systems.EnergyStorage.Concrete_Solid_Media.Components;
+model Dual_Pipe_Model
   //We are going to assume 2 things here: 1) the outlet discharge pressure or the inlet charging pressure is a constant pressure value throughout
   //the liquid portion (which I know is wrong, but let's just go with it for now). 2) The mass flow rate is constant throughout the model. We can
   //use connectors to indicate what the net mass flow rate should be, and then use boundary nodes to initialize the outlet conditions.
@@ -9,10 +9,7 @@ model Dual_Pipe_Model_CS_ED_Enabled_NewGeom
   //k=1 is the charging fluid, k=2 is the discharging. IMPORTANT: Both flows go from i=1...nX where i=1 indicates inlet and i=nX indicates outlet. That being said, the model
   //assumes counterflow such that the concrete nodes are numbered to go in the direction of the CHARGING flow. i=nX for the concrete is connected to i=1 of DISCHARGING flow.
   //********************************************
-   extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable CS_Dummy CS,
-    redeclare replaceable ED_Dummy ED,
-    redeclare Data.Data_Dummy data);
+
 public
   HTF.ThermodynamicState HTF_State[nX,2];
   TES_Med.ThermodynamicState Con_State[nX,2*nY];
@@ -401,21 +398,7 @@ for i in 1:nX loop
 
 end for;
 
-  connect(sensorBus.Condensate_Temp, Cold_Fluid_Temp.y) annotation (Line(
-      points={{-30,100},{-58,100},{-58,116},{-73,116}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorBus.Discharge_Temp, Hot_Fluid_Temp.y) annotation (Line(
-      points={{-30,100},{-75,100}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorBus.Concrete_Ave_Temp, Conc_Temp.y) annotation (Line(
-      points={{-30,100},{-58,100},{-58,84},{-73,84}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
+
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
                              Bitmap(extent={{-102,-74},{104,82}}, fileName="modelica://NHES/Icons/EnergyStoragePackage/Concreteimg.jpg")}),
                                                                  Diagram(
@@ -428,4 +411,4 @@ end for;
     Documentation(info="<html>
 <p>This model is built on the Single Pipe model, operating the two pipes on the same characteristic equations, merely in 2 dimensions. It is important to note though that the numbering for the <b>discharging pipe</b> is consistent with its direction of fluid motion. That is, the discharge inlet connects with node 1 and the discharge outlet connects with node N. To obtain a radial path then, a user should compare charging node n with concrete nodes n with discharging node N-n+1 due to the counterflow nature. &nbsp; </p>
 </html>"));
-end Dual_Pipe_Model_CS_ED_Enabled_NewGeom;
+end Dual_Pipe_Model;

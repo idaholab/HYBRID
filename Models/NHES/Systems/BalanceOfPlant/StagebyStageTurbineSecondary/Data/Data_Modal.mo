@@ -15,6 +15,8 @@ model Data_Modal
   parameter Modelica.Units.SI.MassFlowRate Feed_Flow_Nominal = 68.4;
   parameter Modelica.Units.SI.MassFlowRate Cycle_Bypass_Mflow_Reference = 32;
   parameter Modelica.Units.SI.Power Q_RX_Nominal = 162e6;
+  parameter Modelica.Units.SI.Power Q_Turb_Nominal = 52e6;
+  parameter Modelica.Units.SI.Power Q_Rx_Nom = 160e6;
 
   annotation (
     defaultComponentName="data",

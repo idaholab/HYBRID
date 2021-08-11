@@ -1,12 +1,9 @@
-within NHES.Systems.EnergyStorage.Concrete_Solid_Media;
-model Dual_Pipe_Model_Two_HTFs_CS_ED_Enabled_NewGeom
+within NHES.Systems.EnergyStorage.Concrete_Solid_Media.Components;
+model Dual_Pipe_Model_Two_HTFs
   //We are going to assume 2 things here: 1) the outlet discharge pressure or the inlet charging pressure is a constant pressure value throughout
   //the liquid portion (which I know is wrong, but let's just go with it for now). 2) The mass flow rate is constant throughout the model. We can
   //use connectors to indicate what the net mass flow rate should be, and then use boundary nodes to initialize the outlet conditions.
-   extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable CS_Dummy CS,
-    redeclare replaceable ED_Dummy ED,
-    redeclare Data.Data_Dummy data);
+
 public
   TES_Med.ThermodynamicState Con_State[nX,nY];
 
@@ -433,21 +430,7 @@ for i in 1:nX loop
 
 end for;
 
-  connect(sensorBus.Condensate_Temp, Cold_Fluid_Temp.y) annotation (Line(
-      points={{-30,100},{-60,100},{-60,118},{-71,118}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorBus.Discharge_Temp, Hot_Fluid_Temp.y) annotation (Line(
-      points={{-30,100},{-60,100},{-60,102},{-71,102}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorBus.Concrete_Ave_Temp, Conc_Temp.y) annotation (Line(
-      points={{-30,100},{-60,100},{-60,86},{-71,86}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
+
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
                              Bitmap(extent={{-102,-74},{104,82}}, fileName="modelica://NHES/Icons/EnergyStoragePackage/Concreteimg.jpg")}),
                                                                  Diagram(
@@ -460,4 +443,4 @@ end for;
     Documentation(info="<html>
 <p>&nbsp;The only difference between this model and the Two_Pipe_Model is that the HTFs in the charging and discharging pipes are not assumed to be the same. </p>
 </html>"));
-end Dual_Pipe_Model_Two_HTFs_CS_ED_Enabled_NewGeom;
+end Dual_Pipe_Model_Two_HTFs;

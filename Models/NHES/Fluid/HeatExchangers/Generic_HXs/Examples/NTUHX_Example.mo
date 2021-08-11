@@ -1,9 +1,9 @@
-within NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Examples;
+within NHES.Fluid.HeatExchangers.Generic_HXs.Examples;
 model NTUHX_Example
 
   extends TRANSFORM.Icons.Example;
 
-  Components.NTU_HX HX(
+  Fluid.HeatExchangers.Generic_HXs.NTU_HX HX(
     NTU=3.6,
     K_tube=17000,
     K_shell=5,
@@ -41,19 +41,19 @@ model NTUHX_Example
     h=205e3,
     nPorts=1) annotation (Placement(transformation(extent={{84,-30},{64,-10}})));
   TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort sensor_h(redeclare package
-              Medium =
+      Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-50,6},{-30,26}})));
   TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort sensor_h1(redeclare package
-              Medium =
+      Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-60,-32},{-36,-12}})));
   TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort sensor_h2(redeclare package
-              Medium =
+      Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{22,-30},{42,-10}})));
   TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort sensor_h3(redeclare package
-              Medium =
+      Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{28,4},{48,24}})));
   TRANSFORM.Fluid.Sensors.Pressure sensor_p(redeclare package Medium =

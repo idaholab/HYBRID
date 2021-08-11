@@ -84,7 +84,7 @@ class DymolaMatDiffer:
     self.__outFile = outFile
     self.__messages = ""
     self.__same = True
-    self.__rel_tol = float(kwargs.get('rel_tol',1e-13))
+    self.__rel_tol = float(kwargs.get('rel_err',1e-13))
     self.__out_step = float(kwargs.get('outputStep',None))
     self.__stop_time = float(kwargs.get('stopTime',None))
     self.__testDir = testDir
@@ -243,6 +243,7 @@ class DymolaMatDiffer:
       varNames = np.array([[_absc[0]] + _namesData1 + _namesData2])
       varNamesgold = np.array([[_abscgold[0]] + _namesData1gold + _namesData2gold])
       # Compute the number of parameters.
+      
       sizeParams = timeSeriesData1.shape[0]
       sizeParamsgold = timeSeriesData1gold.shape[0]
       # Create a 2-d array whose size is 'the number of parameters' by 'number of ouput points of the trajectories'.
@@ -277,7 +278,18 @@ class DymolaMatDiffer:
           relativeDf = diffMatrix.div(dfGold)
           relativeDf.fillna(0.0, inplace=True)
           relativeDf = relativeDf.abs()
-          maxValues = relativeDf.max().to_frame().T.values.flatten()
+          #Code added by Daniel Mikkelson 08-11-21
+          relativeDfnump = relativeDf.to_numpy()
+          diffMatrixnump = diffMatrix.to_numpy()
+          newdiffmatt = np.minimum(relativeDfnump,diffMatrixnump)
+          finmat = pd.DataFrame(data=newdiffmatt)
+          finmat.columns = diffMatrix.columns
+          tail = finmat.tail(1)
+          #maxValues = tail.max().to_frame().T.values.flatten()
+          maxValues = finmat.max().to_frame().T.values.flatten()
+          #maxValues = relativeDf.max().to_frame().T.values.flatten() 
+          #End of new code  
+
           mask =  np.where(maxValues > self.__rel_tol)
           diffVariables = relativeDf.columns[mask]
           maxValues = maxValues[mask]

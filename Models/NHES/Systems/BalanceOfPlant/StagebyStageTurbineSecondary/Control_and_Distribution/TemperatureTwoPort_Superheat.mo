@@ -33,7 +33,7 @@ equation
 
   Tsat = HTF.saturationTemperature(port_a.p);
   //dT, which is the real output connector. By applying the spliceTanh function, this model is designed to be connected to a shutoff valve.
-  dT = TRANSFORM.Math.spliceTanh(1,0,(T-Tsat-3),4.0);
+  dT = TRANSFORM.Math.spliceTanh(1,0,(T-Tsat-5),4.0);
   if allowFlowReversal then
     T_a_inflow = Medium.temperature(Medium.setState_phX(
       port_b.p,

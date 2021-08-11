@@ -1,4 +1,4 @@
-within NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Components;
+within NHES.Fluid.HeatExchangers.Utilities.Functions;
 function quality
   "Calculates [0,1] quality given inputs of current enthalpy, hf, and hg"
   input Modelica.Units.SI.SpecificEnthalpy h;
