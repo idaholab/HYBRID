@@ -1,5 +1,6 @@
 within NHES.Systems.PrimaryHeatSystem;
-package HTGR
+package HTGR "High Temperature Gas Reactor"
 
-annotation ();
+
+
 end HTGR;

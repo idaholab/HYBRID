@@ -2,20 +2,18 @@ within NHES.Systems.PrimaryHeatSystem.SMR_Generic.Components;
 model SMR_High_fidelity_no_pump
   "This model includes Hot channel calculations, pressurizer with heaters and sprays, and control bank movement based on bank overlap"
  // import TRANSFORM;
-  parameter Modelica.Units.SI.Power Q_total_th = 200e6;
-  parameter Modelica.Units.SI.Power Q_total_el = 60e6;
+
   extends SMR_Generic.BaseClasses.Partial_SubSystem_A(
     replaceable package Medium = Modelica.Media.Water.StandardWater,
     allowFlowReversal=system.allowFlowReversal,
     redeclare replaceable CS_Dummy CS,
     redeclare replaceable ED_Dummy ED,
     redeclare Data.Data_GenericModule_NuScale data(
-      Q_total=Q_total_th,
-      Q_total_el=Q_total_el,
+      Q_total=200e6,
+      Q_total_el=60e6,
       T_hot=586.85,
-      m_flow=550,
-      nAssembly=37,
-      p_steam=4000000),
+      m_flow=637.1,
+      nAssembly=37),
     port_b(redeclare package Medium = Medium),
     port_a(redeclare package Medium = Medium));
 
@@ -120,7 +118,7 @@ Real Tave=(Tcore_inlet.T+Tcore_exit.T)/2.0;
     use_Ts_start_tube=false,
     h_a_start_tube=data.h_steam_cold,
     h_b_start_tube=data.h_steam_hot,
-    m_flow_a_start_tube=68.4,
+    m_flow_a_start_tube=84.0,
     ps_start_shell=dataInitial.p_start_STHX_shell,
     Ts_start_shell=dataInitial.T_start_STHX_shell,
     ps_start_tube=dataInitial.p_start_STHX_tube,
@@ -464,8 +462,8 @@ equation
   connect(boundary1.ports[1], pressurizer_Update_Doster_sources.CVCS_Outlet_Port)
     annotation (Line(points={{-18,83},{-26,83},{-26,82},{-28,82},{-28,88},{
           -33.36,88}}, color={0,127,255}));
-  connect(massFlowRate1.port_a, port_a) annotation (Line(points={{66,-73},{80,-73},
-          {80,-74},{84,-74},{84,-6},{104,-6}}, color={0,127,255}));
+  connect(port_a, massFlowRate1.port_a) annotation (Line(points={{104,-6},{98,
+          -6},{98,-4},{90,-4},{90,-74},{66,-74},{66,-73}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,
             -120},{100,160}}),
                          graphics={Bitmap(extent={{-114,-90},{110,90}},fileName=

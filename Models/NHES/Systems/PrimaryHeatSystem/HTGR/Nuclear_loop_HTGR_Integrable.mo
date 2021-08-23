@@ -56,8 +56,8 @@ model Nuclear_loop_HTGR_Integrable
     m_start_shell=296.1)
     annotation (Placement(transformation(extent={{20,-4},{0,16}})));
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
-      = NHES.Systems.PrimaryHeatSystem.HTGR.BaseClasses.He_HighT)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
+        NHES.Systems.PrimaryHeatSystem.HTGR.BaseClasses.He_HighT)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=90,
         origin={36,26})));
