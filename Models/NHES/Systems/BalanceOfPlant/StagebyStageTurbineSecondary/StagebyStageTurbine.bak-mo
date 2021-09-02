@@ -1,0 +1,1876 @@
+within NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary;
+package StagebyStageTurbine
+
+  package BaseClasses
+    model TRANSFORMMoistureSeparator_MIKK
+      extends TRANSFORM.Fluid.Volumes.BaseClasses.PartialSimpleVolume(
+        redeclare replaceable package Medium =
+            Modelica.Media.Interfaces.PartialTwoPhaseMedium,
+        mb=port_a.m_flow + port_b.m_flow + port_Liquid.m_flow,
+        Ub=port_a.m_flow*actualStream(port_a.h_outflow) + port_b.m_flow*
+            actualStream(port_b.h_outflow) + Q_flow_internal + Q_gen + port_Liquid.m_flow
+            *actualStream(port_Liquid.h_outflow),
+        mXib=port_a.m_flow*actualStream(port_a.Xi_outflow) + port_b.m_flow*
+            actualStream(port_b.Xi_outflow) + port_Liquid.m_flow*actualStream(
+            port_Liquid.Xi_outflow),
+        mCb=port_a.m_flow*actualStream(port_a.C_outflow) + port_b.m_flow*
+            actualStream(port_b.C_outflow) + mC_flow_internal + mC_gen +
+            port_Liquid.m_flow*actualStream(port_Liquid.C_outflow));
+
+      TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_Liquid(redeclare package
+          Medium = Medium, p(start=p_start)) annotation (Placement(transformation(
+              extent={{-50,-50},{-30,-30}}), iconTransformation(extent={{-50,-50},{-30,
+                -30}})));
+
+      parameter Modelica.Units.SI.Efficiency eta_sep(
+        min=0,
+        max=1) = 0.99 "Separation efficiency";
+
+      Modelica.Units.SI.MassFlowRate m_cond;
+      Modelica.Units.SI.MassFraction x_abs;
+      Modelica.Units.SI.Pressure p_crit=Medium.fluidConstants[1].criticalPressure;
+      Modelica.Units.SI.SpecificEnthalpy h_lsat;
+      Modelica.Units.SI.SpecificEnthalpy h_vsat;
+      Modelica.Units.SI.SpecificEnthalpy enthalpy_usedfor_inlet;
+
+    equation
+
+      x_abs = noEvent(if medium.p/p_crit < 1.0 then max(0.0, min(1.0, (medium.h -
+        h_lsat)/max(h_vsat - h_lsat, 1e-6))) else 1.0) "Steam quality";
+      h_lsat = Medium.specificEnthalpy(Medium.setBubbleState(Medium.setSat_p(medium.p)));
+      h_vsat = Medium.specificEnthalpy(Medium.setDewState(Medium.setSat_p(medium.p)));
+      assert(x_abs > 0, "Steam separator is full with liquid.");
+
+      m_cond = -max(1e-6, 1 - x_abs)*max({port_a.m_flow,port_b.m_flow,0})*eta_sep;
+
+      port_Liquid.m_flow = m_cond;
+      port_Liquid.h_outflow = h_lsat;
+      port_Liquid.Xi_outflow = medium.Xi;
+      port_Liquid.C_outflow = C;
+
+      port_b.h_outflow = (medium.h-(1-x_abs)*eta_sep*h_lsat)/(1-(1-x_abs)*eta_sep);
+     // port_b.h_outflow = h_lsat + eta_sep*(h_vsat-h_lsat);
+      port_b.Xi_outflow = medium.Xi;
+      port_b.p = medium.p;
+      port_b.C_outflow = C;
+
+      port_a.p = medium.p + medium.d*g_n*0.5*geometry.dheight;
+      port_a.h_outflow = medium.h;
+      port_a.Xi_outflow = medium.Xi;
+      port_a.C_outflow = C;
+
+      enthalpy_usedfor_inlet = actualStream(port_a.h_outflow);
+
+      annotation (defaultComponentName="separator", Documentation(info="<html>
+<p>Model updated by Daniel Mikkelson (dmmikkel@ncsu.edu, daniel.mikkelson@inl.gov) to avoid breakdowns in situations where x_abs &gt; eta_sep in previous model. </p>
+<p>Model based on the equations m_steam_in + m_steam_out + m_liq = dm/dt = 0 at steady state and m_steam_in*h_steam_in + m_steam_out*h_steam_out + m_liq*h_liq = m*du/dt  = 0 at steady state. </p>
+<p>Eta_sep is now defined as the fraction of liquid present removed by the moisture separator. Given this definition and h_liq = h_f, the expression for h_steam_out is found based on current moisture separator properties and the mass flow rate of liquid. </p>
+<p>The system tends towards equilibrium at x_abs = (h_steam_in - h_f)/(h_g-h_f). </p>
+</html>"));
+    end TRANSFORMMoistureSeparator_MIKK;
+
+    model Turbine_Inlet
+      "Turbine inlet node that allows for a general fluid flow port to transition into the multi-velocity port useful for internal turbine modeling."
+      replaceable package medium = Modelica.Media.Water.StandardWater;
+      flow Modelica.Units.SI.MassFlowRate mdot;
+      parameter Boolean Vels_in = false;
+      FluidFlow Turb_flow(redeclare package Medium = medium) annotation (Placement(
+            transformation(extent={{90,-10},{110,10}}), iconTransformation(extent={
+                {84,-16},{114,14}})));
+      TRANSFORM.Fluid.Interfaces.FluidPort_Flow Pipe_flow(redeclare package
+          Medium =                                                                   medium)
+        annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+      Modelica.Blocks.Interfaces.RealInput v_rin if Vels_in annotation (Placement(transformation(
+              extent={{-32,32},{8,72}}), iconTransformation(
+            extent={{20,-20},{-20,20}},
+            rotation=270,
+            origin={58,-46})));
+      Modelica.Blocks.Interfaces.RealInput v_thein if Vels_in annotation (Placement(transformation(
+              extent={{-32,32},{8,72}}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={56,46})));
+    protected
+      Modelica.Blocks.Interfaces.RealInput v_rinternal;
+      Modelica.Blocks.Interfaces.RealInput v_theinternal;
+    equation
+      Pipe_flow.m_flow + Turb_flow.m_flow = 0 "Mass conservation";
+      mdot=Pipe_flow.m_flow;
+      if not Vels_in then
+        v_rinternal = 0;
+        v_theinternal = 0;
+      end if;
+      if
+        (Turb_flow.m_flow<0 and not Vels_in) then
+      Turb_flow.v_r = 0 "Assumption of no radial velocity outside of the turbine";
+      Turb_flow.v_theta = 0 "Assumption of no rotational velocity outside of the turbine";
+      elseif
+            (Turb_flow.m_flow>0) then
+        Turb_flow.v_r = inStream(Turb_flow.v_r);
+        Turb_flow.v_theta = inStream(Turb_flow.v_theta);
+      else
+        Turb_flow.v_r = v_rinternal;
+        Turb_flow.v_theta=v_theinternal;
+      end if;
+      Turb_flow.p = Pipe_flow.p;
+      Pipe_flow.Xi_outflow = inStream(Turb_flow.Xi_outflow);
+      Turb_flow.Xi_outflow = inStream(Pipe_flow.Xi_outflow);
+      Pipe_flow.C_outflow = inStream(Turb_flow.C_outflow);
+      Turb_flow.C_outflow = inStream(Pipe_flow.C_outflow);
+      Turb_flow.h_outflow = inStream(Pipe_flow.h_outflow);
+      Pipe_flow.h_outflow = inStream(Turb_flow.h_outflow);
+      connect(v_rin,v_rinternal);
+      connect(v_thein,v_theinternal);
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+              Rectangle(
+              extent={{-100,26},{0,-26}},
+              lineColor={28,108,200},
+              fillColor={0,0,255},
+              fillPattern=FillPattern.Solid), Rectangle(
+              extent={{0,26},{100,-26}},
+              lineColor={28,108,200},
+              fillColor={85,170,255},
+              fillPattern=FillPattern.Solid)}),                      Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end Turbine_Inlet;
+
+    model Turbine_Outlet
+      "Turbine outlet node that allows for transition back from multi-velocity port to a general fluid port. Essentially, the model kills the non-1-dimensional velocities."
+      replaceable package medium = Modelica.Media.Water.StandardWater;
+      parameter Boolean Vels_out = false;
+      FluidFlow Turb_flow(redeclare package Medium = medium) annotation (Placement(
+            transformation(extent={{-110,-10},{-90,10}}), iconTransformation(extent=
+               {{-114,-14},{-84,16}})));
+      TRANSFORM.Fluid.Interfaces.FluidPort_Flow Pipe_flow(redeclare package
+          Medium =                                                                   medium)
+        annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+          Modelica.Blocks.Interfaces.RealOutput v_rout if
+                                                         Vels_out annotation (Placement(transformation(
+              extent={{-32,32},{8,72}}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={58,-46})));
+      Modelica.Blocks.Interfaces.RealOutput v_theout if
+                                                       Vels_out annotation (Placement(transformation(
+              extent={{-32,32},{8,72}}), iconTransformation(
+            extent={{20,-20},{-20,20}},
+            rotation=270,
+            origin={56,46})));
+    protected
+      Modelica.Blocks.Interfaces.RealInput v_rinternal;
+      Modelica.Blocks.Interfaces.RealInput v_theinternal;
+    equation
+      Pipe_flow.m_flow + Turb_flow.m_flow = 0 "Mass conservation";
+      Pipe_flow.p = Turb_flow.p;
+      v_rinternal = Turb_flow.v_r;
+      v_theinternal = Turb_flow.v_theta;
+      if
+        (Turb_flow.m_flow<0) then
+      Turb_flow.v_r = 0 "Assumption of no radial velocity outside of the turbine";
+      Turb_flow.v_theta = 0 "Assumption of no rotational velocity outside of the turbine";
+      else
+        Turb_flow.v_r = inStream(Turb_flow.v_r);
+        Turb_flow.v_theta = inStream(Turb_flow.v_theta);
+      end if;
+      Pipe_flow.Xi_outflow = inStream(Turb_flow.Xi_outflow);
+      Turb_flow.Xi_outflow = inStream(Pipe_flow.Xi_outflow);
+      Pipe_flow.C_outflow = inStream(Turb_flow.C_outflow);
+      Turb_flow.C_outflow = inStream(Pipe_flow.C_outflow);
+      Turb_flow.h_outflow = inStream(Pipe_flow.h_outflow);
+      Pipe_flow.h_outflow = inStream(Turb_flow.h_outflow);
+      connect(v_theout, v_theinternal);
+      connect(v_rout, v_rinternal);
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+              Rectangle(
+              extent={{-100,26},{0,-26}},
+              lineColor={28,108,200},
+              fillColor={85,170,255},
+              fillPattern=FillPattern.Solid), Rectangle(
+              extent={{0,26},{100,-26}},
+              lineColor={28,108,200},
+              fillColor={0,0,255},
+              fillPattern=FillPattern.Solid)}),                      Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end Turbine_Outlet;
+
+    partial model PartialTeeJunction_Cyl
+      "Base class for a splitting/joining component with three ports"
+      import Modelica.Fluid.Types;
+      import Modelica.Fluid.Types.PortFlowDirection;
+
+      replaceable package Medium=Modelica.Media.Interfaces.PartialMedium
+        "Medium in the component"
+        annotation (choicesAllMatching=true);
+
+      FluidFlow port_1(redeclare package Medium = Medium, m_flow(min=if (
+              portFlowDirection_1 == PortFlowDirection.Entering) then 0.0 else -
+              Modelica.Constants.inf, max=if (portFlowDirection_1 ==
+              PortFlowDirection.Leaving) then 0.0 else Modelica.Constants.inf))
+        annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+      FluidFlow port_2(redeclare package Medium = Medium, m_flow(min=if (
+              portFlowDirection_2 == PortFlowDirection.Entering) then 0.0 else -
+              Modelica.Constants.inf, max=if (portFlowDirection_2 ==
+              PortFlowDirection.Leaving) then 0.0 else Modelica.Constants.inf))
+        annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+      FluidFlow port_3(redeclare package Medium = Medium, m_flow(min=if (
+              portFlowDirection_3 == PortFlowDirection.Entering) then 0.0 else -
+              Modelica.Constants.inf, max=if (portFlowDirection_3 ==
+              PortFlowDirection.Leaving) then 0.0 else Modelica.Constants.inf))
+        annotation (Placement(transformation(extent={{-10,90},{10,110}})));
+
+    protected
+      parameter PortFlowDirection portFlowDirection_1=PortFlowDirection.Bidirectional
+        "Flow direction for port_1"
+       annotation(Dialog(tab="Advanced"));
+      parameter PortFlowDirection portFlowDirection_2=PortFlowDirection.Bidirectional
+        "Flow direction for port_2"
+       annotation(Dialog(tab="Advanced"));
+      parameter PortFlowDirection portFlowDirection_3=PortFlowDirection.Bidirectional
+        "Flow direction for port_3"
+       annotation(Dialog(tab="Advanced"));
+
+      annotation(Icon(coordinateSystem(
+            preserveAspectRatio=true,
+            extent={{-100,-100},{100,100}}), graphics={
+            Rectangle(
+              extent={{-100,44},{100,-44}},
+              fillPattern=FillPattern.HorizontalCylinder,
+              fillColor={0,127,255}),
+            Text(
+              extent={{-150,-89},{150,-129}},
+              lineColor={0,0,255},
+              textString="%name"),
+            Rectangle(
+              extent={{-44,100},{44,44}},
+              fillPattern=FillPattern.VerticalCylinder,
+              fillColor={0,127,255}),
+            Rectangle(
+              extent={{-22,82},{21,-4}},
+              fillPattern=FillPattern.Solid,
+              fillColor={0,128,255},
+              pattern=LinePattern.None)}));
+    end PartialTeeJunction_Cyl;
+
+    connector FluidFlow
+      "Interface for quasi one-dimensional fluid flow in a piping network (incompressible or compressible, one or more phases, one or more substances)"
+
+      replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
+        "Medium model" annotation (choicesAllMatching=true);
+        //  parameter Modelica.SIunits.Area A "flow area";
+      flow Modelica.Units.SI.MassFlowRate m_flow
+        "Translational velocity into the component.";
+      stream Modelica.Units.SI.Velocity v_r;
+      stream Modelica.Units.SI.Velocity v_theta;
+     // Medium.MassFlowRate m_flow;
+      Medium.AbsolutePressure p "Thermodynamic pressure in the connection point";
+      stream Medium.SpecificEnthalpy h_outflow
+        "Specific thermodynamic enthalpy close to the connection point if m_flow < 0";
+      stream Medium.MassFraction Xi_outflow[Medium.nXi]
+        "Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0";
+      stream Medium.ExtraProperty C_outflow[Medium.nC]
+        "Properties c_i/m close to the connection point if m_flow < 0";
+
+        annotation (defaultComponentName="Turb_port",Icon(graphics={Text(extent={{-150,110},{150,50}},
+                textString="%name"),
+            Ellipse(
+              extent={{-60,-60},{60,60}},
+              lineColor={28,108,200},
+              fillColor={85,170,255},
+              fillPattern=FillPattern.Sphere),
+            Ellipse(
+              extent={{26,26},{-28,-28}},
+              lineColor={28,108,200},
+              fillPattern=FillPattern.Sphere,
+              fillColor={0,0,103}),
+            Line(
+              points={{-160,80}},
+              color={102,44,145},
+              arrow={Arrow.None,Arrow.Filled})}));
+    end FluidFlow;
+
+    connector Torque "Connector of torque that communicates rotational speed"
+      Modelica.Units.SI.AngularVelocity w;
+      flow Modelica.Units.SI.Torque tau;
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+              Ellipse(
+              extent={{-80,80},{80,-80}},
+              lineColor={28,108,200},
+              fillColor={181,181,181},
+              fillPattern=FillPattern.Solid), Text(
+              extent={{-40,24},{38,-22}},
+              lineColor={0,0,0},
+              fillColor={181,181,181},
+              fillPattern=FillPattern.None,
+              textString="Tau")}),                                   Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end Torque;
+
+    package CylindricalSupport
+
+      partial model PartialSource "Partial component source with one fluid connector"
+          import Modelica.Constants;
+          extends TRANSFORM.Fluid.Interfaces.Records.Visualization_showName;
+        parameter Integer nPorts=0 "Number of ports" annotation(Dialog(connectorSizing=true));
+        parameter Modelica.Units.SI.Velocity v_radial=0;
+        parameter Modelica.Units.SI.Velocity v_rotational=0;
+
+        replaceable package Medium =
+            Modelica.Media.Interfaces.PartialMedium
+            "Medium model within the source"
+           annotation (choicesAllMatching=true);
+        Medium.BaseProperties medium "Medium in the source";
+        FluidFlow ports[nPorts](redeclare package Medium = Medium)
+          annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+      protected
+        parameter Modelica.Fluid.Types.PortFlowDirection flowDirection=Modelica.Fluid.Types.PortFlowDirection.Bidirectional
+          "Allowed flow direction" annotation (Evaluate=true, Dialog(tab="Advanced"));
+      equation
+        // Only one connection allowed to a port to avoid unwanted ideal mixing
+        for i in 1:nPorts loop
+          assert(cardinality(ports[i]) <= 1,"
+each ports[i] of boundary shall at most be connected to one component.
+If two or more connections are present, ideal mixing takes
+place with these connections, which is usually not the intention
+of the modeller. Increase nPorts to add an additional port.
+");        ports[i].p          = medium.p;
+           ports[i].h_outflow  = medium.h;
+           ports[i].Xi_outflow = medium.Xi;
+           ports[i].v_r = v_radial;
+           ports[i].v_theta = v_rotational;
+        end for;
+        annotation (defaultComponentName="boundary", Documentation(info="<html>
+<p>
+Partial component to model the <b>volume interface</b> of a <b>source</b>
+component, such as a mass flow source. The essential
+features are:
+</p>
+<ul>
+<li> The pressure in the connection port (= ports.p) is identical to the
+     pressure in the volume.</li>
+<li> The outflow enthalpy rate (= port.h_outflow) and the composition of the
+     substances (= port.Xi_outflow) are identical to the respective values in the volume.</li>
+</ul>
+</html>"),Icon(graphics={
+              Text(
+                extent={{-149,134},{151,94}},
+                lineColor={0,0,255},
+                textString="%name",
+                visible=DynamicSelect(true,showName))}));
+      end PartialSource;
+
+      partial model PartialFlowSource
+        "Partial component source with one fluid connector"
+        import Modelica.Constants;
+          extends TRANSFORM.Fluid.Interfaces.Records.Visualization_showName;
+        parameter Integer nPorts=0 "Number of ports" annotation(Dialog(connectorSizing=true));
+        parameter Modelica.Units.SI.Velocity v_radial=0;
+        parameter Modelica.Units.SI.Velocity v_rotational=0;
+        replaceable package Medium =
+            Modelica.Media.Interfaces.PartialMedium
+            "Medium model within the source"
+           annotation (choicesAllMatching=true);
+        Medium.BaseProperties medium "Medium in the source";
+        FluidFlow ports[nPorts](redeclare package Medium = Medium)
+          annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+      protected
+        parameter Modelica.Fluid.Types.PortFlowDirection flowDirection=Modelica.Fluid.Types.PortFlowDirection.Bidirectional
+          "Allowed flow direction" annotation (Evaluate=true, Dialog(tab="Advanced"));
+      equation
+        assert(abs(sum(abs(ports.m_flow)) - max(abs(ports.m_flow))) <= Modelica.Constants.small, "FlowSource only supports one connection with flow");
+        // Only one connection allowed to a port to avoid unwanted ideal mixing
+        for i in 1:nPorts loop
+          assert(cardinality(ports[i]) <= 1,"
+each ports[i] of boundary shall at most be connected to one component.
+If two or more connections are present, ideal mixing takes
+place with these connections, which is usually not the intention
+of the modeller. Increase nPorts to add an additional port.
+");        ports[i].p          = medium.p;
+           ports[i].h_outflow  = medium.h;
+           ports[i].Xi_outflow = medium.Xi;
+           ports[i].v_r = v_radial;
+           ports[i].v_theta = v_rotational;
+        end for;
+        annotation (defaultComponentName="boundary", Documentation(info="<html>
+<p>
+Partial component to model the <b>volume interface</b> of a <b>source</b>
+component, such as a mass flow source. The essential
+features are:
+</p>
+<ul>
+<li> The pressure in the connection port (= ports.p) is identical to the
+     pressure in the volume.</li>
+<li> The outflow enthalpy rate (= port.h_outflow) and the composition of the
+     substances (= port.Xi_outflow) are identical to the respective values in the volume.</li>
+</ul>
+</html>"),Icon(graphics={
+              Text(
+                extent={{-149,134},{151,94}},
+                lineColor={0,0,255},
+                textString="%name",
+                visible=DynamicSelect(true,showName))}));
+      end PartialFlowSource;
+
+      partial model PartialVolume_cyl "Base class for volume models"
+        import Modelica.Fluid.Types.Dynamics;
+        import Modelica.Media.Interfaces.Choices.IndependentVariables;
+        replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
+          "Medium properties" annotation (choicesAllMatching=true);
+        // Inputs provided to the volume model
+        input Modelica.Units.SI.Volume V(min=0) "Volume"
+          annotation (Dialog(group="Inputs"));
+        // Initialization
+        parameter Dynamics energyDynamics=Dynamics.DynamicFreeInitial
+          "Formulation of energy balances"
+          annotation (Evaluate=true, Dialog(tab="Advanced", group="Dynamics"));
+        parameter Dynamics massDynamics=energyDynamics "Formulation of mass balances"
+          annotation (Evaluate=true, Dialog(tab="Advanced", group="Dynamics"));
+        final parameter Dynamics substanceDynamics=massDynamics
+          "Formulation of substance balances"
+          annotation (Evaluate=true, Dialog(tab="Advanced", group="Dynamics"));
+        parameter Dynamics traceDynamics=massDynamics
+          "Formulation of trace substance balances"
+          annotation (Evaluate=true, Dialog(tab="Advanced", group="Dynamics"));
+        parameter Modelica.Units.SI.AbsolutePressure p_start=Medium.p_default
+          "Pressure" annotation (Dialog(tab="Initialization", group=
+                "Start Value: Absolute Pressure"));
+        parameter Boolean use_T_start=true "Use T_start if true, otherwise h_start"
+          annotation (Evaluate=true, Dialog(tab="Initialization", group=
+                "Start Value: Temperature"));
+        parameter Modelica.Units.SI.Temperature T_start=Medium.T_default
+          "Temperature" annotation (Evaluate=true, Dialog(
+            tab="Initialization",
+            group="Start Value: Temperature",
+            enable=use_T_start));
+        parameter Modelica.Units.SI.SpecificEnthalpy h_start=
+            Medium.specificEnthalpy_pTX(
+            p_start,
+            T_start,
+            X_start) "Specific enthalpy" annotation (Dialog(
+            tab="Initialization",
+            group="Start Value: Specific Enthalpy",
+            enable=not use_T_start));
+        parameter Modelica.Units.SI.MassFraction X_start[Medium.nX]=Medium.X_default
+          "Mass fraction" annotation (Dialog(
+            tab="Initialization",
+            group="Start Value: Species Mass Fraction",
+            enable=Medium.nXi > 0));
+        parameter TRANSFORM.Units.ExtraProperty C_start[Medium.nC]=fill(0, Medium.nC)
+          "Mass-Specific value" annotation (Dialog(
+            tab="Initialization",
+            group="Start Value: Trace Substances",
+            enable=Medium.nC > 0));
+        Medium.BaseProperties medium(
+          each preferredMediumStates=true,
+          p(start=p_start),
+          h(start=if not use_T_start then h_start else Medium.specificEnthalpy_pTX(
+                p_start,
+                T_start,
+                X_start[1:Medium.nXi])),
+          T(start=if use_T_start then T_start else Medium.temperature_phX(
+                p_start,
+                h_start,
+                X_start[1:Medium.nXi])),
+          Xi(start=X_start[1:Medium.nXi]),
+          X(start=X_start),
+          d(start=if use_T_start then Medium.density_pTX(
+                p_start,
+                T_start,
+                X_start[1:Medium.nXi]) else Medium.density_phX(
+                p_start,
+                h_start,
+                X_start[1:Medium.nXi])));
+        // Total quantities
+        Modelica.Units.SI.Mass m "Mass";
+        Modelica.Units.SI.InternalEnergy U "Internal energy";
+        Modelica.Units.SI.Mass mXi[Medium.nXi] "Species mass";
+        TRANSFORM.Units.ExtraPropertyExtrinsic mC[Medium.nC]
+          "Trace substance extrinsic value";
+        TRANSFORM.Units.ExtraPropertyExtrinsic[Medium.nC] mC_scaled
+          "Scaled trace substance for improved numerical stability";
+        // C has the additional parameter because it is not included in the medium
+        // i.e.,Xi has medium[:].Xi but there is no variable medium[:].C
+        TRANSFORM.Units.ExtraProperty C[Medium.nC](stateSelect=StateSelect.prefer,
+            start=C_start) "Trace substance mass-specific value";
+        // Mass Balance
+        Modelica.Units.SI.MassFlowRate mb=0
+          "Mass flow rate source/sinks within volumes";
+        // Energy Balance
+        Modelica.Units.SI.HeatFlowRate Ub=0
+          "Energy source/sinks within volumes (e.g., ohmic heating, external convection)";
+        // Species Balance
+        Modelica.Units.SI.MassFlowRate mXib[Medium.nXi]=zeros(Medium.nXi)
+          "Species mass flow rates source/sinks within volumes";
+        // Trace Balance
+        TRANSFORM.Units.ExtraPropertyFlowRate mCb[Medium.nC]=zeros(Medium.nC)
+          "Trace flow rate source/sinks within volumes (e.g., chemical reactions, external convection)";
+        Modelica.Units.SI.Force vtheb=0;
+        Modelica.Units.SI.Force vrb=0;
+        Modelica.Units.SI.Velocity v_r;
+        Modelica.Units.SI.Velocity v_the;
+      protected
+        parameter Boolean initialize_p=not Medium.singleState
+          "= true to set up initial equations for pressure";
+      initial equation
+        // Mass Balance
+        if massDynamics == Dynamics.FixedInitial then
+          if initialize_p then
+            medium.p = p_start;
+          end if;
+        elseif massDynamics == Dynamics.SteadyStateInitial then
+          if initialize_p then
+            der(medium.p) = 0;
+          end if;
+        end if;
+        // Energy Balance
+        if energyDynamics == Dynamics.FixedInitial then
+          /*
+    if use_T_start then
+      medium.T = T_start;
+    else
+      medium.h = h_start;
+    end if;
+    */
+          if Medium.ThermoStates == IndependentVariables.ph or Medium.ThermoStates
+               == IndependentVariables.phX then
+            medium.h = h_start;
+          else
+            medium.T = T_start;
+          end if;
+        elseif energyDynamics == Dynamics.SteadyStateInitial then
+          /*
+    if use_T_start then
+      der(medium.T) = 0;
+    else
+      der(medium.h) = 0;
+    end if;
+    */
+          if Medium.ThermoStates == IndependentVariables.ph or Medium.ThermoStates
+               == IndependentVariables.phX then
+            der(medium.h) = 0;
+          else
+            der(medium.T) = 0;
+          end if;
+        end if;
+        // Species Balance
+        if substanceDynamics == Dynamics.FixedInitial then
+          medium.Xi = X_start[1:Medium.nXi];
+        elseif substanceDynamics == Dynamics.SteadyStateInitial then
+          der(medium.Xi) = zeros(Medium.nXi);
+        end if;
+        // Trace Balance
+        if traceDynamics == Dynamics.FixedInitial then
+          C = C_start;
+        elseif traceDynamics == Dynamics.SteadyStateInitial then
+          der(mC) = zeros(Medium.nC);
+        end if;
+      equation
+        assert(not (energyDynamics <> Dynamics.SteadyState and massDynamics ==
+          Dynamics.SteadyState) or Medium.singleState, "If 'massDynamics == Modelica.Fluid.Types.Dynamics.SteadyState', then it is
+         required that 'energyDynamics==Modelica.Fluid.Types.Dynamics.SteadyState' or Medium not conserving mass if volume is fixed.");
+        // Total Quantities
+        m = V*medium.d;
+        U = m*medium.u;
+        mXi = m*medium.Xi;
+        mC = m*C;
+        m*der(v_r) = vrb;
+        m*der(v_the) = vtheb;
+        // Mass Balance
+        if massDynamics == Dynamics.SteadyState then
+          0 = mb;
+        else
+          der(m) = mb;
+        end if;
+        // Energy Balance
+        if energyDynamics == Dynamics.SteadyState then
+          0 = Ub;
+        else
+          der(U) = Ub;
+        end if;
+        // Species Balance
+        if substanceDynamics == Dynamics.SteadyState then
+          zeros(Medium.nXi) = mXib;
+        else
+          der(mXi) = mXib;
+        end if;
+        // Trace Balance
+        if traceDynamics == Dynamics.SteadyState then
+          zeros(Medium.nC) = mCb;
+        else
+          der(mC_scaled) = mCb ./ Medium.C_nominal;
+          mC = mC_scaled .* Medium.C_nominal;
+        end if;
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+              coordinateSystem(preserveAspectRatio=false)));
+      end PartialVolume_cyl;
+    end CylindricalSupport;
+
+    function NZer
+      "Function returns a value that will switch between positive 1 and negative 1 without a divide by 0 error when the argument is 0."
+      input Real m;
+      constant Real k = 0.0001;
+      output Real l;
+    algorithm
+      l := m/sqrt(m*m+k);
+    end NZer;
+  end BaseClasses;
+
+  model Stator_Stage
+    "Non-moving deflection structure within a turbine, helping remove more energy from fluid in the rotor stage"
+    constant Integer nV=2 "Set # of nodes, at present they are used one for deflection or turbine work and the second is the gap between stages";
+    constant Modelica.Units.SI.Acceleration grav=9.81 "gravity";
+    constant Real pi = 3.14159 "pi";
+    constant Real maxangle = Modelica.Constants.pi/2;
+
+    parameter Boolean isenthalpic = false "Automatically sets Q term such that isentropic conditions occur in the stator region (h_in = h_out).";
+    Modelica.Units.SI.MassFlowRate mdot[nV + 1]
+      "Mass flow rate edge-wise along the two nedes";
+    Modelica.Units.SI.Velocity v_z[nV + 1]
+      "Translational velocity edge-wise along the two nodes";
+    Modelica.Units.SI.Velocity v_r[nV] "Rotational velocity in each node";
+    Modelica.Units.SI.Velocity v_the[nV] "Angular velocity in each node";
+    Modelica.Units.SI.Velocity vnet[nV] "Total velocity in each node";
+    Modelica.Units.SI.Velocity v_rin "Inlet rotational velocity";
+    Modelica.Units.SI.Velocity v_rout "Outlet rotational velocity";
+    Modelica.Units.SI.Velocity v_thein "Inlet angular velocity";
+    Modelica.Units.SI.Velocity v_theout "Outlet rotational velocity";
+    Modelica.Units.SI.Pressure p[nV] "Node pressure";
+    Modelica.Units.SI.Pressure pin "Inlet pressure";
+    Modelica.Units.SI.Pressure pout "Outlet pressure";
+    Modelica.Units.SI.SpecificEnthalpy h[nV] "Node enthalpy";
+    Modelica.Units.SI.SpecificEnthalpy hin "Inlet enthalpy";
+    Modelica.Units.SI.SpecificEnthalpy hout "Outlet enthalpy";
+
+    Modelica.Units.SI.Power hflow[nV + 1]
+      "Enthalpy flow rate across node boundaries";
+    Modelica.Units.SI.AngularVelocity omega[nV] "Angular velocity";
+    Modelica.Units.SI.Frequency f_fluid[nV] "Angular frequency";
+    parameter Modelica.Units.SI.Angle alpha[nV]={pi/4,pi/4}
+      "Angular deflection of each node outlet"
+      annotation (dialog(group="Geometry"));
+    Modelica.Units.SI.Impulse mom[nV] "Momentum in each node";
+    Modelica.Units.SI.Force momdot[nV + 1]
+      "Rate of momentum flux across node boundaries";
+    Modelica.Units.SI.Force radmomdot[nV + 1] "Radial momentum flux";
+    Modelica.Units.SI.Force rotmomdot[nV + 1] "Rotational momentum flux";
+    Medium.ThermodynamicState states[nV];
+    Medium.ThermodynamicState statein;
+    Medium.ThermodynamicState stateout;
+    Modelica.Units.SI.Density rhoflow[nV + 1]
+      "Upstream density flowing across boundaries";
+    Modelica.Units.SI.Velocity dv_r[nV] "Change in radial velocity";
+    Modelica.Units.SI.Velocity dv_z[nV] "Change in translational velocity";
+    Modelica.Units.SI.Velocity dv_the[nV] "Change in rotational velocity";
+    parameter Modelica.Units.SI.Area A_flow[nV + 1]=0.1*ones(nV + 1) "Flow area"
+      annotation (dialog(group="Geometry"));
+    parameter Modelica.Units.SI.Length dz[nV]={0.3,0.1} "Axial length"
+      annotation (dialog(group="Geometry"));
+    parameter Modelica.Units.SI.Length dheight[nV]=zeros(nV) "Elevation change"
+      annotation (dialog(group="Geometry"));
+    parameter Modelica.Units.SI.Length ri[nV + 1]=zeros(nV + 1)
+      "Inner radius of flow area" annotation (dialog(group="Geometry"));
+    parameter Modelica.Units.SI.Length ro[nV + 1]={0.18,0.21,0.22}
+      "Outer radius of flow area" annotation (dialog(group="Geometry"));
+    parameter Real Kfld=0.5 "K_nom + fL/D in turbine"
+                                                     annotation(dialog(group = "Geometry"));
+    Modelica.Units.SI.Length rave[nV + 1]
+      "Calculated mass averaged radius based on constant density and assumption of annulus flow";
+    Modelica.Units.SI.Area Amid[nV] "Flow area at midpoint";
+    Modelica.Units.SI.Volume Vol[nV] "Node volume";
+    Modelica.Units.SI.Mass m[nV] "Node mass";
+    Modelica.Units.SI.Velocity mach "Speed of sound";
+    Modelica.Units.SI.Force Ff[nV]
+      "Wall friction force, currently used as a K = K_nom+fL/d = constant";
+    Modelica.Units.SI.Force Fthe[nV] "Angular force";
+    Modelica.Units.SI.Force Fr[nV] "Radial force";
+    Modelica.Units.SI.Force Fz[nV] "Translational force";
+    Modelica.Units.SI.Power q[nV] "Heat conduction/convection";
+    Modelica.Units.SI.Power Q[nV] "Total node energy imparted";
+
+    Modelica.Units.SI.SpecificEntropy s[nV] "Node entropy";
+    Modelica.Units.SI.Length dr[nV] "Change in flow radius";
+    replaceable package Medium = Modelica.Media.Water.StandardWater
+    constrainedby Modelica.Media.Interfaces.PartialMedium;
+    parameter Modelica.Units.SI.SpecificEnthalpy h_init=3000e3 "Initial enthalpy"
+      annotation (dialog(group="Initialization"));
+    parameter Modelica.Units.SI.MassFlowRate m_init=66.3 "Initial mass flow rate"
+      annotation (dialog(group="Initialization"));
+    parameter Modelica.Units.SI.Pressure p_in_init=500000 "Initial inlet pressure"
+      annotation (dialog(group="Initialization"));
+    parameter Modelica.Units.SI.Pressure p_out_init=500000 "Initial outlet pressure"
+      annotation (dialog(group="Initialization"));
+    parameter Modelica.Units.SI.Velocity v_the_init=0 "Initial rotational velocity"
+      annotation (dialog(group="Initialization"));
+
+    parameter Modelica.Units.SI.Velocity v_r_init=0 "Initial radial velocity"
+      annotation (dialog(group="Initialization"));
+
+    BaseClasses.FluidFlow Inlet(redeclare replaceable package Medium =
+                         Medium) annotation (Placement(transformation(extent={{-112,
+              -12},{-92,8}}), iconTransformation(extent={{-118,-22},{-78,18}})));
+    BaseClasses.FluidFlow Outlet(redeclare replaceable package Medium =
+                                     Medium) annotation (Placement(
+          transformation(extent={{86,-10},{106,10}}), iconTransformation(extent=
+             {{70,-34},{130,26}})));
+
+  initial equation
+    //initial equations are complete, and assume that all forces in the system are 0.
+    //This may change, but is currently fine as of 3/5/20.
+     for i in 1:nV loop
+      h[i] = h_init;
+      mdot[i+1] = m_init;
+
+      v_the[i] = v_the_init;
+      v_r[i] = v_r_init;
+      Ff[i] = 0;
+    //  states[i] = Medium.setState_phX(p_in_init,h_init,Medium.X_default);
+      Fr[i] = 0;
+      Fz[i] = -Fthe[i];
+     // states[i].d*A_flow[i]*v_z[i] = mdot[i];
+     end for;
+    // states[2].d*A_flow[nV+1]*v_z[nV+1] = mdot[nV+1];
+    // Fthe[1] = v_the_init*m_init*abs(v_the_init)/dz[1];
+    // Fthe[nV] = 0;
+      pin = p_in_init;
+   //   pout = p_out_init;
+       p[2] = 0.5*pin+0.5*p_out_init;
+   // pout = p_out_init;
+
+  equation
+    statein= Medium.setState_phX(pin,hin,Inlet.Xi_outflow);
+    stateout = Medium.setState_phX(pout,hout,Outlet.Xi_outflow);
+    mach = Medium.velocityOfSound(states[1]);
+    for i in 1:nV loop
+
+      //Calculation for inner geometry, fluid state tracking variable.
+      dr[i] = rave[i+1]-rave[i];
+      states[i] = Medium.setState_phX(p[i],h[i],Medium.X_default);
+      s[i] = Medium.specificEntropy(states[i]);
+      Amid[i]*2 = A_flow[i+1]+A_flow[i];
+      Vol[i] = Amid[i]*dz[i];
+      mom[i] = mdot[i]*v_z[i+1];
+      m[i] =Vol[i]*states[i].d;
+      v_the[i] = rave[i]*omega[i];
+      f_fluid[i] = omega[i]/(2*pi);
+      //Current assumption. Heat flow between the fluid and the turbine stages could be added. At present we'll assume thermal equilibrium.
+      q[i] =0;
+      //Power on the fluid is the sum of all forces dotted with their respective velocities plus heat
+
+      vnet[i]*vnet[i] = (v_r[i]*v_r[i]+v_the[i]*v_the[i]+v_z[i+1]*v_z[i+1]);
+      //Calcultion of all forces is delayed slightly using the derivative term. The goal is to give slightly smoother behavior to simulations.
+      //Radial force is calculated as the amount required to cause the center of mass to move so that the density profile is even.
+      der(Fr[i]) = mdot[i+1]*(dr[i]/dz[i]*v_z[i+1]-v_r[i])*abs(dr[i]/dz[i]*v_z[i+1]-v_r[i])/dz[i];
+      //If statement ensures that no by-zero division occurs
+      if
+        (alpha[i]>0.0 or alpha[i]<0.0) then
+        //Angular force of deflection is rho*A*(delv^2), the derivative could then be construed as mdot (rho*Vol/time)*(delv)^2/distance.
+      der(Fthe[i]) = mdot[i+1]*(tan(alpha[i])*v_z[i+1]-v_the[i])*abs(tan(alpha[i])*v_z[i+1]-v_the[i])/dz[i];
+        //Looking at the force vector, as it is perpendicular to the stator/vane, then using the angular dependency we obtain the value below.
+      der(Fz[i]) = -der(Fthe[i])/tan(alpha[i]);
+        else
+          //Neither force should exist if there's no deflection.
+        der(Fthe[i]) = -Fthe[i];
+        der(Fz[i]) = -Fz[i];
+      end if;
+      der(Ff[i]) = (0.5*states[i].d*v_z[i+1]*abs(v_z[i])*Kfld-Ff[i])/0.01;
+
+    end for;
+    for i in 1:nV+1 loop
+      v_z[i]*A_flow[i]*rhoflow[i] = mdot[i];
+      momdot[i] = abs(v_z[i])*mdot[i];
+      rave[i] = 0.75*(ro[i]^4-ri[i]^4)/(ro[i]^3-ri[i]^3);
+    end for;
+    if isenthalpic then
+    der(Q[1]) = (hin-h[1])*mdot[1]/0.01;
+    der(Q[2]) = (h[1]-h[2])*mdot[2]/0.01;
+    else
+      for i in 1:nV loop
+        Q[i] = Fr[i]*abs(dv_r[i]) + Fthe[i]*abs(dv_the[i]) + q[i] + Fz[i]*abs(dv_z[i]);
+      end for;
+    end if;
+
+  //Now unused assumptions.
+     // if(i == nV) then
+    //  if conserve_kinetic then
+     //  mdot[3]*vnet[2]*vnet[2]=mdot[2]*vnet[1]*vnet[1];
+     // elseif isobaric then
+    //    pout= p[2];
+     // elseif isentropic then
+     //   s[2] = s[1];
+    //  elseif isenthalpic then
+    //  der(Fz[i]) = -0.90*(h[i]-h[i-1])*m[i]*mach/dz[i]/dz[i];
+    //  else
+   //   if(alpha[i]>0 or alpha[i]<0) then
+   //     Fz[i] = -abs(Fthe[i]/tan(alpha[i]));
+   //   end if;
+   //   else
+  //
+   //   der(Fz[i]) = 0;
+   //   end if;
+
+    //5 conservation equations, for mass, energy, and a velocity equation for each of rotational, radial, and translational speeds
+    //Node 1//
+    der(m[1]) + mdot[2]-mdot[1] = 0;
+    m[1]*der(Medium.specificInternalEnergy(states[1])) + hflow[2]-hflow[1] = -p[1]*Vol[1]*(v_z[2]-v_z[1])/dz[1] - v_z[2]*Ff[1]+Q[1];
+    //m[1]*der(v_z[2]) + momdot[2]-momdot[1] + Amid[1]*((p[2]-p[1])+states[1].d*grav*dheight[1])/dz[1] = -Ff[1]+Fz[1];
+    m[1]*der(v_z[2]) + momdot[2]-momdot[1]+A_flow[2]*p[2]-A_flow[1]*p[1] = -Ff[1]+Fz[1];
+    m[1]*der(v_r[1]) + radmomdot[2] - radmomdot[1] = Fr[1];
+    m[1]*der(v_the[1]) + rotmomdot[2]-rotmomdot[1] = Fthe[1];
+
+    //Node 2//
+    der(m[2])  + mdot[3]-mdot[2] = 0;
+    m[2]*der(Medium.specificInternalEnergy(states[2]))  + hflow[3]-hflow[2] =-p[2]*Vol[2]*(v_z[3]-v_z[2])/dz[2] - v_z[3]*Ff[2]+Q[2];
+    m[2]*der(v_z[3]) + momdot[3]-momdot[2]+A_flow[3]*pout-A_flow[2]*p[2]=-Ff[2]+Fz[2];// + Ff[2] = Fz[2];
+    m[2]*der(v_r[2]) + radmomdot[3]-radmomdot[2] = Fr[2];
+    m[2]*der(v_the[2]) + rotmomdot[3]-rotmomdot[2] = Fthe[2];
+
+    //Those equations ignore intrafluid friction terms that certainly exist, but are impossible to use without radial and angular discretization.
+   //boundary conditions//
+    dv_r[1] = semiLinear(
+        BaseClasses.NZer(v_z[1]),
+        v_r[1] - v_rin,
+        v_r[1] - v_r[2]);
+    dv_r[2] = semiLinear(
+        BaseClasses.NZer(v_z[2]),
+        v_r[2] - v_r[1],
+        v_r[2] - v_rout);
+    dv_z[1] = v_z[2]-v_z[1];
+    dv_z[2] = v_z[3]-v_z[2];
+    dv_the[1] = semiLinear(
+        BaseClasses.NZer(v_z[1]),
+        v_the[1] - v_thein,
+        v_the[1] - v_the[2]);
+    dv_the[2] = semiLinear(
+        BaseClasses.NZer(v_z[2]),
+        v_the[2] - v_the[1],
+        v_the[2] - v_theout);
+
+    //semiLinear function takes care of donor directions. Note that in rhoflow[], the second value must be negative to ensure that
+    //the donor density is always >0 across the boundaries (what does -2kg/m^3 mean?)
+    hflow[1] = semiLinear(mdot[1],hin,h[1]);
+    //hflow[1] = semiLinear(mdot[1],Medium.specificInternalEnergy(statein),Medium.specificInternalEnergy(states[1]));
+    radmomdot[1] = semiLinear(mdot[1],v_rin,v_r[1]);
+    rotmomdot[1] = semiLinear(mdot[1],v_thein,v_the[1]);
+    rhoflow[1] = semiLinear(
+        BaseClasses.NZer(v_z[1]),
+        Medium.density(Medium.setState_phX(
+          pin,
+          hin,
+          Medium.X_default)),
+        -states[1].d);
+    //interface-by-interface enthalpy flow calculations.
+    hflow[2] = semiLinear(mdot[2],h[1],h[2]);
+    //hflow[2] = semiLinear(mdot[2],Medium.specificInternalEnergy(states[1]),Medium.specificInternalEnergy(states[2]));
+    radmomdot[2] = semiLinear(mdot[2],v_r[1],v_r[2]);
+    rotmomdot[2] = semiLinear(mdot[2],v_the[1],v_the[2]);
+    rhoflow[2] = semiLinear(
+        BaseClasses.NZer(v_z[2]),
+        states[1].d,
+        -states[2].d);
+    hflow[3] = semiLinear(mdot[3],h[2],hout);
+   // hflow[3] = semiLinear(mdot[3],Medium.specificInternalEnergy(states[2]),Medium.specificInternalEnergy(stateout));
+    radmomdot[3] = semiLinear(mdot[3],v_r[2],v_rout);
+    rotmomdot[3] = semiLinear(mdot[3],v_the[2],v_theout);
+    rhoflow[3] = semiLinear(
+        BaseClasses.NZer(v_z[3]),
+        states[2].d,
+        -Medium.density(Medium.setState_phX(
+          pout,
+          hout,
+          Medium.X_default)));
+
+    //Connections to the inlet and outlet nodes.
+    hout = states[2].h;
+    v_theout = v_the[2];
+    v_rout = v_r[2];
+    p[1] = pin;
+
+    hin=inStream(Inlet.h_outflow);
+
+    Inlet.h_outflow = hin;
+      Inlet.p = p[1];
+    Inlet.m_flow = mdot[1];
+    v_rin = Inlet.v_r;
+    inStream(Inlet.v_r) = v_rin;
+    Inlet.v_theta = v_thein;
+    inStream(Inlet.v_theta) = v_thein;
+    pout = Outlet.p;
+    hout = Outlet.h_outflow;
+      Outlet.m_flow + mdot[3]=0;
+    Outlet.v_r = v_rout;
+    Outlet.v_theta = v_theout;
+
+    Inlet.Xi_outflow = inStream(Outlet.Xi_outflow);
+    Inlet.C_outflow = inStream(Outlet.C_outflow);
+    Outlet.Xi_outflow = inStream(Inlet.Xi_outflow);
+    Outlet.Xi_outflow = inStream(Inlet.C_outflow);
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+          Polygon(
+            points={{40,-40},{48,-26},{40,-6},{100,-6},{100,-40},{40,-40}},
+            lineColor={28,108,200},
+            fillColor={0,128,255},
+            fillPattern=FillPattern.Solid),
+          Polygon(
+            points={{30,-40},{40,-40},{48,-26},{42,-10},{28,-10},{36,-24},{30,-40}},
+            lineColor={28,108,200},
+            fillColor={175,175,175},
+            fillPattern=FillPattern.Solid),
+          Polygon(
+            points={{-100,-40},{30,-40},{36,-24},{26,-6},{-100,-6},{-100,-40}},
+            lineColor={28,108,200},
+            fillColor={0,128,255},
+            fillPattern=FillPattern.Solid),
+          Polygon(
+            points={{-100,40},{30,40},{36,24},{26,6},{-100,6},{-100,40}},
+            lineColor={28,108,200},
+            fillColor={0,128,255},
+            fillPattern=FillPattern.Solid),
+          Polygon(
+            points={{30,40},{40,40},{48,26},{42,10},{28,10},{36,24},{30,40}},
+            lineColor={28,108,200},
+            fillColor={175,175,175},
+            fillPattern=FillPattern.Solid),
+          Polygon(
+            points={{40,40},{48,26},{40,6},{100,6},{100,40},{40,40}},
+            lineColor={28,108,200},
+            fillColor={0,128,255},
+            fillPattern=FillPattern.Solid),
+          Polygon(
+            points={{-100,40},{100,40},{100,52},{-100,44},{-100,40}},
+            lineColor={28,108,200},
+            fillColor={175,175,175},
+            fillPattern=FillPattern.Solid),
+          Polygon(
+            points={{-100,-40},{100,-40},{100,-52},{-100,-44},{-100,-40}},
+            lineColor={28,108,200},
+            fillColor={175,175,175},
+            fillPattern=FillPattern.Solid),
+          Rectangle(
+            extent={{-100,6},{100,-6}},
+            lineColor={28,108,200},
+            fillColor={175,175,175},
+            fillPattern=FillPattern.Solid),
+          Text(
+            extent={{-66,42},{-18,4}},
+            lineColor={0,0,0},
+            textString="1"),
+          Text(
+            extent={{46,40},{94,2}},
+            lineColor={0,0,0},
+            textString="2")}),                                     Diagram(
+          coordinateSystem(preserveAspectRatio=false)),
+      Documentation(info="<html>
+<p>The stator stage of a turbine is a deflection stage. Fluid enters the stage and is deflected to rotate around the axis of translation in order to impinge upon turbine blades in the next stage. This model contains 2 fluid nodes and 2 fluid flow ports. The fluid deflection is considered to happen between the first and second nodes. </p>
+<p>The key parameter in stator and rotor stage components is alpha. The alpha values are the designed deflection angles within the model. NOTE: These have so far been used in a [x, 0] format. An alpha value of 0 indicates that there is no deflection on that node. The deflection is assumed to occur at the end of the node that is indicated. </p>
+<p>The fluid velocity derivatives are dependent on the translational, rotational, and radial forces exerted either by the fluid or on the fluid. Each velocity essentially follows the same equation: </p>
+<p><span style=\"font-family: Calibri; font-size: 11pt;\"><img src=\"file:///C:/Users/MIKKDM/AppData/Local/Temp/3/msohtmlclip1/01/clip_image002.png\"/></span> </p>
+<p>The radial force is taken as an internal expansion force of the fluid to move the center of the mass flow while the fluid flows from node 1 to node 2. The center of mass is taken assuming a constant density and internal and external radius values. </p>
+<p>The resulting force in the axial and rotational directions is due to the structure of the stator stage of the turbine machine. The force has two components, each acting in the direction of rotation or translation. The model is centered around the <b>rotation </b>of the fluid. Thus, the stator stage is assumed to deflect the rotation of the fluid to a certain design angle alpha. </p>
+<p><span style=\"font-family: Calibri; font-size: 11pt;\"><img src=\"file:///C:/Users/MIKKDM/AppData/Local/Temp/3/msohtmlclip1/01/clip_image004.png\"/></span> </p>
+<p>The energy content removed from the fluid, which impacts the calculated enthalpy, in the stator stage is the sum of the force vectors dotted with the velocity (which results in the component forces multiplied by the change in the velocities). </p>
+</html>"));
+  end Stator_Stage;
+
+  model Rotor_Stage
+    "For most variable comments, see Stator_Stage. This stage is the power producing stage wherein the turbine blades rotate based on the energy impinged by the flowing fluid"
+    constant Integer nV=2;
+    constant Modelica.Units.SI.Acceleration grav=9.81;
+    constant Real pi = 3.14159;
+    parameter Modelica.Units.SI.MassFlowRate m_flow_nom=60;
+    Modelica.Units.SI.Angle defl[nV];
+    Modelica.Units.SI.MassFlowRate mdot[nV + 1];
+    Modelica.Units.SI.Velocity v_z[nV + 1];
+    Modelica.Units.SI.Velocity v_r[nV];
+    Modelica.Units.SI.Velocity v_the[nV];
+    Modelica.Units.SI.Velocity vnet[nV + 1];
+    Modelica.Units.SI.Velocity v_rin;
+    Modelica.Units.SI.Velocity v_rout;
+    Modelica.Units.SI.Velocity v_thein;
+    Modelica.Units.SI.Velocity v_theout;
+    Modelica.Units.SI.Pressure p[nV];
+    constant Modelica.Units.SI.Angle maxangle=-Modelica.Constants.pi/2;
+    Modelica.Units.SI.Pressure pin;
+    Modelica.Units.SI.Pressure pout;
+    Modelica.Units.SI.SpecificEnthalpy h[nV];
+    Modelica.Units.SI.SpecificEnthalpy hin;
+    Modelica.Units.SI.SpecificEnthalpy hout;
+
+    Modelica.Units.SI.Power hflow[nV + 1];
+    Modelica.Units.SI.AngularVelocity omega[nV];
+    Modelica.Units.SI.Frequency f_fluid[nV];
+    parameter Modelica.Units.SI.Angle alpha[nV]={pi/4,pi/4}
+      annotation (dialog(group="Geometry"));
+  //  stream Modelica.SIunits.SpecificEnthalpy hin;
+    Modelica.Units.SI.Impulse mom[nV];
+    Modelica.Units.SI.Force momdot[nV + 1];
+    Modelica.Units.SI.Force radmomdot[nV + 1];
+    Modelica.Units.SI.Force rotmomdot[nV + 1];
+    Medium.ThermodynamicState states[nV];
+    Modelica.Units.SI.Density rhoflow[nV + 1];
+    Modelica.Units.SI.Velocity dv_r[nV] "Change in radial velocity";
+    Modelica.Units.SI.Velocity dv_z[nV] "Change in translational velocity";
+    Modelica.Units.SI.Velocity dv_the[nV] "Change in rotational velocity";
+    parameter Modelica.Units.SI.Area A_flow[nV + 1]=0.1*ones(nV + 1) "Flow areas"
+      annotation (dialog(group="Geometry"));
+    parameter Modelica.Units.SI.Length dz[nV]={0.3,0.1} "Axial length"
+      annotation (dialog(group="Geometry"));
+    parameter Modelica.Units.SI.Length dheight[nV]=zeros(nV) "Height difference"
+      annotation (dialog(group="Geometry"));
+    parameter Modelica.Units.SI.Length ri[nV + 1]=zeros(nV + 1) "Inner radii"
+      annotation (dialog(group="Geometry"));
+    parameter Modelica.Units.SI.Length ro[nV + 1]={0.21,0.21,0.21} "Outer radii"
+      annotation (dialog(group="Geometry"));
+    //parameter Modelica.SIunits.Area Asurf annotation(dialog(group = "Geometry"));
+    Modelica.Units.SI.Length rave[nV + 1];
+    Modelica.Units.SI.Torque tau;
+    Modelica.Units.SI.Velocity Turb_speed "Linear rotational velocity of turbine blades";
+    Modelica.Units.SI.Area Amid[nV];
+    Modelica.Units.SI.Volume Vol[nV];
+    Modelica.Units.SI.Mass m[nV];
+
+    Modelica.Units.SI.Force Ff[nV];
+    Modelica.Units.SI.Force Fthe[nV];
+    Modelica.Units.SI.Force Fr[nV];
+    Modelica.Units.SI.Force Fz[nV];
+    Modelica.Units.SI.Power q[nV];
+    Modelica.Units.SI.Power Q[nV];
+    Modelica.Units.SI.Velocity vturbexit;
+    Modelica.Units.SI.SpecificEntropy s[nV];
+    Modelica.Units.SI.Length dr[nV];
+    Modelica.Units.SI.MomentOfInertia I[nV];
+    replaceable package Medium = Modelica.Media.Water.StandardWater
+    constrainedby Modelica.Media.Interfaces.PartialMedium;
+    parameter Modelica.Units.SI.SpecificEnthalpy h_init=3000e3 "Initial enthalpy"
+      annotation (dialog(group="Initialization"));
+    parameter Modelica.Units.SI.MassFlowRate m_init=66.3 "Initial mass flow rate"
+      annotation (dialog(group="Initialization"));
+    parameter Modelica.Units.SI.Pressure p_in_init=500000 "Initial inlet pressure"
+      annotation (dialog(group="Initialization"));
+    parameter Modelica.Units.SI.Pressure p_init=0 "If=0, take outlet pressure and inlet pressure";
+    parameter Modelica.Units.SI.Velocity v_the_init=0 "Initial rotational velocity"
+      annotation (dialog(group="Initialization"));
+    parameter Modelica.Units.SI.Velocity v_r_init=0 "Initial radial velocity"
+      annotation (dialog(group="Initialization"));
+    Medium.ThermodynamicState statein;
+    Medium.ThermodynamicState stateout;
+    Modelica.Units.SI.Power Mech_Q;
+    Modelica.Units.SI.Torque tau2;
+  //  Modelica.SIunits.Power Mech_Q2;
+
+    BaseClasses.FluidFlow Inlet(redeclare replaceable package Medium =
+                         Medium) annotation (Placement(transformation(extent={{-112,
+              -12},{-92,8}}), iconTransformation(extent={{-118,-22},{-78,18}})));
+    BaseClasses.FluidFlow Outlet(redeclare replaceable package Medium =
+                                     Medium) annotation (Placement(
+          transformation(extent={{86,-10},{106,10}}), iconTransformation(extent=
+             {{68,-30},{128,30}})));
+
+    BaseClasses.Torque torque annotation (Placement(
+          transformation(extent={{-44,36},{-24,56}}), iconTransformation(extent=
+             {{-44,36},{-24,56}})));
+  initial equation
+    for i in 1:nV loop
+      h[i] = h_init;
+      mdot[i+1] = m_init;
+    //  p[i] = p_init;
+      v_the[i] = v_the_init;
+      v_r[i] = v_r_init;
+      Ff[i] = 0;
+    //  Fthe[i] = 0;
+      Fr[i] = 0;
+      Fz[i] = 0;
+      defl[i] = alpha[i];
+    end for;
+       Fthe[1] = v_the_init*m_init*abs(v_the_init)/dz[1];
+     Fthe[nV] = 0;
+     if
+       (p_init == 0) then
+    p[1] = p_in_init;
+    p[2] = 0.5*(p[1]+pout);
+     else
+       p[1] = p_init;
+       p[2] = p_init;
+     end if;
+  equation
+      statein=Medium.setState_phX(Inlet.p,Inlet.h_outflow,Inlet.Xi_outflow);
+    stateout = Medium.setState_phX(Outlet.p,Outlet.h_outflow,Outlet.Xi_outflow);
+    torque.tau + tau2 = 0;
+  //  Mech_Q2 = tau2*(v_thein-v_the[1])/rave[1];
+    sqrt(torque.w*torque.w+0.00001)*tau2 = mdot[1]*(hin-h[1])-Ff[1]*v_z[1];
+    torque.w*rave[1] - Turb_speed=0;
+    vturbexit = Turb_speed+v_z[2]*tan(defl[1]);
+    tau = -rave[1]*Fthe[1];
+    for i in 1:nV loop
+
+      if
+        (alpha[i]>0.0 or alpha[i]<0.0) then
+       // der(defl[i]) = ((ksq*((mdot[1]-m_flow_nom)/m_flow_nom*abs((mdot[1]-m_flow_nom)/m_flow_nom)) + klin*(mdot[1]-m_flow_nom)/m_flow_nom
+       //  + ktanh*(-1*tanh(2*(mdot[1]-m_flow_nom)/m_flow_nom)))*(maxangle-alpha[i])+alpha[i]-defl[i])/(5);
+     //  der(defl[i]) = ((Mech_Q-mdot[1]*ref_Eperkg)/ref_Eperkg*(maxangle-alpha[i])+alpha[i]-defl[i])/1000;
+     // der(defl[i]) = (atan((mdot[1]-m_flow_nom)/m_flow_nom)^2*(maxangle-alpha[i]) + alpha[i])/5;
+      der(defl[i]) = (((0.073492*((mdot[1]-m_flow_nom)/m_flow_nom)^2-1.01591*(mdot[1]-m_flow_nom)/m_flow_nom)*(maxangle-alpha[i])+alpha[i])-defl[i])/10;
+      der(Fthe[i]) = -mdot[i]*(v_the[i]-vturbexit)*abs(v_z[i+1])/dz[i];
+      der(Fz[i]) = 0;
+      else
+        defl[i] = 0;
+        der(Fthe[i]) = 0;
+        der(Fz[i]) = 0;
+      end if;
+    end for;
+    Mech_Q = mdot[3]*(hin-h[1]);
+    der(Q[2]) = (h[1]-h[2])*mdot[2]/0.01;
+      Q[1] = Fr[1]*abs(dv_r[1]) + Fthe[1]*abs(dv_the[1]) + q[1] + Fz[1]*abs(dv_z[1]);
+     for i in 1:nV loop
+      I[i] = states[i].d*2*pi*dz[i]*(ro[i]^4-ri[i]^4)/4;
+      dr[i] = rave[i+1]-rave[i];
+      Amid[i]*2 = A_flow[i+1]+A_flow[i];
+      Vol[i] = Amid[i]*dz[i];
+    //Q[i] = Fr[i]*abs(dv_r[i]) + Fthe[i]*abs(dv_the[i]) + q[i]+Fz[i]*abs(dv_z[i]);
+      der(Fr[i]) = mdot[i+1]*(dr[i]/dz[i]*v_z[i+1]-v_r[i])*abs(dr[i]/dz[i]*v_z[i+1]-v_r[i])/dz[i];
+      //der(Fr[i]) =0;
+      der(Ff[i]) = (0.5*states[i].d*v_z[i+1]*abs(v_z[i])*0.00-Ff[i])/0.01;
+      states[i] = Medium.setState_phX(p[i],h[i],Medium.X_default);
+      q[i] =0;
+      mom[i] = mdot[i]*v_z[i+1];
+      m[i] =Vol[i]*states[i].d;
+      v_the[i] = rave[i]*omega[i];
+      f_fluid[i] = omega[i]/(2*pi);
+      s[i] = Medium.specificEntropy(states[i]);
+    end for;
+    //5 conservation equations, for mass, energy, and a velocity equation for each of rotational, radial, and translational speeds
+    //Node 1//
+    der(m[1]) + mdot[2]-mdot[1] = 0;
+    m[1]*der(Medium.specificInternalEnergy(states[1])) + hflow[2]-hflow[1] = -p[1]*Vol[1]*(v_z[2]-v_z[1])/dz[1] - v_z[2]*Ff[1]+Q[1];
+    //m[1]*der(v_z[2]) + momdot[2]-momdot[1] + Amid[1]*((p[2]-p[1])+states[1].d*grav*dheight[1])/dz[1] = -Ff[1]+Fz[1];
+    m[1]*der(v_z[2]) + momdot[2]-momdot[1] + A_flow[2]*p[2]-A_flow[1]*p[1] = -Ff[1]+Fz[1];
+    m[1]*der(v_r[1]) + radmomdot[2] - radmomdot[1] = Fr[1];
+    m[1]*der(v_the[1]) + rotmomdot[2]-rotmomdot[1] = Fthe[1];
+
+    //Node 2//
+    der(m[2])  + mdot[3]-mdot[2] = 0;
+    m[2]*der(Medium.specificInternalEnergy(states[2]))  + hflow[3]-hflow[2] =-p[2]*Vol[2]*(v_z[3]-v_z[2])/dz[2] - v_z[3]*Ff[2]+Q[2];
+    m[2]*der(v_z[3]) + momdot[3]-momdot[2]+A_flow[3]*pout-A_flow[2]*p[2]=-Ff[2]+Fz[2];// + Ff[2] = Fz[2];
+    m[2]*der(v_r[2]) + radmomdot[3]-radmomdot[2] = Fr[2];
+    m[2]*der(v_the[2]) + rotmomdot[3]-rotmomdot[2] = Fthe[2];
+
+   //boundary conditions//
+
+  //  mtap = 0;
+
+    for i in 1:nV+1 loop
+      v_z[i]*A_flow[i]*rhoflow[i] = mdot[i];
+      momdot[i] = abs(v_z[i])*mdot[i];
+      rave[i] = 0.75*(ro[i]^4-ri[i]^4)/(ro[i]^3-ri[i]^3);
+    end for;
+    dv_r[1] = semiLinear(
+        BaseClasses.NZer(v_z[1]),
+        v_r[1] - v_rin,
+        v_r[1] - v_r[2]);
+    dv_r[2] = semiLinear(
+        BaseClasses.NZer(v_z[2]),
+        v_r[2] - v_r[1],
+        v_r[2] - v_rout);
+    dv_z[1] = v_z[2]-v_z[1];
+    dv_z[2] = v_z[3]-v_z[2];
+    dv_the[1] = semiLinear(
+        BaseClasses.NZer(v_z[1]),
+        v_the[1] - v_thein,
+        v_the[1] - v_the[2]);
+    dv_the[2] = semiLinear(
+        BaseClasses.NZer(v_z[2]),
+        v_the[2] - v_the[1],
+        v_the[2] - v_theout);
+    //semiLinear should take care of the donor directions.
+    hflow[1] = semiLinear(mdot[1],hin,h[1]);
+    radmomdot[1] = semiLinear(mdot[1],v_rin,v_r[1]);
+    rotmomdot[1] = semiLinear(mdot[1],v_thein,v_the[1]);
+    rhoflow[1] = semiLinear(v_z[1]/(sqrt(v_z[1]*v_z[1]+0.00001)),Medium.density(Medium.setState_phX(pin,hin,Medium.X_default)),-states[1].d);
+    //interface-by-interface enthalpy flow calculations.
+    hflow[2] = semiLinear(mdot[2],h[1],h[2]);
+    radmomdot[2] = semiLinear(mdot[2],v_r[1],v_r[2]);
+    rotmomdot[2] = semiLinear(mdot[2],v_the[1],v_the[2]);
+    rhoflow[2] = semiLinear(v_z[2]/sqrt((v_z[2]*v_z[2]+0.00001)),states[1].d,-states[2].d);
+
+    //min = mdot[1];
+    hflow[3] = semiLinear(mdot[3],h[2],hout);
+    radmomdot[3] = semiLinear(mdot[3],v_r[2],v_rout);
+    rotmomdot[3] = semiLinear(mdot[3],v_the[2],v_theout);
+    rhoflow[3] = semiLinear(v_z[3]/sqrt((v_z[3]*v_z[3]+0.00001)),states[2].d,-Medium.density(Medium.setState_phX(pout,hout,Medium.X_default)));
+    //v_rin = 0;
+   // v_thein = 0;
+    //pout = 500000;
+  //  hin = 3000e3;
+    //mdot[1] = 66.3;
+    vnet[1]*vnet[1] = semiLinear(
+        BaseClasses.NZer(v_z[1]),
+        v_rin,
+        v_r[1])^2 + semiLinear(
+        BaseClasses.NZer(v_z[1]),
+        v_thein,
+        v_the[1])^2 + v_z[1]*v_z[1];
+    vnet[2]*vnet[2] = semiLinear(
+        BaseClasses.NZer(v_z[2]),
+        v_r[1],
+        v_r[2])^2 + semiLinear(
+        BaseClasses.NZer(v_z[2]),
+        v_the[1],
+        v_the[2])^2 + v_z[2]*v_z[2];
+    vnet[3]*vnet[3] = semiLinear(
+        BaseClasses.NZer(v_z[3]),
+        v_r[2],
+        v_rout)^2 + semiLinear(
+        BaseClasses.NZer(v_z[2]),
+        v_the[2],
+        v_theout)^2 + v_z[3]*v_z[3];
+    hout = states[2].h;
+    v_theout = v_the[2];
+    v_rout = v_r[2];
+    p[1] = pin;
+    //mdot[3] + Outlet.m_flow = 0;
+
+    hin=inStream(Inlet.h_outflow);
+    Inlet.h_outflow = hin;
+      Inlet.p = p[1];
+    Inlet.m_flow = mdot[1];
+    v_rin = Inlet.v_r;
+    inStream(Inlet.v_r) = v_rin;
+    Inlet.v_theta = v_thein;
+    inStream(Inlet.v_theta) = v_thein;
+    pout = Outlet.p;
+    hout = Outlet.h_outflow;
+      Outlet.m_flow + mdot[3]=0;
+    Outlet.v_r = v_rout;
+    Outlet.v_theta = v_theout;
+
+    Inlet.Xi_outflow = inStream(Outlet.Xi_outflow);
+    Inlet.C_outflow = inStream(Outlet.C_outflow);
+    Outlet.Xi_outflow = inStream(Inlet.Xi_outflow);
+    Outlet.Xi_outflow = inStream(Inlet.C_outflow);
+
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+          Polygon(
+            points={{-32,-40},{-22,-22},{-28,-6},{100,-6},{100,-40},{-32,-40}},
+            lineColor={28,108,200},
+            fillColor={0,128,255},
+            fillPattern=FillPattern.Solid),
+          Polygon(
+            points={{-40,-36},{-30,-36},{-22,-22},{-28,-6},{-42,-6},{-34,-20},{-40,
+                -36}},
+            lineColor={28,108,200},
+            fillColor={175,175,175},
+            fillPattern=FillPattern.Solid),
+          Polygon(
+            points={{-100,-40},{-42,-40},{-34,-20},{-42,-6},{-100,-6},{-100,-40}},
+            lineColor={28,108,200},
+            fillColor={0,128,255},
+            fillPattern=FillPattern.Solid),
+          Polygon(
+            points={{-100,40},{-40,40},{-32,20},{-40,6},{-100,6},{-100,40}},
+            lineColor={28,108,200},
+            fillColor={0,128,255},
+            fillPattern=FillPattern.Solid),
+          Polygon(
+            points={{-38,36},{-28,36},{-20,22},{-26,6},{-40,6},{-32,20},{-38,36}},
+            lineColor={28,108,200},
+            fillColor={175,175,175},
+            fillPattern=FillPattern.Solid),
+          Polygon(
+            points={{-30,40},{-20,22},{-26,6},{100,6},{100,40},{-30,40}},
+            lineColor={28,108,200},
+            fillColor={0,128,255},
+            fillPattern=FillPattern.Solid),
+          Polygon(
+            points={{-100,40},{100,40},{100,52},{-100,44},{-100,40}},
+            lineColor={28,108,200},
+            fillColor={175,175,175},
+            fillPattern=FillPattern.Solid),
+          Polygon(
+            points={{-100,-40},{100,-40},{100,-52},{-100,-44},{-100,-40}},
+            lineColor={28,108,200},
+            fillColor={175,175,175},
+            fillPattern=FillPattern.Solid),
+          Rectangle(
+            extent={{-100,6},{100,-6}},
+            lineColor={28,108,200},
+            fillColor={175,175,175},
+            fillPattern=FillPattern.Solid),
+          Text(
+            extent={{-86,42},{-38,4}},
+            lineColor={0,0,0},
+            textString="1"),
+          Text(
+            extent={{16,40},{64,2}},
+            lineColor={0,0,0},
+            textString="2")}),                                     Diagram(
+          coordinateSystem(preserveAspectRatio=false)),
+      Documentation(info="<html>
+<p>The rotor stage is similar to the stator stage in structure. 2 fluid nodes calculate fluid properties, and two fluid ports connect to other parts of the turbine. A torque port is also present on the rotor stage to account for the energy removed from the fluid and applied to the turbine. </p>
+<p>The primary difference between the rotor stage and the stator stage is that there is a viscosity approximation that impacts the resulting angle of rotational deflection. Considering the no-slip condition, there are 2 physical phenomena that impact that actual resulting rotation of the fluid as it flows through the turbine stages. The first is a contact force between the fluid as it impinges upon the blades of the turbine. The second force is the internal viscous forces that propagates much of this contact force through the remainder of the fluid. This is not an instantaneous action and is impacted then by the speed of the fluid. As such, there is a quadratic correction equation introduced into the rotor stage. The coefficients thus far have been estimated by investigating the impact that reducing turbine velocity has on the relative rotational speed of the turbine and the fluid. The biggest takeaway from this is: the fluid speed should be kept at near-nominal values where possible to continue to maintain confidence in results. Future care could be taken to obtain a generalized equation for this change in angular deflection. </p>
+</html>"));
+  end Rotor_Stage;
+
+  model MS
+    "Fluid flow port compatible moisture separator. Liquid removal port is standard fluid port."
+    replaceable package Medium = Modelica.Media.Water.StandardWater;
+    parameter Modelica.Units.SI.Volume V_MS=0.05 "Moisture separator volume";
+    parameter Real eta = 0.99 "Separation efficiency";
+    parameter Modelica.Units.SI.Pressure p_start=200000 "Initial pressure";
+    parameter Modelica.Units.SI.SpecificEnthalpy h_start=2000e3 "Initial steam mixture enthalpy";
+
+    BaseClasses.TRANSFORMMoistureSeparator_MIKK separator(
+      redeclare package Medium = Medium,
+      p_start=p_start,
+      use_T_start=false,
+      h_start=h_start,
+      redeclare model Geometry =
+          TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
+          (V=V_MS),
+      eta_sep=eta)
+      annotation (Placement(transformation(extent={{-8,-10},{12,10}})));
+    BaseClasses.Turbine_Outlet turbine_Outlet(Vels_out=true)
+      annotation (Placement(transformation(extent={{-50,-10},{-30,10}})));
+    BaseClasses.Turbine_Inlet turbine_Inlet(Vels_in=true)
+      annotation (Placement(transformation(extent={{20,-10},{40,10}})));
+    BaseClasses.FluidFlow Turb_In(redeclare package Medium = Medium)
+      annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+    BaseClasses.FluidFlow Turb_Out(redeclare package Medium = Medium)
+      annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+    Modelica.Fluid.Interfaces.FluidPort_a Liquid(redeclare package Medium =
+          Medium)
+      annotation (Placement(transformation(extent={{-10,-42},{10,-22}}),
+          iconTransformation(extent={{-10,-42},{10,-22}})));
+  equation
+
+    connect(turbine_Inlet.v_thein, turbine_Outlet.v_theout) annotation (Line(
+          points={{35.6,4.6},{35.6,20},{-34.4,20},{-34.4,4.6}}, color={0,0,127}));
+    connect(turbine_Outlet.v_rout, turbine_Inlet.v_rin) annotation (Line(points={{
+            -34.2,-4.6},{-34.2,-22},{35.8,-22},{35.8,-4.6}}, color={0,0,127}));
+    connect(separator.port_Liquid, Liquid)
+      annotation (Line(points={{-2,-4},{-2,-32},{0,-32}},   color={0,127,255}));
+    connect(separator.port_b, turbine_Inlet.Pipe_flow)
+      annotation (Line(points={{8,0},{20,0}}, color={0,127,255}));
+    connect(separator.port_a, turbine_Outlet.Pipe_flow)
+      annotation (Line(points={{-4,0},{-30,0}}, color={0,127,255}));
+    connect(turbine_Outlet.Turb_flow, Turb_In) annotation (Line(points={{-49.9,0.1},
+            {-72.95,0.1},{-72.95,0},{-100,0}}, color={28,108,200}));
+    connect(turbine_Inlet.Turb_flow, Turb_Out) annotation (Line(points={{39.9,-0.1},
+            {69.95,-0.1},{69.95,0},{100,0}}, color={28,108,200}));
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+            Rectangle(
+            extent={{-100,-12},{100,-34}},
+            lineColor={28,108,200},
+            fillColor={85,170,255},
+            fillPattern=FillPattern.Solid),
+            Rectangle(
+            extent={{-100,26},{100,-12}},
+            lineColor={28,108,200},
+            fillColor={85,170,255},
+            fillPattern=FillPattern.Solid), Rectangle(
+            extent={{-48,-12},{48,-34}},
+            lineColor={28,108,200},
+            fillColor={0,0,255},
+            fillPattern=FillPattern.Solid)}),                      Diagram(
+          coordinateSystem(preserveAspectRatio=false)),
+      Documentation(info="<html>
+<p>This moisture separator portion was submitted to TRANSFORM. As of now, the author has not checked to make sure that the TRANSFORM moisture separator has been updated based on that submission (separation efficiency application was changed). The model accepts a fluid stream and diverts an assumed efficiency amount of liquid to a third port. Note: the liquid removal port&rsquo;s pressure is allowed to float due to modeling restrictions (cannot dictate m, h, and p). </p>
+<p>The main function is: </p>
+<p><span style=\"font-family: Calibri; font-size: 11pt;\"><img src=\"file:///C:/Users/MIKKDM/AppData/Local/Temp/4/msohtmlclip1/01/clip_image002.png\"/></span> </p>
+</html>"));
+  end MS;
+
+  model Turbine_Tap
+    "Two fluid flow ports with a standard fluid flow tap port, the pressure is set to be equal across all ports and the mass flow rates between the ports are conserved."
+    replaceable package medium = Modelica.Media.Water.StandardWater;
+    BaseClasses.FluidFlow Turb_flow(redeclare package Medium = medium)
+      annotation (Placement(transformation(extent={{-110,-10},{-90,10}}),
+          iconTransformation(extent={{-114,-14},{-84,16}})));
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow Tap_flow(redeclare package
+        Medium =                                                                   medium)
+      annotation (Placement(transformation(extent={{-10,-42},{10,-22}}),
+          iconTransformation(extent={{-10,-42},{10,-22}})));
+    BaseClasses.FluidFlow Turb_flow2(redeclare package Medium = medium)
+      annotation (Placement(transformation(extent={{92,-10},{112,10}}),
+          iconTransformation(extent={{92,-10},{112,10}})));
+  equation
+    Tap_flow.m_flow + Turb_flow.m_flow + Turb_flow2.m_flow= 0 "Mass conservation";
+     Tap_flow.p = Turb_flow.p;
+    Turb_flow2.p=Turb_flow.p;
+
+    Turb_flow2.v_r = inStream(Turb_flow.v_r);
+    Turb_flow.v_r = inStream(Turb_flow2.v_r);
+    Turb_flow2.v_theta = inStream(Turb_flow.v_theta);
+    Turb_flow.v_theta = inStream(Turb_flow2.v_theta);
+    Turb_flow2.h_outflow = inStream(Turb_flow.h_outflow);
+    Turb_flow2.Xi_outflow = inStream(Turb_flow.Xi_outflow);
+    Turb_flow.Xi_outflow = inStream(Turb_flow2.Xi_outflow);
+    Turb_flow2.C_outflow = inStream(Turb_flow.C_outflow);
+    Turb_flow.C_outflow = inStream(Turb_flow2.C_outflow);
+    Turb_flow.h_outflow = inStream(Turb_flow2.h_outflow);
+    Tap_flow.h_outflow = inStream(Turb_flow.h_outflow);
+    Tap_flow.C_outflow = inStream(Turb_flow.C_outflow);
+    Tap_flow.Xi_outflow = inStream(Turb_flow.Xi_outflow);
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+            Rectangle(
+            extent={{-100,-12},{100,-34}},
+            lineColor={28,108,200},
+            fillColor={85,170,255},
+            fillPattern=FillPattern.Solid),
+            Rectangle(
+            extent={{-100,26},{100,-12}},
+            lineColor={28,108,200},
+            fillColor={85,170,255},
+            fillPattern=FillPattern.Solid), Rectangle(
+            extent={{-48,-12},{48,-34}},
+            lineColor={28,108,200},
+            fillColor={0,0,255},
+            fillPattern=FillPattern.Solid)}),                      Diagram(
+          coordinateSystem(preserveAspectRatio=false)),
+      Documentation(info="<html>
+<p>The turbine tap equates pressure at all 3 ports: 2 fluid flow ports and a fluid port. The mass flow rate conservation equation is imposed as well. The amount of mass flow removed from the main turbine flow at any point is a function of what is downstream of the turbine taps. The rotational and radial flow are maintained from the tap inlet to the tap outlet. &nbsp; </p>
+</html>"));
+  end Turbine_Tap;
+
+  model TeeJunctionIdeal_Cyl
+    "Splitting/joining component with static balances for an infinitesimal control volume. Effectively the opposite of a Turbine_Tap, but uses 3 Fluid Flow ports."
+    extends
+      NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.StagebyStageTurbine.BaseClasses.PartialTeeJunction_Cyl;
+
+  equation
+    connect(port_1, port_2) annotation (Line(
+        points={{-100,0},{100,0}}, color={0,127,255}));
+    connect(port_1, port_3) annotation (Line(
+        points={{-100,0},{0,0},{0,100}}, color={0,127,255}));
+    annotation(Documentation(info="<html>
+  This model is the simplest implementation for a splitting/joining component for
+  three flows. Its use is not required. It just formulates the balance
+  equations in the same way that the connect semantics would formulate them anyways.
+  The main advantage of using this component is, that the user does not get
+  confused when looking at the specific enthalpy at each port which might be confusing
+  when not using a splitting/joining component. The reason for the confusion is that one examines the mixing
+  enthalpy of the infinitesimal control volume introduced with the connect statement when
+  looking at the specific enthalpy in the connector which
+  might not be equal to the specific enthalpy at the port in the \"real world\".</html>"));
+  end TeeJunctionIdeal_Cyl;
+
+  model Turbine_Physical
+    Modelica.Mechanics.Rotational.Interfaces.Flange_a Generator_torque
+      annotation (Placement(transformation(extent={{90,48},{110,68}}),
+          iconTransformation(extent={{90,48},{110,68}})));
+    parameter Integer nSt = 10 "Number of ROTOR stages this model will be connected to";
+    parameter Modelica.Units.SI.MomentOfInertia I_turb=1000 "Moment of inertia of the entire turbine";
+    parameter Modelica.Units.SI.AngularVelocity om_start=3600*60/(2*3.14159) "Initial rotational speed";
+    Modelica.Units.SI.AngularVelocity om(start=om_start) "Rotational speed of turbine";
+    Modelica.Units.SI.Torque torq_int[nSt] "Internal torque vector";
+    Modelica.Units.SI.Torque total_torque_fluid "Sum of internal torque vector";
+    Modelica.Units.SI.Angle phi(start=0) "Initial angle, required for Flange_a port to the generator";
+    Modelica.Units.SI.Power P_turb "Turbine power";
+
+    BaseClasses.Torque Fluidtorques[nSt]
+      annotation (Placement(transformation(extent={{-14,-42},{6,-22}})));
+
+  equation
+    for i in 1:nSt loop
+      Fluidtorques[i].w = om;
+      Fluidtorques[i].tau = torq_int[i];
+    end for;
+    der(om)*I_turb = total_torque_fluid + Generator_torque.tau;
+    total_torque_fluid = sum(torq_int);
+    phi = Generator_torque.phi;
+    der(phi) = om;
+    P_turb = total_torque_fluid*om;
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+            Polygon(
+            points={{-100,38},{-100,-22},{100,-42},{100,78},{-100,38}},
+            lineColor={28,108,200},
+            fillColor={181,181,181},
+            fillPattern=FillPattern.Solid), Text(
+            extent={{32,86},{112,34}},
+            lineColor={244,125,35},
+            fillColor={181,181,181},
+            fillPattern=FillPattern.None,
+            textString="e-")}),                                    Diagram(
+          coordinateSystem(preserveAspectRatio=false), graphics={Polygon(
+            points={{-100,40},{-100,-20},{100,-40},{100,80},{-100,40}},
+            lineColor={28,108,200},
+            fillColor={181,181,181},
+            fillPattern=FillPattern.Solid)}),
+      Documentation(info="<html>
+<p>The physical turbine model connects to rotor stage components via the torque port. It also connects to the generator via a torque port. The turbine itself maintains a rotational speed omega, and a torque equation is applied on the turbine to determine that rotational speed. The main turbine parameters are the number of torque ports (should equal the number of rotor stages) and the moment of inertia of the turbine. </p>
+</html>"));
+  end Turbine_Physical;
+
+  package Boundary_Conditions
+    model MassFlowSource_h
+      "Ideal flow source that produces a prescribed mass flow with prescribed specific enthalpy, mass fraction and trace substances"
+      import Modelica.Media.Interfaces.Choices.IndependentVariables;
+      extends
+        NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.StagebyStageTurbine.BaseClasses.CylindricalSupport.PartialFlowSource;
+      parameter Boolean use_m_flow_in = false
+        "Get the mass flow rate from the input connector"
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
+      parameter Boolean use_h_in= false
+        "Get the specific enthalpy from the input connector"
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
+      parameter Boolean use_X_in = false
+        "Get the composition from the input connector"
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
+      parameter Boolean use_C_in = false
+        "Get the trace substances from the input connector"
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
+      parameter Medium.MassFlowRate m_flow = 0
+        "Fixed mass flow rate going out of the fluid port"
+        annotation (Evaluate = true,
+                    Dialog(enable = not use_m_flow_in));
+      parameter Medium.SpecificEnthalpy h = Medium.h_default
+        "Fixed value of specific enthalpy"
+        annotation (Evaluate = true,
+                    Dialog(enable = not use_h_in));
+      parameter Medium.MassFraction X[Medium.nX] = Medium.X_default
+        "Fixed value of composition"
+        annotation (Evaluate = true,
+                    Dialog(enable = (not use_X_in) and Medium.nXi > 0));
+      parameter Medium.ExtraProperty C[Medium.nC](
+           quantity=Medium.extraPropertiesNames)=fill(0, Medium.nC)
+        "Fixed values of trace substances"
+        annotation (Evaluate=true,
+                    Dialog(enable = (not use_C_in) and Medium.nC > 0));
+      Modelica.Blocks.Interfaces.RealInput m_flow_in if     use_m_flow_in
+        "Prescribed mass flow rate"
+        annotation (Placement(transformation(extent={{-120,60},{-80,100}})));
+      Modelica.Blocks.Interfaces.RealInput h_in if              use_h_in
+        "Prescribed fluid specific enthalpy"
+        annotation (Placement(transformation(extent={{-140,20},{-100,60}}), iconTransformation(extent={{-140,20},{-100,60}})));
+      Modelica.Blocks.Interfaces.RealInput X_in[Medium.nX] if
+                                                            use_X_in
+        "Prescribed fluid composition"
+        annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
+      Modelica.Blocks.Interfaces.RealInput C_in[Medium.nC] if
+                                                            use_C_in
+        "Prescribed boundary trace substances"
+        annotation (Placement(transformation(extent={{-120,-100},{-80,-60}}), iconTransformation(extent={{-120,-100},{-80,-60}})));
+    protected
+      Modelica.Blocks.Interfaces.RealInput m_flow_in_internal
+        "Needed to connect to conditional connector";
+      Modelica.Blocks.Interfaces.RealInput h_in_internal
+        "Needed to connect to conditional connector";
+      Modelica.Blocks.Interfaces.RealInput X_in_internal[Medium.nX]
+        "Needed to connect to conditional connector";
+      Modelica.Blocks.Interfaces.RealInput C_in_internal[Medium.nC]
+        "Needed to connect to conditional connector";
+    equation
+      Modelica.Fluid.Utilities.checkBoundary(
+        Medium.mediumName,
+        Medium.substanceNames,
+        Medium.singleState,
+        true,
+        X_in_internal,
+        "MassFlowSource_h");
+      connect(m_flow_in, m_flow_in_internal);
+      connect(h_in, h_in_internal);
+      connect(X_in, X_in_internal);
+      connect(C_in, C_in_internal);
+      if not use_m_flow_in then
+        m_flow_in_internal = m_flow;
+      end if;
+      if not use_h_in then
+        h_in_internal = h;
+      end if;
+      if not use_X_in then
+        X_in_internal = X;
+      end if;
+      if not use_C_in then
+        C_in_internal = C;
+      end if;
+      if Medium.ThermoStates == IndependentVariables.ph or
+         Medium.ThermoStates == IndependentVariables.phX then
+         medium.h = h_in_internal;
+      else
+         medium.T = Medium.temperature(Medium.setState_phX(medium.p, h_in_internal, X_in_internal));
+      end if;
+      sum(ports.m_flow) = -m_flow_in_internal;
+      medium.Xi = X_in_internal[1:Medium.nXi];
+      ports.C_outflow = fill(C_in_internal, nPorts);
+      annotation (defaultComponentName="boundary",
+        Icon(coordinateSystem(
+            preserveAspectRatio=false,
+            extent={{-100,-100},{100,100}}), graphics={
+            Rectangle(
+              extent={{36,45},{100,-45}},
+              lineColor={0,0,0},
+              fillPattern=FillPattern.HorizontalCylinder,
+              fillColor={0,127,255}),
+            Ellipse(
+              extent={{-100,80},{60,-80}},
+              lineColor={0,0,255},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{-60,70},{60,0},{-60,-68},{-60,70}},
+              lineColor={0,0,255},
+              fillColor={0,0,255},
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{-54,32},{16,-30}},
+              lineColor={255,0,0},
+              textString="m"),
+            Ellipse(
+              extent={{-26,30},{-18,22}},
+              lineColor={255,0,0},
+              fillColor={255,0,0},
+              fillPattern=FillPattern.Solid),
+            Text(
+              visible=use_m_flow_in,
+              extent={{-185,132},{-45,100}},
+              lineColor={0,0,0},
+              textString="m_flow"),
+            Text(
+              visible=use_h_in,
+              extent={{-113,72},{-73,38}},
+              lineColor={0,0,0},
+              textString="h"),
+            Text(
+              visible=use_X_in,
+              extent={{-153,-44},{-33,-72}},
+              lineColor={0,0,0},
+              textString="X"),
+            Text(
+              visible=use_X_in,
+              extent={{-155,-98},{-35,-126}},
+              lineColor={0,0,0},
+              textString="C")}),
+        Documentation(info="<html>
+<p>
+Models an ideal flow source, with prescribed values of flow rate, temperature and composition:
+</p>
+<ul>
+<li> Prescribed mass flow rate.</li>
+<li> Prescribed specific enthalpy.</li>
+<li> Boundary composition (only for multi-substance or trace-substance flow).</li>
+</ul>
+<p>If <code>use_m_flow_in</code> is false (default option), the <code>m_flow</code> parameter
+is used as boundary pressure, and the <code>m_flow_in</code> input connector is disabled; if <code>use_m_flow_in</code> is true, then the <code>m_flow</code> parameter is ignored, and the value provided by the input connector is used instead.</p>
+<p>The same thing goes for the temperature and composition</p>
+<p>
+Note, that boundary temperature,
+mass fractions and trace substances have only an effect if the mass flow
+is from the boundary into the port. If mass is flowing from
+the port into the boundary, the boundary definitions,
+with exception of boundary flow rate, do not have an effect.
+</p>
+</html>"));
+    end MassFlowSource_h;
+
+    model Boundary_ph
+      "Boundary with prescribed pressure, specific enthalpy, composition and trace substances"
+      import Modelica.Media.Interfaces.Choices.IndependentVariables;
+      extends
+        NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.StagebyStageTurbine.BaseClasses.CylindricalSupport.PartialSource;
+      parameter Boolean use_p_in = false
+        "Get the pressure from the input connector"
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
+      parameter Boolean use_h_in= false
+        "Get the specific enthalpy from the input connector"
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
+      parameter Boolean use_X_in = false
+        "Get the composition from the input connector"
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
+      parameter Boolean use_C_in = false
+        "Get the trace substances from the input connector"
+        annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
+      parameter Medium.AbsolutePressure p = Medium.p_default
+        "Fixed value of pressure"
+        annotation (Evaluate = true,
+                    Dialog(enable = not use_p_in));
+      parameter Medium.SpecificEnthalpy h = Medium.h_default
+        "Fixed value of specific enthalpy"
+        annotation (Evaluate = true,
+                    Dialog(enable = not use_h_in));
+      parameter Medium.MassFraction X[Medium.nX] = Medium.X_default
+        "Fixed value of composition"
+        annotation (Evaluate = true,
+                    Dialog(enable = (not use_X_in) and Medium.nXi > 0));
+      parameter Medium.ExtraProperty C[Medium.nC](
+           quantity=Medium.extraPropertiesNames)=fill(0, Medium.nC)
+        "Fixed values of trace substances"
+        annotation (Evaluate=true,
+                    Dialog(enable = (not use_C_in) and Medium.nC > 0));
+      Modelica.Blocks.Interfaces.RealInput p_in if use_p_in
+        "Prescribed boundary pressure"
+        annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
+      Modelica.Blocks.Interfaces.RealInput h_in if use_h_in
+        "Prescribed boundary specific enthalpy"
+        annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
+      Modelica.Blocks.Interfaces.RealInput X_in[Medium.nX] if use_X_in
+        "Prescribed boundary composition"
+        annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
+      Modelica.Blocks.Interfaces.RealInput C_in[Medium.nC] if use_C_in
+        "Prescribed boundary trace substances"
+        annotation (Placement(transformation(extent={{-140,-100},{-100,-60}})));
+    protected
+      Modelica.Blocks.Interfaces.RealInput p_in_internal
+        "Needed to connect to conditional connector";
+      Modelica.Blocks.Interfaces.RealInput h_in_internal
+        "Needed to connect to conditional connector";
+      Modelica.Blocks.Interfaces.RealInput X_in_internal[Medium.nX]
+        "Needed to connect to conditional connector";
+      Modelica.Blocks.Interfaces.RealInput C_in_internal[Medium.nC]
+        "Needed to connect to conditional connector";
+    equation
+      Modelica.Fluid.Utilities.checkBoundary(Medium.mediumName, Medium.substanceNames,
+        Medium.singleState, true, X_in_internal, "Boundary_ph");
+      connect(p_in, p_in_internal);
+      connect(h_in, h_in_internal);
+      connect(X_in, X_in_internal);
+      connect(C_in, C_in_internal);
+      if not use_p_in then
+        p_in_internal = p;
+      end if;
+      if not use_h_in then
+        h_in_internal = h;
+      end if;
+      if not use_X_in then
+        X_in_internal = X;
+      end if;
+      if not use_C_in then
+        C_in_internal = C;
+      end if;
+      medium.p = p_in_internal;
+      if Medium.ThermoStates == IndependentVariables.ph or
+         Medium.ThermoStates == IndependentVariables.phX then
+         medium.h = h_in_internal;
+      else
+         medium.T = Medium.temperature(Medium.setState_phX(p_in_internal, h_in_internal, X_in_internal));
+      end if;
+      medium.Xi = X_in_internal[1:Medium.nXi];
+      ports.C_outflow = fill(C_in_internal, nPorts);
+      annotation (defaultComponentName="boundary",
+        Icon(coordinateSystem(
+            preserveAspectRatio=false,
+            extent={{-100,-100},{100,100}}), graphics={
+            Ellipse(
+              extent={{-100,100},{100,-100}},
+              lineColor={0,0,0},
+              fillPattern=FillPattern.Sphere,
+              fillColor={0,127,255}),
+            Line(
+              visible=use_p_in,
+              points={{-100,80},{-60,80}},
+              color={0,0,255}),
+            Line(
+              visible=use_h_in,
+              points={{-100,40},{-92,40}},
+              color={0,0,255}),
+            Line(
+              visible=use_X_in,
+              points={{-100,-40},{-92,-40}},
+              color={0,0,255}),
+            Line(
+              visible=use_C_in,
+              points={{-100,-80},{-60,-80}},
+              color={0,0,255}),
+            Text(
+              visible=use_p_in,
+              extent={{-150,134},{-72,94}},
+              lineColor={0,0,0},
+              textString="p"),
+            Text(
+              visible=use_h_in,
+              extent={{-166,34},{-64,-6}},
+              lineColor={0,0,0},
+              textString="h"),
+            Text(
+              visible=use_X_in,
+              extent={{-164,4},{-62,-36}},
+              lineColor={0,0,0},
+              textString="X"),
+            Text(
+              visible=use_C_in,
+              extent={{-164,-90},{-62,-130}},
+              lineColor={0,0,0},
+              textString="C")}),
+        Documentation(info="<html>
+<p>
+Defines prescribed values for boundary conditions:
+</p>
+<ul>
+<li> Prescribed boundary pressure.</li>
+<li> Prescribed boundary temperature.</li>
+<li> Boundary composition (only for multi-substance or trace-substance flow).</li>
+</ul>
+<p>If <code>use_p_in</code> is false (default option), the <code>p</code> parameter
+is used as boundary pressure, and the <code>p_in</code> input connector is disabled; if <code>use_p_in</code> is true, then the <code>p</code> parameter is ignored, and the value provided by the input connector is used instead.</p>
+<p>The same thing goes for the specific enthalpy and composition</p>
+<p>
+Note, that boundary temperature,
+mass fractions and trace substances have only an effect if the mass flow
+is from the boundary into the port. If mass is flowing from
+the port into the boundary, the boundary definitions,
+with exception of boundary pressure, do not have an effect.
+</p>
+</html>"));
+    end Boundary_ph;
+  end Boundary_Conditions;
+
+  model Generator_Basic
+    "Boundary condition generator for a shaft connector with no electical power connector"
+    Modelica.Mechanics.Rotational.Interfaces.Flange_a shaft annotation (Placement(
+          transformation(extent={{-110,-10},{-90,10}}, rotation=0),
+          iconTransformation(extent={{-111,-11},{-91,9}})));
+    SI.Angle phi(start=0,fixed=true) "Absolute rotation angle of component";
+    SI.AngularVelocity omega_m "Absolute angular velocity of component (= der(phi))";
+    SI.AngularAcceleration a
+      "Absolute angular acceleration of component (= der(w))";
+    parameter Real efficiency=0.99 "Constant generator efficiency";
+    parameter SI.AngularVelocity omega_nominal=50*2*3.14
+      "Fixed angular mechanical flange velocity";
+    Modelica.Units.SI.Power power "Generated power";
+    Modelica.Blocks.Interfaces.RealOutput Power annotation (Placement(
+          transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=90,
+          origin={0,108})));
+  equation
+    // Assumes that the rotational inertia rotates with a fixed speed, i.e. the acceleration is 0
+    power =shaft.tau*omega_m*efficiency;
+    power = Power;
+    phi =shaft.phi;
+    der(phi) = omega_m;
+    omega_m = omega_nominal;
+    a = 0;
+    annotation (defaultComponentName="generator",
+      Icon(graphics={
+          Rectangle(
+            extent={{-102,6},{-60,-6}},
+            lineColor={0,0,0},
+            fillPattern=FillPattern.HorizontalCylinder,
+            fillColor={160,160,164}),    Ellipse(
+                extent={{60,-60},{-60,60}},
+                lineColor={0,0,0},
+                lineThickness=0.5,
+                fillColor={255,255,255},
+                fillPattern=FillPattern.Solid),
+                           Text(
+                extent={{-26,24},{28,-28}},
+                lineColor={0,0,0},
+                fillColor={255,255,255},
+                fillPattern=FillPattern.Solid,
+                textString="G")}),
+      Documentation(info="<html>
+<p>This model describes the conversion between mechanical power and electrical power in an ideal synchronous generator. 
+The frequency in the electrical connector is the e.m.f. of generator.
+<p>It is possible to consider the generator inertia in the model, by setting the parameter <tt>J > 0</tt>. 
+</html>"));
+  end Generator_Basic;
+annotation (Documentation(info="<html>
+<p>The goal of this package is to allow for the detailed simulation of an energy conversion cycle. That is achieved by building a turbine in a stage-by-stage format, designing with deflection angles and cross sectional areas. By designing the turbine in this manner, the user has ready access to intermediate fluid conditions and can either tap these fluid streams or use moisture separators. Additionally, a user can junction in other fluid streams (so if one wanted a reheat stream or a peaking stream). </p>
+<p>This is done by changing the velocity profile from 1-D into 3-D cylindrical. The geometry is still 1-D area averaged, and so the velocities are still defined as existing within a single axial node, but simply having those rotational and radial components. The forces exchanged between the turbine stages and the HTF define the torque applied on the turbine, which then dictates the power via a generator component. </p>
+<p>The Eight_Stage_Turbine example shows all of the capabilities of this package in one single location. It demonstrates the use of the stator and rotor stages, along with the conversion components switching between the cylindrical flow and linear flow components. It also shows the application of the new boundary conditions. </p>
+<p>This package has allowed for simulation of some of the most complex fluid networks observed to date within Dymola/Modelica. Due to the complexity involved by adding so many junctions, it is highly recommended that users build systems component-by-component. Attempting to combine many components together without a grasp for initial conditions can cause failure in initialization stages in otherwise well-posed systems (true across all of Dymola, but very easy to do here). </p>
+<p>The original intent of this package was to enhance our ability to observe system-wide implications of the use of energy storage in integrated energy systems with nuclear reactors. System-wide pressure changes are readily observed when these systems are built up and nuclear reactor feedback is observable. Minimal control optimization has been done so far, but having this level of complexity in our modeling should allow for control mechanism studies moving forward. </p>
+<p>A final developer note: when building such complex fluid networks, it is often possible that adding even one more connection can cause the Dymola matrix building routines to fail and have some form of computation error. It is often possible to alleviate this issue by introducing a quick &quot;Delay&quot; component. While admittedly not physical, even introducing a delay component with a 1ms derivative term can help loosen the solution matrix. It is better to have a minimally off solution than no solution at all. </p>
+<p>(A delay box sets Time_Constant*der(Output) = Input-Output, so technically Output=/=Input, but it&apos;s always exponentially approaching and should be equal within general orders of magnitude. And hey, it&apos;s probably better than our correlations). </p>
+<p>Contact: Daniel Mikkelson, Ph.D.</p>
+<p>Idaho National Laboratory</p>
+<p>daniel.mikkelson@inl.gov</p>
+</html>"));
+end StagebyStageTurbine;

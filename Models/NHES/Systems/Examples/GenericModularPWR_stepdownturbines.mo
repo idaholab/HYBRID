@@ -29,7 +29,6 @@ model GenericModularPWR_stepdownturbines
   BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries BOP(
     redeclare BalanceOfPlant.Turbine.ContolSystems.CS_PressureAndPowerControl
       CS(p_nominal=BOP.port_a_nominal.p, W_totalSetpoint=SC.W_totalSetpoint_BOP),
-
     port_a_nominal(
       p=EM.port_b2_nominal.p,
       h=EM.port_b2_nominal.h,
@@ -41,6 +40,7 @@ model GenericModularPWR_stepdownturbines
     port_a3_nominal_m_flow={-IP1.port_b_nominal.m_flow})
     "{IP.port_b_nominal.p}{IP.port_b_nominal.h}{-IP.port_b_nominal.m_flow}"
     annotation (Placement(transformation(extent={{-18,82},{38,138}})));
+
   EnergyStorage.Battery.Logical ES(
     capacity_max=dataCapacity.ES_capacity,
     capacity_min=0.2*dataCapacity.ES_capacity,

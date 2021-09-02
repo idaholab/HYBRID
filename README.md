@@ -1,29 +1,17 @@
 # HYBRID
-HYBRID 
 
-One of the goals of the HYBRID modeling and simulation project is to assess the economic viability of hybrid systems in a marked that contains renewable energy sources like wind. The hybrid system would be a nuclear reactor that not only generates electricity, but also provides heat to another plant that produces by-products, like hydrogen or desalinated water. The idea is that the possibility of selling heat to a heat user absorbs (at least part of) the volatility introduced by the renewable energy sources.
+HYBRID is a collection of a transient process models developed in the Modelica langauage capable of representing the physical dynamics of various integrated energy systems and processes. The models are developed in a modular way so as to allow users to quickly assemble and test various configurations and control systems. 
 
-The system that is studied is modular and made of an assembly of components. For example, a system could contain a hybrid nuclear reactor, a gas turbine, a battery and some renewables. This system would correspond to the size of a balance area, but in theory any size of system is imaginable. The system is modeled in the ‘Modelica/Dymola’ language.
+The systems studied are modular and made of an assembly of components. For example, a system could contain a hybrid nuclear reactor, a gas turbine, a battery and some renewables. This system would correspond to the size of a balance area, but in theory any size of system is imaginable. The system is modeled in the ‘Modelica/Dymola’ language.
 
-To assess the economics of the system, an optimization procedure is varying different parameters of the system and tries to find the minimal cost of electricity production. 
+To assess the economics of the system, an optimization procedure varying different parameters can be run using the INL [FORCE](https://ies.inl.gov/SitePages/Technology%20-%20System%20Simulation.aspx) platform that combines HYBRID with HERON and RAVEN. 
+
 
 Currently,the HYBRID repository is based on:
 
-RAVEN : RAVEN v 1.1 (and newer). See [GITHUB WEBSITE](https://github.com/idaholab/raven)
-TRANSFORM-Library : TRANsient Simulation Framework of Reconfigurable Models. See [GITHUB WEBSITE](https://github.com/ORNL-Modelica/TRANSFORM-Library)
-DYMOLA: DYMOLA 2020x. See [Dymola Website](https://www.3ds.com/products-services/catia/products/dymola/?woc=%7B%22category%22%3A%5B%22category%2Fdymola%22%5D%7D&wockw=card_content_cta_1_url%3A%22https%3A%2F%2Fblogs.3ds.com%2Fcatia%2F%22)
-
- 
-### Other Software
-Idaho National Laboratory is a cutting edge research facility which is a constantly producing high quality research and software. Feel free to take a look at our other software and scientific offerings at:
-
-[Primary Technology Offerings Page](https://www.inl.gov/inl-initiatives/technology-deployment)
-
-[Supported Open Source Software](https://github.com/idaholab)
-
-[Raw Experiment Open Source Software](https://github.com/IdahoLabResearch)
-
-[Unsupported Open Source Software](https://github.com/IdahoLabCuttingBoard)
+* RAVEN : RAVEN v 1.1 (and newer). See [GITHUB WEBSITE](https://github.com/idaholab/raven)
+* TRANSFORM-Library : TRANsient Simulation Framework of Reconfigurable Models. See [GITHUB WEBSITE](https://github.com/ORNL-Modelica/TRANSFORM-Library)
+* DYMOLA: DYMOLA 2020x. See [Dymola Website](https://www.3ds.com/products-services/catia/products/dymola/?woc=%7B%22category%22%3A%5B%22category%2Fdymola%22%5D%7D&wockw=card_content_cta_1_url%3A%22https%3A%2F%2Fblogs.3ds.com%2Fcatia%2F%22)
 
 ### License
 
@@ -56,14 +44,28 @@ You agree your contributions are submitted under the Apache-2 license. You repre
 
 Authors
 -----
-Andrea Alfonsi
-Aaron Epiney
-Cristian Rabiti
-Jonk Suk Kim
-Konor Frick
-Paul Talbot
-Robert Kinoshita
-Derek Stucki
-Michael Greenwood
-Roberto Ponciroli
-Yu Tang
+* Andrea Alfonsi
+* Aaron Epiney
+* Cristian Rabiti 
+* Jong Suk Kim
+* Konor Frick (Technical Lead/ Owner)
+* Paul Talbot
+* Robert Kinoshita
+* Derek Stucki
+* Michael Greenwood
+* Roberto Ponciroli
+* Yu Tang
+* Daniel Mikkelson (Maintainer)
+* Amey Shigrekar
+
+
+### Other Software
+Idaho National Laboratory is a cutting edge research facility which is a constantly producing high quality research and software. Feel free to take a look at our other software and scientific offerings at:
+
+[Primary Technology Offerings Page](https://www.inl.gov/inl-initiatives/technology-deployment)
+
+[Supported Open Source Software](https://github.com/idaholab)
+
+[Raw Experiment Open Source Software](https://github.com/IdahoLabResearch)
+
+[Unsupported Open Source Software](https://github.com/IdahoLabCuttingBoard)

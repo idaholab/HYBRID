@@ -38,7 +38,6 @@ model TightlyCoupled_SteamFlowCtrl_FY18_LoadFollowPHS
       redeclare
         NHES.Systems.BalanceOfPlant.Turbine.ContolSystems.CS_PressureAndPowerControl
         CS(p_nominal=BOP.port_a_nominal.p, W_totalSetpoint=SC.W_totalSetpoint_BOP)),
-
     redeclare EnergyStorage.Battery.Logical ES(
       capacity_max=dataCapacity.ES_capacity,
       capacity_min=0.2*dataCapacity.ES_capacity,
@@ -67,7 +66,6 @@ model TightlyCoupled_SteamFlowCtrl_FY18_LoadFollowPHS
       flowSplit(port_2(h_outflow(start=2.95398e6, fixed=false))),
       returnPump(PR0=62.7/51.3042, pstart_out=6270000),
       hEX_nuclearHeatCathodeGasRecup_ROM(hShell_out(start=962881, fixed=false))),
-
     redeclare SupervisoryControl.InputSetpointData SC(
       delayStart=delayStart.k,
       W_nominal_IP(displayUnit="MW") = 53303300,

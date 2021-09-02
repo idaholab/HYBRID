@@ -27,7 +27,6 @@ model GenericModularPWR_park
   BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries BOP(
     redeclare BalanceOfPlant.Turbine.ContolSystems.CS_PressureAndPowerControl
       CS(p_nominal=BOP.port_a_nominal.p, W_totalSetpoint=SC.W_totalSetpoint_BOP),
-
     port_a_nominal(
       p=EM.port_b2_nominal.p,
       h=EM.port_b2_nominal.h,
@@ -35,6 +34,7 @@ model GenericModularPWR_park
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h))
     "{IP.port_b_nominal.p}{IP.port_b_nominal.h}{-IP.port_b_nominal.m_flow}"
     annotation (Placement(transformation(extent={{-18,82},{38,138}})));
+
      IndustrialProcess.HighTempSteamElectrolysis.TightlyCoupled_SteamFlowCtrl_FY17
        IP(
     capacity=dataCapacity.IP_capacity,

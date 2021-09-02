@@ -1,4 +1,6 @@
 Battery
 SensibleHeatStorage
 ThermoclineHeatStorage
+Concrete_Solid_Media
+Latent_Heat_TES
 BaseClasses
