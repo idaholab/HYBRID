@@ -264,7 +264,7 @@ package BatteryModels
     Modelica.Units.SI.ElectricCharge InitialCharge "Initial Charge on each cell";
     Modelica.Units.SI.ElectricCharge ResidualCharge(start=InitialEnergyStored/E0_C,
         fixed=true) "Residual Charge in Battery";
-    Modelica.Units.SI.Energy ResidualEnergy "Residual Energy in Battery";
+    Modelica.Units.SI.Energy Energy_Stored "Total Energy Stored in the Battery";
     Modelica.Units.SI.ElectricCharge DeltaCharge(start=0)
       "Charge change since time=0";
     Modelica.Units.SI.Voltage EMF "Li-ion Electromotive Force";
@@ -282,8 +282,8 @@ package BatteryModels
     assert(MaxChargeVoltage > 0, "External Charging Voltage should be positive value!");
     assert(R_int > 0, "Internal Resistance R_int should be positive value!");
 
-    ResidualEnergy = ResidualCharge*E0_C;
-    // Convert ResidualCharge to Residual Energy
+    Energy_Stored = ResidualCharge*E0_C;
+    // Convert ResidualCharge to Energy Stored in the Battery
 
     MaxChargeCurrent = MaxChargeRate/E0_C;
     MaxOutputCurrent = MaxDischargeRate/E0_D;
