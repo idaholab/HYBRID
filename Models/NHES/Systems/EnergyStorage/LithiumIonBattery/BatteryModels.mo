@@ -79,22 +79,22 @@ package BatteryModels
     constant Real ONEHOUR=1.0 "one hour";
     parameter Integer N=1
       "External - number of Battery Bank in parallel connection";
-    parameter Modelica.Units.SI.Energy fullCapacity=from_kWh(480)
+    parameter Modelica.Units.SI.Energy TotalCapacity=from_kWh(480)
       "Full capacity of a battery bank can provide=480 kWh";
-    parameter Modelica.Units.SI.Energy initialCapacity=0.5*fullCapacity
+    parameter Modelica.Units.SI.Energy InitialEnergyStored=0.5*TotalCapacity
       "initial Capacity is set to full capacity";
     parameter Modelica.Units.SI.Energy usableCapacity=from_kWh(384)
       "usable capacity = 384 kWh";
-    parameter Modelica.Units.SI.Energy minCapacity=fullCapacity -
+    parameter Modelica.Units.SI.Energy minCapacity=TotalCapacity -
         usableCapacity "minimum capacity";
     parameter Modelica.Units.SI.Time usefulTime=5.0*HOUR2SECOND
       "time span in hour when battery is useful. Assume 5 hours";
-    parameter Modelica.Units.SI.Power MaxPowerOut=usableCapacity/usefulTime
+    parameter Modelica.Units.SI.Power MaxDischargeRate=usableCapacity/usefulTime
       "assume constant discharge";
-    parameter Modelica.Units.SI.Power maxChargePower=380*480*N
+    parameter Modelica.Units.SI.Power MaxChargeRate=380*480*N
       "380A*480V*N=182400*N W";
     //maximum charge current=380A, Voltage=480V
-    Modelica.Units.SI.Energy residualCapacity(start=initialCapacity, fixed=
+    Modelica.Units.SI.Energy Energy_Stored(start=InitialEnergyStored, fixed=
           true) "current battery capacity";
     Modelica.Units.SI.Power changeRate(start=0) "Charge or Discharge power";
     // Modelica.SIunits.Power outputPower;
@@ -108,15 +108,15 @@ package BatteryModels
       //Charge mode, pSetPoint == negative
       //Filter the output, the battery may not be able to afford the max
       //charging rate
-      if residualCapacity <= fullCapacity - maxChargePower*ONEHOUR*HOUR2SECOND then
+      if Energy_Stored <= TotalCapacity - MaxChargeRate*ONEHOUR*HOUR2SECOND then
         // The battery can be charged at max rate for at least one hour
-        changeRate = if abs(pSetPoint) < maxChargePower then -pSetPoint else
-          maxChargePower;
-      elseif residualCapacity <= fullCapacity then
+        changeRate = if abs(pSetPoint) < MaxChargeRate then -pSetPoint else
+          MaxChargeRate;
+      elseif Energy_Stored <= TotalCapacity then
         // The battery can be charged at max rate for less than one hour
-        changeRate = if abs(pSetPoint) < (fullCapacity - residualCapacity)/
-          ONEHOUR/HOUR2SECOND then -pSetPoint else (fullCapacity -
-          residualCapacity)/ONEHOUR/HOUR2SECOND;
+        changeRate = if abs(pSetPoint) < (TotalCapacity - Energy_Stored)/
+          ONEHOUR/HOUR2SECOND then -pSetPoint else (TotalCapacity -
+          Energy_Stored)/ONEHOUR/HOUR2SECOND;
       else
         // The battery cannot accept any more charge due to over-charging
         changeRate = 0.0;
@@ -126,13 +126,13 @@ package BatteryModels
       //Discharge mode, pSetPoint == positive
       //filter the output, the battery may not be able to meet the demand
       //see if Capacity can last for one hour
-      if residualCapacity >= minCapacity + MaxPowerOut*ONEHOUR*HOUR2SECOND then
+      if Energy_Stored >= minCapacity + MaxDischargeRate*ONEHOUR*HOUR2SECOND then
         // The battery can be discharged at max rate for at least one hour
-        changeRate = if pSetPoint < MaxPowerOut then -pSetPoint else -MaxPowerOut;
-      elseif residualCapacity > minCapacity then
+        changeRate = if pSetPoint < MaxDischargeRate then -pSetPoint else -MaxDischargeRate;
+      elseif Energy_Stored > minCapacity then
         // The battery can be discharged at max rate for less than one hour
-        changeRate = if pSetPoint < (residualCapacity - minCapacity)/ONEHOUR/
-          HOUR2SECOND then -pSetPoint else -(residualCapacity - minCapacity)/
+        changeRate = if pSetPoint < (Energy_Stored - minCapacity)/ONEHOUR/
+          HOUR2SECOND then -pSetPoint else -(Energy_Stored - minCapacity)/
           ONEHOUR/HOUR2SECOND;
       else
         // The battery cannot release any more charge due to low capacity
@@ -148,11 +148,11 @@ package BatteryModels
     outputPower = -changeRate;
 
     if capacityChange < 0 then
-      residualCapacity = if (initialCapacity + capacityChange) < minCapacity
-         then minCapacity else (initialCapacity + capacityChange);
+      Energy_Stored = if (InitialEnergyStored + capacityChange) < minCapacity
+         then minCapacity else (InitialEnergyStored + capacityChange);
     else
-      residualCapacity = if (initialCapacity + capacityChange) > fullCapacity
-         then fullCapacity else (initialCapacity + capacityChange);
+      Energy_Stored = if (InitialEnergyStored + capacityChange) > TotalCapacity
+         then TotalCapacity else (InitialEnergyStored + capacityChange);
     end if;
 
     // Boundary conditions
