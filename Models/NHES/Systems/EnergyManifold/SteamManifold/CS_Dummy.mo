@@ -17,8 +17,8 @@ public
                                                k=0.5)
     annotation (Placement(transformation(extent={{-10,-60},{10,-40}})));
    Modelica.Blocks.Sources.Constant opening_valve_toOther[nPorts_b3](k=fill(1,
-        nPorts_b3)) if
-               nPorts_b3 > 0 annotation (Placement(transformation(extent={{-10,50},{10,70}})));
+        nPorts_b3))
+            if nPorts_b3 > 0 annotation (Placement(transformation(extent={{-10,50},{10,70}})));
    Modelica.Blocks.Sources.Constant opening_valve_toBOP(k=1)
     annotation (Placement(transformation(extent={{-10,80},{10,100}})));
 equation

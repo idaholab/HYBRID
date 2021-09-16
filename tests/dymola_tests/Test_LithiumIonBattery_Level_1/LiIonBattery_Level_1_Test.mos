@@ -1,0 +1,1 @@
+simulateModel("NHES.Systems.EnergyStorage.LithiumIonBattery.Examples.LiIonBattery_Level_1_Test", stopTime=20000, numberOfIntervals=0, outputInterval=10, resultFile="LiIonBattery_Level_1_Test");
