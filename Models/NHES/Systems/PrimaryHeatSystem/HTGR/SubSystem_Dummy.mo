@@ -14,10 +14,5 @@ equation
             140}})),
     Icon(coordinateSystem(extent={{-100,-100},{100,100}}), graphics={
         Text(
-          extent={{-94,82},{94,74}},
-          lineColor={0,0,0},
-          lineThickness=1,
-          fillColor={255,255,237},
-          fillPattern=FillPattern.Solid,
-          textString="Change Me")}));
+          core(             Fuel_kernel))}));
 end SubSystem_Dummy;

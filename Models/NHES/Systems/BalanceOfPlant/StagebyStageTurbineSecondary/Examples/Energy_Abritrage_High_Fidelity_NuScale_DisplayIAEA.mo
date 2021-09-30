@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Examples;
-model Energy_Abritrage_High_Fidelity_NuScale
+model Energy_Abritrage_High_Fidelity_NuScale_DisplayIAEA
   extends Modelica.Icons.Example;
    parameter Integer TES_nPipes=800;
   parameter Modelica.Units.SI.Length TES_Length=150;
@@ -62,16 +62,17 @@ model Energy_Abritrage_High_Fidelity_NuScale
   Components.Economic_Sim_IPCO_July
                             ES(
     Interval_length=1200,
+    intervals_to_steady_state=2,
     demand_intervals=24*5,
-    Demand_Input=1e6*{52.0,52.0,52.0,52.0,52.0,56.6,57.5,52.8,47.8,43.1,44.4,
-        43.1,42.4,41.7,41.5,43.2,43.6,45.5,48.2,50.4,54.5,58.3,59.9,60.9,61.3,
-        62.3,61.5,60.4,58.6,56.6,53.5,50.6,46.6,43.0,41.4,39.9,38.2,37.3,38.8,
-        40.5,41.1,42.7,43.2,49.9,47.4,50.0,52.7,54.8,56.0,54.8,54.7,56.1,56.0,
-        52.9,49.2,44.8,41.6,41.2,40.2,38.6,38.3,37.7,39.0,41.3,41.7,41.7,42.9,
-        44.5,46.9,47.8,48.6,49.9,51.3,51.6,51.4,52.2,52.5,49.9,47.6,43.9,40.9,
-        38.4,36.7,36.3,37.1,37.4,37.5,38.2,38.3,39.9,42.6,45.1,47.9,50.4,52.6,
-        53.9,55.7,56.8,57.0,56.7,53.4,51.3,48.7,45.3,43.2,41.4,39.8,38.9,38.4,
-        37.8,38.2,38.2,38.1,39.3,41.0,43.5,46.7,49.8,52.7,55.4,58.0,60.2,61.1})
+    Demand_Input=1e6*{52.0,52.0,52.0,52.0,52.0,52.0,56.6,57.5,52.8,47.8,43.1,
+        44.4,43.1,42.4,41.7,41.5,43.2,43.6,45.5,48.2,50.4,54.5,58.3,59.9,60.9,
+        61.3,62.3,61.5,60.4,58.6,56.6,53.5,50.6,46.6,43.0,41.4,39.9,38.2,37.3,
+        38.8,40.5,41.1,42.7,43.2,49.9,47.4,50.0,52.7,54.8,56.0,54.8,54.7,56.1,
+        56.0,52.9,49.2,44.8,41.6,41.2,40.2,38.6,38.3,37.7,39.0,41.3,41.7,41.7,
+        42.9,44.5,46.9,47.8,48.6,49.9,51.3,51.6,51.4,52.2,52.5,49.9,47.6,43.9,
+        40.9,38.4,36.7,36.3,37.1,37.4,37.5,38.2,38.3,39.9,42.6,45.1,47.9,50.4,
+        52.6,53.9,55.7,56.8,57.0,56.7,53.4,51.3,48.7,45.3,43.2,41.4,39.8,38.9,
+        38.4,37.8,38.2,38.2,38.1,39.3,41.0,43.5,46.7,49.8,52.7,55.4,58.0,60.2})
     annotation (Placement(transformation(extent={{-38,74},{-18,94}})));
 initial equation
   t_sim_post_init = -7200;
@@ -104,11 +105,12 @@ equation
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-80},
             {100,100}})),
     experiment(
-      StopTime=30,
-      __Dymola_NumberOfIntervals=1080,
+      StartTime=17400,
+      StopTime=19800,
+      __Dymola_NumberOfIntervals=199,
       Tolerance=0.0005,
       __Dymola_Algorithm="Esdirk45a"),
     __Dymola_experimentSetupOutput,
     Icon(coordinateSystem(extent={{-100,-80},{100,100}})),
     __Dymola_Commands(file="run.mos" "run", file="runnow.mos" "runnow"));
-end Energy_Abritrage_High_Fidelity_NuScale;
+end Energy_Abritrage_High_Fidelity_NuScale_DisplayIAEA;

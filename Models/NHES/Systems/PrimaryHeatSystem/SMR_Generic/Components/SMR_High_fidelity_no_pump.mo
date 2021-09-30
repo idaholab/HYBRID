@@ -462,8 +462,8 @@ equation
   connect(boundary1.ports[1], pressurizer_Update_Doster_sources.CVCS_Outlet_Port)
     annotation (Line(points={{-18,83},{-26,83},{-26,82},{-28,82},{-28,88},{
           -33.36,88}}, color={0,127,255}));
-  connect(port_a, massFlowRate1.port_a) annotation (Line(points={{104,-6},{98,
-          -6},{98,-4},{90,-4},{90,-74},{66,-74},{66,-73}}, color={0,127,255}));
+  connect(massFlowRate1.port_a, port_a) annotation (Line(points={{66,-73},{76,
+          -73},{76,-74},{88,-74},{88,-6},{104,-6}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,
             -120},{100,160}}),
                          graphics={Bitmap(extent={{-114,-90},{110,90}},fileName=

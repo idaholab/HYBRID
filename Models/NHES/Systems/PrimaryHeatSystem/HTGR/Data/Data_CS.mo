@@ -3,6 +3,7 @@ model Data_CS
 
   extends BaseClasses.Record_Data;
   parameter Modelica.Units.SI.Temperature T_Rx_Exit_Ref = 850;
+  parameter Modelica.Units.SI.MassFlowRate m_flow_nom = 600;
   annotation (
     defaultComponentName="data",
     Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(

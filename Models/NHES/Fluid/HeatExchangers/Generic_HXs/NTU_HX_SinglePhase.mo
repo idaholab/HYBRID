@@ -80,7 +80,7 @@ public
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
         (
-        V=V_Tube/2,
+        V=V_Tube,
         angle=0,
         dheight=dh_Tube/2),
     use_HeatPort=false,
@@ -107,7 +107,7 @@ public
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
         (
-        V=V_Shell/2,
+        V=V_Shell,
         angle=0,
         dheight=dh_Shell/2),
     use_HeatPort=false,
