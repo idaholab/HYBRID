@@ -24,7 +24,7 @@ model Pebble_Bed_Brayton
       NHES.Systems.PrimaryHeatSystem.HTGR.BaseClasses.He_HighT                                  annotation(choicesAllMatching = true,dialog(group="Media"));
   replaceable package Fuel_Medium =  TRANSFORM.Media.Solids.UO2                                   annotation(choicesAllMatching = true,dialog(group = "Media"));
   replaceable package Pebble_Medium =
-      TRANSFORM.Media.Solids.Graphite.Graphite_5                                                                annotation(dialog(group = "Media"),choicesAllMatching=true);
+      Media.Solids.Graphite_5                                                                                   annotation(dialog(group = "Media"),choicesAllMatching=true);
       replaceable package Aux_Heat_App_Medium =
       Modelica.Media.Water.StandardWater                                           annotation(choicesAllMatching = true, dialog(group = "Media"));
       replaceable package Waste_Heat_App_Medium =
@@ -82,8 +82,8 @@ model Pebble_Bed_Brayton
     m_start_shell=dataInitial.Recuperator_m_Shell)
     annotation (Placement(transformation(extent={{10,-36},{-10,-16}})));
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
-      = Coolant_Medium)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
+        Coolant_Medium)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=90,
         origin={12,-6})));
@@ -263,10 +263,10 @@ model Pebble_Bed_Brayton
           extent={{-110,-56},{-90,-36}})));
   Nuclear.CoreSubchannels.Pebble_Bed_2 core(
     redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
-    redeclare package Pebble_Material =
-        TRANSFORM.Media.Solids.Graphite.Graphite_5,
+    redeclare package Pebble_Material = Media.Solids.Graphite_5,
     redeclare model HeatTransfer =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple,
+
     Q_fission_input=600000000,
     alpha_fuel=-5e-5,
     alpha_coolant=0.0,
@@ -283,8 +283,10 @@ model Pebble_Bed_Brayton
     fissionProductDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     redeclare record Data_DH =
         TRANSFORM.Nuclear.ReactorKinetics.Data.DecayHeat.decayHeat_11_TRACEdefault,
+
     redeclare record Data_FP =
         TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
+
     rho_input=CR_reactivity.y,
     redeclare package Medium = BaseClasses.He_HighT,
     SF_start_power={0.2,0.3,0.3,0.2},
@@ -300,10 +302,11 @@ model Pebble_Bed_Brayton
         nPins_nonFuel=data.nRodNonFuel_assembly,
         angle=1.5707963267949),
     toggle_ReactivityFP=false,
-    Q_shape={0.00921016,0.022452442,0.029926363,0.035801439,0.040191759,0.04361119,
-        0.045088573,0.046395024,0.049471251,0.050548587,0.05122695,0.051676198,0.051725935,
-        0.048691804,0.051083234,0.050675546,0.049468838,0.047862888,0.045913065,
-        0.041222844,0.038816801,0.035268536,0.029550046,0.022746578,0.011373949},
+    Q_shape={0.00921016,0.022452442,0.029926363,0.035801439,0.040191759,
+        0.04361119,0.045088573,0.046395024,0.049471251,0.050548587,0.05122695,
+        0.051676198,0.051725935,0.048691804,0.051083234,0.050675546,0.049468838,
+        0.047862888,0.045913065,0.041222844,0.038816801,0.035268536,0.029550046,
+        0.022746578,0.011373949},
     Fh=1.4,
     n_hot=25,
     Teffref_fuel=1273.15,

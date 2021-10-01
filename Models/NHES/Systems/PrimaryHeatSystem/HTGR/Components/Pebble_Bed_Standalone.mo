@@ -83,8 +83,8 @@ model Pebble_Bed_Standalone
     m_start_shell=dataInitial.Recuperator_m_Shell)
     annotation (Placement(transformation(extent={{20,-52},{0,-32}})));
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
-      = NHES.Systems.PrimaryHeatSystem.HTGR.BaseClasses.He_HighT)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
+        NHES.Systems.PrimaryHeatSystem.HTGR.BaseClasses.He_HighT)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=90,
         origin={36,-22})));
@@ -299,8 +299,8 @@ model Pebble_Bed_Standalone
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={132,0})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Water_T1(redeclare package Medium
-      = Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Water_T1(redeclare package Medium =
+        Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
@@ -311,14 +311,14 @@ model Pebble_Bed_Standalone
         extent={{-10,10},{10,-10}},
         rotation=90,
         origin={104,-34})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Water_T2(redeclare package Medium
-      = Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Water_T2(redeclare package Medium =
+        Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={66,4})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Water_T3(redeclare package Medium
-      = Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Water_T3(redeclare package Medium =
+        Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
@@ -349,10 +349,9 @@ model Pebble_Bed_Standalone
     annotation (Placement(transformation(extent={{-166,-86},{-146,-66}})));
   Modelica.Blocks.Sources.Constant const1(k=850 + 273.15)
     annotation (Placement(transformation(extent={{-202,-86},{-182,-66}})));
-  Nuclear.CoreSubchannels.Pebble_Bed_2                       core(
+  Nuclear.CoreSubchannels.Pebble_Bed_2 core(
     redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
-    redeclare package Pebble_Material =
-        TRANSFORM.Media.Solids.Graphite.Graphite_5,
+    redeclare package Pebble_Material = Media.Solids.Graphite_5,
     redeclare model HeatTransfer =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple,
 
@@ -401,10 +400,11 @@ model Pebble_Bed_Standalone
     Teffref_fuel=1273.15,
     Teffref_coolant=923.15,
     T_inlet=723.15,
-    T_outlet=1123.15)       annotation (Placement(transformation(
+    T_outlet=1123.15) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={-62,-104})));
+
 initial equation
   Q_Trans = 1e7;
 equation

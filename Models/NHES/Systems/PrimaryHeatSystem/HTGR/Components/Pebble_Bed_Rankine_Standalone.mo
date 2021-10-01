@@ -24,7 +24,7 @@ model Pebble_Bed_Rankine_Standalone
       NHES.Systems.PrimaryHeatSystem.HTGR.BaseClasses.He_HighT                                  annotation(choicesAllMatching = true,dialog(group="Media"));
   replaceable package Fuel_Medium =  TRANSFORM.Media.Solids.UO2                                   annotation(choicesAllMatching = true,dialog(group = "Media"));
   replaceable package Pebble_Medium =
-      TRANSFORM.Media.Solids.Graphite.Graphite_5                                                                annotation(dialog(group = "Media"),choicesAllMatching=true);
+      Media.Solids.Graphite_5                                                                                   annotation(dialog(group = "Media"),choicesAllMatching=true);
       replaceable package Aux_Heat_App_Medium =
       Modelica.Media.Water.StandardWater                                           annotation(choicesAllMatching = true, dialog(group = "Media"));
       replaceable package Waste_Heat_App_Medium =
@@ -108,16 +108,15 @@ model Pebble_Bed_Rankine_Standalone
       redeclare package Medium = TRANSFORM.Media.ExternalMedia.CoolProp.Helium,
       R=1000)
     annotation (Placement(transformation(extent={{94,-50},{114,-30}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = TRANSFORM.Media.ExternalMedia.CoolProp.Helium) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        TRANSFORM.Media.ExternalMedia.CoolProp.Helium) annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={184,-16})));
   Nuclear.CoreSubchannels.Pebble_Bed_2 core(
     redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
-    redeclare package Pebble_Material =
-        TRANSFORM.Media.Solids.Graphite.Graphite_5,
+    redeclare package Pebble_Material = Media.Solids.Graphite_5,
     redeclare model HeatTransfer =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple,
 
@@ -170,6 +169,7 @@ model Pebble_Bed_Rankine_Standalone
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={146,-40})));
+
 initial equation
 
 equation
