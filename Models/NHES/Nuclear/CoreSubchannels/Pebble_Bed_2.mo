@@ -85,7 +85,8 @@ model Pebble_Bed_2
   replaceable record Data_FP =
       TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_0
     constrainedby
-    TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.PartialFissionProduct                                                                        annotation (
+    TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.PartialFissionProduct
+                                                                                                                                                        annotation (
      choicesAllMatching=true,Dialog(tab="Kinetics",group="Fission Products"));
   parameter SI.Area sigmasA_add_start[Medium.nC]=fill(0, Medium.nC)
     "Microscopic absorption cross-section for reactivity feedback" annotation(Dialog(tab="Kinetics",group="Fluid Trace Substances"));
@@ -425,7 +426,7 @@ model Pebble_Bed_2
         extent={{-15,-13},{15,13}},
         rotation=0)));
 
-  TRANSFORM.Nuclear.FuelModels.TRISO_Pebble      fuelModel[geometry.nV](
+  FuelModels.TRISO_Pebble                        fuelModel[geometry.nV](
     nKernel_per_Pebble=nKernel_per_Pebble,
     nPebble=nPebble,
     nR_Fuel=nR_Fuel,

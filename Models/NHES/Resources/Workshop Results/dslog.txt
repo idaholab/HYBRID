@@ -1,0 +1,405 @@
+... loading "BOP" from "C:/Users/FRICKL/projects/hybrid_github/hybrid/Models/NHES/Resources/Data/RAVEN/Rx_GT_timeSeries.txt"
+... loading "ES" from "C:/Users/FRICKL/projects/hybrid_github/hybrid/Models/NHES/Resources/Data/RAVEN/Rx_GT_timeSeries.txt"
+... loading "SES" from "C:/Users/FRICKL/projects/hybrid_github/hybrid/Models/NHES/Resources/Data/RAVEN/Rx_GT_timeSeries.txt"
+... loading "NetDemand" from "C:/Users/FRICKL/projects/hybrid_github/hybrid/Models/NHES/Resources/Data/RAVEN/Rx_GT_timeSeries.txt"
+... loading "IP" from "C:/Users/FRICKL/projects/hybrid_github/hybrid/Models/NHES/Resources/Data/RAVEN/Rx_GT_timeSeries.txt"
+Model: NHES.Systems.Examples.IES_SMR_Rx_GasTurbine
+Integration started at 0 using integration method:
+RK-method: esdirk45a
+Local extrapolation
+FSAL
+Continuous extension
+
+Error: The following error was detected at time: 0.8155697847509241
+  Error in region computation of IF97 steam tables(p = 1.27637e+07, h = -1.33092e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(smooth(1, smooth(1, (if noEvent(nuScale_Tave_enthalpy.pipeLoss.dp > nuScale_Tave_enthalpy.pipeLoss.dp_smooth) then nuScale_Tave_enthalpy.pressurizer_tee.medium.p else (if noEvent(nuScale_Tave_enthalpy.pipeLoss.dp <  -nuScale_Tave_enthalpy.pipeLoss.dp_smooth) then nuScale_Tave_enthalpy.STHX.shell.mediums[1].p else (if abs(nuScale_Tave_enthalpy...
+
+Error: The following error was detected at time: 3.739029067706138
+  IF97 medium function g2: the temperature (= -4962.51 K) is lower than 273.15 K!
+  Failed condition: T >= 273.15
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.g2
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.core.coolantSubchannel.mediums[3].p, nuScale_Tave_enthalpy.core.coolantSubchannel.mediums[3].h, nuScale_Tave_enthalpy.core.coolantSubchannel.statesFM[4].phase, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.core.coolantSubchannel.mediums[3].p, nuScale_Tave_enthalpy.core.coolantSubchannel.mediums[3].h...
+
+Error: The following error was detected at time: 3.644284798095342
+  Error in region computation of IF97 steam tables(p = 1.25695e+07, h = -1.87956e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(smooth(1, smooth(1, (if noEvent(nuScale_Tave_enthalpy.pipeLoss.dp > nuScale_Tave_enthalpy.pipeLoss.dp_smooth) then nuScale_Tave_enthalpy.pressurizer_tee.medium.p else (if noEvent(nuScale_Tave_enthalpy.pipeLoss.dp <  -nuScale_Tave_enthalpy.pipeLoss.dp_smooth) then nuScale_Tave_enthalpy.STHX.shell.mediums[1].p else (if abs(nuScale_Tave_enthalpy...
+
+Error: The following error was detected at time: 10.60569214273638
+  IF97 medium function g2: the temperature (= -283655 K) is lower than 273.15 K!
+  Failed condition: T >= 273.15
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.g2
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.Lower_Riser.mediums[1].p, nuScale_Tave_enthalpy.Lower_Riser.mediums[1].h, nuScale_Tave_enthalpy.Lower_Riser.statesFM[1].phase, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.Lower_Riser.mediums[1].p, nuScale_Tave_enthalpy.Lower_Riser.mediums[1].h, nuScale_Tave_enthalpy.Lower_Riser.mediums[1].phase, 0...
+
+Error: The following error was detected at time: 10.09613596381024
+  Error in region computation of IF97 steam tables(p = 9743.06, h = -1.34208e+08)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25...
+
+Error: The following error was detected at time: 9.841357874347176
+  Error in region computation of IF97 steam tables(p = 9770.43, h = -3.83207e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25...
+
+Error: The following error was detected at time: 9.713968829615643
+  Error in region computation of IF97 steam tables(p = 9851.84, h = -8.5028e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25...
+
+Error: The following error was detected at time: 9.650274307249875
+  Error in region computation of IF97 steam tables(p = 9916.57, h = -65599.9)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25...
+
+Error: The following error was detected at time: 9.618427046066993
+  IF97 medium function g2: the input temperature (= 18478.5 K) is higher than the limit of 1073.15 K
+  Failed condition: T <= 1073.15
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.g2
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, BOP.volume_bypass.medium.state.phase, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, BOP.volume_bypass.medium.phase, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, BOP...
+
+Error: The following error was detected at time: 210.7667594966581
+  IF97 medium function g2: the temperature (= -33476.4 K) is lower than 273.15 K!
+  Failed condition: T >= 273.15
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.g2
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.core.coolantSubchannel.mediums[4].p, nuScale_Tave_enthalpy.core.coolantSubchannel.mediums[4].h, nuScale_Tave_enthalpy.core.coolantSubchannel.statesFM[5].phase, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.core.coolantSubchannel.mediums[4].p, nuScale_Tave_enthalpy.core.coolantSubchannel.mediums[4].h...
+
+Error: The following error was detected at time: 204.5596552618312
+  Error in region computation of IF97 steam tables(p = 9912.32, h = -1.94021e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25...
+
+Error: The following error was detected at time: 201.4561031444178
+  Error in region computation of IF97 steam tables(p = 9923.08, h = -3.6451e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25...
+
+Error: The following error was detected at time: 199.9043270857111
+  Error in region computation of IF97 steam tables(p = 10031.5, h = -4.62379e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25...
+
+Error: The following error was detected at time: 3360.127971726107
+  Error in region computation of IF97 steam tables(p = 10019.8, h = -695653)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25...
+
+Error: The following error was detected at time: 3457.687564628442
+  Error in region computation of IF97 steam tables(p = 10108.4, h = -2.83984e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25...
+
+Error: The following error was detected at time: 3438.843782314221
+  Error in region computation of IF97 steam tables(p = 10033.5, h = -9.87863e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25...
+
+Error: The following error was detected at time: 3429.42189115711
+  Error in region computation of IF97 steam tables(p = 10004.3, h = -1.64635e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25...
+
+Error: The following error was detected at time: 4413.6
+  Error in region computation of IF97 steam tables(p = 1.27553e+07, h = -9.52863e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.pressurizer.p_start, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressu...
+
+Error: The following error was detected at time: 4366.8
+  Error in region computation of IF97 steam tables(p = 1.27553e+07, h = -1.64013e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.pressurizer.p_start, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressu...
+
+Error: The following error was detected at time: 4343.4
+  IF97 medium function g2: the temperature (= -237746 K) is lower than 273.15 K!
+  Failed condition: T >= 273.15
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.g2
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.DownComer.mediums[1].p, nuScale_Tave_enthalpy.STHX.shell.mediums[10].h, nuScale_Tave_enthalpy.STHX.shell.statesFM[10].phase, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.STHX.shell.mediums[10].p, nuScale_Tave_enthalpy.STHX.shell.mediums[10].h, nuScale_Tave_enthalpy.STHX.shell.mediums[10].phase, 0)
+...
+
+Error: The following error was detected at time: 4331.7
+  Error in region computation of IF97 steam tables(p = 1.27553e+07, h = -4.07633e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.pressurizer.p_start, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressu...
+
+Error: The following error was detected at time: 4576.343414452418
+  Error in region computation of IF97 steam tables(p = 10035.1, h = -767479)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25...
+
+Error: The following error was detected at time: 4727.959018133869
+  Error in region computation of IF97 steam tables(p = 10025.3, h = -7.2118e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25...
+
+Error: The following error was detected at time: 4703.979509066935
+  Error in region computation of IF97 steam tables(p = 9818.81, h = -2.23902e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25...
+
+Error: The following error was detected at time: 4691.989754533467
+  Error in region computation of IF97 steam tables(p = 9831.93, h = -4.61698e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25...
+
+Error: The following error was detected at time: 4685.994877266734
+  Error in region computation of IF97 steam tables(p = 10165.9, h = -9.24588e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.valve_BV.port_b.p, BOP.volume_bypass.port_a.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25...
+
+Error: The following error was detected at time: 4682.997438633367
+  IF97 medium function g2: the temperature (= 269.055 K) is lower than 273.15 K!
+  Failed condition: T >= 273.15
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.g2
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, BOP.volume_bypass.medium.state.phase, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, BOP.volume_bypass.medium.phase, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(BOP.volume_bypass.medium.p, BOP.volume_bypass.medium.h, BOP...
+
+Error: The following error was detected at time: 7327.514612214058
+  Error in region computation of IF97 steam tables(p = 1.27553e+07, h = -7.92977e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.pressurizer.p_start, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressu...
+
+Error: The following error was detected at time: 7263.757306107029
+  Error in region computation of IF97 steam tables(p = 1.27553e+07, h = -3.09481e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.pressurizer.p_start, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressu...
+
+Error: The following error was detected at time: 7231.878653053514
+  Error in region computation of IF97 steam tables(p = 1.27553e+07, h = -351529)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.pressurizer.p_start, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressu...
+
+Error: The following error was detected at time: 7215.939326526757
+  Error in region computation of IF97 steam tables(p = 1.27205e+07, h = -1.48967e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(smooth(1, smooth(1, (if noEvent(nuScale_Tave_enthalpy.pipeLoss.dp > nuScale_Tave_enthalpy.pipeLoss.dp_smooth) then nuScale_Tave_enthalpy.pressurizer_tee.medium.p else (if noEvent(nuScale_Tave_enthalpy.pipeLoss.dp <  -nuScale_Tave_enthalpy.pipeLoss.dp_smooth) then nuScale_Tave_enthalpy.STHX.shell.mediums[1].p else (if abs(nuScale_Tave_enthalpy...
+
+Error: The following error was detected at time: 7207.969663263379
+  IF97 medium function visc_dTp for viscosity called with too low density
+d = -1.51543 <= 0.00485458 (triple point density)
+  Failed condition: d > 0.004854575724778614
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity(nuScale_Tave_enthalpy.STHX.tube.statesFM[7].d, nuScale_Tave_enthalpy.STHX.tube.statesFM[7].T, nuScale_Tave_enthalpy.STHX.tube.mediums[7].p, nuScale_Tave_enthalpy.STHX.tube.statesFM[7].phase, true)
+Modelica.Media.Water.WaterIF97_ph.dynamicViscosity_Unique16(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = nuScale_Tave_enthalpy....
+
+Error: The following error was detected at time: 8700.545529155122
+  Error in region computation of IF97 steam tables(p = 1.27553e+07, h = -4.54432e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.pressurizer.p_start, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressu...
+
+Error: The following error was detected at time: 8670.272764577561
+  Error in region computation of IF97 steam tables(p = 1.27553e+07, h = -695355)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.pressurizer.p_start, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressu...
+
+Error: The following error was detected at time: 8655.136382288782
+  Error in region computation of IF97 steam tables(p = 1.27271e+07, h = -44928.4)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.STHX.shell.mediums[9].p, nuScale_Tave_enthalpy.STHX.shell.mediums[9].h, nuScale_Tave_enthalpy.STHX.shell.statesFM[9].phase, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.STHX.shell.mediums[9].p, nuScale_Tave_enthalpy.STHX.shell.mediums[9].h, nuScale_Tave_enthalpy.STHX.shell.mediums[9].phase, 0)
+Mode...
+
+Error: The following error was detected at time: 8647.56819114439
+  IF97 medium function g2: the temperature (= -118.407 K) is lower than 273.15 K!
+  Failed condition: T >= 273.15
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.g2
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.STHX.tube.mediums[7].p, nuScale_Tave_enthalpy.STHX.tube.mediums[7].h, nuScale_Tave_enthalpy.STHX.tube.statesFM[7].phase, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.STHX.tube.mediums[7].p, nuScale_Tave_enthalpy.STHX.tube.mediums[7].h, nuScale_Tave_enthalpy.STHX.tube.mediums[7].phase, 0)
+Modelica.M...
+
+Error: The following error was detected at time: 9044.669290934035
+  IF97 medium function g2: the temperature (= -50656.1 K) is lower than 273.15 K!
+  Failed condition: T >= 273.15
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.g2
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.core.coolantSubchannel.mediums[4].p, nuScale_Tave_enthalpy.core.coolantSubchannel.mediums[4].h, nuScale_Tave_enthalpy.core.coolantSubchannel.statesFM[5].phase, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.core.coolantSubchannel.mediums[4].p, nuScale_Tave_enthalpy.core.coolantSubchannel.mediums[4].h...
+
+Error: The following error was detected at time: 9022.334645467017
+  Error in region computation of IF97 steam tables(p = 1.27553e+07, h = -2.62499e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.pressurizer.p_start, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressurizer.h, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(nuScale_Tave_enthalpy.pressurizer.p_surface, nuScale_Tave_enthalpy.pressu...
+
+Error: The following error was detected at time: 9011.167322733509
+  IF97 medium function g2: the temperature (= -215748 K) is lower than 273.15 K!
+  Failed condition: T >= 273.15
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.g2
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.pressurizer_tee.medium.p, nuScale_Tave_enthalpy.PressurizerandTopper.mediums[2].h, nuScale_Tave_enthalpy.PressurizerandTopper.statesFM[2].phase, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.PressurizerandTopper.mediums[2].p, nuScale_Tave_enthalpy.PressurizerandTopper.mediums[2].h, nuScale_Tave_enth...
+
+Error: The following error was detected at time: 9005.583661366754
+  IF97 medium function g2: the temperature (= 258.632 K) is lower than 273.15 K!
+  Failed condition: T >= 273.15
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.g2
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(nuScale_Tave_enthalpy.STHX.tube.mediums[7].p, nuScale_Tave_enthalpy.STHX.tube.mediums[7].h, nuScale_Tave_enthalpy.STHX.tube.statesFM[7].phase, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(nuScale_Tave_enthalpy.STHX.tube.mediums[7].p, nuScale_Tave_enthalpy.STHX.tube.mediums[7].h, nuScale_Tave_enthalpy.STHX.tube.mediums[7].phase, 0)
+Modelica.M...
+
+
+Integration terminated successfully at T = 10800
+   CPU-time for integration                  : 31.787 seconds
+   CPU-time for initialization               : 0.014 seconds
+   Number of result points                   : 217
+   Number of grid points                     : 217
+   Number of accepted steps                  : 863
+   Number of rejected steps                  : 478
+   Number of f-evaluations (dynamics)        : 12805
+   Number of crossing function evaluations   : 2765
+   Number of Jacobian-evaluations            : 274
+   Number of model time events               : 12
+   Number of state events                    : 17
+   Number of step events                     : 0
+
+SUCCESSFUL simulation of NHES.Systems.Examples.IES_SMR_Rx_GasTurbine

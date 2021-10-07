@@ -9,5 +9,7 @@ GenericModularPWR_park
 GenericModularPWR_stepdownturbines
 GenericModularPWR_multimodule
 SMR_Coupling_4_loop_control_FMUME
+IES_SMR_Rx_GasTurbine
+TightlyCoupled_SteamFlowCtrl_microgrid
 BaseClasses
 FMIs
