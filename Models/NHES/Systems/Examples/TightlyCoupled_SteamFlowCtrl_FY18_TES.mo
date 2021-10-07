@@ -59,7 +59,7 @@ model TightlyCoupled_SteamFlowCtrl_FY18_TES
   BaseClasses.Data_Capacity dataCapacity(IP_capacity(displayUnit="MW")=
       53303300, BOP_capacity=0.35*(1 - fracNominal_Other)*PHS.data.Q_total_th)
     annotation (Placement(transformation(extent={{-220,160},{-200,180}})));
-  Modelica.Blocks.Sources.Constant delayStart(k=7200)
+  Modelica.Blocks.Sources.Constant delayStart(k=1800)
     annotation (Placement(transformation(extent={{-200,160},{-180,180}})));
 equation
   connect(PHS.port_b, EM.port_a1) annotation (Line(points={{-142,121.2},{-130,121.2},
