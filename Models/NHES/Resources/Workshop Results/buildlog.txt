@@ -1,0 +1,13 @@
+ 
+Compiling and linking the model (Visual C++). 
+ 
+dsmodel.c
+dsmodelext1.c
+Generating Code...
+   Creating library dymosim.lib and object dymosim.exp
+LINK : warning LNK4217: symbol '___iob_func' defined in 'dsmodel.obj' is imported by 'gsundials.lib(cvode.obj)' in function '_CVodeCreate'
+LINK : warning LNK4286: symbol '___iob_func' defined in 'dsmodel.obj' is imported by 'DymUtil.lib(amat.obj)'
+LINK : warning LNK4286: symbol '___iob_func' defined in 'dsmodel.obj' is imported by 'DymUtil.lib(dsres.obj)'
+ 
+Successful generation of Dymosim. 
+ 
