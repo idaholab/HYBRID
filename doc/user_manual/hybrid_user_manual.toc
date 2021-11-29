@@ -5,9 +5,9 @@
 \contentsline {section}{\numberline {2}HYBRID Installation Procedure}{3}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Overview}{3}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Cloning the Hybrid Repository}{3}{subsection.2.2}%
-\contentsline {subsubsection}{\numberline {2.2.1}Install RAVEN and its plugins as a sub-module}{4}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.1}Install RAVEN and its plugins as a sub-module}{3}{subsubsection.2.2.1}%
 \contentsline {subsubsection}{\numberline {2.2.2}Inform the Framework Paths}{4}{subsubsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.3}Setup of Dymola for the Regression Testing System}{5}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.3}Setup of Dymola for the Regression Testing System}{4}{subsection.2.3}%
 \contentsline {subsection}{\numberline {2.4}Run Regression tests related to the HYBRID project}{5}{subsection.2.4}%
 \contentsline {section}{\numberline {3}Running and Creating New Code}{8}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Understanding and Running Existing Models}{8}{subsection.3.1}%
@@ -33,7 +33,8 @@
 \contentsline {subsubsection}{\numberline {4.5.2}Two-Tank Thermal Energy Storage}{33}{subsubsection.4.5.2}%
 \contentsline {subsubsection}{\numberline {4.5.3}Thermocline Packed Bed Thermal Energy Storage}{35}{subsubsection.4.5.3}%
 \contentsline {subsubsection}{\numberline {4.5.4}Concrete Solid Media Storage}{36}{subsubsection.4.5.4}%
-\contentsline {subsection}{\numberline {4.6}Secondary Energy Source}{37}{subsection.4.6}%
-\contentsline {subsubsection}{\numberline {4.6.1}Natural Gas Fired Turbine}{37}{subsubsection.4.6.1}%
-\contentsline {subsubsection}{\numberline {4.6.2}Hydrogen Turbine}{38}{subsubsection.4.6.2}%
-\contentsline {section}{References}{41}{section*.33}%
+\contentsline {subsubsection}{\numberline {4.5.5}Latent Heat Thermal Energy Storage}{37}{subsubsection.4.5.5}%
+\contentsline {subsection}{\numberline {4.6}Secondary Energy Source}{38}{subsection.4.6}%
+\contentsline {subsubsection}{\numberline {4.6.1}Natural Gas Fired Turbine}{39}{subsubsection.4.6.1}%
+\contentsline {subsubsection}{\numberline {4.6.2}Hydrogen Turbine}{39}{subsubsection.4.6.2}%
+\contentsline {section}{References}{43}{section*.34}%
