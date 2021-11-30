@@ -3,23 +3,13 @@
 
 The first step in installing the package is to clone the HYBRID repository. To do this, use
 \begin{lstlisting}[language=bash]
-git clone git@hpcgitlab.inl.gov:hybrid/hybrid.git
+git clone https://github.com/idaholab/HYBRID.git
 \end{lstlisting}
 This will download the repository into a folder called 'hybrid'. To go inside the folder, use
 \begin{lstlisting}[language=bash]
 cd hybrid
 \end{lstlisting}
 
-\begin{list}{}{}
-\item Note: This only works if you have access to the HYBRID repository.
-
-\item Note2: If you are outside INL, be sure you have the ssh tunnel to INL set-up. For instructions, please check the \href{http://mooseframework.org/wiki/hpcgitlabconnectivity/}{HPC GitLab Connectivity} page.
-
-\item Note3: Be sure to have the proxy settings correct. See \href{https://github.com/idaholab/raven/wiki}{RAVEN} wiki .
-
-\item Note4: An ssh key needs to be registered for hpcgitlab.inl.gov. This key should be good for both, the HYBRID repository as well as the CashFlow plugin. Instructions to generate and register ssh keys can be found \href{https://hpcgitlab.inl.gov/help/ssh/README}{here}.
-If you have troubles accessing the repository, see \href{/hybrid/hybrid/wikis/Install_troubles}{Installation trouble shooting}.
-\end{list}
 
 \subsubsection{Install RAVEN and its plugins as a sub-module}
 
