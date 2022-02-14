@@ -1,0 +1,27 @@
+@startuml Use case RAVEN Validation
+
+
+actor "RAVEN user" as customer
+rectangle "Validation template input" as input
+customer -> input:writes
+
+package "RAVEN Validation Template" {
+  left to right direction
+  package "ModelCalibrationTemplate" as cal{
+      (Calibration incomplete XML input)
+  }
+
+  (ValidationWorkfowGenerator) .> cal: calls
+  cal .down-> val:uses
+  input ---> (ValidationWorkfowGenerator)
+  package "ModelValidationTemplate" as val {
+    (Validation incomplete XML input)
+  }
+  (ValidationWorkfowGenerator) .> val: calls
+  
+  
+}
+val ---> Model:links
+
+ 
+@enduml
