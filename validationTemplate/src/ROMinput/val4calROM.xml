@@ -16,7 +16,7 @@
 
     <Files>
         <Input name="syntheticHistoryPk" type="">syntheticHistoryPk</Input>
-        <Input name="expInput">C:\Users\garrm\OneDrive - Idaho National Laboratory\Documents\TEDSVandV\Exp_data\Initial_Data\200F_cooldown</Input>
+        <Input name="expInput">..\..\TEDS_dymola\exp_principal.csv</Input>
     </Files>
 
     <Steps>

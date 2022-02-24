@@ -14,7 +14,7 @@
     </RunInfo>
 
     <Files>
-        <Input name="dsin.txt" type="DymolaInitialisation">C:\Users\garrm\Documents\SimTEDS\initial_exp_data\update_pipe_length\dsin.txt</Input>
+        <Input name="dsin.txt" type="DymolaInitialisation">..\..\TEDS_dymola\dsin.txt</Input>
         <Input name="syntheticHistoryPk" type="">C:\..\ROMDir\syntheticHistoryPk</Input>
     </Files>
 
@@ -94,7 +94,7 @@
 
     <Models>
         <Code name="dymolaModel" subType="Dymola">
-            <executable>C:\Users\garrm\Documents\SimTEDS\initial_exp_data\update_pipe_length\dymosim.exe</executable>
+            <executable>..\..\TEDS_dymola\dymosim.exe</executable>
             <outputVariablesToLoad>thermocline_Insulation.geometry.Porosity, Time,  thermocline_Insulation.thermocline_fluidprops_heaters_newHC_70C.Tf[1]</outputVariablesToLoad>
             <alias type="output" variable="Thermocline_TC-1"> thermocline_Insulation.thermocline_fluidprops_heaters_newHC_70C.Tf[1]</alias>
         </Code>
