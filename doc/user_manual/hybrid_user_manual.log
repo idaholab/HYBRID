@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.3) (preloaded format=pdflatex 2021.4.16)  29 NOV 2021 10:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.3) (preloaded format=pdflatex 2021.4.16)  8 MAR 2022 14:53
 entering extended mode
 **./hybrid_user_manual.tex
 (hybrid_user_manual.tex
@@ -1141,7 +1141,7 @@ Package rerunfilecheck Info: File `hybrid_user_manual.out' has not changed.
 Here is how much of TeX's memory you used:
  16826 strings out of 479283
  250686 string characters out of 2854389
- 873880 words of memory out of 3000000
+ 873881 words of memory out of 3000000
  33599 multiletter control sequences out of 15000+600000
  449315 words of font info for 128 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1165,7 +1165,7 @@ rs/FRICKL/AppData/Local/Programs/MiKTeX/fonts/type1/urw/helvetic/uhvr8a.pfb><C:
 a.pfb><C:/Users/FRICKL/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr
 8a.pfb><C:/Users/FRICKL/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utm
 ri8a.pfb>
-Output written on hybrid_user_manual.pdf (52 pages, 3875715 bytes).
+Output written on hybrid_user_manual.pdf (52 pages, 3875548 bytes).
 PDF statistics:
  855 PDF objects out of 1000 (max. 8388607)
  286 named destinations out of 1000 (max. 500000)
