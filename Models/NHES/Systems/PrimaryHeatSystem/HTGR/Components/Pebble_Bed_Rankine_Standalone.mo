@@ -1,6 +1,6 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.Components;
 model Pebble_Bed_Rankine_Standalone
-    extends BaseClasses.Partial_SubSystem_A(redeclare replaceable CS_Dummy CS,
+    extends BaseClasses.Partial_SubSystem_A(redeclare replaceable CS_Rankine CS,
     redeclare replaceable ED_Dummy ED,
     redeclare Data.Data_HTGR_Pebble data(
     Q_total=600000000,
@@ -19,7 +19,7 @@ model Pebble_Bed_Rankine_Standalone
     HX_Reheat_Tube_Vol=0.1,
     HX_Reheat_Shell_Vol=0.1,
     HX_Reheat_Buffer_Vol=0.1));
-
+    Real eff;
   replaceable package Coolant_Medium =
       NHES.Systems.PrimaryHeatSystem.HTGR.BaseClasses.He_HighT                                  annotation(choicesAllMatching = true,dialog(group="Media"));
   replaceable package Fuel_Medium =  TRANSFORM.Media.Solids.UO2                                   annotation(choicesAllMatching = true,dialog(group = "Media"));
@@ -62,7 +62,7 @@ model Pebble_Bed_Rankine_Standalone
     annotation (Placement(transformation(extent={{80,124},{100,144}})));
 
   Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase Steam_Offtake(
-    NTU=2.2,
+    NTU=1.25,
     K_tube=1,
     K_shell=1,
     redeclare package Tube_medium =
@@ -89,25 +89,28 @@ model Pebble_Bed_Rankine_Standalone
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary2(
     redeclare package Medium = Aux_Heat_App_Medium,
     use_m_flow_in=false,
-    m_flow=200,
-    T=343.15,
+    m_flow=55,
+    T=353.15,
     nPorts=1) annotation (Placement(transformation(extent={{-58,38},{-38,58}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary1(
     redeclare package Medium = Aux_Heat_App_Medium,
-    p=1500000,
+    p=8000,
     nPorts=1)
-    annotation (Placement(transformation(extent={{-66,-44},{-46,-24}})));
-  GasTurbine.Compressor.Compressor compressor_Controlled(
+    annotation (Placement(transformation(extent={{-106,-44},{-86,-24}})));
+  Compressor_Controlled            compressor_Controlled(
     redeclare package Medium = TRANSFORM.Media.ExternalMedia.CoolProp.Helium,
+    explicitIsentropicEnthalpy=false,
     pstart_in=5500000,
     Tstart_in=398.15,
     Tstart_out=423.15,
+    use_w0_port=true,
     PR0=1.05,
-    w0=300) annotation (Placement(transformation(extent={{120,10},{140,30}})));
+    w0nom=300)
+            annotation (Placement(transformation(extent={{120,10},{140,30}})));
   TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance(
       redeclare package Medium = TRANSFORM.Media.ExternalMedia.CoolProp.Helium,
       R=1000)
-    annotation (Placement(transformation(extent={{94,-50},{114,-30}})));
+    annotation (Placement(transformation(extent={{114,-50},{94,-30}})));
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
         TRANSFORM.Media.ExternalMedia.CoolProp.Helium) annotation (Placement(
         transformation(
@@ -119,12 +122,11 @@ model Pebble_Bed_Rankine_Standalone
     redeclare package Pebble_Material = Media.Solids.Graphite_5,
     redeclare model HeatTransfer =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple,
-
-    Q_fission_input=600000000,
+    Q_fission_input(displayUnit="MW") = 100000000,
     alpha_fuel=-5e-5,
     alpha_coolant=0.0,
     p_b_start(displayUnit="bar") = dataInitial.P_Core_Outlet,
-    Q_nominal=600000000,
+    Q_nominal(displayUnit="MW") = 125000000,
     SigmaF_start=26,
     p_a_start(displayUnit="bar") = dataInitial.P_Core_Inlet,
     T_a_start(displayUnit="K") = dataInitial.T_Core_Inlet,
@@ -136,13 +138,11 @@ model Pebble_Bed_Rankine_Standalone
     fissionProductDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     redeclare record Data_DH =
         TRANSFORM.Nuclear.ReactorKinetics.Data.DecayHeat.decayHeat_11_TRACEdefault,
-
     redeclare record Data_FP =
         TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
-
-    rho_input=0,
+    rho_input=CR_reactivity.y,
     redeclare package Medium = TRANSFORM.Media.ExternalMedia.CoolProp.Helium,
-    SF_start_power={0.2,0.3,0.3,0.2},
+    SF_start_power={0.3,0.25,0.25,0.2},
     nParallel=data.nAssembly,
     redeclare model Geometry =
         TRANSFORM.Nuclear.ClosureRelations.Geometry.Models.CoreSubchannels.Assembly
@@ -170,27 +170,82 @@ model Pebble_Bed_Rankine_Standalone
         rotation=180,
         origin={146,-40})));
 
+  TRANSFORM.Fluid.Machines.SteamTurbine steamTurbine(
+    nUnits=1,
+    eta_mech=0.93,
+    redeclare model Eta_wetSteam =
+        TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant,
+    p_a_start=3000000,
+    p_b_start=8000,
+    T_a_start=673.15,
+    T_b_start=343.15,
+    m_flow_nominal=200,
+    p_inlet_nominal=14000000,
+    p_outlet_nominal=8000,
+    T_nominal=673.15)
+    annotation (Placement(transformation(extent={{-8,-50},{-28,-30}})));
+  TRANSFORM.Electrical.PowerConverters.Generator_Basic generator
+    annotation (Placement(transformation(extent={{-76,-80},{-96,-60}})));
+  TRANSFORM.Blocks.RealExpression CR_reactivity
+    annotation (Placement(transformation(extent={{84,76},{96,90}})));
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort
+                                       sensor_T(redeclare package Medium =
+        TRANSFORM.Media.ExternalMedia.CoolProp.Helium) annotation (Placement(
+        transformation(
+        extent={{-10,10},{10,-10}},
+        rotation=180,
+        origin={58,-40})));
 initial equation
 
 equation
  // Q_Recup =nTU_HX_SinglePhase.geometry.nTubes*abs(sum(nTU_HX_SinglePhase.tube.heatTransfer.Q_flows));
-
+  eff = steamTurbine.Q_mech/core.Q_total.y;
   connect(boundary2.ports[1], Steam_Offtake.Shell_in) annotation (Line(points={
           {-38,48},{-14,48},{-14,18},{-2,18}}, color={0,127,255}));
-  connect(boundary1.ports[1], Steam_Offtake.Shell_out)
-    annotation (Line(points={{-46,-34},{-2,-34},{-2,-2}}, color={0,127,255}));
   connect(compressor_Controlled.inlet, Steam_Offtake.Tube_out) annotation (Line(
         points={{124,28},{68,28},{68,32},{10,32},{10,30},{4,30},{4,18}}, color=
           {0,127,255}));
-  connect(resistance.port_a, Steam_Offtake.Tube_in) annotation (Line(points={{
-          97,-40},{56,-40},{56,-34},{6,-34},{6,-24},{4,-24},{4,-2}}, color={0,
-          127,255}));
   connect(sensor_m_flow.port_b, core.port_a) annotation (Line(points={{184,-26},
           {184,-40},{156,-40}}, color={0,127,255}));
-  connect(resistance.port_b, core.port_b)
-    annotation (Line(points={{111,-40},{136,-40}}, color={0,127,255}));
   connect(compressor_Controlled.outlet, sensor_m_flow.port_a)
     annotation (Line(points={{136,28},{184,28},{184,-6}}, color={0,127,255}));
+  connect(resistance.port_a, core.port_b)
+    annotation (Line(points={{111,-40},{136,-40}}, color={0,127,255}));
+  connect(boundary1.ports[1], steamTurbine.portLP)
+    annotation (Line(points={{-86,-34},{-28,-34}}, color={0,127,255}));
+  connect(steamTurbine.portHP, Steam_Offtake.Shell_out)
+    annotation (Line(points={{-8,-34},{-2,-34},{-2,-2}}, color={0,127,255}));
+  connect(generator.shaft, steamTurbine.shaft_b) annotation (Line(points={{-75.9,
+          -70.1},{-28,-70.1},{-28,-40},{-28,-40}}, color={0,0,0}));
+  connect(actuatorBus.CR_Reactivity, CR_reactivity.u) annotation (Line(
+      points={{30,100},{30,83},{82.8,83}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(resistance.port_b, sensor_T.port_a)
+    annotation (Line(points={{97,-40},{68,-40}}, color={0,127,255}));
+  connect(sensor_T.port_b, Steam_Offtake.Tube_in)
+    annotation (Line(points={{48,-40},{4,-40},{4,-2}}, color={0,127,255}));
+  connect(sensorBus.Core_Outlet_T, sensor_T.T) annotation (Line(
+      points={{-30,100},{-30,-16},{58,-16},{58,-36.4}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.PR_Compressor, compressor_Controlled.w0in) annotation (
+      Line(
+      points={{30,100},{30,54},{28,54},{28,44},{130,44},{130,28.6}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Core_Mass_Flow, sensor_m_flow.m_flow) annotation (Line(
+      points={{-30,100},{-30,-16},{180.4,-16}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           Bitmap(extent={{-80,-92},{78,84}}, fileName="modelica://NHES/Icons/PrimaryHeatSystemPackage/HTGRPB.jpg")}),
                                                                  Diagram(

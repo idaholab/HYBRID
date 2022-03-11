@@ -1,0 +1,12 @@
+[Tests]
+ [./]
+  #REQUIREMENT: R-F-1
+  type = 'HYBRIDTester'
+  input = 'PBHTGR_Brayton.mos'
+  workingDir = '.'
+  output = 'PBHTGR_Brayton.mat'
+  dymola_mats = 'PBHTGR_Brayton.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

@@ -1,0 +1,3 @@
+translateModel("NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.Examples.Pebble_Bed_CC_Test_workshop_Demonstration");
+importinital("./gold/Demonstration_Initiation.txt");
+simulateModel("NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.Examples.Pebble_Bed_CC_Test_workshop_Demonstration", startTime=100, stopTime=200, numberOfIntervals=100, method="Esdirk45a", resultFile="HTGR_Workshop");

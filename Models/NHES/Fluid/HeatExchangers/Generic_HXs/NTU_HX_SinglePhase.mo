@@ -87,17 +87,17 @@ public
     Q_gen=Q,
     nPorts_b=1,
     nPorts_a=1) annotation (Placement(transformation(extent={{28,30},{48,50}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_State Tube_out(redeclare package Medium
-      = Tube_medium)
+  TRANSFORM.Fluid.Interfaces.FluidPort_State Tube_out(redeclare package Medium =
+        Tube_medium)
     annotation (Placement(transformation(extent={{-110,30},{-90,50}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow  Tube_in(redeclare package Medium
-      = Tube_medium)
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow  Tube_in(redeclare package Medium =
+        Tube_medium)
     annotation (Placement(transformation(extent={{90,30},{110,50}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow  Shell_in(redeclare package Medium
-      = Shell_medium)
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow  Shell_in(redeclare package Medium =
+        Shell_medium)
     annotation (Placement(transformation(extent={{-110,-30},{-90,-10}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_State Shell_out(redeclare package Medium
-      = Shell_medium)
+  TRANSFORM.Fluid.Interfaces.FluidPort_State Shell_out(redeclare package Medium =
+        Shell_medium)
     annotation (Placement(transformation(extent={{90,-30},{110,-10}})));
   TRANSFORM.Fluid.Volumes.MixingVolume Shell(
     redeclare package Medium = Shell_medium,
@@ -186,9 +186,9 @@ equation
   //der(Q) = (((1-exp(-NTU*(1-Cr)))*Q_max/(1-Cr*exp(-NTU*(1-Cr))))-Q)/tau;
   if
     (Cr>=1-1e-8) then
-    Q = (NTU/(1+NTU))*Q_max;
+    der(Q) = (NTU/(1+NTU))*Q_max-Q;
     else
-  Q = (1-exp(-NTU*(1-Cr)))*Q_max/(1-Cr*exp(-NTU*(1-Cr)));
+  der(Q) = (1-exp(-NTU*(1-Cr)))*Q_max/(1-Cr*exp(-NTU*(1-Cr)))-Q;
   end if;
   Q_total = Q;
 

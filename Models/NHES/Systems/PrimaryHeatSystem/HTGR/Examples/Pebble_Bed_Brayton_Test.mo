@@ -26,4 +26,8 @@ equation
         color={0,127,255}));
   connect(EG.portElec_a, Pebble_Bed_HTGR.port_a)
     annotation (Line(points={{62,-10},{20,-10}}, color={255,0,0}));
+  annotation (experiment(
+      StopTime=1000,
+      __Dymola_NumberOfIntervals=5002,
+      __Dymola_Algorithm="Esdirk45a"));
 end Pebble_Bed_Brayton_Test;

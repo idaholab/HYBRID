@@ -12,14 +12,14 @@ model Pebble_Bed_CC_Test_workshop_Demonstration
     T=306.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{58,-40},{38,-20}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Water_T1(redeclare package Medium
-      = Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Water_T1(redeclare package Medium =
+        Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{-6,8},{6,-8}},
         rotation=180,
         origin={18,-30})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Water_T3(redeclare package Medium
-      = Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Water_T3(redeclare package Medium =
+        Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{8,9},{-8,-9}},
         rotation=270,
@@ -77,7 +77,7 @@ model Pebble_Bed_CC_Test_workshop_Demonstration
     falling=300,
     period=18000,
     nperiod=22)
-    annotation (Placement(transformation(extent={{-98,34},{-92,40}})));
+    annotation (Placement(transformation(extent={{-102,36},{-96,42}})));
 equation
   total_efficiency = (steamTurbine.Q_mech+Pebble_Bed_HTGR.port_a.W)/Pebble_Bed_HTGR.core.Q_total.y;
   connect(Water_T1.port_a,Intercooler_Source. ports[1])
@@ -108,13 +108,14 @@ equation
   connect(Water_T3.port_b, dual_Pipe_Model_Two_HTFs.Discharge_Inlet)
     annotation (Line(points={{-92,-7},{-92,-6.2},{-78.92,-6.2}},
                             color={0,127,255}));
-  connect(trapezoid.y, Steam_Offtake_Source.m_flow_in) annotation (Line(points=
-          {{-91.7,37},{-90,37},{-90,38},{-86,38}}, color={0,0,127}));
+  connect(trapezoid.y, Steam_Offtake_Source.m_flow_in) annotation (Line(points={{-95.7,
+          39},{-90,39},{-90,38},{-86,38}},         color={0,0,127}));
   connect(steamTurbine.portLP, CC_Dump.ports[1]) annotation (Line(points={{-32,
           -35.6},{-32,-32},{-26,-32},{-26,-36},{-20,-36},{-20,-33}}, color={0,
           127,255}));
   annotation (experiment(
-      StopTime=360000,
+      StartTime=259200,
+      StopTime=345600,
       __Dymola_NumberOfIntervals=5002,
       __Dymola_Algorithm="Esdirk45a"));
 end Pebble_Bed_CC_Test_workshop_Demonstration;

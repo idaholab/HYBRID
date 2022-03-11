@@ -34,7 +34,6 @@ model TRISO "TRISO model estimate"
         (nR=nR_Fuel, r_outer=r_Fuel),
     redeclare model ConductionModel =
         TRANSFORM.HeatAndMassTransfer.DiscritizedModels.BaseClasses.Dimensions_1.ForwardDifference_1O,
-
     redeclare model InternalHeatModel =
         TRANSFORM.HeatAndMassTransfer.DiscritizedModels.BaseClasses.Dimensions_1.VolumetricHeatGeneration
         (q_ppp=1))

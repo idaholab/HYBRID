@@ -152,9 +152,9 @@ model Pebble_Bed_CC
     eta0=data.HP_Comp_Efficiency,
     PR0=data.HP_Comp_P_Ratio,
     w0=data.HP_Comp_MassFlowRate)
-            annotation (Placement(transformation(extent={{25,-18},{-25,18}},
+            annotation (Placement(transformation(extent={{25,18},{-25,-18}},
         rotation=0,
-        origin={-1,-122})));
+        origin={-1,-94})));
   TRANSFORM.Fluid.Pipes.TransportDelayPipe
                                        transportDelayPipe1(
     redeclare package Medium =
@@ -331,7 +331,6 @@ model Pebble_Bed_CC
     redeclare package Pebble_Material = NHES.Media.Solids.Graphite_5,
     redeclare model HeatTransfer =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple,
-
     Q_fission_input=600000000,
     alpha_fuel=-5e-5,
     alpha_coolant=0.0,
@@ -348,10 +347,8 @@ model Pebble_Bed_CC
     fissionProductDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     redeclare record Data_DH =
         TRANSFORM.Nuclear.ReactorKinetics.Data.DecayHeat.decayHeat_11_TRACEdefault,
-
     redeclare record Data_FP =
         TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
-
     rho_input=CR_reactivity.y,
     redeclare package Medium = BaseClasses.He_HighT,
     SF_start_power={0.2,0.3,0.3,0.2},
@@ -414,11 +411,11 @@ equation
   connect(Intercooler.heatPort, boundary4.port)
     annotation (Line(points={{92,-62},{104,-62}},      color={191,0,0}));
   connect(compressor1.outlet, transportDelayPipe1.port_a) annotation (Line(
-        points={{-16,-107.6},{-16,-108},{-72,-108},{-72,-70},{20,-70},{20,-62}},
+        points={{-16,-108.4},{-16,-116},{-74,-116},{-74,-72},{20,-72},{20,-62}},
                                                                      color={0,
           127,255}));
   connect(Intercooler.port_b, compressor1.inlet) annotation (Line(points={{86,-68},
-          {86,-108},{14,-108},{14,-107.6}},
+          {86,-118},{14,-118},{14,-108.4}},
                                         color={0,127,255}));
   connect(springBallValve.port_b,boundary5. ports[1])
     annotation (Line(points={{4,68},{4,76}},              color={0,127,255}));
