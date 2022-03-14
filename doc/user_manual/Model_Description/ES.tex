@@ -60,3 +60,36 @@ The dual pipe and dual pipe two HTFs model contain separate pipes for the chargi
 \end{figure}
 
 %\input{Installation/clone.tex}
+
+\subsubsection{Latent Heat Thermal Energy Storage}
+
+Latent heat energy storage stores energy in materials undergoing phase change. These phase change materials (PCMs) can undergo melting and fusion, boiling and condensation, or hydration and dehydration. PCMs have high volumetric and mass-specific energy storage densities. They can theoretically operate isothermally as the phase change occurs at a single temperature. The ideal PCM would have a large latent heat associated with its phase change, little to no density change between phases, indefinite cyclability between phases, and high thermal conductivity. Research continues in PCMs to identify enhancements that would allow lab-scale experiments to increase size to demonstrate grid-scale applications. A significant challenge is enhancing the thermal conductivity in the PCMs. As the charging or discharging HTF will drive the phase change condition at the heat transfer surface, continuing that process into the PCM mass is based on the thermal conductivity of the material. Conductivity enhancement via geometry specification, micro-encapsulation, and material impregnation has been investigated over time. 
+
+The most common PCMs identified operate between the solid and liquid phases where the density change is minimal. Because the melting or solidification front is key to moving heat between the HTF and the PCMs, many high-fidelity models have been developed across the research field. The model available in the HYBRID repository is based on a paraffin wax experiment. The experiment used water as the HTF to melt and solidify paraffin wax. The original model was built in Star-CCM+ and then converted to Matlab. The Matlab version subsequently has been converted into a Modelica model within HYBRID. The generalized low-fidelity model has been built to accommodate new geometric designs, materials, and HTFs. 
+
+
+The model is a two-dimensional radial conductivity model across three materials: the HTF, a pipe wall, then through the PCM as shown in Figure \ref{PCM}. Within the fluid, the following equation set applies. The equations are also applied within the tube, but the velocity term disappears without internal mass movement. The term $\alpha$ is thermal resistance, equal to thermal conductivity divided by the density and specific heat capacity. 
+
+
+\[\frac{dT}{dt} = \alpha\nabla^{2}T - (\overrightarrow{v}\cdot\nabla T)\]
+
+Effectively, the equation set is applied across the material interfaces, with an effective interface thermal conductivity
+
+\[k_{eff}=\frac{2k_{1}k_{2}}{k_{1}+k_{2}}\]
+
+Because there is phase change within the PCM. The equation is written in terms of enthalpy instead of temperature, and the PCM temperature is calculated as a function of the enthalpy (h). 
+
+\[\frac{dh}{dt} = \alpha\nabla^{2}h\]
+
+\begin{figure}[hbtp]
+\centering
+\includegraphics[scale=0.5]{pics/PCM.png}
+\caption{PCM Nodalization diagram}
+\label{PCM}
+\end{figure}
+
+The initial models built in Matlab and Star-CCM+ used constant fluid properties and an assumed inlet velocity. The Modelica model has a fluid inlet and exit to allow for replacement of the HTF in the model, and for outer conditions to dictate to the PCM model the fluid conditions at the interfaces. 
+
+
+
+
