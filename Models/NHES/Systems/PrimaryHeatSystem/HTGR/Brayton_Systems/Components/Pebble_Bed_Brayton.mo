@@ -168,7 +168,7 @@ model Pebble_Bed_Brayton
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=90,
         origin={20,-52})));
-  BalanceOfPlant.Turbine.BaseClasses.StagebyStageTurbineSecondary.Control_and_Distribution.SpringBallValve
+  BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.SpringBallValve
     springBallValve(
     redeclare package Medium = Coolant_Medium,
     p_spring=data.P_Release,
@@ -270,7 +270,6 @@ model Pebble_Bed_Brayton
     redeclare package Pebble_Material = Media.Solids.Graphite_5,
     redeclare model HeatTransfer =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple,
-
     Q_fission_input=600000000,
     alpha_fuel=-5e-5,
     alpha_coolant=0.0,
@@ -287,10 +286,8 @@ model Pebble_Bed_Brayton
     fissionProductDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     redeclare record Data_DH =
         TRANSFORM.Nuclear.ReactorKinetics.Data.DecayHeat.decayHeat_11_TRACEdefault,
-
     redeclare record Data_FP =
         TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
-
     rho_input=CR_reactivity.y,
     redeclare package Medium =
         HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT,

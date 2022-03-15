@@ -41,7 +41,6 @@ model Pebble_Bed_Full_RX_Complete
   TRANSFORM.Fluid.Volumes.SimpleVolume Core_Outlet(
     redeclare package Medium =
         NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT,
-
     p_start=dataInitial.P_Core_Outlet,
     T_start=dataInitial.T_Core_Outlet,
     redeclare model Geometry =
@@ -50,10 +49,10 @@ model Pebble_Bed_Full_RX_Complete
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={-66,-26})));
+
   GasTurbine.Turbine.Turbine turbine(
     redeclare package Medium =
         NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT,
-
     pstart_out=dataInitial.P_Turbine_Ref,
     Tstart_in=dataInitial.TStart_In_Turbine,
     Tstart_out=dataInitial.TStart_Out_Turbine,
@@ -61,16 +60,15 @@ model Pebble_Bed_Full_RX_Complete
     PR0=data.Turbine_Pressure_Ratio,
     w0=data.Turbine_Nominal_MassFlowRate)
     annotation (Placement(transformation(extent={{-80,46},{-16,0}})));
+
   Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase Reheater(
     NTU=data.HX_Reheat_NTU,
     K_tube=data.HX_Reheat_K_tube,
     K_shell=data.HX_Reheat_K_shell,
     redeclare package Tube_medium =
         NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT,
-
     redeclare package Shell_medium =
         NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT,
-
     V_Tube=data.HX_Reheat_Tube_Vol,
     V_Shell=data.HX_Reheat_Shell_Vol,
     V_buffers=data.HX_Reheat_Buffer_Vol,
@@ -88,8 +86,8 @@ model Pebble_Bed_Full_RX_Complete
     m_start_shell=dataInitial.Recuperator_m_Shell)
     annotation (Placement(transformation(extent={{18,-18},{-2,2}})));
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
-      = NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
+        NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT)
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
@@ -97,7 +95,6 @@ model Pebble_Bed_Full_RX_Complete
   TRANSFORM.Fluid.Volumes.SimpleVolume Precooler(
     redeclare package Medium =
         NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT,
-
     p_start=dataInitial.P_HP_Comp_Ref,
     T_start=data.T_Precooler,
     redeclare model Geometry =
@@ -107,6 +104,7 @@ model Pebble_Bed_Full_RX_Complete
         extent={{10,-10},{-10,10}},
         rotation=270,
         origin={38,38})));
+
   TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Temperature    boundary3(use_port=
         false, T=data.T_Precooler)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
@@ -115,7 +113,6 @@ model Pebble_Bed_Full_RX_Complete
   GasTurbine.Compressor.Compressor compressor(
     redeclare package Medium =
         NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT,
-
     pstart_in=dataInitial.P_LP_Comp_Ref,
     Tstart_in=dataInitial.TStart_LP_Comp_In,
     Tstart_out=dataInitial.TStart_LP_Comp_Out,
@@ -123,19 +120,19 @@ model Pebble_Bed_Full_RX_Complete
     PR0=data.LP_Comp_P_Ratio,
     w0=data.LP_Comp_MassFlowRate)
     annotation (Placement(transformation(extent={{54,18},{98,50}})));
+
   TRANSFORM.Fluid.Pipes.TransportDelayPipe transportDelayPipe(
     redeclare package Medium =
         NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT,
-
     crossArea=data.A_HPDelay,
     length=data.L_HPDelay) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={100,20})));
+
   TRANSFORM.Fluid.Volumes.SimpleVolume Intercooler(
     redeclare package Medium =
         NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT,
-
     p_start=dataInitial.P_LP_Comp_Ref,
     T_start=data.T_Intercooler,
     redeclare model Geometry =
@@ -145,6 +142,7 @@ model Pebble_Bed_Full_RX_Complete
         extent={{10,10},{-10,-10}},
         rotation=90,
         origin={100,-54})));
+
   TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Temperature    boundary4(use_port=
         false, T=data.T_Intercooler)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
@@ -153,7 +151,6 @@ model Pebble_Bed_Full_RX_Complete
   GasTurbine.Compressor.Compressor compressor1(
     redeclare package Medium =
         NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT,
-
     allowFlowReversal=false,
     pstart_in=dataInitial.P_HP_Comp_Ref,
     Tstart_in=dataInitial.TStart_HP_Comp_In,
@@ -164,16 +161,17 @@ model Pebble_Bed_Full_RX_Complete
         extent={{25,-18},{-25,18}},
         rotation=0,
         origin={73,-92})));
+
   TRANSFORM.Fluid.Pipes.TransportDelayPipe transportDelayPipe1(
     redeclare package Medium =
         NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT,
-
     crossArea=data.A_HPDelay,
     length=data.L_HPDelay) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={56,-38})));
-  BalanceOfPlant.Turbine.BaseClasses.StagebyStageTurbineSecondary.Control_and_Distribution.SpringBallValve
+
+  BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.SpringBallValve
     springBallValve(
     redeclare package Medium =
         HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT,
@@ -251,7 +249,6 @@ model Pebble_Bed_Full_RX_Complete
     redeclare package Pebble_Material = Media.Solids.Graphite_5,
     redeclare model HeatTransfer =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple,
-
     Q_fission_input=600000000,
     alpha_fuel=-5e-5,
     alpha_coolant=0.0,
@@ -268,10 +265,8 @@ model Pebble_Bed_Full_RX_Complete
     fissionProductDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
     redeclare record Data_DH =
         TRANSFORM.Nuclear.ReactorKinetics.Data.DecayHeat.decayHeat_11_TRACEdefault,
-
     redeclare record Data_FP =
         TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
-
     rho_input=CR.y,
     redeclare package Medium =
         HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT,

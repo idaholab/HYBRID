@@ -76,8 +76,8 @@ model Pebble_Bed_Rankine_Complex
       redeclare package Medium = TRANSFORM.Media.ExternalMedia.CoolProp.Helium,
       R=1000)
     annotation (Placement(transformation(extent={{-70,28},{-58,42}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = TRANSFORM.Media.ExternalMedia.CoolProp.Helium) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        TRANSFORM.Media.ExternalMedia.CoolProp.Helium) annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
@@ -306,13 +306,13 @@ model Pebble_Bed_Rankine_Complex
     p_nominal=5500000,
     allowFlowReversal=false)
     annotation (Placement(transformation(extent={{60,-70},{40,-50}})));
-  BalanceOfPlant.Turbine.BaseClasses.StagebyStageTurbineSecondary.StagebyStageTurbine.BaseClasses.TRANSFORMMoistureSeparator_MIKK
+  BalanceOfPlant.StagebyStageTurbineSecondary.StagebyStageTurbine.BaseClasses.TRANSFORMMoistureSeparator_MIKK
     Moisture_Separator(redeclare package Medium =
         Modelica.Media.Water.StandardWater, redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume)
     annotation (Placement(transformation(extent={{58,32},{78,52}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium
-      = Modelica.Media.Water.StandardWater)            annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)            annotation (Placement(
         transformation(
         extent={{8,-6},{-8,6}},
         rotation=90,
