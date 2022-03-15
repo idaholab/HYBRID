@@ -48,8 +48,8 @@ model CS_Rankine_Xe100_Based_Secondary
     annotation (Placement(transformation(extent={{-34,-78},{-26,-70}})));
   Modelica.Blocks.Math.Add         add2
     annotation (Placement(transformation(extent={{-10,-78},{10,-58}})));
-  BaseClasses.StagebyStageTurbineSecondary.Control_and_Distribution.Timer timer(
-      Start_Time=1e-2, mult_time_constant=1)
+  StagebyStageTurbineSecondary.Control_and_Distribution.Timer             timer(
+      Start_Time=1e-2)
     annotation (Placement(transformation(extent={{-34,-66},{-26,-58}})));
   TRANSFORM.Controls.LimPID PI_TBV(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -61,7 +61,8 @@ model CS_Rankine_Xe100_Based_Secondary
     annotation (Placement(transformation(extent={{-40,52},{-20,72}})));
   Modelica.Blocks.Sources.Constant const9(k=data.p_steam_vent)
     annotation (Placement(transformation(extent={{-80,52},{-60,72}})));
-  Data.Xe100_data data
+  Data.HTGR_Rankine
+                  data
     annotation (Placement(transformation(extent={{-98,-4},{-78,16}})));
 equation
 

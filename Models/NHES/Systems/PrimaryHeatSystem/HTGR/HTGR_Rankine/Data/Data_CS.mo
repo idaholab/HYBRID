@@ -2,7 +2,7 @@ within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Data;
 model Data_CS
 
   extends BaseClasses.Record_Data;
-  parameter Modelica.Units.SI.Temperature T_Rx_Exit_Ref = 850;
+  parameter Modelica.Units.SI.Temperature T_Rx_Exit_Ref = 850+273.15;
   parameter Modelica.Units.SI.MassFlowRate m_flow_nom = 600;
   parameter Modelica.Units.SI.Temperature T_Steam_Ref = 540+273.15;
   parameter Modelica.Units.SI.Power Q_Nom = 36e6;

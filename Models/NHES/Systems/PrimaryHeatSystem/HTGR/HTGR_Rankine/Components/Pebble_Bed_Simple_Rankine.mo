@@ -22,10 +22,9 @@ model Pebble_Bed_Simple_Rankine
       HX_Reheat_Buffer_Vol=0.1));
     Real eff;
   replaceable package Coolant_Medium =
-      NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.BaseClasses.He_HighT                     annotation(choicesAllMatching = true,dialog(group="Media"));
-  replaceable package Fuel_Medium =  TRANSFORM.Media.Solids.UO2                                   annotation(choicesAllMatching = true,dialog(group = "Media"));
-  replaceable package Pebble_Medium =
-      Media.Solids.Graphite_5                                                                                   annotation(dialog(group = "Media"),choicesAllMatching=true);
+      NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.BaseClasses.He_HighT  "Core coolant"                   annotation(choicesAllMatching = true,dialog(group="Media"));
+  replaceable package Fuel_Medium =  TRANSFORM.Media.Solids.UO2 "Core fuel material for thermodynamic properties"                                  annotation(choicesAllMatching = true,dialog(group = "Media"));
+  replaceable package Pebble_Medium =     Media.Solids.Graphite_5  "Pebble internal material"                         annotation(dialog(group = "Media"),choicesAllMatching=true);
       replaceable package Aux_Heat_App_Medium =
       Modelica.Media.Water.StandardWater                                           annotation(choicesAllMatching = true, dialog(group = "Media"));
       replaceable package Waste_Heat_App_Medium =
@@ -114,7 +113,7 @@ model Pebble_Bed_Simple_Rankine
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
         TRANSFORM.Media.ExternalMedia.CoolProp.Helium) annotation (Placement(
         transformation(
-        extent={{10,-10},{-10,10}},
+        extent={{10,10},{-10,-10}},
         rotation=90,
         origin={88,-8})));
   Nuclear.CoreSubchannels.Pebble_Bed_2 core(
@@ -192,7 +191,7 @@ model Pebble_Bed_Simple_Rankine
                                        sensor_T(redeclare package Medium =
         TRANSFORM.Media.ExternalMedia.CoolProp.Helium) annotation (Placement(
         transformation(
-        extent={{-10,10},{10,-10}},
+        extent={{-10,-10},{10,10}},
         rotation=180,
         origin={14,-42})));
 initial equation
@@ -233,18 +232,18 @@ equation
     annotation (Line(points={{4,-42},{2,-42},{2,-6},{4,-6},{4,-2}},
                                                        color={0,127,255}));
   connect(sensorBus.Core_Outlet_T, sensor_T.T) annotation (Line(
-      points={{-30,100},{-30,-18},{14,-18},{14,-38.4}},
+      points={{-30,100},{100,100},{100,-54},{14,-54},{14,-45.6}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.PR_Compressor, compressor_Controlled.w0in) annotation (
       Line(
-      points={{30,100},{30,34},{50,34},{50,32.6}},
+      points={{30,100},{30,84},{50,84},{50,32.6}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.Core_Mass_Flow, sensor_m_flow.m_flow) annotation (Line(
-      points={{-30,100},{-30,-8},{84.4,-8}},
+      points={{-30,100},{100,100},{100,-8},{91.6,-8}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));

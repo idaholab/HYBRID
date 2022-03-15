@@ -188,7 +188,7 @@ model Pebble_Bed_Brayton
       Medium = Coolant_Medium) annotation (Placement(transformation(
         extent={{-6,8},{6,-8}},
         rotation=180,
-        origin={-16,-46})));
+        origin={-26,-46})));
 
  /*             Data.Data_HTGR_Pebble
                           data(
@@ -317,7 +317,7 @@ model Pebble_Bed_Brayton
     T_outlet=1123.15) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
-        origin={-40,-46})));
+        origin={-52,-46})));
 
   TRANSFORM.Electrical.Interfaces.ElectricalPowerPort_Flow port_a annotation (
       Placement(transformation(extent={{90,-10},{110,10}}),
@@ -355,17 +355,17 @@ equation
     annotation (Line(points={{10,-28},{20,-28},{20,-42}},
                                                       color={0,127,255}));
   connect(Reheater.Shell_out, Core_Inlet_T.port_a) annotation (Line(points={{-10,-28},
-          {-10,-46}},                                color={0,127,255}));
-  connect(turbine.outlet, Reheater.Tube_in) annotation (Line(points={{-30.4,18.2},
-          {-30.4,18},{-12,18},{-12,-22},{-10,-22}},
+          {-14,-28},{-14,-46},{-20,-46}},            color={0,127,255}));
+  connect(turbine.outlet, Reheater.Tube_in) annotation (Line(points={{-30.4,
+          18.2},{-30.4,18},{-16,18},{-16,-22},{-10,-22}},
                                               color={0,127,255}));
   connect(Reheater.Tube_out, sensor_T.port_a)
     annotation (Line(points={{10,-22},{28,-22},{28,-16}},
                                                        color={0,127,255}));
   connect(Core_Outlet.port_b, Steam_Offtake.Tube_in) annotation (Line(points={{-72,-26},
-          {-58,-26},{-58,-18},{-80,-18},{-80,-6}},    color={0,127,255}));
+          {-72,-18},{-80,-18},{-80,-6}},              color={0,127,255}));
   connect(Steam_Offtake.Tube_out, turbine.inlet) annotation (Line(points={{-80,14},
-          {-80,26},{-60,26},{-60,22},{-61.6,22},{-61.6,18.2}},
+          {-80,26},{-62,26},{-62,22},{-61.6,22},{-61.6,18.2}},
                                     color={0,127,255}));
   connect(compressor.outlet, transportDelayPipe.port_a) annotation (Line(points={{69.2,
           50.8},{74,50.8},{74,58},{84,58},{84,38}},
@@ -382,9 +382,9 @@ equation
   connect(Steam_Offtake.Shell_out, auxiliary_heating_port_b) annotation (Line(
         points={{-86,-6},{-86,-46},{-100,-46}},
         color={0,0,0}));
-  connect(core.port_a, Core_Inlet_T.port_b) annotation (Line(points={{-30,-46},{
-          -22,-46}},                      color={0,127,255}));
-  connect(core.port_b, Core_Outlet.port_a) annotation (Line(points={{-50,-46},{
+  connect(core.port_a, Core_Inlet_T.port_b) annotation (Line(points={{-42,-46},
+          {-32,-46}},                     color={0,127,255}));
+  connect(core.port_b, Core_Outlet.port_a) annotation (Line(points={{-62,-46},{
           -72,-46},{-72,-38}},
                  color={0,127,255}));
   connect(actuatorBus.CR_Reactivity, CR_reactivity.u) annotation (Line(

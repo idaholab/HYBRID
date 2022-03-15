@@ -5,8 +5,8 @@ model CS_OTSG_Power_Control
   parameter SI.Time delayStartTCV = 300 "Delay start of TCV control";
   parameter SI.Time delayStartBV = delayStartTCV "Delay start of BV control";
 
-  parameter SI.Pressure p_overpressure "OverPressure steam turbine pressure";
-  //parameter SI.Pressure
+  parameter SI.Pressure p_overpressure = 100e5 "OverPressure steam turbine pressure";
+  parameter SI.Pressure p_nominal = 50e5 "Nominal steam pressure";
 
   parameter Real TCV_opening_nominal = 0.5 "Nominal opening of TCV - controls power";
   parameter Real BV_opening_nominal = 0.001 "Nominal opening of BV - controls pressure";

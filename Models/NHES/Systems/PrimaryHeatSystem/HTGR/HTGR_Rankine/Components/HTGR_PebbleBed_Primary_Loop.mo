@@ -46,7 +46,7 @@ model HTGR_PebbleBed_Primary_Loop
     use_w0_port=true,
     PR0=1.05,
     w0nom=300)
-    annotation (Placement(transformation(extent={{40,-58},{20,-38}})));
+    annotation (Placement(transformation(extent={{32,-40},{12,-60}})));
   TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance(
       redeclare package Medium = Coolant_Medium,
       R=1000)
@@ -111,7 +111,7 @@ model HTGR_PebbleBed_Primary_Loop
         origin={-38,14})));
 
   TRANSFORM.Blocks.RealExpression CR_reactivity
-    annotation (Placement(transformation(extent={{68,94},{80,108}})));
+    annotation (Placement(transformation(extent={{90,84},{102,98}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
                                        sensor_T(redeclare package Medium =
         Coolant_Medium) annotation (Placement(
@@ -186,7 +186,7 @@ equation
           {-38,-34},{-38,4}},   color={0,127,255},
       thickness=0.5));
   connect(compressor_Controlled.outlet, sensor_m_flow.port_a)
-    annotation (Line(points={{24,-40},{24,-34},{-12,-34}},color={0,127,255},
+    annotation (Line(points={{16,-58},{16,-34},{-12,-34}},color={0,127,255},
       thickness=0.5));
   connect(resistance.port_a, core.port_b)
     annotation (Line(points={{-6.2,39},{-38,39},{-38,24}},
@@ -197,13 +197,13 @@ equation
                                                  color={0,127,255},
       thickness=0.5));
   connect(sensorBus.Core_Outlet_T, sensor_T.T) annotation (Line(
-      points={{-30,100},{60,100},{60,44},{64,44},{64,35},{55.52,35}},
+      points={{-30,100},{64,100},{64,35},{55.52,35}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.PR_Compressor, compressor_Controlled.w0in) annotation (
       Line(
-      points={{30,100},{30,-39.4}},
+      points={{30,100},{110,100},{110,-68},{22,-68},{22,-58.6}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -214,7 +214,7 @@ equation
       thickness=0.5));
 
   connect(actuatorBus.CR_Reactivity, CR_reactivity.u) annotation (Line(
-      points={{30,100},{30,101},{66.8,101}},
+      points={{30,100},{30,90},{80,90},{80,91},{88.8,91}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -223,7 +223,7 @@ equation
   connect(port_a, STHX.port_a_tube)
     annotation (Line(points={{97,-33},{63,-33},{63,-16}}, color={0,127,255}));
   connect(STHX.port_b_shell, compressor_Controlled.inlet) annotation (Line(
-        points={{57.94,-16},{56,-16},{56,-40},{36,-40}}, color={0,127,255}));
+        points={{57.94,-16},{56,-16},{56,-58},{28,-58}}, color={0,127,255}));
   connect(STHX.port_a_shell, sensor_T.port_b) annotation (Line(points={{57.94,8},
           {58,8},{58,28},{53,28},{53,30}}, color={0,127,255}));
   connect(sensorBus.Steam_Pressure, Steam_Pressure.y) annotation (Line(

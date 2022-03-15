@@ -85,8 +85,8 @@ model Pebble_Bed_CC
     m_start_shell=dataInitial.Recuperator_m_Shell)
     annotation (Placement(transformation(extent={{10,-36},{-10,-16}})));
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
-        Coolant_Medium)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
+      = Coolant_Medium)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=90,
         origin={12,-6})));
@@ -138,12 +138,12 @@ model Pebble_Bed_CC
     Q_gen=-Q_Trans)    annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
-        origin={86,-62})));
+        origin={84,-62})));
   TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Temperature Intercooler_Temp(use_port=
         false, T=data.T_Intercooler) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
-        origin={114,-62})));
+        origin={110,-62})));
   GasTurbine.Compressor.Compressor      compressor1(
     redeclare package Medium =
         Coolant_Medium,
@@ -259,7 +259,7 @@ model Pebble_Bed_CC
         transformation(
         extent={{-10,10},{10,-10}},
         rotation=90,
-        origin={86,-32})));
+        origin={84,-32})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort CC_Mid_Temp(redeclare package
       Medium = Waste_Heat_App_Medium) annotation (Placement(
         transformation(
@@ -362,11 +362,11 @@ model Pebble_Bed_CC
       Placement(transformation(extent={{90,10},{110,30}}),
         iconTransformation(extent={{90,10},{110,30}})));
   TRANSFORM.Blocks.RealExpression CR_reactivity
-    annotation (Placement(transformation(extent={{104,84},{116,98}})));
+    annotation (Placement(transformation(extent={{74,78},{86,92}})));
   TRANSFORM.Blocks.RealExpression PR_Compressor
-    annotation (Placement(transformation(extent={{106,64},{118,78}})));
+    annotation (Placement(transformation(extent={{74,66},{86,80}})));
   Modelica.Blocks.Sources.RealExpression Core_M_flow(y=core.port_a.m_flow)
-    annotation (Placement(transformation(extent={{-88,92},{-76,106}})));
+    annotation (Placement(transformation(extent={{-60,104},{-48,118}})));
 initial equation
   Q_Trans = 1e7;
 equation
@@ -388,13 +388,13 @@ equation
           26,56},{48,56},{48,56.8},{48.8,56.8}},
                                         color={0,127,255}));
   connect(Intercooler.heatPort, Intercooler_Temp.port)
-    annotation (Line(points={{92,-62},{104,-62}}, color={191,0,0}));
+    annotation (Line(points={{90,-62},{100,-62}}, color={191,0,0}));
   connect(compressor1.outlet, transportDelayPipe1.port_a) annotation (Line(
         points={{-16,-108.4},{-16,-116},{-74,-116},{-74,-72},{20,-72},{20,-62}},
                                                                      color={0,
           127,255}));
-  connect(Intercooler.port_b, compressor1.inlet) annotation (Line(points={{86,-68},
-          {86,-118},{14,-118},{14,-108.4}},
+  connect(Intercooler.port_b, compressor1.inlet) annotation (Line(points={{84,-68},
+          {84,-118},{14,-118},{14,-108.4}},
                                         color={0,127,255}));
   connect(springBallValve.port_b,boundary5. ports[1])
     annotation (Line(points={{4,68},{4,76}},              color={0,127,255}));
@@ -425,21 +425,21 @@ equation
           56.8},{74,56.8},{74,58},{84,58},{84,30}},
                                             color={0,127,255}));
   connect(transportDelayPipe.port_b, Intercooler_Pre_Temp.port_b) annotation (
-      Line(points={{84,10},{84,-16},{86,-16},{86,-22}},  color={0,127,255}));
+      Line(points={{84,10},{84,-22}},                    color={0,127,255}));
   connect(Intercooler.port_a, Intercooler_Pre_Temp.port_a)
-    annotation (Line(points={{86,-56},{86,-42}}, color={0,127,255}));
+    annotation (Line(points={{84,-56},{84,-42}}, color={0,127,255}));
   connect(Waste_Heat_Vol.port_b, CC_Mid_Temp.port_a) annotation (Line(points={{66,-52},
           {66,-8},{80,-8},{80,4},{76,4}},
                                       color={0,0,0}));
   connect(CC_Mid_Temp.port_b, Steam_Reheat_Waste.Shell_in) annotation (Line(
         points={{56,4},{48,4},{48,-2}},                color={0,0,0}));
   connect(Core_Outlet_T.port, Core_Outlet.port_a) annotation (Line(points={{-68,-48},
-          {-82,-48},{-82,-26},{-68,-26}},      color={0,127,255}));
+          {-68,-26}},                          color={0,127,255}));
   connect(auxiliary_heating_port_a, Steam_Offtake.Shell_in) annotation (Line(
         points={{-100,60},{-86,60},{-86,36},{-92,36},{-92,30}},
         color={0,0,0}));
   connect(Steam_Offtake.Shell_out, auxiliary_heating_port_b) annotation (Line(
-        points={{-92,10},{-92,-32},{-84,-32},{-84,-46},{-100,-46}},
+        points={{-92,10},{-92,-46},{-100,-46}},
         color={0,0,0}));
   connect(combined_cycle_port_a, CC_Inlet_Temp.port_a) annotation (Line(points={{32,-100},
           {32,-86},{54,-86},{54,-96},{66,-96},{66,-93}}, color={0,0,0}));
@@ -459,7 +459,7 @@ equation
   connect(combined_cycle_port_b, combined_cycle_port_b)
     annotation (Line(points={{-56,-100},{-56,-100}}, color={0,127,255}));
   connect(actuatorBus.CR_Reactivity, CR_reactivity.u) annotation (Line(
-      points={{30,100},{66,100},{66,90},{102.8,90},{102.8,91}},
+      points={{30,100},{66,100},{66,85},{72.8,85}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -470,7 +470,7 @@ equation
       thickness=0.5));
 
   connect(actuatorBus.PR_Compressor, PR_Compressor.u) annotation (Line(
-      points={{30,100},{30,74},{104.8,74},{104.8,71}},
+      points={{30,100},{30,73},{72.8,73}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -479,7 +479,7 @@ equation
       extent={{-3,6},{-3,6}},
       horizontalAlignment=TextAlignment.Right));
   connect(sensorBus.Core_Mass_Flow, Core_M_flow.y) annotation (Line(
-      points={{-30,100},{-75.4,99}},
+      points={{-30,100},{-47.4,111}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));

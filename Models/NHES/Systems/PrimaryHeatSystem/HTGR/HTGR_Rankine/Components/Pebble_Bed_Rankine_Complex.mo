@@ -150,7 +150,7 @@ model Pebble_Bed_Rankine_Complex
     T_nominal=673.15)
     annotation (Placement(transformation(extent={{38,26},{58,46}})));
   TRANSFORM.Electrical.PowerConverters.Generator_Basic generator
-    annotation (Placement(transformation(extent={{58,-20},{38,0}})));
+    annotation (Placement(transformation(extent={{64,-28},{44,-8}})));
   TRANSFORM.Blocks.RealExpression CR_reactivity
     annotation (Placement(transformation(extent={{68,94},{80,108}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
@@ -291,7 +291,7 @@ model Pebble_Bed_Rankine_Complex
     m_flow_nominal=2.5) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
-        origin={108,2})));
+        origin={100,2})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
                                        sensor_T2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)            annotation (Placement(
@@ -323,7 +323,7 @@ model Pebble_Bed_Rankine_Complex
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     dp_nominal=100000,
     m_flow_nominal=50) annotation (Placement(transformation(
-        extent={{8,8},{-8,-8}},
+        extent={{-8,8},{8,-8}},
         rotation=180,
         origin={-46,72})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary(
@@ -331,7 +331,7 @@ model Pebble_Bed_Rankine_Complex
     p=12000000,
     T=573.15,
     nPorts=1)
-    annotation (Placement(transformation(extent={{-136,70},{-116,90}})));
+    annotation (Placement(transformation(extent={{-82,62},{-62,82}})));
 initial equation
 
 equation
@@ -360,12 +360,12 @@ equation
       thickness=0.5));
   connect(actuatorBus.PR_Compressor, compressor_Controlled.w0in) annotation (
       Line(
-      points={{30,100},{-30,100},{-30,50},{-100,50},{-100,-30},{-58,-30},{-58,-41.4}},
+      points={{30,100},{30,92},{-100,92},{-100,-22},{-58,-22},{-58,-41.4}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.Core_Mass_Flow, sensor_m_flow.m_flow) annotation (Line(
-      points={{-30,100},{-30,50},{-100,50},{-100,-43.6},{-80,-43.6}},
+      points={{-30,100},{-30,92},{-100,92},{-100,-43.6},{-80,-43.6}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -383,7 +383,7 @@ equation
                                                           color={0,127,255},
       thickness=0.5));
   connect(sensorBus.Steam_Temperature, sensor_T1.T) annotation (Line(
-      points={{-30,100},{30,100},{30,36},{20,36},{20,32.16}},
+      points={{-30,100},{20,100},{20,32.16}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -407,7 +407,7 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(LPT.shaft_b, generator.shaft) annotation (Line(
-      points={{74,-6},{74,-10.1},{58.1,-10.1}},
+      points={{74,-6},{74,-18.1},{64.1,-18.1}},
       color={0,0,0},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -419,11 +419,11 @@ equation
       color={0,127,255},
       thickness=0.5));
   connect(tee.port_3, LPT_Bypass.port_a) annotation (Line(
-      points={{90,28},{108,28},{108,12}},
+      points={{90,28},{100,28},{100,12}},
       color={0,127,255},
       thickness=0.5));
   connect(LPT_Bypass.port_b, volume1.port_a) annotation (Line(
-      points={{108,-8},{108,-72},{36,-72},{36,-60},{28,-60}},
+      points={{100,-8},{100,-72},{36,-72},{36,-60},{28,-60}},
       color={0,127,255},
       thickness=0.5));
   connect(STHX.port_a_tube, sensor_T2.port_b)
@@ -434,7 +434,7 @@ equation
     annotation (Line(points={{-18,-60},{-12,-60}},color={0,127,255},
       thickness=0.5));
   connect(sensorBus.Feedwater_Temp, sensor_T2.T) annotation (Line(
-      points={{-30,100},{-30,50},{-100,50},{-100,-76},{-28,-76},{-28,-63.6}},
+      points={{-30,100},{-30,92},{-100,92},{-100,-76},{-28,-76},{-28,-63.6}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -450,13 +450,13 @@ equation
       color={0,0,0},
       pattern=LinePattern.Dash));
   connect(actuatorBus.TCV_Position, TCV.opening) annotation (Line(
-      points={{30,100},{30,54},{8,54},{8,48},{0,48},{0,36.4}},
+      points={{30,100},{30,92},{0,92},{0,36.4}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.Divert_Valve_Position, LPT_Bypass.opening) annotation (
       Line(
-      points={{30,100},{30,88},{116,88},{116,2}},
+      points={{30,100},{30,88},{116,88},{116,2},{108,2}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -499,14 +499,14 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.TBV, TBV.opening) annotation (Line(
-      points={{30,100},{32,100},{32,78.4},{-46,78.4}},
+      points={{30,100},{30,92},{-46,92},{-46,78.4}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(volume.port_b, TBV.port_a) annotation (Line(points={{-14,30},{-14,44},
-          {-72,44},{-72,72},{-54,72}}, color={0,127,255}));
-  connect(TBV.port_b, boundary.ports[1]) annotation (Line(points={{-38,72},{-26,
-          72},{-26,74},{-14,74},{-14,80},{-116,80}}, color={0,127,255}));
+  connect(volume.port_b, TBV.port_a) annotation (Line(points={{-14,30},{-14,46},
+          {-26,46},{-26,72},{-38,72}}, color={0,127,255}));
+  connect(TBV.port_b, boundary.ports[1]) annotation (Line(points={{-54,72},{-62,
+          72}},                                      color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           Bitmap(extent={{-80,-92},{78,84}}, fileName="modelica://NHES/Icons/PrimaryHeatSystemPackage/HTGRPB.jpg")}),
                                                                  Diagram(
