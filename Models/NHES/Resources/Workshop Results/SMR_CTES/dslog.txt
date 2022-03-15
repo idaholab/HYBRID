@@ -1,0 +1,412 @@
+Model: NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Examples.Energy_Abritrage_High_Fidelity_NuScale_DisplayIAEA
+Integration started at 24600 using integration method:
+RK-method: esdirk45a
+Local extrapolation
+FSAL
+Continuous extension
+
+Error: The following error was detected at time: 25026.39668852624
+  Error in region computation of IF97 steam tables(p = 14462.8, h = 1.06618e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(SecSide.Rotor8.states[2].p, SecSide.Rotor8.states[2].h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(SecSide.Rotor8.p[2], SecSide.Rotor8.h[2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(SecSide.Rotor8.p[2], SecSide.Rotor8.h[2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25(SecSide.Rotor8.p[2], SecSide.Roto...
+
+Error: The following error was detected at time: 25191.87652692792
+  IF97 medium function visc_dTp for viscosity called with too low density
+d = -6.34144 <= 0.00485458 (triple point density)
+  Failed condition: d > 0.004854575724778614
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity(Reactor.STHX.tube.statesFM[2].d, Reactor.STHX.tube.statesFM[2].T, Reactor.STHX.tube.mediums[2].p, Reactor.STHX.tube.statesFM[2].phase, true)
+Modelica.Media.Water.WaterIF97_ph.dynamicViscosity_Unique16(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = Reactor.STHX.tube.flowModel.mediaProps[2].state.phase, 
+h = Reactor.STHX.tube....
+
+Error: The following error was detected at time: 25179.47484888881
+  IF97 medium function visc_dTp for viscosity called with too low density
+d = -19.2879 <= 0.00485458 (triple point density)
+  Failed condition: d > 0.004854575724778614
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity(Reactor.STHX.tube.statesFM[2].d, Reactor.STHX.tube.statesFM[2].T, Reactor.STHX.tube.mediums[2].p, Reactor.STHX.tube.statesFM[2].phase, true)
+Modelica.Media.Water.WaterIF97_ph.dynamicViscosity_Unique16(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = Reactor.STHX.tube.flowModel.mediaProps[2].state.phase, 
+h = Reactor.STHX.tube....
+
+Error: The following error was detected at time: 25173.27400986925
+  IF97 medium function visc_dTp for viscosity called with too low density
+d = -70.6986 <= 0.00485458 (triple point density)
+  Failed condition: d > 0.004854575724778614
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity(Reactor.STHX.tube.statesFM[2].d, Reactor.STHX.tube.statesFM[2].T, Reactor.STHX.tube.mediums[2].p, Reactor.STHX.tube.statesFM[2].phase, true)
+Modelica.Media.Water.WaterIF97_ph.dynamicViscosity_Unique16(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = Reactor.STHX.tube.flowModel.mediaProps[2].state.phase, 
+h = Reactor.STHX.tube....
+
+
+Warning: Failed to solve nonlinear system using Newton solver.
+  Time: 25187.82116690422
+  Tag: simulation.nonlinear[5]
+  For debugging information enable
+  Simulation/Setup/Debug/Nonlinear solver diagnostics/Detailed logging of failed nonlinear solutions.
+Error: The following error was detected at time: 25186.55027779109
+  IF97 medium function visc_dTp for viscosity called with too low density
+d = -2476.71 <= 0.00485458 (triple point density)
+  Failed condition: d > 0.004854575724778614
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity(Reactor.STHX.tube.statesFM[2].d, Reactor.STHX.tube.statesFM[2].T, Reactor.STHX.tube.mediums[2].p, Reactor.STHX.tube.statesFM[2].phase, true)
+Modelica.Media.Water.WaterIF97_ph.dynamicViscosity_Unique16(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = Reactor.STHX.tube.flowModel.mediaProps[2].state.phase, 
+h = Reactor.STHX.tube....
+
+Error: The following error was detected at time: 25185.91483323452
+
+Model error - power: (3.17E-08*Reactor.core.Hot_Channel_Calculations.q_flux[25]) ^ (1.0/Reactor.core.Hot_Channel_Calculations.m) = (-0.000599807) ^ (0.25)
+
+Error: The following error was detected at time: 25185.59711095624
+  Error in region computation of IF97 steam tables(p = 650742, h = -4.8249e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(p_dis, SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.IF97_Utilities.T_ph(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.temperature_ph_Unique27(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], fill(0, 0...
+
+Error: The following error was detected at time: 25231.35718475758
+  IF97 medium function tsat called with too low pressure
+p = -71055.8 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p(p_dis)
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p(SecSide.TES.sat[6, 2].psat)
+Modelica.Media.Water.WaterIF97_ph.bubbleEnthalpy_Unique42(
+Modelica.Media.Water.WaterIF97_base.SaturationProperties(
+psat = SecSide.TES.sat[6, 2].psat, 
+Tsat = SecSide.TES.sat[6, 2].Tsat
+))
+
+Error: The following error was detected at time: 25228.8724851047
+  IF97 medium function tsat called with too low pressure
+p = -7140.55 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(SecSide.MoistSep1.separator.medium.p, SecSide.Stator5.states[1].h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(SecSide.Stator5.p[1], SecSide.Stator5.h[1], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(SecSide.Stator5.p[1], SecSide.Stator5.h[1], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25(SecSide.Stator5.p[...
+
+Error: The following error was detected at time: 25227.63013527826
+  IF97 medium function tsat called with too low pressure
+p = -27574.2 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p(p_dis)
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p(SecSide.TES.sat[6, 2].psat)
+Modelica.Media.Water.WaterIF97_ph.bubbleEnthalpy_Unique42(
+Modelica.Media.Water.WaterIF97_base.SaturationProperties(
+psat = SecSide.TES.sat[6, 2].psat, 
+Tsat = SecSide.TES.sat[6, 2].Tsat
+))
+
+Error: The following error was detected at time: 25363.8809442668
+  Error in region computation of IF97 steam tables(p = 568952, h = -1.74609e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(p_dis, SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.IF97_Utilities.T_ph(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.temperature_ph_Unique27(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], fill(0, 0...
+
+Error: The following error was detected at time: 25356.94047219238
+  IF97 medium function visc_dTp for viscosity called with too low density
+d = -469.497 <= 0.00485458 (triple point density)
+  Failed condition: d > 0.004854575724778614
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity(Reactor.STHX.tube.statesFM[2].d, Reactor.STHX.tube.statesFM[2].T, Reactor.STHX.tube.mediums[2].p, Reactor.STHX.tube.statesFM[2].phase, true)
+Modelica.Media.Water.WaterIF97_ph.dynamicViscosity_Unique16(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = Reactor.STHX.tube.flowModel.mediaProps[2].state.phase, 
+h = Reactor.STHX.tube....
+
+Error: The following error was detected at time: 26129.64431701595
+  Error in region computation of IF97 steam tables(p = 2.08946e+07, h = 6.04231e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(Reactor.pressurizer_tee.medium.p, Reactor.PressurizerandTopper.mediums[2].h, Reactor.PressurizerandTopper.statesFM[2].phase, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(Reactor.PressurizerandTopper.mediums[2].p, Reactor.PressurizerandTopper.mediums[2].h, Reactor.PressurizerandTopper.mediums[2].phase, 0)
+Modelica.Media.Water.WaterIF97_ph.den...
+
+Error: The following error was detected at time: 26114.82215856696
+  Error in region computation of IF97 steam tables(p = 988566, h = -4.25516e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(p_dis, SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.IF97_Utilities.T_ph(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.temperature_ph_Unique27(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], fill(0, 0...
+
+Error: The following error was detected at time: 26107.41107934246
+  Error in region computation of IF97 steam tables(p = 469708, h = -493683)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(p_dis, SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.IF97_Utilities.T_ph(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.temperature_ph_Unique27(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], fill(0, 0...
+
+Error: The following error was detected at time: 26103.70553973021
+  IF97 medium function visc_dTp for viscosity called with too low density
+d = -1038.6 <= 0.00485458 (triple point density)
+  Failed condition: d > 0.004854575724778614
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity(Reactor.STHX.tube.statesFM[2].d, Reactor.STHX.tube.statesFM[2].T, Reactor.STHX.tube.mediums[2].p, Reactor.STHX.tube.statesFM[2].phase, true)
+Modelica.Media.Water.WaterIF97_ph.dynamicViscosity_Unique16(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = Reactor.STHX.tube.flowModel.mediaProps[2].state.phase, 
+h = Reactor.STHX.tube....
+
+Error: The following error was detected at time: 26268.77376263255
+  IF97 medium function tsat called with too low pressure
+p = -2.69238e+06 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p(Reactor.STHX.tube.mediums[9].p)
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p(Reactor.STHX.tube.mediums[9].sat.psat)
+Modelica.Media.Water.WaterIF97_ph.bubbleEnthalpy_Unique42(
+Modelica.Media.Water.WaterIF97_base.SaturationProperties(
+psat = Reactor.STHX.tube.mediums[9].sat.psat, 
+Tsat = Reactor.STHX.tube.mediums[9]....
+
+Error: The following error was detected at time: 26259.38688137526
+  IF97 medium function tsat called with too low pressure
+p = -14923.6 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p(SecSide.LP.Shell.medium.p)
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p(SecSide.LP.Shell.medium.sat.psat)
+Modelica.Media.Water.WaterIF97_ph.bubbleEnthalpy_Unique42(
+Modelica.Media.Water.WaterIF97_base.SaturationProperties(
+psat = SecSide.LP.Shell.medium.sat.psat, 
+Tsat = SecSide.LP.Shell.medium.sat.Tsat
+))
+
+Error: The following error was detected at time: 26254.69344074661
+  IF97 medium function tsat called with too low pressure
+p = -99953.4 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p(p_dis)
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p(SecSide.TES.sat[6, 2].psat)
+Modelica.Media.Water.WaterIF97_ph.bubbleEnthalpy_Unique42(
+Modelica.Media.Water.WaterIF97_base.SaturationProperties(
+psat = SecSide.TES.sat[6, 2].psat, 
+Tsat = SecSide.TES.sat[6, 2].Tsat
+))
+
+Error: The following error was detected at time: 26489.87938552625
+  Error in region computation of IF97 steam tables(p = 526745, h = -678555)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(p_dis, SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.IF97_Utilities.T_ph(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.temperature_ph_Unique27(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], fill(0, 0...
+
+Error: The following error was detected at time: 26476.00016786698
+  IF97 medium function visc_dTp for viscosity called with too low density
+d = -206.689 <= 0.00485458 (triple point density)
+  Failed condition: d > 0.004854575724778614
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity(Reactor.STHX.tube.statesFM[2].d, Reactor.STHX.tube.statesFM[2].T, Reactor.STHX.tube.mediums[2].p, Reactor.STHX.tube.statesFM[2].phase, true)
+Modelica.Media.Water.WaterIF97_ph.dynamicViscosity_Unique16(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = Reactor.STHX.tube.flowModel.mediaProps[2].state.phase, 
+h = Reactor.STHX.tube....
+
+Error: The following error was detected at time: 26492.90911169226
+  Error in region computation of IF97 steam tables(p = 9.50622e+06, h = 1.77139e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(Reactor.Upper_Riser.mediums[2].p, Reactor.PressurizerandTopper.mediums[1].h, Reactor.PressurizerandTopper.statesFM[1].phase, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(Reactor.PressurizerandTopper.mediums[1].p, Reactor.PressurizerandTopper.mediums[1].h, Reactor.PressurizerandTopper.mediums[1].phase, 0)
+Modelica.Media.Water.WaterIF97_ph.den...
+
+Error: The following error was detected at time: 26491.93973879722
+  Error in region computation of IF97 steam tables(p = 9.99953e+06, h = 7.93523e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(Reactor.pressurizer_tee.medium.p, Reactor.PressurizerandTopper.mediums[2].h, Reactor.PressurizerandTopper.statesFM[2].phase, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(Reactor.PressurizerandTopper.mediums[2].p, Reactor.PressurizerandTopper.mediums[2].h, Reactor.PressurizerandTopper.mediums[2].phase, 0)
+Modelica.Media.Water.WaterIF97_ph.den...
+
+Error: The following error was detected at time: 26491.45505234971
+  IF97 medium function g2: the temperature (= -41619.8 K) is lower than 273.15 K!
+  Failed condition: T >= 273.15
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.g2
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(Reactor.Upper_Riser.mediums[2].p, Reactor.PressurizerandTopper.mediums[1].h, Reactor.PressurizerandTopper.statesFM[1].phase, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(Reactor.PressurizerandTopper.mediums[1].p, Reactor.PressurizerandTopper.mediums[1].h, Reactor.PressurizerandTopper.mediums[1].phase, 0)
+Modelica.Media.Water.WaterIF97_ph.den...
+
+Error: The following error was detected at time: 26491.21270912595
+  IF97 medium function visc_dTp: viscosity computed outside the range
+of validity of the IF97 formulation: p = 3.03722e+06 Pa, Tc = 1257.59 K
+  Failed condition: p <= 500000000.0 and (Tc >= 0.0 and Tc <= 150) or p <= 350000000.0 and (Tc > 150.0 and Tc <= 600) or p <= 300000000.0 and (Tc > 600.0 and Tc <= 900)
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity(Reactor.Upper_Riser.statesFM[2].d, Reactor.Upper_Riser.statesFM[2].T, Reactor.Upper_Riser.mediums[2].p, Reactor.Upper_Riser.statesFM[2].phase, true)
+Modelica.Media.Water.WaterIF97_ph.dynamicViscosity_Unique16(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = Reactor.Upper_Riser.flowModel.states[2].phase, 
+h = Reactor.Upper_Rise...
+
+Error: The following error was detected at time: 26491.09153751407
+  IF97 medium function g2: the temperature (= -153226 K) is lower than 273.15 K!
+  Failed condition: T >= 273.15
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.g2
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(Reactor.pressurizer_tee.medium.p, Reactor.pressurizer_tee.medium.h, Reactor.pressurizer_tee.medium.state.phase, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(Reactor.pressurizer_tee.medium.p, Reactor.pressurizer_tee.medium.h, Reactor.pressurizer_tee.medium.phase, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(Reactor.pressurizer_tee...
+
+Error: The following error was detected at time: 26572.01557391332
+  Error in region computation of IF97 steam tables(p = 632824, h = -1.54115e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(p_dis, SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.IF97_Utilities.T_ph(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.temperature_ph_Unique27(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique25(SecSide.TES.p_in[2], SecSide.TES.h_f[1, 2], fill(0, 0...
+
+Error: The following error was detected at time: 26561.00778701565
+  IF97 medium function visc_dTp for viscosity called with too low density
+d = -41.387 <= 0.00485458 (triple point density)
+  Failed condition: d > 0.004854575724778614
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity(Reactor.STHX.tube.statesFM[2].d, Reactor.STHX.tube.statesFM[2].T, Reactor.STHX.tube.mediums[2].p, Reactor.STHX.tube.statesFM[2].phase, true)
+Modelica.Media.Water.WaterIF97_ph.dynamicViscosity_Unique16(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = Reactor.STHX.tube.flowModel.mediaProps[2].state.phase, 
+h = Reactor.STHX.tube....
+
+Error: The following error was detected at time: 26555.50389356681
+  IF97 medium function visc_dTp for viscosity called with too low density
+d = -811.679 <= 0.00485458 (triple point density)
+  Failed condition: d > 0.004854575724778614
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity
+Modelica.Media.Water.IF97_Utilities.dynamicViscosity(Reactor.STHX.tube.statesFM[2].d, Reactor.STHX.tube.statesFM[2].T, Reactor.STHX.tube.mediums[2].p, Reactor.STHX.tube.statesFM[2].phase, true)
+Modelica.Media.Water.WaterIF97_ph.dynamicViscosity_Unique16(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = Reactor.STHX.tube.flowModel.mediaProps[2].state.phase, 
+h = Reactor.STHX.tube....
+
+
+Warning: Failed to solve nonlinear system using Newton solver.
+  Time: 26598.20674590752
+  Tag: simulation.nonlinear[5]
+
+Warning: Failed to solve nonlinear system using Newton solver.
+  Time: 26597.27969310388
+  Tag: simulation.nonlinear[5]
+
+Warning: Failed to solve nonlinear system using Newton solver.
+  Time: 26596.81616670205
+  Tag: simulation.nonlinear[5]
+Error: The following error was detected at time: 26703.70821133254
+  IF97 medium function tsat called with too low pressure
+p = -1.07337e+08 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p(Reactor.Lower_Riser.mediums[1].p)
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p(Reactor.Lower_Riser.mediums[1].sat.psat)
+Modelica.Media.Water.WaterIF97_ph.bubbleEnthalpy_Unique42(
+Modelica.Media.Water.WaterIF97_base.SaturationProperties(
+psat = Reactor.Lower_Riser.mediums[1].sat.psat, 
+Tsat = Reactor.Lower_Riser.med...
+
+Error: The following error was detected at time: 26701.85410572525
+  IF97 medium function tsat called with too low pressure
+p = -2.05614e+07 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p(Reactor.Lower_Riser.mediums[1].p)
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p(Reactor.Lower_Riser.mediums[1].sat.psat)
+Modelica.Media.Water.WaterIF97_ph.bubbleEnthalpy_Unique42(
+Modelica.Media.Water.WaterIF97_base.SaturationProperties(
+psat = Reactor.Lower_Riser.mediums[1].sat.psat, 
+Tsat = Reactor.Lower_Riser.med...
+
+
+Warning: Failed to solve nonlinear system using Newton solver.
+  Time: 26700.9270529216
+  Tag: simulation.nonlinear[5]
+Error: The following error was detected at time: 26700.46352651978
+  Error in region computation of IF97 steam tables(p = 3.2122e+07, h = -3.38871e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(Reactor.pressurizer_tee.medium.p, Reactor.pressurizer_tee.medium.h, Reactor.pressurizer_tee.medium.state.phase, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(Reactor.pressurizer_tee.medium.p, Reactor.pressurizer_tee.medium.h, Reactor.pressurizer_tee.medium.phase, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique26(Reactor.pressurizer_tee...
+
+
+Integration terminated successfully at T = 27000
+   CPU-time for integration                  : 275.144 seconds
+   CPU-time for initialization               : 0.03 seconds
+   Number of result points                   : 346
+   Number of grid points                     : 272
+   Number of accepted steps                  : 1504
+   Number of rejected steps                  : 790
+   Number of f-evaluations (dynamics)        : 19167
+   Number of crossing function evaluations   : 5121
+   Number of Jacobian-evaluations            : 590
+   Number of model time events               : 0
+   Number of state events                    : 37
+   Number of step events                     : 0
+
+SUCCESSFUL simulation of NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Examples.Energy_Abritrage_High_Fidelity_NuScale_DisplayIAEA

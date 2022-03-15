@@ -49,16 +49,58 @@ equation
           Rectangle(
           extent={{-100,-12},{100,-34}},
           lineColor={28,108,200},
-          fillColor={85,170,255},
+          fillColor={33,133,255},
           fillPattern=FillPattern.Solid),
           Rectangle(
           extent={{-100,26},{100,-12}},
           lineColor={28,108,200},
-          fillColor={85,170,255},
+          fillColor={170,255,255},
           fillPattern=FillPattern.Solid), Rectangle(
           extent={{-48,-12},{48,-34}},
           lineColor={28,108,200},
           fillColor={0,0,255},
+          fillPattern=FillPattern.Solid),
+        Line(
+          points={{-78,20},{70,20},{70,16},{-72,16},{-72,12},{70,12},{70,8},{
+              -72,8},{-72,4},{70,4},{70,0},{-72,0},{-72,-4},{70,-4},{70,-8},{
+              -72,-8}},
+          color={175,175,175},
+          thickness=1),
+        Polygon(
+          points={{-76,-8},{-70,-10},{-66,-12},{-66,-14},{-64,-12},{-60,-10},{
+              -54,-10},{-52,-10},{-50,-8},{-76,-8}},
+          lineColor={0,0,0},
+          smooth=Smooth.Bezier,
+          fillColor={85,170,255},
+          fillPattern=FillPattern.Solid),
+        Ellipse(
+          extent={{-64,-16},{-66,-20}},
+          lineColor={0,0,0},
+          fillColor={85,170,255},
+          fillPattern=FillPattern.Solid),
+        Polygon(
+          points={{24,16},{30,14},{34,12},{34,10},{36,12},{40,14},{46,14},{48,
+              14},{50,16},{24,16}},
+          lineColor={0,0,0},
+          smooth=Smooth.Bezier,
+          fillColor={85,170,255},
+          fillPattern=FillPattern.Solid),
+        Ellipse(
+          extent={{36,8},{34,4}},
+          lineColor={0,0,0},
+          fillColor={85,170,255},
+          fillPattern=FillPattern.Solid),
+        Polygon(
+          points={{-18,4},{-12,2},{-8,0},{-8,-2},{-6,0},{-2,2},{4,2},{6,2},{8,4},
+              {-18,4}},
+          lineColor={0,0,0},
+          smooth=Smooth.Bezier,
+          fillColor={85,170,255},
+          fillPattern=FillPattern.Solid),
+        Ellipse(
+          extent={{-6,-4},{-8,-8}},
+          lineColor={0,0,0},
+          fillColor={85,170,255},
           fillPattern=FillPattern.Solid)}),                      Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     Documentation(info="<html>

@@ -4,16 +4,14 @@ model Single_Pipe_CTES
   parameter Modelica.Units.SI.MassFlowRate shell_flow_shim=1.5;
   parameter Modelica.Units.SI.MassFlowRate tube_flow_shim=1.5;
 
-  Single_Pipe_CS_ED_Enabled_NewGeom
-              CTES(
+  Components.Single_Pipe_Model CTES(
     nY=7,
     nX=9,
     tau=0.05,
     nPipes=250,
     dX=150,
     dY=0.3,
-    redeclare package TES_Med =
-        BaseClasses.HeatCrete,
+    redeclare package TES_Med = BaseClasses.HeatCrete,
     Hot_Con_Start=443.15,
     Cold_Con_Start=363.15)
     annotation (Placement(transformation(extent={{-34,-28},{36,42}})));

@@ -12,8 +12,7 @@ model Regions_3_CHF_EPRI_with_hotchannel
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium = Medium,m_flow(min=if allowFlowReversal then -Modelica.Constants.inf else 0)) annotation (Placement(
         transformation(extent={{-110,-10},{-90,10}}), iconTransformation(extent={{-110,-10},{-90,
             10}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow    port_b(redeclare package Medium
-      =                                                                          Medium,m_flow(max=if allowFlowReversal then +Modelica.Constants.inf else 0)) annotation (
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow    port_b(redeclare package Medium = Medium,m_flow(max=if allowFlowReversal then +Modelica.Constants.inf else 0)) annotation (
       Placement(transformation(extent={{90,-10},{110,10}}), iconTransformation(extent={{90,-10},
             {110,10}})));
 
@@ -74,8 +73,7 @@ model Regions_3_CHF_EPRI_with_hotchannel
   replaceable record Data_FP =
       TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_0
     constrainedby
-    TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.PartialFissionProduct
-                                                                                                                                                        annotation (
+    TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.PartialFissionProduct                                                                        annotation (
      choicesAllMatching=true,Dialog(tab="Kinetics",group="Fission Products"));
   parameter SI.Area sigmasA_add_start[Medium.nC]=fill(0, Medium.nC)
     "Microscopic absorption cross-section for reactivity feedback" annotation(Dialog(tab="Kinetics",group="Fluid Trace Substances"));
@@ -560,7 +558,6 @@ model Regions_3_CHF_EPRI_with_hotchannel
     mass_flow=coolantSubchannel.m_flows[1],
     Pressure_sat=port_a.p,
     Temp_sat=Modelica.Media.Water.WaterIF97_base.saturationTemperature(port_a.p),
-
     Dimension=geometry.dimension,
     h_in=coolantSubchannel.port_a.h_outflow,
     CrossArea=geometry.crossArea,

@@ -54,11 +54,11 @@ model Energy_Arbitrage_Modal
       T(displayUnit="degC") = 579.25,
       h=2997670))
     annotation (Placement(transformation(extent={{-114,-40},{-14,64}})));
-  Modal_CS_ED_Enabled_SMR SecSide(
-    redeclare CS_Modal CS,
+  NuScale_SBST_Secondary_With_CTES SecSide(
+    redeclare NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.CS_Modal
+      CS,
     TES_nPipes=TES_nPipes,
     TES_Length=TES_Length,
-    PipConcLRat=PipConcLRat,
     TES_Thick=TES_Thick,
     TES_Width=TES_Width,
     LP_NTU=LP_NTU,
@@ -67,7 +67,7 @@ model Energy_Arbitrage_Modal
     P_Rise_DFV=P_Rise_DFV,
     Q_nom=Q_nom)
     annotation (Placement(transformation(extent={{20,-36},{100,54}})));
-  Components.Economic_Sim_1 Econ_Sim
+  Components.Economic_Sim_Profile Econ_Sim
     annotation (Placement(transformation(extent={{-16,64},{20,100}})));
 initial equation
   MoneyMade = 0;
@@ -97,12 +97,13 @@ equation
   Price = PriceList[value];
   der(MoneyNominal) = (1/100)*(1/3600)*PriceList[value]*Q_nom/1000;
   Econ_Sim.Net_Demand.y = SecSide.Demand_Internal;
-  Econ_Sim.Anticipatory_Signals.y = SecSide.DFV_Ancticipatory_Internal;
 
-  connect(SecSide.port_b, Reactor.port_a) annotation (Line(points={{17.6,-3.6},
-          {17.6,2},{-4,2},{-4,5.6},{-12.1818,5.6}},          color={0,127,255}));
-  connect(SecSide.port_a, Reactor.port_b) annotation (Line(points={{17.6,26.1},
-          {-4,26.1},{-4,32},{-12.1818,32}},      color={0,127,255}));
+  Econ_Sim.Anticipatory_Signals.y = SecSide.DFV_Anticipatory_Internal;
+
+  connect(SecSide.port_b, Reactor.port_a) annotation (Line(points={{20.8,-13.5},
+          {20.8,2},{-4,2},{-4,5.6},{-12.1818,5.6}},          color={0,127,255}));
+  connect(SecSide.port_a, Reactor.port_b) annotation (Line(points={{20,31.5},{
+          -4,31.5},{-4,32},{-12.1818,32}},       color={0,127,255}));
   annotation (
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-80},{100,
             100}})),
