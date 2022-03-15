@@ -21,8 +21,7 @@ model Pebble_Bed_Brayton
       HP_Comp_Efficiency=0.88,
       HX_Reheat_NTU=15,
       HX_Reheat_Tube_Vol=0.1,
-      HX_Reheat_Shell_Vol=0.1,
-      HX_Reheat_Buffer_Vol=0.1));
+      HX_Reheat_Shell_Vol=0.1));
 
   replaceable package Coolant_Medium =
       NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT
@@ -72,7 +71,6 @@ model Pebble_Bed_Brayton
         Coolant_Medium,
     V_Tube=data.HX_Reheat_Tube_Vol,
     V_Shell=data.HX_Reheat_Shell_Vol,
-    V_buffers=data.HX_Reheat_Buffer_Vol,
     p_start_tube=dataInitial.Recuperator_P_Tube,
     h_start_tube_inlet=dataInitial.Recuperator_h_Tube_Inlet,
     h_start_tube_outlet=dataInitial.Recuperator_h_Tube_Outlet,
@@ -227,7 +225,6 @@ model Pebble_Bed_Brayton
     redeclare package Shell_medium = Aux_Heat_App_Medium,
     V_Tube=3,
     V_Shell=3,
-    V_buffers=1,
     p_start_tube=5920000,
     h_start_tube_inlet=3600e3,
     h_start_tube_outlet=2900e3,

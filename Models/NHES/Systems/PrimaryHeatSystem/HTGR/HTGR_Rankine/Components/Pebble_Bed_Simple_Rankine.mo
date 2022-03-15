@@ -70,7 +70,6 @@ model Pebble_Bed_Simple_Rankine
     redeclare package Shell_medium = Aux_Heat_App_Medium,
     V_Tube=3,
     V_Shell=3,
-    V_buffers=1,
     p_start_tube=6030000,
     h_start_tube_inlet=3600e3,
     h_start_tube_outlet=2900e3,

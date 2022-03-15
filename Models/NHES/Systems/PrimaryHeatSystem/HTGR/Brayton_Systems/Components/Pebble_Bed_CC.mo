@@ -18,8 +18,7 @@ model Pebble_Bed_CC
       nRodFuel_assembly=264,
       nAssembly=12,
       HX_Reheat_Tube_Vol=0.1,
-      HX_Reheat_Shell_Vol=0.1,
-      HX_Reheat_Buffer_Vol=0.1));
+      HX_Reheat_Shell_Vol=0.1));
 
   replaceable package Coolant_Medium =
       NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT
@@ -70,7 +69,6 @@ model Pebble_Bed_CC
         Coolant_Medium,
     V_Tube=data.HX_Reheat_Tube_Vol,
     V_Shell=data.HX_Reheat_Shell_Vol,
-    V_buffers=data.HX_Reheat_Buffer_Vol,
     p_start_tube=dataInitial.Recuperator_P_Tube,
     h_start_tube_inlet=dataInitial.Recuperator_h_Tube_Inlet,
     h_start_tube_outlet=dataInitial.Recuperator_h_Tube_Outlet,
@@ -227,7 +225,6 @@ model Pebble_Bed_CC
     redeclare package Shell_medium = Waste_Heat_App_Medium,
     V_Tube=0.1,
     V_Shell=0.1,
-    V_buffers=0.1,
     p_start_tube=1990000,
     h_start_tube_inlet=2307e3,
     h_start_tube_outlet=3600e3,

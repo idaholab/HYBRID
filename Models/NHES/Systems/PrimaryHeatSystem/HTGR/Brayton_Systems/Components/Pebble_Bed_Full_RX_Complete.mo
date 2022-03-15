@@ -71,7 +71,6 @@ model Pebble_Bed_Full_RX_Complete
         NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT,
     V_Tube=data.HX_Reheat_Tube_Vol,
     V_Shell=data.HX_Reheat_Shell_Vol,
-    V_buffers=data.HX_Reheat_Buffer_Vol,
     p_start_tube=dataInitial.Recuperator_P_Tube,
     h_start_tube_inlet=dataInitial.Recuperator_h_Tube_Inlet,
     h_start_tube_outlet=dataInitial.Recuperator_h_Tube_Outlet,
