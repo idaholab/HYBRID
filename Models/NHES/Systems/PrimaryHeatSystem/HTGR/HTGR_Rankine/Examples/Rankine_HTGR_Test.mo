@@ -23,5 +23,7 @@ equation
   annotation (experiment(
       StopTime=10,
       __Dymola_NumberOfIntervals=50,
-      __Dymola_Algorithm="Esdirk45a"));
+      __Dymola_Algorithm="Esdirk45a"), Documentation(info="<html>
+<p>This test is effectively the same as the above &quot;Complex&quot; test but split between two models. </p>
+</html>"));
 end Rankine_HTGR_Test;

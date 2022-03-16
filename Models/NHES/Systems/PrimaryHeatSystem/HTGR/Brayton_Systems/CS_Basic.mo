@@ -1,7 +1,7 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems;
 model CS_Basic
 
-  extends HTGR_Rankine_Mikk_In_Progress.BaseClasses.Partial_ControlSystem;
+  extends BaseClasses.Partial_ControlSystem;
 
   TRANSFORM.Controls.LimPID     CR(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
