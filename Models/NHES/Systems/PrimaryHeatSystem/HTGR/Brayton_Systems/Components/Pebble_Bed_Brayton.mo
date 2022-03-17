@@ -191,7 +191,7 @@ model Pebble_Bed_Brayton
  /*             Data.Data_HTGR_Pebble
                           data(
     redeclare package Coolant_Medium =
-        NHES.Systems.PrimaryHeatSystem.HTGR.BaseClasses.He_HighT,
+        NHES.Systems.PrimaryHeatSystem.HTGR.Coolant_Medium,
     redeclare package Fuel_Medium = TRANSFORM.Media.Solids.UO2,
     redeclare package Pebble_Medium =
         TRANSFORM.Media.Solids.Graphite.Graphite_5,
@@ -286,7 +286,7 @@ model Pebble_Bed_Brayton
     redeclare record Data_FP =
         TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
     rho_input=CR_reactivity.y,
-    redeclare package Medium = BaseClasses.He_HighT,
+    redeclare package Medium = Coolant_Medium,
     SF_start_power={0.2,0.3,0.3,0.2},
     nParallel=data.nAssembly,
     redeclare model Geometry =

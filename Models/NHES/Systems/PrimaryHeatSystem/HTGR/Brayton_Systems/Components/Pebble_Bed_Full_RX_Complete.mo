@@ -41,7 +41,7 @@ model Pebble_Bed_Full_RX_Complete
     parameter Real eff = 0.9;
   TRANSFORM.Fluid.Volumes.SimpleVolume Core_Outlet(
     redeclare package Medium =
-        NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.BaseClasses.He_HighT,
+        Coolant_Medium,
     p_start=dataInitial.P_Core_Outlet,
     T_start=dataInitial.T_Core_Outlet,
     redeclare model Geometry =
@@ -53,7 +53,7 @@ model Pebble_Bed_Full_RX_Complete
 
   GasTurbine.Turbine.Turbine turbine(
     redeclare package Medium =
-        NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.BaseClasses.He_HighT,
+        Coolant_Medium,
     pstart_out=dataInitial.P_Turbine_Ref,
     Tstart_in=dataInitial.TStart_In_Turbine,
     Tstart_out=dataInitial.TStart_Out_Turbine,
@@ -67,9 +67,9 @@ model Pebble_Bed_Full_RX_Complete
     K_tube=data.HX_Reheat_K_tube,
     K_shell=data.HX_Reheat_K_shell,
     redeclare package Tube_medium =
-        NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.BaseClasses.He_HighT,
+        Coolant_Medium,
     redeclare package Shell_medium =
-        NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.BaseClasses.He_HighT,
+        Coolant_Medium,
     V_Tube=data.HX_Reheat_Tube_Vol,
     V_Shell=data.HX_Reheat_Shell_Vol,
     p_start_tube=dataInitial.Recuperator_P_Tube,
@@ -87,14 +87,14 @@ model Pebble_Bed_Full_RX_Complete
     annotation (Placement(transformation(extent={{18,-18},{-2,2}})));
 
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
-        NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.BaseClasses.He_HighT)
+        Coolant_Medium)
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={38,10})));
   TRANSFORM.Fluid.Volumes.SimpleVolume Precooler(
     redeclare package Medium =
-        NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.BaseClasses.He_HighT,
+        Coolant_Medium,
     p_start=dataInitial.P_HP_Comp_Ref,
     T_start=data.T_Precooler,
     redeclare model Geometry =
@@ -112,7 +112,7 @@ model Pebble_Bed_Full_RX_Complete
         origin={2,36})));
   GasTurbine.Compressor.Compressor compressor(
     redeclare package Medium =
-        NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.BaseClasses.He_HighT,
+        Coolant_Medium,
     pstart_in=dataInitial.P_LP_Comp_Ref,
     Tstart_in=dataInitial.TStart_LP_Comp_In,
     Tstart_out=dataInitial.TStart_LP_Comp_Out,
@@ -123,7 +123,7 @@ model Pebble_Bed_Full_RX_Complete
 
   TRANSFORM.Fluid.Pipes.TransportDelayPipe transportDelayPipe(
     redeclare package Medium =
-        NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.BaseClasses.He_HighT,
+        Coolant_Medium,
     crossArea=data.A_HPDelay,
     length=data.L_HPDelay) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
@@ -132,7 +132,7 @@ model Pebble_Bed_Full_RX_Complete
 
   TRANSFORM.Fluid.Volumes.SimpleVolume Intercooler(
     redeclare package Medium =
-        NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.BaseClasses.He_HighT,
+        Coolant_Medium,
     p_start=dataInitial.P_LP_Comp_Ref,
     T_start=data.T_Intercooler,
     redeclare model Geometry =
@@ -150,7 +150,7 @@ model Pebble_Bed_Full_RX_Complete
         origin={78,-54})));
   GasTurbine.Compressor.Compressor compressor1(
     redeclare package Medium =
-        NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.BaseClasses.He_HighT,
+        Coolant_Medium,
     allowFlowReversal=false,
     pstart_in=dataInitial.P_HP_Comp_Ref,
     Tstart_in=dataInitial.TStart_HP_Comp_In,
@@ -164,7 +164,7 @@ model Pebble_Bed_Full_RX_Complete
 
   TRANSFORM.Fluid.Pipes.TransportDelayPipe transportDelayPipe1(
     redeclare package Medium =
-        NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.BaseClasses.He_HighT,
+        Coolant_Medium,
     crossArea=data.A_HPDelay,
     length=data.L_HPDelay) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
@@ -173,7 +173,7 @@ model Pebble_Bed_Full_RX_Complete
 
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.SpringBallValve
     springBallValve(
-    redeclare package Medium = BaseClasses.He_HighT,
+    redeclare package Medium = Coolant_Medium,
     p_spring=data.P_Release,
     K=data.K_P_Release,
     opening_init=0.) annotation (Placement(transformation(
@@ -181,14 +181,14 @@ model Pebble_Bed_Full_RX_Complete
         rotation=90,
         origin={4,58})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary5(
-    redeclare package Medium = BaseClasses.He_HighT,
+    redeclare package Medium = Coolant_Medium,
     p=data.P_Release,
     nPorts=1) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={4,86})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort Core_Inlet_T(redeclare package
-      Medium = BaseClasses.He_HighT) annotation (Placement(transformation(
+      Medium = Coolant_Medium) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
         origin={-8,-42})));
@@ -196,7 +196,7 @@ model Pebble_Bed_Full_RX_Complete
  /*             Data.Data_HTGR_Pebble
                           data(
     redeclare package Coolant_Medium =
-        NHES.Systems.PrimaryHeatSystem.HTGR.BaseClasses.He_HighT,
+        NHES.Systems.PrimaryHeatSystem.HTGR.Coolant_Medium,
     redeclare package Fuel_Medium = TRANSFORM.Media.Solids.UO2,
     redeclare package Pebble_Medium =
         TRANSFORM.Media.Solids.Graphite.Graphite_5,
@@ -222,13 +222,13 @@ model Pebble_Bed_Full_RX_Complete
     annotation (Placement(transformation(extent={{80,124},{100,144}})));
 
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort Intercooler_Pre_Temp(redeclare
-      package Medium = BaseClasses.He_HighT) annotation (Placement(
+      package Medium = Coolant_Medium) annotation (Placement(
         transformation(
         extent={{-10,10},{10,-10}},
         rotation=90,
         origin={100,-16})));
   TRANSFORM.Fluid.Sensors.Temperature Core_Outlet_T(redeclare package Medium =
-        BaseClasses.He_HighT) annotation (Placement(transformation(
+        Coolant_Medium) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={-76,-78})));
@@ -264,7 +264,7 @@ model Pebble_Bed_Full_RX_Complete
     redeclare record Data_FP =
         TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
     rho_input=CR.y,
-    redeclare package Medium = BaseClasses.He_HighT,
+    redeclare package Medium = Coolant_Medium,
     SF_start_power={0.2,0.3,0.3,0.2},
     nParallel=data.nAssembly,
     redeclare model Geometry =

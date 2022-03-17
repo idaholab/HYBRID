@@ -22,7 +22,8 @@ model Pebble_Bed_Simple_Rankine
       HX_Reheat_Buffer_Vol=0.1));
     Real eff;
   replaceable package Coolant_Medium =
-       Modelica.Media.IdealGases.SingleGases.He  constrainedby Modelica.Media.Interfaces.PartialMedium   "Core coolant"                   annotation(choicesAllMatching = true,dialog(group="Media"));
+       Modelica.Media.IdealGases.SingleGases.He  constrainedby
+    Modelica.Media.Interfaces.PartialMedium                                                              "Core coolant"                   annotation(choicesAllMatching = true,dialog(group="Media"));
   replaceable package Fuel_Medium =  TRANSFORM.Media.Solids.UO2 "Core fuel material for thermodynamic properties"                                  annotation(choicesAllMatching = true,dialog(group = "Media"));
   replaceable package Pebble_Medium =     Media.Solids.Graphite_5  "Pebble internal material"                         annotation(dialog(group = "Media"),choicesAllMatching=true);
       replaceable package Aux_Heat_App_Medium =
@@ -108,9 +109,9 @@ model Pebble_Bed_Simple_Rankine
   TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance(
       redeclare package Medium = Coolant_Medium,
       R=1000)
-    annotation (Placement(transformation(extent={{50,-52},{30,-32}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
-        Coolant_Medium) annotation (Placement(
+    annotation (Placement(transformation(extent={{50,-50},{30,-30}})));
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
+      = Coolant_Medium) annotation (Placement(
         transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
@@ -209,7 +210,8 @@ equation
     annotation (Line(points={{56,32},{56,38},{88,38},{88,2}},
                                                           color={0,127,255}));
   connect(resistance.port_a, core.port_b)
-    annotation (Line(points={{47,-42},{54,-42}},   color={0,127,255}));
+    annotation (Line(points={{47,-40},{50,-40},{50,-42},{54,-42}},
+                                                   color={0,127,255}));
   connect(boundary1.ports[1], steamTurbine.portLP)
     annotation (Line(points={{-86,-34},{-28,-34}}, color={0,127,255}));
   connect(steamTurbine.portHP, Steam_Offtake.Shell_out)
@@ -226,7 +228,8 @@ equation
       extent={{-6,3},{-6,3}},
       horizontalAlignment=TextAlignment.Right));
   connect(resistance.port_b, sensor_T.port_a)
-    annotation (Line(points={{33,-42},{24,-42}}, color={0,127,255}));
+    annotation (Line(points={{33,-40},{28,-40},{28,-42},{24,-42}},
+                                                 color={0,127,255}));
   connect(sensor_T.port_b, Steam_Offtake.Tube_in)
     annotation (Line(points={{4,-42},{2,-42},{2,-6},{4,-6},{4,-2}},
                                                        color={0,127,255}));

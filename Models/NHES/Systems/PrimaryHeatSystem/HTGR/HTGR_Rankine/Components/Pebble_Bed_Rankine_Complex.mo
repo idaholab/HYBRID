@@ -238,7 +238,7 @@ model Pebble_Bed_Rankine_Complex
     redeclare model HeatTransfer_shell =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_SinglePhase_2Region,
     redeclare package Medium_shell =
-        NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.BaseClasses.He_HighT)
+        Coolant_Medium)
     annotation (Placement(transformation(
         extent={{-12,-11},{12,11}},
         rotation=90,

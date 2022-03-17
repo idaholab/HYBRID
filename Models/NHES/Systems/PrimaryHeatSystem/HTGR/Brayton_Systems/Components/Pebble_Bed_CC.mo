@@ -324,7 +324,7 @@ model Pebble_Bed_CC
     redeclare record Data_FP =
         TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
     rho_input=CR_reactivity.y,
-    redeclare package Medium = BaseClasses.He_HighT,
+    redeclare package Medium = Coolant_Medium,
     SF_start_power={0.2,0.3,0.3,0.2},
     nParallel=data.nAssembly,
     redeclare model Geometry =
