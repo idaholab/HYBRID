@@ -22,7 +22,7 @@ model Pebble_Bed_Simple_Rankine
       HX_Reheat_Buffer_Vol=0.1));
     Real eff;
   replaceable package Coolant_Medium =
-      NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.BaseClasses.He_HighT  "Core coolant"                   annotation(choicesAllMatching = true,dialog(group="Media"));
+       Modelica.Media.IdealGases.SingleGases.He  constrainedby Modelica.Media.Interfaces.PartialMedium   "Core coolant"                   annotation(choicesAllMatching = true,dialog(group="Media"));
   replaceable package Fuel_Medium =  TRANSFORM.Media.Solids.UO2 "Core fuel material for thermodynamic properties"                                  annotation(choicesAllMatching = true,dialog(group = "Media"));
   replaceable package Pebble_Medium =     Media.Solids.Graphite_5  "Pebble internal material"                         annotation(dialog(group = "Media"),choicesAllMatching=true);
       replaceable package Aux_Heat_App_Medium =

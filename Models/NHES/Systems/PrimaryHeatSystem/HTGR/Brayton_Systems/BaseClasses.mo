@@ -146,4 +146,15 @@ package BaseClasses
     Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
           coordinateSystem(preserveAspectRatio=false)));
   end SignalSubBus_SensorOutput;
+
+  package He_HighT
+    "Ideal gas \"He\" from NASA Glenn coefficients but Tmax higher"
+    extends Modelica.Media.IdealGases.Common.SingleGasNasa(
+       mediumName="Helium",
+       data=HTGR_Rankine_Mikk_In_Progress.BaseClasses.He,
+       fluidConstants={Modelica.Media.IdealGases.Common.FluidData.He});
+
+    annotation (Documentation(info="<html><div>
+      <img src=\"modelica://Modelica/Resources/Images/Media/IdealGases/SingleGases/He.png\"></div></html>"));
+  end He_HighT;
 end BaseClasses;

@@ -167,9 +167,13 @@ equation
   //Assume heat capacity ratio to be a specified, non-zero value. This may cause HX to operate a little differently than the method intends if there is phase change (as that would make Cr=0 identically by definition)
   //We ignore that for this model as neither side is specified to be single or two-phase here. Additionally, the heat capacity ratio is no longer defined by m_flow*Cp, but instead we can define it by the maximum power ratio
   //by assuming Q_sh/tub = m_flow*Cp*dT, and so the dT values should cancel numerator & denominator
+  if
+    (abs(Q_min) > 0) then
 
-      Cr = abs(Q_min)/abs(Q_max);
-
+      Cr = abs(Q_max)/abs(Q_min);
+  else
+      Cr = 1;
+  end if;
   //Calculate Q using Cr, Q_max, and NTU. Note that if Cr = 0, this simplifies to Q_max*(1-exp(-NTU)) just as the hex_ calculations used."
   //der(Q) = (((1-exp(-NTU*(1-Cr)))*Q_max/(1-Cr*exp(-NTU*(1-Cr))))-Q)/tau;
   if use_derQ then

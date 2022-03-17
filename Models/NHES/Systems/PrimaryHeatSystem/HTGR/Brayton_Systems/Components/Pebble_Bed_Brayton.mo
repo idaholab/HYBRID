@@ -24,8 +24,7 @@ model Pebble_Bed_Brayton
       HX_Reheat_Shell_Vol=0.1));
 
   replaceable package Coolant_Medium =
-      NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT
-                                                                                                annotation(choicesAllMatching = true,dialog(group="Media"));
+     Modelica.Media.IdealGases.SingleGases.He  constrainedby Modelica.Media.Interfaces.PartialMedium               annotation(choicesAllMatching = true,dialog(group="Media"));
   replaceable package Fuel_Medium =  TRANSFORM.Media.Solids.UO2                                   annotation(choicesAllMatching = true,dialog(group = "Media"));
   replaceable package Pebble_Medium =
       Media.Solids.Graphite_5                                                                                   annotation(dialog(group = "Media"),choicesAllMatching=true);
@@ -286,8 +285,7 @@ model Pebble_Bed_Brayton
     redeclare record Data_FP =
         TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
     rho_input=CR_reactivity.y,
-    redeclare package Medium =
-        HTGR_Rankine_Mikk_In_Progress.BaseClasses.He_HighT,
+    redeclare package Medium = BaseClasses.He_HighT,
     SF_start_power={0.2,0.3,0.3,0.2},
     nParallel=data.nAssembly,
     redeclare model Geometry =
@@ -301,11 +299,10 @@ model Pebble_Bed_Brayton
         nPins_nonFuel=data.nRodNonFuel_assembly,
         angle=1.5707963267949),
     toggle_ReactivityFP=false,
-    Q_shape={0.00921016,0.022452442,0.029926363,0.035801439,0.040191759,
-        0.04361119,0.045088573,0.046395024,0.049471251,0.050548587,0.05122695,
-        0.051676198,0.051725935,0.048691804,0.051083234,0.050675546,0.049468838,
-        0.047862888,0.045913065,0.041222844,0.038816801,0.035268536,0.029550046,
-        0.022746578,0.011373949},
+    Q_shape={0.00921016,0.022452442,0.029926363,0.035801439,0.040191759,0.04361119,
+        0.045088573,0.046395024,0.049471251,0.050548587,0.05122695,0.051676198,0.051725935,
+        0.048691804,0.051083234,0.050675546,0.049468838,0.047862888,0.045913065,
+        0.041222844,0.038816801,0.035268536,0.029550046,0.022746578,0.011373949},
     Fh=1.4,
     n_hot=25,
     Teffref_fuel=1273.15,
@@ -353,8 +350,8 @@ equation
                                                       color={0,127,255}));
   connect(Reheater.Shell_out, Core_Inlet_T.port_a) annotation (Line(points={{-10,-28},
           {-14,-28},{-14,-46},{-20,-46}},            color={0,127,255}));
-  connect(turbine.outlet, Reheater.Tube_in) annotation (Line(points={{-30.4,
-          18.2},{-30.4,18},{-16,18},{-16,-22},{-10,-22}},
+  connect(turbine.outlet, Reheater.Tube_in) annotation (Line(points={{-30.4,18.2},
+          {-30.4,18},{-16,18},{-16,-22},{-10,-22}},
                                               color={0,127,255}));
   connect(Reheater.Tube_out, sensor_T.port_a)
     annotation (Line(points={{10,-22},{28,-22},{28,-16}},
@@ -379,10 +376,10 @@ equation
   connect(Steam_Offtake.Shell_out, auxiliary_heating_port_b) annotation (Line(
         points={{-86,-6},{-86,-46},{-100,-46}},
         color={0,0,0}));
-  connect(core.port_a, Core_Inlet_T.port_b) annotation (Line(points={{-42,-46},
-          {-32,-46}},                     color={0,127,255}));
-  connect(core.port_b, Core_Outlet.port_a) annotation (Line(points={{-62,-46},{
-          -72,-46},{-72,-38}},
+  connect(core.port_a, Core_Inlet_T.port_b) annotation (Line(points={{-42,-46},{
+          -32,-46}},                      color={0,127,255}));
+  connect(core.port_b, Core_Outlet.port_a) annotation (Line(points={{-62,-46},{-72,
+          -46},{-72,-38}},
                  color={0,127,255}));
   connect(actuatorBus.CR_Reactivity, CR_reactivity.u) annotation (Line(
       points={{30,100},{30,101},{76.8,101}},
