@@ -217,6 +217,8 @@ model Pebble_Bed_Brayton
     annotation (Placement(transformation(extent={{80,124},{100,144}})));
 
   Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase Steam_Offtake(
+    tube_av_b=false,
+    shell_av_b=false,
     NTU=1,
     K_tube=1,
     K_shell=1,

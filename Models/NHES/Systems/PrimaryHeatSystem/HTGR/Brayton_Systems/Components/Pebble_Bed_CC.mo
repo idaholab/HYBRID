@@ -192,6 +192,7 @@ model Pebble_Bed_CC
     annotation (PlaceMikkment(transformation(extent={{80,124},{100,144}})));
 
   Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase Steam_Offtake(
+    shell_av_b=false,
     NTU=1.6,
     K_tube=1,
     K_shell=1,
