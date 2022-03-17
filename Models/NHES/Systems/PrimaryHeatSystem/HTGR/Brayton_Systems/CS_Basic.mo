@@ -11,7 +11,7 @@ model CS_Basic
     annotation (Placement(transformation(extent={{-40,-64},{-20,-44}})));
   Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
     annotation (Placement(transformation(extent={{-72,-64},{-52,-44}})));
-  HTGR_Rankine_Mikk_In_Progress.Data.Data_CS data(T_Rx_Exit_Ref=1123.15)
+  Data.Data_CS data(T_Rx_Exit_Ref=1123.15)
     annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
   Modelica.Blocks.Sources.RealExpression PR_Compressor(y=0)
     "total thermal power"

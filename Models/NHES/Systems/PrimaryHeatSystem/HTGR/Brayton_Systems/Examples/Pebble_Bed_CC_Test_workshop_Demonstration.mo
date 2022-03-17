@@ -13,14 +13,14 @@ model Pebble_Bed_CC_Test_workshop_Demonstration
     T=306.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{58,-40},{38,-20}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Water_T1(redeclare package Medium =
-        Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Water_T1(redeclare package Medium
+      = Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{-6,8},{6,-8}},
         rotation=180,
         origin={18,-30})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Water_T3(redeclare package Medium =
-        Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Water_T3(redeclare package Medium
+      = Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{8,9},{-8,-9}},
         rotation=270,

@@ -1,6 +1,6 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.Components;
 model Pebble_Bed_Brayton
-  extends HTGR_Rankine_Mikk_In_Progress.BaseClasses.Partial_SubSystem_A(
+  extends BaseClasses.Partial_SubSystem_A(
     redeclare replaceable CS_Dummy CS,
     redeclare replaceable ED_Dummy ED,
     redeclare Data.Data_HTGR_Pebble data(
@@ -24,7 +24,8 @@ model Pebble_Bed_Brayton
       HX_Reheat_Shell_Vol=0.1));
 
   replaceable package Coolant_Medium =
-     Modelica.Media.IdealGases.SingleGases.He  constrainedby Modelica.Media.Interfaces.PartialMedium               annotation(choicesAllMatching = true,dialog(group="Media"));
+     Modelica.Media.IdealGases.SingleGases.He  constrainedby
+    Modelica.Media.Interfaces.PartialMedium                                                                        annotation(choicesAllMatching = true,dialog(group="Media"));
   replaceable package Fuel_Medium =  TRANSFORM.Media.Solids.UO2                                   annotation(choicesAllMatching = true,dialog(group = "Media"));
   replaceable package Pebble_Medium =
       Media.Solids.Graphite_5                                                                                   annotation(dialog(group = "Media"),choicesAllMatching=true);

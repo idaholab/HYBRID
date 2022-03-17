@@ -63,7 +63,7 @@ model Pebble_Bed_Rankine_Complex
     annotation (Placement(transformation(extent={{78,120},{98,140}})));
 
   Brayton_Systems.Compressor_Controlled compressor_Controlled(
-    redeclare package Medium = TRANSFORM.Media.ExternalMedia.CoolProp.Helium,
+    redeclare package Medium = Coolant_Medium,
     explicitIsentropicEnthalpy=false,
     pstart_in=5500000,
     Tstart_in=398.15,
@@ -73,11 +73,11 @@ model Pebble_Bed_Rankine_Complex
     w0nom=300)
     annotation (Placement(transformation(extent={{-48,-60},{-68,-40}})));
   TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance(
-      redeclare package Medium = TRANSFORM.Media.ExternalMedia.CoolProp.Helium,
+      redeclare package Medium = Coolant_Medium,
       R=1000)
     annotation (Placement(transformation(extent={{-70,28},{-58,42}})));
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
-        TRANSFORM.Media.ExternalMedia.CoolProp.Helium) annotation (Placement(
+        Coolant_Medium) annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
@@ -106,7 +106,7 @@ model Pebble_Bed_Rankine_Complex
     redeclare record Data_FP =
         TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
     rho_input=CR_reactivity.y,
-    redeclare package Medium = TRANSFORM.Media.ExternalMedia.CoolProp.Helium,
+    redeclare package Medium = Coolant_Medium,
     SF_start_power={0.3,0.25,0.25,0.2},
     nParallel=data.nAssembly,
     redeclare model Geometry =
@@ -155,7 +155,7 @@ model Pebble_Bed_Rankine_Complex
     annotation (Placement(transformation(extent={{68,94},{80,108}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
                                        sensor_T(redeclare package Medium =
-        TRANSFORM.Media.ExternalMedia.CoolProp.Helium) annotation (Placement(
+        Coolant_Medium) annotation (Placement(
         transformation(
         extent={{-5,-7},{5,7}},
         rotation=270,

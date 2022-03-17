@@ -66,7 +66,7 @@ model Pebble_Bed_Simple_Rankine
     K_tube=1,
     K_shell=1,
     redeclare package Tube_medium =
-        TRANSFORM.Media.ExternalMedia.CoolProp.Helium,
+        Coolant_Medium,
     redeclare package Shell_medium = Aux_Heat_App_Medium,
     V_Tube=3,
     V_Shell=3,
@@ -97,7 +97,7 @@ model Pebble_Bed_Simple_Rankine
     nPorts=1)
     annotation (Placement(transformation(extent={{-106,-44},{-86,-24}})));
   Brayton_Systems.Compressor_Controlled compressor_Controlled(
-    redeclare package Medium = TRANSFORM.Media.ExternalMedia.CoolProp.Helium,
+    redeclare package Medium = Coolant_Medium,
     explicitIsentropicEnthalpy=false,
     pstart_in=5500000,
     Tstart_in=398.15,
@@ -106,11 +106,11 @@ model Pebble_Bed_Simple_Rankine
     PR0=1.05,
     w0nom=300) annotation (Placement(transformation(extent={{40,14},{60,34}})));
   TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance(
-      redeclare package Medium = TRANSFORM.Media.ExternalMedia.CoolProp.Helium,
+      redeclare package Medium = Coolant_Medium,
       R=1000)
     annotation (Placement(transformation(extent={{50,-52},{30,-32}})));
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
-        TRANSFORM.Media.ExternalMedia.CoolProp.Helium) annotation (Placement(
+        Coolant_Medium) annotation (Placement(
         transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
@@ -139,7 +139,7 @@ model Pebble_Bed_Simple_Rankine
     redeclare record Data_FP =
         TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
     rho_input=CR_reactivity.y,
-    redeclare package Medium = TRANSFORM.Media.ExternalMedia.CoolProp.Helium,
+    redeclare package Medium = Coolant_Medium,
     SF_start_power={0.3,0.25,0.25,0.2},
     nParallel=data.nAssembly,
     redeclare model Geometry =
@@ -188,7 +188,7 @@ model Pebble_Bed_Simple_Rankine
     annotation (Placement(transformation(extent={{84,76},{96,90}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
                                        sensor_T(redeclare package Medium =
-        TRANSFORM.Media.ExternalMedia.CoolProp.Helium) annotation (Placement(
+        Coolant_Medium) annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
