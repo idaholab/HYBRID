@@ -218,7 +218,7 @@ model Pebble_Bed_Full_RX_Complete
     HX_Reheat_Buffer_Vol=0.1)
     annotation (Placement(transformation(extent={{-100,50},{-80,70}})));*/
 
-  HTGR_Rankine_Mikk_In_Progress.Data.DataInitial_HTGR_Pebble dataInitial
+  Data.DataInitial_HTGR_Pebble dataInitial
     annotation (Placement(transformation(extent={{80,124},{100,144}})));
 
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort Intercooler_Pre_Temp(redeclare

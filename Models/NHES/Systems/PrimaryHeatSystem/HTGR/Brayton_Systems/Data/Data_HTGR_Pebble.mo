@@ -1,11 +1,12 @@
-within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Data;
+within NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.Data;
 model Data_HTGR_Pebble
 
   extends BaseClasses.Record_Data;
 
   import TRANSFORM.Units.Conversions.Functions.Distance_m.from_in;
 
-  replaceable package Coolant_Medium = Modelica.Media.Interfaces.PartialMedium annotation(choicesAllMatching = true,dialog(group="Media"));
+  replaceable package Coolant_Medium =
+      Modelica.Media.Interfaces.PartialMedium                                  annotation(choicesAllMatching = true,dialog(group="Media"));
   replaceable package Fuel_Medium =
       TRANSFORM.Media.Interfaces.Solids.PartialAlloy                                    annotation(choicesAllMatching = true,dialog(group = "Media"));
   replaceable package Pebble_Medium =
@@ -59,17 +60,14 @@ model Data_HTGR_Pebble
   parameter Real HX_Aux_NTU = 1 annotation(dialog(tab = "HXs", group = "Aux HX"));
   parameter SI.Volume HX_Aux_Tube_Vol = 3 annotation(dialog(tab = "HXs", group = "Aux HX"));
   parameter SI.Volume HX_Aux_Shell_Vol = 3 annotation(dialog(tab = "HXs", group = "Aux HX"));
-  parameter SI.Volume HX_Aux_Buffer_Vol = 1 annotation(dialog(tab = "HXs", group = "Aux HX"));
   parameter Real HX_Aux_K_tube(unit = "1/m4") = 1 annotation(dialog(tab = "HXs", group = "Aux HX"));
   parameter Real HX_Aux_K_shell(unit = "1/m4") = 1 annotation(dialog(tab = "HXs", group = "Aux HX"));
 
   parameter Real HX_Reheat_NTU = 10 annotation(dialog(tab = "HXs", group = "Reheat HX"));
   parameter SI.Volume HX_Reheat_Tube_Vol = 0.2 annotation(dialog(tab = "HXs", group = "Reheat HX"));
   parameter SI.Volume HX_Reheat_Shell_Vol = 0.2 annotation(dialog(tab = "HXs", group = "Reheat HX"));
-  parameter SI.Volume HX_Reheat_Buffer_Vol = 0.1 annotation(dialog(tab = "HXs", group = "Reheat HX"));
   parameter Real HX_Reheat_K_tube(unit = "1/m4") = 1 annotation(dialog(tab = "HXs", group = "Reheat HX"));
   parameter Real HX_Reheat_K_shell(unit = "1/m4") = 1 annotation(dialog(tab = "HXs", group = "Reheat HX"));
-
   parameter SI.Volume V_Intercooler = 0.0 annotation(dialog(tab = "HXs",group = "Coolers"));
   parameter SI.Volume V_Precooler = 0.0 annotation(dialog(tab = "HXs", group = "Coolers"));
 

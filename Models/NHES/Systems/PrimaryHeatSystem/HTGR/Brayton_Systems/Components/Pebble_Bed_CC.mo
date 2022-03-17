@@ -188,8 +188,8 @@ model Pebble_Bed_CC
 
 
 
-  HTGR_Rankine_Mikk_In_Progress.Data.DataInitial_HTGR_Pebble dataInitial
-    annotation (Placement(transformation(extent={{80,124},{100,144}})));
+  Data.DataInitial_HTGR_Pebble dataInitial
+    annotation (PlaceMikkment(transformation(extent={{80,124},{100,144}})));
 
   Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase Steam_Offtake(
     NTU=1.6,
