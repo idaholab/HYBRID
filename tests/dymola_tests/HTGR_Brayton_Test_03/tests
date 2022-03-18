@@ -1,0 +1,12 @@
+[Tests]
+ [./]
+  #REQUIREMENT: R-F-1
+  type = 'HYBRIDTester'
+  input = 'HTGR_Workshop.mos'
+  workingDir = '.'
+  output = 'HTGR_Workshop.mat'
+  dymola_mats = 'HTGR_Workshop.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]
