@@ -2,8 +2,8 @@ within NHES.Systems.BalanceOfPlant.Turbine;
 model SteamTurbine_L1_boundaries
 
   extends BaseClasses.Partial_SubSystem_B(
-    redeclare replaceable ControlSystems.CS_Dummy CS,
-    redeclare replaceable ControlSystems.ED_Dummy ED,
+    redeclare replaceable ContolSystems.CS_Dummy CS,
+    redeclare replaceable ContolSystems.ED_Dummy ED,
     redeclare Data.IdealTurbine data);
 
   parameter SI.Pressure p_condenser=1e4 "Condenser operating pressure";

@@ -3,15 +3,10 @@ model NTUHX_Example
 
   extends TRANSFORM.Icons.Example;
 
-  NTU_HX_SinglePhase HX(
-    tube_av_b=true,
-    shell_av_b=true,
-    use_derQ=true,
+  Fluid.HeatExchangers.Generic_HXs.NTU_HX HX(
     NTU=3.6,
     K_tube=17000,
     K_shell=5,
-    redeclare package Tube_medium = Modelica.Media.Water.StandardWater,
-    redeclare package Shell_medium = Modelica.Media.Water.StandardWater,
     V_Tube=4.,
     V_Shell=4,
     p_start_tube=2340000,
@@ -20,7 +15,9 @@ model NTUHX_Example
     p_start_shell=58000,
     h_start_shell_inlet=205.5e3,
     h_start_shell_outlet=205.5e3,
-    Cr_init=0.8)
+    Cr_init=0.8,
+    deltaX_t_init=0.0,
+    deltaX_s_init=0.0)
     annotation (Placement(transformation(extent={{-26,-20},{10,12}})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Tube_Feed(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -29,7 +26,6 @@ model NTUHX_Example
     nPorts=1) annotation (Placement(transformation(extent={{88,4},{68,24}})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Shell_Feed(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
-    use_m_flow_in=false,
     m_flow=13.3,
     h=1015.8e3,
     nPorts=1)

@@ -1,1 +1,0 @@
-simulateModel("NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Examples.Rankine_HTGR_Complex", stopTime=10, numberOfIntervals=30, method="Esdirk45a", resultFile="PBHTGR_Rankine_Alone");

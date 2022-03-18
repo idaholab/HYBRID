@@ -1,1 +1,0 @@
-simulateModel("NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.Examples.Pebble_Bed_CC_Test", stopTime=100, numberOfIntervals=100, method="Esdirk45a", resultFile="PBHTGR_CC_Brayton");

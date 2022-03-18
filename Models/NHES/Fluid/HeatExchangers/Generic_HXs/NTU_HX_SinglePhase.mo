@@ -3,14 +3,9 @@ model NTU_HX_SinglePhase
   "Calculates Q as an internal heat generation in a control volume, as a source on one side and a sink on the other. This model allows both for flow reversal and for single phase flow on either or both sides of the HX."
   import Modelica.Units.SI.*;
   import NHES;
-  //user options
-  parameter Boolean tube_av_b = true "Resistance connects between volume and port_b, false for between port_a and volume";
-  parameter Boolean shell_av_b = true "Resistance connects between volume and port_b, false for between port_a and volume";
-  parameter Boolean use_derQ = true "Calculates Q via exponential approach, for false calculates Q directly";
-  parameter Modelica.Units.SI.Time tau = 1 "Time constant of exponential approach if use_derQ=true" annotation (Evaluate = true,
-                Dialog(enable = use_derQ));
-  Modelica.Units.SI.Power Q(start = Q_init)
+  Modelica.Units.SI.Power Q
     "Power source/sink in each of the heat transfer volumes";
+  Modelica.Units.SI.Power Q_total "Total actual HX power";
   Modelica.Units.SI.Power Q_max "Minimum of Q_max_s and Q_max_t";
   Modelica.Units.SI.Power Q_max_s
     "Max Q of shell side assuming reaches inlet tube temperature";
@@ -22,13 +17,14 @@ model NTU_HX_SinglePhase
   parameter Real K_tube(unit = "1/m4") "Pressure loss coefficient. Units make this value equal to a typical local loss coefficient divided by the flow area squared.";
   parameter Real K_shell(unit = "1/m4") "Same as K_tube but for the shell side.";
   replaceable package Tube_medium = Modelica.Media.Interfaces.PartialMedium annotation(Dialog(tab="General", group="Mediums"), choicesAllMatching=true);
-  replaceable package Shell_medium =    Modelica.Media.Interfaces.PartialMedium
-                                                                                    annotation(Dialog(tab = "General", group = "Mediums"),choicesAllMatching=true);
+  replaceable package Shell_medium = Modelica.Media.Water.StandardWater constrainedby
+    Modelica.Media.Interfaces.PartialMedium                                                                                   annotation(Dialog(tab = "General", group = "Mediums"),choicesAllMatching=true);
   parameter Modelica.Units.SI.Volume V_Tube=0.1 "Total tube-side volume"
     annotation (Dialog(tab="General", group="Sizing"));
   parameter Modelica.Units.SI.Volume V_Shell=0.1 "Total shell-side volume"
     annotation (Dialog(tab="General", group="Sizing"));
-
+  parameter Modelica.Units.SI.Volume V_buffers=0.1 "Volume of buffers"
+    annotation (Dialog(tab="General", group="Sizing"));
   parameter Modelica.Units.SI.Length dh_Tube=0.0
     "Total tube-side change in height"
     annotation (Dialog(tab="General", group="Sizing"));
@@ -53,8 +49,9 @@ model NTU_HX_SinglePhase
     annotation (Dialog(tab="Initialization", group="Shell"));
   parameter Modelica.Units.SI.Pressure dp_general=100 "Initialization pressure drop calculation"
     annotation (Dialog(tab="Initialization", group="Both"));
-  parameter Modelica.Units.SI.Power Q_init=0 "Initial guess value for heat rate";
-  parameter Real Cr_init = 0.0 "Initial guess value for heat capacity ratio" annotation(Dialog(tab = "Initialization", group = "Heat Transfer"));
+  parameter Modelica.Units.SI.Power Q_init=0 "Initial heat rate";
+  parameter Real Cr_init = 0.0 "Initial heat capacity ratio" annotation(Dialog(tab = "Initialization", group = "Heat Transfer"));
+  parameter Modelica.Units.SI.Time tau=1 "Power time constant, used to make the matrix easier to solve.";
 
   parameter Modelica.Units.SI.MassFlowRate m_start_tube=66.3 "Initial tube mass flow rate"
     annotation (Dialog(tab="Initialization", group="Tube"));
@@ -85,22 +82,22 @@ public
         (
         V=V_Tube,
         angle=0,
-        dheight=dh_Tube),
+        dheight=dh_Tube/2),
     use_HeatPort=false,
     Q_gen=Q,
     nPorts_b=1,
-    nPorts_a=1) annotation (Placement(transformation(extent={{-10,18},{10,38}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_State Tube_out(redeclare package Medium =
-        Tube_medium)
+    nPorts_a=1) annotation (Placement(transformation(extent={{28,30},{48,50}})));
+  TRANSFORM.Fluid.Interfaces.FluidPort_State Tube_out(redeclare package Medium
+      = Tube_medium)
     annotation (Placement(transformation(extent={{-110,30},{-90,50}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow  Tube_in(redeclare package Medium =
-        Tube_medium)
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow  Tube_in(redeclare package Medium
+      = Tube_medium)
     annotation (Placement(transformation(extent={{90,30},{110,50}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow  Shell_in(redeclare package Medium =
-        Shell_medium)
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow  Shell_in(redeclare package Medium
+      = Shell_medium)
     annotation (Placement(transformation(extent={{-110,-30},{-90,-10}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_State Shell_out(redeclare package Medium =
-        Shell_medium)
+  TRANSFORM.Fluid.Interfaces.FluidPort_State Shell_out(redeclare package Medium
+      = Shell_medium)
     annotation (Placement(transformation(extent={{90,-30},{110,-10}})));
   TRANSFORM.Fluid.Volumes.MixingVolume Shell(
     redeclare package Medium = Shell_medium,
@@ -112,25 +109,25 @@ public
         (
         V=V_Shell,
         angle=0,
-        dheight=dh_Shell),
+        dheight=dh_Shell/2),
     use_HeatPort=false,
     Q_gen=-Q,
     nPorts_a=1,
     nPorts_b=1)
-    annotation (Placement(transformation(extent={{-10,-56},{10,-36}})));
+    annotation (Placement(transformation(extent={{28,-30},{48,-10}})));
 
   NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.LossResistance
     Tube_dp(
     redeclare package Medium = Tube_medium,
             K=K_tube, dp_init=dp_init_tube)
-    annotation (Placement(transformation(extent={{10,48},{-10,68}})));
+    annotation (Placement(transformation(extent={{-16,30},{-36,50}})));
   NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.LossResistance
     Shell_dp(
     redeclare package Medium = Shell_medium,
              K=K_shell, dp_init=dp_init_shell)
-    annotation (Placement(transformation(extent={{-10,-26},{10,-6}})));
+    annotation (Placement(transformation(extent={{-28,-30},{-8,-10}})));
 initial equation
-
+  //Q=Q_init;
 equation
 
    //Find the inlet temperatures and enthalpies given the flow direction
@@ -163,61 +160,14 @@ equation
     Q_max = Q_max_t;
     Q_min = Q_max_s;
   end if;
-
-  //Assume heat capacity ratio to be a specified, non-zero value. This may cause HX to operate a little differently than the method intends if there is phase change (as that would make Cr=0 identically by definition)
-  //We ignore that for this model as neither side is specified to be single or two-phase here. Additionally, the heat capacity ratio is no longer defined by m_flow*Cp, but instead we can define it by the maximum power ratio
-  //by assuming Q_sh/tub = m_flow*Cp*dT, and so the dT values should cancel numerator & denominator
-  if
-    (abs(Q_min) > 0) then
-
-      Cr = abs(Q_max)/abs(Q_min);
-  else
-      Cr = 1;
-  end if;
-  //Calculate Q using Cr, Q_max, and NTU. Note that if Cr = 0, this simplifies to Q_max*(1-exp(-NTU)) just as the hex_ calculations used."
-  //der(Q) = (((1-exp(-NTU*(1-Cr)))*Q_max/(1-Cr*exp(-NTU*(1-Cr))))-Q)/tau;
-  if use_derQ then
-  if
-    (Cr>=1-1e-8) then
-    tau*der(Q) = (NTU/(1+NTU))*Q_max-Q;
-    else
-  tau*der(Q) = (1-exp(-NTU*(1-Cr)))*Q_max/(1-Cr*exp(-NTU*(1-Cr)))-Q;
-  end if;
-  else
- if
-   (Cr>=1-1e-8) then
-    Q = (NTU/(1+NTU))*Q_max;
-    else
-  Q = (1-exp(-NTU*(1-Cr)))*Q_max/(1-Cr*exp(-NTU*(1-Cr)));
-      end if;
-  end if;
-
-  if tube_av_b then
-    connect(Tube_in, Tube.port_a[1]);
-    connect(Tube.port_b[1], Tube_dp.port_a);
-    connect(Tube_dp.port_b, Tube_out);
-  else
-    connect(Tube_in, Tube_dp.port_a);
-    connect(Tube_dp.port_b, Tube.port_a[1]);
-    connect(Tube.port_b[1], Tube_out);
-  end if;
-    if shell_av_b then
-    connect(Shell_in, Shell.port_a[1]);
-    connect(Shell.port_b[1], Shell_dp.port_a);
-    connect(Shell_dp.port_b, Shell_out);
-  else
-    connect(Shell_in, Shell_dp.port_a);
-    connect(Shell_dp.port_b, Shell.port_a[1]);
-    connect(Shell.port_b[1], Shell_out);
-  end if;
-
-
-    //The values of hex_t, hex_s, Tex_t, and Tex_s are provided for ease of access purposes only. They are not required in the method.
+ // "Calculate the theoretical exit enthalpy assuming that there is some form of boiling or condensation occurring."
+  //Including this in an algorithm appears to allow for more of the model to be differentiable based on the translation warnings.
+  //However, it does still indicate that this section is not differentiable for some reason.
   if
     (abs(Tube_dp.m_flow) <= 1e-8) then
     hex_t = hin_t;
     else
-    hex_t = hin_t + Q_max*(1-exp(-NTU))/(abs(Tube_dp.m_flow));
+  hex_t = hin_t + Q_max*(1-exp(-NTU))/(abs(Tube_dp.m_flow));
   end if;
   Tex_t = Tube_medium.temperature_phX(Tube_out.p,hex_t,Tube_medium.X_default);
   Tex_s = Shell_medium.temperature_phX(Shell_out.p,hex_s,Shell_medium.X_default);
@@ -227,8 +177,33 @@ equation
   else
   hex_s = hin_s - Q_max*(1-exp(-NTU))/(abs(Shell_dp.m_flow));
   end if;
-  //Presentation values only
 
+  //Check for phase change by determining if a change in quality occurs.
+
+      Cr = abs(Q_max)/abs(Q_min);
+
+  //Calculate Q using Cr, Q_max, and NTU. Note that if Cr = 0, this simplifies to Q_max*(1-exp(-NTU)) just as the hex_ calculations used."
+  //der(Q) = (((1-exp(-NTU*(1-Cr)))*Q_max/(1-Cr*exp(-NTU*(1-Cr))))-Q)/tau;
+  if
+    (Cr>=1-1e-8) then
+    Q = (NTU/(1+NTU))*Q_max;
+    else
+  Q = (1-exp(-NTU*(1-Cr)))*Q_max/(1-Cr*exp(-NTU*(1-Cr)));
+  end if;
+  Q_total = Q;
+
+  connect(Tube_in, Tube.port_b[1])
+    annotation (Line(points={{100,40},{44,40}}, color={0,127,255}));
+  connect(Tube.port_a[1], Tube_dp.port_a)
+    annotation (Line(points={{32,40},{-19,40}}, color={0,127,255}));
+  connect(Tube_dp.port_b, Tube_out) annotation (Line(points={{-33,40},{-68,
+          40},{-68,40},{-100,40}}, color={0,127,255}));
+  connect(Shell_dp.port_b, Shell.port_a[1]) annotation (Line(points={{-11,-20},{
+          32,-20}},                color={0,127,255}));
+  connect(Shell_dp.port_a, Shell_in)
+    annotation (Line(points={{-25,-20},{-100,-20}}, color={0,127,255}));
+  connect(Shell.port_b[1], Shell_out) annotation (Line(points={{44,-20},{100,-20}},
+                               color={0,127,255}));
   annotation (
     Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
@@ -255,13 +230,7 @@ equation
           lineColor={0,0,0},
           textString="Shell
 ")}),
-    Diagram(coordinateSystem(preserveAspectRatio=false), graphics={Text(
-          extent={{-46,14},{54,-18}},
-          textColor={28,108,200},
-          textString="Connections are conditional, 
-not shown
-
-")}),
+    Diagram(coordinateSystem(preserveAspectRatio=false)),
     Documentation(info="<html>
 <p>The goal of this module is to provide a low-fidelity but still accurate model of a HX that uses the NTU method to calculate heat transfer. Main drivers of this desire include a simplified geometry calculation and a significant reduction in the number of variables introduced in order to simulate a system. </p>
 <p>Preliminary versions of this model will be kept, but they use progressively less accurate and flexible calculations. Prior models used linear pressure drop terms rather than quadratic, and they also assumed the direction of mass flow. This up-to-date model can calculate the system power during flow reversal on either the shell or tube side, as well as flip which direction the power is transferred. If a user is not exercising a model that has any real potential for flow reversal (for example, a nuclear secondary system undergoing straightforward power level changes), then a more simplified model may be appropriate. </p>
