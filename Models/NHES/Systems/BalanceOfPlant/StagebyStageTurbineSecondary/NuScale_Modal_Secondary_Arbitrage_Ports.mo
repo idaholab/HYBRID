@@ -729,8 +729,8 @@ public
         origin={-188,-18})));
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow12(redeclare package Medium =
                Modelica.Media.Examples.TwoPhaseWater)
-
     annotation (Placement(transformation(extent={{-152,58},{-144,66}})));
+
   StagebyStageTurbine.BaseClasses.Turbine_Inlet turbine_Inlet1
     annotation (Placement(transformation(extent={{32,48},{12,68}})));
   StagebyStageTurbine.TeeJunctionIdeal_Cyl teeJunctionIdeal_Cyl(redeclare

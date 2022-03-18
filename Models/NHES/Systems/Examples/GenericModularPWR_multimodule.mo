@@ -52,7 +52,7 @@ model GenericModularPWR_multimodule
     port_a3_nominal_h={IP.port_b_nominal.h},
     port_a3_nominal_m_flow={-IP.port_b_nominal.m_flow},
     nPorts_a3=1,
-    redeclare BalanceOfPlant.Turbine.ContolSystems.CS_PressureAndPowerControl
+    redeclare BalanceOfPlant.Turbine.ControlSystems.CS_PressureAndPowerControl
       CS(
       p_nominal=BOP.port_a_nominal.p,
       W_totalSetpoint=SC.W_totalSetpoint_BOP,
