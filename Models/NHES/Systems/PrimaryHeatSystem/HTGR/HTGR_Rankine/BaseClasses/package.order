@@ -5,9 +5,6 @@ Record_SubSystem
 Record_SubSystem_A
 Partial_ControlSystem
 Partial_EventDriver
-He
 SignalSubBus_ActuatorInput
 SignalSubBus_SensorOutput
-He_HighT
 TRISO
-TRISO_Core_In_Progress

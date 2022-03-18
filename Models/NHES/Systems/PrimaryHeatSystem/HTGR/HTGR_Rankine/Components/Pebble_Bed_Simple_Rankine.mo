@@ -110,8 +110,8 @@ model Pebble_Bed_Simple_Rankine
       redeclare package Medium = Coolant_Medium,
       R=1000)
     annotation (Placement(transformation(extent={{50,-50},{30,-30}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Coolant_Medium) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Coolant_Medium) annotation (Placement(
         transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,

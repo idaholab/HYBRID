@@ -1,9 +1,9 @@
-within NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.BaseClasses;
+within NHES.Media;
 package He_HighT
   "Ideal gas \"He\" from NASA Glenn coefficients but Tmax higher"
   extends Modelica.Media.IdealGases.Common.SingleGasNasa(
      mediumName="Helium",
-     data=HTGR_Rankine_Mikk_In_Progress.BaseClasses.He,
+     data=Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.BaseClasses.He,
      fluidConstants={Modelica.Media.IdealGases.Common.FluidData.He});
 
   annotation (Documentation(info="<html><div>
