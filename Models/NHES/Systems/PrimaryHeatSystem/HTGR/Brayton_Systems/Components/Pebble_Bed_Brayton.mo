@@ -1,0 +1,430 @@
+within NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.Components;
+model Pebble_Bed_Brayton
+  extends BaseClasses.Partial_SubSystem_A(
+    redeclare replaceable CS_Dummy CS,
+    redeclare replaceable ED_Dummy ED,
+    redeclare Data.Data_HTGR_Pebble data(
+      Q_total=600000000,
+      Q_total_el=300000000,
+      K_P_Release=10000,
+      m_flow=637.1,
+      length_core=10,
+      r_outer_fuelRod=0.03,
+      th_clad_fuelRod=0.025,
+      th_gap_fuelRod=0.02,
+      r_pellet_fuelRod=0.01,
+      pitch_fuelRod=0.06,
+      sizeAssembly=17,
+      nRodFuel_assembly=264,
+      nAssembly=12,
+      LP_Comp_Efficiency=0.88,
+      HP_Comp_Efficiency=0.88,
+      HX_Reheat_NTU=15,
+      HX_Reheat_Tube_Vol=0.1,
+      HX_Reheat_Shell_Vol=0.1));
+
+  replaceable package Coolant_Medium =
+     Modelica.Media.IdealGases.SingleGases.He  constrainedby
+    Modelica.Media.Interfaces.PartialMedium                                                                        annotation(choicesAllMatching = true,dialog(group="Media"));
+  replaceable package Fuel_Medium =  TRANSFORM.Media.Solids.UO2                                   annotation(choicesAllMatching = true,dialog(group = "Media"));
+  replaceable package Pebble_Medium =
+      Media.Solids.Graphite_5                                                                                   annotation(dialog(group = "Media"),choicesAllMatching=true);
+      replaceable package Aux_Heat_App_Medium =
+      Modelica.Media.Water.StandardWater                                           annotation(choicesAllMatching = true, dialog(group = "Media"));
+      replaceable package Waste_Heat_App_Medium =
+      Modelica.Media.Water.StandardWater                                            annotation(choicesAllMatching = true, dialog(group = "Media"));
+
+  //Modelica.Units.SI.Power Q_Recup;
+
+    Modelica.Units.SI.Power Q_gen;
+    Real cycle_eff;
+
+    parameter Real eff = 0.9;
+  TRANSFORM.Fluid.Volumes.SimpleVolume Core_Outlet(
+    redeclare package Medium =
+        Coolant_Medium,
+    p_start=dataInitial.P_Core_Outlet,
+    T_start=dataInitial.T_Core_Outlet,
+    redeclare model Geometry =
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
+        (V=0)) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={-72,-32})));
+  GasTurbine.Turbine.Turbine      turbine(
+    redeclare package Medium =
+       Coolant_Medium,
+    pstart_out=dataInitial.P_Turbine_Ref,
+    Tstart_in=dataInitial.TStart_In_Turbine,
+    Tstart_out=dataInitial.TStart_Out_Turbine,
+    eta0=data.Turbine_Efficiency,
+    PR0=data.Turbine_Pressure_Ratio,
+    w0=data.Turbine_Nominal_MassFlowRate)
+            annotation (Placement(transformation(extent={{-72,-16},{-20,22}})));
+  Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase Reheater(
+    NTU=data.HX_Reheat_NTU,
+    K_tube=data.HX_Reheat_K_tube,
+    K_shell=data.HX_Reheat_K_shell,
+    redeclare package Tube_medium =
+        Coolant_Medium,
+    redeclare package Shell_medium =
+        Coolant_Medium,
+    V_Tube=data.HX_Reheat_Tube_Vol,
+    V_Shell=data.HX_Reheat_Shell_Vol,
+    p_start_tube=dataInitial.Recuperator_P_Tube,
+    h_start_tube_inlet=dataInitial.Recuperator_h_Tube_Inlet,
+    h_start_tube_outlet=dataInitial.Recuperator_h_Tube_Outlet,
+    p_start_shell=dataInitial.Recuperator_P_Tube,
+    h_start_shell_inlet=dataInitial.Recuperator_h_Shell_Inlet,
+    h_start_shell_outlet=dataInitial.HX_Aux_h_tube_out,
+    dp_init_tube=dataInitial.Recuperator_dp_Tube,
+    dp_init_shell=dataInitial.Recuperator_dp_Shell,
+    Q_init=-100000000,
+    Cr_init=0.8,
+    m_start_tube=dataInitial.Recuperator_m_Tube,
+    m_start_shell=dataInitial.Recuperator_m_Shell)
+    annotation (Placement(transformation(extent={{10,-36},{-10,-16}})));
+
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
+        Coolant_Medium)
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={28,-6})));
+  TRANSFORM.Fluid.Volumes.SimpleVolume Precooler(
+    redeclare package Medium =
+        Coolant_Medium,
+    p_start=dataInitial.P_HP_Comp_Ref,
+    T_start=data.T_Precooler,
+    redeclare model Geometry =
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
+        (V=0),
+    use_HeatPort=true) annotation (Placement(transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=270,
+        origin={28,32})));
+  TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Temperature    boundary3(use_port=
+        false, T=data.T_Precooler)
+    annotation (Placement(transformation(extent={{6,-6},{-6,6}},
+        rotation=180,
+        origin={10,32})));
+  GasTurbine.Compressor.Compressor      compressor(
+    redeclare package Medium =
+        Coolant_Medium,
+    pstart_in=dataInitial.P_LP_Comp_Ref,
+    Tstart_in=dataInitial.TStart_LP_Comp_In,
+    Tstart_out=dataInitial.TStart_LP_Comp_Out,
+    eta0=data.LP_Comp_Efficiency,
+    PR0=data.LP_Comp_P_Ratio,
+    w0=data.LP_Comp_MassFlowRate)
+            annotation (Placement(transformation(extent={{34,22},{78,54}})));
+  TRANSFORM.Fluid.Pipes.TransportDelayPipe
+                                       transportDelayPipe(
+    redeclare package Medium =
+        Coolant_Medium,
+    crossArea=data.A_HPDelay,
+    length=data.L_HPDelay)
+    annotation (Placement(transformation(extent={{10,-10},{-10,10}},
+        rotation=90,
+        origin={84,28})));
+  TRANSFORM.Fluid.Volumes.SimpleVolume Intercooler(
+    redeclare package Medium =
+        Coolant_Medium,
+    p_start=dataInitial.P_LP_Comp_Ref,
+    T_start=data.T_Intercooler,
+    redeclare model Geometry =
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
+        (V=0.0),
+    use_HeatPort=true,
+    Q_gen=0)           annotation (Placement(transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=90,
+        origin={84,-48})));
+  TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Temperature    boundary4(use_port=
+        false, T=data.T_Intercooler)
+    annotation (Placement(transformation(extent={{-6,-6},{6,6}},
+        rotation=180,
+        origin={106,-48})));
+  GasTurbine.Compressor.Compressor      compressor1(
+    redeclare package Medium =
+        Coolant_Medium,
+    allowFlowReversal=false,
+    pstart_in=dataInitial.P_HP_Comp_Ref,
+    Tstart_in=dataInitial.TStart_HP_Comp_In,
+    Tstart_out=dataInitial.TStart_HP_Comp_Out,
+    eta0=data.HP_Comp_Efficiency,
+    PR0=data.HP_Comp_P_Ratio,
+    w0=data.HP_Comp_MassFlowRate)
+            annotation (Placement(transformation(extent={{25,-18},{-25,18}},
+        rotation=0,
+        origin={55,-82})));
+  TRANSFORM.Fluid.Pipes.TransportDelayPipe
+                                       transportDelayPipe1(
+    redeclare package Medium =
+        Coolant_Medium,
+    crossArea=data.A_HPDelay,
+    length=data.L_HPDelay)
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={20,-52})));
+  BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.SpringBallValve
+    springBallValve(
+    redeclare package Medium = Coolant_Medium,
+    p_spring=data.P_Release,
+    K=data.K_P_Release,
+    opening_init=0.) annotation (Placement(transformation(
+        extent={{-6,-6},{6,6}},
+        rotation=90,
+        origin={8,54})));
+  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary5(
+    redeclare package Medium = Coolant_Medium,
+    p=data.P_Release,
+    nPorts=1)
+    annotation (Placement(transformation(extent={{4,-4},{-4,4}},
+        rotation=90,
+        origin={8,70})));
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Core_Inlet_T(redeclare package
+      Medium = Coolant_Medium) annotation (Placement(transformation(
+        extent={{-6,8},{6,-8}},
+        rotation=180,
+        origin={-26,-46})));
+
+ /*             Data.Data_HTGR_Pebble
+                          data(
+    redeclare package Coolant_Medium =
+        NHES.Systems.PrimaryHeatSystem.HTGR.Coolant_Medium,
+    redeclare package Fuel_Medium = TRANSFORM.Media.Solids.UO2,
+    redeclare package Pebble_Medium =
+        TRANSFORM.Media.Solids.Graphite.Graphite_5,
+    redeclare package Aux_Heat_App_Medium = Modelica.Media.Water.StandardWater,
+    redeclare package Waste_Heat_App_Medium =
+        Modelica.Media.Water.StandardWater,
+    Q_total=600000000,
+    Q_total_el=300000000,
+    K_P_Release=10000,
+    m_flow=637.1,
+    r_outer_fuelRod=0.03,
+    th_clad_fuelRod=0.025,
+    th_gap_fuelRod=0.02,
+    r_pellet_fuelRod=0.01,
+    pitch_fuelRod=0.06,
+    nAssembly=37,
+    HX_Reheat_Tube_Vol=0.1,
+    HX_Reheat_Shell_Vol=0.1,
+    HX_Reheat_Buffer_Vol=0.1)
+    annotation (Placement(transformation(extent={{-100,50},{-80,70}})));*/
+
+  Data.DataInitial_HTGR_Pebble dataInitial
+    annotation (Placement(transformation(extent={{80,124},{100,144}})));
+
+  Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase Steam_Offtake(
+    tube_av_b=false,
+    shell_av_b=false,
+    NTU=1,
+    K_tube=1,
+    K_shell=1,
+    redeclare package Tube_medium =
+        Coolant_Medium,
+    redeclare package Shell_medium = Aux_Heat_App_Medium,
+    V_Tube=3,
+    V_Shell=3,
+    p_start_tube=5920000,
+    h_start_tube_inlet=3600e3,
+    h_start_tube_outlet=2900e3,
+    p_start_shell=1000000,
+    h_start_shell_inlet=600e3,
+    h_start_shell_outlet=1000e3,
+    dp_init_tube=30000,
+    dp_init_shell=40000,
+    Q_init=-100000000,
+    Cr_init=0.8,
+    m_start_tube=296.1,
+    m_start_shell=1) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=270,
+        origin={-84,4})));
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Intercooler_Pre_Temp(redeclare
+      package Medium = Coolant_Medium) annotation (Placement(
+        transformation(
+        extent={{-10,10},{10,-10}},
+        rotation=90,
+        origin={84,-18})));
+  TRANSFORM.Fluid.Sensors.Temperature Core_Outlet_T(redeclare package Medium =
+        Coolant_Medium) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=180,
+        origin={-70,-74})));
+  Modelica.Fluid.Interfaces.FluidPort_a auxiliary_heating_port_a(redeclare
+      package Medium =
+               Aux_Heat_App_Medium)  annotation (
+      Placement(transformation(extent={{-110,50},{-90,70}}),
+        iconTransformation(extent={{-110,50},{-90,70}})));
+  Modelica.Fluid.Interfaces.FluidPort_b auxiliary_heating_port_b(redeclare
+      package Medium =
+               Aux_Heat_App_Medium)  annotation (
+      Placement(transformation(extent={{-110,-56},{-90,-36}}),
+                                                             iconTransformation(
+          extent={{-110,-56},{-90,-36}})));
+  Nuclear.CoreSubchannels.Pebble_Bed_2 core(
+    redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
+    redeclare package Pebble_Material = Media.Solids.Graphite_5,
+    redeclare model HeatTransfer =
+        TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple,
+    Q_fission_input=600000000,
+    alpha_fuel=-5e-5,
+    alpha_coolant=0.0,
+    p_b_start(displayUnit="bar") = dataInitial.P_Core_Outlet,
+    Q_nominal=600000000,
+    SigmaF_start=26,
+    p_a_start(displayUnit="bar") = dataInitial.P_Core_Inlet,
+    T_a_start(displayUnit="K") = dataInitial.T_Core_Inlet,
+    T_b_start(displayUnit="K") = dataInitial.T_Core_Outlet,
+    m_flow_a_start=data.m_flow,
+    exposeState_a=false,
+    exposeState_b=false,
+    Ts_start(displayUnit="degC"),
+    fissionProductDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    redeclare record Data_DH =
+        TRANSFORM.Nuclear.ReactorKinetics.Data.DecayHeat.decayHeat_11_TRACEdefault,
+    redeclare record Data_FP =
+        TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
+    rho_input=CR_reactivity.y,
+    redeclare package Medium = Coolant_Medium,
+    SF_start_power={0.2,0.3,0.3,0.2},
+    nParallel=data.nAssembly,
+    redeclare model Geometry =
+        TRANSFORM.Nuclear.ClosureRelations.Geometry.Models.CoreSubchannels.Assembly
+        (
+        width_FtoF_inner=data.sizeAssembly*data.pitch_fuelRod,
+        rs_outer={data.r_pellet_fuelRod,data.r_pellet_fuelRod + data.th_gap_fuelRod,
+            data.r_outer_fuelRod},
+        length=data.length_core,
+        nPins=data.nRodFuel_assembly,
+        nPins_nonFuel=data.nRodNonFuel_assembly,
+        angle=1.5707963267949),
+    toggle_ReactivityFP=false,
+    Q_shape={0.00921016,0.022452442,0.029926363,0.035801439,0.040191759,0.04361119,
+        0.045088573,0.046395024,0.049471251,0.050548587,0.05122695,0.051676198,0.051725935,
+        0.048691804,0.051083234,0.050675546,0.049468838,0.047862888,0.045913065,
+        0.041222844,0.038816801,0.035268536,0.029550046,0.022746578,0.011373949},
+    Fh=1.4,
+    n_hot=25,
+    Teffref_fuel=1273.15,
+    Teffref_coolant=923.15,
+    T_inlet=723.15,
+    T_outlet=1123.15) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=180,
+        origin={-52,-46})));
+
+  TRANSFORM.Electrical.Interfaces.ElectricalPowerPort_Flow port_a annotation (
+      Placement(transformation(extent={{90,-10},{110,10}}),
+        iconTransformation(extent={{90,-10},{110,10}})));
+  TRANSFORM.Blocks.RealExpression CR_reactivity
+    annotation (Placement(transformation(extent={{78,94},{90,108}})));
+  Modelica.Blocks.Sources.RealExpression PR_Compressor(y=core.port_a.m_flow)
+    "total thermal power"
+    annotation (Placement(transformation(extent={{-104,94},{-92,106}})));
+initial equation
+
+equation
+ // Q_Recup =nTU_HX_SinglePhase.geometry.nTubes*abs(sum(nTU_HX_SinglePhase.tube.heatTransfer.Q_flows));
+ Q_gen = turbine.Wt - compressor.Wc - compressor1.Wc;
+ cycle_eff = Q_gen / core.Q_total.y;
+
+    port_a.W = Q_gen;
+  connect(Precooler.heatPort, boundary3.port)
+    annotation (Line(points={{22,32},{16,32}},color={191,0,0}));
+  connect(Precooler.port_b, compressor.inlet) annotation (Line(points={{28,38},
+          {28,56},{48,56},{48,50.8},{42.8,50.8}},
+                                        color={0,127,255}));
+  connect(Intercooler.heatPort, boundary4.port)
+    annotation (Line(points={{90,-48},{100,-48}},      color={191,0,0}));
+  connect(compressor1.outlet, transportDelayPipe1.port_a) annotation (Line(
+        points={{40,-67.6},{40,-68},{20,-68},{20,-62}},              color={0,
+          127,255}));
+  connect(Intercooler.port_b, compressor1.inlet) annotation (Line(points={{84,-54},
+          {84,-68},{70,-68},{70,-67.6}},color={0,127,255}));
+  connect(springBallValve.port_b,boundary5. ports[1])
+    annotation (Line(points={{8,60},{8,66}},              color={0,127,255}));
+  connect(springBallValve.port_a, Precooler.port_b) annotation (Line(points={{8,48},{
+          28,48},{28,38}},                        color={0,127,255}));
+  connect(Reheater.Shell_in, transportDelayPipe1.port_b)
+    annotation (Line(points={{10,-28},{20,-28},{20,-42}},
+                                                      color={0,127,255}));
+  connect(Reheater.Shell_out, Core_Inlet_T.port_a) annotation (Line(points={{-10,-28},
+          {-14,-28},{-14,-46},{-20,-46}},            color={0,127,255}));
+  connect(turbine.outlet, Reheater.Tube_in) annotation (Line(points={{-30.4,18.2},
+          {-30.4,18},{-16,18},{-16,-22},{-10,-22}},
+                                              color={0,127,255}));
+  connect(Reheater.Tube_out, sensor_T.port_a)
+    annotation (Line(points={{10,-22},{28,-22},{28,-16}},
+                                                       color={0,127,255}));
+  connect(Core_Outlet.port_b, Steam_Offtake.Tube_in) annotation (Line(points={{-72,-26},
+          {-72,-18},{-80,-18},{-80,-6}},              color={0,127,255}));
+  connect(Steam_Offtake.Tube_out, turbine.inlet) annotation (Line(points={{-80,14},
+          {-80,26},{-62,26},{-62,22},{-61.6,22},{-61.6,18.2}},
+                                    color={0,127,255}));
+  connect(compressor.outlet, transportDelayPipe.port_a) annotation (Line(points={{69.2,
+          50.8},{74,50.8},{74,58},{84,58},{84,38}},
+                                            color={0,127,255}));
+  connect(transportDelayPipe.port_b, Intercooler_Pre_Temp.port_b) annotation (
+      Line(points={{84,18},{84,-8}},                     color={0,127,255}));
+  connect(Intercooler.port_a, Intercooler_Pre_Temp.port_a)
+    annotation (Line(points={{84,-42},{84,-28}}, color={0,127,255}));
+  connect(Core_Outlet_T.port, Core_Outlet.port_a) annotation (Line(points={{-70,-64},
+          {-70,-46},{-72,-46},{-72,-38}},      color={0,127,255}));
+  connect(auxiliary_heating_port_a, Steam_Offtake.Shell_in) annotation (Line(
+        points={{-100,60},{-86,60},{-86,14}},
+        color={0,0,0}));
+  connect(Steam_Offtake.Shell_out, auxiliary_heating_port_b) annotation (Line(
+        points={{-86,-6},{-86,-46},{-100,-46}},
+        color={0,0,0}));
+  connect(core.port_a, Core_Inlet_T.port_b) annotation (Line(points={{-42,-46},{
+          -32,-46}},                      color={0,127,255}));
+  connect(core.port_b, Core_Outlet.port_a) annotation (Line(points={{-62,-46},{-72,
+          -46},{-72,-38}},
+                 color={0,127,255}));
+  connect(actuatorBus.CR_Reactivity, CR_reactivity.u) annotation (Line(
+      points={{30,100},{30,101},{76.8,101}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Core_Outlet_T, Core_Outlet_T.T) annotation (Line(
+      points={{-30,100},{-30,74},{-114,74},{-114,-74},{-76,-74}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+
+  connect(sensor_T.port_b, Precooler.port_a) annotation (Line(points={{28,4},{
+          28,26}},                   color={0,127,255}));
+  connect(sensorBus.Core_Mass_Flow, PR_Compressor.y) annotation (Line(
+      points={{-30,100},{-91.4,100}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-3,6},{-3,6}},
+      horizontalAlignment=TextAlignment.Right));
+  annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+          Bitmap(extent={{-80,-92},{78,84}}, fileName="modelica://NHES/Icons/PrimaryHeatSystemPackage/HTGRPB.jpg")}),
+                                                                 Diagram(
+        coordinateSystem(preserveAspectRatio=false)),
+    experiment(
+      StopTime=10000,
+      __Dymola_NumberOfIntervals=591,
+      __Dymola_Algorithm="Esdirk45a"),
+    Documentation(info="<html>
+<p>The core model used here is the current pebble bed model that uses TRISO structured fuel. </p>
+<p>Three ports allow this model to be interconnected to outside components. There are two fluid ports and one electrical port. The electrical port should be connected to some grid or electrical distribution model. </p>
+<p>Two fluid ports on the side of the model are used for a thermal application by removing heat from the Helium coolant upstream of the turbine. Note that this is not a bypass flow as it has been in steam systems, although that may be used in the future (the system should be evaluated to determine which method is more efficient). </p>
+<p>The system has only been tested (as of March 2022) with Helium coolant, but any gas package should operate properly. </p>
+<p>A breakdown of the components: </p>
+<p>The core model is effectively a replaceable heat source. The default is a pebble bed system, and a prismatic fuel model will be forthcoming. </p>
+<p>The turbine model uses inputs from the data structure to describe its size and efficiency characteristics. </p>
+<p>The recuperating heat exchanger is of NTU type. There is no description in the literature to describe the actual geometry of a recuperating heat exchanger of this size. The NTU HX is used for simulation speed, and the NTU value describes the effective size of that heat exchanger. </p>
+<p>The precooler and intercooler are named to match the diagram included in the documentation of the overall Brayton_Systems package. The boundary conditions applied there dictate the fluid flow temperatures. In the future, a heat exchanger to evaluate the necessary cooling requirements could replace these boundary conditions. </p>
+<p>The compression of the Helium is split into two stages, each coming immediately after a cooling stage. </p>
+<p>It is necessary to have pressure relief within the system. In this model, this is done via a spring valve that opens just upstream of the first compressor. </p>
+</html>"));
+end Pebble_Bed_Brayton;
