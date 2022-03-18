@@ -36,7 +36,7 @@ model TightlyCoupled_SteamFlowCtrl_FY18_LoadFollowPHS
       nPorts_a3=1,
       port_a3_nominal_m_flow={-IP.port_b_nominal.m_flow},
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ContolSystems.CS_PressureAndPowerControl
+        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_PressureAndPowerControl
         CS(p_nominal=BOP.port_a_nominal.p, W_totalSetpoint=SC.W_totalSetpoint_BOP)),
     redeclare EnergyStorage.Battery.Logical ES(
       capacity_max=dataCapacity.ES_capacity,
