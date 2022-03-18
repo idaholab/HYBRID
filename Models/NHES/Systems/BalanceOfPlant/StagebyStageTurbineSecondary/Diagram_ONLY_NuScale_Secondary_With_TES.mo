@@ -1,13 +1,5 @@
 within NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary;
 model Diagram_ONLY_NuScale_Secondary_With_TES
-  //
-  //
-  //
-  // DO NOT USE THIS MODEL, IT IS CONSTRUCTED TO MAKE A BETTER IMAGE ONLY
-  // THIS MODEL IS IDENTICAL TO NUSCALE_SBST_SECONDARY_WITH_CTES, USE THAT
-  //
-  //
-  //
   extends TRANSFORM.Icons.ObsoleteModel;
   extends BaseClasses.Partial_SubSystem_A(
     redeclare replaceable CS_Dummy CS,
@@ -834,7 +826,7 @@ equation
   connect(port_b, port_b)
     annotation (Line(points={{-160,-44},{-160,-44}}, color={0,127,255}));
   connect(turbine_Tap2.Tap_flow, LPTapValve.port_a) annotation (Line(
-      points={{31,9.44},{32,9.44},{32,-4},{26,-4},{26,-8},{25,-8}},
+      points={{31,9.44},{32,9.44},{32,-8},{25,-8}},
       color={0,127,255},
       thickness=1));
   connect(LPTapValve.port_b, LP.Shell_in) annotation (Line(

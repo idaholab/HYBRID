@@ -12,7 +12,7 @@ model SteamTurbine_L1_boundaries_Test_a
     port_b_nominal(p=1000000, h=BOP.Medium.specificEnthalpy_pT(BOP.port_b_nominal.p,
           318.95)),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_PressureAndPowerControl
+      NHES.Systems.BalanceOfPlant.Turbine.ContolSystems.CS_PressureAndPowerControl
       CS(p_nominal=BOP.port_a_nominal.p, W_totalSetpoint=sine.y))
     annotation (Placement(transformation(extent={{-30,-30},{30,30}})));
   TRANSFORM.Electrical.Sources.FrequencySource

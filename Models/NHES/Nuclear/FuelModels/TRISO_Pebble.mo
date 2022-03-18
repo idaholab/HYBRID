@@ -42,6 +42,7 @@ model TRISO_Pebble "TRISO model estimate"
         (nR=nR_Fuel, r_outer=r_Fuel),
     redeclare model ConductionModel =
         TRANSFORM.HeatAndMassTransfer.DiscritizedModels.BaseClasses.Dimensions_1.ForwardDifference_1O,
+
     redeclare model InternalHeatModel =
         TRANSFORM.HeatAndMassTransfer.DiscritizedModels.BaseClasses.Dimensions_1.VolumetricHeatGeneration
         (q_ppp=division_kernel.y*3/(4*Modelica.Constants.pi*r_Fuel^3)))
@@ -91,6 +92,7 @@ model TRISO_Pebble "TRISO model estimate"
         (nR=4, r_outer=r_Pebble),
     redeclare model ConductionModel =
         TRANSFORM.HeatAndMassTransfer.DiscritizedModels.BaseClasses.Dimensions_1.ForwardDifference_1O,
+
     redeclare model InternalHeatModel =
         TRANSFORM.HeatAndMassTransfer.DiscritizedModels.BaseClasses.Dimensions_1.VolumetricHeatGeneration
         (q_ppp=division_pebble.y*3/(4*Modelica.Constants.pi*r_Pebble^3)))
@@ -123,6 +125,7 @@ model TRISO_Pebble "TRISO model estimate"
         (nR=nR_Fuel, r_outer=r_Fuel),
     redeclare model ConductionModel =
         TRANSFORM.HeatAndMassTransfer.DiscritizedModels.BaseClasses.Dimensions_1.ForwardDifference_1O,
+
     redeclare model InternalHeatModel =
         TRANSFORM.HeatAndMassTransfer.DiscritizedModels.BaseClasses.Dimensions_1.VolumetricHeatGeneration
         (q_ppp=division_kernel.y*3/(4*Modelica.Constants.pi*r_Fuel^3)))

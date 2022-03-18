@@ -1,33 +1,35 @@
 within NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary;
-model NuScale_Modal_Secondary_Arbitrage_Ports
+model Modal_Controlled_Generic_SMR
   import NHES;
-    extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable CS_Dummy CS,
-    redeclare replaceable ED_Dummy ED,
-    redeclare Data.Data_Dummy data);
-    input Modelica.Units.SI.Power Q_RX_Internal;
-    input Modelica.Units.SI.Power Demand_Internal;
-    input Real DFV_Ancticipatory_Internal;
-  parameter Integer TES_nPipes= 950;
+
+  parameter Integer TES_nPipes= 950 "Pipes in CTES module";
   parameter Modelica.Units.SI.Length TES_Length=275
     "TES pipe length within concrete";
-    parameter Real PipConcLRat = 3 "Pipe:Conc. ratio";
+  parameter Real HTFtoConcreteRatio =  3 "CTES Pipe:concrete length ratio";
   parameter Modelica.Units.SI.Length TES_Thick=0.2
     "TES thickness to adiabatic boundary condition";
   parameter Modelica.Units.SI.Length TES_Width=0.8
     "Cross sectional area perpendicular to pipe length";
-  parameter Real LP_NTU = 1.5 "Low pressure NTUHX NTU";
-  parameter Real IP_NTU = 20.0 "Intermediate pressure NTUHX NTU";
-  parameter Real HP_NTU = 4.0 "High pressure NTUHX NTU";
-  parameter Modelica.Units.SI.Pressure P_Rise_DFV=6.6e5 "Discharge source pump replacement dp";
+  parameter Real LP_NTU = 1.5;
+  parameter Real IP_NTU = 20.0;
+  parameter Real HP_NTU = 4.0;
+  parameter Modelica.Units.SI.Pressure P_Rise_DFV=6.6e5;
+  parameter Modelica.Units.SI.Time Ramp_Stor=500;
+  parameter Modelica.Units.SI.Time Ramp_Dis=1500;
+  parameter Real derspeed = 0.2;
+  parameter Real frac = 2.0;
   constant Real pi = Modelica.Constants.pi;
   parameter Modelica.Units.SI.Power Q_nom;
   Modelica.Units.SI.Energy dEdCycle;
   Modelica.Units.SI.Time t_track;
  // Modelica.SIunits.Temperature T_ideal;
   parameter Modelica.Units.SI.Temperature T_feed_ref=273 + 138;
+  Modelica.Units.SI.Power Q_Cond_Feed;
+  Modelica.Units.SI.MassFlowRate mflowcalc;
+  Modelica.Units.SI.SpecificEnthalpy dhfd;
+  Modelica.Units.SI.SpecificEnthalpy dhcn;
 
-    parameter Modelica.Units.SI.Velocity vthes1=0 "Initial rotational velocity. 's/r' indicates stator/rotor, # is stage #" annotation(dialog(tab = "Initialization", group = "Rotational Velocity"));
+  parameter Modelica.Units.SI.Velocity vthes1=0 "Initial rotational velocity. 's/r' indicates stator/rotor, # is stage #" annotation(dialog(tab = "Initialization", group = "Rotational Velocity"));
   parameter Modelica.Units.SI.Velocity vther1=0 annotation(dialog(tab = "Initialization", group = "Rotational Velocity"));
   parameter Modelica.Units.SI.Velocity vthes2=0 annotation(dialog(tab = "Initialization", group = "Rotational Velocity"));
   parameter Modelica.Units.SI.Velocity vther2=0 annotation(dialog(tab = "Initialization", group = "Rotational Velocity"));
@@ -101,12 +103,12 @@ model NuScale_Modal_Secondary_Arbitrage_Ports
   parameter Modelica.Units.SI.Length ror7[3]={0.69,0.74,0.75} annotation(dialog(tab = "Geometry", group = "Radii"));
   parameter Modelica.Units.SI.Length ros8[3]={0.75,0.81,0.82} annotation(dialog(tab = "Geometry", group = "Radii"));
   parameter Modelica.Units.SI.Length ror8[3]={0.82,0.87,0.89} annotation(dialog(tab = "Geometry", group = "Radii"));
- parameter Real[2] alphas1 = {pi/3.4,0} "Ideal deflection angle in each stage. 0 indicates no change, not a 0 angle" annotation(dialog(tab = "Deflection", group = "Angles"));
-  parameter Real[2] alphar1 = {-pi/3.48,0} annotation(dialog(tab = "Deflection", group = "Angles"));
+  parameter Real[2] alphas1 = {pi/3.4,0} "Ideal deflection angle in each stage. 0 indicates no change, not a 0 angle" annotation(dialog(tab = "Deflection", group = "Angles"));
+  parameter Real[2] alphar1 = {-pi/3.55,0} annotation(dialog(tab = "Deflection", group = "Angles"));
   parameter Real[2] alphas2 = {pi/2.185,0} annotation(dialog(tab = "Deflection", group = "Angles"));
-  parameter Real[2] alphar2 = {-pi/2.2,0} annotation(dialog(tab = "Deflection", group = "Angles"));
+  parameter Real[2] alphar2 = {-pi/2.23,0} annotation(dialog(tab = "Deflection", group = "Angles"));
   parameter Real[2] alphas3 = {pi/2.43,0} annotation(dialog(tab = "Deflection", group = "Angles"));
-  parameter Real[2] alphar3 = {-pi/2.4,0} annotation(dialog(tab = "Deflection", group = "Angles"));
+  parameter Real[2] alphar3 = {-pi/2.47,0} annotation(dialog(tab = "Deflection", group = "Angles"));
   parameter Real[2] alphas4 = {pi/2.6,0} annotation(dialog(tab = "Deflection", group = "Angles"));
   parameter Real[2] alphar4 = {-pi/2.56,0} annotation(dialog(tab = "Deflection", group = "Angles"));
   parameter Real[2] alphas5 = {pi/2.52,0} annotation(dialog(tab = "Deflection", group = "Angles"));
@@ -114,9 +116,9 @@ model NuScale_Modal_Secondary_Arbitrage_Ports
   parameter Real[2] alphas6 = {pi/3.33,0} annotation(dialog(tab = "Deflection", group = "Angles"));
   parameter Real[2] alphar6 = {-pi/3.62,0} annotation(dialog(tab = "Deflection", group = "Angles"));
   parameter Real[2] alphas7 = {pi/2.53,0} annotation(dialog(tab = "Deflection", group = "Angles"));
-  parameter Real[2] alphar7 = {-pi/2.55,0} annotation(dialog(tab = "Deflection", group = "Angles"));
+  parameter Real[2] alphar7 = {-pi/2.64,0} annotation(dialog(tab = "Deflection", group = "Angles"));
   parameter Real[2] alphas8 = {pi/2.41,0} annotation(dialog(tab = "Deflection", group = "Angles"));
-  parameter Real[2] alphar8 = {-pi/2.21,0} annotation(dialog(tab = "Deflection", group = "Angles"));
+  parameter Real[2] alphar8 = {-pi/2.207,0} annotation(dialog(tab = "Deflection", group = "Angles"));
 
 public
   StagebyStageTurbine.MS MoistSep3(V_MS=0.6, eta=0.227)
@@ -324,7 +326,8 @@ public
     p_in_init=ps1in,
     p_out_init=ps1out)
     annotation (Placement(transformation(extent={{-136,12},{-130,32}})));
-  NHES.Fluid.HeatExchangers.Generic_HXs.NTU_HX LP(
+  NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Components.NTU_HX
+    LP(
     NTU=LP_NTU,
     K_tube=17000,
     K_shell=5,
@@ -341,7 +344,8 @@ public
     deltaX_s_init=0.0,
     Shell(medium(h(start=100000))))
     annotation (Placement(transformation(extent={{4,-20},{16,-42}})));
-  NHES.Fluid.HeatExchangers.Generic_HXs.NTU_HX IP(
+  NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Components.NTU_HX
+    IP(
     NTU=IP_NTU,
     K_tube=17000,
     K_shell=500,
@@ -354,7 +358,8 @@ public
     h_start_shell_inlet=368.2e3,
     h_start_shell_outlet=368.2e3)
     annotation (Placement(transformation(extent={{-36,-20},{-16,-40}})));
-  NHES.Fluid.HeatExchangers.Generic_HXs.NTU_HX HP(
+  NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Components.NTU_HX
+    HP(
     NTU=HP_NTU,
     K_tube=16500,
     K_shell=50,
@@ -660,6 +665,20 @@ public
         extent={{4,-4},{-4,4}},
         rotation=90,
         origin={-178,14})));
+  TRANSFORM.Controls.PI_Control PI2(
+    k=1e-8,
+    Ti=10,
+    initType=Modelica.Blocks.Types.Init.InitialOutput,
+    directActing=false,
+    x_start=1000,
+    y_start=1)
+    annotation (Placement(transformation(extent={{4,-4},{-4,4}},
+        rotation=180,
+        origin={-162,4})));
+  Modelica.Blocks.Sources.Constant const4(k=3.72e6)
+    annotation (Placement(transformation(extent={{-4,4},{4,-4}},
+        rotation=0,
+        origin={-176,4})));
   NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.ValveLineartanh
     FCV(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
@@ -669,6 +688,10 @@ public
         extent={{5,5},{-5,-5}},
         rotation=270,
         origin={-115,-9})));
+  Modelica.Blocks.Sources.Constant const7(k=162e6)
+    annotation (Placement(transformation(extent={{-2,-2},{2,2}},
+        rotation=90,
+        origin={-126,-28})));
   Modelica.Fluid.Machines.PrescribedPump CDP(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
     allowFlowReversal=false,
@@ -692,6 +715,16 @@ public
     h_start=300e3,
     N_const=1278.78)
     annotation (Placement(transformation(extent={{50,-42},{36,-28}})));
+  TRANSFORM.Controls.LimPID     PID(
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    k=1E-9,
+    Ti=10,
+    initType=Modelica.Blocks.Types.Init.InitialOutput,
+    xi_start=0,
+    y_start=1)
+    annotation (Placement(transformation(extent={{-2,2},{2,-2}},
+        rotation=90,
+        origin={-126,-22})));
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium =
                Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{6,7},{-6,-7}},
@@ -714,6 +747,18 @@ public
         extent={{-5,-5},{5,5}},
         rotation=270,
         origin={-107,-45})));
+  Modelica.Blocks.Sources.Constant const2(k=2e5)
+    annotation (Placement(transformation(extent={{-4,4},{4,-4}},
+        rotation=0,
+        origin={-80,-56})));
+  TRANSFORM.Controls.PI_Control PI1(
+    k=15/550000,
+    Ti=20,
+    initType=Modelica.Blocks.Types.Init.InitialOutput,
+    y_start=1220)                   annotation (Placement(transformation(
+        extent={{3,-3},{-3,3}},
+        rotation=270,
+        origin={-61,-47})));
   TRANSFORM.Fluid.Volumes.MixingVolume volume5(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
     p_start=ps1in,
@@ -729,8 +774,22 @@ public
         origin={-188,-18})));
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow12(redeclare package Medium =
                Modelica.Media.Examples.TwoPhaseWater)
-
-    annotation (Placement(transformation(extent={{-152,58},{-144,66}})));
+    annotation (Placement(transformation(extent={{-154,44},{-146,52}})));
+  NHES.Systems.EnergyStorage.Concrete_Solid_Media.Single_Pipe_CS_ED_Enabled_NewGeom
+                                                 TES(
+    nPipes=TES_nPipes,
+    dX=TES_Length,
+    Pipe_to_Concrete_Length_Ratio=HTFtoConcreteRatio,
+    dY=TES_Width,
+    HTF_h_start=300e3,
+    Hot_Con_Start=483.15,
+    Cold_Con_Start=423.15)
+    annotation (Placement(transformation(extent={{148,62},{168,82}})));
+  TRANSFORM.Fluid.FittingsAndResistances.PressureLoss Condensate_Res(dp0=
+        2200000) annotation (Placement(transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=90,
+        origin={162,32})));
   StagebyStageTurbine.BaseClasses.Turbine_Inlet turbine_Inlet1
     annotation (Placement(transformation(extent={{32,48},{12,68}})));
   StagebyStageTurbine.TeeJunctionIdeal_Cyl teeJunctionIdeal_Cyl(redeclare
@@ -747,15 +806,32 @@ public
     K_ab=1,
     K_ba=1)
     annotation (Placement(transformation(extent={{24,24},{4,44}})));
-
-  Modelica.Fluid.Interfaces.FluidPort_b Feedwater(redeclare package Medium =
+  TRANSFORM.Fluid.FittingsAndResistances.PressureLoss resistance12(dp0=-
+        P_Rise_DFV)
+    annotation (Placement(transformation(extent={{124,-54},{144,-34}})));
+  NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.ValveLinearTotal
+    DFV(
+    redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
+    dp_nominal=250000,
+    m_flow_nominal=20,
+    opening_actual(start=0)) annotation (Placement(transformation(
+        extent={{5,5},{-5,-5}},
+        rotation=180,
+        origin={163,-43})));
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium =
+        Modelica.Media.Examples.TwoPhaseWater)
+    annotation (Placement(transformation(extent={{-4,4},{4,-4}},
+        rotation=90,
+        origin={190,-36})));
+  Modelica.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium =
         Modelica.Media.Examples.TwoPhaseWater) annotation (Placement(
-        transformation(extent={{-112,-64},{-92,-44}}), iconTransformation(
-          extent={{-112,-64},{-92,-44}})));
-  Modelica.Fluid.Interfaces.FluidPort_a SG_Return(redeclare package Medium =
+        transformation(extent={{-288,20},{-268,40}}),  iconTransformation(
+          extent={{-288,20},{-268,40}})));
+  Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium =
         Modelica.Media.Examples.TwoPhaseWater) annotation (Placement(
-        transformation(extent={{-112,38},{-92,58}}), iconTransformation(extent={
-            {-112,38},{-92,58}})));
+        transformation(extent={{-288,120},{-268,140}}),
+                                                     iconTransformation(extent={{-288,
+            120},{-268,140}})));
   NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.ValveLinearTotal
     DFV1(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
@@ -768,39 +844,128 @@ public
   NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.TemperatureTwoPort_Superheat
     sensor_T(redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{126,50},{106,70}})));
+  Modelica.Blocks.Math.Add     add1     annotation (Placement(transformation(
+        extent={{5,-5},{-5,5}},
+        rotation=90,
+        origin={87,95})));
+  NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
+    delay1(Ti=10) annotation (Placement(transformation(
+        extent={{3,-3},{-3,3}},
+        rotation=90,
+        origin={85,71})));
+  Modelica.Blocks.Math.Min min1 annotation (Placement(transformation(
+        extent={{3,-3},{-3,3}},
+        rotation=90,
+        origin={85,81})));
+  Modelica.Blocks.Sources.Constant const(k=1)
+    annotation (Placement(transformation(extent={{70,90},{78,98}})));
+  Modelica.Blocks.Interfaces.RealInput Demand annotation (Placement(
+        transformation(extent={{-62,62},{-22,102}}),iconTransformation(
+        extent={{20,-20},{-20,20}},
+        rotation=90,
+        origin={-50,220})));
+  Modelica.Blocks.Interfaces.RealInput DFV2_Antic annotation (Placement(
+        transformation(extent={{2,88},{42,128}}),    iconTransformation(
+        extent={{20,-20},{-20,20}},
+        rotation=90,
+        origin={40,220})));
+  NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.BaseClasses.Peaking_Operational_Logic
+    demand_Shim_Logic_New_2_1(
+    Q_nom=Q_nom,
+    Ti_Charge=0.01,
+    Ti_Discharge=0.01) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={-54,150})));
+  NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.PI_Control_Reset_Input
+    PI_DFV2(
+    k=1,
+    Ti=25,
+    k_s=5e-8,
+    k_m=5e-8)
+    annotation (Placement(transformation(extent={{70,140},{90,160}})));
+  NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.PI_Control_Reset_Input
+    PI_TBV_Elec(
+    k=1,
+    Ti=100,
+    k_s=1e-8,
+    k_m=1e-8,
+    directActing=false)
+    annotation (Placement(transformation(extent={{-104,140},{-124,160}})));
+  NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Timer
+    timer(Start_Time=30) annotation (Placement(transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=90,
+        origin={-188,90})));
+  NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Timer
+    timer1(Start_Time=30) annotation (Placement(transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=90,
+        origin={228,42})));
+  NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
+    delay2(Ti=0.001)
+    annotation (Placement(transformation(extent={{-62,94},{-42,114}})));
+  NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+    minMaxFilter
+    annotation (Placement(transformation(extent={{-228,20},{-208,40}})));
+  NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+    minMaxFilter1
+    annotation (Placement(transformation(extent={{208,-26},{228,-6}})));
+  NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.PI_Control_Reset_Input
+    PI_FCV(
+    k=1,
+    Ti=30,
+    k_s=1e-6,
+    k_m=1e-6,
+    directActing=true)
+    annotation (Placement(transformation(extent={{-100,106},{-120,126}})));
+  Modelica.Blocks.Interfaces.RealInput Q_Rx_Total annotation (Placement(
+        transformation(extent={{-188,134},{-148,174}}), iconTransformation(
+        extent={{20,-20},{-20,20}},
+        rotation=180,
+        origin={-300,180})));
+  NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.PI_Control_Reset_Input
+    PI_TBV_Rx(
+    k=-1e-11,
+    Ti=10,
+    initType=Modelica.Blocks.Types.Init.InitialOutput,
+    y_start=0) annotation (Placement(transformation(
+        extent={{-4,4},{4,-4}},
+        rotation=180,
+        origin={-154,130})));
+  Modelica.Blocks.Sources.Constant const1(k=162e6)
+    annotation (Placement(transformation(extent={{-2,-2},{2,2}},
+        rotation=90,
+        origin={-142,122})));
+  Modelica.Blocks.Math.Add add3
+    annotation (Placement(transformation(extent={{-184,126},{-172,138}})));
+  TRANSFORM.Controls.LimPID     PID1(
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    k=1/700,
+    Ti=10,
+    initType=Modelica.Blocks.Types.Init.InitialOutput,
+    xi_start=0,
+    y_start=1)
+    annotation (Placement(transformation(extent={{2,2},{-2,-2}},
+        rotation=90,
+        origin={-126,-8})));
+  Modelica.Blocks.Math.Add add4
+    annotation (Placement(transformation(extent={{-126,-14},{-124,-12}})));
+  Modelica.Blocks.Sources.Constant const3(k=68.4)
+    annotation (Placement(transformation(extent={{2,-2},{-2,2}},
+        rotation=90,
+        origin={-122,0})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
                                        sensor_T1(redeclare package Medium =
         Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{-6,7},{6,-7}},
         rotation=90,
         origin={-118,-25})));
-  Modelica.Blocks.Sources.RealExpression Q_RX_Internal_Block(y=Q_RX_Internal)
-    annotation (Placement(transformation(extent={{-288,106},{-268,126}})));
-  Modelica.Blocks.Sources.RealExpression Demand_Internal_Block(y=Demand_Internal)
-    annotation (Placement(transformation(extent={{-288,90},{-268,110}})));
-  Modelica.Blocks.Sources.RealExpression DFV_Ancticipatory_Internal_Block(y=
-        DFV_Ancticipatory_Internal)
-    annotation (Placement(transformation(extent={{-288,74},{-268,94}})));
-  Modelica.Fluid.Interfaces.FluidPort_b TBV_Send(redeclare package Medium =
-        Modelica.Media.Examples.TwoPhaseWater) annotation (Placement(
-        transformation(extent={{100,74},{120,94}}), iconTransformation(extent={{94,48},
-            {114,68}})));
-  Modelica.Fluid.Interfaces.FluidPort_a TBV_Return(redeclare package Medium =
-        Modelica.Media.Examples.TwoPhaseWater) annotation (Placement(
-        transformation(extent={{100,-66},{120,-46}}),iconTransformation(extent={{94,-66},
-            {114,-46}})));
-  Modelica.Fluid.Interfaces.FluidPort_a Arbitrage_Return(redeclare package
-      Medium = Modelica.Media.Examples.TwoPhaseWater) annotation (Placement(
-        transformation(extent={{48,-100},{68,-80}}), iconTransformation(extent={{40,-110},
-            {60,-90}})));
-  Modelica.Fluid.Interfaces.FluidPort_b Arbitrage_Send(redeclare package Medium =
-        Modelica.Media.Examples.TwoPhaseWater) annotation (Placement(
-        transformation(extent={{-54,-100},{-34,-80}}), iconTransformation(
-          extent={{-28,-112},{-8,-92}})));
 initial equation
   dEdCycle=0;
   t_track = 0;
-
+  Q_Cond_Feed = 0;
+  mflowcalc = HP.Tube_in.m_flow;
 //  T_ideal = T_feed_ref;
 equation
   der(t_track)=1;
@@ -809,7 +974,15 @@ equation
     reinit(dEdCycle,0);
     reinit(t_track,0);
   end when;
-
+  der(mflowcalc) = HP.Tube_in.m_flow - mflowcalc;
+  dhfd = (Modelica.Media.Water.StandardWater.specificEnthalpy_pT(HP.Tube_out.p,T_feed_ref)-HP.hex_t);
+  dhcn = Condensate_Res.port_a.h_outflow-Modelica.Media.Water.StandardWater.specificEnthalpy_pT(Condensate_Res.port_a.p,HP.Tin_t);
+  if  Condensate_Res.m_flow>0 and HP.Tex_t<=T_feed_ref then
+    10*der(Q_Cond_Feed) = min(0.5*(HP.Tube_in.m_flow + HP.Tube_out.m_flow) *dhfd,
+    Condensate_Res.m_flow*(dhcn)) -Q_Cond_Feed;
+  else
+    10*der(Q_Cond_Feed) = 0-Q_Cond_Feed;
+  end if;
 
   connect(generator.shaft, turbine_Editable.Generator_torque) annotation (Line(
         points={{-66.1,59.9},{-70,59.9},{-70,60},{-72,60},{-72,59.8},{-74,
@@ -1026,17 +1199,31 @@ equation
     annotation (Line(points={{-36,-34},{-54,-34}}, color={0,127,255}));
   connect(HP.Tube_in, FWCP.port_b) annotation (Line(points={{-76,-33.4},{
           -72,-33.4},{-72,-34},{-66,-34}}, color={0,127,255}));
+  connect(TCV.opening, PI2.y) annotation (Line(points={{-147,3},{-157.6,3},
+          {-157.6,4}}, color={0,0,127}));
+  connect(const4.y, PI2.u_s)
+    annotation (Line(points={{-171.6,4},{-166.8,4}}, color={0,0,127}));
+  connect(PI2.u_m, sensor_p1.p)
+    annotation (Line(points={{-162,8.8},{-162,11.6},{-178,11.6}},
+                                                      color={0,0,127}));
   connect(LP.Tube_in, CDP.port_b) annotation (Line(points={{16,-35.4},{26,
           -35.4},{26,-35},{36,-35}}, color={0,127,255}));
   connect(FCV.port_b, sensor_m_flow1.port_a) annotation (Line(points={{
           -115,-4},{-116,-4},{-116,14},{-130,14},{-130,9}}, color={0,127,
           255}));
+  connect(PID.u_s, const7.y) annotation (Line(points={{-126,-24.4},{-126,-25.8}},
+                   color={0,0,127}));
   connect(sensor_p1.port, TCV.port_a) annotation (Line(points={{-174,14},
           {-168,14},{-168,-4},{-143,-4},{-143,-2}}, color={0,127,255}));
   connect(sensor_p2.p, add.u1)
     annotation (Line(points={{-104,-28.4},{-104,-39}}, color={0,0,127}));
   connect(sensor_p3.p, add.u2)
     annotation (Line(points={{-110,3.6},{-110,-39}}, color={0,0,127}));
+  connect(const2.y, PI1.u_s) annotation (Line(points={{-75.6,-56},{-61,-56},{-61,
+          -50.6}},           color={0,0,127}));
+  connect(add.y, PI1.u_m) annotation (Line(points={{-107,-50.5},{-108,
+          -50.5},{-108,-52},{-98,-52},{-98,-46},{-82,-46},{-82,-47},{
+          -64.6,-47}}, color={0,0,127}));
   connect(sensor_p3.port, sensor_m_flow1.port_a) annotation (Line(points={{-114,6},
           {-122,6},{-122,9},{-130,9}},           color={0,127,255}));
   connect(sensor_p2.port, HP.Tube_out) annotation (Line(points={{-108,-26},
@@ -1045,15 +1232,22 @@ equation
           {-186,-18.5},{-186,-4},{-189,-4}}, color={0,127,255}));
   connect(volume5.port_b[2], TCV.port_a) annotation (Line(points={{-182,
           -17.5},{-162,-17.5},{-162,-2},{-143,-2}}, color={0,127,255}));
-  connect(sensor_m_flow12.port_a, TBV2.port_b) annotation (Line(points={{-152,62},
-          {-170,62},{-170,60},{-188,60},{-188,6},{-189,6}},
-                               color={0,127,255}));
-  connect(volume3.port_a[1], CDP.port_a) annotation (Line(points={{86,-36.5},{
-          68,-36.5},{68,-35},{50,-35}},color={0,127,255}));
+  connect(sensor_m_flow12.port_a, TBV2.port_b) annotation (Line(points={{-154,48},
+          {-189,48},{-189,6}}, color={0,127,255}));
+  connect(volume3.port_a[1], CDP.port_a) annotation (Line(points={{86,-36.5},{68,
+          -36.5},{68,-35},{50,-35}},   color={0,127,255}));
   connect(PI4.u_s, sensor_m_flow6.m_flow) annotation (Line(points={{151,-5.4},{151,
           5.3},{146.52,5.3},{146.52,15}},            color={0,0,127}));
+  connect(sensor_m_flow12.port_b, TES.Charge_Inlet) annotation (Line(
+        points={{-146,48},{-136,48},{-136,74.2},{150.2,74.2}}, color={0,
+          127,255}));
+  connect(Condensate_Res.port_a, TES.Charge_Outlet) annotation (Line(points={{
+          162,39},{162,40},{84,40},{84,68},{161,68},{161,78.2}}, color={0,127,
+          255}));
   connect(sensor_m_flow6.port_a, turbine_Outlet.Pipe_flow) annotation (Line(
         points={{144,21},{136,21},{136,24},{134,24}}, color={0,127,255}));
+  connect(Condensate_Res.port_b, sensor_m_flow6.port_a) annotation (Line(points={{162,25},
+          {162,24},{150,24},{150,21},{144,21}},          color={0,127,255}));
   connect(teeJunctionIdeal_Cyl.port_2, turbine_Inlet1.Turb_flow)
     annotation (Line(points={{2,58},{2,57.9},{12.1,57.9}},color={28,108,200}));
   connect(MoistSep1.Turb_Out, Stator5.Inlet) annotation (Line(points={{
@@ -1073,396 +1267,125 @@ equation
   connect(transportDelayPipe.port_b, turbine_Inlet3.Pipe_flow)
     annotation (Line(points={{4,34},{-4,34}},                  color={0,
           127,255}));
-  connect(sensor_m_flow1.port_b, Feedwater) annotation (Line(points={{-130,-3},{
-          -138,-3},{-138,-54},{-102,-54}}, color={0,127,255}));
-  connect(SG_Return, volume5.port_a[1]) annotation (Line(points={{-102,48},{-102,
-          48},{-194,48},{-194,-18}}, color={0,127,255}));
+  connect(volume3.port_a[2], resistance12.port_a) annotation (Line(points={{86,-35.5},
+          {86,-36},{78,-36},{78,-44},{127,-44}}, color={0,127,255}));
+  connect(resistance12.port_b, DFV.port_a) annotation (Line(points={{141,-44},{158,
+          -44},{158,-43}}, color={0,127,255}));
+  connect(sensor_m_flow1.port_b, port_b) annotation (Line(points={{-130,-3},{
+          -138,-3},{-138,30},{-278,30}},
+                                      color={0,127,255}));
+  connect(port_a, volume5.port_a[1]) annotation (Line(points={{-278,130},{-202,
+          130},{-202,-18},{-194,-18}},
+                                  color={0,127,255}));
   connect(DFV1.port_b, turbine_Inlet1.Pipe_flow) annotation (Line(points={{80,61},
           {72,61},{72,58},{32,58}},                 color={0,127,255}));
   connect(sensor_T.port_b, DFV1.port_a) annotation (Line(points={{106,60},{106,61},
           {90,61}},          color={0,127,255}));
+  connect(sensor_T.port_a, TES.Discharge_Outlet) annotation (Line(points={{126,60},
+          {156.4,60},{156.4,66.4}},           color={0,127,255}));
+  connect(sensor_T.dT, add1.u2) annotation (Line(points={{116,63.6},{116,114},{90,
+          114},{90,101}}, color={0,0,127}));
+  connect(DFV1.opening, delay1.y)
+    annotation (Line(points={{85,65},{85,67.58}}, color={0,0,127}));
+  connect(min1.u1, const.y) annotation (Line(points={{83.2,84.6},{80,84.6},{80,88},
+          {78,88},{78,94},{78.4,94}},
+                    color={0,0,127}));
+  connect(add1.y, min1.u2) annotation (Line(points={{87,89.5},{87,86.75},{86.8,86.75},
+          {86.8,84.6}}, color={0,0,127}));
+  connect(delay1.u, min1.y) annotation (Line(points={{85,74.6},{85,77.7}},
+                      color={0,0,127}));
+  connect(DFV2_Antic, add1.u1) annotation (Line(points={{22,108},{48,108},{48,104},
+          {82,104},{82,101},{84,101}}, color={0,0,127}));
+  connect(Demand, demand_Shim_Logic_New_2_1.Demand) annotation (Line(points={{-42,
+          82},{-8,82},{-8,124},{-54,124},{-54,138}}, color={0,0,127}));
+  connect(demand_Shim_Logic_New_2_1.Discharge, PI_DFV2.k_in) annotation (Line(
+        points={{-47.3,161.9},{-47.3,166},{32,166},{32,158},{68,158}}, color={255,
+          0,255}));
+  connect(demand_Shim_Logic_New_2_1.Charge, PI_TBV_Elec.k_in) annotation (Line(
+        points={{-54.7,161.9},{-54.7,172},{-88,172},{-88,158},{-102,158}},
+        color={255,0,255}));
+  connect(DFV.port_b, sensor_m_flow2.port_a) annotation (Line(points={{168,-43},
+          {180,-43},{180,-46},{190,-46},{190,-40}}, color={0,127,255}));
+  connect(sensor_m_flow2.port_b, TES.Discharge_Inlet) annotation (Line(points={{
+          190,-32},{190,68},{165.8,68},{165.8,71.8}}, color={0,127,255}));
+  connect(PI_DFV2.y, timer1.u)
+    annotation (Line(points={{91,150},{228,150},{228,54}}, color={0,0,127}));
+  connect(generator.Power, delay2.u) annotation (Line(points={{-56,70.8},{-56,
+          86},{-74,86},{-74,104},{-64,104}}, color={0,0,127}));
+  connect(delay2.y, demand_Shim_Logic_New_2_1.Power) annotation (Line(points={{-40.6,
+          104},{-30,104},{-30,128},{-50,128},{-50,137.8}}, color={0,0,127}));
+  connect(demand_Shim_Logic_New_2_1.DFV_Power, PI_DFV2.u_m) annotation (Line(
+        points={{-42.1,149.9},{-16,149.9},{-16,138},{80,138}}, color={0,0,127}));
+  connect(demand_Shim_Logic_New_2_1.DFV_Demand, PI_DFV2.u_s) annotation (Line(
+        points={{-51.1,161.9},{-51.1,170},{50,170},{50,150},{68,150}}, color={0,
+          0,127}));
+  connect(timer.y, minMaxFilter.u) annotation (Line(points={{-188,78.6},{-188,70},
+          {-220,70},{-220,30},{-230,30}}, color={0,0,127}));
+  connect(minMaxFilter.y, TBV2.opening) annotation (Line(points={{-206.6,30},{-200,
+          30},{-200,26},{-196,26},{-196,1},{-193,1}}, color={0,0,127}));
+  connect(timer1.y, minMaxFilter1.u) annotation (Line(points={{228,30.6},{228,14},
+          {226,14},{226,10},{196,10},{196,-16},{206,-16}}, color={0,0,127}));
+  connect(minMaxFilter1.y, DFV.opening) annotation (Line(points={{229.4,-16},{238,
+          -16},{238,-28},{163,-28},{163,-39}}, color={0,0,127}));
+  connect(demand_Shim_Logic_New_2_1.TBV_Power, PI_TBV_Elec.u_m) annotation (
+      Line(points={{-65.9,149.9},{-74,149.9},{-74,128},{-114,128},{-114,138}},
+        color={0,0,127}));
+  connect(demand_Shim_Logic_New_2_1.TBV_Demand, PI_TBV_Elec.u_s) annotation (
+      Line(points={{-58.5,161.9},{-58.5,164},{-78,164},{-78,150},{-102,150}},
+        color={0,0,127}));
+  connect(demand_Shim_Logic_New_2_1.Nominal, PI_FCV.k_in) annotation (Line(
+        points={{-62.5,138.1},{-62.5,124},{-98,124}}, color={255,0,255}));
+  connect(demand_Shim_Logic_New_2_1.FCV_Power, PI_FCV.u_m) annotation (Line(
+        points={{-58.7,138.1},{-58.7,118},{-84,118},{-84,104},{-110,104}},
+        color={0,0,127}));
+  connect(demand_Shim_Logic_New_2_1.FCV_Demand, PI_FCV.u_s) annotation (Line(
+        points={{-65.9,141.9},{-70,141.9},{-70,116},{-98,116}}, color={0,0,127}));
+  connect(PI_TBV_Rx.u_s, const1.y) annotation (Line(points={{-149.2,130},{-142,
+          130},{-142,124.2}}, color={0,0,127}));
+  connect(PI_TBV_Rx.u_m, Q_Rx_Total) annotation (Line(points={{-154,125.2},{
+          -168,125.2},{-168,154}}, color={0,0,127}));
+  connect(PI_TBV_Elec.y, add3.u1) annotation (Line(points={{-125,150},{-134,150},
+          {-134,138},{-196,138},{-196,135.6},{-185.2,135.6}}, color={0,0,127}));
+  connect(PI_TBV_Rx.y, add3.u2) annotation (Line(points={{-158.4,130},{-200,130},
+          {-200,128.4},{-185.2,128.4}}, color={0,0,127}));
+  connect(add3.y, timer.u) annotation (Line(points={{-171.4,132},{-164,132},{
+          -164,110},{-188,110},{-188,102}}, color={0,0,127}));
+  connect(PID.u_m, Q_Rx_Total) annotation (Line(points={{-128.4,-22},{-188,-22},
+          {-188,-18},{-264,-18},{-264,154},{-168,154}}, color={0,0,127}));
+  connect(demand_Shim_Logic_New_2_1.Charge, PI_TBV_Rx.k_in) annotation (Line(
+        points={{-54.7,161.9},{-54.7,180},{-138,180},{-138,133.2},{-149.2,133.2}},
+        color={255,0,255}));
+  connect(PID1.u_m, sensor_m_flow1.m_flow) annotation (Line(points={{-128.4,-8},
+          {-132,-8},{-132,-4},{-124,-4},{-124,3},{-127.48,3}}, color={0,0,127}));
+  connect(const3.y, PID1.u_s) annotation (Line(points={{-122,-2.2},{-122,-5.6},
+          {-126,-5.6}}, color={0,0,127}));
+  connect(PID1.y, add4.u1) annotation (Line(points={{-126,-10.2},{-126,-12},{
+          -126,-12.4},{-126.2,-12.4}}, color={0,0,127}));
+  connect(PID.y, add4.u2) annotation (Line(points={{-126,-19.8},{-126,-16},{
+          -126,-13.6},{-126.2,-13.6}}, color={0,0,127}));
+  connect(add4.y, FCV.opening) annotation (Line(points={{-123.9,-13},{-123.9,
+          -10.5},{-119,-10.5},{-119,-9}}, color={0,0,127}));
+  connect(PI1.y, FWCP.N_in) annotation (Line(points={{-61,-43.7},{-61,-41.85},{
+          -60,-41.85},{-60,-40}}, color={0,0,127}));
   connect(HP.Tube_out, sensor_T1.port_a) annotation (Line(points={{-96,-33.4},{-106,
           -33.4},{-106,-34},{-118,-34},{-118,-31}}, color={0,127,255}));
   connect(sensor_T1.port_b, FCV.port_a) annotation (Line(points={{-118,-19},{-118,
           -18},{-115,-18},{-115,-14}}, color={0,127,255}));
-  connect(actuatorBus.FWCP_Speed, FWCP.N_in) annotation (Line(
-      points={{30,100},{144,100},{144,98},{256,98},{256,-58},{-60,-58},{-60,-40}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-
-  connect(sensorBus.dP_FCV, add.y) annotation (Line(
-      points={{-30,100},{-236,100},{-236,-58},{-107,-58},{-107,-50.5}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorBus.Q_RX, Q_RX_Internal_Block.y) annotation (Line(
-      points={{-30,100},{-236,100},{-236,116},{-267,116}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorBus.Demand, Demand_Internal_Block.y) annotation (Line(
-      points={{-30,100},{-267,100}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorBus.DFV_Anticipatory, DFV_Ancticipatory_Internal_Block.y)
-    annotation (Line(
-      points={{-30,100},{-236,100},{-236,84},{-267,84}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(actuatorBus.DFV_Opening, DFV1.opening) annotation (Line(
-      points={{30,100},{85,100},{85,65}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorBus.Superheat_Sensor_Opening, sensor_T.dT) annotation (Line(
-      points={{-30,100},{-32,100},{-32,86},{116,86},{116,63.6}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorBus.Generator_Power, generator.Power) annotation (Line(
-      points={{-30,100},{-46,100},{-46,98},{-56,98},{-56,70.8},{-56,70.8}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorBus.Feed_Flow_Rate, sensor_m_flow1.m_flow) annotation (Line(
-      points={{-30,100},{-236,100},{-236,-26},{-130,-26},{-130,-8},{-122,-8},{
-          -122,3},{-127.48,3}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(actuatorBus.FCV_Opening, FCV.opening) annotation (Line(
-      points={{30,100},{30,88},{-214,88},{-214,-40},{-136,-40},{-136,-9},{-119,
-          -9}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(actuatorBus.TBV_Opening, TBV2.opening) annotation (Line(
-      points={{30,100},{30,88},{-214,88},{-214,1},{-193,1}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorBus.P_Turbine_Inlet, sensor_p1.p) annotation (Line(
-      points={{-30,100},{-236,100},{-236,-26},{-178,-26},{-178,11.6}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(actuatorBus.TCV_Opening, TCV.opening) annotation (Line(
-      points={{30,100},{30,88},{-214,88},{-214,-38},{-154,-38},{-154,3},{-147,3}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-
-  connect(TBV_Send, sensor_m_flow12.port_b) annotation (Line(points={{110,84},{
-          108,84},{108,72},{104,72},{104,62},{-144,62}}, color={0,127,255}));
-  connect(TBV_Return, sensor_m_flow6.port_a) annotation (Line(points={{110,-56},
-          {154,-56},{154,-52},{196,-52},{196,42},{146,42},{146,21},{144,21}},
-        color={0,127,255}));
-  connect(Arbitrage_Return, sensor_T.port_a) annotation (Line(points={{58,-90},
-          {118,-90},{118,-86},{228,-86},{228,76},{126,76},{126,60}}, color={0,
-          127,255}));
-  connect(Arbitrage_Send, volume3.port_a[2]) annotation (Line(points={{-44,-90},
-          {18,-90},{18,-70},{86,-70},{86,-35.5}}, color={0,127,255}));
-  annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
-        Polygon(
-          points={{24,22},{24,-8},{32,-22},{32,36},{24,22}},
-          lineColor={0,0,0},
-          fillColor={0,114,208},
-          fillPattern=FillPattern.Solid),
-        Polygon(
-          points={{40,22},{40,-8},{48,-24},{48,38},{40,22}},
-          lineColor={0,0,0},
-          fillColor={0,114,208},
-          fillPattern=FillPattern.Solid),
-        Polygon(
-          points={{-12,22},{-12,-8},{-2,-22},{-2,38},{-12,22}},
-          lineColor={0,0,0},
-          fillColor={0,114,208},
-          fillPattern=FillPattern.Solid),
-        Polygon(
-          points={{8,22},{8,-8},{16,-24},{16,36},{8,22}},
-          lineColor={0,0,0},
-          fillColor={0,114,208},
-          fillPattern=FillPattern.Solid),
-        Rectangle(
-          extent={{-2.55993,3},{93.4405,-3}},
-          lineColor={0,0,0},
-          origin={-31.44,-1},
-          rotation=0,
-          fillColor={135,135,135},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Ellipse(
-          extent={{60,14},{88,-12}},
-          lineColor={0,0,0},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid),
-        Text(
-          extent={{69,-6},{79,8}},
-          lineColor={0,0,0},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid,
-          textString="G"),
-        Rectangle(
-          extent={{-1.06666,3.0002},{38.9329,-3.0002}},
-          lineColor={0,0,0},
-          origin={61,-50.933},
-          rotation=90,
-          fillColor={0,128,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-0.4,3},{15.5,-3}},
-          lineColor={0,0,0},
-          origin={48.427,-15},
-          rotation=0,
-          fillColor={0,128,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-0.341457,2},{13.6584,-2}},
-          lineColor={0,0,0},
-          origin={8,-48.342},
-          rotation=-90,
-          fillColor={0,0,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-1.12002,2},{40.8804,-2}},
-          lineColor={0,0,0},
-          origin={11.12,-60},
-          rotation=0,
-          fillColor={0,0,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-0.578156,2.1722},{23.1262,-2.1722}},
-          lineColor={0,0,0},
-          origin={5.422,-49.828},
-          rotation=180,
-          fillColor={0,0,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Ellipse(
-          extent={{-26,-46},{-14,-58}},
-          lineColor={0,0,0},
-          fillPattern=FillPattern.Sphere,
-          fillColor={0,100,199}),
-        Polygon(
-          points={{-19,-49},{-19,-55},{-24,-52},{-19,-49}},
-          lineColor={0,0,0},
-          pattern=LinePattern.None,
-          fillPattern=FillPattern.HorizontalCylinder,
-          fillColor={255,255,255}),
-        Rectangle(
-          extent={{-1.81329,5},{66.1867,-5}},
-          lineColor={0,0,0},
-          origin={-92.1867,-53},
-          rotation=0,
-          fillColor={0,0,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-0.341463,3},{13.6586,-3}},
-          lineColor={0,0,0},
-          origin={72.3414,-67},
-          rotation=360,
-          fillColor={0,0,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-16,3},{16,-3}},
-          lineColor={0,0,0},
-          fillColor={66,200,200},
-          fillPattern=FillPattern.HorizontalCylinder,
-          origin={-12,38},
-          rotation=-90),
-        Rectangle(
-          extent={{-38,54},{-12,42}},
-          lineColor={0,0,0},
-          fillColor={66,200,200},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-94,54},{-46,42}},
-          lineColor={0,0,0},
-          fillColor={66,200,200},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Ellipse(
-          extent={{-48,57},{-30,39}},
-          lineColor={95,95,95},
-          fillColor={175,175,175},
-          fillPattern=FillPattern.Sphere),
-        Ellipse(
-          extent={{-37,57},{-41,39}},
-          lineColor={0,0,0},
-          fillPattern=FillPattern.VerticalCylinder,
-          fillColor={162,162,0}),
-        Rectangle(
-          extent={{-38,55},{-40,67}},
-          lineColor={0,0,0},
-          fillColor={95,95,95},
-          fillPattern=FillPattern.VerticalCylinder),
-        Rectangle(
-          extent={{-48,69},{-30,67}},
-          lineColor={0,0,0},
-          fillColor={181,0,0},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Polygon(
-          points={{-24,-56},{-28,-60},{-12,-60},{-16,-56},{-24,-56}},
-          lineColor={0,0,255},
-          pattern=LinePattern.None,
-          fillColor={0,0,0},
-          fillPattern=FillPattern.VerticalCylinder),
-        Rectangle(
-          extent={{-0.244084,1},{9.76422,-1}},
-          lineColor={0,0,0},
-          origin={-1.764,19},
-          rotation=360,
-          fillColor={0,0,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-0.195303,1},{7.8128,-1}},
-          lineColor={0,0,0},
-          origin={16.187,19},
-          rotation=360,
-          fillColor={0,0,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-0.195308,1},{7.813,-1}},
-          lineColor={0,0,0},
-          origin={32.187,19},
-          rotation=360,
-          fillColor={0,0,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Ellipse(
-          extent={{46,-50},{74,-76}},
-          lineColor={0,0,0},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid),
-        Text(
-          extent={{55,-70},{65,-56}},
-          lineColor={0,0,0},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid,
-          textString="C"),
-        Rectangle(
-          extent={{-1.06666,3.0002},{38.9329,-3.0002}},
-          lineColor={0,0,0},
-          origin={-53,-70.933},
-          rotation=90,
-          fillColor={0,128,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-2.61619,3},{101.384,-3}},
-          lineColor={0,0,0},
-          origin={-53.384,-31},
-          rotation=0,
-          fillColor={0,128,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-0.37333,1.00001},{13.6262,-1}},
-          lineColor={0,0,0},
-          origin={29,-29.626},
-          rotation=90,
-          fillColor={0,128,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-0.37333,1.00001},{13.6262,-1}},
-          lineColor={0,0,0},
-          origin={13,-29.626},
-          rotation=90,
-          fillColor={0,128,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-0.37333,1.00001},{13.6262,-1}},
-          lineColor={0,0,0},
-          origin={-5,-29.626},
-          rotation=90,
-          fillColor={0,128,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-0.37333,1.00001},{13.6262,-1}},
-          lineColor={0,0,0},
-          origin={45,-29.626},
-          rotation=90,
-          fillColor={0,128,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-2.61619,3},{101.384,-3}},
-          lineColor={0,0,0},
-          origin={-53.384,-69},
-          rotation=0,
-          fillColor={0,128,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-10,54},{48,48}},
-          lineColor={0,0,0},
-          fillColor={66,200,200},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-0.634164,0.999955},{25.3659,-1.0001}},
-          lineColor={0,0,0},
-          origin={22.634,41.0001},
-          rotation=360,
-          fillColor={0,0,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-0.586685,0.999995},{21.4135,-1}},
-          lineColor={0,0,0},
-          origin={21,20.5865},
-          rotation=90,
-          fillColor={0,128,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Text(
-          extent={{45,52},{54,64}},
-          lineColor={0,0,0},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid,
-          textString="1"),
-        Text(
-          extent={{109,62},{119,76}},
-          lineColor={0,0,0},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid,
-          textString="1"),
-        Text(
-          extent={{113,-54},{123,-40}},
-          lineColor={0,0,0},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid,
-          textString="2"),
-        Text(
-          extent={{63,-22},{72,-12}},
-          lineColor={0,0,0},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid,
-          textString="2"),
-        Text(
-          extent={{77,-66},{86,-56}},
-          lineColor={0,0,0},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid,
-          textString="3"),
-        Text(
-          extent={{-37,-112},{-27,-98}},
-          lineColor={0,0,0},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid,
-          textString="3"),
-        Text(
-          extent={{59,-114},{69,-100}},
-          lineColor={0,0,0},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid,
-          textString="4"),
-        Text(
-          extent={{47,36},{56,48}},
-          lineColor={0,0,0},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid,
-          textString="4")}),                                     Diagram(
-        coordinateSystem(preserveAspectRatio=false)),
+  annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-280,
+            -80},{240,200}}),                                   graphics={
+                                                 Bitmap(
+          extent={{-184,-54},{146,190}},
+          imageSource=
+              "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",
+          fileName="modelica://MikkelsonModeling/../../../Downloads/stmtur.jpg")}),
+                                                                 Diagram(
+        coordinateSystem(preserveAspectRatio=false, extent={{-280,-80},{240,200}})),
     experiment(
       StopTime=30,
       __Dymola_NumberOfIntervals=531,
       Tolerance=0.0005,
       __Dymola_Algorithm="Esdirk45a"),
     Documentation(info="<html>
-<p>This is an integrable NuScale secondary model with 6 fluid ports. The left-side icon ports are intended to be connected to the steam generator of the SMR. Ports labelled 1 and 2 on the right hand side of the icon are designed as the <b>charging</b> ports, connected to the TBV for sourcing and returning just upstream of the condensers. Ports labelled 3 and 4 on the bottom side of the icon are designed as the <b>discharging</b> ports, which sources from the condensers and returns steam to peak the turbine. </p>
-<p>For other notes, see the NuScale_Secondary model. </p>
+<p>Original model without extension of Hybrid standard control systems. See Modal for more description. </p>
 </html>"));
-end NuScale_Modal_Secondary_Arbitrage_Ports;
+end Modal_Controlled_Generic_SMR;

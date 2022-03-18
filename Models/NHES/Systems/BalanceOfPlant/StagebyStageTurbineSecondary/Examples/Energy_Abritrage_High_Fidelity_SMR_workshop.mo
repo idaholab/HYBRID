@@ -105,7 +105,8 @@ equation
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-80},
             {100,100}})),
     experiment(
-      StopTime=3600,
+      StartTime=17400,
+      StopTime=19800,
       __Dymola_NumberOfIntervals=199,
       Tolerance=0.0005,
       __Dymola_Algorithm="Esdirk45a"),
