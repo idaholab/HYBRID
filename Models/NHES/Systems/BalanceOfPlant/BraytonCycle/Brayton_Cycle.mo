@@ -6,13 +6,12 @@ model Brayton_Cycle
     redeclare replaceable Data.Data_BC_Test data(
       K_P_Release=10000,
       HX_Reheat_Tube_Vol=0.1,
-      HX_Reheat_Shell_Vol=0.1,
-      HX_Reheat_Buffer_Vol=0.1));
+      HX_Reheat_Shell_Vol=0.1));
 
 
   //Modelica.Units.SI.Power Q_Recup;
     replaceable package Medium =
-      NHES.Systems.PrimaryHeatSystem.HTGR.BaseClasses.He_HighT constrainedby Modelica.Media.Interfaces.PartialMedium annotation(choicesAllMatching=true);
+      Modelica.Media.IdealGases.SingleGases.He constrainedby Modelica.Media.Interfaces.PartialMedium annotation(choicesAllMatching=true);
     Modelica.Units.SI.Power Q_gen;
 
 
@@ -36,7 +35,6 @@ model Brayton_Cycle
         Medium,
     V_Tube=data.HX_Reheat_Tube_Vol,
     V_Shell=data.HX_Reheat_Shell_Vol,
-    V_buffers=data.HX_Reheat_Buffer_Vol,
     p_start_tube=dataInitial.Recuperator_P_Tube,
     h_start_tube_inlet=dataInitial.Recuperator_h_Tube_Inlet,
     h_start_tube_outlet=dataInitial.Recuperator_h_Tube_Outlet,

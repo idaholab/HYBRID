@@ -1,7 +1,7 @@
 within NHES.Systems.BalanceOfPlant.BraytonCycle.Examples;
 model Test
   extends Modelica.Icons.Example;
-  package Medium = NHES.Systems.PrimaryHeatSystem.HTGR.BaseClasses.He_HighT;
+  package Medium = Modelica.Media.IdealGases.SingleGases.He;
   Brayton_Cycle brayton_Cycle(redeclare replaceable Data.Data_BC_Test data(
       K_P_Release(unit="1/(m.kg)") = 10000,
       HX_Aux_K_tube(unit="1/m4"),
