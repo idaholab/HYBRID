@@ -48,16 +48,16 @@ authorized['samplers'] = samplers
 
 def readInputFile(inputFilePath, logger):
   """ 
-  Read input file 
-      @ In, inputFilePath, string, relative path to the input file
-      @ In, logger, Logger, for formatted messages
-      @ Out, calibration, bool, indicates whether calibration is performed or not
-      @ Out, metric, string, metric for exp/model comparison
-      @ Out, model, dict, information about the model to run 
-      @ Out, target_list, dict, list of SRQ 
-      @ Out, exp, dict, information about the experimental dataset 
-      @ Out, variables, dict, information about the model's variables 
-      @ Out, optimization, dict, information about the optimization if calibration is True
+    Read input file 
+        @ In, inputFilePath, string, relative path to the input file
+        @ In, logger, Logger, for formatted messages
+        @ Out, calibration, bool, indicates whether calibration is performed or not
+        @ Out, metric, string, metric for exp/model comparison
+        @ Out, model, dict, information about the model to run 
+        @ Out, target_list, dict, list of SRQ 
+        @ Out, exp, dict, information about the experimental dataset 
+        @ Out, variables, dict, information about the model's variables 
+        @ Out, optimization, dict, information about the optimization if calibration is True
   """
   
   # Load input file
@@ -291,7 +291,6 @@ def writeXMLCalibration(model, exp, variables, metric, optimization, work_dir, c
   calTemplate = CalibrationTemplate(authorized['distributions'], authorized['metrics_sync'])
   calTemplate.loadTemplate('calibration_incomplete_XML.xml', os.path.dirname(inspect.getfile(CalibrationTemplate)))
   logger.info('Calibration template loaded.')
-
   # Writing the calibration MXL file without running it with RAVEN and get errors
   logger.info('Writing RAVEN calibration input file.')
   calXMLToWrite = calTemplate.createWorkflow(model, metric, exp, variables, optimization, work_dir, validationFile)
