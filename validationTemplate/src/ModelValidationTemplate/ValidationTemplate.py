@@ -52,6 +52,7 @@ class ValidationTemplate(Template):
         Specific to individual templates. Must overload to be useful.
             @ In, romTag, bool, whether validation workflow should be written for 
             @ In, model, dict, information about the model
+            @ In, exp, dict, information about the experimental data
             @ In, variables, dict, information about the variables, dictionary of dictionary 
                 each variable dictionary has with the following keys : 
                     - path, str: path of the variable in the model 
@@ -59,7 +60,7 @@ class ValidationTemplate(Template):
                     - dist_params, list[float]: numerical parameters defining the PDF
                     - alias, str: alias of the variable in the RAVEN XML file
             @ In, metric, str, metric used to compute the distance bet. model and exp data 
-            @ In, romTag, bool, indicates whether or not a ROM is used for calibration
+            @ In, romTag, bool, optional, indicates whether or not a ROM is used for calibration
             @ In, kwargs, dict, other unused keyword arguments
             @ Out, xml.etree.ElementTree.Element, modified copy of template
         """

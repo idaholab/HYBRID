@@ -103,23 +103,23 @@ class CalibrationTemplate(Template):
       xml.find('Models').find('Code[@name="raven"]').append(newAlias)
       # Add corresponding distributions
       p1, p2 = self.distributions[varDict['distribution']]
-      dist_node = xmlUtils.newNode(varDict['distribution'], attrib={'name':varDict['alias']+'_dist'})
-      dist_node.append(xmlUtils.newNode(p1, text = varDict['dist_params'][0]))
-      dist_node.append(xmlUtils.newNode(p2, text = varDict['dist_params'][1]))
-      xml.find('Distributions').append(dist_node)
+      distNode = xmlUtils.newNode(varDict['distribution'], attrib={'name':varDict['alias']+'_dist'})
+      distNode.append(xmlUtils.newNode(p1, text = varDict['dist_params'][0]))
+      distNode.append(xmlUtils.newNode(p2, text = varDict['dist_params'][1]))
+      xml.find('Distributions').append(distNode)
       # Optimizer
-      var_node = xmlUtils.newNode('variable', attrib={'name':varDict['path']})
-      var_node.append(xmlUtils.newNode('distribution', text=varDict['alias']+'_dist'))
+      varNode = xmlUtils.newNode('variable', attrib={'name':varDict['path']})
+      varNode.append(xmlUtils.newNode('distribution', text=varDict['alias']+'_dist'))
       if varDict['initials'] is not None:
           init = ','.join([str(ee) for ee in varDict['initials']])
-          var_node.append(xmlUtils.newNode('initial', text=init))
-      xml.find('Optimizers').find('GradientDescent').append(var_node)
+          varNode.append(xmlUtils.newNode('initial', text=init))
+      xml.find('Optimizers').find('GradientDescent').append(varNode)
       # optOut PointSet
-      out_node = xml.find('DataObjects').find('PointSet[@name="optOut"]').find('Input')
-      self._updateCommaSeperatedList(out_node, varDict['path'], position=0)
+      outNode = xml.find('DataObjects').find('PointSet[@name="optOut"]').find('Input')
+      self._updateCommaSeperatedList(outNode, varDict['path'], position=0)
       # Export PointSet
-      pt_node = xml.find('DataObjects').find('PointSet[@name="optExport"]').find('Output')
-      self._updateCommaSeperatedList(pt_node, varDict['path'], position=0)
+      ptNode = xml.find('DataObjects').find('PointSet[@name="optExport"]').find('Output')
+      self._updateCommaSeperatedList(ptNode, varDict['path'], position=0)
       
   
   
