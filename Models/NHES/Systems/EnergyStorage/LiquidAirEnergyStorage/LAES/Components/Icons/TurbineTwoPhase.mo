@@ -1,0 +1,25 @@
+within NHES.Systems.EnergyStorage.LiquidAirEnergyStorage.LAES.Components.Icons;
+partial model TurbineTwoPhase
+
+  annotation (Icon(graphics={
+        Polygon(
+          points={{-28,76},{-28,28},{-22,28},{-22,82},{-60,82},{-60,76},{-28,
+              76}},
+          lineColor={128,128,128},
+          lineThickness=0.5,
+          fillColor={57,150,0},
+          fillPattern=FillPattern.Solid),
+        Polygon(
+          points={{26,56},{32,56},{32,76},{60,76},{60,82},{26,82},{26,56}},
+          lineColor={128,128,128},
+          lineThickness=0.5,
+          fillColor={57,150,0},
+          fillPattern=FillPattern.Solid),
+        Polygon(
+          points={{-28,28},{-28,-26},{32,-60},{32,60},{-28,28}},
+          lineColor={128,128,128},
+          lineThickness=0.5,
+          fillColor={57,150,0},
+          fillPattern=FillPattern.Solid)}), Diagram(graphics));
+
+end TurbineTwoPhase;
