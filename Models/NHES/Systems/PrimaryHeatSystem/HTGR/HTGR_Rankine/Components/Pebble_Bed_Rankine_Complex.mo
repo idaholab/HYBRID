@@ -22,7 +22,8 @@ model Pebble_Bed_Rankine_Complex
       HX_Reheat_Buffer_Vol=0.1));
     Real eff;
   replaceable package Coolant_Medium =
-       Modelica.Media.IdealGases.SingleGases.He  constrainedby Modelica.Media.Interfaces.PartialMedium                     annotation(choicesAllMatching = true,dialog(group="Media"));
+       Modelica.Media.IdealGases.SingleGases.He  constrainedby
+    Modelica.Media.Interfaces.PartialMedium                                                                                annotation(choicesAllMatching = true,dialog(group="Media"));
   replaceable package Fuel_Medium =  TRANSFORM.Media.Solids.UO2                                   annotation(choicesAllMatching = true,dialog(group = "Media"));
   replaceable package Pebble_Medium =
       Media.Solids.Graphite_5                                                                                   annotation(dialog(group = "Media"),choicesAllMatching=true);

@@ -22,7 +22,8 @@ model HTGR_PebbleBed_Primary_Loop
       HX_Reheat_Buffer_Vol=0.1));
   input Modelica.Units.SI.Pressure input_steam_pressure;
   replaceable package Coolant_Medium =
-       Modelica.Media.IdealGases.SingleGases.He  constrainedby Modelica.Media.Interfaces.PartialMedium                     annotation(choicesAllMatching = true,dialog(group="Media"));
+       Modelica.Media.IdealGases.SingleGases.He  constrainedby
+    Modelica.Media.Interfaces.PartialMedium                                                                                annotation(choicesAllMatching = true,dialog(group="Media"));
   replaceable package Fuel_Medium =  TRANSFORM.Media.Solids.UO2                                   annotation(choicesAllMatching = true,dialog(group = "Media"));
   replaceable package Pebble_Medium =
       Media.Solids.Graphite_5                                                                                   annotation(dialog(group = "Media"),choicesAllMatching=true);

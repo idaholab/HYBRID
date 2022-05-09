@@ -11,7 +11,8 @@ model Brayton_Cycle
 
   //Modelica.Units.SI.Power Q_Recup;
     replaceable package Medium =
-      Modelica.Media.IdealGases.SingleGases.He constrainedby Modelica.Media.Interfaces.PartialMedium annotation(choicesAllMatching=true);
+      Modelica.Media.IdealGases.SingleGases.He constrainedby
+    Modelica.Media.Interfaces.PartialMedium                                                          annotation(choicesAllMatching=true);
     Modelica.Units.SI.Power Q_gen;
 
 
