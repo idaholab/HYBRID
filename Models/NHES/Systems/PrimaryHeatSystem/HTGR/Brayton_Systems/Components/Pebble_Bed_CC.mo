@@ -18,7 +18,8 @@ model Pebble_Bed_CC
       nRodFuel_assembly=264,
       nAssembly=12,
       HX_Reheat_Tube_Vol=0.1,
-      HX_Reheat_Shell_Vol=0.1));
+      HX_Reheat_Shell_Vol=0.1,
+      nPebble=1056000));
 
   replaceable package Coolant_Medium =
        Modelica.Media.IdealGases.SingleGases.He  constrainedby
@@ -84,8 +85,8 @@ model Pebble_Bed_CC
     annotation (Placement(transformation(extent={{10,-36},{-10,-16}})));
 
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
-        Coolant_Medium)
-    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+        Coolant_Medium) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
         rotation=90,
         origin={12,-6})));
   TRANSFORM.Fluid.Volumes.SimpleVolume Precooler(
@@ -252,14 +253,12 @@ model Pebble_Bed_CC
         rotation=90,
         origin={66,-58})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort Intercooler_Pre_Temp(redeclare
-      package Medium = Coolant_Medium) annotation (Placement(
-        transformation(
+      package Medium = Coolant_Medium) annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=90,
         origin={84,-32})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort CC_Mid_Temp(redeclare package
-      Medium = Waste_Heat_App_Medium) annotation (Placement(
-        transformation(
+      Medium = Waste_Heat_App_Medium) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={66,4})));
@@ -290,20 +289,33 @@ model Pebble_Bed_CC
                                                              iconTransformation(
           extent={{-110,-56},{-90,-36}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort CC_Inlet_Temp(redeclare package
-      Medium = Waste_Heat_App_Medium) annotation (Placement(
-        transformation(
+      Medium = Waste_Heat_App_Medium) annotation (Placement(transformation(
         extent={{8,7},{-8,-7}},
         rotation=270,
         origin={66,-85})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort CC_Outlet_Temp(redeclare package
-      Medium = Waste_Heat_App_Medium) annotation (Placement(
-        transformation(
+      Medium = Waste_Heat_App_Medium) annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=180,
         origin={44,-74})));
-  Nuclear.CoreSubchannels.Pebble_Bed_2 core(
+
+  TRANSFORM.Electrical.Interfaces.ElectricalPowerPort_Flow port_a annotation (
+      Placement(transformation(extent={{90,10},{110,30}}),
+        iconTransformation(extent={{90,10},{110,30}})));
+  TRANSFORM.Blocks.RealExpression CR_reactivity
+    annotation (Placement(transformation(extent={{74,78},{86,92}})));
+  TRANSFORM.Blocks.RealExpression PR_Compressor
+    annotation (Placement(transformation(extent={{74,66},{86,80}})));
+  Modelica.Blocks.Sources.RealExpression Core_M_flow(y=core.port_a.m_flow)
+    annotation (Placement(transformation(extent={{-60,104},{-48,118}})));
+  Nuclear.CoreSubchannels.Pebble_Bed_New
+                                       core(
     redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
-    redeclare package Pebble_Material = NHES.Media.Solids.Graphite_5,
+    redeclare package Pebble_Material = Media.Solids.Graphite_5,
+    redeclare model Geometry = Nuclear.New_Geometries.PackedBed (
+        d_pebble=2*data.r_Pebble,
+        nPebble=data.Pebble,
+        packing_factor=0.55),
     redeclare model HeatTransfer =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple,
     Q_fission_input=600000000,
@@ -328,21 +340,12 @@ model Pebble_Bed_CC
     redeclare package Medium = Coolant_Medium,
     SF_start_power={0.2,0.3,0.3,0.2},
     nParallel=data.nAssembly,
-    redeclare model Geometry =
-        TRANSFORM.Nuclear.ClosureRelations.Geometry.Models.CoreSubchannels.Assembly
-        (
-        width_FtoF_inner=data.sizeAssembly*data.pitch_fuelRod,
-        rs_outer={data.r_pellet_fuelRod,data.r_pellet_fuelRod + data.th_gap_fuelRod,
-            data.r_outer_fuelRod},
-        length=data.length_core,
-        nPins=data.nRodFuel_assembly,
-        nPins_nonFuel=data.nRodNonFuel_assembly,
-        angle=1.5707963267949),
     toggle_ReactivityFP=false,
-    Q_shape={0.00921016,0.022452442,0.029926363,0.035801439,0.040191759,0.04361119,
-        0.045088573,0.046395024,0.049471251,0.050548587,0.05122695,0.051676198,0.051725935,
-        0.048691804,0.051083234,0.050675546,0.049468838,0.047862888,0.045913065,
-        0.041222844,0.038816801,0.035268536,0.029550046,0.022746578,0.011373949},
+    Q_shape={0.00921016,0.022452442,0.029926363,0.035801439,0.040191759,
+        0.04361119,0.045088573,0.046395024,0.049471251,0.050548587,0.05122695,
+        0.051676198,0.051725935,0.048691804,0.051083234,0.050675546,0.049468838,
+        0.047862888,0.045913065,0.041222844,0.038816801,0.035268536,0.029550046,
+        0.022746578,0.011373949},
     Fh=1.4,
     n_hot=25,
     Teffref_fuel=1273.15,
@@ -351,17 +354,8 @@ model Pebble_Bed_CC
     T_outlet=1123.15) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
-        origin={-40,-46})));
+        origin={-44,-46})));
 
-  TRANSFORM.Electrical.Interfaces.ElectricalPowerPort_Flow port_a annotation (
-      Placement(transformation(extent={{90,10},{110,30}}),
-        iconTransformation(extent={{90,10},{110,30}})));
-  TRANSFORM.Blocks.RealExpression CR_reactivity
-    annotation (Placement(transformation(extent={{74,78},{86,92}})));
-  TRANSFORM.Blocks.RealExpression PR_Compressor
-    annotation (Placement(transformation(extent={{74,66},{86,80}})));
-  Modelica.Blocks.Sources.RealExpression Core_M_flow(y=core.port_a.m_flow)
-    annotation (Placement(transformation(extent={{-60,104},{-48,118}})));
 initial equation
   Q_Trans = 1e7;
 equation
@@ -446,11 +440,6 @@ equation
   connect(CC_Outlet_Temp.port_b, combined_cycle_port_b) annotation (Line(points={{34,-74},
           {-38,-74},{-38,-84},{-56,-84},{-56,-100}},
                                          color={0,0,0}));
-  connect(core.port_a, Core_Inlet_T.port_b) annotation (Line(points={{-30,-46},{
-          -22,-46}},                      color={0,127,255}));
-  connect(core.port_b, Core_Outlet.port_a) annotation (Line(points={{-50,-46},{-68,
-          -46},{-68,-26}},
-                 color={0,127,255}));
   connect(combined_cycle_port_b, combined_cycle_port_b)
     annotation (Line(points={{-56,-100},{-56,-100}}, color={0,127,255}));
   connect(actuatorBus.CR_Reactivity, CR_reactivity.u) annotation (Line(
@@ -478,6 +467,10 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(Core_Outlet_T.port, core.port_b) annotation (Line(points={{-68,-48},{
+          -68,-46},{-54,-46}}, color={0,127,255}));
+  connect(Core_Inlet_T.port_b, core.port_a)
+    annotation (Line(points={{-22,-46},{-34,-46}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           Bitmap(extent={{-80,-92},{78,84}}, fileName=
               "modelica://NHES/Icons/PrimaryHeatSystemPackage/HTGRPB.jpg")}),

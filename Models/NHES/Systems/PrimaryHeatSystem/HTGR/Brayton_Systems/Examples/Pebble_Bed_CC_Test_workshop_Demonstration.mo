@@ -2,7 +2,7 @@ within NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.Examples;
 model Pebble_Bed_CC_Test_workshop_Demonstration
   extends Modelica.Icons.Example;
   Real total_efficiency;
-  NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.Components.Pebble_Bed_CC
+  Components.Pebble_Bed_CC
     Pebble_Bed_HTGR(redeclare
       NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS_Basic CS,
       redeclare NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.ED_Dummy ED)
@@ -63,7 +63,7 @@ model Pebble_Bed_CC_Test_workshop_Demonstration
     annotation (Placement(transformation(extent={{50,-6},{104,42}})));
   EnergyStorage.Concrete_Solid_Media.Components.Dual_Pipe_Model_Two_HTFs
     dual_Pipe_Model_Two_HTFs(Hot_Con_Start=673.15, Cold_Con_Start=398.15)
-    annotation (Placement(transformation(extent={{-54,-16},{-82,4}})));
+    annotation (Placement(transformation(extent={{-54,-14},{-82,6}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Steam_Offtake_Dump(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=2000000,
@@ -85,9 +85,6 @@ equation
     annotation (Line(points={{24,-30},{38,-30}},          color={0,127,255}));
   connect(steamTurbine.shaft_b,generator. shaft) annotation (Line(points={{-54,-44},
           {-54,-45.13},{-42.13,-45.13}},                       color={0,0,0}));
-  connect(Pebble_Bed_HTGR.auxiliary_heating_port_a, Steam_Offtake_Source.ports[
-    1]) annotation (Line(points={{-48,31.2},{-48,30},{-66,30}}, color={0,127,
-          255}));
   connect(Water_T1.port_b, Pebble_Bed_HTGR.combined_cycle_port_a) annotation (
       Line(points={{12,-30},{-2,-30},{-2,-24},{-3.12,-24},{-3.12,-20}},
                                                    color={0,127,255}));
@@ -96,24 +93,24 @@ equation
           -20}},                                         color={0,127,255}));
   connect(EG.portElec_a, Pebble_Bed_HTGR.port_a) annotation (Line(points={{50,18},
           {20,18.4}},                         color={255,0,0}));
-  connect(Pebble_Bed_HTGR.auxiliary_heating_port_b, dual_Pipe_Model_Two_HTFs.Charge_Inlet)
-    annotation (Line(points={{-48,-2.72},{-60,-2.72},{-60,-2},{-57.08,-2},{
-          -57.08,-3.8}},
-                   color={0,127,255}));
   connect(dual_Pipe_Model_Two_HTFs.Charge_Outlet, Steam_Offtake_Dump.ports[1])
-    annotation (Line(points={{-72.2,0.2},{-72,10}}, color={0,127,255}));
+    annotation (Line(points={{-72.2,2.2},{-72,10}}, color={0,127,255}));
   connect(steamTurbine.portHP, dual_Pipe_Model_Two_HTFs.Discharge_Outlet)
     annotation (Line(points={{-82,-35.6},{-86,-35.6},{-86,-26},{-66,-26},{-66,
-          -16},{-65.76,-16},{-65.76,-11.6}},
+          -9.6},{-65.76,-9.6}},
                    color={0,127,255}));
   connect(Water_T3.port_b, dual_Pipe_Model_Two_HTFs.Discharge_Inlet)
-    annotation (Line(points={{-92,-7},{-92,-6.2},{-78.92,-6.2}},
+    annotation (Line(points={{-92,-7},{-92,-4.2},{-78.92,-4.2}},
                             color={0,127,255}));
   connect(trapezoid.y, Steam_Offtake_Source.m_flow_in) annotation (Line(points={{-95.6,
           38},{-86,38}},                           color={0,0,127}));
   connect(steamTurbine.portLP, CC_Dump.ports[1]) annotation (Line(points={{-54,
           -35.6},{-54,-38},{-42,-38},{-42,-35}},                     color={0,
           127,255}));
+  connect(dual_Pipe_Model_Two_HTFs.Charge_Inlet, Pebble_Bed_HTGR.auxiliary_heating_port_b)
+    annotation (Line(points={{-57.08,-1.8},{-48,-2.72}}, color={0,127,255}));
+  connect(Steam_Offtake_Source.ports[1], Pebble_Bed_HTGR.auxiliary_heating_port_a)
+    annotation (Line(points={{-66,30},{-66,31.2},{-48,31.2}}, color={0,127,255}));
   annotation (experiment(
       StopTime=100,
       __Dymola_NumberOfIntervals=100,

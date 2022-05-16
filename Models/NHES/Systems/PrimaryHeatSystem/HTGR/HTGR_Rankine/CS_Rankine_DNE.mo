@@ -14,7 +14,7 @@ model CS_Rankine_DNE
   HTGR_Rankine.Data.Data_CS data(
     T_Rx_Exit_Ref=1023.15,
     m_flow_nom=250,
-    Q_Nom=45e6)
+    Q_Nom=43.75e6)
     annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
   TRANSFORM.Controls.LimPID Blower_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -25,7 +25,7 @@ model CS_Rankine_DNE
     initType=Modelica.Blocks.Types.Init.NoInit)
     annotation (Placement(transformation(extent={{-2,-22},{6,-30}})));
   Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
-    annotation (Placement(transformation(extent={{-22,-30},{-14,-22}})));
+    annotation (Placement(transformation(extent={{-20,-32},{-12,-24}})));
   TRANSFORM.Controls.LimPID FWCP_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=-1e-2,
@@ -43,7 +43,7 @@ model CS_Rankine_DNE
     annotation (Placement(transformation(extent={{-4,-4},{6,6}})));
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-5,
+    k=5e-6,
     Ti=15,
     yMax=1 - 1e-6,
     yMin=0,
@@ -94,6 +94,8 @@ model CS_Rankine_DNE
     annotation (Placement(transformation(extent={{-42,-60},{-34,-52}})));
   Modelica.Blocks.Math.Add         add3
     annotation (Placement(transformation(extent={{-2,-68},{6,-60}})));
+  Modelica.Blocks.Sources.Constant const11(k=-0.01)
+    annotation (Placement(transformation(extent={{-14,-48},{-6,-40}})));
 equation
 
   connect(const1.y,CR. u_s) annotation (Line(points={{-35.7,-71},{-25,-71}},
@@ -104,7 +106,7 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(const2.y, Blower_Speed.u_s)
-    annotation (Line(points={{-13.6,-26},{-2.8,-26}},
+    annotation (Line(points={{-11.6,-28},{-8,-28},{-8,-26},{-2.8,-26}},
                                                color={0,0,127}));
   connect(const3.y, FWCP_Speed.u_s) annotation (Line(points={{-49.6,-2},{-32.8,
           -2}},               color={0,0,127}));
@@ -197,8 +199,7 @@ equation
   connect(add3.u2, CR.y) annotation (Line(points={{-2.8,-66.4},{-12,-66.4},{-12,
           -71},{-13.5,-71}},
                      color={0,0,127}));
-  connect(add3.u1, CR1.y) annotation (Line(points={{-2.8,-61.6},{-6,-61.6},{-6,
-          -56},{-13.6,-56}},
-                      color={0,0,127}));
+  connect(add3.u1, const11.y) annotation (Line(points={{-2.8,-61.6},{-2.8,-48},
+          {0,-48},{0,-44},{-5.6,-44}}, color={0,0,127}));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics));
 end CS_Rankine_DNE;

@@ -1,5 +1,5 @@
 within NHES.Nuclear.CoreSubchannels;
-model Pebble_Bed_2_DNE
+model Pebble_Bed_New
   "0-D point kinetics fuel channel model with three solid media regions including a hot channel calculation routine."
   import TRANSFORM;
 
@@ -17,27 +17,39 @@ model Pebble_Bed_2_DNE
             {110,10}})));
 
   parameter Real nParallel=1 "Number of identical parallel coolant channels";
-
+  parameter Integer nV = 4;
+  parameter Real nKernel_per_Pebble = 15000 annotation(dialog(tab = "Pebble Data"));
+  parameter Real nPebble = 220000 annotation(dialog(tab = "Pebble Data"));
+  parameter Integer nR_Fuel = 1 annotation(dialog(tab = "Pebble Data"));
+  parameter Modelica.Units.SI.Length r_Pebble = 0.03 annotation(dialog(tab = "Pebble Data"));
+  parameter Modelica.Units.SI.Length r_Fuel = 200e-6 annotation(dialog(tab = "Pebble Data"));
+  parameter Modelica.Units.SI.Length r_Buffer = r_Fuel + 100e-6 annotation(dialog(tab = "Pebble Data"));
+  parameter Modelica.Units.SI.Length r_IPyC = r_Buffer+40e-6 annotation(dialog(tab = "Pebble Data"));
+  parameter Modelica.Units.SI.Length r_SiC = r_IPyC+35e-6 annotation(dialog(tab = "Pebble Data"));
+  parameter Modelica.Units.SI.Length r_OPyC = r_SiC+40e-6 annotation(dialog(tab = "Pebble Data"));
+  parameter Modelica.Units.SI.ThermalConductivity k_Buffer= 2.25 annotation(dialog(tab = "Pebble Data"));
+  parameter Modelica.Units.SI.ThermalConductivity k_IPyC = 8.0 annotation(dialog(tab = "Pebble Data"));
+  parameter Modelica.Units.SI.ThermalConductivity k_SiC = 175 annotation(dialog(tab = "Pebble Data"));
+  parameter Modelica.Units.SI.ThermalConductivity k_OPyC = 8.0 annotation(dialog(tab = "Pebble Data"));
+  parameter Modelica.Units.SI.Temperature Pebble_Surface_Init = 750+273.15 annotation(dialog(tab = "Initialization", group = "Start Value: Fuel"));
+  parameter Modelica.Units.SI.Temperature Pebble_Center_Init = 1100+273.15 annotation(dialog(tab = "Initialization", group = "Start Value: Fuel"));
+ replaceable package Fuel_Kernel_Material =
+      TRANSFORM.Media.Interfaces.Solids.PartialAlloy
+                                              "Fission material"
+  annotation (choicesAllMatching=true);
+  replaceable package Pebble_Material =
+      TRANSFORM.Media.Interfaces.Solids.PartialAlloy                                   "Bulk pebble material in which fuel is embedded" annotation (choicesAllMatching=true);
   replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
     "Coolant medium" annotation (choicesAllMatching=true);
-  replaceable package Material_1 =
-      TRANSFORM.Media.Interfaces.Solids.PartialAlloy
-      annotation (choicesAllMatching=true);
-  replaceable package Material_2 =
-      TRANSFORM.Media.Interfaces.Solids.PartialAlloy
-      annotation (choicesAllMatching=true);
-  replaceable package Material_3 =
-      TRANSFORM.Media.Interfaces.Solids.PartialAlloy
-    annotation (choicesAllMatching=true);
 
   replaceable model Geometry =
-      TRANSFORM.Nuclear.ClosureRelations.Geometry.Models.CoreSubchannels.Generic
-    constrainedby
-    TRANSFORM.Nuclear.ClosureRelations.Geometry.Models.CoreSubchannels.Generic
-    "Geometry" annotation (Dialog(group="Geometry"),choicesAllMatching=true);
+      New_Geometries.PackedBed (d_pebble = 2*r_Pebble, nPebble = nPebble)     "Geometry parameter handling"
+                                                                                                 annotation(dialog(group = "Geometry"));
 
-  Geometry geometry(final nRegions=3)
-    annotation (Placement(transformation(extent={{-96,82},{-80,98}})));
+  Geometry geometry(nV=nV,
+    nPebble=nPebble,
+    d_pebble=2*r_Pebble)
+    annotation (Placement(transformation(extent={{-100,82},{-84,98}})));
 
   replaceable model FlowModel =
       TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable
@@ -192,91 +204,35 @@ model Pebble_Bed_2_DNE
     "Change in decay constants for each fission product" annotation (Dialog(tab=
          "Parameter Change", group="Input: Fission Products"));
 
-  // Fuel Initialization
-  parameter SI.Temperature T_start_1=Material_1.T_default "Fuel temperature"
-    annotation (Dialog(tab="Fuel Element Initialization",group="Reference Temperatures for Start Values"));
-  parameter SI.Temperature T_start_2=Material_1.T_default "Gap temperature"
-    annotation (Dialog(tab="Fuel Element Initialization",group="Reference Temperatures for Start Values"));
-  parameter SI.Temperature T_start_3=Material_1.T_default
-    "Cladding temperature"
-    annotation (Dialog(tab="Fuel Element Initialization",group="Reference Temperatures for Start Values"));
-
-  parameter SI.Temperature Ts_start_1[geometry.nRs[1],geometry.nV]=fill(
-      T_start_1,
-      geometry.nRs[1],
-      geometry.nV) "Fuel temperatures"     annotation (Dialog(tab="Fuel Element Initialization",
-        group="Start Value: Temperature"));
-  parameter SI.Temperature Ts_start_2[geometry.nRs[2],geometry.nV]=[{Ts_start_1
-      [end, :]}; fill(
-      T_start_2,
-      geometry.nRs[2] - 1,
-      geometry.nV)] "Gap temperatures" annotation (Dialog(tab="Fuel Element Initialization",
-        group="Start Value: Temperature"));
-  parameter SI.Temperature Ts_start_3[geometry.nRs[3],geometry.nV]=[{
-      Ts_start_2[end, :]}; fill(
-      T_start_3,
-      geometry.nRs[3] - 1,
-      geometry.nV)] "Cladding temperatures" annotation (Dialog(tab="Fuel Element Initialization",
-        group="Start Value: Temperature"));
-
-  //Hot Channel initialization
-
-  // Fuel Initialization
-  parameter SI.Temperature T_start_1_Hotchannel=Material_1.T_default "Fuel temperature"
-    annotation (Dialog(tab="Fuel Element Initialization",group="Reference Temperatures for Start Values"));
-  parameter SI.Temperature T_start_2_Hotchannel=Material_1.T_default "Gap temperature"
-    annotation (Dialog(tab="Fuel Element Initialization",group="Reference Temperatures for Start Values"));
-  parameter SI.Temperature T_start_3_Hotchannel=Material_1.T_default
-    "Cladding temperature"
-    annotation (Dialog(tab="Fuel Element Initialization",group="Reference Temperatures for Start Values"));
-
-  parameter SI.Temperature Ts_start_1_Hotchannel[geometry.nRs[1],n_hot]=fill(
-      T_start_1_Hotchannel,
-      geometry.nRs[1],
-      n_hot) "Fuel temperatures"     annotation (Dialog(tab="Fuel Element Initialization",
-        group="Start Value: Temperature"));
-  parameter SI.Temperature Ts_start_2_Hotchannel[geometry.nRs[2],n_hot]=[{Ts_start_1_Hotchannel
-      [end, :]}; fill(
-      T_start_2_Hotchannel,
-      geometry.nRs[2] - 1,
-      n_hot)] "Gap temperatures" annotation (Dialog(tab="Fuel Element Initialization",
-        group="Start Value: Temperature"));
-  parameter SI.Temperature Ts_start_3_Hotchannel[geometry.nRs[3],n_hot]=[{
-      Ts_start_2_Hotchannel[end, :]}; fill(
-      T_start_3_Hotchannel,
-      geometry.nRs[3] - 1,
-      n_hot)] "Cladding temperatures" annotation (Dialog(tab="Fuel Element Initialization",
-        group="Start Value: Temperature"));
-
       // Coolant Initialization
   parameter SI.AbsolutePressure[geometry.nV] ps_start=linspace_1D(
       p_a_start,
       p_b_start,
-      geometry.nV) "Pressure" annotation (Dialog(tab="Coolant Initialization",
+      geometry.nV) "Pressure" annotation (Dialog(tab="Initialization",
         group="Start Value: Absolute Pressure"));
   parameter SI.AbsolutePressure p_a_start=Medium.p_default
-    "Pressure at port a" annotation (Dialog(tab="Coolant Initialization", group="Start Value: Absolute Pressure"));
+    "Pressure at port a" annotation (Dialog(tab="Initialization", group="Start Value: Absolute Pressure"));
   parameter SI.AbsolutePressure p_b_start=p_a_start + (if m_flow_a_start > 0 then -1e3 elseif m_flow_a_start < 0 then -1e3 else 0)
-    "Pressure at port b" annotation (Dialog(tab="Coolant Initialization", group="Start Value: Absolute Pressure"));
+    "Pressure at port b" annotation (Dialog(tab="Initialization", group="Start Value: Absolute Pressure"));
 
   parameter Boolean use_Ts_start=true
     "Use T_start if true, otherwise h_start" annotation (Evaluate=true, Dialog(
-        tab="Coolant Initialization", group="Start Value: Temperature"));
+        tab="Initialization", group="Start Value: Temperature"));
   parameter SI.Temperature Ts_start[geometry.nV]=linspace_1D(
       T_a_start,
       T_b_start,
       geometry.nV) "Temperature" annotation (Evaluate=true, Dialog(
-      tab="Coolant Initialization",
+      tab="Initialization",
       group="Start Value: Temperature",
       enable=use_Ts_start));
   parameter SI.Temperature T_a_start=Medium.T_default
     "Temperature at port a" annotation (Dialog(
-      tab="Coolant Initialization",
+      tab="Initialization",
       group="Start Value: Temperature",
       enable=use_Ts_start));
   parameter SI.Temperature T_b_start=T_a_start
     "Temperature at port b" annotation (Dialog(
-      tab="Coolant Initialization",
+      tab="Initialization",
       group="Start Value: Temperature",
       enable=use_Ts_start));
 
@@ -289,21 +245,21 @@ model Pebble_Bed_2_DNE
       Ts_start[i],
       Xs_start[i, 1:Medium.nX]) for i in 1:geometry.nV}
     "Specific enthalpy" annotation (Dialog(
-      tab="Coolant Initialization",
+      tab="Initialization",
       group="Start Value: Specific Enthalpy",
       enable=not use_Ts_start));
   parameter SI.SpecificEnthalpy h_a_start=Medium.specificEnthalpy_pTX(
       p_a_start,
       T_a_start,
       X_a_start) "Specific enthalpy at port a" annotation (Dialog(
-      tab="Coolant Initialization",
+      tab="Initialization",
       group="Start Value: Specific Enthalpy",
       enable=not use_Ts_start));
   parameter SI.SpecificEnthalpy h_b_start=Medium.specificEnthalpy_pTX(
       p_b_start,
       T_b_start,
       X_b_start) "Specific enthalpy at port b" annotation (Dialog(
-      tab="Coolant Initialization",
+      tab="Initialization",
       group="Start Value: Specific Enthalpy",
       enable=not use_Ts_start));
 
@@ -312,14 +268,14 @@ model Pebble_Bed_2_DNE
       X_a_start,
       X_b_start,
       geometry.nV) "Mass fraction" annotation (Dialog(
-      tab="Coolant Initialization",
+      tab="Initialization",
       group="Start Value: Species Mass Fraction",
       enable=Medium.nXi > 0));
   parameter SI.MassFraction X_a_start[Medium.nX]=Medium.X_default
-    "Mass fraction at port a" annotation (Dialog(tab="Coolant Initialization",
+    "Mass fraction at port a" annotation (Dialog(tab="Initialization",
         group="Start Value: Species Mass Fraction"));
   parameter SI.MassFraction X_b_start[Medium.nX]=X_a_start
-    "Mass fraction at port b" annotation (Dialog(tab="Coolant Initialization",
+    "Mass fraction at port b" annotation (Dialog(tab="Initialization",
         group="Start Value: Species Mass Fraction"));
 
   parameter SI.MassFraction Cs_start[geometry.nV,Medium.nC]=
@@ -327,25 +283,25 @@ model Pebble_Bed_2_DNE
       C_a_start,
       C_b_start,
       geometry.nV) "Mass fraction" annotation (Dialog(
-      tab="Coolant Initialization",
+      tab="Initialization",
       group="Start Value: Trace Substances Mass Fraction",
       enable=Medium.nC > 0));
   parameter SI.MassFraction C_a_start[Medium.nC]=fill(0, Medium.nC)
-    "Mass fraction at port a" annotation (Dialog(tab="Coolant Initialization",
+    "Mass fraction at port a" annotation (Dialog(tab="Initialization",
         group="Start Value: Trace Substances Mass Fraction"));
   parameter SI.MassFraction C_b_start[Medium.nC]=C_a_start
-    "Mass fraction at port b" annotation (Dialog(tab="Coolant Initialization",
+    "Mass fraction at port b" annotation (Dialog(tab="Initialization",
         group="Start Value: Trace Substances Mass Fraction"));
 
   parameter SI.MassFlowRate[geometry.nV + 1] m_flows_start=linspace(
       m_flow_a_start,
       -m_flow_b_start,
-      geometry.nV + 1) "Mass flow rates" annotation (Evaluate=true, Dialog(tab="Coolant Initialization",
+      geometry.nV + 1) "Mass flow rates" annotation (Evaluate=true, Dialog(tab="Initialization",
         group="Start Value: Mass Flow Rate"));
   parameter SI.MassFlowRate m_flow_a_start=0 "Mass flow rate at port_a"
-    annotation (Dialog(tab="Coolant Initialization", group="Start Value: Mass Flow Rate"));
+    annotation (Dialog(tab="Initialization", group="Start Value: Mass Flow Rate"));
   parameter SI.MassFlowRate m_flow_b_start=-m_flow_a_start
-    "Mass flow rate at port_b" annotation (Dialog(tab="Coolant Initialization",
+    "Mass flow rate at port_b" annotation (Dialog(tab="Initialization",
         group="Start Value: Mass Flow Rate"));
 
   // Advanced
@@ -447,14 +403,14 @@ model Pebble_Bed_2_DNE
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.StraightPipe
         (
         nV=geometry.nV,
-        dimension=geometry.dimension,
-        crossArea=geometry.crossArea,
+        dimension=geometry.d_pebble,
+        crossArea=geometry.crossArea_flow,
         perimeter=geometry.perimeter,
-        length=geometry.length,
+        length=geometry.core_height,
         roughness=geometry.roughness,
         surfaceArea=geometry.surfaceArea,
         dheight=geometry.dheight,
-        nSurfaces=geometry.nSurfaces,
+        nSurfaces=2,
         height_a=geometry.height_a,
         angle=geometry.angle),
     redeclare model InternalTraceGen =
@@ -462,13 +418,29 @@ model Pebble_Bed_2_DNE
         (mC_gens={{SF_mC_add[i, j]*kinetics.fissionProducts.mC_gens_add[j] for
             j in 1:Medium.nC} for i in 1:coolantSubchannel.nV})) annotation (
       Placement(transformation(
-        extent={{-15,-13},{15,13}},
+        extent={{-17,-13},{13,13}},
         rotation=0)));
 
-  FuelModels.TRISO_Pebble fuelModel[geometry.nV](
-    redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
-    redeclare package Pebble_Material = Media.Solids.Graphite_5,
-    energyDynamics=energyDynamics_fuel) annotation (Placement(transformation(
+  FuelModels.TRISO_Pebble                        fuelModel[geometry.nV](
+    nKernel_per_Pebble=nKernel_per_Pebble,
+    nPebble=nPebble/nV,
+    nR_Fuel=nR_Fuel,
+    n_Power_Region=geometry.nV,
+    r_Pebble=r_Pebble,
+    r_Fuel=r_Fuel,
+    r_Buffer=r_Buffer,
+    r_IPyC=r_IPyC,
+    r_SiC=r_SiC,
+    r_OPyC=r_OPyC,
+    k_Buffer=k_Buffer,
+    k_IPyC=k_IPyC,
+    k_SiC=k_SiC,
+    k_OPyC=k_OPyC,
+    redeclare package Fuel_Kernel_Material = Fuel_Kernel_Material,
+    redeclare package Pebble_Material =
+        Pebble_Material,
+    energyDynamics=energyDynamics_fuel)
+                                    annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={0,26})));
@@ -619,23 +591,23 @@ model Pebble_Bed_2_DNE
     Q_fission_start=Q_fission_start,
     Cs_start=Cs_pg_start,
     Es_start=Es_start,
-    V=fuelModel.nKernel_per_Pebble*sum(fuelModel.nPebble_per_region)*4/3*
-        Modelica.Constants.pi*fuelModel.r_Fuel,
+    V=fuelModel.nKernel_per_Pebble*sum(fuelModel.nPebble)*4/3*Modelica.Constants.pi
+        *fuelModel.r_Fuel,
     mCs_start=mCs_fp_start,
     mCs_add={sum(coolantSubchannel.mCs[:, j])*coolantSubchannel.nParallel for j in
             1:Medium.nC},
-    Vs_add=fuelModel.nKernel_per_Pebble*sum(fuelModel.nPebble_per_region)*4/3*
-        Modelica.Constants.pi*fuelModel.r_Fuel,
+    Vs_add=fuelModel.nKernel_per_Pebble*sum(fuelModel.nPebble)*4/3*Modelica.Constants.pi
+        *fuelModel.r_Fuel,
     toggle_ReactivityFP=toggle_ReactivityFP)
     annotation (Placement(transformation(extent={{-78,80},{-58,100}})));
 equation
  //  sat.psat = port_a.p;
   // sat.Tsat = Modelica.Media.Water.WaterIF97_base.saturationTemperature(port_a.p);
-  connect(port_a, coolantSubchannel.port_a) annotation (Line(points={{-100,0},{
-          -15,0}},                         color={0,127,255}));
+  connect(port_a, coolantSubchannel.port_a) annotation (Line(points={{-100,0},{-17,
+          0}},                             color={0,127,255}));
   connect(shapeFactor.u, Q_total.y)
     annotation (Line(points={{25,45},{33.2,45}}, color={0,0,127}));
-  connect(coolantSubchannel.port_b, Mass_Sensor.port_a) annotation (Line(points={{15,0},{
+  connect(coolantSubchannel.port_b, Mass_Sensor.port_a) annotation (Line(points={{13,0},{
           52,0}},                           color={0,127,255}));
   connect(Mass_Sensor.port_b, port_b)
     annotation (Line(points={{72,0},{100,0}}, color={0,127,255}));
@@ -663,7 +635,8 @@ equation
   connect(fuelModel.Power_in, shapeFactor.y)
     annotation (Line(points={{0,37},{0,45},{13.5,45}}, color={0,0,127}));
   connect(fuelModel.heatPorts_b, coolantSubchannel.heatPorts[:, 1]) annotation (
-     Line(points={{0.1,15.8},{0.1,10.9},{0,10.9},{0,6.5}}, color={127,0,0}));
+     Line(points={{0.1,15.8},{0.1,10.9},{-2,10.9},{-2,6.5}},
+                                                           color={127,0,0}));
   annotation (defaultComponentName="coreSubchannel",
 Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
             100,100}})),        Icon(coordinateSystem(preserveAspectRatio=false,
@@ -735,4 +708,4 @@ Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
           color={0,128,255},
           smooth=Smooth.None,
           visible=DynamicSelect(true,showDesignFlowDirection))}));
-end Pebble_Bed_2_DNE;
+end Pebble_Bed_New;

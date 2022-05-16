@@ -50,8 +50,8 @@ model Brayton_Cycle
     annotation (Placement(transformation(extent={{18,-18},{-2,2}})));
 
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
-        Medium)
-    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+        Medium) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
         rotation=90,
         origin={38,10})));
   TRANSFORM.Fluid.Volumes.SimpleVolume Precooler(
@@ -146,8 +146,7 @@ model Brayton_Cycle
         rotation=90,
         origin={4,86})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort Feed_Temp(redeclare package Medium =
-        Medium) annotation (Placement(
-        transformation(
+        Medium) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
         origin={-6,-40})));
@@ -158,8 +157,7 @@ model Brayton_Cycle
     annotation (Placement(transformation(extent={{80,124},{100,144}})));
 
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort Intercooler_Pre_Temp(redeclare
-      package Medium = Medium)               annotation (Placement(
-        transformation(
+      package Medium = Medium) annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=90,
         origin={100,-22})));

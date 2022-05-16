@@ -19,7 +19,8 @@ model Pebble_Bed_Simple_Rankine
       nAssembly=12,
       HX_Reheat_Tube_Vol=0.1,
       HX_Reheat_Shell_Vol=0.1,
-      HX_Reheat_Buffer_Vol=0.1));
+      HX_Reheat_Buffer_Vol=0.1,
+      nPebble=220000));
     Real eff;
   replaceable package Coolant_Medium =
        Modelica.Media.IdealGases.SingleGases.He  constrainedby
@@ -111,63 +112,10 @@ model Pebble_Bed_Simple_Rankine
       R=1000)
     annotation (Placement(transformation(extent={{50,-50},{30,-30}})));
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
-        Coolant_Medium) annotation (Placement(
-        transformation(
+        Coolant_Medium) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
         origin={88,-8})));
-  Nuclear.CoreSubchannels.Pebble_Bed_2 core(
-    redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
-    redeclare package Pebble_Material = Media.Solids.Graphite_5,
-    redeclare model HeatTransfer =
-        TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple,
-    Q_fission_input(displayUnit="MW") = 100000000,
-    alpha_fuel=-5e-5,
-    alpha_coolant=0.0,
-    p_b_start(displayUnit="bar") = dataInitial.P_Core_Outlet,
-    Q_nominal(displayUnit="MW") = 125000000,
-    SigmaF_start=26,
-    p_a_start(displayUnit="bar") = dataInitial.P_Core_Inlet,
-    T_a_start(displayUnit="K") = dataInitial.T_Core_Inlet,
-    T_b_start(displayUnit="K") = dataInitial.T_Core_Outlet,
-    m_flow_a_start=300,
-    exposeState_a=false,
-    exposeState_b=false,
-    Ts_start(displayUnit="degC"),
-    fissionProductDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
-    redeclare record Data_DH =
-        TRANSFORM.Nuclear.ReactorKinetics.Data.DecayHeat.decayHeat_11_TRACEdefault,
-    redeclare record Data_FP =
-        TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
-    rho_input=CR_reactivity.y,
-    redeclare package Medium = Coolant_Medium,
-    SF_start_power={0.3,0.25,0.25,0.2},
-    nParallel=data.nAssembly,
-    redeclare model Geometry =
-        TRANSFORM.Nuclear.ClosureRelations.Geometry.Models.CoreSubchannels.Assembly
-        (
-        width_FtoF_inner=data.sizeAssembly*data.pitch_fuelRod,
-        rs_outer={data.r_pellet_fuelRod,data.r_pellet_fuelRod + data.th_gap_fuelRod,
-            data.r_outer_fuelRod},
-        length=data.length_core,
-        nPins=data.nRodFuel_assembly,
-        nPins_nonFuel=data.nRodNonFuel_assembly,
-        angle=1.5707963267949),
-    toggle_ReactivityFP=false,
-    Q_shape={0.00921016,0.022452442,0.029926363,0.035801439,0.040191759,
-        0.04361119,0.045088573,0.046395024,0.049471251,0.050548587,0.05122695,
-        0.051676198,0.051725935,0.048691804,0.051083234,0.050675546,0.049468838,
-        0.047862888,0.045913065,0.041222844,0.038816801,0.035268536,0.029550046,
-        0.022746578,0.011373949},
-    Fh=1.4,
-    n_hot=25,
-    Teffref_fuel=1273.15,
-    Teffref_coolant=923.15,
-    T_inlet=723.15,
-    T_outlet=1123.15) annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=180,
-        origin={64,-42})));
 
   TRANSFORM.Fluid.Machines.SteamTurbine steamTurbine(
     nUnits=1,
@@ -187,13 +135,53 @@ model Pebble_Bed_Simple_Rankine
     annotation (Placement(transformation(extent={{-76,-80},{-96,-60}})));
   TRANSFORM.Blocks.RealExpression CR_reactivity
     annotation (Placement(transformation(extent={{84,76},{96,90}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort
-                                       sensor_T(redeclare package Medium =
-        Coolant_Medium) annotation (Placement(
-        transformation(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
+        Coolant_Medium) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={14,-42})));
+  Nuclear.CoreSubchannels.Pebble_Bed_New
+                                       core(
+    redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
+    redeclare package Pebble_Material = Media.Solids.Graphite_5,
+    redeclare model Geometry = Nuclear.New_Geometries.PackedBed (d_pebble=2*
+            data.r_Pebble, nPebble=data.nPebble),
+    redeclare model FlowModel =
+        TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable,
+    redeclare model HeatTransfer =
+        TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple,
+    Q_fission_input(displayUnit="MW") = 100000000,
+    alpha_fuel=-5e-5,
+    alpha_coolant=0.0,
+    p_b_start(displayUnit="bar") = 3915000,
+    Q_nominal(displayUnit="MW") = 125000000,
+    SigmaF_start=26,
+    p_a_start(displayUnit="bar") = 3920000,
+    T_a_start(displayUnit="K") = dataInitial.T_Core_Inlet,
+    T_b_start(displayUnit="K") = dataInitial.T_Core_Outlet,
+    m_flow_a_start=300,
+    exposeState_a=false,
+    exposeState_b=false,
+    Ts_start(displayUnit="degC"),
+    fissionProductDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    redeclare record Data_DH =
+        TRANSFORM.Nuclear.ReactorKinetics.Data.DecayHeat.decayHeat_11_TRACEdefault,
+    redeclare record Data_FP =
+        TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
+    rho_input=CR_reactivity.y,
+    redeclare package Medium = Coolant_Medium,
+    SF_start_power={0.3,0.25,0.25,0.2},
+    nParallel=1,
+    Fh=1.4,
+    n_hot=25,
+    Teffref_fuel=1273.15,
+    Teffref_coolant=923.15,
+    T_inlet=723.15,
+    T_outlet=1123.15) annotation (Placement(transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=0,
+        origin={74,-38})));
+
 initial equation
 
 equation
@@ -204,14 +192,9 @@ equation
   connect(compressor_Controlled.inlet, Steam_Offtake.Tube_out) annotation (Line(
         points={{44,32},{4,32},{4,18}},                                  color=
           {0,127,255}));
-  connect(sensor_m_flow.port_b, core.port_a) annotation (Line(points={{88,-18},
-          {88,-42},{74,-42}},   color={0,127,255}));
   connect(compressor_Controlled.outlet, sensor_m_flow.port_a)
     annotation (Line(points={{56,32},{56,38},{88,38},{88,2}},
                                                           color={0,127,255}));
-  connect(resistance.port_a, core.port_b)
-    annotation (Line(points={{47,-40},{50,-40},{50,-42},{54,-42}},
-                                                   color={0,127,255}));
   connect(boundary1.ports[1], steamTurbine.portLP)
     annotation (Line(points={{-86,-34},{-28,-34}}, color={0,127,255}));
   connect(steamTurbine.portHP, Steam_Offtake.Shell_out)
@@ -249,6 +232,10 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(core.port_a, sensor_m_flow.port_b)
+    annotation (Line(points={{84,-38},{88,-38},{88,-18}}, color={0,127,255}));
+  connect(core.port_b, resistance.port_a) annotation (Line(points={{64,-38},{54,
+          -38},{54,-40},{47,-40}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           Bitmap(extent={{-80,-92},{78,84}}, fileName="modelica://NHES/Icons/PrimaryHeatSystemPackage/HTGRPB.jpg")}),
                                                                  Diagram(

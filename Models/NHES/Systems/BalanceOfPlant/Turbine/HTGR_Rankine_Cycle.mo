@@ -42,18 +42,16 @@ model HTGR_Rankine_Cycle
     controlType="RPM",
     use_port=true)
     annotation (Placement(transformation(extent={{-24,-30},{-44,-50}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort
-                                       sensor_T1(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)            annotation (Placement(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium =
+        Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{6,6},{-6,-6}},
         rotation=180,
         origin={22,40})));
-  TRANSFORM.Fluid.Sensors.Pressure     sensor_p(redeclare package Medium =
+  TRANSFORM.Fluid.Sensors.Pressure sensor_p(redeclare package Medium =
         Modelica.Media.Water.StandardWater, redeclare function iconUnit =
-        TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_bar)
-                                                       annotation (Placement(
-        transformation(
+        TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_bar) annotation (
+      Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=0,
         origin={-18,76})));
@@ -117,9 +115,8 @@ model HTGR_Rankine_Cycle
         extent={{10,10},{-10,-10}},
         rotation=90,
         origin={86,-34})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort
-                                       sensor_T2(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)            annotation (Placement(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T2(redeclare package Medium =
+        Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
@@ -137,7 +134,7 @@ model HTGR_Rankine_Cycle
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume)
     annotation (Placement(transformation(extent={{56,30},{76,50}})));
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)            annotation (Placement(
+        Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{6,-7},{-6,7}},
         rotation=90,
