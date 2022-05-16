@@ -19,7 +19,9 @@ replaceable package Medium = Modelica.Media.Water.StandardWater;
     annotation (Dialog(tab="Initialization"));
       parameter Modelica.Units.SI.MassFlowRate m_riser_st "Initial feed mass flow rate"
     annotation (Dialog(tab="Initialization"));
-      parameter Modelica.Units.SI.SpecificEnthalpy h_downcomer_st "Initial liquid enthaply"
+      parameter Modelica.Units.SI.SpecificEnthalpy h_downcomer_st=Medium.bubbleEnthalpy(Medium.setSat_p(
+      p_start))/0.95
+                    "Initial liquid enthaply"
       annotation (Dialog(tab="Initialization"));
 
   parameter Real alphag_start=0.5 "Initial Void Fraction" annotation(Dialog(tab="Initialization"));

@@ -97,12 +97,10 @@ package HRSGs "Heat Recovery Steam Generators"
           Modelica.Media.Water.StandardWater) annotation (Placement(transformation(extent={{-10,150},{10,170}}), iconTransformation(extent={{-10,150},
               {10,170}})));
     Modelica.Fluid.Sensors.MassFlowRate massFlowRate(redeclare package Medium
-        =
-          Modelica.Media.Water.StandardWater)
+        = Modelica.Media.Water.StandardWater)
       annotation (Placement(transformation(extent={{-104,28},{-84,48}})));
     Modelica.Fluid.Sensors.MassFlowRate massFlowRate1(redeclare package Medium
-        =
-          Modelica.Media.Water.StandardWater,                                                                        allowFlowReversal=false)
+        = Modelica.Media.Water.StandardWater,                                                                        allowFlowReversal=false)
       annotation (Placement(transformation(extent={{-10,-10},{10,10}},
           rotation=90,
           origin={82,70})));
@@ -213,7 +211,9 @@ package HRSGs "Heat Recovery Steam Generators"
           origin={-58,38})));
     Vessels.Steam_Drum steam_Drum_SI_5_1(
       p_start=P_sys*1.2,
-      alphag_start=0.7,
+      m_feed_st=Nominal_Flow,
+      m_steam_st=Nominal_Flow,
+      m_riser_st=Recirculation_Rate,
       allowFlowReversal=false,
       V_drum=10)
       annotation (Placement(transformation(extent={{16,28},{36,48}})));
@@ -239,6 +239,7 @@ package HRSGs "Heat Recovery Steam Generators"
           TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Turbulent_MSL,
       redeclare model HeatTransfer_tube =
           TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Alphas_TwoPhase_3Region,
+
       p_a_start_shell=200000,
       p_b_start_shell=120000,
       T_a_start_shell=673.15,
@@ -247,9 +248,10 @@ package HRSGs "Heat Recovery Steam Generators"
       p_b_start_tube=P_sys*1.2,
       use_Ts_start_tube=false,
       T_a_start_tube=548.15,
-      h_a_start_tube=400e3,
-      h_b_start_tube=400e3,
-      m_flow_a_start_tube=0)  if use_Econimizer  annotation (Placement(transformation(
+      h_a_start_tube=800e3,
+      h_b_start_tube=800e3,
+      m_flow_a_start_tube=Nominal_Flow)
+                              if use_Econimizer  annotation (Placement(transformation(
           extent={{-10,10},{10,-10}},
           rotation=90,
           origin={-56,-38})));
@@ -374,10 +376,11 @@ package HRSGs "Heat Recovery Steam Generators"
           origin={64,48})));
     NCSU_INL.Pressure_Control_Valve pressure_Control_Valve(
       P_sys=P_sys,
-      Nominal_dp=P_sys ./ 1000,
-      Nominal_Flow=Recirculation_Rate*0.1,
+      Nominal_dp=P_sys,
+      Nominal_Flow=Nominal_Flow,
+      Ti=10,
       Delay_Opening=PCV_opening_start)
-      annotation (Placement(transformation(extent={{50,120},{30,140}})));
+      annotation (Placement(transformation(extent={{52,122},{32,142}})));
     TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow RecircPump(redeclare package
         Medium =
           Modelica.Media.Water.StandardWater,                                                                              m_flow_nominal=
@@ -446,10 +449,10 @@ package HRSGs "Heat Recovery Steam Generators"
     connect(Superheater.port_b_shell, Evaporator.port_a_shell)
       annotation (Line(points={{86.6,-46},{86.6,-54},{40,-54},{40,-24},{30.6,-24},{30.6,-34}},   color={0,140,72}));
     connect(Gas_Resistance_2.port_a, Gas_Inlet_Port) annotation (Line(points={{133,-112},{154,-112},{154,0},{160,0}},     color={0,140,72}));
-    connect(massFlowRate1.port_b, pressure_Control_Valve.port_a) annotation (Line(points={{82,80},{82,130},{50,130}},
-                                                                                                              color={238,46,47}));
-    connect(pressure_Control_Valve.port_b, Steam_Outlet_port) annotation (Line(points={{30,130},{0,130},{0,160}},
-                                                                                                           color={238,46,47}));
+    connect(massFlowRate1.port_b, pressure_Control_Valve.port_a) annotation (Line(points={{82,80},
+            {82,132},{52,132}},                                                                               color={238,46,47}));
+    connect(pressure_Control_Valve.port_b, Steam_Outlet_port) annotation (Line(points={{32,132},
+            {0,132},{0,160}},                                                                              color={238,46,47}));
     connect(steam_Drum_SI_5_1.downcomer_port, DowncomerResistance.port_b)
       annotation (Line(points={{22,28},{22,4},{-14,4},{-14,-7}}, color={244,125,35}));
     connect(Economizer.port_a_shell, Evaporator.port_b_shell)
