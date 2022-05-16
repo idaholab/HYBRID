@@ -3,8 +3,8 @@ partial record Record_SubSystem_A
 
   extends Record_SubSystem;
 
-  replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby
-    Modelica.Media.Interfaces.PartialMedium "Medium at fluid ports"
+  replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium
+                                            "Medium at fluid ports"
     annotation (choicesAllMatching=true);
 
   /* Nominal Conditions */

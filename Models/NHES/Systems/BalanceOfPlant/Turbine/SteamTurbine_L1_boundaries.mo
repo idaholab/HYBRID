@@ -43,8 +43,8 @@ model SteamTurbine_L1_boundaries
     redeclare package Medium = Medium,
     use_T_start=false,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=0.01),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=0.01),
     p_start=p_condenser,
     h_start=steamTurbine.h_b_start)
     annotation (Placement(transformation(extent={{58,-30},{78,-10}})));
@@ -65,8 +65,8 @@ model SteamTurbine_L1_boundaries
     redeclare package Medium = Medium,
     p_start=port_b_start.p,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=5),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=5),
     use_T_start=false,
     h_start=port_b_start.h)
     annotation (Placement(transformation(extent={{-70,-90},{-90,-70}})));
@@ -109,8 +109,8 @@ model SteamTurbine_L1_boundaries
     use_T_start=false,
     h_start=port_a_start.h,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=0.01),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=0.01),
     redeclare package Medium = Medium,
     p_start=p_condenser)
                    "included for numeric purposes"
@@ -137,8 +137,8 @@ model SteamTurbine_L1_boundaries
     nPorts_a=1,
     nPorts_b=3,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=1),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=1),
     redeclare package Medium = Medium)
     annotation (Placement(transformation(extent={{-120,30},{-100,50}})));
   TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance4(R=1,
@@ -160,10 +160,10 @@ model SteamTurbine_L1_boundaries
      redeclare package Medium = Medium,
      each nPorts=1,
     each use_m_flow_in=true,
-    each use_h_in=true)  if nPorts_a3 > 0
+    each use_h_in=true) if  nPorts_a3 > 0
      annotation (Placement(transformation(extent={{72,-150},{92,-130}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate massFlowRate[nPorts_a3](redeclare
-      package Medium = Medium) if nPorts_a3 > 0
+  TRANSFORM.Fluid.Sensors.MassFlowRate massFlowRate[nPorts_a3](redeclare package
+              Medium = Medium) if nPorts_a3 > 0
     annotation (Placement(transformation(extent={{-30,-150},{-10,-130}})));
   TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort
                                            specificEnthalpy[nPorts_a3](

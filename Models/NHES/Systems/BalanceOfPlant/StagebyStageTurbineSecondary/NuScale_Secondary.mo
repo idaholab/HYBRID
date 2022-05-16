@@ -376,8 +376,8 @@ public
     use_T_start=false,
     h_start=1200e3,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=0.2),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=0.2),
     nPorts_a=2,
     nPorts_b=1)
     annotation (Placement(transformation(extent={{-54,-22},{-34,-2}})));
@@ -387,8 +387,8 @@ public
     use_T_start=false,
     h_start=1200e3,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=0.2),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=0.2),
     nPorts_a=3,
     nPorts_b=1)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
@@ -409,8 +409,8 @@ public
     use_T_start=false,
     h_start=150e3,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=5),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=5),
     nPorts_b=4,
     nPorts_a=1)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
@@ -531,8 +531,8 @@ public
     use_T_start=false,
     h_start=1200e3,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=2.5),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=2.5),
     nPorts_b=1,
     nPorts_a=1)
     annotation (Placement(transformation(extent={{-4,-5},{4,5}},
@@ -544,8 +544,8 @@ public
     use_T_start=false,
     h_start=1200e3,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=0.8),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=0.8),
     nPorts_b=1,
     nPorts_a=1)
     annotation (Placement(transformation(extent={{-6,-6},{6,6}},
@@ -639,8 +639,8 @@ public
     rho_nominal=945,
     use_powerCharacteristic=false,
     redeclare function efficiencyCharacteristic =
-        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency
-        (eta_nominal=0.8),
+        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency (
+         eta_nominal=0.8),
     V=1.5,
     energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
     massDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
@@ -678,8 +678,8 @@ public
     rho_nominal=945,
     use_powerCharacteristic=false,
     redeclare function efficiencyCharacteristic =
-        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency
-        (eta_nominal=0.8),
+        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency (
+         eta_nominal=0.8),
     V=1.5,
     energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
     massDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
@@ -715,8 +715,8 @@ public
     use_T_start=false,
     h_start=3000e3,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=1),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=1),
     nPorts_b=2,
     nPorts_a=1)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},

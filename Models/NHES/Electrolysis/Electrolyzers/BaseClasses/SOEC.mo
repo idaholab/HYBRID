@@ -7,11 +7,11 @@ model SOEC "Solid Oxide Electrolysis Cell (SOEC) stack model"
 
   // ---------- Fluid packages -------------------------------------------------
   replaceable package MediumCathode =
-  Electrolysis.Media.Electrolysis.CathodeGas constrainedby
-    Modelica.Media.Interfaces.PartialMedium "Medium model for cathode gas" annotation (Dialog(group="Working fluids (Medium)"));
+  Electrolysis.Media.Electrolysis.CathodeGas constrainedby Modelica.Media.Interfaces.PartialMedium
+                                            "Medium model for cathode gas" annotation (Dialog(group="Working fluids (Medium)"));
   replaceable package MediumAnode =
-  Electrolysis.Media.Electrolysis.AnodeGas_air constrainedby
-    Modelica.Media.Interfaces.PartialMedium "Medium model for anode gas" annotation (Dialog(group="Working fluids (Medium)"));
+  Electrolysis.Media.Electrolysis.AnodeGas_air constrainedby Modelica.Media.Interfaces.PartialMedium
+                                            "Medium model for anode gas" annotation (Dialog(group="Working fluids (Medium)"));
 
   // ---------- Define constants -----------------------------------------------
   constant Modelica.Media.IdealGases.Common.DataRecord

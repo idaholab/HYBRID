@@ -13,8 +13,8 @@ model MS
     use_T_start=false,
     h_start=h_start,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=V_MS),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=V_MS),
     eta_sep=eta)
     annotation (Placement(transformation(extent={{-8,-10},{12,10}})));
   BaseClasses.Turbine_Outlet turbine_Outlet(Vels_out=true)

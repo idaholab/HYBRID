@@ -15,13 +15,11 @@ model Test
 
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT      boundary(
     p=5940000,
-    T=1123.15,                                                                        redeclare
-      package                                                                                           Medium = Medium,
+    T=1123.15,                                                                        redeclare package Medium = Medium,
     nPorts=1)
     annotation (Placement(transformation(extent={{-110,6},{-90,26}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
-    p=6000000,                                                        redeclare
-      package                                                                           Medium=Medium,
+    p=6000000,                                                        redeclare package Medium=Medium,
     T=623.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-110,-28},{-90,-8}})));

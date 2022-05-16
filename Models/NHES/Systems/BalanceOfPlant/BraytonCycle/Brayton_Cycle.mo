@@ -60,8 +60,8 @@ model Brayton_Cycle
     p_start=dataInitial.P_HP_Comp_Ref,
     T_start=data.T_Precooler,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=0),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=0),
     use_HeatPort=true) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=270,
@@ -96,8 +96,8 @@ model Brayton_Cycle
     p_start=dataInitial.P_LP_Comp_Ref,
     T_start=data.T_Intercooler,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=0.0),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=0.0),
     use_HeatPort=true)    annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
@@ -157,8 +157,8 @@ model Brayton_Cycle
   NHES.Systems.BalanceOfPlant.BraytonCycle.Data.DataInitial_BC_Test dataInitial
     annotation (Placement(transformation(extent={{80,124},{100,144}})));
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Intercooler_Pre_Temp(redeclare
-      package Medium = Medium)               annotation (Placement(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Intercooler_Pre_Temp(redeclare package Medium =
+                       Medium)               annotation (Placement(
         transformation(
         extent={{-10,10},{10,-10}},
         rotation=90,

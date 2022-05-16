@@ -363,8 +363,8 @@ public
     rho_nominal=945,
     use_powerCharacteristic=false,
     redeclare function efficiencyCharacteristic =
-        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency
-        (eta_nominal=0.8),
+        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency (
+         eta_nominal=0.8),
     V=1.5,
     energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
     massDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
@@ -401,8 +401,8 @@ public
     rho_nominal=945,
     use_powerCharacteristic=false,
     redeclare function efficiencyCharacteristic =
-        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency
-        (eta_nominal=0.8),
+        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency (
+         eta_nominal=0.8),
     V=1.5,
     energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
     massDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
@@ -438,8 +438,8 @@ public
     use_T_start=false,
     h_start=3000e3,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=10),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=10),
     nPorts_b=2,
     nPorts_a=1)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
@@ -490,8 +490,8 @@ public
         extent={{-8,8},{8,-8}},
         rotation=180,
         origin={68,42})));
-  Control_and_Distribution.TemperatureTwoPort_Superheat T_Super(redeclare
-      package Medium = Modelica.Media.Examples.TwoPhaseWater)
+  Control_and_Distribution.TemperatureTwoPort_Superheat T_Super(redeclare package
+              Medium = Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{104,32},{84,52}})));
   Modelica.Blocks.Sources.RealExpression DFV_Ancticipatory_Internal_Block(y=
         DFV_Anticipatory_Internal)
@@ -515,8 +515,8 @@ public
     rho_nominal=945,
     use_powerCharacteristic=false,
     redeclare function efficiencyCharacteristic =
-        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency
-        (eta_nominal=0.8),
+        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency (
+         eta_nominal=0.8),
     V=1.5,
     energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
     massDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,

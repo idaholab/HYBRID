@@ -5,8 +5,7 @@ model TemperatureTwoPort_Superheat
   extends TRANSFORM.Fluid.Sensors.BaseClasses.PartialMultiSensor_1values(final
       var=T, redeclare replaceable function iconUnit =
         TRANSFORM.Units.Conversions.Functions.Temperature_K.to_degC
-      constrainedby
-      TRANSFORM.Units.Conversions.Functions.Temperature_K.BaseClasses.to);
+      constrainedby TRANSFORM.Units.Conversions.Functions.Temperature_K.BaseClasses.to);
   Modelica.Units.SI.Temperature Tsat;
   Modelica.Units.SI.Temperature T;
   replaceable package HTF =Modelica.Media.Water.StandardWater
