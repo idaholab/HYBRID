@@ -5,7 +5,7 @@ model CS_Rankine_Primary
 
   TRANSFORM.Controls.LimPID     CR(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-6,
+    k=1e-9,
     Ti=15,
     initType=Modelica.Blocks.Types.Init.NoInit)
     annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
@@ -18,10 +18,10 @@ model CS_Rankine_Primary
     annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
   TRANSFORM.Controls.LimPID Blower_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-5,
+    k=1e-7,
     Ti=30,
-    yMax=250,
-    yMin=25,
+    yMax=75,
+    yMin=45,
     initType=Modelica.Blocks.Types.Init.NoInit)
     annotation (Placement(transformation(extent={{-36,14},{-16,-6}})));
   Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)

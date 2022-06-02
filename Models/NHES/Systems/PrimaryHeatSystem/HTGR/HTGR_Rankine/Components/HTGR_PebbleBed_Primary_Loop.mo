@@ -42,7 +42,7 @@ model HTGR_PebbleBed_Primary_Loop
     annotation (Placement(transformation(extent={{90,84},{102,98}})));
 
   Modelica.Blocks.Sources.RealExpression Thermal_Power(y=core.Q_total.y)
-    annotation (Placement(transformation(extent={{-92,84},{-80,98}})));
+    annotation (Placement(transformation(extent={{-92,88},{-80,102}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
                         annotation (Placement(
@@ -55,7 +55,7 @@ model HTGR_PebbleBed_Primary_Loop
             38},{108,60}})));
 
   Modelica.Blocks.Sources.RealExpression Steam_Pressure(y=input_steam_pressure)
-    annotation (Placement(transformation(extent={{-94,98},{-82,112}})));
+    annotation (Placement(transformation(extent={{-92,98},{-80,112}})));
   Nuclear.CoreSubchannels.Pebble_Bed_New
                                        core(
     redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
@@ -142,6 +142,7 @@ model HTGR_PebbleBed_Primary_Loop
         TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable,
     redeclare model FlowModel_tube =
         TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.TwoPhase_Developed_2Region_NumStable,
+
     p_b_start_shell=3910000,
     p_a_start_tube=14100000,
     p_b_start_tube=14000000,
@@ -153,6 +154,7 @@ model HTGR_PebbleBed_Primary_Loop
     redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS304,
     redeclare model HeatTransfer_tube =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Alphas_TwoPhase_5Region,
+
     p_a_start_shell=3915000,
     T_a_start_shell=1023.15,
     T_b_start_shell=523.15,
@@ -164,9 +166,9 @@ model HTGR_PebbleBed_Primary_Loop
         (
         D_i_shell(displayUnit="m") = 0.011,
         D_o_shell=0.022,
-        crossAreaEmpty_shell=4500*0.01,
+        crossAreaEmpty_shell=5000*0.01,
         length_shell=60,
-        nTubes=4500,
+        nTubes=5000,
         nV=4,
         dimension_tube(displayUnit="mm") = 0.0254,
         length_tube=360,
@@ -191,12 +193,12 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.Steam_Pressure, Steam_Pressure.y) annotation (Line(
-      points={{-30,100},{-74,100},{-74,105},{-81.4,105}},
+      points={{-30,100},{-74,100},{-74,105},{-79.4,105}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.Power, Thermal_Power.y) annotation (Line(
-      points={{-30,100},{-74,100},{-74,91},{-79.4,91}},
+      points={{-30,100},{-74,100},{-74,95},{-79.4,95}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -224,7 +226,7 @@ equation
           80},{-39,80},{-39,68}},
                               color={0,127,255}));
   connect(sensorBus.Core_Outlet_T,sensor_T. T) annotation (Line(
-      points={{-30,100},{-30,86},{-32,86},{-32,63},{-36.48,63}},
+      points={{-30,100},{-30,63},{-36.48,63}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));

@@ -111,7 +111,7 @@ model HTGR_Rankine_Cycle
   TRANSFORM.Fluid.Valves.ValveLinear LPT_Bypass(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     dp_nominal=100000,
-    m_flow_nominal=2.5) annotation (Placement(transformation(
+    m_flow_nominal=7.5) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
         origin={86,-34})));
@@ -125,7 +125,7 @@ model HTGR_Rankine_Cycle
                                            pump1(redeclare package Medium =
         Modelica.Media.Water.StandardWater,
     use_input=false,
-    p_nominal=5500000,
+    p_nominal=3300000,
     allowFlowReversal=false)
     annotation (Placement(transformation(extent={{40,-74},{20,-54}})));
   StagebyStageTurbineSecondary.StagebyStageTurbine.BaseClasses.TRANSFORMMoistureSeparator_MIKK

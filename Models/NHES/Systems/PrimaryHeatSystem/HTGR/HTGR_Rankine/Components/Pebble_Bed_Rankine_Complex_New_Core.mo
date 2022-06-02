@@ -78,8 +78,8 @@ model Pebble_Bed_Rankine_Complex_New_Core
     PR0=1.05,
     w0nom=300)
     annotation (Placement(transformation(extent={{-48,-60},{-68,-40}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
-        Coolant_Medium) annotation (Placement(transformation(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
+      = Coolant_Medium) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={-82,-38})));
@@ -134,8 +134,8 @@ model Pebble_Bed_Rankine_Complex_New_Core
     p_b_start=8000,
     T_a_start=673.15,
     T_b_start=343.15,
-    m_flow_nominal=49,
-    p_inlet_nominal=14000000,
+    m_flow_nominal=60,
+    p_inlet_nominal=16000000,
     p_outlet_nominal=2500000,
     T_nominal=813.15)
     annotation (Placement(transformation(extent={{38,26},{58,46}})));
@@ -143,8 +143,8 @@ model Pebble_Bed_Rankine_Complex_New_Core
     annotation (Placement(transformation(extent={{64,-28},{44,-8}})));
   TRANSFORM.Blocks.RealExpression CR_reactivity
     annotation (Placement(transformation(extent={{68,94},{80,108}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
-        Coolant_Medium) annotation (Placement(transformation(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
+      = Coolant_Medium) annotation (Placement(transformation(
         extent={{-5,-7},{5,7}},
         rotation=270,
         origin={-43,27})));
@@ -162,8 +162,8 @@ model Pebble_Bed_Rankine_Complex_New_Core
     controlType="RPM",
     use_port=true)
     annotation (Placement(transformation(extent={{8,-50},{-12,-70}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium =
-        Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium
+      = Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{6,6},{-6,-6}},
         rotation=180,
@@ -205,7 +205,7 @@ model Pebble_Bed_Rankine_Complex_New_Core
     p_b_start=8000,
     T_a_start=673.15,
     T_b_start=343.15,
-    m_flow_nominal=34,
+    m_flow_nominal=36,
     p_inlet_nominal=3000000,
     p_outlet_nominal=8000,
     T_nominal=573.15) annotation (Placement(transformation(
@@ -237,8 +237,8 @@ model Pebble_Bed_Rankine_Complex_New_Core
         extent={{10,10},{-10,-10}},
         rotation=90,
         origin={100,2})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T2(redeclare package Medium =
-        Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T2(redeclare package Medium
+      = Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
@@ -250,8 +250,8 @@ model Pebble_Bed_Rankine_Complex_New_Core
     p_nominal=3000000,
     allowFlowReversal=false)
     annotation (Placement(transformation(extent={{60,-50},{40,-70}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium =
-        Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium
+      = Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{8,-6},{-8,6}},
         rotation=90,
@@ -298,6 +298,7 @@ model Pebble_Bed_Rankine_Complex_New_Core
         TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable,
     redeclare model FlowModel_tube =
         TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.TwoPhase_Developed_2Region_NumStable,
+
     p_b_start_shell=3910000,
     p_a_start_tube=14100000,
     p_b_start_tube=14000000,
@@ -309,6 +310,7 @@ model Pebble_Bed_Rankine_Complex_New_Core
     redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS304,
     redeclare model HeatTransfer_tube =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Alphas_TwoPhase_5Region,
+
     p_a_start_shell=3915000,
     T_a_start_shell=1023.15,
     T_b_start_shell=523.15,
@@ -323,7 +325,7 @@ model Pebble_Bed_Rankine_Complex_New_Core
         crossAreaEmpty_shell=4500*0.01,
         length_shell=60,
         nTubes=4500,
-        nV=4,
+        nV=6,
         dimension_tube(displayUnit="mm") = 0.0254,
         length_tube=360,
         th_wall=0.003,
@@ -353,8 +355,8 @@ model Pebble_Bed_Rankine_Complex_New_Core
     annotation (Placement(transformation(extent={{230,-104},{210,-84}})));
   Modelica.Blocks.Sources.RealExpression Pump_Pressure1(y=Condenser.V_liquid)
     annotation (Placement(transformation(extent={{254,-78},{242,-64}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium =
-        Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium
+      = Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{10,10},{-10,-10}},
         rotation=180,
@@ -564,7 +566,7 @@ equation
         coordinateSystem(preserveAspectRatio=false)),
     experiment(
       StopTime=250000,
-      Interval=37,
+      Interval=111,
       __Dymola_Algorithm="Esdirk45a"),
     Documentation(info="<html>
 <p>This model is mostly based on Xe-100 designs, but is not yet considered to represent the system completely. Few details exist regarding specific internal dimensions of that design. As such, the characteristics and theory of control should be accurate (what elements are controlled based on what variables) but the time constants are not to be considered completely accurate as of yet. Continued work (as of March 2022) will be done to match some literature output data produced by X-Energy. </p>

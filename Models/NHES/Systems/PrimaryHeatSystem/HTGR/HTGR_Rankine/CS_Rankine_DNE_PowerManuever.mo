@@ -62,7 +62,7 @@ model CS_Rankine_DNE_PowerManuever
     xi_start=1500)
     annotation (Placement(transformation(extent={{-34,44},{-26,52}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
-    amplitude=-0.75*data.Q_Nom,
+    amplitude=0.0*data.Q_Nom,
     rising=600,
     width=1200,
     falling=600,
