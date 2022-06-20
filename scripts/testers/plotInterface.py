@@ -243,7 +243,7 @@ class CreateGoldBox(QDialog):
   '''
     Dialog box used to walk user through creating new gold files
   '''
-  def __init__(self, tests, parent=None):
+  def __init__(self, tests, otherTests, parent=None):
     '''
       Creates a CreateGoldBox object
       @ In, tests, list of DifferPlot objects, holds all information about test
@@ -252,6 +252,7 @@ class CreateGoldBox(QDialog):
     '''
     super(CreateGoldBox, self).__init__(parent)
     self.tests = tests
+    self.otherTests = otherTests
     self.setGeometry(200, 200, 475, 350)
     self.setWindowTitle('Create New Gold Files')
     self.instruct1Label = QLabel('Select tests to create a new gold file:')
@@ -291,7 +292,19 @@ class CreateGoldBox(QDialog):
         listItem.setFlags(listItem.flags() | Qt.ItemIsUserCheckable)
         listItem.setCheckState(Qt.Unchecked)
         self.testList.addItem(listItem)
-        
+    for name in self.otherTests['diffVars']:
+      itemString = name +  ', (Different variables but common variables identical)'
+      listItem = QListWidgetItem(itemString)
+      listItem.setFlags(listItem.flags() | Qt.ItemIsUserCheckable)
+      listItem.setCheckState(Qt.Unchecked)
+      self.testList.addItem(listItem)
+    for name in self.otherTests['diffTimes']:
+      itemString = name + ', (Output file had nonmatching timesteps)'
+      listItem = QListWidgetItem(itemString)
+      listItem.setFlags(listItem.flags() | Qt.ItemIsUserCheckable)
+      listItem.setCheckState(Qt.Unchecked)
+      self.testList.addItem(listItem)
+
   def selectAll(self):
     '''
       Selects all the test items on the list to create new gold files for
@@ -310,10 +323,8 @@ class CreateGoldBox(QDialog):
       @ Out, None
     '''
     if os.path.basename(os.getcwd()) == 'testers':
-      print('called from testers path')
       hybridPath = os.path.dirname(os.path.dirname(os.getcwd()))
     else:
-      print('called from hybrid path')
       hybridPath = os.getcwd()
     self.testsToAdd = []
     for i in range(self.testList.count()):
@@ -418,7 +429,7 @@ class MainWindow(QMainWindow):
   '''
     The main window where the plots are shown
   '''
-  def __init__(self, tests):
+  def __init__(self, tests, otherTests):
     '''
       Creates the main window object where the plots are shown
       @ In, tests, list of DifferPlot objects, holds all information about test
@@ -426,6 +437,7 @@ class MainWindow(QMainWindow):
     '''
     super().__init__()
     self.tests = tests
+    self.otherTests = otherTests
     self.mainWidg = QWidget()
     self.setWindowTitle("Results Differences")
     self.setGeometry(200, 200, 800, 550)
@@ -456,7 +468,7 @@ class MainWindow(QMainWindow):
     self.layout = QSplitter()
     self.addLayout()
     self.tolBox = ToleranceBox(tests)
-    self.createGoldBox = CreateGoldBox(tests)
+    self.createGoldBox = CreateGoldBox(tests, otherTests)
     self.tolBox.onClicked.connect(self.changeTol)
     self.changeTolButton.clicked.connect(lambda: self.tolBox.openWin())
     self.newGoldAction.triggered.connect(lambda: self.createGoldBox.openWin())
@@ -752,7 +764,7 @@ class MainWindow(QMainWindow):
         self.table.setItem(i+1,2, QTableWidgetItem(str(vals[2])))
     else:
       self.table.clear()
-      self.table.rowCount(0)
+      self.table.setRowCount(0)
 
   def changeTest(self):
     '''

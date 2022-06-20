@@ -111,6 +111,7 @@ class DymolaMatDiffer:
     self.differVars = set()
     self.loaded = True
     self.sameVariables = True
+    self.timeLoaded = False
 
   # Should be used to compare the gold file and the test file
   def load(self, isTest, file):
@@ -210,6 +211,10 @@ class DymolaMatDiffer:
             self._message += str(tm) + '\n'
           self._message += comparisonSteps
           self._same = False
+        self.timeLoaded = False
+        return
+      else:
+        self.timeLoaded = True
     if not self._out_step:
       self.timeStepsArray, self.timeStepsArraygold = np.array([self.timeSteps]),  np.array([self.timeStepsgold])
     else:
@@ -314,13 +319,33 @@ class DymolaMatDiffer:
     if not self._same:
       return (self._same, self._message)
     goldFiles = os.listdir(self._goldDir)
-    goldFiles = [list(filter(lambda x: '.mat' in x, goldFiles))[0]]
+    goldFiles = list(filter(lambda x: '.mat' in x, goldFiles))
+    passedSetTimes= []
     for goldFile in goldFiles: #loops over all reference files in gold folder
       self._same, self._message = True, ''
       self.load(isTest = False, file = os.path.join(self._goldDir, goldFile))
-      self.setTimes()
       if not self._same:
         continue
+      self.setTimes()
+      if not self._same and goldFile == goldFiles[-1]:
+        if len(passedSetTimes):
+          self._same, self._message = True, ''
+          goldFile = passedSetTimes[-1]
+          self.load(isTest=False, file=os.path.join(self._goldDir, goldFile))
+          self.setTimes()
+          self.compareVariables()
+          if not self._same:
+            return self._same, self._message
+          self.computeComparisons()
+          self.checkTol()
+          if not self._same:
+            return self._same, self._message
+        else:
+          continue
+      elif not self._same:
+        continue
+      else:
+        passedSetTimes.append(goldFile)
       self.compareVariables()
       if not self._same:
         continue

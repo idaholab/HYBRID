@@ -53,6 +53,7 @@ class DifferPlots(DymolaMatDiffer.DymolaMatDiffer):
       'corrWeight': 1,
       'weighted': 0.4
       }
+    self.showInList = False
             
   def meanDiff(self, var):
     '''
@@ -146,7 +147,7 @@ class DifferPlots(DymolaMatDiffer.DymolaMatDiffer):
     '''
     differ = set()
     for var in self.commonVars:
-      if self.goldVars[var].compVals['distl2'] > self.tols['l2dist'] and not ".der" in var:
+      if self.goldVars[var].compVals['distl2'] > self.tols['l2dist']:
         differ.add(var)
     return differ
     
@@ -164,11 +165,11 @@ class DifferPlots(DymolaMatDiffer.DymolaMatDiffer):
       stdvDif = self.goldVars[var].compVals['stdvDiff']
       corrDif = self.goldVars[var].compVals['stdvDiff']
       weightedDif = self.tols['meanWeight'] * meanDif + self.tols['stdvWeight'] * stdvDif + self.tols['corrWeight'] * corrDif
-      if weightedDif > self.tols['weighted'] and not ".der" in var:
+      if weightedDif > self.tols['weighted']:
         differ.add(var)
     return differ
             
-  def checkTol(self, comparisons, union = True):
+  def checkTol(self, comparisons, union=True):
     '''
       Calls the tolerance functions for each comparion applied.
       Combines multiple types of comparisons applied simultaneously.
@@ -205,20 +206,37 @@ class DifferPlots(DymolaMatDiffer.DymolaMatDiffer):
       @ Out, self._same, bool, whether the test matches with any of the reference files
       @ Out, self._message, string, message to show if files do not match
     '''
-    self.load(isTest = True, file = os.path.join(self.testDir, self._outFile))
+    self.load(isTest=True, file=os.path.join(self.testDir, self._outFile))
     if not self._same:
       return self._same, self._message
     goldFiles = os.listdir(self._goldDir)
-    goldFiles = [list(filter(lambda x: '.mat' in x, goldFiles))[0]]
+    goldFiles = list(filter(lambda x: '.mat' in x, goldFiles))
+    passedSetTimes= []
     for goldFile in goldFiles:
       self._same = True
       self._message = ''
-      self.load(isTest = False, file = os.path.join(self._goldDir, goldFile))
+      self.load(isTest = False, file=os.path.join(self._goldDir, goldFile))
       if not self._same:
         continue
       self.setTimes()
-      if not self._same:
+      if not self._same and goldFile == goldFiles[-1]:
+        if len(passedSetTimes):
+          self._same, self._message = True, ''
+          goldFile = passedSetTimes[-1]
+          self.load(isTest=False, file=os.path.join(self._goldDir, goldFile))
+          self.setTimes()
+          self.compareVariables()
+          self.computeComparisons()
+          self.checkTol(comparisons=['maxDiff'])
+          if not self._same:
+            self.showInList = True
+          return self._same, self._message
+        else:
+          continue
+      elif not self._same:
         continue
+      else:
+        passedSetTimes.append(goldFile)
       self.compareVariables()
       self.computeComparisons()
       self.checkTol(comparisons = ['maxDiff'])
