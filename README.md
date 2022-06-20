@@ -16,7 +16,7 @@ Currently,the HYBRID repository is based on:
 Publications
 -----
 ### Manual
-* [HYBRID User Manual](https://www.osti.gov/biblio/1760168-hybrid-user-manual)
+* [HYBRID User Manual](https://www.osti.gov/biblio/1863262-hybrid-user-manual)
 ### Technical Reports
 * [Evaluation of Hydrogen Production Feasibility for a Light Water Reactor in the Midwest](https://www.osti.gov/biblio/1569271-evaluation-hydrogen-production-feasibility-light-water-reactor-midwest)
 * [Status Report on FY2022 Model Development within the Integrated Energy Systems HYBRID Repository](https://www.osti.gov/biblio/1844226-status-report-fy2022-model-development-within-integrated-energy-systems-hybrid-repository)
