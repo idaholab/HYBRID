@@ -2,7 +2,7 @@ within NHES.Systems.BalanceOfPlant.Turbine.Examples;
 model Intermediate_Rankine_Cycle_Test_b
   import NHES;
   extends Modelica.Icons.Example;
-  NHES.Systems.BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_Basic BOP(
+  NHES.Systems.BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle BOP(
   port_a_nominal(
       m_flow=493.7058,
       p=14000000,
