@@ -1,7 +1,10 @@
 Battery
+CompressedAirEnergyStorage
+Concrete_Solid_Media
+CTES
+Latent_Heat_TES
 LithiumIonBattery
 SensibleHeatStorage
+SHS_Two_Tank_Mikk
 ThermoclineHeatStorage
-Concrete_Solid_Media
-Latent_Heat_TES
 BaseClasses
