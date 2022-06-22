@@ -24,8 +24,6 @@ model Intermediate_Rankine_Cycle "Two stage BOP model"
     p_outlet_nominal=2500000,
     T_nominal=673.15)
     annotation (Placement(transformation(extent={{34,24},{54,44}})));
-  TRANSFORM.Electrical.PowerConverters.Generator_Basic generator
-    annotation (Placement(transformation(extent={{34,-34},{14,-14}})));
   Fluid.Vessels.IdealCondenser Condenser(
     p=10000,
     V_total=75,
@@ -65,8 +63,6 @@ model Intermediate_Rankine_Cycle "Two stage BOP model"
         extent={{8,8},{-8,-8}},
         rotation=180,
         origin={-4,40})));
-  Modelica.Blocks.Sources.RealExpression Electrical_Power(y=generator.power)
-    annotation (Placement(transformation(extent={{-100,106},{-88,120}})));
   TRANSFORM.Fluid.Machines.SteamTurbine LPT(
     nUnits=1,
     eta_mech=0.93,
@@ -92,7 +88,7 @@ model Intermediate_Rankine_Cycle "Two stage BOP model"
   TRANSFORM.Fluid.Valves.ValveLinear LPT_Bypass(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     dp_nominal=100000,
-    m_flow_nominal=2.5) annotation (Placement(transformation(
+    m_flow_nominal=100) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
         origin={86,-24})));
@@ -115,12 +111,14 @@ model Intermediate_Rankine_Cycle "Two stage BOP model"
   StagebyStageTurbineSecondary.StagebyStageTurbine.BaseClasses.TRANSFORMMoistureSeparator_MIKK
     Moisture_Separator(redeclare package Medium =
         Modelica.Media.Water.StandardWater,
-    p_start=2500000,
+    p_start=4000000,
+    T_start=773.15,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume)
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
+        (V=5))
     annotation (Placement(transformation(extent={{58,30},{78,50}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)            annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium
+      = Modelica.Media.Water.StandardWater)            annotation (Placement(
         transformation(
         extent={{6,-7},{-6,7}},
         rotation=90,
@@ -158,7 +156,7 @@ model Intermediate_Rankine_Cycle "Two stage BOP model"
     "included for numeric purposes"
     annotation (Placement(transformation(extent={{-56,-50},{-36,-30}})));
   Fluid.HeatExchangers.Generic_HXs.NTU_HX       IP(
-    NTU=IP_NTU,
+    NTU=20,
     K_tube=17000,
     K_shell=500,
     V_Tube=5,
@@ -168,7 +166,7 @@ model Intermediate_Rankine_Cycle "Two stage BOP model"
     Q_init=1e6)
     annotation (Placement(transformation(extent={{66,-118},{86,-138}})));
   Fluid.HeatExchangers.Generic_HXs.NTU_HX      IP1(
-    NTU=IP_NTU,
+    NTU=20,
     K_tube=17000,
     K_shell=500,
     V_Tube=5,
@@ -179,12 +177,12 @@ model Intermediate_Rankine_Cycle "Two stage BOP model"
     annotation (Placement(transformation(extent={{-30,-26},{-10,-46}})));
   TRANSFORM.Fluid.Volumes.MixingVolume volume(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
-    p_start=pr3out,
+    p_start=3000000,
     use_T_start=false,
-    h_start=1200e3,
+    h_start=3.5e6,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=200),
+        (V=80),
     nPorts_a=3,
     nPorts_b=1)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
@@ -209,12 +207,18 @@ model Intermediate_Rankine_Cycle "Two stage BOP model"
     T=318.9576,
     nPorts=1)
     annotation (Placement(transformation(extent={{-56,-120},{-36,-100}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)            annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium
+      = Modelica.Media.Water.StandardWater)            annotation (Placement(
         transformation(
         extent={{6,-7},{-6,7}},
         rotation=90,
         origin={41,-110})));
+  Electrical.Generator      generator1(J=1e4)
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+        rotation=-90,
+        origin={46,-32})));
+  TRANSFORM.Electrical.Sensors.PowerSensor sensorW
+    annotation (Placement(transformation(extent={{124,-52},{144,-32}})));
 initial equation
 
 equation
@@ -241,11 +245,6 @@ equation
   connect(TCV.port_b, sensor_T1.port_a) annotation (Line(
       points={{4,40},{16,40}},
       color={0,127,255},
-      thickness=0.5));
-  connect(sensorBus.Power, Electrical_Power.y) annotation (Line(
-      points={{-30,100},{-80,100},{-80,112},{-84,112},{-84,113},{-87.4,113}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
       thickness=0.5));
   connect(LPT.portHP, tee.port_1) annotation (Line(
       points={{52,4},{52,8},{82,8},{82,14}},
@@ -287,8 +286,6 @@ equation
       color={0,127,255},
       thickness=0.5));
 
-  connect(LPT.shaft_b, generator.shaft) annotation (Line(points={{46,-16},{46,-24.1},
-          {34.1,-24.1}}, color={0,0,0}));
   connect(actuatorBus.opening_TCV, TCV.opening) annotation (Line(
       points={{30.1,100.1},{-4,100.1},{-4,46.4}},
       color={111,216,99},
@@ -369,6 +366,18 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(LPT.shaft_b, generator1.shaft_a)
+    annotation (Line(points={{46,-16},{46,-22}}, color={0,0,0}));
+  connect(generator1.portElec, sensorW.port_a) annotation (Line(points={{46,-42},
+          {46,-46},{118,-46},{118,-42},{124,-42}}, color={255,0,0}));
+  connect(sensorW.port_b, portElec_b) annotation (Line(points={{144,-42},{148,
+          -42},{148,-14},{146,-14},{146,0},{160,0}}, color={255,0,0}));
+  connect(sensorW.W, sensorBus.Power) annotation (Line(points={{134,-31},{134,
+          94},{-30,94},{-30,100}}, color={0,0,127}), Text(
+      string="%second",
+      index=1,
+      extent={{-3,6},{-3,6}},
+      horizontalAlignment=TextAlignment.Right));
 annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-2.09756,2},{83.9024,-2}},

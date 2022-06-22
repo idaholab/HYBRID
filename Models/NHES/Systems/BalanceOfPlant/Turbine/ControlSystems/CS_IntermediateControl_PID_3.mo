@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_IntermediateControl_PID_2
+model CS_IntermediateControl_PID_3
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
   extends NHES.Icons.DummyIcon;
@@ -62,7 +62,11 @@ model CS_IntermediateControl_PID_2
     annotation (Placement(transformation(extent={{-38,68},{-18,88}})));
   Modelica.Blocks.Sources.Constant const9(k=data.p_steam_vent)
     annotation (Placement(transformation(extent={{-78,68},{-58,88}})));
-  Fluid.Intermediate_Rankine data
+  Fluid.Intermediate_Rankine data(
+    p_steam_vent=3447400,
+    T_Steam_Ref=852.9,
+    Q_Nom=60e6,
+    T_Feedwater=685.3)
     annotation (Placement(transformation(extent={{-96,12},{-76,32}})));
   Modelica.Blocks.Sources.Constant ExternalDivertValve(k=1)
     annotation (Placement(transformation(extent={{80,-28},{60,-8}})));
@@ -181,4 +185,4 @@ equation
       index=1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-end CS_IntermediateControl_PID_2;
+end CS_IntermediateControl_PID_3;

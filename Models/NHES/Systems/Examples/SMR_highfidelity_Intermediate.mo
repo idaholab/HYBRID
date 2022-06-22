@@ -1,5 +1,5 @@
 within NHES.Systems.Examples;
-model SMR_highfidelity
+model SMR_highfidelity_Intermediate
   "High Fidelity Natural Circulation Model based on NuScale reactor. Hot channel calcs, pressurizer, and beginning of cycle reactivity feedback"
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
@@ -24,7 +24,7 @@ model SMR_highfidelity
       Q_nom(displayUnit="MW") = 200000000,
       demand=1.0),
     redeclare package Medium = Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{-94,-24},{-40,34}})));
+    annotation (Placement(transformation(extent={{-92,-24},{-38,34}})));
   EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(port_a1_nominal(
       p=nuScale_Tave_enthalpy_Pressurizer_CR.port_b_nominal.p,
       h=nuScale_Tave_enthalpy_Pressurizer_CR.port_b_nominal.h,
@@ -32,18 +32,15 @@ model SMR_highfidelity
       port_b1_nominal(p=nuScale_Tave_enthalpy_Pressurizer_CR.port_a_nominal.p,
         h=nuScale_Tave_enthalpy_Pressurizer_CR.port_a_nominal.h))
     annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
-  BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries BOP(
+  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_2 BOP(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
       h=EM.port_b2_nominal.h,
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
-      CS(
-      delayStartTCV=100,
-      p_nominal=3447400,
-      W_totalSetpoint=SC.W_totalSetpoint_BOP))
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_3
+      CS)
     annotation (Placement(transformation(extent={{42,-20},{82,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
     annotation (Placement(transformation(extent={{100,-22},{140,22}})));
@@ -61,10 +58,10 @@ model SMR_highfidelity
     annotation (Placement(transformation(extent={{158,60},{198,100}})));
 equation
   connect(nuScale_Tave_enthalpy_Pressurizer_CR.port_b, EM.port_a1) annotation (
-      Line(points={{-39.1692,13.2857},{-30,13.2857},{-30,8},{-20,8}}, color={0,
+      Line(points={{-37.1692,13.2857},{-30,13.2857},{-30,8},{-20,8}}, color={0,
           127,255}));
   connect(nuScale_Tave_enthalpy_Pressurizer_CR.port_a, EM.port_b1) annotation (
-      Line(points={{-39.1692,-0.385714},{-30,-0.385714},{-30,-8},{-20,-8}},
+      Line(points={{-37.1692,-0.385714},{-30,-0.385714},{-30,-8},{-20,-8}},
         color={0,127,255}));
   connect(EM.port_b2, BOP.port_a)
     annotation (Line(points={{20,8},{42,8}}, color={0,127,255}));
@@ -91,4 +88,4 @@ equation
       StopTime=18000,
       Interval=1,
       __Dymola_Algorithm="Esdirk45a"));
-end SMR_highfidelity;
+end SMR_highfidelity_Intermediate;

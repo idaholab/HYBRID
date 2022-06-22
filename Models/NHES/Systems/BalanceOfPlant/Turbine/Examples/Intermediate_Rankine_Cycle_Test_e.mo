@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.Examples;
-model Intermediate_Rankine_Cycle_Test_d
+model Intermediate_Rankine_Cycle_Test_e
   import NHES;
 
   parameter Real IP_NTU = 20.0 "Intermediate pressure NTUHX NTU";
@@ -33,31 +33,22 @@ model Intermediate_Rankine_Cycle_Test_d
     startTime=350,
     amplitude=2e8)
     annotation (Placement(transformation(extent={{-70,70},{-50,90}})));
-  NHES.Fluid.Pipes.StraightPipe_withWall pipe(
-    redeclare package Medium =
-        Modelica.Media.Water.StandardWater,
-    p_a_start=5000000,
-    p_b_start=5000000,
-    use_Ts_start=false,
-    h_a_start=3.6e6,
-    h_b_start=1.2e6,
-    m_flow_a_start=180,
-    length=10,
-    diameter=1,
-    redeclare package Wall_Material = NHES.Media.Solids.SS316,
-    th_wall=0.001) annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=90,
-        origin={-60,0})));
-  TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.HeatFlow boundary(use_port=
-        true, Q_flow=500e6)
-    annotation (Placement(transformation(extent={{-96,-10},{-76,10}})));
-  Modelica.Blocks.Sources.Pulse pulse(
-    amplitude=150e6,
-    period=5000,
-    offset=600e6,
-    startTime=3000)
-    annotation (Placement(transformation(extent={{-118,-10},{-98,10}})));
+  NHES.Systems.PrimaryHeatSystem.SMR_Generic.Components.SMR_Tave_enthalpy
+                               nuScale_Tave_enthalpy(
+    redeclare NHES.Systems.PrimaryHeatSystem.SMR_Generic.CS_SMR_Tave_Enthalpy
+      CS(
+      T_SG_exit=579.15,
+      Q_nom(displayUnit="MW") = 160000000,
+      demand=1.0),
+    port_a_nominal(
+      m_flow=70,
+      p=3447380,
+      T(displayUnit="degC") = 421.15),
+    port_b_nominal(
+      p=3447380,
+      T(displayUnit="degC") = 579.25,
+      h=2997670))
+    annotation (Placement(transformation(extent={{-122,-40},{-54,48}})));
 equation
 
   connect(stateDisplay1.statePort, stateSensor1.statePort) annotation (Line(
@@ -72,13 +63,11 @@ equation
     annotation (Line(points={{-18,12},{0,12}},   color={0,127,255}));
   connect(BOP.portElec_b, sinkElec.port)
     annotation (Line(points={{60,0},{70,0}}, color={255,0,0}));
-  connect(stateSensor.port_b, pipe.port_a) annotation (Line(points={{-38,-12},{-46,
-          -12},{-46,-14},{-60,-14},{-60,-10}}, color={0,127,255}));
-  connect(pipe.port_b, stateSensor1.port_a)
-    annotation (Line(points={{-60,10},{-60,12},{-38,12}}, color={0,127,255}));
-  connect(boundary.port, pipe.heatPorts[1])
-    annotation (Line(points={{-76,0},{-64.4,0},{-64.4,0.1}}, color={191,0,0}));
-  connect(pulse.y, boundary.Q_flow_ext)
-    annotation (Line(points={{-97,0},{-90,0}}, color={0,0,127}));
+  connect(stateSensor.port_b, nuScale_Tave_enthalpy.port_a) annotation (Line(
+        points={{-38,-12},{-42,-12},{-42,-1.41538},{-52.7636,-1.41538}}, color=
+          {0,127,255}));
+  connect(nuScale_Tave_enthalpy.port_b, stateSensor1.port_a) annotation (Line(
+        points={{-52.7636,20.9231},{-42,20.9231},{-42,12},{-38,12}}, color={0,
+          127,255}));
   annotation (experiment(StopTime=50000, __Dymola_Algorithm="Dassl"));
-end Intermediate_Rankine_Cycle_Test_d;
+end Intermediate_Rankine_Cycle_Test_e;

@@ -4,6 +4,7 @@ TightlyCoupled_SteamFlowCtrl_FY18_TES
 SMR_Coupling_Test
 SMR_Coupling_4_loop_control
 SMR_highfidelity
+SMR_highfidelity_Intermediate
 SMR_IES_CTES
 GenericModularPWR_park
 GenericModularPWR_stepdownturbines

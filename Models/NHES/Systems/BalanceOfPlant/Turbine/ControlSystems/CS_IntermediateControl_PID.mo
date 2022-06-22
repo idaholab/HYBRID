@@ -62,8 +62,7 @@ model CS_IntermediateControl_PID
     annotation (Placement(transformation(extent={{-38,68},{-18,88}})));
   Modelica.Blocks.Sources.Constant const9(k=data.p_steam_vent)
     annotation (Placement(transformation(extent={{-78,68},{-58,88}})));
-  Data.Intermediate_Rankine
-                  data
+  Fluid.Intermediate_Rankine data
     annotation (Placement(transformation(extent={{-96,12},{-76,32}})));
   Modelica.Blocks.Sources.Constant ExternalDivertValve(k=1e-6)
     annotation (Placement(transformation(extent={{80,-28},{60,-8}})));
