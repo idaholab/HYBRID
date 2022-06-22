@@ -5,7 +5,7 @@ model Intermediate_Rankine_Cycle_Test_b
   NHES.Systems.BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle BOP(
   port_a_nominal(
       m_flow=493.7058,
-      p=14000000,
+      p=5000000,
       h=BOP.Medium.specificEnthalpy_pT(BOP.port_a_nominal.p, 591)),
     port_b_nominal(p=1000000, h=BOP.Medium.specificEnthalpy_pT(BOP.port_b_nominal.p,
           318.95)))
@@ -66,5 +66,5 @@ equation
     annotation (Line(points={{-99,20},{-90,20}}, color={0,0,127}));
   connect(BOP.portElec_b, sinkElec.port)
     annotation (Line(points={{38,0},{70,0}}, color={255,0,0}));
-  annotation (experiment(StopTime=500));
+  annotation (experiment(StopTime=500, __Dymola_Algorithm="Esdirk45a"));
 end Intermediate_Rankine_Cycle_Test_b;

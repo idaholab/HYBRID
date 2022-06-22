@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.Examples;
-model Intermediate_Rankine_Cycle_Test_a
+model Intermediate_Rankine_Cycle_Test_d
   import NHES;
 
   parameter Real IP_NTU = 20.0 "Intermediate pressure NTUHX NTU";
@@ -33,37 +33,25 @@ model Intermediate_Rankine_Cycle_Test_a
     startTime=350,
     amplitude=2e8)
     annotation (Placement(transformation(extent={{-70,70},{-50,90}})));
-  NHES.Fluid.HeatExchangers.Generic_HXs.NTU_HX nTU_HX(
-    NTU=30,
-    K_tube=17000,
-    K_shell=500,
-    V_Tube=10,
-    V_Shell=10,
-    p_start_tube=5000000,
-    h_start_tube_inlet=1e6,
-    h_start_tube_outlet=3e6,
-    p_start_shell=5000000,
-    h_start_shell_inlet=3.1e6,
-    h_start_shell_outlet=1e6,
-    Q_init=10e7,
-    tau=1,
-    m_start_tube=200,
-    m_start_shell=200) annotation (Placement(transformation(
+  NHES.Fluid.Pipes.StraightPipe_withWall pipe(
+    redeclare package Medium =
+        Modelica.Media.Water.StandardWater,
+    p_a_start=9000000,
+    p_b_start=5000000,
+    use_Ts_start=false,
+    h_a_start=3.2e6,
+    h_b_start=1.2e6,
+    m_flow_a_start=200,
+    length=10,
+    diameter=1,
+    redeclare package Wall_Material = NHES.Media.Solids.SS316,
+    th_wall=0.001) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
-        rotation=-90,
-        origin={-58,0})));
-  Modelica.Fluid.Sources.MassFlowSource_h source(
-    redeclare package Medium = Modelica.Media.Water.StandardWater,
-    m_flow=300,
-    nPorts=1,
-    h=5.3e6)
-    annotation (Placement(transformation(extent={{-88,0},{-68,20}})));
-  Modelica.Fluid.Sources.Boundary_ph sink(
-    redeclare package Medium = Modelica.Media.Water.StandardWater,
-    h=1e6,
-    nPorts=1,
-    p(displayUnit="bar") = 4500000)
-    annotation (Placement(transformation(extent={{-88,-2},{-68,-22}})));
+        rotation=90,
+        origin={-60,0})));
+  TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.HeatFlow boundary(Q_flow=
+        500e6)
+    annotation (Placement(transformation(extent={{-102,-10},{-82,10}})));
 equation
 
   connect(stateDisplay1.statePort, stateSensor1.statePort) annotation (Line(
@@ -78,13 +66,11 @@ equation
     annotation (Line(points={{-18,12},{0,12}},   color={0,127,255}));
   connect(BOP.portElec_b, sinkElec.port)
     annotation (Line(points={{60,0},{70,0}}, color={255,0,0}));
-  connect(nTU_HX.Tube_in, stateSensor.port_b) annotation (Line(points={{-54,-10},
-          {-54,-12},{-38,-12}}, color={0,127,255}));
-  connect(nTU_HX.Tube_out, stateSensor1.port_a)
-    annotation (Line(points={{-54,10},{-54,12},{-38,12}}, color={0,127,255}));
-  connect(source.ports[1], nTU_HX.Shell_in)
-    annotation (Line(points={{-68,10},{-60,10}}, color={0,127,255}));
-  connect(sink.ports[1], nTU_HX.Shell_out) annotation (Line(points={{-68,-12},{
-          -60,-12},{-60,-10}}, color={0,127,255}));
+  connect(stateSensor.port_b, pipe.port_a) annotation (Line(points={{-38,-12},{-46,
+          -12},{-46,-14},{-60,-14},{-60,-10}}, color={0,127,255}));
+  connect(pipe.port_b, stateSensor1.port_a)
+    annotation (Line(points={{-60,10},{-60,12},{-38,12}}, color={0,127,255}));
+  connect(boundary.port, pipe.heatPorts[1])
+    annotation (Line(points={{-82,0},{-64.4,0},{-64.4,0.1}}, color={191,0,0}));
   annotation (experiment(StopTime=500));
-end Intermediate_Rankine_Cycle_Test_a;
+end Intermediate_Rankine_Cycle_Test_d;
