@@ -85,7 +85,7 @@ equation
                                 Diagram(coordinateSystem(preserveAspectRatio=
             false, extent={{-100,-100},{220,100}})),
     experiment(
-      StopTime=18000,
+      StopTime=500,
       Interval=1,
       __Dymola_Algorithm="Esdirk45a"));
 end SMR_highfidelity_Intermediate;

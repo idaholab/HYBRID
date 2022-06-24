@@ -21,13 +21,14 @@ model CS_IntermediateControl_PID_3
     annotation (Placement(transformation(extent={{2,38},{22,58}})));
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-5,
-    Ti=15,
-    yMax=1 - 1e-6,
+    k=0.0001,
+    Ti=5,
+    Td=0.1,
+    yMax=0.3,
     yMin=0,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
-    annotation (Placement(transformation(extent={{-62,-56},{-42,-36}})));
+    annotation (Placement(transformation(extent={{-60,-56},{-40,-36}})));
   Modelica.Blocks.Sources.Constant const5(k=data.T_Feedwater)
     annotation (Placement(transformation(extent={{-92,-56},{-72,-36}})));
   TRANSFORM.Controls.LimPID TCV_Position(
@@ -45,7 +46,7 @@ model CS_IntermediateControl_PID_3
     annotation (Placement(transformation(extent={{-26,-28},{-18,-20}})));
   Modelica.Blocks.Math.Add         add1
     annotation (Placement(transformation(extent={{-8,-28},{12,-8}})));
-  Modelica.Blocks.Sources.Constant const8(k=1e-6)
+  Modelica.Blocks.Sources.Constant const8(k=0)
     annotation (Placement(transformation(extent={{-32,-56},{-24,-48}})));
   Modelica.Blocks.Math.Add         add2
     annotation (Placement(transformation(extent={{-8,-56},{12,-36}})));
@@ -64,9 +65,9 @@ model CS_IntermediateControl_PID_3
     annotation (Placement(transformation(extent={{-78,68},{-58,88}})));
   Fluid.Intermediate_Rankine data(
     p_steam_vent=3447400,
-    T_Steam_Ref=852.9,
+    T_Steam_Ref=579.75,
     Q_Nom=60e6,
-    T_Feedwater=685.3)
+    T_Feedwater=421.15)
     annotation (Placement(transformation(extent={{-96,12},{-76,32}})));
   Modelica.Blocks.Sources.Constant ExternalDivertValve(k=1)
     annotation (Placement(transformation(extent={{80,-28},{60,-8}})));
@@ -76,14 +77,15 @@ model CS_IntermediateControl_PID_3
     annotation (Placement(transformation(extent={{-8,-82},{12,-62}})));
   Modelica.Blocks.Sources.Constant const1(k=0)
     annotation (Placement(transformation(extent={{-32,-82},{-24,-74}})));
-  TRANSFORM.Controls.LimPID Turb_Divert_Valve1(
+  TRANSFORM.Controls.LimPID CondensorBalance(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-2,
+    k=-1e-2,
     Ti=15,
-    yMax=200,
-    yMin=-200,
+    yMax=2000,
+    yMin=-2000,
     initType=Modelica.Blocks.Types.Init.InitialState,
-    xi_start=1500)
+    xi_start=1500,
+    y_start=0)
     annotation (Placement(transformation(extent={{-86,-90},{-66,-70}})));
 equation
   connect(const3.y,FWCP_Speed. u_s) annotation (Line(points={{-49,42},{-40,42}},
@@ -103,9 +105,9 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(const5.y,Turb_Divert_Valve. u_s)
-    annotation (Line(points={{-71,-46},{-64,-46}},   color={0,0,127}));
+    annotation (Line(points={{-71,-46},{-62,-46}},   color={0,0,127}));
   connect(sensorBus.Feedwater_Temp,Turb_Divert_Valve. u_m) annotation (Line(
-      points={{-30,-100},{-52,-100},{-52,-58}},
+      points={{-30,-100},{-50,-100},{-50,-58}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -130,7 +132,7 @@ equation
           {0,0,127}));
   connect(add2.u1,timer. y) annotation (Line(points={{-10,-40},{-23.44,-40}},
                                                                 color={0,0,127}));
-  connect(Turb_Divert_Valve.y,timer. u) annotation (Line(points={{-41,-46},{-36,
+  connect(Turb_Divert_Valve.y,timer. u) annotation (Line(points={{-39,-46},{-36,
           -46},{-36,-40},{-32.8,-40}},                               color={0,0,
           127}));
   connect(const9.y,PI_TBV. u_s)
@@ -162,21 +164,21 @@ equation
       index=1,
       extent={{-6,3},{-6,3}},
       horizontalAlignment=TextAlignment.Right));
-  connect(Turb_Divert_Valve1.u_m, sensorBus.Condensor_Output_mflow) annotation
-    (Line(points={{-76,-92},{-76,-100},{-30,-100}}, color={0,0,127}), Text(
+  connect(CondensorBalance.u_m, sensorBus.Condensor_Output_mflow) annotation (
+      Line(points={{-76,-92},{-76,-100},{-30,-100}}, color={0,0,127}), Text(
       string="%second",
       index=1,
       extent={{-3,-6},{-3,-6}},
       horizontalAlignment=TextAlignment.Right));
-  connect(Turb_Divert_Valve1.u_s, sensorBus.Condensor_Input_mflow) annotation (
+  connect(CondensorBalance.u_s, sensorBus.Condensor_Input_mflow) annotation (
       Line(points={{-88,-80},{-100,-80},{-100,-100},{-30,-100}}, color={0,0,127}),
       Text(
       string="%second",
       index=1,
       extent={{-3,-6},{-3,-6}},
       horizontalAlignment=TextAlignment.Right));
-  connect(Turb_Divert_Valve1.y, add3.u1) annotation (Line(points={{-65,-80},{
-          -54,-80},{-54,-66},{-10,-66}}, color={0,0,127}));
+  connect(CondensorBalance.y, add3.u1) annotation (Line(points={{-65,-80},{-54,
+          -80},{-54,-66},{-10,-66}}, color={0,0,127}));
   connect(const1.y, add3.u2)
     annotation (Line(points={{-23.6,-78},{-10,-78}}, color={0,0,127}));
   connect(add3.y, actuatorBus.CondensorFlow) annotation (Line(points={{13,-72},
