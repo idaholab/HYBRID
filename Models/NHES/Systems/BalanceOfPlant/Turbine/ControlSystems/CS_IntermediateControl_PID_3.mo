@@ -6,10 +6,10 @@ model CS_IntermediateControl_PID_3
 
   TRANSFORM.Controls.LimPID FWCP_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-1e-2,
-    Ti=30,
+    k=-1,
+    Ti=15,
     yMax=750,
-    yMin=-1000,
+    yMin=-1500,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-38,32},{-18,52}})));
@@ -21,11 +21,11 @@ model CS_IntermediateControl_PID_3
     annotation (Placement(transformation(extent={{2,38},{22,58}})));
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=0.0001,
+    k=1e-5,
     Ti=5,
     Td=0.1,
-    yMax=0.3,
-    yMin=0,
+    yMax=1,
+    yMin=1e-3,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-60,-56},{-40,-36}})));
@@ -55,7 +55,7 @@ model CS_IntermediateControl_PID_3
     annotation (Placement(transformation(extent={{-32,-44},{-24,-36}})));
   TRANSFORM.Controls.LimPID PI_TBV(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-5e-7,
+    k=-1e-9,
     Ti=15,
     yMax=1.0,
     yMin=0.0,
@@ -64,15 +64,11 @@ model CS_IntermediateControl_PID_3
   Modelica.Blocks.Sources.Constant const9(k=data.p_steam_vent)
     annotation (Placement(transformation(extent={{-78,68},{-58,88}})));
   Fluid.Intermediate_Rankine data(
-    p_steam_vent=3447400,
+    p_steam_vent=3600000,
     T_Steam_Ref=579.75,
     Q_Nom=60e6,
     T_Feedwater=421.15)
     annotation (Placement(transformation(extent={{-96,12},{-76,32}})));
-  Modelica.Blocks.Sources.Constant ExternalDivertValve(k=1)
-    annotation (Placement(transformation(extent={{80,-28},{60,-8}})));
-  Modelica.Blocks.Sources.Constant Volume_pump(k=200)
-    annotation (Placement(transformation(extent={{80,14},{60,34}})));
   Modelica.Blocks.Math.Add         add3
     annotation (Placement(transformation(extent={{-8,-82},{12,-62}})));
   Modelica.Blocks.Sources.Constant const1(k=0)
@@ -122,11 +118,6 @@ equation
                                       color={0,0,127}));
   connect(TCV_Position.y,add1. u1) annotation (Line(points={{-33,-12},{-10,-12}},
                                                   color={0,0,127}));
-  connect(actuatorBus.Divert_Valve_Position,add2. y) annotation (Line(
-      points={{30,-100},{30,-46},{13,-46}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(add2.u2,const8. y) annotation (Line(points={{-10,-52},{-23.6,-52}},
                                                                          color=
           {0,0,127}));
@@ -142,28 +133,11 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(actuatorBus.TBV,PI_TBV. y) annotation (Line(
-      points={{30,-100},{30,78},{-17,78}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(actuatorBus.opening_TCV,add1. y) annotation (Line(
       points={{30.1,-99.9},{30.1,-16},{30,-16},{30,-18},{13,-18}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(ExternalDivertValve.y, actuatorBus.opening_BV) annotation (Line(
-        points={{59,-18},{30.1,-18},{30.1,-99.9}}, color={0,0,127}), Text(
-      string="%second",
-      index=1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
-  connect(Volume_pump.y, actuatorBus.Volume_Pump) annotation (Line(points={{59,24},
-          {30,24},{30,-100}}, color={0,0,127}), Text(
-      string="%second",
-      index=1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
   connect(CondensorBalance.u_m, sensorBus.Condensor_Output_mflow) annotation (
       Line(points={{-76,-92},{-76,-100},{-30,-100}}, color={0,0,127}), Text(
       string="%second",
@@ -185,6 +159,24 @@ equation
           {30,-72},{30,-100}}, color={0,0,127}), Text(
       string="%second",
       index=1,
+      extent={{6,3},{6,3}},
+      horizontalAlignment=TextAlignment.Left));
+  connect(actuatorBus.Divert_Valve_Position, add2.y) annotation (Line(
+      points={{30,-100},{30,-46},{13,-46}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{6,3},{6,3}},
+      horizontalAlignment=TextAlignment.Left));
+  connect(actuatorBus.opening_BV, PI_TBV.y) annotation (Line(
+      points={{30.1,-99.9},{30.1,78},{-17,78}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
 end CS_IntermediateControl_PID_3;

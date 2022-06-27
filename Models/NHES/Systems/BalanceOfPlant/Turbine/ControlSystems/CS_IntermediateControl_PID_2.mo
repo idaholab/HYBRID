@@ -158,8 +158,8 @@ equation
       index=1,
       extent={{-6,3},{-6,3}},
       horizontalAlignment=TextAlignment.Right));
-  connect(Turb_Divert_Valve1.u_m, sensorBus.Condensor_Output_mflow) annotation
-    (Line(points={{-76,-92},{-76,-100},{-30,-100}}, color={0,0,127}), Text(
+  connect(Turb_Divert_Valve1.u_m, sensorBus.Condensor_Output_mflow) annotation (
+     Line(points={{-76,-92},{-76,-100},{-30,-100}}, color={0,0,127}), Text(
       string="%second",
       index=1,
       extent={{-3,-6},{-3,-6}},

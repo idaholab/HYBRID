@@ -32,16 +32,16 @@ model SMR_highfidelity_Intermediate
       port_b1_nominal(p=nuScale_Tave_enthalpy_Pressurizer_CR.port_a_nominal.p,
         h=nuScale_Tave_enthalpy_Pressurizer_CR.port_a_nominal.h))
     annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
-  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_2 BOP(
+  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_3 BOP(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
       h=EM.port_b2_nominal.h,
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_3
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_4
       CS)
-    annotation (Placement(transformation(extent={{42,-20},{82,20}})));
+    annotation (Placement(transformation(extent={{50,-20},{90,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
     annotation (Placement(transformation(extent={{100,-22},{140,22}})));
   ElectricalGrid.InfiniteGrid.Infinite EG
@@ -56,6 +56,18 @@ model SMR_highfidelity_Intermediate
     fileName=Modelica.Utilities.Files.loadResource(
         "modelica://NHES/Resources/Data/RAVEN/Uprate_timeSeries.txt"))
     annotation (Placement(transformation(extent={{158,60},{198,100}})));
+  TRANSFORM.Fluid.Valves.ValveCompressible valve_TCV(
+    p_nominal=3700000,
+    redeclare package Medium = Modelica.Media.Water.StandardWater,
+    m_flow_nominal=200,
+    dp_nominal=100000)
+    annotation (Placement(transformation(extent={{24,-2},{44,18}})));
+  Modelica.Blocks.Sources.Pulse pulse(
+    amplitude=-0.1,
+    period=5000,
+    offset=1,
+    startTime=3000)
+    annotation (Placement(transformation(extent={{-8,44},{12,64}})));
 equation
   connect(nuScale_Tave_enthalpy_Pressurizer_CR.port_b, EM.port_a1) annotation (
       Line(points={{-37.1692,13.2857},{-30,13.2857},{-30,8},{-20,8}}, color={0,
@@ -63,14 +75,18 @@ equation
   connect(nuScale_Tave_enthalpy_Pressurizer_CR.port_a, EM.port_b1) annotation (
       Line(points={{-37.1692,-0.385714},{-30,-0.385714},{-30,-8},{-20,-8}},
         color={0,127,255}));
-  connect(EM.port_b2, BOP.port_a)
-    annotation (Line(points={{20,8},{42,8}}, color={0,127,255}));
   connect(EM.port_a2, BOP.port_b)
-    annotation (Line(points={{20,-8},{42,-8}}, color={0,127,255}));
+    annotation (Line(points={{20,-8},{50,-8}}, color={0,127,255}));
   connect(BOP.portElec_b, SY.port_a[1])
-    annotation (Line(points={{82,0},{100,0}}, color={255,0,0}));
+    annotation (Line(points={{90,0},{100,0}}, color={255,0,0}));
   connect(SY.port_Grid, EG.portElec_a)
     annotation (Line(points={{140,0},{160,0}}, color={255,0,0}));
+  connect(EM.port_b2, valve_TCV.port_a)
+    annotation (Line(points={{20,8},{24,8}}, color={0,127,255}));
+  connect(valve_TCV.port_b, BOP.port_a)
+    annotation (Line(points={{44,8},{50,8}}, color={0,127,255}));
+  connect(pulse.y, valve_TCV.opening) annotation (Line(points={{13,54},{26,54},
+          {26,48},{34,48},{34,16}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{220,100}}), graphics={
         Ellipse(lineColor = {75,138,73},
@@ -85,7 +101,7 @@ equation
                                 Diagram(coordinateSystem(preserveAspectRatio=
             false, extent={{-100,-100},{220,100}})),
     experiment(
-      StopTime=1000,
+      StopTime=50000,
       Interval=10,
       __Dymola_Algorithm="Esdirk45a"));
 end SMR_highfidelity_Intermediate;
