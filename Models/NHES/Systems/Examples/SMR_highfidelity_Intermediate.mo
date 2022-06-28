@@ -63,7 +63,7 @@ model SMR_highfidelity_Intermediate
     dp_nominal=100000)
     annotation (Placement(transformation(extent={{24,-2},{44,18}})));
   Modelica.Blocks.Sources.Pulse pulse(
-    amplitude=-0.1,
+    amplitude=-0.3,
     period=5000,
     offset=1,
     startTime=3000)
@@ -85,8 +85,8 @@ equation
     annotation (Line(points={{20,8},{24,8}}, color={0,127,255}));
   connect(valve_TCV.port_b, BOP.port_a)
     annotation (Line(points={{44,8},{50,8}}, color={0,127,255}));
-  connect(pulse.y, valve_TCV.opening) annotation (Line(points={{13,54},{26,54},
-          {26,48},{34,48},{34,16}}, color={0,0,127}));
+  connect(pulse.y, valve_TCV.opening) annotation (Line(points={{13,54},{24,54},
+          {24,26},{34,26},{34,16}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{220,100}}), graphics={
         Ellipse(lineColor = {75,138,73},
