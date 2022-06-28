@@ -44,14 +44,14 @@ model CS_IntermediateControl_PID_4
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=-3e-9,
     Ti=10,
-    yMax=1.0,
-    yMin=1e-2,
+    yMax=1,
+    yMin=0,
     initType=Modelica.Blocks.Types.Init.NoInit)
     annotation (Placement(transformation(extent={{-38,68},{-18,88}})));
   Modelica.Blocks.Sources.Constant const9(k=data.p_steam_vent)
     annotation (Placement(transformation(extent={{-78,68},{-58,88}})));
   Fluid.Intermediate_Rankine data(
-    p_steam_vent=8000000,
+    p_steam_vent=3500000,
     T_Steam_Ref=579.75,
     Q_Nom=60e6,
     T_Feedwater=421.15)

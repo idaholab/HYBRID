@@ -56,18 +56,6 @@ model SMR_highfidelity_Intermediate
     fileName=Modelica.Utilities.Files.loadResource(
         "modelica://NHES/Resources/Data/RAVEN/Uprate_timeSeries.txt"))
     annotation (Placement(transformation(extent={{158,60},{198,100}})));
-  TRANSFORM.Fluid.Valves.ValveCompressible valve_TCV(
-    p_nominal=3700000,
-    redeclare package Medium = Modelica.Media.Water.StandardWater,
-    m_flow_nominal=200,
-    dp_nominal=100000)
-    annotation (Placement(transformation(extent={{24,-2},{44,18}})));
-  Modelica.Blocks.Sources.Pulse pulse(
-    amplitude=-0.3,
-    period=5000,
-    offset=1,
-    startTime=3000)
-    annotation (Placement(transformation(extent={{-8,44},{12,64}})));
 equation
   connect(nuScale_Tave_enthalpy_Pressurizer_CR.port_b, EM.port_a1) annotation (
       Line(points={{-37.1692,13.2857},{-30,13.2857},{-30,8},{-20,8}}, color={0,
@@ -81,12 +69,8 @@ equation
     annotation (Line(points={{90,0},{100,0}}, color={255,0,0}));
   connect(SY.port_Grid, EG.portElec_a)
     annotation (Line(points={{140,0},{160,0}}, color={255,0,0}));
-  connect(EM.port_b2, valve_TCV.port_a)
-    annotation (Line(points={{20,8},{24,8}}, color={0,127,255}));
-  connect(valve_TCV.port_b, BOP.port_a)
-    annotation (Line(points={{44,8},{50,8}}, color={0,127,255}));
-  connect(pulse.y, valve_TCV.opening) annotation (Line(points={{13,54},{24,54},
-          {24,26},{34,26},{34,16}}, color={0,0,127}));
+  connect(EM.port_b2, BOP.port_a)
+    annotation (Line(points={{20,8},{50,8}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{220,100}}), graphics={
         Ellipse(lineColor = {75,138,73},

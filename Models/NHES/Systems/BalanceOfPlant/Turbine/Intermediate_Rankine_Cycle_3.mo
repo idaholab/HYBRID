@@ -123,7 +123,7 @@ model Intermediate_Rankine_Cycle_3 "Two stage BOP model"
     p_nominal=port_a_nominal.p,
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_nominal=10,
-    dp_nominal=1000000)
+    dp_nominal=100000)
     annotation (Placement(transformation(extent={{-86,6},{-66,26}})));
   TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance3(R=1,
       redeclare package Medium = Modelica.Media.Water.StandardWater)
@@ -163,7 +163,7 @@ model Intermediate_Rankine_Cycle_3 "Two stage BOP model"
     p_start_tube=1000000,
     p_start_shell=2400000,
     Q_init=1e6)
-    annotation (Placement(transformation(extent={{-32,-26},{-12,-46}})));
+    annotation (Placement(transformation(extent={{-20,-26},{0,-46}})));
   TRANSFORM.Fluid.Volumes.MixingVolume volume(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
     p_start=2300000,
@@ -210,7 +210,7 @@ model Intermediate_Rankine_Cycle_3 "Two stage BOP model"
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary2(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_m_flow_in=true,
-    use_T_in=false,
+    use_T_in=true,
     T=348.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-84,-38},{-64,-18}})));
@@ -249,6 +249,22 @@ model Intermediate_Rankine_Cycle_3 "Two stage BOP model"
         extent={{-10,10},{10,-10}},
         rotation=180,
         origin={-46,-40})));
+  TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance4(R=1,
+      redeclare package Medium = Modelica.Media.Water.StandardWater)
+    annotation (Placement(transformation(extent={{10,-10},{-10,10}},
+        rotation=180,
+        origin={-132,40})));
+  TRANSFORM.Fluid.Volumes.MixingVolume header(
+    use_T_start=false,
+    h_start=port_a_start.h,
+    p_start=port_a_start.p,
+    nPorts_a=1,
+    nPorts_b=1,
+    redeclare model Geometry =
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
+        (V=1),
+    redeclare package Medium = Modelica.Media.Water.StandardWater)
+    annotation (Placement(transformation(extent={{-122,30},{-102,50}})));
 initial equation
 
 equation
@@ -305,16 +321,14 @@ equation
     annotation (Line(points={{-128,-40},{-160,-40}},color={0,127,255}));
   connect(sensor_p.port, TCV.port_a)
     annotation (Line(points={{-18,50},{-18,40},{-12,40}}, color={0,127,255}));
-  connect(port_a, TCV.port_a)
-    annotation (Line(points={{-160,40},{-12,40}}, color={0,127,255}));
   connect(valve_BV.port_a, TCV.port_a) annotation (Line(points={{-86,16},{-90,
           16},{-90,40},{-12,40}}, color={0,127,255}));
   connect(valve_BV.port_b, resistance3.port_a) annotation (Line(points={{-66,16},
           {-34,16},{-34,3}},                                  color={0,127,255}));
   connect(resistance3.port_b, IP1.Shell_in) annotation (Line(points={{-34,-11},
-          {-34,-22},{-32,-22},{-32,-34}},                color={0,127,255}));
-  connect(IP1.Shell_out, volume.port_a[1]) annotation (Line(points={{-12,-34},{
-          34,-34},{34,-50},{87.3333,-50},{87.3333,-66}},
+          {-34,-26},{-24,-26},{-24,-34},{-20,-34}},      color={0,127,255}));
+  connect(IP1.Shell_out, volume.port_a[1]) annotation (Line(points={{0,-34},{30,
+          -34},{30,-50},{72,-50},{72,-58},{84,-58},{84,-66},{87.3333,-66}},
                                          color={0,127,255}));
   connect(LPT_Bypass.port_b, volume.port_a[2]) annotation (Line(points={{84,-36},
           {84,-66},{88,-66}},                         color={0,127,255}));
@@ -344,9 +358,8 @@ equation
           {66,-103},{66,-52},{47,-52},{47,-56}},          color={0,127,255}));
   connect(IP.Shell_out, resistance1.port_b) annotation (Line(points={{86,-126},
           {90,-126},{90,-117}}, color={0,127,255}));
-  connect(level_measure.y, PID1.u_m) annotation (Line(points={{-133,-20},{-128,
-          -20},{-128,-26},{-114,-26},{-114,-18}},
-                                             color={0,0,127}));
+  connect(level_measure.y, PID1.u_m) annotation (Line(points={{-133,-20},{-128,-20},
+          {-128,-26},{-114,-26},{-114,-18}}, color={0,0,127}));
   connect(level_setpoint.y, PID1.u_s) annotation (Line(points={{-133,0},{-132,0},
           {-132,-6},{-126,-6}},           color={0,0,127}));
   connect(PID1.y, boundary2.m_flow_in) annotation (Line(points={{-103,-6},{-100,
@@ -355,8 +368,8 @@ equation
           {-60,-28},{-60,-59.6}}, color={0,127,255}));
   connect(IP.Tube_out, pump2.port_a) annotation (Line(points={{66,-132},{36,-132},
           {36,-122},{4,-122},{4,-98}}, color={0,127,255}));
-  connect(pump2.port_b, IP1.Tube_in) annotation (Line(points={{4,-78},{2,-78},{2,
-          -40},{-12,-40}}, color={0,127,255}));
+  connect(pump2.port_b, IP1.Tube_in) annotation (Line(points={{4,-78},{4,-40},{
+          0,-40}},         color={0,127,255}));
   connect(actuatorBus.opening_BV, valve_BV.opening) annotation (Line(
       points={{30.1,100.1},{-16,100.1},{-16,102},{-76,102},{-76,24}},
       color={111,216,99},
@@ -433,7 +446,15 @@ equation
   connect(sensor_T3.port_b, reservoir.port_a) annotation (Line(points={{-56,-40},
           {-60,-40},{-60,-59.6}}, color={0,127,255}));
   connect(sensor_T3.port_a, IP1.Tube_out)
-    annotation (Line(points={{-36,-40},{-32,-40}}, color={0,127,255}));
+    annotation (Line(points={{-36,-40},{-20,-40}}, color={0,127,255}));
+  connect(port_a, resistance4.port_a)
+    annotation (Line(points={{-160,40},{-139,40}}, color={0,127,255}));
+  connect(resistance4.port_b, header.port_a[1])
+    annotation (Line(points={{-125,40},{-118,40}}, color={0,127,255}));
+  connect(header.port_b[1], TCV.port_a)
+    annotation (Line(points={{-106,40},{-12,40}}, color={0,127,255}));
+  connect(sensor_T3.T, boundary2.T_in) annotation (Line(points={{-46,-36.4},{
+          -46,-12},{-92,-12},{-92,-24},{-86,-24}}, color={0,0,127}));
 annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-2.09756,2},{83.9024,-2}},
