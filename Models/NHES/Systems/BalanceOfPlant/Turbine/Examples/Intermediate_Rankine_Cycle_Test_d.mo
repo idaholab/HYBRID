@@ -6,7 +6,7 @@ model Intermediate_Rankine_Cycle_Test_d
   parameter Modelica.Units.SI.Pressure pr3out=253000 annotation(dialog(tab = "Initialization", group = "Pressure"));
 
   extends Modelica.Icons.Example;
-  NHES.Systems.BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle BOP(
+  NHES.Systems.BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_3 BOP(
   port_a_nominal(
       m_flow=493.7058,
       p=14000000,
@@ -53,9 +53,9 @@ model Intermediate_Rankine_Cycle_Test_d
         true, Q_flow=500e6)
     annotation (Placement(transformation(extent={{-96,-10},{-76,10}})));
   Modelica.Blocks.Sources.Pulse pulse(
-    amplitude=150e6,
+    amplitude=10e6,
     period=5000,
-    offset=600e6,
+    offset=60e6,
     startTime=3000)
     annotation (Placement(transformation(extent={{-118,-10},{-98,10}})));
 equation

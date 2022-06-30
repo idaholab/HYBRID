@@ -1,5 +1,5 @@
 within NHES.Systems.Examples;
-model SMR_highfidelity_Intermediate
+model SMR_highfidelity_Intermediate_2
   "High Fidelity Natural Circulation Model based on NuScale reactor. Hot channel calcs, pressurizer, and beginning of cycle reactivity feedback"
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
@@ -8,7 +8,7 @@ model SMR_highfidelity_Intermediate
  max(SC.W_totalSetpoint_BOP/SC.W_nominal_BOP*fracNominal_BOP
      + sum(EM.port_b3.m_flow./EM.port_b3_nominal_m_flow)*fracNominal_Other,
      0.5));
-  PrimaryHeatSystem.SMR_Generic.Components.SMR_High_fidelity_no_pump
+  PrimaryHeatSystem.SMR_Generic.Components.SMR_High_fidelity
     nuScale_Tave_enthalpy_Pressurizer_CR(
     port_a_nominal(
       m_flow=90,
@@ -24,7 +24,7 @@ model SMR_highfidelity_Intermediate
       Q_nom(displayUnit="MW") = 200000000,
       demand=1.0),
     redeclare package Medium = Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{-92,-24},{-38,34}})));
+    annotation (Placement(transformation(extent={{-94,-24},{-40,34}})));
   EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(port_a1_nominal(
       p=nuScale_Tave_enthalpy_Pressurizer_CR.port_b_nominal.p,
       h=nuScale_Tave_enthalpy_Pressurizer_CR.port_b_nominal.h,
@@ -39,9 +39,12 @@ model SMR_highfidelity_Intermediate
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_4
-      CS(electric_demand_int = SC.demand_BOP.y[1]))
-    annotation (Placement(transformation(extent={{50,-20},{90,20}})));
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control_Intermediate
+      CS(
+      delayStartTCV=100,
+      p_nominal=3447400,
+      W_totalSetpoint=SC.W_totalSetpoint_BOP))
+    annotation (Placement(transformation(extent={{42,-20},{82,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
     annotation (Placement(transformation(extent={{100,-22},{140,22}})));
   ElectricalGrid.InfiniteGrid.Infinite EG
@@ -49,7 +52,7 @@ model SMR_highfidelity_Intermediate
   BaseClasses.Data_Capacity dataCapacity(IP_capacity(displayUnit="MW")=
       53303300, BOP_capacity(displayUnit="MW") = 60000000)
     annotation (Placement(transformation(extent={{-100,82},{-80,102}})));
-  Modelica.Blocks.Sources.Constant delayStart(k=10000)
+  Modelica.Blocks.Sources.Constant delayStart(k=0)
     annotation (Placement(transformation(extent={{-60,80},{-40,100}})));
   SupervisoryControl.InputSetpointData SC(delayStart=delayStart.k,
     W_nominal_BOP(displayUnit="MW") = 60000000,
@@ -58,19 +61,19 @@ model SMR_highfidelity_Intermediate
     annotation (Placement(transformation(extent={{158,60},{198,100}})));
 equation
   connect(nuScale_Tave_enthalpy_Pressurizer_CR.port_b, EM.port_a1) annotation (
-      Line(points={{-37.1692,13.2857},{-30,13.2857},{-30,8},{-20,8}}, color={0,
+      Line(points={{-39.1692,13.2857},{-30,13.2857},{-30,8},{-20,8}}, color={0,
           127,255}));
   connect(nuScale_Tave_enthalpy_Pressurizer_CR.port_a, EM.port_b1) annotation (
-      Line(points={{-37.1692,-0.385714},{-30,-0.385714},{-30,-8},{-20,-8}},
+      Line(points={{-39.1692,-0.385714},{-30,-0.385714},{-30,-8},{-20,-8}},
         color={0,127,255}));
+  connect(EM.port_b2, BOP.port_a)
+    annotation (Line(points={{20,8},{42,8}}, color={0,127,255}));
   connect(EM.port_a2, BOP.port_b)
-    annotation (Line(points={{20,-8},{50,-8}}, color={0,127,255}));
+    annotation (Line(points={{20,-8},{42,-8}}, color={0,127,255}));
   connect(BOP.portElec_b, SY.port_a[1])
-    annotation (Line(points={{90,0},{100,0}}, color={255,0,0}));
+    annotation (Line(points={{82,0},{100,0}}, color={255,0,0}));
   connect(SY.port_Grid, EG.portElec_a)
     annotation (Line(points={{140,0},{160,0}}, color={255,0,0}));
-  connect(EM.port_b2, BOP.port_a)
-    annotation (Line(points={{20,8},{50,8}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{220,100}}), graphics={
         Ellipse(lineColor = {75,138,73},
@@ -85,7 +88,7 @@ equation
                                 Diagram(coordinateSystem(preserveAspectRatio=
             false, extent={{-100,-100},{220,100}})),
     experiment(
-      StopTime=10000,
-      Interval=10,
+      StopTime=18000,
+      Interval=1,
       __Dymola_Algorithm="Esdirk45a"));
-end SMR_highfidelity_Intermediate;
+end SMR_highfidelity_Intermediate_2;
