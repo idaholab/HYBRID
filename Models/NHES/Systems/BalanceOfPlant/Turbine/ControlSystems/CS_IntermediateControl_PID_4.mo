@@ -8,11 +8,11 @@ model CS_IntermediateControl_PID_4
 
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2e-5,
+    k=2e-4,
     Ti=5,
     Td=0.1,
     yMax=1,
-    yMin=1e-2,
+    yMin=0,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-60,-58},{-40,-38}})));
@@ -48,7 +48,7 @@ model CS_IntermediateControl_PID_4
     p_steam_vent=15000000,
     T_Steam_Ref=579.75,
     Q_Nom=50e6,
-    T_Feedwater=433.15)
+    T_Feedwater=421.15)
     annotation (Placement(transformation(extent={{-96,12},{-76,32}})));
   TRANSFORM.Controls.LimPID CondensorBalance(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -74,7 +74,7 @@ model CS_IntermediateControl_PID_4
     period=18000,
     nperiod=2,
     offset=50e6,
-    startTime=86000)
+    startTime=2000)
     annotation (Placement(transformation(extent={{-92,-22},{-78,-8}})));
   Modelica.Blocks.Sources.Constant const3(k=data.p_steam)
     annotation (Placement(transformation(extent={{-70,30},{-50,50}})));

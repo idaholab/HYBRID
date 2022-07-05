@@ -32,7 +32,7 @@ model SMR_highfidelity_Intermediate
       port_b1_nominal(p=nuScale_Tave_enthalpy_Pressurizer_CR.port_a_nominal.p,
         h=nuScale_Tave_enthalpy_Pressurizer_CR.port_a_nominal.h))
     annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
-  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_3 BOP(
+  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_4 BOP(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
       h=EM.port_b2_nominal.h,
@@ -41,7 +41,7 @@ model SMR_highfidelity_Intermediate
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_4
       CS(electric_demand_int = SC.demand_BOP.y[1]))
-    annotation (Placement(transformation(extent={{50,-20},{90,20}})));
+    annotation (Placement(transformation(extent={{42,-20},{82,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
     annotation (Placement(transformation(extent={{100,-22},{140,22}})));
   ElectricalGrid.InfiniteGrid.Infinite EG
@@ -64,13 +64,13 @@ equation
       Line(points={{-37.1692,-0.385714},{-30,-0.385714},{-30,-8},{-20,-8}},
         color={0,127,255}));
   connect(EM.port_a2, BOP.port_b)
-    annotation (Line(points={{20,-8},{50,-8}}, color={0,127,255}));
+    annotation (Line(points={{20,-8},{42,-8}}, color={0,127,255}));
   connect(BOP.portElec_b, SY.port_a[1])
-    annotation (Line(points={{90,0},{100,0}}, color={255,0,0}));
+    annotation (Line(points={{82,0},{100,0}}, color={255,0,0}));
   connect(SY.port_Grid, EG.portElec_a)
     annotation (Line(points={{140,0},{160,0}}, color={255,0,0}));
   connect(EM.port_b2, BOP.port_a)
-    annotation (Line(points={{20,8},{50,8}}, color={0,127,255}));
+    annotation (Line(points={{20,8},{42,8}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{220,100}}), graphics={
         Ellipse(lineColor = {75,138,73},
