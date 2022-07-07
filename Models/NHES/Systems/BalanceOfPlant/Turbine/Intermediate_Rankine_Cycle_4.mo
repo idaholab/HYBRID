@@ -22,7 +22,7 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
     T_b_start=573.15,
     m_flow_nominal=50,
     p_inlet_nominal=3447400,
-    p_outlet_nominal=2400000,
+    p_outlet_nominal=600000,
     T_nominal=563.15)
     annotation (Placement(transformation(extent={{32,22},{52,42}})));
   Fluid.Vessels.IdealCondenser Condenser(
@@ -49,8 +49,9 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
   TRANSFORM.Fluid.Valves.ValveLinear TCV(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_start=400,
-    dp_nominal=10000,
-    m_flow_nominal=80) annotation (Placement(transformation(
+    dp_nominal=1000000,
+    m_flow_nominal=160)
+                       annotation (Placement(transformation(
         extent={{8,8},{-8,-8}},
         rotation=180,
         origin={-4,40})));
@@ -65,7 +66,7 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
     T_a_start=673.15,
     T_b_start=343.15,
     m_flow_nominal=80,
-    p_inlet_nominal=2400000,
+    p_inlet_nominal=600000,
     p_outlet_nominal=8000,
     T_nominal=523.15) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
@@ -73,7 +74,7 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
         origin={44,-6})));
   TRANSFORM.Fluid.FittingsAndResistances.TeeJunctionVolume tee(redeclare
       package Medium = Modelica.Media.Water.StandardWater, V=5,
-    p_start=2400000)
+    p_start=600000)
     annotation (Placement(transformation(extent={{-10,10},{10,-10}},
         rotation=90,
         origin={82,24})));
@@ -109,8 +110,8 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
         (V=0.01))
     annotation (Placement(transformation(extent={{58,30},{78,50}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)            annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium
+      = Modelica.Media.Water.StandardWater)            annotation (Placement(
         transformation(
         extent={{6,-7},{-6,7}},
         rotation=90,
@@ -132,7 +133,7 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
     p_start_tube=1000000,
     h_start_tube_inlet=1e6,
     h_start_tube_outlet=1.05e6,
-    p_start_shell=2200000,
+    p_start_shell=500000,
     h_start_shell_inlet=3e6,
     h_start_shell_outlet=2.9e6,
     dp_init_tube=0,
@@ -150,14 +151,14 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
     redeclare package Shell_medium = Modelica.Media.Water.StandardWater,
     V_Tube=5,
     V_Shell=5,
-    p_start_tube=3000000,
-    h_start_tube_outlet=2e6,
+    p_start_tube=3600000,
+    h_start_tube_outlet=3e6,
     p_start_shell=2400000,
     Q_init=1e6)
     annotation (Placement(transformation(extent={{-20,-26},{0,-46}})));
   TRANSFORM.Fluid.Volumes.MixingVolume volume(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
-    p_start=2300000,
+    p_start=550000,
     use_T_start=false,
     h_start=3.5e6,
     redeclare model Geometry =
@@ -168,8 +169,8 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={88,-72})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)            annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium
+      = Modelica.Media.Water.StandardWater)            annotation (Placement(
         transformation(
         extent={{6,-7},{-6,7}},
         rotation=90,
