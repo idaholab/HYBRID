@@ -73,7 +73,7 @@ model CS_IntermediateControl_PID_4
     falling=720,
     period=18000,
     nperiod=-2,
-    offset=40e6,
+    offset=50e6,
     startTime=20000)
     annotation (Placement(transformation(extent={{-92,-22},{-78,-8}})));
   Modelica.Blocks.Sources.Constant const3(k=data.p_steam)

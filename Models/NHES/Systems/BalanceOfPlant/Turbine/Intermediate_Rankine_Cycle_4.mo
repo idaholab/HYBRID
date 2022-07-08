@@ -20,9 +20,9 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
     p_b_start=1800000,
     T_a_start=852.15,
     T_b_start=573.15,
-    m_flow_nominal=50,
+    m_flow_nominal=70,
     p_inlet_nominal=3447400,
-    p_outlet_nominal=600000,
+    p_outlet_nominal=700000,
     T_nominal=563.15)
     annotation (Placement(transformation(extent={{32,22},{52,42}})));
   Fluid.Vessels.IdealCondenser Condenser(
@@ -49,7 +49,7 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
   TRANSFORM.Fluid.Valves.ValveLinear TCV(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_start=400,
-    dp_nominal=1000000,
+    dp_nominal=100000,
     m_flow_nominal=160)
                        annotation (Placement(transformation(
         extent={{8,8},{-8,-8}},
@@ -65,8 +65,8 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
     p_b_start=8000,
     T_a_start=673.15,
     T_b_start=343.15,
-    m_flow_nominal=80,
-    p_inlet_nominal=600000,
+    m_flow_nominal=70,
+    p_inlet_nominal=700000,
     p_outlet_nominal=8000,
     T_nominal=523.15) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
@@ -74,7 +74,7 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
         origin={44,-6})));
   TRANSFORM.Fluid.FittingsAndResistances.TeeJunctionVolume tee(redeclare
       package Medium = Modelica.Media.Water.StandardWater, V=5,
-    p_start=600000)
+    p_start=700000)
     annotation (Placement(transformation(extent={{-10,10},{10,-10}},
         rotation=90,
         origin={82,24})));
@@ -133,7 +133,7 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
     p_start_tube=1000000,
     h_start_tube_inlet=1e6,
     h_start_tube_outlet=1.05e6,
-    p_start_shell=500000,
+    p_start_shell=600000,
     h_start_shell_inlet=3e6,
     h_start_shell_outlet=2.9e6,
     dp_init_tube=0,
@@ -158,7 +158,7 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
     annotation (Placement(transformation(extent={{-20,-26},{0,-46}})));
   TRANSFORM.Fluid.Volumes.MixingVolume volume(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
-    p_start=550000,
+    p_start=650000,
     use_T_start=false,
     h_start=3.5e6,
     redeclare model Geometry =
