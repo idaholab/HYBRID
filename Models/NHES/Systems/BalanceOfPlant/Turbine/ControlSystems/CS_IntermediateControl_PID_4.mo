@@ -20,7 +20,7 @@ model CS_IntermediateControl_PID_4
     annotation (Placement(transformation(extent={{-92,-56},{-72,-36}})));
   TRANSFORM.Controls.LimPID TCV_Power(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=5e-9,
+    k=5e-8,
     Ti=5,
     k_s=1,
     k_m=1,
@@ -50,20 +50,6 @@ model CS_IntermediateControl_PID_4
     Q_Nom=40e6,
     T_Feedwater=421.15)
     annotation (Placement(transformation(extent={{-96,12},{-76,32}})));
-  TRANSFORM.Controls.LimPID CondensorBalance(
-    controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-1e-1,
-    Ti=0.1,
-    yMax=2000,
-    yMin=-2000,
-    initType=Modelica.Blocks.Types.Init.InitialState,
-    xi_start=1500,
-    y_start=0)
-    annotation (Placement(transformation(extent={{-80,-90},{-60,-70}})));
-  Modelica.Blocks.Sources.Constant const1(k=0)
-    annotation (Placement(transformation(extent={{-26,-82},{-18,-74}})));
-  Modelica.Blocks.Math.Add         add3
-    annotation (Placement(transformation(extent={{-2,-82},{18,-62}})));
   Modelica.Blocks.Sources.Constant const(k=data.Q_Nom)
     annotation (Placement(transformation(extent={{62,-12},{82,8}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
@@ -73,14 +59,14 @@ model CS_IntermediateControl_PID_4
     falling=720,
     period=18000,
     nperiod=-2,
-    offset=50e6,
+    offset=45e6,
     startTime=20000)
     annotation (Placement(transformation(extent={{-92,-22},{-78,-8}})));
   Modelica.Blocks.Sources.Constant const3(k=data.p_steam)
     annotation (Placement(transformation(extent={{-70,30},{-50,50}})));
   TRANSFORM.Controls.LimPID FWCP_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2e-8,
+    k=2e-7,
     Ti=5,
     yMax=250,
     yMin=-250,
@@ -147,39 +133,6 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(CondensorBalance.y,add3. u1) annotation (Line(points={{-59,-80},{-48,-80},
-          {-48,-66},{-4,-66}},       color={0,0,127}));
-  connect(const1.y,add3. u2)
-    annotation (Line(points={{-17.6,-78},{-4,-78}},  color={0,0,127}));
-  connect(actuatorBus.CondensorFlow, add3.y) annotation (Line(
-      points={{30,-100},{30,-72},{19,-72}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-3,-6},{-3,-6}},
-      horizontalAlignment=TextAlignment.Right));
-  connect(sensorBus.Condensor_Output_mflow, CondensorBalance.u_m) annotation (
-      Line(
-      points={{-30,-100},{-70,-100},{-70,-92}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-3,-6},{-3,-6}},
-      horizontalAlignment=TextAlignment.Right));
-  connect(sensorBus.Condensor_Input_mflow, CondensorBalance.u_s) annotation (
-      Line(
-      points={{-30,-100},{-100,-100},{-100,-80},{-82,-80}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
   connect(trapezoid.y, TCV_Power.u_s) annotation (Line(points={{-77.3,-15},{-62,
           -15},{-62,-12},{-52,-12}}, color={0,0,127}));
   connect(sensorBus.Steam_Pressure, FWCP_Speed.u_m) annotation (Line(

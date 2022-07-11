@@ -49,8 +49,8 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
   TRANSFORM.Fluid.Valves.ValveLinear TCV(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_start=400,
-    dp_nominal=100000,
-    m_flow_nominal=160)
+    dp_nominal=1000000,
+    m_flow_nominal=300)
                        annotation (Placement(transformation(
         extent={{8,8},{-8,-8}},
         rotation=180,
@@ -454,25 +454,39 @@ equation
           127,255}));
 annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
-          extent={{-2.09756,2},{83.9024,-2}},
+          extent={{-24,2},{24,-2}},
           lineColor={0,0,0},
-          origin={-45.9024,-64},
-          rotation=360,
-          fillColor={0,0,255},
-          fillPattern=FillPattern.HorizontalCylinder),
+          fillColor={64,164,200},
+          fillPattern=FillPattern.HorizontalCylinder,
+          origin={20,-42},
+          rotation=180),
         Rectangle(
-          extent={{-1.81329,5},{66.1867,-5}},
+          extent={{-11.5,3},{11.5,-3}},
           lineColor={0,0,0},
-          origin={-68.1867,-41},
+          fillColor={64,164,200},
+          fillPattern=FillPattern.HorizontalCylinder,
+          origin={-1,-28.5},
+          rotation=90),
+        Rectangle(
+          extent={{-4.5,2.5},{4.5,-2.5}},
+          lineColor={0,0,0},
+          fillColor={64,164,200},
+          fillPattern=FillPattern.HorizontalCylinder,
+          origin={-8.5,-31.5},
+          rotation=360),
+        Rectangle(
+          extent={{-0.800004,5},{29.1996,-5}},
+          lineColor={0,0,0},
+          origin={-71.1996,-49},
           rotation=0,
           fillColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
-          extent={{-16,3},{16,-3}},
+          extent={{-18,3},{18,-3}},
           lineColor={0,0,0},
           fillColor={66,200,200},
           fillPattern=FillPattern.HorizontalCylinder,
-          origin={4,30},
+          origin={-39,28},
           rotation=-90),
         Rectangle(
           extent={{-1.81332,3},{66.1869,-3}},
@@ -482,30 +496,30 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           fillColor={135,135,135},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
-          extent={{-70,46},{-22,34}},
+          extent={{-70,46},{-36,34}},
           lineColor={0,0,0},
           fillColor={66,200,200},
           fillPattern=FillPattern.HorizontalCylinder),
         Polygon(
-          points={{0,16},{0,-14},{30,-32},{30,36},{0,16}},
+          points={{-42,12},{-42,-18},{-12,-36},{-12,32},{-42,12}},
           lineColor={0,0,0},
           fillColor={0,114,208},
           fillPattern=FillPattern.Solid),
         Text(
-          extent={{11,-8},{21,6}},
+          extent={{-31,-10},{-21,4}},
           lineColor={0,0,0},
           fillColor={255,255,255},
           fillPattern=FillPattern.Solid,
-          textString="T"),
+          textString="HPT"),
         Ellipse(
           extent={{46,12},{74,-14}},
           lineColor={0,0,0},
           fillColor={255,255,255},
           fillPattern=FillPattern.Solid),
         Rectangle(
-          extent={{-0.4,3},{15.5,-3}},
+          extent={{-0.601938,3},{23.3253,-3}},
           lineColor={0,0,0},
-          origin={30.4272,-29},
+          origin={22.6019,-29},
           rotation=0,
           fillColor={0,128,255},
           fillPattern=FillPattern.HorizontalCylinder),
@@ -529,59 +543,47 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           fillColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
-          extent={{-0.487802,2},{19.5122,-2}},
+          extent={{-0.341463,2},{13.6587,-2}},
           lineColor={0,0,0},
-          origin={20,-38.488},
+          origin={20,-44.3415},
           rotation=-90,
           fillColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
-          extent={{-0.243902,2},{9.7562,-2}},
+          extent={{-1.41463,2.0001},{56.5851,-2.0001}},
           lineColor={0,0,0},
-          origin={-46,-62.244},
-          rotation=-90,
-          fillColor={0,0,255},
-          fillPattern=FillPattern.HorizontalCylinder),
-        Rectangle(
-          extent={{-0.578156,2.1722},{23.1262,-2.1722}},
-          lineColor={0,0,0},
-          origin={21.4218,-39.828},
+          origin={18.5851,-46.0001},
           rotation=180,
           fillColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Ellipse(
-          extent={{-4,-34},{8,-46}},
+          extent={{-46,-40},{-34,-52}},
           lineColor={0,0,0},
           fillPattern=FillPattern.Sphere,
           fillColor={0,100,199}),
         Polygon(
-          points={{-2,-44},{-6,-48},{10,-48},{6,-44},{-2,-44}},
+          points={{-44,-50},{-48,-54},{-32,-54},{-36,-50},{-44,-50}},
           lineColor={0,0,255},
           pattern=LinePattern.None,
           fillColor={0,0,0},
           fillPattern=FillPattern.VerticalCylinder),
-        Rectangle(
-          extent={{-20,46},{6,34}},
-          lineColor={0,0,0},
-          fillColor={66,200,200},
-          fillPattern=FillPattern.HorizontalCylinder),
         Ellipse(
-          extent={{-30,49},{-12,31}},
+          extent={{-56,49},{-38,31}},
           lineColor={95,95,95},
           fillColor={175,175,175},
           fillPattern=FillPattern.Sphere),
         Rectangle(
-          extent={{-20,49},{-22,61}},
+          extent={{-46,49},{-48,61}},
           lineColor={0,0,0},
           fillColor={95,95,95},
           fillPattern=FillPattern.VerticalCylinder),
         Rectangle(
-          extent={{-30,63},{-12,61}},
+          extent={{-56,63},{-38,61}},
           lineColor={0,0,0},
           fillColor={181,0,0},
           fillPattern=FillPattern.HorizontalCylinder),
         Ellipse(
-          extent={{-19,49},{-23,31}},
+          extent={{-45,49},{-49,31}},
           lineColor={0,0,0},
           fillPattern=FillPattern.VerticalCylinder,
           fillColor={162,162,0}),
@@ -598,11 +600,33 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           fillPattern=FillPattern.Solid,
           textString="C"),
         Polygon(
-          points={{3,-37},{3,-43},{-1,-40},{3,-37}},
+          points={{-39,-43},{-39,-49},{-43,-46},{-39,-43}},
           lineColor={0,0,0},
           pattern=LinePattern.None,
           fillPattern=FillPattern.HorizontalCylinder,
-          fillColor={255,255,255})}),                            Diagram(
+          fillColor={255,255,255}),
+        Polygon(
+          points={{-4,12},{-4,-18},{26,-36},{26,32},{-4,12}},
+          lineColor={0,0,0},
+          fillColor={0,114,208},
+          fillPattern=FillPattern.Solid),
+        Text(
+          extent={{7,-10},{17,4}},
+          lineColor={0,0,0},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid,
+          textString="LPT"),
+        Rectangle(
+          extent={{-4,-40},{22,-48}},
+          lineColor={238,46,47},
+          pattern=LinePattern.None,
+          lineThickness=1,
+          fillPattern=FillPattern.HorizontalCylinder,
+          fillColor={28,108,200}),
+        Line(
+          points={{-4,-44},{22,-44}},
+          color={255,0,0},
+          thickness=1)}),                                        Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     experiment(
       StopTime=1000,
