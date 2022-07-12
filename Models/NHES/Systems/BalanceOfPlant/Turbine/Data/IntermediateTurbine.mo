@@ -22,6 +22,8 @@ model IntermediateTurbine
       //Component Pressures
   parameter Modelica.Units.SI.Pressure p_condensor = 10000 "Condensor pressure"
   annotation (Dialog(tab="General Parameters",group = "Pressures"));
+  parameter Modelica.Units.SI.Pressure p_boundary = 100000 "Boundary pressure for venting"
+  annotation (Dialog(tab="General Parameters", group= "Pressures"));
       //Component Volumes
   parameter Modelica.Units.SI.Volume  V_condensor = 150 "Condensor volume"
   annotation (Dialog(tab="General Parameters", group = "Volumes"));
@@ -29,6 +31,17 @@ model IntermediateTurbine
   annotation (Dialog(tab="General Parameters", group = "Volumes"));
   parameter Modelica.Units.SI.Volume  V_moistureseperator = 0.01 "Moisture Seperator volume"
   annotation (Dialog(tab="General Parameters", group = "Volumes"));
+  parameter Modelica.Units.SI.Volume  V_FeedwaterMixVolume = 80 "Feedwater Mixing volume"
+  annotation (Dialog(tab="General Parameters", group = "Volumes"));
+  parameter Modelica.Units.SI.Volume  V_Header = 1 "Header Mixing volume"
+  annotation (Dialog(tab="General Parameters", group = "Volumes"));
+        //Moment of Inertia
+  parameter Modelica.Units.SI.MomentOfInertia generator_MoI = 1e4 "Generator Moment of inertia"
+  annotation (Dialog(tab="General Parameters",group = "Generator"));
+        //Component Temperatures
+  parameter Modelica.Units.SI.Temperature T_boundary = 573.15 "Boundary Temperature for venting"
+  annotation (Dialog(tab="General Parameters", group= "Temperatures"));
+
       //Resistances
   parameter TRANSFORM.Units.HydraulicResistance  R_bypass = 1000 "Hydraulic Resistance of internal bypass stream"
   annotation (Dialog(tab="General Parameters", group = "Resistances"));
@@ -39,8 +52,6 @@ model IntermediateTurbine
 
 
   //Valve Parameters
-  parameter Modelica.Units.SI.MassFlowRate valve_BV_mflow = 10 "Bypass valve nominal mass flow"
-  annotation (Dialog(tab="Valves", group="Bypass Valve"));
   parameter Modelica.Units.SI.MassFlowRate valve_TCV_mflow = 300 "Turbine Control valve nominal mass flow"
   annotation (Dialog(tab="Valves", group="Turbine Control Valve"));
   parameter Modelica.Units.SI.Pressure valve_TCV_dp_nominal = 1000000 "Nominal pressure drop for turbine control"
@@ -49,6 +60,20 @@ model IntermediateTurbine
   annotation (Dialog(tab="Valves", group="LPT Bypass Valve"));
   parameter Modelica.Units.SI.Pressure valve_LPT_Bypass_dp_nominal = 10000 "Nominal pressure drop for LPT Bypass Valve"
   annotation (Dialog(tab="Valves", group="LPT Bypass Valve"));
+  parameter Modelica.Units.SI.MassFlowRate valve_TBV_mflow = 50 "Turbine External Bypass valve nominal mass flow"
+  annotation (Dialog(tab="Valves", group="Turbine External Bypass Valve"));
+  parameter Modelica.Units.SI.Pressure valve_TBV_dp_nominal = 100000 "Nominal pressure drop for turbine external bypass"
+  annotation (Dialog(tab="Valves", group="Turbine External Bypass Valve"));
+  parameter Modelica.Units.SI.MassFlowRate InternalBypassValve_mflow_small = 1e-2 "Internal Bypass valve nominal mass flow"
+  annotation (Dialog(tab="Valves", group="Internal Bypass Valve"));
+  parameter Modelica.Units.SI.Pressure InternalBypassValve_p_spring = 5500000 "Internal Bypass valve spring pressure"
+  annotation (Dialog(tab="Valves", group="Internal Bypass Valve"));
+  parameter Real InternalBypassValve_K( unit="1/(m.kg)") = 60 "Internal Bypass valve K nominal"
+  annotation (Dialog(tab="Valves", group="Internal Bypass Valve"));
+  parameter Real InternalBypassValve_tau(unit="1/s") = 0.0001 "Internal Bypass valve time constant"
+  annotation (Dialog(tab="Valves", group="Internal Bypass Valve"));
+
+
 
   //Turbine Parameters
   parameter Modelica.Units.SI.Pressure HPT_p_exit_nominal = 700000 "Nominal HPT outlet pressure"
@@ -74,6 +99,10 @@ model IntermediateTurbine
   //Pump Parameters
   parameter Modelica.Units.SI.Pressure firstfeedpump_p_nominal = 1000000 "Pressure rise in first feedwater pump"
   annotation (Dialog(tab="Pumps", group="First Feedwater Pump"));
+  parameter Modelica.Units.SI.Pressure secondfeedpump_p_nominal = 3600000 "Pressure rise in second feedwater pump"
+  annotation (Dialog(tab="Pumps", group="Second Feedwater Pump"));
+  parameter Modelica.Units.SI.MassFlowRate controlledfeedpump_mflow_nominal = 80 "Nominal mass flow in controlled feedwater pump"
+  annotation (Dialog(tab="Pumps", group="Controlled Feedwater Pump"));
 
   //Heat Exchangers
     //Main Feedwater Heater
@@ -98,8 +127,6 @@ model IntermediateTurbine
   parameter Modelica.Units.SI.Volume  BypassFeedHeater_V_tube = 5 "Tube side volume in bypass feedwater heater"
   annotation (Dialog(tab="Heat Exchangers", group="Bypass Feedwater Heater"));
   parameter Modelica.Units.SI.Volume  BypassFeedHeater_V_shell = 5 "Shell side volume in bypass feedwater heater"
-  annotation (Dialog(tab="Heat Exchangers", group="Bypass Feedwater Heater"));
-  parameter Modelica.Units.SI.Power  BypassFeedHeater_Q_init = 1e6 "Initial Heat Flow in main feedwater heater"
   annotation (Dialog(tab="Heat Exchangers", group="Bypass Feedwater Heater"));
 
 
