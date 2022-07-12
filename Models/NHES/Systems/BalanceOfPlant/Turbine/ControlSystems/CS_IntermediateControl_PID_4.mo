@@ -49,7 +49,7 @@ model CS_IntermediateControl_PID_4
     T_Steam_Ref=579.75,
     Q_Nom=40e6,
     T_Feedwater=421.15)
-    annotation (Placement(transformation(extent={{-96,12},{-76,32}})));
+    annotation (Placement(transformation(extent={{-98,12},{-78,32}})));
   Modelica.Blocks.Sources.Constant const(k=data.Q_Nom)
     annotation (Placement(transformation(extent={{62,-12},{82,8}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(

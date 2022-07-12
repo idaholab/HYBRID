@@ -86,6 +86,6 @@ equation
             false, extent={{-100,-100},{220,100}})),
     experiment(
       StopTime=10000,
-      Interval=10,
+      Interval=7.5,
       __Dymola_Algorithm="Esdirk45a"));
 end SMR_highfidelity_Intermediate;
