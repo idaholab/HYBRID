@@ -22,7 +22,7 @@ model Data_base
   */
 
 // General
-package Medium = TRANSFORM.Media.ExternalMedia.CoolProp.Nitrogen;
+package Medium = Modelica.Media.IdealGases.SingleGases.N2;//TRANSFORM.Media.ExternalMedia.CoolProp.Nitrogen;
 package Medium_cw = Modelica.Media.Water.StandardWater;
 
 parameter SI.Length d_outer_4in = TRANSFORM.Units.Conversions.Functions.Distance_m.from_in(4.5);
