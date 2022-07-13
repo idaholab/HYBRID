@@ -256,11 +256,6 @@ equation
     annotation (Line(points={{53,-32},{53,-38}},     color={0,127,255},
       thickness=0.5));
 
-  connect(actuatorBus.TBV, TBV.opening) annotation (Line(
-      points={{30,100},{-74,100},{-74,78.4}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(TBV.port_b, boundary.ports[1]) annotation (Line(points={{-82,72},{-96,
           72}},                                      color={0,127,255}));
   connect(LPT.shaft_b, generator.shaft) annotation (Line(points={{46,-16},{46,-24.1},
@@ -280,6 +275,10 @@ equation
     annotation (Line(points={{-100,40},{-68,40}}, color={0,127,255}));
   connect(sensor_T2.port_b, port_b)
     annotation (Line(points={{-80,-40},{-100,-40}}, color={0,127,255}));
+  connect(TBV.opening, actuatorBus.TBV) annotation (Line(points={{-74,78.4},{-74,
+          100},{30,100}},       color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-2.09756,2},{83.9024,-2}},
