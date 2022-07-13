@@ -44,7 +44,7 @@ import Modelica.Math;
 annotation (
     uses(
     Modelica(version="4.0.0"),
-    TRANSFORM(version="0.5")),
+    TRANSFORM(version="0.5"),ThermalPower(version = "1.23"),Modelon(version = "4.0")),
     version="2",
     Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
       graphics={Bitmap(extent={{-92,-76},{86,92}}, fileName=

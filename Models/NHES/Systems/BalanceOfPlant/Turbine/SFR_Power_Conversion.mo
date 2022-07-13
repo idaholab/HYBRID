@@ -80,8 +80,8 @@ model SFR_Power_Conversion
   Modelica.Blocks.Sources.RealExpression Q_balance1
     "Heat loss/gain not accounted for in connections (e.g., energy vented to atmosphere) [W]"
     annotation (Placement(transformation(extent={{-96,102},{-84,114}})));
-  TRANSFORM.Fluid.Sensors.Pressure           sensor_p(redeclare package Medium
-      = Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.Pressure           sensor_p(redeclare package Medium =
+        Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{-10,10},{10,-10}},
         rotation=180,
@@ -131,8 +131,8 @@ equation
     annotation (Line(points={{-100,60},{-48,60},{-48,66}}, color={0,127,255}));
   connect(sensorBus.Steam_Pressure, sensor_p.p) annotation (Line(
       points={{-30,100},{-32,100},{-32,88},{-60,88},{-60,78},{-54,78},{-54,76}},
-
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
+
 end SFR_Power_Conversion;

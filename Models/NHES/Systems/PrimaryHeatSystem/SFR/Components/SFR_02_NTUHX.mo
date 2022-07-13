@@ -15,7 +15,7 @@ model SFR_02_NTUHX
     annotation (Placement(transformation(extent={{-6,46},{14,66}})));
   TRANSFORM.Blocks.RealExpression CR
     annotation (Placement(transformation(extent={{88,92},{102,108}})));
-  Nuclear.CoreSubchannels.SFR      coreSubchannel1(
+  Nuclear.CoreSubchannels.SFR Core(
     nAssembliesIF=11,
     nAssembliesOF=31,
     nAssembliesIRB=25,
@@ -59,7 +59,8 @@ model SFR_02_NTUHX
     R_IRB=43,
     R_IF=17,
     R_OF=17,
-    R_RB=43) annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+    R_RB=43) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
         rotation=90,
         origin={-62,0})));
 
@@ -217,15 +218,15 @@ equation
       thickness=0.5));
   connect(sensor_T.port_a, Core_Outlet_Riser.port_b)
     annotation (Line(points={{-6,56},{-64,56},{-64,50}}, color={0,127,255}));
-  connect(coreSubchannel1.port_b, Core_Outlet_Riser.port_a) annotation (Line(
-        points={{-62,10},{-62,26},{-64,26},{-64,30}},     color={0,127,255}));
+  connect(Core.port_b, Core_Outlet_Riser.port_a) annotation (Line(points={{-62,
+          10},{-62,26},{-64,26},{-64,30}}, color={0,127,255}));
   connect(sensor_T.port_b, hot_plenum.port_a) annotation (Line(points={{14,56},
           {37,56}},                color={0,127,255}));
   connect(hot_plenum.port_b, pipe1.port_a) annotation (Line(points={{51,56},{52,
           56},{52,26}},              color={0,127,255}));
   connect(cold_plenum.port_a, pump.port_a)
     annotation (Line(points={{-4,-94},{-34,-94}}, color={0,127,255}));
-  connect(coreSubchannel1.port_a, core_inlet.port_b)
+  connect(Core.port_a, core_inlet.port_b)
     annotation (Line(points={{-62,-10},{-62,-30}}, color={0,127,255}));
   connect(actuatorBus.Pump_Speed, pump.inputSignal) annotation (Line(
       points={{30,100},{32,100},{32,88},{104,88},{104,-128},{-36,-128},{-36,-101},

@@ -1,7 +1,7 @@
 within NHES.Media.SolarSalt;
 package SolarSalt
-  "FLiBe | LiF-BeF2 67%-33% with 99.995% enriched Li-7 | Linear compressibility"
-  // Energies 2021 14, pp 1195-1209
+  "Solar salt package compliant with Aspen HYSYS models within HYBRID repository"
+  // Update reference where possible
 // beta_const adjusted till density matched. kappa left alone
 // references are based on 800K
 // assumed specific enthalpy at 273.15 is zero

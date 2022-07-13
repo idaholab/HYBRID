@@ -23,14 +23,16 @@ model HTGR_PebbleBed_Primary_Loop
       nPebble=220000));
   input Modelica.Units.SI.Pressure input_steam_pressure;
   replaceable package Coolant_Medium =
-       Modelica.Media.IdealGases.SingleGases.He  constrainedby Modelica.Media.Interfaces.PartialMedium                     annotation(choicesAllMatching = true,dialog(group="Media"));
+       Modelica.Media.IdealGases.SingleGases.He  constrainedby
+    Modelica.Media.Interfaces.PartialMedium                                                                                annotation(choicesAllMatching = true,dialog(group="Media"));
   replaceable package Fuel_Medium =  TRANSFORM.Media.Solids.UO2                                   annotation(choicesAllMatching = true,dialog(group = "Media"));
   replaceable package Pebble_Medium =
       Media.Solids.Graphite_5                                                                                   annotation(dialog(group = "Media"),choicesAllMatching=true);
-      replaceable package Aux_Heat_App_Medium =
-      Modelica.Media.Water.StandardWater                                           annotation(choicesAllMatching = true, dialog(group = "Media"));
-      replaceable package Waste_Heat_App_Medium =
-      Modelica.Media.Water.StandardWater                                            annotation(choicesAllMatching = true, dialog(group = "Media"));
+      replaceable package Power_Medium =
+      Modelica.Media.Water.StandardWater constrainedby
+    Modelica.Media.Interfaces.PartialMedium annotation (choicesAllMatching=true,
+      dialog(group="Media"));
+
 
   //Modelica.Units.SI.Power Q_Recup;
 
@@ -44,13 +46,11 @@ model HTGR_PebbleBed_Primary_Loop
   Modelica.Blocks.Sources.RealExpression Thermal_Power(y=core.Q_total.y)
     annotation (Placement(transformation(extent={{-92,88},{-80,102}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)
-                        annotation (Placement(
+        Power_Medium)   annotation (Placement(
         transformation(extent={{86,-44},{108,-22}}), iconTransformation(extent={
             {86,-44},{108,-22}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)
-                        annotation (Placement(
+        Power_Medium)   annotation (Placement(
         transformation(extent={{86,38},{108,60}}), iconTransformation(extent={{86,
             38},{108,60}})));
 
@@ -141,26 +141,26 @@ model HTGR_PebbleBed_Primary_Loop
     redeclare model FlowModel_shell =
         TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable,
     redeclare model FlowModel_tube =
-        TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.TwoPhase_Developed_2Region_NumStable,
-
+        TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable,
     p_b_start_shell=3910000,
-    p_a_start_tube=14100000,
-    p_b_start_tube=14000000,
-    use_Ts_start_tube=false,
+    p_a_start_tube=200000,
+    p_b_start_tube=190000,
+    use_Ts_start_tube=true,
+    T_a_start_tube=573.15,
+    T_b_start_tube=823.15,
     h_a_start_tube=500e3,
     h_b_start_tube=3500e3,
     exposeState_b_shell=true,
     exposeState_b_tube=true,
     redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS304,
     redeclare model HeatTransfer_tube =
-        TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Alphas_TwoPhase_5Region,
-
+        TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_SinglePhase_2Region,
     p_a_start_shell=3915000,
     T_a_start_shell=1023.15,
     T_b_start_shell=523.15,
     m_flow_a_start_shell=50,
     m_flow_a_start_tube=50,
-    redeclare package Medium_tube = Modelica.Media.Water.WaterIF97_ph,
+    redeclare package Medium_tube = Power_Medium,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.HeatExchanger.ShellAndTubeHX
         (

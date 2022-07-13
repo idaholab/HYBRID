@@ -108,11 +108,11 @@ equation
   connect(boundary5.ports[1], CHX_Inlet_T.port_a) annotation (Line(points={{-122,
           -18},{-92,-18}},            color={0,127,255}));
   connect(CHX_Inlet_T.port_b, two_Tank_SHS_System_NTU.port_ch_a) annotation (
-      Line(points={{-72,-18},{-50,-18},{-50,-28.62},{-49.04,-28.62}}, color={0,
+      Line(points={{-72,-18},{-50,-18},{-50,29.52},{-49.04,29.52}},   color={0,
           127,255}));
   connect(CHX_Discharge_T.port_a, two_Tank_SHS_System_NTU.port_ch_b)
     annotation (Line(points={{-94,16},{-84,16},{-84,22},{-68,22},{-68,32},{
-          -49.04,32},{-49.04,30.54}},
+          -49.04,32},{-49.04,-28.62}},
                                color={0,127,255}));
   connect(CHX_Discharge_T.port_b, boundary1.ports[1])
     annotation (Line(points={{-114,16},{-128,16}}, color={0,127,255}));
@@ -125,10 +125,11 @@ equation
   connect(boilerDrum.steamPort,valveLinear. port_a) annotation (Line(points={{101.3,
           49.36},{102,49.36},{102,72},{72,72}},     color={0,127,255}));
   connect(pump.port_b, two_Tank_SHS_System_NTU.port_dch_b) annotation (Line(
-        points={{106,12},{94,12},{94,16},{80,16},{80,-28.62},{46,-28.62}},
+        points={{106,12},{94,12},{94,16},{80,16},{80,32.58},{45.04,32.58}},
         color={0,127,255}));
   connect(two_Tank_SHS_System_NTU.port_dch_a, boilerDrum.riserPort) annotation (
-     Line(points={{45.04,32.58},{88.7,32.58},{88.7,32.2}}, color={0,127,255}));
+     Line(points={{45.04,-28.62},{88.7,-28.62},{88.7,32.2}},
+                                                           color={0,127,255}));
   connect(boundary3.ports[1], boilerDrum.feedwaterPort)
     annotation (Line(points={{124,41},{104,41}}, color={0,127,255}));
   connect(PID1.u_s,const1. y)

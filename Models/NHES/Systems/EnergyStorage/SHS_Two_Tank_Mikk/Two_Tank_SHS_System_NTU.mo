@@ -187,21 +187,23 @@ model Two_Tank_SHS_System_NTU
 
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_ch_a(redeclare package Medium =
         Charging_Medium)                                                                           annotation (Placement(
-        transformation(extent={{-108,-72},{-88,-52}}), iconTransformation(
-          extent={{-108,-72},{-88,-52}})));
+        transformation(extent={{-108,42},{-88,62}}),   iconTransformation(
+          extent={{-108,42},{-88,62}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_State port_ch_b(redeclare package Medium =
         Charging_Medium)                                                                            annotation (Placement(
-        transformation(extent={{-108,44},{-88,64}}), iconTransformation(extent={
-            {-108,44},{-88,64}})));
+        transformation(extent={{-108,-72},{-88,-52}}),
+                                                     iconTransformation(extent={{-108,
+            -72},{-88,-52}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_dch_a(redeclare package Medium =
         Discharging_Medium)                                                                            annotation (Placement(
-        transformation(extent={{88,48},{108,68}}), iconTransformation(extent={{88,
-            48},{108,68}})));
+        transformation(extent={{88,-72},{108,-52}}),
+                                                   iconTransformation(extent={{88,-72},
+            {108,-52}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_State port_dch_b(redeclare package
       Medium =
         Discharging_Medium)                                                                             annotation (Placement(
-        transformation(extent={{90,-72},{110,-52}}), iconTransformation(extent={
-            {90,-72},{110,-52}})));
+        transformation(extent={{88,48},{108,68}}),   iconTransformation(extent={{88,48},
+            {108,68}})));
   TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance(
       redeclare package Medium =
         Storage_Medium, R=100)
@@ -283,10 +285,11 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(port_dch_a, DHX.Shell_in) annotation (Line(points={{98,58},{56,58},{56,
-          38},{-6,38},{-6,16},{-2,16}}, color={0,127,255}));
-  connect(DHX.Shell_out, port_dch_b) annotation (Line(points={{18,16},{48,16},{48,
-          18},{72,18},{72,16},{92,16},{92,-62},{100,-62}}, color={0,127,255}));
+  connect(port_dch_a, DHX.Shell_in) annotation (Line(points={{98,-62},{68,-62},
+          {68,28},{-8,28},{-8,16},{-2,16}},
+                                        color={0,127,255}));
+  connect(DHX.Shell_out, port_dch_b) annotation (Line(points={{18,16},{86,16},{
+          86,58},{98,58}},                                 color={0,127,255}));
   connect(boundary2.h_in, delay1.y)
     annotation (Line(points={{-46,-90},{-53.44,-90}}, color={0,0,127}));
   connect(CHX.Tube_in, Charging_Valve.port_b) annotation (Line(points={{-10,-50},
@@ -294,12 +297,12 @@ equation
   connect(CHX.Shell_in, boundary2.ports[1]) annotation (Line(points={{-16,-70},{
           -16,-84},{-14,-84},{-14,-94},{-24,-94}}, color={0,127,255}));
   connect(CHX.Shell_in, port_ch_a) annotation (Line(points={{-16,-70},{-16,-74},
-          {-82,-74},{-82,-62},{-98,-62}}, color={0,127,255}));
+          {-84,-74},{-84,52},{-98,52}},   color={0,127,255}));
   connect(CHX.Shell_out, boundary4.ports[1]) annotation (Line(points={{-16,-50},
           {-52,-50},{-52,-42},{-104,-42}},
                                       color={0,127,255}));
-  connect(CHX.Shell_out, port_ch_b) annotation (Line(points={{-16,-50},{-52,-50},
-          {-52,-42},{-88,-42},{-88,54},{-98,54}}, color={0,127,255}));
+  connect(CHX.Shell_out, port_ch_b) annotation (Line(points={{-16,-50},{-54,-50},
+          {-54,-62},{-98,-62}},                   color={0,127,255}));
   connect(hot_tank.port_a, resistance.port_b) annotation (Line(points={{44,-79.6},
           {58,-79.6},{58,-74},{41,-74}}, color={0,127,255}));
   connect(CHX.Tube_out, sensor_T.port_a)
