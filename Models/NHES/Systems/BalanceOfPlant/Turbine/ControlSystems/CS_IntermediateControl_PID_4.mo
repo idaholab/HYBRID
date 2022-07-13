@@ -66,13 +66,13 @@ model CS_IntermediateControl_PID_4
     annotation (Placement(transformation(extent={{-70,30},{-50,50}})));
   TRANSFORM.Controls.LimPID FWCP_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2e-7,
-    Ti=5,
+    k=2.5e-7,
+    Ti=20,
     yMax=250,
-    yMin=-250,
+    yMin=-72,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
-    annotation (Placement(transformation(extent={{-38,30},{-18,50}})));
+    annotation (Placement(transformation(extent={{-40,30},{-20,50}})));
   Modelica.Blocks.Sources.Constant const4(k=72.1)
     annotation (Placement(transformation(extent={{-14,48},{-6,56}})));
   Modelica.Blocks.Math.Add         add
@@ -136,7 +136,7 @@ equation
   connect(trapezoid.y, TCV_Power.u_s) annotation (Line(points={{-77.3,-15},{-62,
           -15},{-62,-12},{-52,-12}}, color={0,0,127}));
   connect(sensorBus.Steam_Pressure, FWCP_Speed.u_m) annotation (Line(
-      points={{-30,-100},{-100,-100},{-100,8},{-28,8},{-28,28}},
+      points={{-30,-100},{-100,-100},{-100,8},{-30,8},{-30,28}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -154,9 +154,9 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(const3.y, FWCP_Speed.u_s)
-    annotation (Line(points={{-49,40},{-40,40}}, color={0,0,127}));
+    annotation (Line(points={{-49,40},{-42,40}}, color={0,0,127}));
   connect(FWCP_Speed.y, add.u2)
-    annotation (Line(points={{-17,40},{0,40}}, color={0,0,127}));
+    annotation (Line(points={{-19,40},{0,40}}, color={0,0,127}));
   connect(const4.y, add.u1)
     annotation (Line(points={{-5.6,52},{0,52}}, color={0,0,127}));
   connect(actuatorBus.Feed_Pump_Speed, add.y) annotation (Line(
