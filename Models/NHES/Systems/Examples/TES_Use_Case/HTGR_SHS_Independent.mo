@@ -39,18 +39,18 @@ equation
   connect(sinkElec.port, hTGR_Rankine_Cycle1.port_e) annotation (Line(points={{
           148,-18},{136,-18},{136,-60},{122,-60}}, color={255,0,0}));
   connect(two_Tank_SHS_System_NTU.port_dch_b, hTGR_Rankine_Cycle1.port_a)
-    annotation (Line(points={{31.44,-44.18},{52,-44.18},{52,-48},{62,-48}},
+    annotation (Line(points={{32,-78.98},{52,-78.98},{52,-48},{62,-48}},
         color={0,127,255}));
   connect(two_Tank_SHS_System_NTU.port_dch_a, hTGR_Rankine_Cycle1.port_b)
-    annotation (Line(points={{31.44,-78.98},{52,-78.98},{52,-72},{62,-72}},
+    annotation (Line(points={{31.44,-44.18},{52,-44.18},{52,-72},{62,-72}},
         color={0,127,255}));
   connect(BOP.portElec_b, hTGR_Rankine_Cycle1.port_e) annotation (Line(points={
           {116,12},{136,12},{136,-60},{122,-60}}, color={255,0,0}));
   connect(EM.port_b3[1], two_Tank_SHS_System_NTU.port_ch_a) annotation (Line(
-        points={{17.4,-20},{17.4,-28},{-36,-28},{-36,-45.92},{-23.44,-45.92}},
+        points={{17.4,-20},{17.4,-28},{-36,-28},{-36,-78.98},{-23.44,-78.98}},
         color={0,127,255}));
   connect(two_Tank_SHS_System_NTU.port_ch_b, BOP.port_a3[1]) annotation (Line(
-        points={{-23.44,-78.98},{-52,-78.98},{-52,-102},{128,-102},{128,-26},{
+        points={{-23.44,-45.34},{-52,-45.34},{-52,-102},{128,-102},{128,-26},{
           124,-26},{124,-22},{74,-22},{74,-18}}, color={0,127,255}));
   annotation (experiment(
       StopTime=10,

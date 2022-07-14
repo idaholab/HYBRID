@@ -5,7 +5,7 @@ model CS_Rankine_Xe100_Based_Secondary
 
   TRANSFORM.Controls.LimPID FWCP_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-1e-4,
+    k=-1e-2,
     Ti=30,
     yMax=750,
     yMin=-1000,
@@ -62,7 +62,7 @@ model CS_Rankine_Xe100_Based_Secondary
   Modelica.Blocks.Sources.Constant const9(k=data.p_steam_vent)
     annotation (Placement(transformation(extent={{-80,52},{-60,72}})));
   Data.HTGR_Rankine
-                  data(p_steam_vent=14500000, Q_Nom=43.75e6)
+                  data
     annotation (Placement(transformation(extent={{-98,-4},{-78,16}})));
 equation
 

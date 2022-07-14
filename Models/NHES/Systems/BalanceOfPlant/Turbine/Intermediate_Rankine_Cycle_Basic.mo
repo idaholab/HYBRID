@@ -1,12 +1,9 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
-model HTGR_Rankine_Cycle
-  extends BaseClasses.Partial_SubSystem(
-    redeclare replaceable ControlSystems.CS_Rankine_Xe100_Based_Secondary CS,
+model Intermediate_Rankine_Cycle_Basic "Two stage BOP model"
+  extends BaseClasses.Partial_SubSystem_C(
+    redeclare replaceable ControlSystems.CS_IntermediateControl CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
     redeclare Data.IdealTurbine data);
-
-
-
 
   PrimaryHeatSystem.HTGR.HTGR_Rankine.Data.DataInitial_HTGR_Pebble dataInitial(
       P_LP_Comp_Ref=4000000)
@@ -57,22 +54,13 @@ model HTGR_Rankine_Cycle
         extent={{10,-10},{-10,10}},
         rotation=0,
         origin={-18,76})));
-  TRANSFORM.Fluid.Volumes.SimpleVolume volume(
-    redeclare package Medium = Modelica.Media.Water.StandardWater,
-    p_start=3900000,
-    T_start=723.15,
-    redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=2),
-    use_TraceMassPort=false)
-    annotation (Placement(transformation(extent={{10,-10},{-10,10}},
-        rotation=180,
-        origin={-62,40})));
 
   TRANSFORM.Fluid.Valves.ValveLinear TCV(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
+    m_flow_start=400,
     dp_nominal=100000,
-    m_flow_nominal=50) annotation (Placement(transformation(
+    m_flow_nominal=500)
+                       annotation (Placement(transformation(
         extent={{8,8},{-8,-8}},
         rotation=180,
         origin={-4,40})));
@@ -96,11 +84,11 @@ model HTGR_Rankine_Cycle
         origin={46,-6})));
   TRANSFORM.Fluid.Volumes.SimpleVolume volume1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
-    p_start=3900000,
+    p_start=5500000,
     T_start=473.15,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=5.0),
+        (V=0),
     use_TraceMassPort=false)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=180,
@@ -141,32 +129,10 @@ model HTGR_Rankine_Cycle
         transformation(
         extent={{6,-7},{-6,7}},
         rotation=90,
-        origin={53,-26})));
-  TRANSFORM.Fluid.Valves.ValveLinear TBV(
-    redeclare package Medium = Modelica.Media.Water.StandardWater,
-    dp_nominal=100000,
-    m_flow_nominal=50) annotation (Placement(transformation(
-        extent={{-8,8},{8,-8}},
-        rotation=180,
-        origin={-74,72})));
-  TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary(
-    redeclare package Medium = Modelica.Media.Water.StandardWater,
-    p=12000000,
-    T=573.15,
-    nPorts=1)
-    annotation (Placement(transformation(extent={{-116,62},{-96,82}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{-110,30},{-90,50}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{-110,-50},{-90,-30}})));
-  TRANSFORM.Electrical.Interfaces.ElectricalPowerPort_Flow port_e
-    annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+        origin={61,-24})));
 initial equation
 
 equation
-  port_e.W = generator.power;
 
   connect(HPT.portHP, sensor_T1.port_b) annotation (Line(
       points={{34,40},{28,40}},
@@ -223,8 +189,8 @@ equation
           -64},{40,-64}},                                           color={0,127,
           255},
       thickness=0.5));
-  connect(pump1.port_b, volume1.port_a) annotation (Line(points={{20,-64},{16,-64},
-          {16,-40},{2,-40}},                         color={0,127,255},
+  connect(pump1.port_b, volume1.port_a) annotation (Line(points={{20,-64},{16,
+          -64},{16,-40},{2,-40}},                    color={0,127,255},
       thickness=0.5));
   connect(HPT.shaft_b, LPT.shaft_a) annotation (Line(
       points={{54,34},{54,14},{46,14},{46,4}},
@@ -249,15 +215,14 @@ equation
       color={0,127,255},
       thickness=0.5));
   connect(LPT.portLP, sensor_m_flow1.port_a) annotation (Line(
-      points={{52,-16},{52,-20},{53,-20}},
+      points={{52,-16},{52,-18},{61,-18}},
       color={0,127,255},
       thickness=0.5));
   connect(sensor_m_flow1.port_b,Condenser. port_a)
-    annotation (Line(points={{53,-32},{53,-38}},     color={0,127,255},
+    annotation (Line(points={{61,-30},{61,-36},{53,-36},{53,-38}},
+                                                     color={0,127,255},
       thickness=0.5));
 
-  connect(TBV.port_b, boundary.ports[1]) annotation (Line(points={{-82,72},{-96,
-          72}},                                      color={0,127,255}));
   connect(LPT.shaft_b, generator.shaft) annotation (Line(points={{46,-16},{46,-24.1},
           {34.1,-24.1}}, color={0,0,0}));
   connect(actuatorBus.opening_TCV, TCV.opening) annotation (Line(
@@ -265,20 +230,12 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(volume.port_b, TBV.port_a) annotation (Line(points={{-56,40},{-46,40},
-          {-46,72},{-66,72}}, color={0,127,255}));
-  connect(volume.port_b, TCV.port_a)
-    annotation (Line(points={{-56,40},{-12,40}}, color={0,127,255}));
-  connect(volume.port_b, sensor_p.port) annotation (Line(points={{-56,40},{-34,40},
-          {-34,62},{-18,62},{-18,66}}, color={0,127,255}));
-  connect(port_a, volume.port_a)
-    annotation (Line(points={{-100,40},{-68,40}}, color={0,127,255}));
   connect(sensor_T2.port_b, port_b)
-    annotation (Line(points={{-80,-40},{-100,-40}}, color={0,127,255}));
-  connect(TBV.opening, actuatorBus.TBV) annotation (Line(points={{-74,78.4},{-74,
-          100},{30,100}},       color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
+    annotation (Line(points={{-80,-40},{-160,-40}}, color={0,127,255}));
+  connect(sensor_p.port, TCV.port_a)
+    annotation (Line(points={{-18,66},{-18,40},{-12,40}}, color={0,127,255}));
+  connect(port_a, TCV.port_a)
+    annotation (Line(points={{-160,40},{-12,40}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-2.09756,2},{83.9024,-2}},
@@ -441,4 +398,4 @@ equation
 <p>Separate HTGR models will be developed for different uses. The primary differentiator is whether a combined cycle is going to be integrated or not. The combined cycle thoerized to be used here takes advantage of the relatively hot waste heat that is produced by an HTGR to boil water at low pressure and send that to a turbine. </p>
 <p>No part of this HTGR model should be considered to be optimized. Additionally, thermal mass of the system needs references and then will need to be adjusted (likely through pipes replacing current zero-volume volume nodes) to more appropriately reflect system time constants. </p>
 </html>"));
-end HTGR_Rankine_Cycle;
+end Intermediate_Rankine_Cycle_Basic;
