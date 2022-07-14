@@ -24,7 +24,7 @@ model SMR_highfidelity_Intermediate
       Q_nom(displayUnit="MW") = 200000000,
       demand=1.0),
     redeclare package Medium = Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{-92,-24},{-38,34}})));
+    annotation (Placement(transformation(extent={{-92,-24},{-38,32}})));
   EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(port_a1_nominal(
       p=nuScale_Tave_enthalpy_Pressurizer_CR.port_b_nominal.p,
       h=nuScale_Tave_enthalpy_Pressurizer_CR.port_b_nominal.h,
@@ -58,10 +58,10 @@ model SMR_highfidelity_Intermediate
     annotation (Placement(transformation(extent={{158,60},{198,100}})));
 equation
   connect(nuScale_Tave_enthalpy_Pressurizer_CR.port_b, EM.port_a1) annotation (
-      Line(points={{-37.1692,13.2857},{-30,13.2857},{-30,8},{-20,8}}, color={0,
+      Line(points={{-37.1692,12},{-30,12},{-30,8},{-20,8}},           color={0,
           127,255}));
   connect(nuScale_Tave_enthalpy_Pressurizer_CR.port_a, EM.port_b1) annotation (
-      Line(points={{-37.1692,-0.385714},{-30,-0.385714},{-30,-8},{-20,-8}},
+      Line(points={{-37.1692,-1.2},{-30,-1.2},{-30,-8},{-20,-8}},
         color={0,127,255}));
   connect(EM.port_a2, BOP.port_b)
     annotation (Line(points={{20,-8},{42,-8}}, color={0,127,255}));
