@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_IntermediateControl_PID_4
+model CS_IntermediateControl_PID_5
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
   extends NHES.Icons.DummyIcon;
@@ -26,7 +26,7 @@ model CS_IntermediateControl_PID_4
     k_m=1,
     yMax=0,
     yMin=-1 + 0.0001,
-    initType=Modelica.Blocks.Types.Init.InitialState,
+    initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-50,-2},{-30,-22}})));
   Modelica.Blocks.Sources.RealExpression
@@ -47,7 +47,7 @@ model CS_IntermediateControl_PID_4
     p_steam=3500000,
     p_steam_vent=15000000,
     T_Steam_Ref=579.75,
-    Q_Nom=40e6,
+    Q_Nom=60e6,
     T_Feedwater=421.15)
     annotation (Placement(transformation(extent={{-98,12},{-78,32}})));
   Modelica.Blocks.Sources.Constant const(k=data.Q_Nom)
@@ -186,6 +186,6 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(const.y, TCV_Power.u_s) annotation (Line(points={{83,-2},{88,-2},{88,
-          14},{-14,14},{-14,4},{-60,4},{-60,-12},{-52,-12}}, color={0,0,127}));
-end CS_IntermediateControl_PID_4;
+  connect(TCV_Power.u_s, const.y) annotation (Line(points={{-52,-12},{-58,-12},
+          {-58,4},{50,4},{50,18},{88,18},{88,-2},{83,-2}}, color={0,0,127}));
+end CS_IntermediateControl_PID_5;

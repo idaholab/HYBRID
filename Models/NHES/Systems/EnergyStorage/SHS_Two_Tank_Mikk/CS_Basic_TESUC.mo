@@ -1,12 +1,12 @@
 within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
-model CS_IES_HTGR
+model CS_Basic_TESUC
 
   extends BaseClasses.Partial_ControlSystem;
 
   Data.Data_Default data
-    annotation (Placement(transformation(extent={{-20,16},{0,36}})));
+    annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-    Charging_Valve_Position_MinMax(min=1e-4)
+    Charging_Valve_Position_MinMax(min=2e-4)
     annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
   Modelica.Blocks.Math.Product product2
     annotation (Placement(transformation(extent={{-18,-18},{-12,-24}})));
@@ -35,16 +35,16 @@ model CS_IES_HTGR
     y_start=0.0)
     annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
-    amplitude=2.0,
+    amplitude=-2.0,
     rising=500,
     width=8500,
     falling=500,
     period=18000,
-    offset=0.0,
-    startTime=0)
-    annotation (Placement(transformation(extent={{-58,48},{-46,60}})));
+    offset=2,
+    startTime=2000)
+    annotation (Placement(transformation(extent={{-56,48},{-44,60}})));
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-    Discharging_Valve_Position(min=1e-4) annotation (Placement(transformation(
+    Discharging_Valve_Position(min=2e-4) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=180,
         origin={12,64})));
@@ -77,10 +77,12 @@ model CS_IES_HTGR
     initType=Modelica.Blocks.Types.Init.InitialOutput,
     y_start=0.0)
     annotation (Placement(transformation(extent={{-40,0},{-34,-6}})));
+  Modelica.Blocks.Sources.Constant one8(k=0)
+    annotation (Placement(transformation(extent={{-16,78},{-10,84}})));
+  Modelica.Blocks.Sources.Constant one9(k=0)
+    annotation (Placement(transformation(extent={{-14,16},{-8,22}})));
 equation
 
-  connect(product2.y, Charging_Valve_Position_MinMax.u) annotation (Line(points={{-11.7,
-          -21},{-8,-21},{-8,-22},{0,-22}},    color={0,0,127}));
   connect(add2.y,product2. u1) annotation (Line(points={{-49.7,-23},{-22,-23},{
           -22,-22},{-18.6,-22},{-18.6,-22.8}},              color={0,0,127}));
   connect(min2.y,add2. u2) annotation (Line(points={{-71.6,-28},{-60,-28},{-60,
@@ -96,11 +98,14 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(sensorBus.cold_tank_level, min2.u1) annotation (Line(
+      points={{-30,-100},{-30,-108},{-102,-108},{-102,-25.6},{-80.8,-25.6}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   connect(trapezoid.y,PID3. u_s)
-    annotation (Line(points={{-45.4,54},{-40,54},{-40,58},{-36.8,58}},
+    annotation (Line(points={{-43.4,54},{-40,54},{-40,58},{-36.8,58}},
                                                      color={0,0,127}));
-  connect(product1.y, Discharging_Valve_Position.u)
-    annotation (Line(points={{-11.6,64},{0,64}}, color={0,0,127}));
   connect(PID3.y,product1. u2) annotation (Line(points={{-27.6,58},{-26,58},{
           -26,52},{-20.8,52},{-20.8,61.6}},                  color={0,0,127}));
   connect(add1.y,product1. u1) annotation (Line(points={{-29.7,73},{-24,73},{
@@ -120,14 +125,14 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.hot_tank_level, min1.u1) annotation (Line(
-      points={{-30,-100},{-102,-100},{-102,68.4},{-56.8,68.4}},
+      points={{-30,-100},{-30,-70},{-102,-70},{-102,68.4},{-56.8,68.4}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(one1.y, PID5.u_s) annotation (Line(points={{-51.7,-13},{-44.6,-13},{
           -44.6,-17}},color={0,0,127}));
   connect(sensorBus.Charge_Temp, PID5.u_m) annotation (Line(
-      points={{-30,-100},{-102,-100},{-102,-4},{-41,-4},{-41,-13.4}},
+      points={{-30,-100},{-30,-64},{-102,-64},{-102,-4},{-41,-4},{-41,-13.4}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -146,25 +151,25 @@ equation
   connect(add3.u1, PID2.y) annotation (Line(points={{-30.6,-9.2},{-33.7,-9.2},{
           -33.7,-3}}, color={0,0,127}));
   connect(sensorBus.charge_m_flow, PID2.u_m) annotation (Line(
-      points={{-30,-100},{-102,-100},{-102,6},{-37,6},{-37,0.6}},
+      points={{-30,-100},{-30,-28},{-8,-28},{-8,-24},{-6,-24},{-6,6},{-37,6},{
+          -37,0.6}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.Charging_Logical, switch1.u2) annotation (Line(
-      points={{-30,-100},{-102,-100},{-102,-4},{-50.4,-4}},
+      points={{-30,-100},{-30,-70},{-102,-70},{-102,-4},{-50.4,-4}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.Discharge_Steam, PID3.u_m) annotation (Line(
-      points={{-30,-100},{-102,-100},{-102,42},{-32,42},{-32,53.2}},
+      points={{-30,-100},{-30,-70},{-102,-70},{-102,42},{-32,42},{-32,53.2}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.cold_tank_level, min2.u1) annotation (Line(
-      points={{-30,-100},{-102,-100},{-102,-25.6},{-80.8,-25.6}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
+  connect(product2.y, Charging_Valve_Position_MinMax.u) annotation (Line(points
+        ={{-11.7,-21},{-6,-21},{-6,-28},{0,-28},{0,-22}}, color={0,0,127}));
+  connect(product1.y, Discharging_Valve_Position.u)
+    annotation (Line(points={{-11.6,64},{0,64}}, color={0,0,127}));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics={
         Text(
           extent={{-94,82},{94,74}},
@@ -173,4 +178,4 @@ annotation(defaultComponentName="changeMe_CS", Icon(graphics={
           fillColor={255,255,237},
           fillPattern=FillPattern.Solid,
           textString="Change Me")}));
-end CS_IES_HTGR;
+end CS_Basic_TESUC;

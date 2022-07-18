@@ -19,7 +19,7 @@ model CS_SMR_Tave
     annotation (Placement(transformation(extent={{-50,110},{-30,130}})));
   TRANSFORM.Controls.LimPID PID_CR(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    initType=Modelica.Blocks.Types.Init.SteadyState,
+    initType=Modelica.Blocks.Types.Init.NoInit,
     Ti=5,
     k_s=1000*1/data.Q_total,
     k_m=1000*1/data.Q_total)
@@ -42,7 +42,7 @@ model CS_SMR_Tave
     yMin=34.0,
     y_start=67,
     k=0.0001,
-    initType=Modelica.Blocks.Types.Init.SteadyState,
+    initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1.0,
     k_s=1/72,
     k_m=1/72)
