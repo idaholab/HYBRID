@@ -188,16 +188,16 @@ model Two_Tank_SHS_System_NTU_TESUC
         rotation=270,
         origin={-14,-60})));
 
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_ch_a(redeclare package Medium
-      = Charging_Medium)                                                                           annotation (Placement(
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_ch_a(redeclare package Medium =
+        Charging_Medium)                                                                           annotation (Placement(
         transformation(extent={{-108,-72},{-88,-52}}), iconTransformation(
           extent={{-108,-72},{-88,-52}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_State port_ch_b(redeclare package Medium
-      = Charging_Medium)                                                                            annotation (Placement(
+  TRANSFORM.Fluid.Interfaces.FluidPort_State port_ch_b(redeclare package Medium =
+        Charging_Medium)                                                                            annotation (Placement(
         transformation(extent={{-108,44},{-88,64}}), iconTransformation(extent={
             {-108,44},{-88,64}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_dch_a(redeclare package Medium
-      = Discharging_Medium)                                                                            annotation (Placement(
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_dch_a(redeclare package Medium =
+        Discharging_Medium)                                                                            annotation (Placement(
         transformation(extent={{88,48},{108,68}}), iconTransformation(extent={{88,
             48},{108,68}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_State port_dch_b(redeclare package
@@ -209,8 +209,8 @@ model Two_Tank_SHS_System_NTU_TESUC
       redeclare package Medium =
         Storage_Medium, R=100)
     annotation (Placement(transformation(extent={{24,-84},{44,-64}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
-      = Storage_Medium)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
+        Storage_Medium)
     annotation (Placement(transformation(extent={{0,-88},{20,-68}})));
 equation
   connect(volume.port_a, Discharging_Valve.port_b)

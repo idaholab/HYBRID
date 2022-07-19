@@ -1,5 +1,5 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model SMR_SHS_Test_4
+model SMR_SHS_Test_5
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
  Real demandChange=
@@ -59,13 +59,18 @@ model SMR_SHS_Test_4
     redeclare replaceable
       NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
       ht_area=100,
+      hot_tank_init_temp=573.15,
       cold_tank_area=100,
+      cold_tank_init_temp=373.15,
       m_flow_ch_min=0.1,
+      DHX_NTU=20,
       DHX_K_tube(unit="1/m4"),
-      DHX_K_shell(unit="1/m4")),
+      DHX_K_shell(unit="1/m4"),
+      DHX_p_start_shell=1200000,
+      DHX_Q_init=1e6),
     m_flow_min=2.5,
     tank_height=15,
-    Produced_steam_flow=26)
+    Produced_steam_flow=intermediate_Rankine_Cycle_TESUC_SmallCycle.port_a.m_flow)
     annotation (Placement(transformation(extent={{-20,-76},{20,-36}})));
 
   TRANSFORM.Fluid.Valves.ValveLinear SHS_Throttle(
@@ -76,8 +81,8 @@ model SMR_SHS_Test_4
         extent={{6,6},{-6,-6}},
         rotation=180,
         origin={50,-30})));
-  BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries_no_heat
-                                                    BOP(
+  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_SmallCycle
+                                                    intermediate_Rankine_Cycle_TESUC_SmallCycle(
     port_a_nominal(
       p=1200000,
       h=2e6,
@@ -88,7 +93,15 @@ model SMR_SHS_Test_4
       m_flow=-20),
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_6
-      CS)
+      CS,
+    port_a_start(
+      p=1100000,
+      h=2e6,
+      m_flow=20),
+    port_b_start(
+      p=1200000,
+      h=1e6,
+      m_flow=-20))
     annotation (Placement(transformation(extent={{112,-80},{152,-40}})));
   Fluid.Sensors.stateDisplay stateDisplay1
     annotation (Placement(transformation(extent={{-52,28},{-6,58}})));
@@ -144,8 +157,9 @@ equation
   connect(SHS_Throttle.port_b, intermediate_Rankine_Cycle_TESUC.port_a1)
     annotation (Line(points={{56,-30},{69.2,-30},{69.2,-19.2}},
         color={0,127,255}));
-  connect(BOP.portElec_b, SY.port_a[2]) annotation (Line(points={{152,-60},{158,
-          -60},{158,-26},{108,-26},{108,1.1},{112,1.1}}, color={255,0,0}));
+  connect(intermediate_Rankine_Cycle_TESUC_SmallCycle.portElec_b, SY.port_a[2])
+    annotation (Line(points={{152,-60},{158,-60},{158,-26},{108,-26},{108,1.1},
+          {112,1.1}}, color={255,0,0}));
   connect(SMR_Taveprogram.port_b, stateSensor1.port_a) annotation (Line(points={{
           -51.0909,10.7692},{-51.0909,11},{-38,11}},  color={0,127,255}));
   connect(stateSensor1.port_b, EM.port_a1) annotation (Line(points={{-24,11},{-22,
@@ -183,8 +197,9 @@ equation
         color={0,0,0}));
   connect(two_Tank_SHS_System_NTU.port_dch_b, stateSensor6.port_a) annotation (
       Line(points={{20,-68.4},{48,-68.4},{48,-68}}, color={0,127,255}));
-  connect(stateSensor6.port_b, BOP.port_a) annotation (Line(points={{62,-68},{
-          64,-68},{64,-52},{112,-52}}, color={0,127,255}));
+  connect(stateSensor6.port_b, intermediate_Rankine_Cycle_TESUC_SmallCycle.port_a)
+    annotation (Line(points={{62,-68},{64,-68},{64,-52},{112,-52}}, color={0,
+          127,255}));
   connect(stateSensor6.statePort, stateDisplay7.statePort) annotation (Line(
         points={{55.035,-67.96},{55.035,-54},{86,-54},{86,-44.16}}, color={0,0,0}));
   connect(stateSensor7.statePort, stateDisplay6.statePort) annotation (Line(
@@ -193,7 +208,7 @@ equation
   connect(two_Tank_SHS_System_NTU.port_dch_a, stateSensor7.port_b) annotation (
       Line(points={{19.6,-44.4},{38,-44.4},{38,-74},{82,-74},{82,-68}}, color={0,
           127,255}));
-  connect(stateSensor7.port_a, BOP.port_b)
+  connect(stateSensor7.port_a, intermediate_Rankine_Cycle_TESUC_SmallCycle.port_b)
     annotation (Line(points={{96,-68},{112,-68}}, color={0,127,255}));
   connect(triggeredTrapezoid.y, SHS_Throttle.opening) annotation (Line(points={{
           44.5,-17},{50,-17},{50,-25.2}}, color={0,0,127}));
@@ -211,12 +226,12 @@ equation
                                 Diagram(coordinateSystem(preserveAspectRatio=
             false, extent={{-100,-100},{200,100}})),
     experiment(
-      StopTime=20000,
-      __Dymola_NumberOfIntervals=1000,
+      StopTime=200,
+      Interval=2,
       __Dymola_Algorithm="Esdirk45a"),
     Documentation(info="<html>
 <p>NuScale style reactor system. System has a nominal thermal output of 160MWt rather than the updated 200MWt.</p>
 <p>System is based upon report: Frick, Konor L. Status Report on the NuScale Module Developed in the Modelica Framework. United States: N. p., 2019. Web. doi:10.2172/1569288.</p>
 </html>"),
     __Dymola_experimentSetupOutput(events=false));
-end SMR_SHS_Test_4;
+end SMR_SHS_Test_5;

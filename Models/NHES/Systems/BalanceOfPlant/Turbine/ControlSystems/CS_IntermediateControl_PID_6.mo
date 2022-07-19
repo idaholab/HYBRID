@@ -44,8 +44,8 @@ model CS_IntermediateControl_PID_6
       Start_Time=1e-2)
     annotation (Placement(transformation(extent={{-32,-44},{-24,-36}})));
   Data.Intermediate_Rankine_Setpoints data(
-    p_steam=1197000,
-    p_steam_vent=15000000,
+    p_steam(displayUnit="Pa") = 1197000,
+    p_steam_vent(displayUnit="Pa") = 15000000,
     T_Steam_Ref=491.15,
     Q_Nom=18.57e6,
     T_Feedwater=309.9)
@@ -66,14 +66,14 @@ model CS_IntermediateControl_PID_6
     annotation (Placement(transformation(extent={{-70,30},{-50,50}})));
   TRANSFORM.Controls.LimPID FWCP_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2.5e-7,
+    k=2.5e-6,
     Ti=20,
     yMax=250,
-    yMin=-72,
+    yMin=-20,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-40,30},{-20,50}})));
-  Modelica.Blocks.Sources.Constant const4(k=72.1)
+  Modelica.Blocks.Sources.Constant const4(k=20)
     annotation (Placement(transformation(extent={{-14,48},{-6,56}})));
   Modelica.Blocks.Math.Add         add
     annotation (Placement(transformation(extent={{2,36},{22,56}})));

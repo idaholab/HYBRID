@@ -26,8 +26,11 @@ model CS_SMR_Tave
     annotation (Placement(transformation(extent={{30,130},{50,110}})));
   Modelica.Blocks.Logical.Switch switch_CR
     annotation (Placement(transformation(extent={{-10,130},{10,150}})));
-  GenericModular_PWR.Data.Data_GenericModule data(length_steamGenerator_tube=
-        36, T_avg=569.15)
+  GenericModular_PWR.Data.Data_GenericModule data(
+    Q_total=190e6,
+    Q_total_el=48e6,                              length_steamGenerator_tube=
+        36,
+    T_avg=559.15)
     annotation (Placement(transformation(extent={{74,142},{90,158}})));
   Modelica.Blocks.Math.Add Sum_Hot_and_Cold_Leg
     annotation (Placement(transformation(extent={{-182,144},{-162,164}})));

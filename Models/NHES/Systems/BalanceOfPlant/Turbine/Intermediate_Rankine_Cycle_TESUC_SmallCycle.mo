@@ -21,7 +21,7 @@ model Intermediate_Rankine_Cycle_TESUC_SmallCycle "Two stage BOP model"
       HPT_p_exit_nominal=8000,
       HPT_T_in_nominal=491.15,
       HPT_nominal_mflow=30,
-      firstfeedpump_p_nominal=1200000));
+      firstfeedpump_p_nominal=100000));
 
   Data.IntermediateTurbineInitialisation init(
     p_steam_vent=15000000,
@@ -29,7 +29,7 @@ model Intermediate_Rankine_Cycle_TESUC_SmallCycle "Two stage BOP model"
     Q_Nom=20e6,
     T_Feedwater=309.15,
     p_steam=1200000,
-    FeedwaterMixVolume_p_start=1200000,
+    FeedwaterMixVolume_p_start=100000,
     header_p_start=1000000,
     header_h_start=2e6,
     FeedwaterMixVolume_h_start=1e6,

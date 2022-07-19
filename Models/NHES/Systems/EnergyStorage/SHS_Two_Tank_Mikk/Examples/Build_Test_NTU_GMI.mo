@@ -37,7 +37,7 @@ model Build_Test_NTU_GMI
     rising=30,
     falling=30,
     offset=0)
-    annotation (Placement(transformation(extent={{-150,-30},{-130,-10}})));
+    annotation (Placement(transformation(extent={{-152,-30},{-132,-10}})));
 
   TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump(redeclare package Medium =
         Modelica.Media.Water.StandardWater, m_flow_nominal=25)
@@ -116,7 +116,7 @@ equation
   connect(CHX_Discharge_T.port_b, boundary1.ports[1])
     annotation (Line(points={{-88,32},{-98,32}},   color={0,127,255}));
   connect(boundary5.m_flow_in, triggeredTrapezoid.y)
-    annotation (Line(points={{-118,-20},{-129,-20}},
+    annotation (Line(points={{-118,-20},{-131,-20}},
                                                    color={0,0,127}));
   connect(pump.port_a,boilerDrum. downcomerPort) annotation (Line(points={{64,20},
           {64,28},{101.3,28},{101.3,32.2}},                             color={0,
