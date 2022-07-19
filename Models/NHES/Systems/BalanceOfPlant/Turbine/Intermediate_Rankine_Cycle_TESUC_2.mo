@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
-model Intermediate_Rankine_Cycle_TESUC "Two stage BOP model"
+model Intermediate_Rankine_Cycle_TESUC_2 "Two stage BOP model"
   extends BaseClasses.Partial_SubSystem_C(
     redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
@@ -153,17 +153,6 @@ model Intermediate_Rankine_Cycle_TESUC "Two stage BOP model"
         rotation=180,
         origin={-128,74})));
 
-  StagebyStageTurbineSecondary.Control_and_Distribution.SpringBallValve InternalBypassValve(
-    redeclare package Medium = Modelica.Media.Water.StandardWater,
-    dp_start=init.InternalBypassValve_dp_start,
-    m_flow_start=init.InternalBypassValve_mflow_start,
-    m_flow_small=data.InternalBypassValve_mflow_small,
-    p_spring=data.InternalBypassValve_p_spring,
-    K=data.InternalBypassValve_K,
-    opening_init=0,
-    tau=data.InternalBypassValve_tau)
-    annotation (Placement(transformation(extent={{-82,10},{-62,30}})));
-
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
                                        sensor_T4(redeclare package Medium =
         Modelica.Media.Water.StandardWater)            annotation (Placement(
@@ -204,6 +193,14 @@ model Intermediate_Rankine_Cycle_TESUC "Two stage BOP model"
     p_inlet_nominal=port_a_nominal.p)
     annotation (Placement(transformation(extent={{40,22},{60,42}})));
 
+  TRANSFORM.Fluid.Valves.ValveLinear InternalBypass(
+    redeclare package Medium = Modelica.Media.Water.StandardWater,
+    m_flow_start=400,
+    dp_nominal=1500000,
+    m_flow_nominal=15) annotation (Placement(transformation(
+        extent={{8,8},{-8,-8}},
+        rotation=180,
+        origin={-74,22})));
 initial equation
 
 equation
@@ -284,10 +281,6 @@ equation
       index=-1,
       extent={{-3,6},{-3,6}},
       horizontalAlignment=TextAlignment.Right));
-  connect(InternalBypassValve.port_a, header.port_b[2]) annotation (Line(points={{-82,20},
-          {-104,20},{-104,40},{-106,40},{-106,42.5}},          color={0,127,255}));
-  connect(InternalBypassValve.port_b, R_InternalBypass.port_a)
-    annotation (Line(points={{-62,20},{-24,20},{-24,5}}, color={0,127,255}));
   connect(firstfeedpump.port_b, sensor_T4.port_b) annotation (Line(points={{98,-144},
           {90,-144}},                              color={0,127,255}));
   connect(port_b, pump_SimpleMassFlow1.port_b) annotation (Line(points={{-160,-40},
@@ -320,6 +313,20 @@ equation
   connect(steamTurbine.shaft_b, powerSensor.flange_a)
     annotation (Line(points={{60,32},{68,32},{68,34},{78,34}},
                                                color={0,0,0}));
+  connect(InternalBypass.port_a, header.port_b[2]) annotation (Line(points={{
+          -82,22},{-94,22},{-94,24},{-106,24},{-106,42.5}}, color={0,127,255}));
+  connect(InternalBypass.port_b, R_InternalBypass.port_a) annotation (Line(
+        points={{-66,22},{-44,22},{-44,20},{-24,20},{-24,5}}, color={0,127,255}));
+  connect(actuatorBus.Divert_Valve_Position, InternalBypass.opening)
+    annotation (Line(
+      points={{30,100},{-74,100},{-74,28.4}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-3,6},{-3,6}},
+      horizontalAlignment=TextAlignment.Right));
 annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-24,2},{24,-2}},
@@ -503,4 +510,4 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
     Documentation(info="<html>
 <p>A two stage turbine rankine cycle with feedwater heating internal to the system - can be externally bypassed or LPT can be bypassed both will feedwater heat post bypass</p>
 </html>"));
-end Intermediate_Rankine_Cycle_TESUC;
+end Intermediate_Rankine_Cycle_TESUC_2;

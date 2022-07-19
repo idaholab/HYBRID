@@ -1,5 +1,5 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model SMR_SHS_Test_3
+model SMR_SHS_Test_4
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
  Real demandChange=
@@ -29,14 +29,14 @@ model SMR_SHS_Test_3
     port_b3_nominal_m_flow={-0.67},
     nPorts_b3=1)
     annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC
+  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_2
     intermediate_Rankine_Cycle_TESUC(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
       h=EM.port_b2_nominal.h,
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
-    redeclare BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_4 CS)
+    redeclare BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC CS)
     annotation (Placement(transformation(extent={{62,-20},{102,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
     annotation (Placement(transformation(extent={{112,-22},{152,22}})));
@@ -220,4 +220,4 @@ equation
 <p>System is based upon report: Frick, Konor L. Status Report on the NuScale Module Developed in the Modelica Framework. United States: N. p., 2019. Web. doi:10.2172/1569288.</p>
 </html>"),
     __Dymola_experimentSetupOutput(events=false));
-end SMR_SHS_Test_3;
+end SMR_SHS_Test_4;

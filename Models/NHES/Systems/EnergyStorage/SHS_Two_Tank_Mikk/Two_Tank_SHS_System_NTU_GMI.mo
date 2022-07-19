@@ -183,7 +183,7 @@ model Two_Tank_SHS_System_NTU_GMI
     Q_init=1)          annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=270,
-        origin={-46,-54})));
+        origin={-44,-54})));
 
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_ch_a(redeclare package Medium =
         Charging_Medium)                                                                           annotation (Placement(
@@ -287,21 +287,21 @@ equation
           86,-4},{86,-40},{94,-40},{94,-62},{100,-62}},    color={0,127,255}));
   connect(boundary2.h_in, delay1.y)
     annotation (Line(points={{-86,-88},{-93.44,-88}}, color={0,0,127}));
-  connect(CHX.Tube_in, Charging_Valve.port_b) annotation (Line(points={{-42,-44},
-          {-42,-30}},                     color={0,127,255}));
-  connect(CHX.Shell_in, boundary2.ports[1]) annotation (Line(points={{-48,-64},
-          {-48,-70},{-58,-70},{-58,-92},{-64,-92}},color={0,127,255}));
-  connect(CHX.Shell_in, port_ch_a) annotation (Line(points={{-48,-64},{-48,-70},
+  connect(CHX.Tube_in, Charging_Valve.port_b) annotation (Line(points={{-40,-44},
+          {-40,-38},{-42,-38},{-42,-30}}, color={0,127,255}));
+  connect(CHX.Shell_in, boundary2.ports[1]) annotation (Line(points={{-46,-64},
+          {-46,-70},{-58,-70},{-58,-92},{-64,-92}},color={0,127,255}));
+  connect(CHX.Shell_in, port_ch_a) annotation (Line(points={{-46,-64},{-46,-70},
           {-82,-70},{-82,-62},{-98,-62}}, color={0,127,255}));
-  connect(CHX.Shell_out, boundary4.ports[1]) annotation (Line(points={{-48,-44},
-          {-48,-36},{-84,-36},{-84,34},{-106,34}},
+  connect(CHX.Shell_out, boundary4.ports[1]) annotation (Line(points={{-46,-44},
+          {-46,-36},{-84,-36},{-84,34},{-106,34}},
                                       color={0,127,255}));
-  connect(CHX.Shell_out, port_ch_b) annotation (Line(points={{-48,-44},{-48,-36},
+  connect(CHX.Shell_out, port_ch_b) annotation (Line(points={{-46,-44},{-46,-36},
           {-84,-36},{-84,54},{-98,54}},           color={0,127,255}));
   connect(hot_tank.port_a, resistance.port_b) annotation (Line(points={{36,
           -79.6},{36,-76},{13,-76}},     color={0,127,255}));
   connect(CHX.Tube_out, sensor_T.port_a)
-    annotation (Line(points={{-42,-64},{-42,-76},{-34,-76}},
+    annotation (Line(points={{-40,-64},{-40,-76},{-34,-76}},
                                                            color={0,127,255}));
   connect(sensor_T.port_b, resistance.port_a)
     annotation (Line(points={{-14,-76},{-1,-76}},         color={0,127,255}));
