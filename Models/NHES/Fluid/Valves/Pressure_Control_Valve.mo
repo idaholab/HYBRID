@@ -1,9 +1,11 @@
 within NHES.Fluid.Valves;
-model Pressure_Control_Valve "PID pressure controlled linear valve"
+model Pressure_Control_Valve
+  "Linear Valve Controlled by PI controller to mantain a set inlet pressure"
 
-parameter Modelica.Units.SI.Pressure P_sys "Pressure";
-parameter Modelica.Units.SI.Pressure Nominal_dp "Nominal Pressure drop";
-parameter Modelica.Units.SI.MassFlowRate Nominal_Flow "Nominal Mass Flow Rate";
+parameter Modelica.Units.SI.Pressure P_sys=1e5 "Pressure";
+parameter Modelica.Units.SI.PressureDifference Nominal_dp=0.5e5
+                                                               "Nominal Pressure drop";
+parameter Modelica.Units.SI.MassFlowRate Nominal_Flow=1 "Nominal Mass Flow Rate";
 parameter Real k=-0.000003 "Controller Gain";
 parameter Real Ti=0.5
                      "Controller Integrator Time Constant";
@@ -22,8 +24,8 @@ parameter Real Delay_Time=5  "Delay Duration";
     redeclare package Medium = Modelica.Media.Water.StandardWater,
                                                  dp_nominal=Nominal_dp, m_flow_nominal=Nominal_Flow)
     annotation (Placement(transformation(extent={{-10,-50},{10,-30}})));
-  Modelica.Blocks.Continuous.LimPID PID(
-    controllerType=Modelica.Blocks.Types.SimpleController.PID,
+  TRANSFORM.Controls.LimPID         PID(
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=k,
     Ti=Ti,
     Td=Td,
@@ -32,7 +34,10 @@ parameter Real Delay_Time=5  "Delay Duration";
     wp=wp,
     wd=wd,
     Ni=ni,
-    Nd=Nd) annotation (Placement(transformation(extent={{-20,40},{0,60}})));
+    Nd=Nd,
+    reset=TRANSFORM.Types.Reset.Parameter,
+    y_reset=0)
+           annotation (Placement(transformation(extent={{-20,42},{0,62}})));
   Modelica.Blocks.Sources.RealExpression Pressure_Level(y=P_sys) annotation (Placement(transformation(extent={{-50,40},{-30,60}})));
   TRANSFORM.Fluid.Sensors.Pressure sensor_p(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -54,21 +59,24 @@ parameter Real Delay_Time=5  "Delay Duration";
         origin={12,18})));
   Modelica.Blocks.Sources.RealExpression DelayOpening(y=Delay_Opening) annotation (Placement(transformation(extent={{-48,62},{-28,82}})));
 equation
-  connect(Pressure_Level.y, PID.u_s) annotation (Line(points={{-29,50},{-22,50}},
-                                                                                color={0,0,127}));
+  connect(Pressure_Level.y, PID.u_s) annotation (Line(points={{-29,50},{-26,50},
+          {-26,52},{-22,52}},                                                   color={0,0,127}));
   connect(port_a, sensor_p.port) annotation (Line(points={{-100,0},{-86,0},{-86,6}},           color={0,127,255}));
   connect(sensor_p.port, valveLinear.port_a) annotation (Line(points={{-86,6},{-86,-40},{-10,-40}},           color={0,127,255}));
   connect(valveLinear.port_b, port_b) annotation (Line(points={{10,-40},{78,-40},{78,0},{100,0}}, color={0,127,255}));
   connect(sensor_p.p, switch1.u3) annotation (Line(points={{-80,16},{-54,16}},                   color={0,0,127}));
-  connect(switch1.y, PID.u_m) annotation (Line(points={{-31,24},{-10,24},{-10,38}},
-                                                                                  color={0,0,127}));
-  connect(PID.y, switch2.u3) annotation (Line(points={{1,50},{6,50},{6,36},{4,36},{4,30}},      color={0,0,127}));
+  connect(switch1.y, PID.u_m) annotation (Line(points={{-31,24},{-10,24},{-10,
+          40}},                                                                   color={0,0,127}));
+  connect(PID.y, switch2.u3) annotation (Line(points={{1,52},{6,52},{6,36},{4,
+          36},{4,30}},                                                                          color={0,0,127}));
   connect(switch2.y, valveLinear.opening) annotation (Line(points={{12,7},{12,-26},{0,-26},{0,-32}},  color={0,0,127}));
   connect(DelayOpening.y, switch2.u1) annotation (Line(points={{-27,72},{26,72},{26,30},{20,30}}, color={0,0,127}));
   connect(DelayOpening.y, switch1.u1) annotation (Line(points={{-27,72},{-22,72},{-22,86},{-60,86},{-60,32},{-54,32}},        color={0,0,127}));
   connect(port_a, port_a) annotation (Line(points={{-100,0},{-100,0}}, color={0,127,255}));
   connect(booleanStep.y, switch1.u2) annotation (Line(points={{-79,90},{-62,90},{-62,24},{-54,24}}, color={255,0,255}));
   connect(booleanStep.y, switch2.u2) annotation (Line(points={{-79,90},{12,90},{12,30}}, color={255,0,255}));
+  connect(booleanStep.y, PID.trigger) annotation (Line(points={{-79,90},{-62,90},
+          {-62,40},{-18,40}}, color={255,0,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Polygon(
           points={{20,-47},{60,-62},{20,-77},{20,-47}},

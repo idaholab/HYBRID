@@ -1,5 +1,6 @@
 within NHES.Fluid.Machines;
-model FlowMultiplier "Multiplies the exit flow rate by a capcity factor"
+model FlowMultiplier
+  "Increases outlet flow by a capcity factor.  Used to correct flow rates for Gas Turbine"
   extends Modelica.Fluid.Interfaces.PartialTwoPort;
   parameter Real capacityScaler=1;
 

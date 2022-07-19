@@ -1,9 +1,7 @@
 within NHES.Systems.BalanceOfPlant;
 package HRSG "Heat Recovery Steam Generators"
   model HRSG "Single pressure heat recovery steam generator"
-    import NCSU_INL;
-    import NCSU_INL;
-    import NCSU_INL;
+
    parameter Boolean use_nat_circ = false
       "Make unit free convection"
       annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
@@ -48,46 +46,45 @@ package HRSG "Heat Recovery Steam Generators"
   parameter Real n_tubes_ECON=20 "Number of Tubes in Econimizer"
     annotation (Dialog(tab="Econimizer Dimensions",
           group="Econimizer Tubes"));
-          parameter Modelica.Units.SI.Length ECON_L=10 if use_Superheater "Height of Econimizer"
+          parameter Modelica.Units.SI.Length ECON_L=10  "Height of Econimizer"
     annotation (Dialog(tab="Econimizer Dimensions",
           group="Econimizer Tubes"));
-          parameter Modelica.Units.SI.Length ECON_tube_Dia=50e-3 if use_Superheater "Hydraulic Diameter of Tubes"
+          parameter Modelica.Units.SI.Length ECON_tube_Dia=50e-3 "Hydraulic Diameter of Tubes"
     annotation (Dialog(tab="Econimizer Dimensions",
           group="Econimizer Tubes"));
-          parameter Modelica.Units.SI.Length ECON_shell_Dia=300e-3 if use_Superheater "Hydraulic Diameter of Shell"
+          parameter Modelica.Units.SI.Length ECON_shell_Dia=300e-3  "Hydraulic Diameter of Shell"
     annotation (Dialog(tab="Econimizer Dimensions",
           group="Econimizer Shell"));
-          parameter Real n_tubes_ECON_DC=1 if use_Superheater "Number of Downcomers in Econimizer"
+          parameter Real n_tubes_ECON_DC=1  "Number of Downcomers in Econimizer"
   annotation (Dialog(tab="Econimizer Dimensions",
           group="Econimizer Downcomer"));
-  parameter Modelica.Units.SI.Length ECON_DC_Dia=0.75 if use_Superheater "Diameter of Downcomer"
+  parameter Modelica.Units.SI.Length ECON_DC_Dia=0.75 "Diameter of Downcomer"
     annotation (Dialog(tab="Econimizer Dimensions",
           group="Econimizer Downcomer"));
 
   parameter Real n_tubes_SH=20 "Number of Tubes in Superheater"
     annotation (Dialog(tab="Superheater Dimensions",
           group="Superheater Tubes"));
-          parameter Modelica.Units.SI.Length SH_L=10 if use_Econimizer "Height of Superheater"
+          parameter Modelica.Units.SI.Length SH_L=10  "Height of Superheater"
     annotation (Dialog(tab="Superheater Dimensions",
           group="Superheater Tubes"));
-          parameter Modelica.Units.SI.Length SH_tube_Dia=50e-3 if use_Econimizer "Hydraulic Diameter of Tubes"
+          parameter Modelica.Units.SI.Length SH_tube_Dia=50e-3  "Hydraulic Diameter of Tubes"
     annotation (Dialog(tab="Superheater Dimensions",
           group="Superheater Tubes"));
-          parameter Modelica.Units.SI.Length SH_shell_Dia=300e-3 if use_Econimizer "Hydraulic Diameter of Shell"
+          parameter Modelica.Units.SI.Length SH_shell_Dia=300e-3  "Hydraulic Diameter of Shell"
     annotation (Dialog(tab="Superheater Dimensions",
           group="Superheater Shell"));
-          parameter Real n_tubes_SH_DC=1 if use_Econimizer "Number of Downcomers in Superheater"
+          parameter Real n_tubes_SH_DC=1  "Number of Downcomers in Superheater"
   annotation (Dialog(tab="Superheater Dimensions",
           group="Superheater Downcomer"));
-          parameter Modelica.Units.SI.Length SH_DC_Dia=0.75 if use_Econimizer "Diameter of Downcomer"
+          parameter Modelica.Units.SI.Length SH_DC_Dia=0.75 "Diameter of Downcomer"
     annotation (Dialog(tab="Superheater Dimensions",
           group="Superheater Downcomer"));
 
     Modelica.Fluid.Interfaces.FluidPort_a Feed_port(redeclare package Medium =
           Modelica.Media.Water.StandardWater)
       annotation (Placement(transformation(extent={{-10,-170},{10,-150}}),  iconTransformation(extent={{-10,-170},{10,-150}})));
-    Modelica.Fluid.Interfaces.FluidPort_a Gas_Inlet_Port(redeclare package
-        Medium =
+    Modelica.Fluid.Interfaces.FluidPort_a Gas_Inlet_Port(redeclare package Medium =
           NHES.Media.FlueGas)
       annotation (Placement(transformation(extent={{150,-10},{170,10}}), iconTransformation(extent={{150,-10},{170,10}})));
     Modelica.Fluid.Interfaces.FluidPort_b Gas_Outlet_Port(redeclare package
@@ -148,7 +145,8 @@ package HRSG "Heat Recovery Steam Generators"
       yMin=0,
       kp=250,
       LevelSet=0.5,
-      xi_start=0)
+      xi_start=0,
+      Ti=1)
       annotation (Placement(transformation(extent={{8,80},{-16,102}})));
     TRANSFORM.HeatExchangers.GenericDistributed_HX Evaporator(
       redeclare model Geometry =
@@ -372,13 +370,13 @@ package HRSG "Heat Recovery Steam Generators"
           extent={{-10,-10},{10,10}},
           rotation=180,
           origin={64,48})));
-    NHES.Fluid.Valves.Pressure_Control_Valve pressure_Control_Valve(
+    Fluid.Valves.Pressure_Control_Valve_Simple
+                                             pressure_Control_Valve_Simple(
       P_sys=P_sys,
-      Nominal_dp=P_sys ./ 100,
+      Nominal_dp=P_sys ./ 1.5,
       Nominal_Flow=Recirculation_Rate*0.1,
-      Ti=5,
-      Delay_Opening=PCV_opening_start)
-      annotation (Placement(transformation(extent={{50,118},{30,138}})));
+      Ti=5)
+      annotation (Placement(transformation(extent={{48,118},{28,138}})));
     TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow RecircPump(redeclare package
         Medium =
           Modelica.Media.Water.StandardWater,                                                                              m_flow_nominal=
@@ -452,10 +450,10 @@ package HRSG "Heat Recovery Steam Generators"
     connect(Superheater.port_b_shell, Evaporator.port_a_shell)
       annotation (Line(points={{86.6,-46},{86.6,-54},{40,-54},{40,-24},{30.6,-24},{30.6,-34}},   color={0,140,72}));
     connect(Gas_Resistance_2.port_a, Gas_Inlet_Port) annotation (Line(points={{133,-112},{154,-112},{154,0},{160,0}},     color={0,140,72}));
-    connect(massFlowRate1.port_b, pressure_Control_Valve.port_a) annotation (Line(points={{82,80},
-            {82,128},{50,128}},                                                                               color={238,46,47}));
-    connect(pressure_Control_Valve.port_b, Steam_Outlet_port) annotation (Line(points={{30,128},
-            {0,128},{0,160}},                                                                              color={238,46,47}));
+    connect(massFlowRate1.port_b, pressure_Control_Valve_Simple.port_a)
+      annotation (Line(points={{82,80},{82,128},{48,128}}, color={238,46,47}));
+    connect(pressure_Control_Valve_Simple.port_b, Steam_Outlet_port)
+      annotation (Line(points={{28,128},{0,128},{0,160}}, color={238,46,47}));
     connect(steam_Drum.downcomer_port, DowncomerResistance.port_b) annotation (
         Line(points={{22,30},{22,4},{-14,4},{-14,-7}}, color={244,125,35}));
     connect(Economizer.port_a_shell, Evaporator.port_b_shell)
@@ -612,6 +610,194 @@ package HRSG "Heat Recovery Steam Generators"
           Interval=0.1,
           __Dymola_Algorithm="Esdirk45a"));
     end Gas_Turbine_HRSG_Test;
+
+    model HRSG_Test "Test of HRSG"
+      Modelica.Fluid.Sources.Boundary_pT SinkExhaustGas(
+        p=10000,
+        redeclare package Medium = NHES.Media.FlueGas,
+        use_p_in=false,
+        nPorts=1)           annotation (Placement(transformation(extent={{74,42},
+                {90,58}},
+                      rotation=0)));
+      Modelica.Fluid.Sources.Boundary_pT FeedSource(
+        p=500000,
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        use_p_in=false,
+        T=313.15,
+        nPorts=1) annotation (Placement(transformation(extent={{78,-72},{62,-56}},   rotation=0)));
+      Modelica.Fluid.Sources.Boundary_pT SteamSink(
+        p=100000,
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        use_p_in=false,
+        nPorts=1) annotation (Placement(transformation(extent={{94,78},{78,94}},   rotation=0)));
+      NHES.Systems.BalanceOfPlant.HRSG.HRSG heatRecoverySteamGenerator(
+        use_nat_circ=false,
+        use_booster_pump=true,
+        use_Econimizer=true,
+        use_Superheater=false,
+        Recirculation_Rate=10,
+        P_sys=862000,
+        Nominal_Flow=5.5,
+        YMAX=5,
+        n_tubes_EVAP=500,
+        EVAP_tube_Dia(displayUnit="mm") = 0.03,
+        EVAP_shell_Dia(displayUnit="mm") = 0.15,
+        EVAP_DC_Dia=0.3,
+        n_tubes_ECON=10,
+        ECON_L=6,
+        ECON_tube_Dia(displayUnit="mm") = 0.05,
+        ECON_shell_Dia(displayUnit="mm") = 0.75,
+        ECON_DC_Dia=0.3,
+        threeElementContoller(
+          k=100,
+          kp=1e5,
+          Ti=2.5),
+        pressure_Control_Valve_Simple(k=-0.0003))
+        annotation (Placement(transformation(extent={{58,-40},{-22,40}})));
+      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary(
+        redeclare package Medium = NHES.Media.FlueGas,
+        m_flow=10,
+        T=973.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{-72,-10},{-52,10}})));
+    equation
+      connect(heatRecoverySteamGenerator.Steam_Outlet_port, SteamSink.ports[1])
+        annotation (Line(points={{18,40},{18,86},{78,86}},  color={0,127,255}));
+      connect(heatRecoverySteamGenerator.Gas_Outlet_Port, SinkExhaustGas.ports[1]) annotation (Line(points={{58,0},{
+              96,0},{96,50},{90,50}},                                                                                           color={0,127,255}));
+      connect(heatRecoverySteamGenerator.Feed_port, FeedSource.ports[1])
+        annotation (Line(points={{18,-40},{18,-64},{62,-64}},         color={0,127,255}));
+      connect(boundary.ports[1], heatRecoverySteamGenerator.Gas_Inlet_Port)
+        annotation (Line(points={{-52,0},{-22,0}}, color={0,127,255}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                120,100}}), graphics={
+            Ellipse(lineColor = {75,138,73},
+                    fillColor={255,255,255},
+                    fillPattern = FillPattern.Solid,
+                    extent={{-100,-100},{100,100}}),
+            Polygon(lineColor = {0,0,255},
+                    fillColor = {75,138,73},
+                    pattern = LinePattern.None,
+                    fillPattern = FillPattern.Solid,
+                    points={{-36,60},{64,0},{-36,-60},{-36,60}})}),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}})),
+        experiment(
+          StopTime=1000,
+          Interval=1,
+          __Dymola_Algorithm="Esdirk45a"));
+    end HRSG_Test;
+
+    model HRSG_MEE_Test "Test of HRSG"
+      Modelica.Fluid.Sources.Boundary_pT SinkExhaustGas(
+        p=10000,
+        redeclare package Medium = NHES.Media.FlueGas,
+        use_p_in=false,
+        nPorts=1)           annotation (Placement(transformation(extent={{-28,-10},
+                {-44,6}},
+                      rotation=0)));
+      NHES.Systems.BalanceOfPlant.HRSG.HRSG heatRecoverySteamGenerator(
+        use_nat_circ=false,
+        use_booster_pump=true,
+        use_Econimizer=true,
+        use_Superheater=false,
+        Recirculation_Rate=10,
+        P_sys=862000,
+        Nominal_Flow=5.5,
+        YMAX=5,
+        n_tubes_EVAP=500,
+        EVAP_tube_Dia(displayUnit="mm") = 0.03,
+        EVAP_shell_Dia(displayUnit="mm") = 0.15,
+        EVAP_DC_Dia=0.3,
+        n_tubes_ECON=10,
+        ECON_L=6,
+        ECON_tube_Dia(displayUnit="mm") = 0.05,
+        ECON_shell_Dia(displayUnit="mm") = 0.75,
+        ECON_DC_Dia=0.3,
+        threeElementContoller(
+          k=100,
+          kp=1e5,
+          Ti=2.5),
+        pressure_Control_Valve_Simple(k=-0.0003))
+        annotation (Placement(transformation(extent={{-64,-42},{-144,38}})));
+      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary(
+        redeclare package Medium = NHES.Media.FlueGas,
+        m_flow=9,
+        T=973.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{-196,-12},{-176,8}})));
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Condensate_Out(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        p=10000,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{-14,-88},{8,-68}})));
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Brine_Oulet10(
+        redeclare package Medium = Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+
+        p=10000,
+        X={0.92,0.08},
+        nPorts=1) annotation (Placement(transformation(extent={{282,-16},{260,4}})));
+      Desalination.MEE.Multiple_Effect.MEE_PF8_FC
+                              mEE_PF8_FC(redeclare
+          Desalination.MEE.ControlSystems.CS_PressureControlSystem CS)
+        annotation (Placement(transformation(extent={{88,-40},{196,68}})));
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Brine_Source(
+        redeclare package Medium = Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+
+        use_X_in=false,
+        p=100000,
+        h=1.5e5,
+        X={0.92,0.08},
+        nPorts=1) annotation (Placement(transformation(extent={{252,30},{230,50}})));
+      TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package
+          Medium = Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{40,38},{60,58}})));
+      TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package
+          Medium = Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{42,-84},{62,-64}})));
+    equation
+      connect(heatRecoverySteamGenerator.Gas_Outlet_Port, SinkExhaustGas.ports[1]) annotation (Line(points={{-64,-2},
+              {-44,-2}},                                                                                                        color={0,127,255}));
+      connect(boundary.ports[1], heatRecoverySteamGenerator.Gas_Inlet_Port)
+        annotation (Line(points={{-176,-2},{-144,-2}},
+                                                   color={0,127,255}));
+      connect(Brine_Oulet10.ports[1],mEE_PF8_FC. Saltwater_Reject_Oulet)
+        annotation (Line(points={{260,-6},{228,-6},{228,-7.6},{196,-7.6}},
+            color={0,127,255}));
+      connect(Brine_Source.ports[1],mEE_PF8_FC. Saltwater_Input) annotation (
+          Line(points={{230,40},{213,40},{213,35.6},{196,35.6}},
+                                                             color={0,127,255}));
+      connect(sensor_m_flow1.port_b,mEE_PF8_FC. Condensate_Oulet) annotation (
+          Line(points={{62,-74},{142,-74},{142,-38.92}},color={0,127,255}));
+      connect(sensor_m_flow1.port_a,Condensate_Out. ports[1]) annotation (Line(
+            points={{42,-74},{16,-74},{16,-78},{8,-78}},          color={0,127,255}));
+      connect(sensor_m_flow.port_b,mEE_PF8_FC. Steam_Input) annotation (Line(
+            points={{60,48},{78,48},{78,35.6},{88,35.6}},     color={0,127,255}));
+      connect(mEE_PF8_FC.Water_Outlet, heatRecoverySteamGenerator.Feed_port)
+        annotation (Line(points={{88,-7.6},{88,-6},{-22,-6},{-22,-48},{-104,-48},
+              {-104,-42}}, color={0,127,255}));
+      connect(heatRecoverySteamGenerator.Steam_Outlet_port, sensor_m_flow.port_a)
+        annotation (Line(points={{-104,38},{-104,48},{40,48}}, color={0,127,255}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                120,100}}), graphics={
+            Ellipse(lineColor = {75,138,73},
+                    fillColor={255,255,255},
+                    fillPattern = FillPattern.Solid,
+                    extent={{-100,-100},{100,100}}),
+            Polygon(lineColor = {0,0,255},
+                    fillColor = {75,138,73},
+                    pattern = LinePattern.None,
+                    fillPattern = FillPattern.Solid,
+                    points={{-36,60},{64,0},{-36,-60},{-36,60}})}),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}})),
+        experiment(
+          StopTime=1000,
+          Interval=1,
+          __Dymola_Algorithm="Esdirk45a"));
+    end HRSG_MEE_Test;
     annotation (Icon(graphics={
           Rectangle(
             lineColor={200,200,200},

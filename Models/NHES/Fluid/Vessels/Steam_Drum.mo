@@ -1,5 +1,6 @@
 within NHES.Fluid.Vessels;
-model Steam_Drum "3 equation model based steam drum"
+model Steam_Drum
+  "3 equation model Steam drum with riser, downcomer, feed, steam ports, and level output"
 
   import Modelica.Fluid.Types.Dynamics;
 
@@ -12,15 +13,6 @@ replaceable package Medium = Modelica.Media.Water.StandardWater;
 // Initialization
   parameter Modelica.Units.SI.Pressure p_start=103e5 "Initial pressure"
     annotation (Dialog(tab="Initialization"));
-
-  parameter Modelica.Units.SI.MassFlowRate m_feed_st "Initial feed mass flow rate"
-    annotation (Dialog(tab="Initialization"));
-      parameter Modelica.Units.SI.MassFlowRate m_steam_st "Initial feed mass flow rate"
-    annotation (Dialog(tab="Initialization"));
-      parameter Modelica.Units.SI.MassFlowRate m_riser_st "Initial feed mass flow rate"
-    annotation (Dialog(tab="Initialization"));
-
-
   parameter Real alphag_start=0.5 "Initial Void Fraction" annotation(Dialog(tab="Initialization"));
   parameter Medium.SpecificEnthalpy h_f_start=Medium.bubbleEnthalpy(Medium.setSat_p(
       p_start)) "Liquid enthalpy start value"    annotation (Dialog(tab="Initialization"));
@@ -67,14 +59,14 @@ Modelica.Fluid.Interfaces.FluidPort_b steam_port(
   Medium.SpecificEnthalpy h_f( start=h_f_start, stateSelect=StateSelect.prefer)
     "Specific enthalpy of sat liquid";
   Modelica.Units.SI.SpecificEnthalpy h_riser(min=0);
-  Modelica.Units.SI.SpecificEnthalpy h_downcomer;
-  Modelica.Units.SI.SpecificEnthalpy h_feed;
-  Modelica.Units.SI.SpecificEnthalpy h_steam(start=h_g_start);
+  Modelica.Units.SI.SpecificEnthalpy h_downcomer(min=0);
+  Modelica.Units.SI.SpecificEnthalpy h_feed(min=0);
+  Modelica.Units.SI.SpecificEnthalpy h_steam(min=0);
   Modelica.Units.SI.SpecificEnthalpy h_fg;
-  Modelica.Units.SI.MassFlowRate m_feed(start=m_feed_st);
-  Modelica.Units.SI.MassFlowRate m_riser(start=m_riser_st);
-  Modelica.Units.SI.MassFlowRate m_steam(start=m_steam_st);
-  Modelica.Units.SI.MassFlowRate m_downcomer(start=m_steam-m_feed-m_riser);
+  Modelica.Units.SI.MassFlowRate m_feed;
+  Modelica.Units.SI.MassFlowRate m_riser;
+  Modelica.Units.SI.MassFlowRate m_downcomer;
+  Modelica.Units.SI.MassFlowRate m_steam;
   Modelica.Units.SI.Density rho_g;
   Modelica.Units.SI.Density rho_liquid;
   Modelica.Units.SI.Mass M_liquid;

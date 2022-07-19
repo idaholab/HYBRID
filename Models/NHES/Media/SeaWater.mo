@@ -47,7 +47,8 @@ partial package SeaWater "Salt Water media using IAPWS industrial fromulation"
 
   redeclare function extends dynamicViscosity "Return dynamic viscosity"
   algorithm
-    eta := 10 - state.T*0.3 + state.p*0.2;
+    eta := (4.2844e-5)+(0.157
+                            *((state.T-273.15+64.993)^2)-91.296)^(-1);
     annotation (Documentation(info="<html>
 
 </html>"));
@@ -76,7 +77,10 @@ partial package SeaWater "Salt Water media using IAPWS industrial fromulation"
   redeclare function extends specificHeatCapacityCp
     "Return specific heat capacity at constant pressure"
   algorithm
-    cp := 0;
+    cp := IAPWS_Utilities.cp_pT(
+          state.p,
+          state.T,
+          state.X);
     annotation (Documentation(info="<html>
 
 </html>"));
@@ -159,6 +163,8 @@ partial package SeaWater "Salt Water media using IAPWS industrial fromulation"
       Real vt "Derivative of specific volume w.r.t. temperature";
       Real vp "Derivative of specific volume w.r.t. pressure";
       Real vx;
+      Real gSs;
+      Real gSps;
       Real x "Dryness fraction";
       Real dpT "dp/dT derivative of saturation curve";
       Modelica.Units.SI.SpecificEnergy mu;
@@ -178,7 +184,7 @@ partial package SeaWater "Salt Water media using IAPWS industrial fromulation"
     algorithm
       h := aux.h;
       annotation (
-        derivative(noDerivative=aux) = h_pT_der,
+        derivative(noDerivative=aux)=h_pT_der,
         Inline=false,
         LateInline=true);
     end h_props_pT;
@@ -195,6 +201,7 @@ partial package SeaWater "Salt Water media using IAPWS industrial fromulation"
       SeaWater.IAPWS_Utilities.GibbsDerivsBrine g
         "Dimensionless Gibbs function and derivatives w.r.t. pi and tau";
       Integer error "Error flag for inverse iterations";
+      Modelica.Units.SI.SpecificVolume vint;
     algorithm
 
       aux.b := X[2]/(0.314038218
@@ -212,13 +219,14 @@ partial package SeaWater "Salt Water media using IAPWS industrial fromulation"
         +(g.gS-aux.T*g.gSt);
       aux.s := aux.R_s*(g.tau*g.gtau - g.g)
         -g.gSt;
-      aux.rho := p/(aux.R_s*T*g.pi*g.gpi)
-        +(1/g.gSp);
+      vint:=((aux.R_s*T*g.pi*g.gpi)/p)+ g.gSp/100;
+
+      aux.rho :=1/vint;
       aux.vt := aux.R_s/p*(g.pi*g.gpi - g.tau*g.pi*g.gtaupi)
         -g.gSpp;
       aux.vp := aux.R_s*T/(p*p)*g.pi*g.pi*g.gpipi
         +g.gStp;
-      aux.vx := g.gSps;
+      aux.vx:=g.gSps;
       aux.cp := -aux.R_s*g.tau*g.tau*g.gtautau
         -aux.T*g.gStt;
       aux.cv := aux.R_s*(-g.tau*g.tau*g.gtautau + ((g.gpi - g.tau*g.gtaupi)*(g.gpi
@@ -228,13 +236,16 @@ partial package SeaWater "Salt Water media using IAPWS industrial fromulation"
       aux.dpT := -aux.vt/aux.vp;
       aux.pt := -g.p/g.T*(g.gpi - g.tau*g.gtaupi)/(g.gpipi*g.pi);
       aux.pd := -g.R_s*g.T*g.gpi*g.gpi/(g.gpipi);
-      aux.mu:=aux.h-aux.T*aux.s-X[2]*g.gSs;
+      //aux.mu:=aux.h-aux.T*aux.s-X[2]*g.gSs;
       if X[2]>-1e-10 and X[2]<1e-10 then
         aux.theta:=0;
         else
       aux.theta:=(g.gS-X[2]*g.gs)/(aux.b*aux.R_s*T);
       end if;
       aux.beta:=(g.gps/g.gpi);
+      aux.gSs:=g.gSs;
+      aux.gSps:=g.gSps;
+
     end sesWaterBaseProp_pT;
 
     function g1 "Gibbs function for region 1: g(p,T,S)"
@@ -257,6 +268,9 @@ partial package SeaWater "Salt Water media using IAPWS industrial fromulation"
       Real [6] qk;
       Real [8] qi;
       Real [7] qj;
+      Real [6] qkp;
+      Real [8] qip;
+      Real [7] qjp;
       Integer i;
       Integer j;
       Integer k;
@@ -395,7 +409,7 @@ partial package SeaWater "Salt Water media using IAPWS industrial fromulation"
         g.gSp:=0;
         g.gStt:=0;
         g.gStp:=0;
-        g.gSpp:=0;
+    //    g.gSpp:=0;
         g.gSs:=0;
         g.gSps:=0;
       else
@@ -424,13 +438,13 @@ partial package SeaWater "Salt Water media using IAPWS industrial fromulation"
       for k in 2:6 loop
         for j in 1:7 loop
           for i in 3:8 loop
-            qi[i]:=(k-1)*n[i, j, k]*(g.xi^(i - 1))* (theta1^(j - 1))*(pi2^(k - 2));
+            qip[i]:=(k-1)*n[i, j, k]*(g.xi^(i - 1))* (theta1^(j - 1))*(pi2^(k - 2));
           end for;
-          qj[j]:=sum(qi);
+          qjp[j]:=sum(qip);
         end for;
-        qk[k]:=sum(qj);
+        qkp[k]:=sum(qjp);
       end for;
-      g.gSp:=IAPWS_Utilities.data.gSTAR*sum(qk)/100e6/10;
+      g.gSp:=IAPWS_Utilities.data.gSTAR*sum(qkp)/100e5;
 
       for k in 1:6 loop
         for j in 3:7 loop
@@ -443,7 +457,7 @@ partial package SeaWater "Salt Water media using IAPWS industrial fromulation"
       end for;
       g.gStt:=IAPWS_Utilities.data.gSTAR*sum(qk)/(40^2)/10;
 
-      for k in 1:6 loop
+      for k in 2:6 loop
         for j in 2:7 loop
           for i in 3:8 loop
             qi[i]:=(j-1)*(k-1)*n[i, j, k]*(g.xi^(i - 1))* (theta1^(j - 2))*(pi2^(k - 2));
@@ -749,9 +763,8 @@ partial package SeaWater "Salt Water media using IAPWS industrial fromulation"
       output Modelica.Units.SI.Density rho "Density";
     algorithm
       rho := aux.rho;
-      annotation (
-        derivative(noDerivative=aux) = rho_pT_der,
-        Inline=false,
+      annotation (derivative(noDerivative=aux) = rho_pT_der,
+            Inline=false,
         LateInline=true);
     end rho_props_pT;
 
@@ -783,9 +796,8 @@ partial package SeaWater "Salt Water media using IAPWS industrial fromulation"
       input IAPWS_Utilities.IAPWSBase aux "Auxiliary record";
       output Modelica.Units.SI.SpecificEnergy mu "Chemical Potential";
     algorithm
-      mu := aux.mu;
+      mu := aux.h-T*aux.s-X[2]*aux.gSs;
       annotation (
-        derivative(noDerivative=aux) = rho_pT_der,
         Inline=false,
         LateInline=true);
     end mu_props_pT;
@@ -819,7 +831,8 @@ partial package SeaWater "Salt Water media using IAPWS industrial fromulation"
       output Modelica.Units.SI.SpecificEntropy s "Specific entropy";
     algorithm
       s := aux.s;
-      annotation (Inline=false, LateInline=true);
+      annotation (derivative(noDerivative=aux) = s_pT_der,
+      Inline=false, LateInline=true);
     end s_props_pT;
 
     function tph "Inverse function: T(p,h)"
@@ -936,56 +949,165 @@ partial package SeaWater "Salt Water media using IAPWS industrial fromulation"
     algorithm
       rho := properties.rho;
       annotation (
-        derivative(noDerivative=properties) = rho_ph_der,
+        derivative(noDerivative=properties)=NCSU_INL.MEE_Stuff.rho_ph_der,
         Inline=false,
         LateInline=true);
     end rho_props_ph;
 
     function rho_pT_der "Derivative function of rho_pT"
       extends Modelica.Icons.Function;
-      input SI.Pressure p "Pressure";
-      input SI.Temperature T "Temperature";
-      input SI.MassFraction X[:];
+      input Modelica.Units.SI.Pressure p "Pressure";
+      input Modelica.Units.SI.Temperature T "Temperature";
+      input Modelica.Units.SI.MassFraction X[:]
+                                               "Massfraction";
       input NHES.Media.SeaWater.IAPWS_Utilities.IAPWSBase aux "Auxiliary record";
       input Real p_der "Derivative of pressure";
       input Real T_der "Derivative of temperature";
-      input Real X_der;
+      input Real X_der[:]
+                      "Derivative of massfraction";
       output Real rho_der "Derivative of density";
 
     algorithm
      rho_der := (-aux.rho*aux.rho*aux.vp)*p_der + (-aux.rho*aux.rho*aux.vt)*
-          T_der+(-aux.rho*aux.rho*aux.vx)*X_der;
+          T_der;
+          //+(-aux.rho*aux.rho*aux.vx)*X_der[2];
     end rho_pT_der;
-
-    function rho_ph_der "Derivative function of rho_ph"
-      extends Modelica.Icons.Function;
-      input SI.Pressure p "Pressure";
-      input SI.SpecificEnthalpy h "Specific enthalpy";
-      input SI.MassFraction X[:];
-      input NHES.Media.SeaWater.IAPWS_Utilities.IAPWSBase aux "Auxiliary record";
-      input Real p_der "Derivative of pressure";
-      input Real h_der "Derivative of specific enthalpy";
-      output Real rho_der "Derivative of density";
-    algorithm
-        rho_der := (-aux.rho*aux.rho*(aux.vp*aux.cp - aux.vt/aux.rho + aux.T*aux.vt
-          *aux.vt)/aux.cp)*p_der + (-aux.rho*aux.rho*aux.vt/(aux.cp))*h_der;
-
-    end rho_ph_der;
 
     function h_pT_der "Derivative function of h_pT"
       extends Modelica.Icons.Function;
-      input SI.Pressure p "Pressure";
-      input SI.Temperature T "Temperature";
-      input SI.MassFraction X[:];
+      input Modelica.Units.SI.Pressure p "Pressure";
+      input Modelica.Units.SI.Temperature T "Temperature";
+      input Modelica.Units.SI.MassFraction X[:];
       input NHES.Media.SeaWater.IAPWS_Utilities.IAPWSBase aux "Auxiliary record";
       input Real p_der "Derivative of pressure";
       input Real T_der "Derivative of temperature";
+      input Real X_der[:];
       output Real h_der "Derivative of specific enthalpy";
     algorithm
 
         h_der := (1/aux.rho - aux.T*aux.vt)*p_der + aux.cp*T_der;
 
     end h_pT_der;
+
+    function mu_pT_der "Derivative function of mu_pT"
+      extends Modelica.Icons.Function;
+      input Modelica.Units.SI.Pressure p "Pressure";
+      input Modelica.Units.SI.Temperature T "Temperature";
+      input Modelica.Units.SI.MassFraction X[:]
+                                               "Massfraction";
+      input NHES.Media.SeaWater.IAPWS_Utilities.IAPWSBase aux "Auxiliary record";
+      input Real p_der "Derivative of pressure";
+      input Real T_der "Derivative of temperature";
+      input Real X_der[:]
+                      "Derivative of massfraction";
+      output Real mu_der "Derivative of density";
+
+    algorithm
+     mu_der  :=(1/aux.rho - aux.T*aux.vt-aux.T*aux.vp)*p_der + (2*aux.cp+aux.s)*T_der;
+
+    //-X[2]*aux.gSps
+    end mu_pT_der;
+
+    function gs_props_pT
+      "gibbs salt der as function or pressure and temperature"
+      extends Modelica.Icons.Function;
+      input Modelica.Units.SI.Pressure p "Pressure";
+      input Modelica.Units.SI.Temperature T "Temperature";
+      input Modelica.Units.SI.MassFraction X[:];
+      input IAPWS_Utilities.IAPWSBase aux "Auxiliary record";
+      output Modelica.Units.SI.SpecificEnergy gs "Chemical Potential";
+    algorithm
+      gs := aux.gSs;
+      annotation (derivative(noDerivative=aux) = gs_pT_der,
+        Inline=false,
+        LateInline=true);
+    end gs_props_pT;
+
+    function gs_pTX
+      "Gibbs salt der as function or pressure temperature and MassFraction"
+      extends Modelica.Icons.Function;
+      input Modelica.Units.SI.Pressure p "Pressure";
+      input Modelica.Units.SI.Temperature T "Temperature";
+      input Modelica.Units.SI.MassFraction X[:];
+      output Modelica.Units.SI.SpecificEnergy gs "Chemical Potential";
+    algorithm
+      gs := NHES.Media.SeaWater.IAPWS_Utilities.gs_props_pT(
+            p,
+            T,
+            X,
+            NHES.Media.SeaWater.IAPWS_Utilities.sesWaterBaseProp_pT(
+              p,
+              T,
+              X));
+      annotation (Inline=true);
+    end gs_pTX;
+
+    function gs_pT_der "Derivative function of gs_pT"
+      extends Modelica.Icons.Function;
+      input Modelica.Units.SI.Pressure p "Pressure";
+      input Modelica.Units.SI.Temperature T "Temperature";
+      input Modelica.Units.SI.MassFraction X[:]
+      "Massfraction";
+      input NHES.Media.SeaWater.IAPWS_Utilities.IAPWSBase aux "Auxiliary record";
+      input Real p_der "Derivative of pressure";
+      input Real T_der "Derivative of temperature";
+      input Real X_der[:]
+                         "Derivative of massfraction";
+      output Real gs_der "Derivative of density";
+
+    algorithm
+     gs_der := aux.gSps*p_der;
+    end gs_pT_der;
+
+    function s_pT_der "Derivative function of s_pT"
+      extends Modelica.Icons.Function;
+      input Modelica.Units.SI.Pressure p "Pressure";
+      input Modelica.Units.SI.Temperature T "Temperature";
+      input Modelica.Units.SI.MassFraction X[:]
+      "Massfraction";
+      input NHES.Media.SeaWater.IAPWS_Utilities.IAPWSBase aux "Auxiliary record";
+      input Real p_der "Derivative of pressure";
+      input Real T_der "Derivative of temperature";
+      input Real X_der[:]
+                         "Derivative of massfraction";
+      output Real s_der "Derivative of density";
+
+    algorithm
+     s_der := (aux.cp/aux.T)*T_der+aux.vp*p_der;
+    end s_pT_der;
+
+    function cp_pT
+      "Specific heat capacity at constant pressure as function of pressure and temperature"
+
+      extends Modelica.Icons.Function;
+      input SI.Pressure p "Pressure";
+      input SI.Temperature T "Temperature";
+      input SI.MassFraction X[:];
+      output SI.SpecificHeatCapacity cp "Specific heat capacity";
+    algorithm
+      cp := NHES.Media.SeaWater.IAPWS_Utilities.cp_props_pT(
+        p,
+        T,
+        X,
+        NHES.Media.SeaWater.IAPWS_Utilities.sesWaterBaseProp_pT(
+          p,
+          T,
+          X));
+      annotation (Inline=true);
+    end cp_pT;
+
+    function cp_props_pT
+      "Specific heat capacity at constant pressure as function of pressure and temperature"
+      extends Modelica.Icons.Function;
+      input SI.Pressure p "Pressure";
+      input SI.Temperature T "Temperature";
+      input SI.MassFraction X[:];
+      input NHES.Media.SeaWater.IAPWS_Utilities.IAPWSBase aux "Auxiliary record";
+      output SI.SpecificHeatCapacity cp "Specific heat capacity";
+    algorithm
+      cp := aux.cp;
+      annotation (Inline=false, LateInline=true);
+    end cp_props_pT;
   end IAPWS_Utilities;
 
   replaceable function mu_pTX
@@ -1128,6 +1250,20 @@ partial package SeaWater "Salt Water media using IAPWS industrial fromulation"
         X);
     annotation (Inline=true);
   end density_phX;
+
+  replaceable function gs_pTX
+    "Relative Return Chemical Potential from p, T, and X or Xi"
+    extends Modelica.Icons.Function;
+    input AbsolutePressure p "Pressure";
+    input Temperature T "Temperature";
+    input MassFraction X[:] "Mass fractions";
+    output Modelica.Units.SI.SpecificEnergy gs "Cehmical Potential";
+  algorithm
+    gs := IAPWS_Utilities.gs_pTX(
+            p,
+            T,
+            X);
+  end gs_pTX;
   annotation (Documentation(info="<html>
 <p>Salt Water Media using IAPWS industrial formulation.</p>
 <p>Thermodynamic Properties are determined from a Gibbs Equation Of State.</p>
