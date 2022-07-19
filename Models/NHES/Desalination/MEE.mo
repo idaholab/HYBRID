@@ -6492,23 +6492,23 @@ package MEE "Multi Effect Evaporators"
         annotation (Placement(transformation(extent={{-226,106},{-206,126}})));
       Modelica.Blocks.Sources.RealExpression T7_set(y=data.T7)
         annotation (Placement(transformation(extent={{-226,86},{-206,106}})));
-      Modelica.Fluid.Sensors.Temperature temperature1(redeclare package Medium
-          = Modelica.Media.Water.StandardWater)
+      Modelica.Fluid.Sensors.Temperature temperature1(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
         annotation (Placement(transformation(extent={{-364,6},{-344,26}})));
-      Modelica.Fluid.Sensors.Temperature temperature2(redeclare package Medium
-          = Modelica.Media.Water.StandardWater)
+      Modelica.Fluid.Sensors.Temperature temperature2(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
         annotation (Placement(transformation(extent={{-268,4},{-248,24}})));
-      Modelica.Fluid.Sensors.Temperature temperature3(redeclare package Medium
-          = Modelica.Media.Water.StandardWater)
+      Modelica.Fluid.Sensors.Temperature temperature3(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
         annotation (Placement(transformation(extent={{-164,6},{-144,26}})));
-      Modelica.Fluid.Sensors.Temperature temperature4(redeclare package Medium
-          = Modelica.Media.Water.StandardWater)
+      Modelica.Fluid.Sensors.Temperature temperature4(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
         annotation (Placement(transformation(extent={{-64,4},{-44,24}})));
-      Modelica.Fluid.Sensors.Temperature temperature5(redeclare package Medium
-          = Modelica.Media.Water.StandardWater)
+      Modelica.Fluid.Sensors.Temperature temperature5(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
         annotation (Placement(transformation(extent={{44,2},{64,22}})));
-      Modelica.Fluid.Sensors.Temperature temperature6(redeclare package Medium
-          = Modelica.Media.Water.StandardWater)
+      Modelica.Fluid.Sensors.Temperature temperature6(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
         annotation (Placement(transformation(extent={{138,2},{158,22}})));
       Fluid.Valves.FCV BrineFCV1(
         redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
@@ -6934,14 +6934,14 @@ package MEE "Multi Effect Evaporators"
         annotation (Placement(transformation(extent={{-226,106},{-206,126}})));
       Modelica.Blocks.Sources.RealExpression T7_set(y=data.T7)
         annotation (Placement(transformation(extent={{-226,86},{-206,106}})));
-      Modelica.Fluid.Sensors.Temperature temperature1(redeclare package Medium
-          = Modelica.Media.Water.StandardWater)
+      Modelica.Fluid.Sensors.Temperature temperature1(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
         annotation (Placement(transformation(extent={{-364,6},{-344,26}})));
-      Modelica.Fluid.Sensors.Temperature temperature2(redeclare package Medium
-          = Modelica.Media.Water.StandardWater)
+      Modelica.Fluid.Sensors.Temperature temperature2(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
         annotation (Placement(transformation(extent={{-268,4},{-248,24}})));
-      Modelica.Fluid.Sensors.Temperature temperature3(redeclare package Medium
-          = Modelica.Media.Water.StandardWater)
+      Modelica.Fluid.Sensors.Temperature temperature3(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
         annotation (Placement(transformation(extent={{-164,6},{-144,26}})));
       Fluid.Valves.FCV BrineFCV1(
         redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
@@ -6970,7 +6970,7 @@ package MEE "Multi Effect Evaporators"
       Components.PreHeater preHeater(redeclare package Medium_1 =
             Modelica.Media.Water.StandardWater, redeclare package Medium_2 =
             NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
-        annotation (Placement(transformation(extent={{460,20},{500,60}})));
+        annotation (Placement(transformation(extent={{458,6},{498,46}})));
     equation
       connect(effect1.Steam_Outlet_Port,effect2. Tube_Inlet) annotation (Line(
             points={{-358,-18},{-358,-12},{-296,-12},{-296,-60},{-287.4,-60}},
@@ -7142,15 +7142,16 @@ package MEE "Multi Effect Evaporators"
         annotation (Line(points={{-210,40},{-310,40}}, color={0,127,255}));
       connect(CV3.port_b, Condensate_Oulet) annotation (Line(points={{446,-110},
               {446,-140},{-558,-140}}, color={0,127,255}));
-      connect(preHeater.port_b1, CV3.port_a) annotation (Line(points={{480.1,
-              20.2},{480,20.2},{480,-30},{446,-30},{446,-90}}, color={0,127,255}));
+      connect(preHeater.port_b1, CV3.port_a) annotation (Line(points={{478.1,
+              6.2},{476,6.2},{476,-52},{446,-52},{446,-90}},   color={0,127,255}));
       connect(preHeater.port_a2, Saltwater_Input)
-        annotation (Line(points={{500.2,40},{560,40}}, color={0,127,255}));
+        annotation (Line(points={{498.2,26},{498.2,24},{536,24},{536,40},{560,
+              40}},                                    color={0,127,255}));
       connect(effect3.Steam_Outlet_Port, preHeater.port_a1) annotation (Line(
-            points={{-154,-16},{-154,-4},{444,-4},{444,72},{480,72},{480,60}},
+            points={{-154,-16},{-154,-4},{428,-4},{428,46},{478,46}},
             color={0,127,255}));
-      connect(preHeater.port_b2, BrineFCV3.port_a) annotation (Line(points={{
-              460,40},{-32,40},{-32,52},{-110,52},{-110,40}}, color={0,127,255}));
+      connect(preHeater.port_b2, BrineFCV3.port_a) annotation (Line(points={{458,26},
+              {-88,26},{-88,52},{-110,52},{-110,40}},         color={0,127,255}));
       connect(actuatorBus.CV3_opening, CV3.opening) annotation (Line(
           points={{30.1,100.1},{422,100.1},{422,-58},{476,-58},{476,-100},{454,
               -100}},
