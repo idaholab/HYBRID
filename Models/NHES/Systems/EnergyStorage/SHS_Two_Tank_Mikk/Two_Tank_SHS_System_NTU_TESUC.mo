@@ -1,6 +1,6 @@
 within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
 model Two_Tank_SHS_System_NTU_TESUC
-    extends BaseClasses.Partial_SubSystem_A(    redeclare replaceable CS_Boiler_04 CS,
+    extends BaseClasses.Partial_SubSystem_A(    redeclare replaceable CS_Basic_TESUC CS,
     redeclare replaceable ED_Dummy ED,
     redeclare replaceable Data.Data_SHS data(
       DHX_p_start_shell=1100000,
@@ -20,8 +20,9 @@ model Two_Tank_SHS_System_NTU_TESUC
     parameter Integer CHXnV = 5;
     parameter Modelica.Units.SI.Length tank_height = 15;
 
-    input Modelica.Units.SI.MassFlowRate Produced_steam_flow annotation(Dialog(tab = "General"));
-    output Boolean Charging_Trigger = hysteresis.y;
+    input Modelica.Units.SI.MassFlowRate Power_Demand annotation(Dialog(tab = "General", group = "Inputs"));
+    input Modelica.Units.SI.Temperature T_Steam "Used for control of power production in the case of steam cycle on the discharge side, could be replaced with gas temp if a Brayton cycle used." annotation(Dialog(tab = "General", group = "Inputs"));
+  output Boolean Charging_Trigger=greaterEqualThreshold.y;
 
   Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase DHX(
     tube_av_b=false,
@@ -90,9 +91,6 @@ model Two_Tank_SHS_System_NTU_TESUC
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={82,-66})));
-  Modelica.Blocks.Sources.RealExpression Discharge_Mass_Flow(y=
-        Discharging_Valve.m_flow)
-    annotation (Placement(transformation(extent={{-102,104},{-82,124}})));
   TRANSFORM.Fluid.Pipes.TransportDelayPipe cold_tank_dump_pipe(
     redeclare package Medium = Storage_Medium,
     crossArea=data.ctdp_area,
@@ -139,10 +137,10 @@ model Two_Tank_SHS_System_NTU_TESUC
         rotation=90,
         origin={-26,-26})));
   Modelica.Blocks.Sources.RealExpression Charging_Mass_Flow(y=Charging_Valve.m_flow)
-    annotation (Placement(transformation(extent={{-102,76},{-82,96}})));
+    annotation (Placement(transformation(extent={{-104,90},{-84,110}})));
 
   Modelica.Blocks.Sources.RealExpression Level_Cold_Tank(y=cold_tank.level)
-    annotation (Placement(transformation(extent={{-102,90},{-82,110}})));
+    annotation (Placement(transformation(extent={{-104,104},{-84,124}})));
   Modelica.Blocks.Sources.RealExpression Level_Hot_Tank(y=hot_tank.level)
     annotation (Placement(transformation(extent={{-104,118},{-84,138}})));
   Modelica.Fluid.Sources.MassFlowSource_h boundary2(
@@ -163,14 +161,14 @@ model Two_Tank_SHS_System_NTU_TESUC
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
     delay1(Ti=0.5)
     annotation (Placement(transformation(extent={{-62,-92},{-54,-88}})));
-  Modelica.Blocks.Logical.Hysteresis hysteresis(uLow=3, uHigh=12)
-    annotation (Placement(transformation(extent={{-66,68},{-46,88}})));
-  Modelica.Blocks.Sources.RealExpression Level_Hot_Tank2(y=15 - hot_tank.level)
-    annotation (Placement(transformation(extent={{-100,64},{-80,84}})));
+  Modelica.Blocks.Logical.GreaterEqualThreshold
+                                     greaterEqualThreshold(threshold=0.0)
+    annotation (Placement(transformation(extent={{-96,68},{-76,88}})));
+  Modelica.Blocks.Sources.RealExpression Level_Hot_Tank2(y=Power_Demand)
+    annotation (Placement(transformation(extent={{-132,68},{-112,88}})));
   Modelica.Blocks.Sources.RealExpression Charging_Temperature(y=sensor_T.T)
     annotation (Placement(transformation(extent={{-104,132},{-84,152}})));
-  Modelica.Blocks.Sources.RealExpression Charging_Temperature1(y=
-        Produced_steam_flow)
+  Modelica.Blocks.Sources.RealExpression Steam_Temp(y=T_Steam)
     annotation (Placement(transformation(extent={{-30,130},{-50,150}})));
   Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase CHX(
     shell_av_b=true,
@@ -247,43 +245,32 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.discharge_m_flow, Discharge_Mass_Flow.y) annotation (Line(
-      points={{-30,100},{-76,100},{-76,114},{-81,114}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(sensorBus.hot_tank_level, Level_Hot_Tank.y) annotation (Line(
       points={{-30,100},{-76,100},{-76,128},{-83,128}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.cold_tank_level,Level_Cold_Tank. y) annotation (Line(
-      points={{-30,100},{-81,100}},
+      points={{-30,100},{-76,100},{-76,114},{-83,114}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.charge_m_flow, Charging_Mass_Flow.y) annotation (Line(
-      points={{-30,100},{-76,100},{-76,86},{-81,86}},
+      points={{-30,100},{-83,100}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(Level_Hot_Tank1.y, delay1.u)
     annotation (Line(points={{-67,-90},{-62.8,-90}}, color={0,0,127}));
-  connect(hysteresis.u, Level_Hot_Tank2.y)
-    annotation (Line(points={{-68,78},{-74,78},{-74,74},{-79,74}},
-                                                     color={0,0,127}));
+  connect(greaterEqualThreshold.u, Level_Hot_Tank2.y)
+    annotation (Line(points={{-98,78},{-111,78}},color={0,0,127}));
   connect(sensorBus.Charge_Temp, Charging_Temperature.y) annotation (Line(
       points={{-30,100},{-76,100},{-76,142},{-83,142}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.Charging_Logical, hysteresis.y) annotation (Line(
-      points={{-30,100},{-30,72},{-45,72},{-45,78}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorBus.Discharge_Steam, Charging_Temperature1.y) annotation (Line(
-      points={{-30,100},{-30,114},{-58,114},{-58,140},{-51,140}},
+  connect(sensorBus.Charging_Logical, greaterEqualThreshold.y) annotation (Line(
+      points={{-30,100},{-68,100},{-68,78},{-75,78}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -310,6 +297,11 @@ equation
     annotation (Line(points={{-10,-70},{-10,-78},{0,-78}}, color={0,127,255}));
   connect(sensor_T.port_b, resistance.port_a)
     annotation (Line(points={{20,-78},{27,-78},{27,-74}}, color={0,127,255}));
+  connect(sensorBus.Steam_Temp, Steam_Temp.y) annotation (Line(
+      points={{-30,100},{-62,100},{-62,140},{-51,140}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   annotation (experiment(
       StopTime=432000,
       Interval=37,

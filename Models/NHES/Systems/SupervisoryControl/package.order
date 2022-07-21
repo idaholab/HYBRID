@@ -4,3 +4,6 @@ InputSetpointData_Cluster
 InputSetpointDatanew
 Dummy_SC
 BaseClasses
+InputSetpointData_TESUseCase_IndependentBOP
+InputSetpointData_TESUseCase_ESPeaking
+InputSetpointData_TESUseCase_AllES

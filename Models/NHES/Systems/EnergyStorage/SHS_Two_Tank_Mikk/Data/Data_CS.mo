@@ -8,6 +8,7 @@ model Data_CS
   parameter Modelica.Units.SI.MassFlowRate steam_prod_rate = 2.5;
   parameter Modelica.Units.SI.MassFlowRate reference_charging_m_flow = 20;
   parameter Modelica.Units.SI.MassFlowRate reference_discharging_m_flow = 10;
+  parameter Real discharge_control_ref_value = 100 "Change this value based on what control is based on. For temperature, make sure to enter in K";
 
   annotation (
     defaultComponentName="data",

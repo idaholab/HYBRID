@@ -33,9 +33,7 @@ model Intermediate_Rankine_Cycle_TESUC_2 "Two stage BOP model"
 
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
                                        sensor_T1(redeclare package Medium =
-        Modelica.Media.Water.StandardWater,
-    p_start=3500000,
-    T_start=579.15)                                    annotation (Placement(
+        Modelica.Media.Water.StandardWater)                                    annotation (Placement(
         transformation(
         extent={{6,6},{-6,-6}},
         rotation=180,

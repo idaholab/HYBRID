@@ -12,7 +12,8 @@ model HTGR_SHS_Independent
       NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.CS_Rankine_Primary CS)
     annotation (Placement(transformation(extent={{-114,-20},{-44,38}})));
   EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU
-    two_Tank_SHS_System_NTU
+    two_Tank_SHS_System_NTU(redeclare
+      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Basic_TESUC CS)
     annotation (Placement(transformation(extent={{-24,-90},{32,-32}})));
   EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(
     port_a1_nominal(

@@ -2,9 +2,10 @@ within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
 model CS_Basic_TESUC
 
   extends BaseClasses.Partial_ControlSystem;
-
-  Data.Data_Default data
-    annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
+  parameter Modelica.Units.SI.Temperature steam_ref;
+  input Modelica.Units.SI.MassFlowRate Ref_Charge_Flow "TES should supply expected charging mass flow rate given demand" annotation(Dialog(tab = "General"));
+  replaceable Data.Data_CS data
+    annotation (Placement(transformation(extent={{-92,18},{-72,38}})), Dialog(tab = "General", choicesAllMatching=true));
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
     Charging_Valve_Position_MinMax(min=2e-4)
     annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
@@ -28,12 +29,13 @@ model CS_Basic_TESUC
     annotation (Placement(transformation(extent={{-68,-24},{-62,-18}})));
   TRANSFORM.Controls.LimPID PID3(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2e-2,
+    k=0.01*data.discharge_control_ref_value,
     Ti=10,
     yMax=1.0,
     yMin=0.0,
     y_start=0.0)
     annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
+<<<<<<< Updated upstream
   Modelica.Blocks.Sources.Trapezoid trapezoid(
     amplitude=2,
     rising=500,
@@ -43,6 +45,8 @@ model CS_Basic_TESUC
     offset=0,
     startTime=2000)
     annotation (Placement(transformation(extent={{-56,48},{-44,60}})));
+=======
+>>>>>>> Stashed changes
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
     Discharging_Valve_Position(min=2e-4) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
@@ -58,16 +62,14 @@ model CS_Basic_TESUC
     annotation (Placement(transformation(extent={{-52,76},{-46,82}})));
   Modelica.Blocks.Sources.Constant one2(k=1.25)
     annotation (Placement(transformation(extent={{-74,60},{-68,66}})));
-  Modelica.Blocks.Sources.Constant one1(k=273.15 + 245)
-    annotation (Placement(transformation(extent={{-58,-16},{-52,-10}})));
+  Modelica.Blocks.Sources.Constant one1(k=data.hot_tank_ref_temp)
+    annotation (Placement(transformation(extent={{-54,-20},{-48,-14}})));
   Modelica.Blocks.Math.Add add3(k1=0.1)
     annotation (Placement(transformation(extent={{-30,-14},{-24,-8}})));
   Modelica.Blocks.Logical.Switch switch1
-    annotation (Placement(transformation(extent={{-50,-6},{-46,-2}})));
+    annotation (Placement(transformation(extent={{-48,-6},{-44,-2}})));
   Modelica.Blocks.Sources.Constant one6(k=0.0)
     annotation (Placement(transformation(extent={{-56,-8},{-54,-6}})));
-  Modelica.Blocks.Sources.Constant one7(k=22.0)
-    annotation (Placement(transformation(extent={{-56,-2},{-54,0}})));
   TRANSFORM.Controls.LimPID PID2(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=2.5e-2,
@@ -77,6 +79,7 @@ model CS_Basic_TESUC
     initType=Modelica.Blocks.Types.Init.InitialOutput,
     y_start=0.0)
     annotation (Placement(transformation(extent={{-40,0},{-34,-6}})));
+<<<<<<< Updated upstream
   Modelica.Blocks.Logical.Switch switch_CR1
     annotation (Placement(transformation(extent={{0,32},{20,12}})));
   Modelica.Blocks.Logical.Greater greater1
@@ -87,6 +90,12 @@ model CS_Basic_TESUC
     annotation (Placement(transformation(extent={{-88,0},{-76,12}})));
   Modelica.Blocks.Sources.Constant one9(k=0.01)
     annotation (Placement(transformation(extent={{-22,30},{-16,36}})));
+=======
+  Modelica.Blocks.Sources.Constant one9(k=data.discharge_control_ref_value)
+    annotation (Placement(transformation(extent={{-48,54},{-42,60}})));
+  Modelica.Blocks.Sources.RealExpression Level_Hot_Tank2(y=Ref_Charge_Flow)
+    annotation (Placement(transformation(extent={{-66,-8},{-56,6}})));
+>>>>>>> Stashed changes
 equation
 
   connect(add2.y,product2. u1) annotation (Line(points={{-49.7,-23},{-22,-23},{
@@ -103,9 +112,6 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(trapezoid.y,PID3. u_s)
-    annotation (Line(points={{-43.4,54},{-40,54},{-40,58},{-36.8,58}},
-                                                     color={0,0,127}));
   connect(PID3.y,product1. u2) annotation (Line(points={{-27.6,58},{-26,58},{
           -26,52},{-20.8,52},{-20.8,61.6}},                  color={0,0,127}));
   connect(add1.y,product1. u1) annotation (Line(points={{-29.7,73},{-24,73},{
@@ -119,14 +125,14 @@ equation
           {-56.8,62},{-56.8,63.6}},
                                  color={0,0,127}));
   connect(sensorBus.hot_tank_level, min1.u1) annotation (Line(
-      points={{-30,-100},{-30,-70},{-102,-70},{-102,68.4},{-56.8,68.4}},
+      points={{-30,-100},{-102,-100},{-102,68.4},{-56.8,68.4}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(one1.y, PID5.u_s) annotation (Line(points={{-51.7,-13},{-44.6,-13},{
-          -44.6,-17}},color={0,0,127}));
+  connect(one1.y, PID5.u_s) annotation (Line(points={{-47.7,-17},{-44.6,-17}},
+                      color={0,0,127}));
   connect(sensorBus.Charge_Temp, PID5.u_m) annotation (Line(
-      points={{-30,-100},{-30,-64},{-102,-64},{-102,-4},{-41,-4},{-41,-13.4}},
+      points={{-30,-100},{-102,-100},{-102,-8},{-41,-8},{-41,-13.4}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -136,30 +142,32 @@ equation
   connect(product2.u2, add3.y) annotation (Line(points={{-18.6,-19.2},{-22,
           -19.2},{-22,-11},{-23.7,-11}},
                                 color={0,0,127}));
-  connect(switch1.u1, one7.y) annotation (Line(points={{-50.4,-2.4},{-50.4,-1},
-          {-53.9,-1}},          color={0,0,127}));
-  connect(switch1.u3, one6.y) annotation (Line(points={{-50.4,-5.6},{-50.4,-7},
-          {-53.9,-7}}, color={0,0,127}));
-  connect(switch1.y, PID2.u_s) annotation (Line(points={{-45.8,-4},{-45.8,-3},{
-          -40.6,-3}}, color={0,0,127}));
+  connect(switch1.u3, one6.y) annotation (Line(points={{-48.4,-5.6},{-48.4,-7},{
+          -53.9,-7}},  color={0,0,127}));
+  connect(switch1.y, PID2.u_s) annotation (Line(points={{-43.8,-4},{-43.8,-3},{-40.6,
+          -3}},       color={0,0,127}));
   connect(add3.u1, PID2.y) annotation (Line(points={{-30.6,-9.2},{-33.7,-9.2},{
           -33.7,-3}}, color={0,0,127}));
   connect(sensorBus.charge_m_flow, PID2.u_m) annotation (Line(
-      points={{-30,-100},{-30,-28},{-8,-28},{-8,-24},{-6,-24},{-6,6},{-37,6},{
-          -37,0.6}},
+      points={{-30,-100},{-102,-100},{-102,6},{-37,6},{-37,0.6}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.Charging_Logical, switch1.u2) annotation (Line(
-      points={{-30,-100},{-30,-70},{-102,-70},{-102,-4},{-50.4,-4}},
+      points={{-30,-100},{-102,-100},{-102,-4},{-48.4,-4}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.Discharge_Steam, PID3.u_m) annotation (Line(
-      points={{-30,-100},{-30,-70},{-102,-70},{-102,42},{-32,42},{-32,53.2}},
+  connect(product2.y, Charging_Valve_Position_MinMax.u) annotation (Line(points=
+         {{-11.7,-21},{-6,-21},{-6,-28},{0,-28},{0,-22}}, color={0,0,127}));
+  connect(product1.y, Discharging_Valve_Position.u)
+    annotation (Line(points={{-11.6,64},{0,64}}, color={0,0,127}));
+  connect(sensorBus.Steam_Temp, PID3.u_m) annotation (Line(
+      points={{-30,-100},{-102,-100},{-102,44},{-32,44},{-32,53.2}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
+<<<<<<< Updated upstream
   connect(product2.y, Charging_Valve_Position_MinMax.u) annotation (Line(points=
          {{-11.7,-21},{-6,-21},{-6,-28},{0,-28},{0,-22}}, color={0,0,127}));
   connect(product1.y, Discharging_Valve_Position.u)
@@ -194,6 +202,13 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
+=======
+  connect(PID3.u_s, one9.y) annotation (Line(points={{-36.8,58},{-36.8,57},{-41.7,
+          57}}, color={0,0,127}));
+  connect(switch1.u1, Level_Hot_Tank2.y) annotation (Line(points={{-48.4,-2.4},{
+          -48.4,-2},{-48,-2},{-48,0},{-55.5,0},{-55.5,-1}},
+                                          color={0,0,127}));
+>>>>>>> Stashed changes
 annotation(defaultComponentName="changeMe_CS", Icon(graphics={
         Text(
           extent={{-94,82},{94,74}},
