@@ -1,5 +1,5 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model SMR_SHS_Test_4_NewSHS_NewCS
+model SMR_SHS_Test_4_NewSHS_NewCS_0721
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
  Real demandChange=
@@ -55,7 +55,8 @@ model SMR_SHS_Test_4_NewSHS_NewCS
   EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_TESUC
                                                               two_Tank_SHS_System_NTU(
     redeclare replaceable
-      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Basic_TESUC CS,
+      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Basic_TESUC_0721 CS(
+        steam_ref=(190 + 273.15) + 273.15, Ref_Charge_Flow=25),
     redeclare replaceable
       NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
       ht_area=100,
@@ -223,4 +224,4 @@ equation
 <p>System is based upon report: Frick, Konor L. Status Report on the NuScale Module Developed in the Modelica Framework. United States: N. p., 2019. Web. doi:10.2172/1569288.</p>
 </html>"),
     __Dymola_experimentSetupOutput(events=false));
-end SMR_SHS_Test_4_NewSHS_NewCS;
+end SMR_SHS_Test_4_NewSHS_NewCS_0721;

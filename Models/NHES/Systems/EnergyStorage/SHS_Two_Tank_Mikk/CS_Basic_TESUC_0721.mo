@@ -1,5 +1,5 @@
 within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
-model CS_Basic_TESUC
+model CS_Basic_TESUC_0721
 
   extends BaseClasses.Partial_ControlSystem;
   parameter Modelica.Units.SI.Temperature steam_ref;
@@ -20,11 +20,11 @@ model CS_Basic_TESUC
     y_start=0.0)
     annotation (Placement(transformation(extent={{-44,-14},{-38,-20}})));
   Modelica.Blocks.Math.Add add2
-    annotation (Placement(transformation(extent={{-56,-26},{-50,-20}})));
+    annotation (Placement(transformation(extent={{-50,-34},{-44,-28}})));
   Modelica.Blocks.Math.Min min2
-    annotation (Placement(transformation(extent={{-80,-32},{-72,-24}})));
+    annotation (Placement(transformation(extent={{-68,-36},{-60,-28}})));
   Modelica.Blocks.Sources.Constant one4(k=1.25)
-    annotation (Placement(transformation(extent={{-94,-32},{-90,-28}})));
+    annotation (Placement(transformation(extent={{-78,-36},{-74,-32}})));
   Modelica.Blocks.Sources.Constant one5(k=-0.25)
     annotation (Placement(transformation(extent={{-68,-24},{-62,-18}})));
   TRANSFORM.Controls.LimPID PID3(
@@ -68,7 +68,6 @@ model CS_Basic_TESUC
     y_start=0.0)
     annotation (Placement(transformation(extent={{-40,0},{-34,-6}})));
 
-
   Modelica.Blocks.Sources.Constant one9(k=data.discharge_control_ref_value)
     annotation (Placement(transformation(extent={{-60,46},{-48,58}})));
   Modelica.Blocks.Sources.RealExpression Level_Hot_Tank2(y=Ref_Charge_Flow)
@@ -76,18 +75,20 @@ model CS_Basic_TESUC
 
 equation
 
-  connect(add2.y,product2. u1) annotation (Line(points={{-49.7,-23},{-22,-23},{
-          -22,-22},{-18.6,-22},{-18.6,-22.8}},              color={0,0,127}));
-  connect(min2.y,add2. u2) annotation (Line(points={{-71.6,-28},{-60,-28},{-60,
-          -24.8},{-56.6,-24.8}},                                       color={0,
+  connect(add2.y,product2. u1) annotation (Line(points={{-43.7,-31},{-22,-31},{
+          -22,-22.8},{-18.6,-22.8}},                        color={0,0,127}));
+  connect(min2.y,add2. u2) annotation (Line(points={{-59.6,-32},{-59.6,-32.8},{
+          -50.6,-32.8}},                                               color={0,
           0,127}));
-  connect(one4.y,min2. u2) annotation (Line(points={{-89.8,-30},{-88,-30},{-88,
-          -30.4},{-80.8,-30.4}},   color={0,0,127}));
-  connect(add2.u1, one5.y) annotation (Line(points={{-56.6,-21.2},{-56.6,-21},{
-          -61.7,-21}},color={0,0,127}));
+  connect(one4.y,min2. u2) annotation (Line(points={{-73.8,-34},{-72,-34},{-72,
+          -40},{-68.8,-40},{-68.8,-34.4}},
+                                   color={0,0,127}));
+  connect(add2.u1, one5.y) annotation (Line(points={{-50.6,-29.2},{-50.6,-24},{
+          -58,-24},{-58,-21},{-61.7,-21}},
+                      color={0,0,127}));
   connect(sensorBus.cold_tank_level, min2.u1) annotation (Line(
-      points={{-30,-100},{-30,-108},{-102,-108},{-102,-26},{-92,-26},{-92,-25.6},
-          {-80.8,-25.6}},
+      points={{-30,-100},{-30,-44},{-98,-44},{-98,-24},{-74,-24},{-74,-29.6},{
+          -68.8,-29.6}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -132,11 +133,6 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.Charging_Logical, switch1.u2) annotation (Line(
-      points={{-30,-100},{-102,-100},{-102,-4},{-48.4,-4}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(product2.y, Charging_Valve_Position_MinMax.u) annotation (Line(points=
          {{-11.7,-21},{-6,-21},{-6,-28},{0,-28},{0,-22}}, color={0,0,127}));
   connect(product1.y, Discharging_Valve_Position.u)
@@ -176,6 +172,11 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(sensorBus.Charging_Logical, switch1.u2) annotation (Line(
+      points={{-30,-100},{-102,-100},{-102,-4},{-48.4,-4}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics={
         Text(
           extent={{-94,82},{94,74}},
@@ -184,4 +185,4 @@ annotation(defaultComponentName="changeMe_CS", Icon(graphics={
           fillColor={255,255,237},
           fillPattern=FillPattern.Solid,
           textString="Change Me")}));
-end CS_Basic_TESUC;
+end CS_Basic_TESUC_0721;

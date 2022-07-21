@@ -5,6 +5,7 @@ model Data_CS
   parameter Modelica.Units.SI.Length hot_tank_level_min = 1.0;
   parameter Modelica.Units.SI.Length cold_tank_level_min = 1.0;
   parameter Modelica.Units.SI.Temperature hot_tank_ref_temp = 273.15+245;
+  parameter Modelica.Units.SI.Temperature cold_tank_ref_temp = 273.15+160;
   parameter Modelica.Units.SI.MassFlowRate steam_prod_rate = 2.5;
   parameter Modelica.Units.SI.MassFlowRate reference_charging_m_flow = 20;
   parameter Modelica.Units.SI.MassFlowRate reference_discharging_m_flow = 10;
