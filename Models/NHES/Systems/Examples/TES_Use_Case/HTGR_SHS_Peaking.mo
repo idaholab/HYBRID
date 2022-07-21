@@ -22,18 +22,18 @@ equation
           {{-45.05,-0.57},{-36,-0.57},{-36,-8.2},{-30.6,-8.2}}, color={0,127,
           255}));
   connect(two_Tank_SHS_System_NTU.port_ch_a,
-    nuScale_Modal_Secondary_Arbitrage_Ports.TBV_Send) annotation (Line(points={
-          {52.58,22.08},{38,22.08},{38,25.4},{31.2,25.4}}, color={0,127,255}));
+    nuScale_Modal_Secondary_Arbitrage_Ports.TBV_Send) annotation (Line(points={{52.58,
+          -10.98},{38,-10.98},{38,25.4},{31.2,25.4}},      color={0,127,255}));
   connect(two_Tank_SHS_System_NTU.port_ch_b,
-    nuScale_Modal_Secondary_Arbitrage_Ports.TBV_Return) annotation (Line(points=
-         {{52.58,-10.98},{38,-10.98},{38,-8.8},{31.2,-8.8}}, color={0,127,255}));
+    nuScale_Modal_Secondary_Arbitrage_Ports.TBV_Return) annotation (Line(points={{52.58,
+          22.66},{38,22.66},{38,-8.8},{31.2,-8.8}},          color={0,127,255}));
   connect(nuScale_Modal_Secondary_Arbitrage_Ports.Arbitrage_Send,
     two_Tank_SHS_System_NTU.port_dch_a) annotation (Line(points={{-5.4,-22.6},{
-          -4,-22.6},{-4,-40},{118,-40},{118,-10.98},{109.42,-10.98}}, color={0,
+          -4,-22.6},{-4,-40},{118,-40},{118,23.82},{109.42,23.82}},   color={0,
           127,255}));
   connect(two_Tank_SHS_System_NTU.port_dch_b,
     nuScale_Modal_Secondary_Arbitrage_Ports.Arbitrage_Return) annotation (Line(
-        points={{109.42,23.82},{116,23.82},{116,-30},{14,-30},{14,-26},{15,-26},
+        points={{110,-10.98},{116,-10.98},{116,-30},{14,-30},{14,-26},{15,-26},
           {15,-22}}, color={0,127,255}));
   annotation (experiment(
       StopTime=10,

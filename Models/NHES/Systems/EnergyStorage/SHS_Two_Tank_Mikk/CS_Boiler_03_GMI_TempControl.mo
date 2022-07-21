@@ -1,5 +1,5 @@
 within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
-model CS_Boiler_03_GMI
+model CS_Boiler_03_GMI_TempControl
 
   extends BaseClasses.Partial_ControlSystem;
 
@@ -28,23 +28,24 @@ model CS_Boiler_03_GMI
     annotation (Placement(transformation(extent={{-68,-24},{-62,-18}})));
   TRANSFORM.Controls.LimPID PID3(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2e-2,
+    k=-2e-4,
     Ti=1,
     yMax=1.0,
     yMin=0.0,
     y_start=0.0)
     annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
-    amplitude=10,
+    amplitude=250,
     rising=10,
     width=9480,
     falling=10,
     period=18000,
-    offset=0.0,
+    nperiod=-1,
+    offset=50,
     startTime=0)
     annotation (Placement(transformation(extent={{-58,48},{-46,60}})));
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-    Discharging_Valve_Position(min=0.3)  annotation (Placement(transformation(
+    Discharging_Valve_Position(min=0.1)  annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=180,
         origin={12,64})));
@@ -58,7 +59,7 @@ model CS_Boiler_03_GMI
     annotation (Placement(transformation(extent={{-52,76},{-46,82}})));
   Modelica.Blocks.Sources.Constant one2(k=1.25)
     annotation (Placement(transformation(extent={{-74,60},{-68,66}})));
-  Modelica.Blocks.Sources.Constant one1(k=273.15 + 245)
+  Modelica.Blocks.Sources.Constant one1(k=273.15 + 300)
     annotation (Placement(transformation(extent={{-58,-16},{-52,-10}})));
   Modelica.Blocks.Math.Add add3(k1=0.1)
     annotation (Placement(transformation(extent={{-30,-14},{-24,-8}})));
@@ -72,7 +73,7 @@ model CS_Boiler_03_GMI
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=2.5e-2,
     Ti=10,
-    yMax=1.0,
+    yMax=10,
     yMin=0.0,
     initType=Modelica.Blocks.Types.Init.InitialOutput,
     y_start=0.0)
@@ -132,7 +133,7 @@ equation
   connect(one1.y, PID5.u_s) annotation (Line(points={{-51.7,-13},{-44.6,-13},{
           -44.6,-17}},color={0,0,127}));
   connect(sensorBus.Charge_Temp, PID5.u_m) annotation (Line(
-      points={{-30,-100},{-30,-64},{-102,-64},{-102,-4},{-41,-4},{-41,-13.4}},
+      points={{-30,-100},{-30,-64},{-102,-64},{-102,-10},{-41,-10},{-41,-13.4}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -174,4 +175,4 @@ annotation(defaultComponentName="changeMe_CS", Icon(graphics={
           fillColor={255,255,237},
           fillPattern=FillPattern.Solid,
           textString="Change Me")}));
-end CS_Boiler_03_GMI;
+end CS_Boiler_03_GMI_TempControl;

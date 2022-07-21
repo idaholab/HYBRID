@@ -1,5 +1,5 @@
 within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
-model Two_Tank_SHS_System_NTU_GMI
+model Two_Tank_SHS_System_NTU_GMI_TempControl
     extends BaseClasses.Partial_SubSystem_A(    redeclare replaceable CS_Boiler_04 CS,
     redeclare replaceable ED_Dummy ED,
     redeclare replaceable Data.Data_SHS data(DHX_v_shell=1.0));
@@ -17,7 +17,7 @@ model Two_Tank_SHS_System_NTU_GMI
     parameter Integer CHXnV = 5;
     parameter Modelica.Units.SI.Length tank_height = 15;
 
-    input Modelica.Units.SI.MassFlowRate Produced_steam_flow annotation(Dialog(tab = "General"));
+    input Modelica.Units.SI.Temperature Steam_Output_Temp annotation(Dialog(tab = "General"));
     output Boolean Charging_Trigger = hysteresis.y;
 
   Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase DHX(
@@ -167,7 +167,7 @@ model Two_Tank_SHS_System_NTU_GMI
   Modelica.Blocks.Sources.RealExpression Charging_Temperature(y=sensor_T.T)
     annotation (Placement(transformation(extent={{-104,132},{-84,152}})));
   Modelica.Blocks.Sources.RealExpression Charging_Temperature1(y=
-        Produced_steam_flow)
+        Steam_Output_Temp)
     annotation (Placement(transformation(extent={{-30,130},{-50,150}})));
   Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase CHX(
     shell_av_b=true,
@@ -573,4 +573,4 @@ equation
           fillColor={85,85,255},
           fillPattern=FillPattern.HorizontalCylinder,
           lineThickness=1)}));
-end Two_Tank_SHS_System_NTU_GMI;
+end Two_Tank_SHS_System_NTU_GMI_TempControl;

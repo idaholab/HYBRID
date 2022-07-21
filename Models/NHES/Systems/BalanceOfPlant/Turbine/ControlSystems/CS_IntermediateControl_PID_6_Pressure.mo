@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_IntermediateControl_PID_6
+model CS_IntermediateControl_PID_6_Pressure
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
   extends NHES.Icons.DummyIcon;
@@ -66,14 +66,14 @@ model CS_IntermediateControl_PID_6
     annotation (Placement(transformation(extent={{-70,30},{-50,50}})));
   TRANSFORM.Controls.LimPID FWCP_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2.5e-5,
-    Ti=20,
-    yMax=250,
-    yMin=-20,
+    k=2.5,
+    Ti=5,
+    yMax=100,
+    yMin=-12,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-40,30},{-20,50}})));
-  Modelica.Blocks.Sources.Constant const4(k=200)
+  Modelica.Blocks.Sources.Constant const4(k=12e5)
     annotation (Placement(transformation(extent={{-14,48},{-6,56}})));
   Modelica.Blocks.Math.Add         add
     annotation (Placement(transformation(extent={{2,36},{22,56}})));
@@ -188,4 +188,4 @@ equation
       horizontalAlignment=TextAlignment.Left));
   connect(TCV_Power.u_s, const.y) annotation (Line(points={{-52,-12},{-58,-12},
           {-58,4},{50,4},{50,18},{88,18},{88,-2},{83,-2}}, color={0,0,127}));
-end CS_IntermediateControl_PID_6;
+end CS_IntermediateControl_PID_6_Pressure;
