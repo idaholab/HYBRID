@@ -22,7 +22,7 @@ model Two_Tank_SHS_System_NTU_TESUC
 
     input Modelica.Units.SI.MassFlowRate Power_Demand annotation(Dialog(tab = "General", group = "Inputs"));
     input Modelica.Units.SI.Temperature T_Steam "Used for control of power production in the case of steam cycle on the discharge side, could be replaced with gas temp if a Brayton cycle used." annotation(Dialog(tab = "General", group = "Inputs"));
-  output Boolean Charging_Trigger=greaterEqualThreshold.y;
+  output Boolean Charging_Trigger=greaterThreshold.y;
 
   Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase DHX(
     tube_av_b=false,
@@ -161,8 +161,8 @@ model Two_Tank_SHS_System_NTU_TESUC
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
     delay1(Ti=0.5)
     annotation (Placement(transformation(extent={{-62,-92},{-54,-88}})));
-  Modelica.Blocks.Logical.GreaterEqualThreshold
-                                     greaterEqualThreshold(threshold=0.0)
+  Modelica.Blocks.Logical.GreaterThreshold
+                                     greaterThreshold(     threshold=0.0)
     annotation (Placement(transformation(extent={{-96,68},{-76,88}})));
   Modelica.Blocks.Sources.RealExpression Level_Hot_Tank2(y=Power_Demand)
     annotation (Placement(transformation(extent={{-132,68},{-112,88}})));
@@ -262,14 +262,14 @@ equation
       thickness=0.5));
   connect(Level_Hot_Tank1.y, delay1.u)
     annotation (Line(points={{-67,-90},{-62.8,-90}}, color={0,0,127}));
-  connect(greaterEqualThreshold.u, Level_Hot_Tank2.y)
-    annotation (Line(points={{-98,78},{-111,78}},color={0,0,127}));
+  connect(greaterThreshold.u, Level_Hot_Tank2.y)
+    annotation (Line(points={{-98,78},{-111,78}}, color={0,0,127}));
   connect(sensorBus.Charge_Temp, Charging_Temperature.y) annotation (Line(
       points={{-30,100},{-76,100},{-76,142},{-83,142}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.Charging_Logical, greaterEqualThreshold.y) annotation (Line(
+  connect(sensorBus.Charging_Logical, greaterThreshold.y) annotation (Line(
       points={{-30,100},{-68,100},{-68,78},{-75,78}},
       color={239,82,82},
       pattern=LinePattern.Dash,
