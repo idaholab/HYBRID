@@ -35,7 +35,7 @@ model CS_Boiler_03_GMI_TempControl
     y_start=0.0)
     annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
-    amplitude=250,
+    amplitude=218,
     rising=10,
     width=9480,
     falling=10,
@@ -67,7 +67,7 @@ model CS_Boiler_03_GMI_TempControl
     annotation (Placement(transformation(extent={{-50,-6},{-46,-2}})));
   Modelica.Blocks.Sources.Constant one6(k=0.0)
     annotation (Placement(transformation(extent={{-56,-8},{-54,-6}})));
-  Modelica.Blocks.Sources.Constant one7(k=22.0)
+  Modelica.Blocks.Sources.Constant one7(k=915.5)
     annotation (Placement(transformation(extent={{-56,-2},{-54,0}})));
   TRANSFORM.Controls.LimPID PID2(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,

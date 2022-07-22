@@ -1,10 +1,11 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_IntermediateControl_PID_TESUC
+model CS_IntermediateControl_PID_TESUC_ImpControl
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
   extends NHES.Icons.DummyIcon;
 
-  input Real electric_demand_int = data.Q_Nom;
+  input Real electric_demand
+  annotation(Dialog(tab="General"));
 
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -30,8 +31,8 @@ model CS_IntermediateControl_PID_TESUC
     xi_start=1500)
     annotation (Placement(transformation(extent={{-50,-2},{-30,-22}})));
   Modelica.Blocks.Sources.RealExpression
-                                   realExpression(y=electric_demand_int)
-    annotation (Placement(transformation(extent={{-94,-6},{-80,6}})));
+                                   realExpression(y=electric_demand)
+    annotation (Placement(transformation(extent={{114,-32},{128,-20}})));
   Modelica.Blocks.Sources.Constant const7(k=1)
     annotation (Placement(transformation(extent={{-26,-28},{-18,-20}})));
   Modelica.Blocks.Math.Add         add1
@@ -50,8 +51,6 @@ model CS_IntermediateControl_PID_TESUC
     Q_Nom=67.38e6,
     T_Feedwater=421.15)
     annotation (Placement(transformation(extent={{-98,12},{-78,32}})));
-  Modelica.Blocks.Sources.Constant const(k=data.Q_Nom)
-    annotation (Placement(transformation(extent={{62,-12},{82,8}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
     amplitude=-10e6,
     rising=720,
@@ -61,7 +60,7 @@ model CS_IntermediateControl_PID_TESUC
     nperiod=-2,
     offset=45e6,
     startTime=20000)
-    annotation (Placement(transformation(extent={{-92,-22},{-78,-8}})));
+    annotation (Placement(transformation(extent={{68,74},{82,88}})));
   Modelica.Blocks.Sources.Constant const3(k=data.p_steam)
     annotation (Placement(transformation(extent={{-70,30},{-50,50}})));
   TRANSFORM.Controls.LimPID FWCP_Speed(
@@ -89,6 +88,37 @@ model CS_IntermediateControl_PID_TESUC
     annotation (Placement(transformation(extent={{-38,72},{-18,92}})));
   Modelica.Blocks.Sources.Constant const9(k=data.p_steam_vent)
     annotation (Placement(transformation(extent={{-78,72},{-58,92}})));
+  TRANSFORM.Controls.LimPID SHS_Pump_MFR(
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    k=-2e-4,
+    Ti=5,
+    Td=0.1,
+    yMax=100,
+    yMin=-19.9,
+    initType=Modelica.Blocks.Types.Init.NoInit,
+    xi_start=1500)
+    annotation (Placement(transformation(extent={{-46,-80},{-34,-68}})));
+  Modelica.Blocks.Sources.Constant const1(k=data.T_SHS_Return)
+    annotation (Placement(transformation(extent={{-92,-88},{-72,-68}})));
+  Modelica.Blocks.Sources.Constant const6(k=20)
+    annotation (Placement(transformation(extent={{-26,-84},{-18,-76}})));
+  Modelica.Blocks.Math.Add         add3
+    annotation (Placement(transformation(extent={{-2,-84},{18,-64}})));
+  TRANSFORM.Controls.LimPID TCV_Power1(
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    k=5e-8,
+    Ti=5,
+    k_s=1,
+    k_m=1,
+    yMax=0,
+    yMin=-1 + 0.0001,
+    initType=Modelica.Blocks.Types.Init.InitialState,
+    xi_start=1500)
+    annotation (Placement(transformation(extent={{98,28},{78,8}})));
+  Modelica.Blocks.Sources.Constant const11(k=1)
+    annotation (Placement(transformation(extent={{86,-10},{78,-2}})));
+  Modelica.Blocks.Math.Add         add4
+    annotation (Placement(transformation(extent={{62,0},{42,20}})));
 equation
   connect(const5.y,Turb_Divert_Valve. u_s)
     annotation (Line(points={{-71,-46},{-66,-46},{-66,-48},{-62,-48}},
@@ -186,6 +216,55 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(const.y, TCV_Power.u_s) annotation (Line(points={{83,-2},{88,-2},{88,
-          14},{-14,14},{-14,4},{-60,4},{-60,-12},{-52,-12}}, color={0,0,127}));
-end CS_IntermediateControl_PID_TESUC;
+  connect(sensorBus.SHS_Return_T, SHS_Pump_MFR.u_m) annotation (Line(
+      points={{-30,-100},{-40,-100},{-40,-81.2}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(const1.y, SHS_Pump_MFR.u_s) annotation (Line(points={{-71,-78},{-56,-78},
+          {-56,-74},{-47.2,-74}}, color={0,0,127}));
+  connect(SHS_Pump_MFR.y, add3.u1) annotation (Line(points={{-33.4,-74},{-32,-74},
+          {-32,-72},{-10,-72},{-10,-68},{-4,-68}}, color={0,0,127}));
+  connect(const6.y, add3.u2) annotation (Line(points={{-17.6,-80},{-16,-80},{-16,
+          -76},{-8,-76},{-8,-86},{-4,-86},{-4,-80}}, color={0,0,127}));
+  connect(actuatorBus.condensor_pump, add3.y) annotation (Line(
+      points={{30,-100},{30,-74},{19,-74}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{6,3},{6,3}},
+      horizontalAlignment=TextAlignment.Left));
+  connect(sensorBus.Power, TCV_Power1.u_m) annotation (Line(
+      points={{-30,-100},{106,-100},{106,36},{88,36},{88,30}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-3,6},{-3,6}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(TCV_Power1.y, add4.u1) annotation (Line(points={{77,18},{70,18},{70,16},
+          {64,16}}, color={0,0,127}));
+  connect(const11.y, add4.u2) annotation (Line(points={{77.6,-6},{70,-6},{70,4},
+          {64,4}}, color={0,0,127}));
+  connect(actuatorBus.TCV_SHS, add4.y) annotation (Line(
+      points={{30,-100},{30,10},{41,10}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(realExpression.y, TCV_Power1.u_s) annotation (Line(points={{128.7,-26},
+          {134,-26},{134,16},{100,16},{100,18}}, color={0,0,127}));
+  connect(realExpression.y, TCV_Power.u_s) annotation (Line(points={{128.7,-26},
+          {132,-26},{132,-40},{54,-40},{54,-4},{20,-4},{20,2},{-60,2},{-60,-12},
+          {-52,-12}}, color={0,0,127}));
+end CS_IntermediateControl_PID_TESUC_ImpControl;

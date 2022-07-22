@@ -33,6 +33,9 @@ model Two_Tank_SHS_System_NTU_GMI_TempControl
     V_Tube=data.DHX_v_tube,
     V_Shell=data.DHX_v_shell,
     p_start_tube=data.DHX_p_start_tube,
+    use_T_start_tube=true,
+    T_start_tube_inlet=573.15,
+    T_start_tube_outlet=573.15,
     h_start_tube_inlet=data.DHX_h_start_tube_inlet,
     h_start_tube_outlet=data.DHX_h_start_tube_outlet,
     p_start_shell=data.DHX_p_start_shell,
@@ -160,9 +163,9 @@ model Two_Tank_SHS_System_NTU_GMI_TempControl
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
     delay1(Ti=0.5)
     annotation (Placement(transformation(extent={{-102,-90},{-94,-86}})));
-  Modelica.Blocks.Logical.Hysteresis hysteresis(uLow=3, uHigh=12)
+  Modelica.Blocks.Logical.Hysteresis hysteresis(uLow=3, uHigh=47)
     annotation (Placement(transformation(extent={{-98,80},{-86,68}})));
-  Modelica.Blocks.Sources.RealExpression Level_Hot_Tank2(y=15 - hot_tank.level)
+  Modelica.Blocks.Sources.RealExpression Level_Hot_Tank2(y=50 - hot_tank.level)
     annotation (Placement(transformation(extent={{-134,64},{-114,84}})));
   Modelica.Blocks.Sources.RealExpression Charging_Temperature(y=sensor_T.T)
     annotation (Placement(transformation(extent={{-104,132},{-84,152}})));
@@ -173,13 +176,17 @@ model Two_Tank_SHS_System_NTU_GMI_TempControl
     shell_av_b=true,
     use_derQ=true,
     tau=1,
-    NTU=0.9,
+    NTU=10,
     K_tube=1000,
     K_shell=1000,
     redeclare package Tube_medium = Storage_Medium,
     redeclare package Shell_medium = Charging_Medium,
     V_Tube=10,
     V_Shell=25,
+    use_T_start_tube=true,
+    T_start_tube_inlet=573.15,
+    T_start_tube_outlet=573.15,
+    dp_init_tube=20000,
     Q_init=1)          annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=270,
