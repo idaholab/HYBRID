@@ -1,8 +1,10 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.Components;
 model Pebble_Bed_Brayton
   extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable CS_Dummy CS,
-    redeclare replaceable ED_Dummy ED,
+    redeclare replaceable
+      NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.CS_Dummy CS,
+    redeclare replaceable
+      NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.ED_Dummy ED,
     redeclare Data.Data_HTGR_Pebble data(
       Q_total=600000000,
       Q_total_el=300000000,
@@ -73,9 +75,15 @@ model Pebble_Bed_Brayton
     V_Tube=data.HX_Reheat_Tube_Vol,
     V_Shell=data.HX_Reheat_Shell_Vol,
     p_start_tube=dataInitial.Recuperator_P_Tube,
+    use_T_start_tube=true,
+    T_start_tube_inlet=673.15,
+    T_start_tube_outlet=673.15,
     h_start_tube_inlet=dataInitial.Recuperator_h_Tube_Inlet,
     h_start_tube_outlet=dataInitial.Recuperator_h_Tube_Outlet,
     p_start_shell=dataInitial.Recuperator_P_Tube,
+    use_T_start_shell=true,
+    T_start_shell_inlet=673.15,
+    T_start_shell_outlet=673.15,
     h_start_shell_inlet=dataInitial.Recuperator_h_Shell_Inlet,
     h_start_shell_outlet=dataInitial.HX_Aux_h_tube_out,
     dp_init_tube=dataInitial.Recuperator_dp_Tube,
@@ -86,8 +94,8 @@ model Pebble_Bed_Brayton
     m_start_shell=dataInitial.Recuperator_m_Shell)
     annotation (Placement(transformation(extent={{10,-36},{-10,-16}})));
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
-        Coolant_Medium) annotation (Placement(transformation(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
+      = Coolant_Medium) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={28,-6})));
@@ -229,6 +237,9 @@ model Pebble_Bed_Brayton
     V_Tube=3,
     V_Shell=3,
     p_start_tube=5920000,
+    use_T_start_tube=true,
+    T_start_tube_inlet=1123.15,
+    T_start_tube_outlet=1123.15,
     h_start_tube_inlet=3600e3,
     h_start_tube_outlet=2900e3,
     p_start_shell=1000000,

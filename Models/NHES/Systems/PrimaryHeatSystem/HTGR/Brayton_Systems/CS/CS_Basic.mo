@@ -1,4 +1,4 @@
-within NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems;
+within NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS;
 model CS_Basic
 
   extends BaseClasses.Partial_ControlSystem;

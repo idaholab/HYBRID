@@ -1,4 +1,4 @@
-within NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems;
+within NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS;
 model ED_Dummy
 
   extends BaseClasses.Partial_EventDriver;

@@ -1,8 +1,9 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.Components;
-model Pebble_Bed_Full_RX_Complete
+model Pebble_Bed_Full_RX_Complete_Transient
   extends BaseClasses.Partial_SubSystem_A(
     redeclare replaceable
-      NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.CS_Dummy CS,
+      NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.CS_Basic_Transient_Example
+      CS,
     redeclare replaceable
       NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.ED_Dummy ED,
     redeclare Data.Data_HTGR_Pebble data(
@@ -95,8 +96,8 @@ model Pebble_Bed_Full_RX_Complete
     m_start_shell=dataInitial.Recuperator_m_Shell)
     annotation (Placement(transformation(extent={{18,-18},{-2,2}})));
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
-        Coolant_Medium) annotation (Placement(transformation(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
+      = Coolant_Medium) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={38,10})));
@@ -156,16 +157,17 @@ model Pebble_Bed_Full_RX_Complete
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
         rotation=180,
         origin={78,-54})));
-  GasTurbine.Compressor.Compressor compressor1(
+  Compressor_Controlled            compressor_Controlled(
     redeclare package Medium =
         Coolant_Medium,
     allowFlowReversal=false,
     pstart_in=dataInitial.P_HP_Comp_Ref,
     Tstart_in=dataInitial.TStart_HP_Comp_In,
     Tstart_out=dataInitial.TStart_HP_Comp_Out,
+    use_w0_port=true,
     eta0=data.HP_Comp_Efficiency,
     PR0=data.HP_Comp_P_Ratio,
-    w0=data.HP_Comp_MassFlowRate) annotation (Placement(transformation(
+    w0nom=300)                    annotation (Placement(transformation(
         extent={{25,-18},{-25,18}},
         rotation=0,
         origin={73,-92})));
@@ -239,14 +241,6 @@ model Pebble_Bed_Full_RX_Complete
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={-76,-78})));
-  TRANSFORM.Controls.LimPID     CR(
-    controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-8,
-    Ti=15,
-    initType=Modelica.Blocks.Types.Init.NoInit)
-    annotation (Placement(transformation(extent={{-102,-52},{-82,-32}})));
-  Modelica.Blocks.Sources.Constant const1(k=850 + 273.15)
-    annotation (Placement(transformation(extent={{-136,-52},{-116,-32}})));
 
   Nuclear.CoreSubchannels.Pebble_Bed_New
                                        core(
@@ -276,7 +270,8 @@ model Pebble_Bed_Full_RX_Complete
         TRANSFORM.Nuclear.ReactorKinetics.Data.DecayHeat.decayHeat_11_TRACEdefault,
     redeclare record Data_FP =
         TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
-    rho_input=CR.y,
+
+    rho_input=CR_reactivity.u,
     redeclare package Medium = Coolant_Medium,
     SF_start_power={0.2,0.3,0.3,0.2},
     nParallel=data.nAssembly,
@@ -296,11 +291,15 @@ model Pebble_Bed_Full_RX_Complete
         rotation=180,
         origin={-36,-62})));
 
+  Modelica.Blocks.Sources.RealExpression Charging_Mass_Flow(y=turbine.Wt)
+    annotation (Placement(transformation(extent={{-80,90},{-60,110}})));
+  TRANSFORM.Blocks.RealExpression CR_reactivity
+    annotation (Placement(transformation(extent={{74,76},{86,90}})));
 initial equation
 
 equation
  // Q_Recup =nTU_HX_SinglePhase.geometry.nTubes*abs(sum(nTU_HX_SinglePhase.tube.heatTransfer.Q_flows));
- Q_gen = turbine.Wt - compressor.Wc - compressor1.Wc;
+ Q_gen =turbine.Wt - compressor.Wc - compressor_Controlled.Wc;
  cycle_eff = Q_gen / core.Q_total.y;
 
   connect(Precooler.heatPort, boundary3.port)
@@ -311,12 +310,10 @@ equation
                                         color={0,127,255}));
   connect(Intercooler.heatPort, boundary4.port)
     annotation (Line(points={{94,-54},{88,-54}},       color={191,0,0}));
-  connect(compressor1.outlet, transportDelayPipe1.port_a) annotation (Line(
-        points={{58,-77.6},{58,-52},{56,-52},{56,-48}},              color={0,
-          127,255}));
-  connect(Intercooler.port_b, compressor1.inlet) annotation (Line(points={{100,-60},
-          {100,-70},{88,-70},{88,-77.6}},
-                                        color={0,127,255}));
+  connect(compressor_Controlled.outlet, transportDelayPipe1.port_a) annotation (
+     Line(points={{58,-77.6},{58,-52},{56,-52},{56,-48}}, color={0,127,255}));
+  connect(Intercooler.port_b, compressor_Controlled.inlet) annotation (Line(
+        points={{100,-60},{100,-70},{88,-70},{88,-77.6}}, color={0,127,255}));
   connect(springBallValve.port_b,boundary5. ports[1])
     annotation (Line(points={{4,68},{4,76}},              color={0,127,255}));
   connect(springBallValve.port_a, Precooler.port_b) annotation (Line(points={{4,48},{
@@ -339,12 +336,8 @@ equation
   connect(Intercooler.port_a, Intercooler_Pre_Temp.port_a)
     annotation (Line(points={{100,-48},{100,-26}},
                                                  color={0,127,255}));
-  connect(Core_Outlet_T.T,CR. u_m) annotation (Line(points={{-82,-78},{-92,-78},
-          {-92,-54}},       color={0,0,127}));
   connect(Core_Outlet_T.port, Core_Outlet.port_a) annotation (Line(points={{-76,-68},
           {-76,-64},{-66,-64},{-66,-32}},      color={0,127,255}));
-  connect(const1.y,CR. u_s) annotation (Line(points={{-115,-42},{-104,-42}},
-                                 color={0,0,127}));
   connect(Core_Outlet.port_b, turbine.inlet) annotation (Line(points={{-66,-20},
           {-66,0},{-67.2,0},{-67.2,4.6}},
                                        color={0,127,255}));
@@ -354,6 +347,27 @@ equation
     annotation (Line(points={{-8,-52},{-8,-62},{-26,-62}}, color={0,127,255}));
   connect(Core_Outlet.port_a, core.port_b) annotation (Line(points={{-66,-32},{
           -66,-62},{-46,-62}}, color={0,127,255}));
+  connect(actuatorBus.PR_Compressor, compressor_Controlled.w0in) annotation (
+      Line(
+      points={{30,100},{88,100},{88,98},{146,98},{146,-76.52},{73,-76.52}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Turbine_Power, Charging_Mass_Flow.y) annotation (Line(
+      points={{-30,100},{-59,100}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Core_Outlet_T, Core_Outlet_T.T) annotation (Line(
+      points={{-30,100},{-30,72},{-114,72},{-114,-78},{-82,-78}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.CR_Reactivity, CR_reactivity.u) annotation (Line(
+      points={{30,100},{30,84},{70,84},{70,83},{72.8,83}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           Bitmap(extent={{-80,-90},{78,86}}, fileName=
               "modelica://NHES/Icons/PrimaryHeatSystemPackage/HTGRPB.jpg")}),
@@ -374,4 +388,4 @@ equation
 <p>The precooler and intercooler are named to match the diagram included in the documentation of the overall Brayton_Systems package. The boundary conditions applied there dictate the fluid flow temperatures. In the future, a heat exchanger to evaluate the necessary cooling requirements could replace these boundary conditions. </p>
 <p>The compression of the Helium is split into two stages, each coming immediately after a cooling stage. </p>
 </html>"));
-end Pebble_Bed_Full_RX_Complete;
+end Pebble_Bed_Full_RX_Complete_Transient;

@@ -2,11 +2,10 @@ within NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.Examples;
 model Pebble_Bed_CC_Test_workshop_Demonstration
   extends Modelica.Icons.Example;
   Real total_efficiency;
-  Components.Pebble_Bed_CC
-    Pebble_Bed_HTGR(redeclare
-      NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS_Basic CS,
-      redeclare NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.ED_Dummy ED)
-    annotation (Placement(transformation(extent={{-48,-20},{20,44}})));
+  Components.Pebble_Bed_CC Pebble_Bed_HTGR(redeclare
+      NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.CS_Basic CS,
+      redeclare NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.ED_Dummy
+      ED) annotation (Placement(transformation(extent={{-48,-20},{20,44}})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T Intercooler_Source(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow=20,

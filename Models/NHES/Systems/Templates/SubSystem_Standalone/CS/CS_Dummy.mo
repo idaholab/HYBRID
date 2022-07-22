@@ -1,4 +1,4 @@
-within NHES.Systems.Templates.SubSystem_Standalone;
+within NHES.Systems.Templates.SubSystem_Standalone.CS;
 model CS_Dummy
 
   extends BaseClasses.Partial_ControlSystem;

@@ -1,8 +1,10 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.Components;
 model Pebble_Bed_CC
   extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable CS_Dummy CS,
-    redeclare replaceable ED_Dummy ED,
+    redeclare replaceable
+      NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.CS_Dummy CS,
+    redeclare replaceable
+      NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.ED_Dummy ED,
     redeclare Data.Data_HTGR_Pebble data(
       Q_total=600000000,
       Q_total_el=300000000,
@@ -71,9 +73,15 @@ model Pebble_Bed_CC
     V_Tube=data.HX_Reheat_Tube_Vol,
     V_Shell=data.HX_Reheat_Shell_Vol,
     p_start_tube=dataInitial.Recuperator_P_Tube,
+    use_T_start_tube=true,
+    T_start_tube_inlet=873.15,
+    T_start_tube_outlet=873.15,
     h_start_tube_inlet=dataInitial.Recuperator_h_Tube_Inlet,
     h_start_tube_outlet=dataInitial.Recuperator_h_Tube_Outlet,
     p_start_shell=dataInitial.Recuperator_P_Tube,
+    use_T_start_shell=true,
+    T_start_shell_inlet=873.15,
+    T_start_shell_outlet=873.15,
     h_start_shell_inlet=dataInitial.Recuperator_h_Shell_Inlet,
     h_start_shell_outlet=dataInitial.HX_Aux_h_tube_out,
     dp_init_tube=dataInitial.Recuperator_dp_Tube,
@@ -227,9 +235,15 @@ model Pebble_Bed_CC
     V_Tube=0.1,
     V_Shell=0.1,
     p_start_tube=1990000,
+    use_T_start_tube=true,
+    T_start_tube_inlet=673.15,
+    T_start_tube_outlet=673.15,
     h_start_tube_inlet=2307e3,
     h_start_tube_outlet=3600e3,
     p_start_shell=400000,
+    use_T_start_shell=true,
+    T_start_shell_inlet=673.15,
+    T_start_shell_outlet=673.15,
     h_start_shell_inlet=600e3,
     h_start_shell_outlet=700e3,
     dp_init_tube=30000,

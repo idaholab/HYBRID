@@ -3,9 +3,9 @@ model Pebble_Bed_CC_Test
   extends Modelica.Icons.Example;
   NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.Components.Pebble_Bed_CC
     Pebble_Bed_HTGR(redeclare
-      NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS_Basic CS,
-      redeclare NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.ED_Dummy ED)
-    annotation (Placement(transformation(extent={{-48,-44},{22,24}})));
+      NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.CS_Basic CS,
+      redeclare NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.ED_Dummy
+      ED) annotation (Placement(transformation(extent={{-48,-44},{22,24}})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T Intercooler_Source(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow=20,

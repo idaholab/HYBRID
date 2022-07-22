@@ -2,8 +2,10 @@ within NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems;
 model SubSystem_Dummy
 
   extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable CS_Dummy CS,
-    redeclare replaceable ED_Dummy ED,
+    redeclare replaceable
+      NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.CS_Dummy CS,
+    redeclare replaceable
+      NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.ED_Dummy ED,
     redeclare Data.Data_Dummy data);
 
 equation
