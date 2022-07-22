@@ -2,7 +2,7 @@ within NHES.Media;
 package SolarSalt_PCM "Industry standard solar salt package"
 extends Modelica.Icons.VariantsPackage;
   package ConstantPropertyLiquidSolarSalt
-    "Solar Salt Package"
+    "Solar Salt PCM Package"
     /*
 Properties have been calculated based on a weighted average basis between T_min and T_max
 */

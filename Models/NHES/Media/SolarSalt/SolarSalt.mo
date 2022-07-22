@@ -1,6 +1,6 @@
 within NHES.Media.SolarSalt;
 package SolarSalt
-  "FLiBe | LiF-BeF2 67%-33% with 99.995% enriched Li-7 | Linear compressibility"
+  "Linear Solar Salt"
   // Energies 2021 14, pp 1195-1209
 // beta_const adjusted till density matched. kappa left alone
 // references are based on 800K
