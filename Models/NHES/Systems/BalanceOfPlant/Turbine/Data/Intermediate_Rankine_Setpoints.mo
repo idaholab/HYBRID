@@ -5,7 +5,7 @@ model Intermediate_Rankine_Setpoints
   parameter Modelica.Units.SI.Power Q_Nom = 60e6 "Reference electrical power";
   parameter Modelica.Units.SI.Temperature T_Feedwater = 148+273.15 "Reference feedwater temperature";
   parameter Modelica.Units.SI.Pressure p_steam_vent = 150e5 "Overpressurization relief valve setpoint"; //error associated with too high Temperature calling using the steam generator pipe surface temperature and the water fluid pressure is your indicator that the system is overpressurized and leaving the steam tables
-
+  parameter Modelica.Units.SI.Temperature T_SHS_Return = 218+273.15 "Reference SHS Return temperature";
 
   extends Systems.BalanceOfPlant.Turbine.BaseClasses.Record_Data;
 

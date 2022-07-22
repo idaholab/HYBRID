@@ -19,7 +19,7 @@ model SMR_SHS_Test_Config_Peaking_TempControl
       m_flow=67.07,
       T(displayUnit="degC") = 422.05,
       p=3447380))
-    annotation (Placement(transformation(extent={{-102,-28},{-52,28}})));
+    annotation (Placement(transformation(extent={{-102,-26},{-52,30}})));
 
   EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(port_a1_nominal(
       p=SMR_Taveprogram.port_b_nominal.p,
@@ -60,12 +60,21 @@ model SMR_SHS_Test_Config_Peaking_TempControl
     redeclare replaceable
       NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
       ht_area=100,
-      hot_tank_init_temp=593.15,
+      hot_tank_init_temp=513.15,
       cold_tank_area=100,
-      cold_tank_init_temp=423.15,
+      cold_tank_init_temp=453.15,
       m_flow_ch_min=0.1,
       DHX_K_tube(unit="1/m4"),
-      DHX_K_shell(unit="1/m4")),
+      DHX_K_shell(unit="1/m4"),
+      DHX_p_start_tube=120000,
+      DHX_h_start_tube_inlet=272e3,
+      DHX_h_start_tube_outlet=530e3,
+      discharge_pump_dp_nominal=10000,
+      charge_pump_dp_nominal=10000,
+      disvalve_m_flow_nom=100,
+      chvalve_m_flow_nom=200),
+    redeclare package Storage_Medium =
+        NHES.Media.Hitec.Hitec,
     m_flow_min=0.1,
     tank_height=15,
     Steam_Output_Temp=stateSensor6.temperature.T)
@@ -74,7 +83,7 @@ model SMR_SHS_Test_Config_Peaking_TempControl
   TRANSFORM.Fluid.Valves.ValveLinear SHS_Throttle(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_start=400,
-    dp_nominal=500000,
+    dp_nominal=450000,
     m_flow_nominal=60) annotation (Placement(transformation(
         extent={{6,6},{-6,-6}},
         rotation=180,
@@ -115,11 +124,11 @@ model SMR_SHS_Test_Config_Peaking_TempControl
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{68,-60},{48,-50}})));
   Modelica.Blocks.Logical.TriggeredTrapezoid triggeredTrapezoid(
-    amplitude=0.1,
+    amplitude=0.25,
     rising=30,
     falling=30,
     offset=0.008)
-    annotation (Placement(transformation(extent={{32,-22},{42,-12}})));
+    annotation (Placement(transformation(extent={{32,-24},{42,-14}})));
   TRANSFORM.Fluid.Valves.ValveLinear SHS_Throttle_CoolSide(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_start=400,
@@ -149,7 +158,7 @@ equation
     annotation (Line(points={{52,-30},{69.2,-30},{69.2,-19.2}},
         color={0,127,255}));
   connect(SMR_Taveprogram.port_b, stateSensor1.port_a) annotation (Line(points={{
-          -51.0909,10.7692},{-51.0909,11},{-38,11}},  color={0,127,255}));
+          -51.0909,12.7692},{-51.0909,11},{-38,11}},  color={0,127,255}));
   connect(stateSensor1.port_b, EM.port_a1) annotation (Line(points={{-24,11},{-22,
           11},{-22,12},{-16,12},{-16,10},{-12,10}}, color={0,127,255}));
   connect(stateSensor1.statePort, stateDisplay1.statePort) annotation (Line(
@@ -162,8 +171,8 @@ equation
           255}));
   connect(stateSensor2.statePort, stateDisplay2.statePort) annotation (Line(
         points={{45.035,9.045},{45.035,37.1},{47,37.1}}, color={0,0,0}));
-  connect(SMR_Taveprogram.port_a, stateSensor3.port_b) annotation (Line(points={
-          {-51.0909,-3.44615},{-46,-3.44615},{-46,-6},{-40,-6}}, color={0,127,255}));
+  connect(SMR_Taveprogram.port_a, stateSensor3.port_b) annotation (Line(points={{
+          -51.0909,-1.44615},{-46,-1.44615},{-46,-6},{-40,-6}},  color={0,127,255}));
   connect(stateSensor3.port_a, EM.port_b1)
     annotation (Line(points={{-26,-6},{-12,-6}}, color={0,127,255}));
   connect(stateDisplay3.statePort, stateSensor3.statePort) annotation (Line(
@@ -195,7 +204,7 @@ equation
       Line(points={{19.6,-44.4},{42,-44.4},{42,-55},{48,-55}},          color={0,
           127,255}));
   connect(triggeredTrapezoid.y, SHS_Throttle.opening) annotation (Line(points={{42.5,
-          -17},{46,-17},{46,-25.2}},      color={0,0,127}));
+          -19},{46,-19},{46,-25.2}},      color={0,0,127}));
   connect(stateSensor7.port_a, SHS_Throttle_CoolSide.port_a) annotation (Line(
         points={{68,-55},{76,-55},{76,-58},{84,-58}}, color={0,127,255}));
   connect(SHS_Throttle_CoolSide.port_b, intermediate_Rankine_Cycle_TESUC.port_b1)
