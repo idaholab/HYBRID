@@ -236,13 +236,13 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC "Two stage BOP model"
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
-        origin={136,72})));
-  TRANSFORM.Fluid.Valves.ValveLinear TCV1(
+        origin={98,48})));
+  TRANSFORM.Fluid.Valves.ValveLinear TCV_LPT(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_start=400,
-    dp_nominal=data.valve_TCV_dp_nominal,
-    m_flow_nominal=data.valve_TCV_mflow)
-                       annotation (Placement(transformation(
+    dp_nominal=data.valve_TCV_LPT_dp_nominal,
+    m_flow_nominal=data.valve_TCV_LPT_mflow) annotation (Placement(
+        transformation(
         extent={{8,8},{-8,-8}},
         rotation=180,
         origin={104,72})));
@@ -392,10 +392,8 @@ equation
       index=-1,
       extent={{-3,-6},{-3,-6}},
       horizontalAlignment=TextAlignment.Right));
-  connect(sensor_T3.port_a, port_a2)
-    annotation (Line(points={{146,72},{160,72}}, color={0,127,255}));
   connect(sensorBus.SHS_Return_T, sensor_T3.T) annotation (Line(
-      points={{-30,100},{120,100},{120,62},{136,62},{136,68.4}},
+      points={{-30,100},{-30,74},{64,74},{64,34},{98,34},{98,44.4}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -403,11 +401,7 @@ equation
       index=-1,
       extent={{-3,-6},{-3,-6}},
       horizontalAlignment=TextAlignment.Right));
-  connect(TCV1.port_b, sensor_T3.port_b)
-    annotation (Line(points={{112,72},{126,72}}, color={0,127,255}));
-  connect(TCV1.port_a, tee.port_3) annotation (Line(points={{96,72},{88,72},{88,
-          46},{106,46},{106,4},{100,4}}, color={0,127,255}));
-  connect(actuatorBus.TCV_SHS, TCV1.opening) annotation (Line(
+  connect(actuatorBus.TCV_SHS, TCV_LPT.opening) annotation (Line(
       points={{30,100},{104,100},{104,78.4}},
       color={111,216,99},
       pattern=LinePattern.Dash,
@@ -416,6 +410,12 @@ equation
       index=-1,
       extent={{-3,6},{-3,6}},
       horizontalAlignment=TextAlignment.Right));
+  connect(sensor_T3.port_b, TCV_LPT.port_a) annotation (Line(points={{88,48},{
+          86,48},{86,72},{96,72}}, color={0,127,255}));
+  connect(TCV_LPT.port_b, port_a2)
+    annotation (Line(points={{112,72},{160,72}}, color={0,127,255}));
+  connect(sensor_T3.port_a, tee.port_3) annotation (Line(points={{108,48},{110,
+          48},{110,2},{100,2},{100,4}}, color={0,127,255}));
 annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-24,2},{24,-2}},

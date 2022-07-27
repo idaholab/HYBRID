@@ -265,6 +265,6 @@ equation
   connect(realExpression.y, TCV_Power1.u_s) annotation (Line(points={{128.7,-26},
           {134,-26},{134,16},{100,16},{100,18}}, color={0,0,127}));
   connect(realExpression.y, TCV_Power.u_s) annotation (Line(points={{128.7,-26},
-          {132,-26},{132,-40},{54,-40},{54,-4},{20,-4},{20,2},{-60,2},{-60,-12},
+          {132,-26},{132,-38},{54,-38},{54,-2},{20,-2},{20,4},{-60,4},{-60,-12},
           {-52,-12}}, color={0,0,127}));
 end CS_IntermediateControl_PID_TESUC_ImpControl;

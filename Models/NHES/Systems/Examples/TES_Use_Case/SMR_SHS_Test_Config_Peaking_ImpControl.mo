@@ -61,10 +61,10 @@ model SMR_SHS_Test_Config_Peaking_ImpControl
       CS,
     redeclare replaceable
       NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
-      ht_level_max=50,
+      ht_level_max=100,
       ht_area=100,
       hot_tank_init_temp=513.15,
-      cold_tank_level_max=50,
+      cold_tank_level_max=100,
       cold_tank_area=100,
       cold_tank_init_temp=453.15,
       m_flow_ch_min=0.1,
@@ -75,23 +75,17 @@ model SMR_SHS_Test_Config_Peaking_ImpControl
       DHX_h_start_tube_outlet=530e3,
       discharge_pump_dp_nominal=10000,
       charge_pump_dp_nominal=10000,
-      disvalve_m_flow_nom=400,
-      chvalve_m_flow_nom=400),
+      disvalve_m_flow_nom=1000,
+      disvalve_dp_nominal=10000,
+      chvalve_m_flow_nom=5000,
+      chvalve_dp_nominal=10000),
     redeclare package Storage_Medium =
         NHES.Media.Hitec.Hitec,
     m_flow_min=0.1,
-    tank_height=50,
+    tank_height=100,
     Steam_Output_Temp=stateSensor6.temperature.T)
     annotation (Placement(transformation(extent={{-20,-76},{20,-36}})));
 
-  TRANSFORM.Fluid.Valves.ValveLinear SHS_Throttle(
-    redeclare package Medium = Modelica.Media.Water.StandardWater,
-    m_flow_start=400,
-    dp_nominal=450000,
-    m_flow_nominal=60) annotation (Placement(transformation(
-        extent={{6,6},{-6,-6}},
-        rotation=180,
-        origin={46,-30})));
   Fluid.Sensors.stateDisplay stateDisplay1
     annotation (Placement(transformation(extent={{-52,28},{-6,58}})));
   Fluid.Sensors.stateSensor stateSensor1(redeclare package Medium =
@@ -127,12 +121,6 @@ model SMR_SHS_Test_Config_Peaking_ImpControl
   Fluid.Sensors.stateSensor stateSensor7(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{68,-60},{48,-50}})));
-  Modelica.Blocks.Logical.TriggeredTrapezoid triggeredTrapezoid(
-    amplitude=0.25,
-    rising=30,
-    falling=30,
-    offset=0.008)
-    annotation (Placement(transformation(extent={{32,-24},{42,-14}})));
   Modelica.Blocks.Sources.Sine sine(
     amplitude=20e6,
     f=1/10000,
@@ -140,7 +128,6 @@ model SMR_SHS_Test_Config_Peaking_ImpControl
     startTime=1000)
     annotation (Placement(transformation(extent={{-26,72},{-6,92}})));
 equation
-    two_Tank_SHS_System_NTU.Charging_Trigger = triggeredTrapezoid.u;
 
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)
     annotation (Line(points={{28,-6},{44,-6},{44,-8},{62,-8}},
@@ -150,9 +137,6 @@ equation
           0,0}));
   connect(SY.port_Grid, EG.portElec_a)
     annotation (Line(points={{152,0},{160,0}}, color={255,0,0}));
-  connect(SHS_Throttle.port_b, intermediate_Rankine_Cycle_TESUC.port_a1)
-    annotation (Line(points={{52,-30},{69.2,-30},{69.2,-19.2}},
-        color={0,127,255}));
   connect(SMR_Taveprogram.port_b, stateSensor1.port_a) annotation (Line(points={{
           -51.0909,12.7692},{-51.0909,11},{-38,11}},  color={0,127,255}));
   connect(stateSensor1.port_b, EM.port_a1) annotation (Line(points={{-24,11},{-22,
@@ -181,8 +165,6 @@ equation
   connect(stateDisplay4.statePort, stateSensor4.statePort) annotation (Line(
         points={{-76,-94.16},{-76,-100},{-30.965,-100},{-30.965,-67.96}}, color=
          {0,0,0}));
-  connect(stateSensor5.port_b, SHS_Throttle.port_a)
-    annotation (Line(points={{30,-30},{40,-30}}, color={0,127,255}));
   connect(two_Tank_SHS_System_NTU.port_ch_b, stateSensor5.port_a) annotation (
       Line(points={{-19.6,-45.2},{-24,-45.2},{-24,-30},{16,-30}}, color={0,127,255}));
   connect(stateDisplay5.statePort, stateSensor5.statePort) annotation (Line(
@@ -199,14 +181,14 @@ equation
   connect(two_Tank_SHS_System_NTU.port_dch_a, stateSensor7.port_b) annotation (
       Line(points={{19.6,-44.4},{42,-44.4},{42,-55},{48,-55}},          color={0,
           127,255}));
-  connect(triggeredTrapezoid.y, SHS_Throttle.opening) annotation (Line(points={{42.5,
-          -19},{46,-19},{46,-25.2}},      color={0,0,127}));
   connect(stateSensor6.port_b, intermediate_Rankine_Cycle_TESUC.port_a2)
     annotation (Line(points={{62,-68},{108,-68},{108,13.6},{101.6,13.6}}, color=
          {0,127,255}));
   connect(stateSensor7.port_a, intermediate_Rankine_Cycle_TESUC.port_b1)
     annotation (Line(points={{68,-55},{68,-54},{106,-54},{106,-10.4},{101.6,-10.4}},
         color={0,127,255}));
+  connect(stateSensor5.port_b, intermediate_Rankine_Cycle_TESUC.port_a1)
+    annotation (Line(points={{30,-30},{69.2,-30},{69.2,-19.2}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{200,100}}), graphics={
         Ellipse(lineColor = {75,138,73},
@@ -222,7 +204,7 @@ equation
             false, extent={{-100,-100},{200,100}})),
     experiment(
       StopTime=20000,
-      Interval=5,
+      Interval=10,
       __Dymola_Algorithm="Esdirk45a"),
     Documentation(info="<html>
 <p>NuScale style reactor system. System has a nominal thermal output of 160MWt rather than the updated 200MWt.</p>

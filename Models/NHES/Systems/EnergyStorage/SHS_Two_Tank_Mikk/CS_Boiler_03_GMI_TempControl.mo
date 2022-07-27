@@ -12,8 +12,9 @@ model CS_Boiler_03_GMI_TempControl
     annotation (Placement(transformation(extent={{-18,-18},{-12,-24}})));
   TRANSFORM.Controls.LimPID PID5(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-7.5e-4,
+    k=-7.5e-3,
     Ti=30,
+    yMax=1.0,
     yMin=0.0,
     initType=Modelica.Blocks.Types.Init.InitialOutput,
     y_start=0.0)
@@ -28,24 +29,14 @@ model CS_Boiler_03_GMI_TempControl
     annotation (Placement(transformation(extent={{-68,-24},{-62,-18}})));
   TRANSFORM.Controls.LimPID PID3(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-2e-4,
+    k=2e-4,
     Ti=1,
     yMax=1.0,
     yMin=0.0,
     y_start=0.0)
     annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
-  Modelica.Blocks.Sources.Trapezoid trapezoid(
-    amplitude=218,
-    rising=10,
-    width=9480,
-    falling=10,
-    period=18000,
-    nperiod=-1,
-    offset=50,
-    startTime=0)
-    annotation (Placement(transformation(extent={{-58,48},{-46,60}})));
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-    Discharging_Valve_Position(min=0.1)  annotation (Placement(transformation(
+    Discharging_Valve_Position(min=0.01) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=180,
         origin={12,64})));
@@ -59,9 +50,9 @@ model CS_Boiler_03_GMI_TempControl
     annotation (Placement(transformation(extent={{-52,76},{-46,82}})));
   Modelica.Blocks.Sources.Constant one2(k=1.25)
     annotation (Placement(transformation(extent={{-74,60},{-68,66}})));
-  Modelica.Blocks.Sources.Constant one1(k=273.15 + 300)
+  Modelica.Blocks.Sources.Constant one1(k=273.15 + 240)
     annotation (Placement(transformation(extent={{-58,-16},{-52,-10}})));
-  Modelica.Blocks.Math.Add add3(k1=0.1)
+  Modelica.Blocks.Math.Add add3(k1=0.05)
     annotation (Placement(transformation(extent={{-30,-14},{-24,-8}})));
   Modelica.Blocks.Logical.Switch switch1
     annotation (Placement(transformation(extent={{-50,-6},{-46,-2}})));
@@ -73,11 +64,13 @@ model CS_Boiler_03_GMI_TempControl
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=2.5e-2,
     Ti=10,
-    yMax=10,
+    yMax=1,
     yMin=0.0,
     initType=Modelica.Blocks.Types.Init.InitialOutput,
     y_start=0.0)
     annotation (Placement(transformation(extent={{-40,0},{-34,-6}})));
+  Modelica.Blocks.Sources.Constant one8(k=273.15 + 218)
+    annotation (Placement(transformation(extent={{-52,50},{-46,56}})));
 equation
 
   connect(product2.y, Charging_Valve_Position_MinMax.u) annotation (Line(points={{-11.7,
@@ -102,9 +95,6 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(trapezoid.y,PID3. u_s)
-    annotation (Line(points={{-45.4,54},{-40,54},{-40,58},{-36.8,58}},
-                                                     color={0,0,127}));
   connect(product1.y, Discharging_Valve_Position.u)
     annotation (Line(points={{-11.6,64},{0,64}}, color={0,0,127}));
   connect(PID3.y,product1. u2) annotation (Line(points={{-27.6,58},{-26,58},{
@@ -132,11 +122,6 @@ equation
       thickness=0.5));
   connect(one1.y, PID5.u_s) annotation (Line(points={{-51.7,-13},{-44.6,-13},{
           -44.6,-17}},color={0,0,127}));
-  connect(sensorBus.Charge_Temp, PID5.u_m) annotation (Line(
-      points={{-30,-100},{-30,-64},{-102,-64},{-102,-10},{-41,-10},{-41,-13.4}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(PID5.y, add3.u2) annotation (Line(points={{-37.7,-17},{-34,-17},{-34,
           -12.8},{-30.6,-12.8}},
                                color={0,0,127}));
@@ -167,6 +152,14 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(sensorBus.Hot_Tank_Temp, PID5.u_m) annotation (Line(
+      points={{-30,-100},{-30,-70},{-102,-70},{-102,-10},{-41,-10},{-41,-13.4}},
+
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(one8.y, PID3.u_s) annotation (Line(points={{-45.7,53},{-45.7,54},{
+          -36.8,54},{-36.8,58}}, color={0,0,127}));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics={
         Text(
           extent={{-94,82},{94,74}},
