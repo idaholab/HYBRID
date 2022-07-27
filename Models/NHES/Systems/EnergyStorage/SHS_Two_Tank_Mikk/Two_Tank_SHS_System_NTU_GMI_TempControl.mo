@@ -157,7 +157,7 @@ model Two_Tank_SHS_System_NTU_GMI_TempControl
     use_T_in=false,
     m_flow=-m_flow_min,
     T=473.15,
-    nPorts=1) annotation (Placement(transformation(extent={{-126,24},{-106,44}})));
+    nPorts=2) annotation (Placement(transformation(extent={{-126,24},{-106,44}})));
   Modelica.Blocks.Sources.RealExpression Level_Hot_Tank1(y=CHX.Shell.medium.h)
     annotation (Placement(transformation(extent={{-128,-98},{-108,-78}})));
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
@@ -216,10 +216,13 @@ model Two_Tank_SHS_System_NTU_GMI_TempControl
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
       = Storage_Medium)
     annotation (Placement(transformation(extent={{-34,-86},{-14,-66}})));
-  Modelica.Blocks.Sources.RealExpression Hot_Tank_Temp(y=hot_tank.T)
+  Modelica.Blocks.Sources.RealExpression Coolant_Water_temp(y=sensor_T1.T)
     annotation (Placement(transformation(extent={{-68,76},{-48,96}})));
   Modelica.Blocks.Sources.RealExpression Cold_Tank_Temp(y=cold_tank.T)
     annotation (Placement(transformation(extent={{-68,96},{-48,116}})));
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium
+      = Modelica.Media.Water.StandardWater)
+    annotation (Placement(transformation(extent={{-82,-40},{-62,-20}})));
 equation
   connect(volume.port_a, Discharging_Valve.port_b)
     annotation (Line(points={{68,-22},{68,-32}},   color={0,127,255}));
@@ -302,13 +305,9 @@ equation
           {-40,-38},{-42,-38},{-42,-30}}, color={0,127,255}));
   connect(CHX.Shell_in, boundary2.ports[1]) annotation (Line(points={{-46,-64},
           {-46,-70},{-58,-70},{-58,-92},{-64,-92}},color={0,127,255}));
-  connect(CHX.Shell_in, port_ch_a) annotation (Line(points={{-46,-64},{-46,-70},
-          {-82,-70},{-82,-62},{-98,-62}}, color={0,127,255}));
   connect(CHX.Shell_out, boundary4.ports[1]) annotation (Line(points={{-46,-44},
-          {-46,-36},{-84,-36},{-84,34},{-106,34}},
+          {-46,-36},{-84,-36},{-84,34.5},{-106,34.5}},
                                       color={0,127,255}));
-  connect(CHX.Shell_out, port_ch_b) annotation (Line(points={{-46,-44},{-46,-36},
-          {-84,-36},{-84,54},{-98,54}},           color={0,127,255}));
   connect(hot_tank.port_a, resistance.port_b) annotation (Line(points={{36,
           -79.6},{36,-76},{13,-76}},     color={0,127,255}));
   connect(CHX.Tube_out, sensor_T.port_a)
@@ -316,7 +315,7 @@ equation
                                                            color={0,127,255}));
   connect(sensor_T.port_b, resistance.port_a)
     annotation (Line(points={{-14,-76},{-1,-76}},         color={0,127,255}));
-  connect(sensorBus.Hot_Tank_Temp, Hot_Tank_Temp.y) annotation (Line(
+  connect(sensorBus.Hot_Tank_Temp, Coolant_Water_temp.y) annotation (Line(
       points={{-30,100},{-30,76},{-47,76},{-47,86}},
       color={239,82,82},
       pattern=LinePattern.Dash,
@@ -330,6 +329,12 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(CHX.Shell_out, sensor_T1.port_b) annotation (Line(points={{-46,-44},{
+          -46,-34},{-56,-34},{-56,-30},{-62,-30}}, color={0,127,255}));
+  connect(port_ch_b, sensor_T1.port_a) annotation (Line(points={{-98,54},{-84,
+          54},{-84,32},{-86,32},{-86,-30},{-82,-30}}, color={0,127,255}));
+  connect(port_ch_a, CHX.Shell_in) annotation (Line(points={{-98,-62},{-76,-62},
+          {-76,-64},{-46,-64}}, color={0,127,255}));
   annotation (experiment(
       StopTime=432000,
       Interval=37,

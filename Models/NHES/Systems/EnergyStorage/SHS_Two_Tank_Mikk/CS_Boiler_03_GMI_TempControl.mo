@@ -6,14 +6,14 @@ model CS_Boiler_03_GMI_TempControl
   Data.Data_Default data
     annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-    Charging_Valve_Position_MinMax(min=1e-4)
+    Charging_Valve_Position_MinMax(min=1e-2)
     annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
   Modelica.Blocks.Math.Product product2
     annotation (Placement(transformation(extent={{-18,-18},{-12,-24}})));
   TRANSFORM.Controls.LimPID PID5(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-7.5e-3,
-    Ti=30,
+    k=7.5e-4,
+    Ti=5,
     yMax=1.0,
     yMin=0.0,
     initType=Modelica.Blocks.Types.Init.InitialOutput,
@@ -50,7 +50,7 @@ model CS_Boiler_03_GMI_TempControl
     annotation (Placement(transformation(extent={{-52,76},{-46,82}})));
   Modelica.Blocks.Sources.Constant one2(k=1.25)
     annotation (Placement(transformation(extent={{-74,60},{-68,66}})));
-  Modelica.Blocks.Sources.Constant one1(k=273.15 + 240)
+  Modelica.Blocks.Sources.Constant one1(k=273.15 + 148)
     annotation (Placement(transformation(extent={{-58,-16},{-52,-10}})));
   Modelica.Blocks.Math.Add add3(k1=0.01)
     annotation (Placement(transformation(extent={{-30,-14},{-24,-8}})));

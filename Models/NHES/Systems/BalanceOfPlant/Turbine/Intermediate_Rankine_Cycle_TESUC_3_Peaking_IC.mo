@@ -249,12 +249,11 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC "Two stage BOP model"
         extent={{8,8},{-8,-8}},
         rotation=180,
         origin={104,72})));
-  TRANSFORM.Fluid.Valves.ValveLinear TCV1(
+  TRANSFORM.Fluid.Valves.ValveLinear SHS_charge_control(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_start=400,
     dp_nominal=data.valve_SHS_dp_nominal,
-    m_flow_nominal=data.valve_SHS_mflow)
-                       annotation (Placement(transformation(
+    m_flow_nominal=data.valve_SHS_mflow) annotation (Placement(transformation(
         extent={{8,8},{-8,-8}},
         rotation=180,
         origin={-62,-102})));
@@ -425,11 +424,13 @@ equation
     annotation (Line(points={{112,72},{160,72}}, color={0,127,255}));
   connect(sensor_T3.port_a, tee.port_3) annotation (Line(points={{108,48},{110,
           48},{110,2},{100,2},{100,4}}, color={0,127,255}));
-  connect(port_a1, TCV1.port_a) annotation (Line(points={{-92,-160},{-92,-102},
-          {-70,-102}}, color={0,127,255}));
-  connect(TCV1.port_b, FeedwaterMixVolume.port_b[3]) annotation (Line(points={{
-          -54,-102},{-20,-102},{-20,-39.3333},{-24,-39.3333}}, color={0,127,255}));
-  connect(actuatorBus.SHS_throttle, TCV1.opening) annotation (Line(
+  connect(port_a1, SHS_charge_control.port_a) annotation (Line(points={{-92,
+          -160},{-92,-102},{-70,-102}}, color={0,127,255}));
+  connect(SHS_charge_control.port_b, FeedwaterMixVolume.port_b[3]) annotation (
+      Line(points={{-54,-102},{-20,-102},{-20,-39.3333},{-24,-39.3333}}, color=
+          {0,127,255}));
+  connect(actuatorBus.SHS_throttle, SHS_charge_control.opening) annotation (
+      Line(
       points={{30,100},{-90,100},{-90,-84},{-62,-84},{-62,-95.6}},
       color={111,216,99},
       pattern=LinePattern.Dash,
