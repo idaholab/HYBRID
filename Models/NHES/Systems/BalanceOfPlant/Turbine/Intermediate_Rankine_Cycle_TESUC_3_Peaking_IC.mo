@@ -4,6 +4,9 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC "Two stage BOP model"
     redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
     redeclare Data.IntermediateTurbine data(
+      valve_SHS_mflow=35,
+      valve_TCV_LPT_mflow=500,
+      valve_TCV_LPT_dp_nominal=10000,
       InternalBypassValve_mflow_small=0,
       InternalBypassValve_p_spring=15000000,
       InternalBypassValve_K=40,
@@ -246,6 +249,15 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC "Two stage BOP model"
         extent={{8,8},{-8,-8}},
         rotation=180,
         origin={104,72})));
+  TRANSFORM.Fluid.Valves.ValveLinear TCV1(
+    redeclare package Medium = Modelica.Media.Water.StandardWater,
+    m_flow_start=400,
+    dp_nominal=data.valve_SHS_dp_nominal,
+    m_flow_nominal=data.valve_SHS_mflow)
+                       annotation (Placement(transformation(
+        extent={{8,8},{-8,-8}},
+        rotation=180,
+        origin={-62,-102})));
 initial equation
 
 equation
@@ -346,9 +358,6 @@ equation
   connect(FeedwaterMixVolume.port_b[2], sensor_T4.port_a) annotation (Line(
         points={{-24,-40},{-20,-40},{-20,-128},{-10,-128}},
         color={0,127,255}));
-  connect(FeedwaterMixVolume.port_b[3], port_a1) annotation (Line(points={{-24,
-          -39.3333},{-20,-39.3333},{-20,-108},{-92,-108},{-92,-160}},
-                                                            color={0,127,255}));
   connect(InternalBypass.port_a, header.port_b[2]) annotation (Line(points={{
           -82,22},{-94,22},{-94,24},{-106,24},{-106,42.5}}, color={0,127,255}));
   connect(InternalBypass.port_b, R_InternalBypass.port_a) annotation (Line(
@@ -416,6 +425,15 @@ equation
     annotation (Line(points={{112,72},{160,72}}, color={0,127,255}));
   connect(sensor_T3.port_a, tee.port_3) annotation (Line(points={{108,48},{110,
           48},{110,2},{100,2},{100,4}}, color={0,127,255}));
+  connect(port_a1, TCV1.port_a) annotation (Line(points={{-92,-160},{-92,-102},
+          {-70,-102}}, color={0,127,255}));
+  connect(TCV1.port_b, FeedwaterMixVolume.port_b[3]) annotation (Line(points={{
+          -54,-102},{-20,-102},{-20,-39.3333},{-24,-39.3333}}, color={0,127,255}));
+  connect(actuatorBus.SHS_throttle, TCV1.opening) annotation (Line(
+      points={{30,100},{-90,100},{-90,-84},{-62,-84},{-62,-95.6}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
 annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-24,2},{24,-2}},

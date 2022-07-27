@@ -56,6 +56,10 @@ model IntermediateTurbine
   annotation (Dialog(tab="Valves", group="Turbine Control Valve"));
   parameter Modelica.Units.SI.Pressure valve_TCV_dp_nominal = 1000000 "Nominal pressure drop for turbine control"
   annotation (Dialog(tab="Valves", group="Turbine Control Valve"));
+   parameter Modelica.Units.SI.MassFlowRate valve_SHS_mflow = 60 "Turbine Control valve nominal mass flow"
+  annotation (Dialog(tab="Valves", group="Turbine Control Valve"));
+  parameter Modelica.Units.SI.Pressure valve_SHS_dp_nominal = 450000 "Nominal pressure drop for turbine control"
+  annotation (Dialog(tab="Valves", group="Turbine Control Valve"));
   parameter Modelica.Units.SI.MassFlowRate valve_TCV_LPT_mflow = 300 "Turbine Control valve nominal mass flow"
   annotation (Dialog(tab="Valves", group="Turbine Control Valve"));
   parameter Modelica.Units.SI.Pressure valve_TCV_LPT_dp_nominal = 100000 "Nominal pressure drop for turbine control"

@@ -48,7 +48,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl
     p_steam=3398000,
     p_steam_vent=15000000,
     T_Steam_Ref=579.75,
-    Q_Nom=67.38e6,
+    Q_Nom=40e6,
     T_Feedwater=421.15)
     annotation (Placement(transformation(extent={{-98,12},{-78,32}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
@@ -119,6 +119,27 @@ model CS_IntermediateControl_PID_TESUC_ImpControl
     annotation (Placement(transformation(extent={{86,-10},{78,-2}})));
   Modelica.Blocks.Math.Add         add4
     annotation (Placement(transformation(extent={{62,0},{42,20}})));
+  Modelica.Blocks.Math.Add         add5
+    annotation (Placement(transformation(extent={{58,-76},{38,-56}})));
+  TRANSFORM.Controls.LimPID TCV_Power2(
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    k=-5e-8,
+    Ti=5,
+    k_s=1,
+    k_m=1,
+    yMax=1 - 0.015,
+    yMin=0,
+    initType=Modelica.Blocks.Types.Init.InitialState,
+    xi_start=1500)
+    annotation (Placement(transformation(extent={{90,-50},{70,-70}})));
+  Modelica.Blocks.Sources.Constant const10(k=0.015)
+    annotation (Placement(transformation(extent={{82,-86},{74,-78}})));
+  Modelica.Blocks.Math.Add add6
+    annotation (Placement(transformation(extent={{134,-68},{114,-48}})));
+  Modelica.Blocks.Sources.Constant const12(k=-data.Q_Nom)
+    annotation (Placement(transformation(extent={{178,-74},{158,-54}})));
+  Modelica.Blocks.Sources.Constant const13(k=0)
+    annotation (Placement(transformation(extent={{98,-32},{90,-24}})));
 equation
   connect(const5.y,Turb_Divert_Valve. u_s)
     annotation (Line(points={{-71,-46},{-66,-46},{-66,-48},{-62,-48}},
@@ -267,4 +288,21 @@ equation
   connect(realExpression.y, TCV_Power.u_s) annotation (Line(points={{128.7,-26},
           {132,-26},{132,-38},{54,-38},{54,-2},{20,-2},{20,4},{-60,4},{-60,-12},
           {-52,-12}}, color={0,0,127}));
+  connect(add5.u1, TCV_Power2.y)
+    annotation (Line(points={{60,-60},{69,-60}}, color={0,0,127}));
+  connect(add5.u2, const10.y) annotation (Line(points={{60,-72},{66,-72},{66,
+          -82},{73.6,-82}}, color={0,0,127}));
+  connect(TCV_Power2.u_s, add6.y) annotation (Line(points={{92,-60},{104,-60},{
+          104,-58},{113,-58}}, color={0,0,127}));
+  connect(realExpression.y, add6.u1) annotation (Line(points={{128.7,-26},{146,
+          -26},{146,-52},{136,-52}}, color={0,0,127}));
+  connect(add6.u2, const12.y)
+    annotation (Line(points={{136,-64},{157,-64}}, color={0,0,127}));
+  connect(const13.y, TCV_Power2.u_m)
+    annotation (Line(points={{89.6,-28},{80,-28},{80,-48}}, color={0,0,127}));
+  connect(actuatorBus.SHS_throttle, add5.y) annotation (Line(
+      points={{30,-100},{30,-66},{37,-66}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
 end CS_IntermediateControl_PID_TESUC_ImpControl;
