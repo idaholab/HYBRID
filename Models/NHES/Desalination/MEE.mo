@@ -2926,6 +2926,75 @@ package MEE "Multi Effect Evaporators"
               thickness=1,
               arrow={Arrow.None,Arrow.Filled})}));
     end Evaporator_Brine_Flash;
+
+    model TVC
+      import Modelica.Units.SI;
+      import Modelica.Fluid.Types.Dynamics;
+      replaceable package Medium = Modelica.Media.Water.StandardWater;
+
+      SI.AbsolutePressure Pp(start=3e5);
+      parameter SI.AbsolutePressure Pe=5e3 "Vaccum Pressure";
+      SI.AbsolutePressure Pc(start=1.5e5);
+      SI.MassFlowRate mp;
+      SI.MassFlowRate me;
+      SI.MassFlowRate mc;
+      SI.SpecificEnthalpy hp;
+      SI.SpecificEnthalpy he;
+      SI.SpecificEnthalpy hc;
+      Real MR;
+      Real CR;
+      Real ER(start=15);
+
+      TRANSFORM.Fluid.Interfaces.FluidPort_Flow  primarysteam(redeclare package
+          Medium = Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+      TRANSFORM.Fluid.Interfaces.FluidPort_State mixturesteam(redeclare package
+          Medium = Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+      TRANSFORM.Fluid.Interfaces.FluidPort_Flow  secondarysteam(redeclare
+          package Medium =
+                   Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{-10,-110},{10,-90}})));
+    equation
+      //bals
+      mp+me+mc=0;
+      mp*hp+me*he+mc*hc=0;
+      //ratios
+      MR=mp/me;
+      CR=Pc/Pe;
+      ER=Pp/Pe;
+      if ER<10 then
+        MR=-1.61061763080868 + 11.0331387899116 * log(CR) +13.5281254171601/ER-
+        14.9338191429307*(log(CR)^2)-34.4397376531113/(ER^2)-48.4767172051364 *
+        log(CR)/ER+ 6.46223679313751*(log(CR)^3)+29.9699902855834/(ER^3)+
+        70.8113406477665* (log(CR)/(ER^2))+ 46.9590107717394*(log(CR)^2)/ER;
+      elseif ER<100 then
+        MR=-3.20842210618164 + 3.93335312452389 *CR + 27.2360043794853/ER
+        -1.19206948677452 *(CR^2)-141.423288255019/(ER^2)-22.5455184193569
+        *CR/ER +0.125812687624122 *(CR^3)+348.506574704109/(ER^3)+41.7960967174647
+        *CR/(ER^2)+6.43992939366982 *(CR^2)/ER;
+      else
+        MR=-1.93422581403321 + 2.152523807931* CR +113.490932154749/ER
+        -0.522221061154973* (CR^2)-14735.9653361836/(ER^2)-31.8519701023059*
+        CR/ER +0.047506773195604*(CR^3)+900786.044551787/(ER^3)-495.581541338594*
+        CR/(ER^2)+10.0251265889018 *(CR^2)/ER;
+      end if;
+
+      //ports
+      mp=primarysteam.m_flow;
+      me=secondarysteam.m_flow;
+      mc=mixturesteam.m_flow;
+      hp=actualStream(primarysteam.h_outflow);
+      primarysteam.h_outflow=hp;
+      he=actualStream(secondarysteam.h_outflow);
+      secondarysteam.h_outflow=he;
+      hc=mixturesteam.h_outflow;
+      Pp=primarysteam.p;
+      Pe=secondarysteam.p;
+      Pc=mixturesteam.p;
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end TVC;
   end Components;
 
   package Examples
@@ -6599,7 +6668,7 @@ package MEE "Multi Effect Evaporators"
         dp_nom=1000) annotation (Placement(transformation(
             extent={{10,-10},{-10,10}},
             rotation=90,
-            origin={-210,30})));
+            origin={-210,28})));
 
       NHES.Fluid.Valves.FCV BrineFCV3(
         redeclare package Medium = NHES.Media.SeaWater (ThermoStates=
@@ -6846,7 +6915,7 @@ package MEE "Multi Effect Evaporators"
       connect(BrineFCV3.port_b, effect3.Brine_Inlet_Port) annotation (Line(
             points={{-110,20},{-110,-46},{-124,-46}}, color={0,127,255}));
       connect(BrineFCV2.port_b, effect2.Brine_Inlet_Port) annotation (Line(
-            points={{-210,20},{-210,-48},{-228,-48}}, color={0,127,255}));
+            points={{-210,18},{-210,-48},{-228,-48}}, color={0,127,255}));
       connect(BrineFCV1.port_b, effect1.Brine_Inlet_Port) annotation (Line(
             points={{-310,20},{-310,-50},{-326,-50}}, color={0,127,255}));
       connect(sensorBus.T1, temperature1.T) annotation (Line(
@@ -6991,9 +7060,11 @@ package MEE "Multi Effect Evaporators"
       connect(BrineFCV4.port_a, BrineFCV3.port_a)
         annotation (Line(points={{-10,40},{-110,40}}, color={0,127,255}));
       connect(BrineFCV3.port_a, BrineFCV2.port_a)
-        annotation (Line(points={{-110,40},{-210,40}}, color={0,127,255}));
+        annotation (Line(points={{-110,40},{-160,40},{-160,38},{-210,38}},
+                                                       color={0,127,255}));
       connect(BrineFCV2.port_a, BrineFCV1.port_a)
-        annotation (Line(points={{-210,40},{-310,40}}, color={0,127,255}));
+        annotation (Line(points={{-210,38},{-260,38},{-260,40},{-310,40}},
+                                                       color={0,127,255}));
       connect(CV7.port_b, Condensate_Oulet) annotation (Line(points={{350,-108},
               {348,-108},{348,-140},{-558,-140}}, color={0,127,255}));
       connect(preHeater.port_b1, CV7.port_a) annotation (Line(points={{350.1,
@@ -7175,7 +7246,7 @@ package MEE "Multi Effect Evaporators"
       connect(CVM.port_b, Condensate_Oulet) annotation (Line(points={{-318,-108},
               {-318,-140},{-558,-140}}, color={0,127,255}));
       connect(actuatorBus.MCV_opening, CVM.opening) annotation (Line(
-          points={{30,100},{422,100},{422,-114},{-294,-114},{-294,-98},{-310,
+          points={{30,100},{422,100},{422,-112},{-294,-112},{-294,-98},{-310,
               -98}},
           color={111,216,99},
           pattern=LinePattern.Dash,
@@ -8275,7 +8346,7 @@ package MEE "Multi Effect Evaporators"
 
     model CS_TemperatureControlSystemMEETCV7
 
-      extends NCSU_INL.NHESdelta.MEE.BaseClasses.Partial_ControlSystem;
+      extends NHES.Desalination.MEE.BaseClasses.Partial_ControlSystem;
 
       TRANSFORM.Controls.LimPID PID1(
         controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -8519,7 +8590,7 @@ package MEE "Multi Effect Evaporators"
           extent={{6,3},{6,3}},
           horizontalAlignment=TextAlignment.Left));
       connect(sensorBus.MPset, PID8.u_s) annotation (Line(
-          points={{-29.9,-99.9},{-29.9,-62},{-70,-62},{-70,90},{-62,90}},
+          points={{-30,-100},{-30,-62},{-70,-62},{-70,90},{-62,90}},
           color={239,82,82},
           pattern=LinePattern.Dash,
           thickness=0.5), Text(
@@ -8528,7 +8599,7 @@ package MEE "Multi Effect Evaporators"
           extent={{-6,3},{-6,3}},
           horizontalAlignment=TextAlignment.Right));
       connect(sensorBus.MP, PID8.u_m) annotation (Line(
-          points={{-29.9,-99.9},{-29.9,72},{-50,72},{-50,78}},
+          points={{-30,-100},{-30,72},{-50,72},{-50,78}},
           color={239,82,82},
           pattern=LinePattern.Dash,
           thickness=0.5), Text(
@@ -8537,7 +8608,7 @@ package MEE "Multi Effect Evaporators"
           extent={{-3,-6},{-3,-6}},
           horizontalAlignment=TextAlignment.Right));
       connect(actuatorBus.MCV_opening, PID8.y) annotation (Line(
-          points={{30.1,-99.9},{30.1,90},{-39,90}},
+          points={{30,-100},{30,90},{-39,90}},
           color={111,216,99},
           pattern=LinePattern.Dash,
           thickness=0.5), Text(
@@ -8546,7 +8617,7 @@ package MEE "Multi Effect Evaporators"
           extent={{6,3},{6,3}},
           horizontalAlignment=TextAlignment.Left));
       connect(sensorBus.mTVC, PID9.u_m) annotation (Line(
-          points={{-29.9,-99.9},{-29.9,-68},{70,-68},{70,-62}},
+          points={{-30,-100},{-30,-68},{70,-68},{70,-62}},
           color={239,82,82},
           pattern=LinePattern.Dash,
           thickness=0.5), Text(
@@ -8555,7 +8626,7 @@ package MEE "Multi Effect Evaporators"
           extent={{-3,-6},{-3,-6}},
           horizontalAlignment=TextAlignment.Right));
       connect(actuatorBus.TCVCV_opening, PID9.y) annotation (Line(
-          points={{30.1,-99.9},{30.1,-76},{90,-76},{90,-50},{81,-50}},
+          points={{30,-100},{30,-76},{90,-76},{90,-50},{81,-50}},
           color={111,216,99},
           pattern=LinePattern.Dash,
           thickness=0.5), Text(
@@ -8564,7 +8635,7 @@ package MEE "Multi Effect Evaporators"
           extent={{6,3},{6,3}},
           horizontalAlignment=TextAlignment.Left));
       connect(sensorBus.mMset, PID9.u_s) annotation (Line(
-          points={{-29.9,-99.9},{-29.9,-68},{48,-68},{48,-50},{58,-50}},
+          points={{-30,-100},{-30,-68},{48,-68},{48,-50},{58,-50}},
           color={239,82,82},
           pattern=LinePattern.Dash,
           thickness=0.5), Text(
@@ -8573,7 +8644,7 @@ package MEE "Multi Effect Evaporators"
           extent={{-6,3},{-6,3}},
           horizontalAlignment=TextAlignment.Right));
       connect(sensorBus.mM, PID10.u_s) annotation (Line(
-          points={{-29.9,-99.9},{-29.9,-68},{48,-68},{48,-10},{58,-10}},
+          points={{-30,-100},{-30,-68},{48,-68},{48,-10},{58,-10}},
           color={239,82,82},
           pattern=LinePattern.Dash,
           thickness=0.5), Text(
@@ -8582,7 +8653,7 @@ package MEE "Multi Effect Evaporators"
           extent={{-6,3},{-6,3}},
           horizontalAlignment=TextAlignment.Right));
       connect(sensorBus.mE, PID10.u_m) annotation (Line(
-          points={{-29.9,-99.9},{-29.9,-68},{48,-68},{48,-28},{70,-28},{70,-22}},
+          points={{-30,-100},{-30,-68},{48,-68},{48,-28},{70,-28},{70,-22}},
           color={239,82,82},
           pattern=LinePattern.Dash,
           thickness=0.5), Text(
@@ -8592,7 +8663,7 @@ package MEE "Multi Effect Evaporators"
           horizontalAlignment=TextAlignment.Right));
 
       connect(actuatorBus.ECV_opening, PID10.y) annotation (Line(
-          points={{30.1,-99.9},{30.1,-76},{90,-76},{90,-10},{81,-10}},
+          points={{30,-100},{30,-76},{90,-76},{90,-10},{81,-10}},
           color={111,216,99},
           pattern=LinePattern.Dash,
           thickness=0.5), Text(
