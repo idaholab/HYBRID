@@ -5,7 +5,8 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC "Two stage BOP model"
     redeclare replaceable ControlSystems.ED_Dummy ED,
     redeclare Data.IntermediateTurbine data(
       valve_SHS_mflow=35,
-      valve_TCV_LPT_mflow=500,
+      valve_SHS_dp_nominal=1000000,
+      valve_TCV_LPT_mflow=30,
       valve_TCV_LPT_dp_nominal=10000,
       InternalBypassValve_mflow_small=0,
       InternalBypassValve_p_spring=15000000,
@@ -239,7 +240,7 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC "Two stage BOP model"
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
-        origin={98,48})));
+        origin={134,72})));
   TRANSFORM.Fluid.Valves.ValveLinear TCV_LPT(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_start=400,
@@ -401,7 +402,7 @@ equation
       extent={{-3,-6},{-3,-6}},
       horizontalAlignment=TextAlignment.Right));
   connect(sensorBus.SHS_Return_T, sensor_T3.T) annotation (Line(
-      points={{-30,100},{-30,74},{64,74},{64,34},{98,34},{98,44.4}},
+      points={{-30,100},{-30,74},{88,74},{88,58},{134,58},{134,68.4}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -418,12 +419,6 @@ equation
       index=-1,
       extent={{-3,6},{-3,6}},
       horizontalAlignment=TextAlignment.Right));
-  connect(sensor_T3.port_b, TCV_LPT.port_a) annotation (Line(points={{88,48},{
-          86,48},{86,72},{96,72}}, color={0,127,255}));
-  connect(TCV_LPT.port_b, port_a2)
-    annotation (Line(points={{112,72},{160,72}}, color={0,127,255}));
-  connect(sensor_T3.port_a, tee.port_3) annotation (Line(points={{108,48},{110,
-          48},{110,2},{100,2},{100,4}}, color={0,127,255}));
   connect(port_a1, SHS_charge_control.port_a) annotation (Line(points={{-92,
           -160},{-92,-102},{-70,-102}}, color={0,127,255}));
   connect(SHS_charge_control.port_b, FeedwaterMixVolume.port_b[3]) annotation (
@@ -435,6 +430,12 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(TCV_LPT.port_b, sensor_T3.port_b)
+    annotation (Line(points={{112,72},{124,72}}, color={0,127,255}));
+  connect(sensor_T3.port_a, port_a2)
+    annotation (Line(points={{144,72},{160,72}}, color={0,127,255}));
+  connect(TCV_LPT.port_a, tee.port_3) annotation (Line(points={{96,72},{90,72},
+          {90,52},{104,52},{104,4},{100,4}}, color={0,127,255}));
 annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-24,2},{24,-2}},

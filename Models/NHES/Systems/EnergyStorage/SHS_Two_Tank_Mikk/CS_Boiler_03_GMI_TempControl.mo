@@ -6,17 +6,17 @@ model CS_Boiler_03_GMI_TempControl
   Data.Data_Default data
     annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-    Charging_Valve_Position_MinMax(min=1e-2)
+    Charging_Valve_Position_MinMax(min=1e-2, max=1)
     annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
   Modelica.Blocks.Math.Product product2
     annotation (Placement(transformation(extent={{-18,-18},{-12,-24}})));
   TRANSFORM.Controls.LimPID PID5(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=7.5e-4,
+    k=-7.5e-4,
     Ti=5,
     yMax=1.0,
-    yMin=0.0,
-    initType=Modelica.Blocks.Types.Init.InitialOutput,
+    yMin=0.001,
+    initType=Modelica.Blocks.Types.Init.NoInit,
     y_start=0.0)
     annotation (Placement(transformation(extent={{-44,-14},{-38,-20}})));
   Modelica.Blocks.Math.Add add2
@@ -29,14 +29,15 @@ model CS_Boiler_03_GMI_TempControl
     annotation (Placement(transformation(extent={{-68,-24},{-62,-18}})));
   TRANSFORM.Controls.LimPID PID3(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2e-3,
-    Ti=10,
+    k=2e-4,
+    Ti=1,
     yMax=1.0,
     yMin=0.0,
-    y_start=0.0)
+    initType=Modelica.Blocks.Types.Init.InitialOutput,
+    y_start=1)
     annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-    Discharging_Valve_Position(min=0.01) annotation (Placement(transformation(
+    Discharging_Valve_Position(min=1e-3) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=180,
         origin={12,64})));
@@ -52,7 +53,7 @@ model CS_Boiler_03_GMI_TempControl
     annotation (Placement(transformation(extent={{-74,60},{-68,66}})));
   Modelica.Blocks.Sources.Constant one1(k=273.15 + 148)
     annotation (Placement(transformation(extent={{-58,-16},{-52,-10}})));
-  Modelica.Blocks.Math.Add add3(k1=0.01)
+  Modelica.Blocks.Math.Add add3(k1=0.1, k2=1)
     annotation (Placement(transformation(extent={{-30,-14},{-24,-8}})));
   Modelica.Blocks.Logical.Switch switch1
     annotation (Placement(transformation(extent={{-50,-6},{-46,-2}})));
@@ -65,11 +66,11 @@ model CS_Boiler_03_GMI_TempControl
     k=2.5e-2,
     Ti=10,
     yMax=1,
-    yMin=0.0,
-    initType=Modelica.Blocks.Types.Init.InitialOutput,
+    yMin=0.01,
+    initType=Modelica.Blocks.Types.Init.NoInit,
     y_start=0.0)
     annotation (Placement(transformation(extent={{-40,0},{-34,-6}})));
-  Modelica.Blocks.Sources.Constant one8(k=273.15 + 218)
+  Modelica.Blocks.Sources.Constant one8(k=273.15 + 180)
     annotation (Placement(transformation(extent={{-52,50},{-46,56}})));
 equation
 
@@ -147,19 +148,22 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.Hot_Tank_Temp, PID5.u_m) annotation (Line(
-      points={{-30,-100},{-30,-70},{-102,-70},{-102,-10},{-41,-10},{-41,-13.4}},
-
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(one8.y, PID3.u_s) annotation (Line(points={{-45.7,53},{-45.7,54},{
           -36.8,54},{-36.8,58}}, color={0,0,127}));
-  connect(sensorBus.Discharge_Steam, PID3.u_m) annotation (Line(
-      points={{-30,-100},{-30,-70},{-102,-70},{-102,38},{-32,38},{-32,53.2}},
+  connect(sensorBus.Coolant_Water_temp, PID5.u_m) annotation (Line(
+      points={{-30,-100},{-30,-70},{-102,-70},{-102,-8},{-41,-8},{-41,-13.4}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(sensorBus.Cold_Tank_Entrance_Temp, PID3.u_m) annotation (Line(
+      points={{-30,-100},{-30,-70},{-102,-70},{-102,42},{-32,42},{-32,53.2}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-3,-6},{-3,-6}},
+      horizontalAlignment=TextAlignment.Right));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics={
         Text(
           extent={{-94,82},{94,74}},
