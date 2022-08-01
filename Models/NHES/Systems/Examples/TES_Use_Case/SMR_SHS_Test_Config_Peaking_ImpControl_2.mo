@@ -1,5 +1,5 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model SMR_SHS_Test_Config_Peaking_ImpControl
+model SMR_SHS_Test_Config_Peaking_ImpControl_2
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
  Real demandChange=
@@ -29,7 +29,7 @@ model SMR_SHS_Test_Config_Peaking_ImpControl
     port_b3_nominal_m_flow={-0.67},
     nPorts_b3=1)
     annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC
+  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2
     intermediate_Rankine_Cycle_TESUC(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
@@ -37,7 +37,7 @@ model SMR_SHS_Test_Config_Peaking_ImpControl
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_ImpControl
+      BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_ImpControl_2
       CS(electric_demand=sine.y))
     annotation (Placement(transformation(extent={{62,-20},{102,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
@@ -54,10 +54,10 @@ model SMR_SHS_Test_Config_Peaking_ImpControl
     fileName=Modelica.Utilities.Files.loadResource(
         "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
     annotation (Placement(transformation(extent={{160,60},{200,100}})));
-  EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl
+  EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl_2
     two_Tank_SHS_System_NTU(
     redeclare
-      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl
+      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_2
       CS,
     redeclare replaceable
       NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
@@ -204,7 +204,7 @@ equation
                                 Diagram(coordinateSystem(preserveAspectRatio=
             false, extent={{-100,-100},{200,100}})),
     experiment(
-      StopTime=20000,
+      StopTime=200000,
       Interval=10,
       __Dymola_Algorithm="Esdirk45a"),
     Documentation(info="<html>
@@ -212,4 +212,4 @@ equation
 <p>System is based upon report: Frick, Konor L. Status Report on the NuScale Module Developed in the Modelica Framework. United States: N. p., 2019. Web. doi:10.2172/1569288.</p>
 </html>"),
     __Dymola_experimentSetupOutput(events=false));
-end SMR_SHS_Test_Config_Peaking_ImpControl;
+end SMR_SHS_Test_Config_Peaking_ImpControl_2;

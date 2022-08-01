@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_IntermediateControl_PID_TESUC_ImpControl
+model CS_IntermediateControl_PID_TESUC_ImpControl_2
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
   extends NHES.Icons.DummyIcon;
@@ -66,7 +66,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl
     annotation (Placement(transformation(extent={{-70,30},{-50,50}})));
   TRANSFORM.Controls.LimPID FWCP_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2.5e-7,
+    k=2.5e-6,
     Ti=20,
     yMax=250,
     yMin=-72,
@@ -122,9 +122,9 @@ model CS_IntermediateControl_PID_TESUC_ImpControl
     annotation (Placement(transformation(extent={{62,0},{42,20}})));
   Modelica.Blocks.Math.Add         add5
     annotation (Placement(transformation(extent={{58,-76},{38,-56}})));
-  TRANSFORM.Controls.LimPID SHS_Throttle(
+  TRANSFORM.Controls.LimPID Charge_OnOff_Throttle(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-1e-8,
+    k=-5e-8,
     Ti=5,
     k_s=1,
     k_m=1,
@@ -143,20 +143,20 @@ model CS_IntermediateControl_PID_TESUC_ImpControl
     annotation (Placement(transformation(extent={{98,-32},{90,-24}})));
   Modelica.Blocks.Math.Add         add7
     annotation (Placement(transformation(extent={{116,48},{96,68}})));
-  TRANSFORM.Controls.LimPID Discharge_MassFlow(
+  TRANSFORM.Controls.LimPID Discharge_OnOff_Throttle(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=-2e-8,
     Ti=5,
     k_s=1,
     k_m=1,
-    yMax=0,
-    yMin=-18,
+    yMax=1 - 0.01,
+    yMin=0,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
-    annotation (Placement(transformation(extent={{150,74},{130,54}})));
+    annotation (Placement(transformation(extent={{152,74},{132,54}})));
   Modelica.Blocks.Sources.Constant const14(k=0)
     annotation (Placement(transformation(extent={{156,92},{148,100}})));
-  Modelica.Blocks.Sources.Constant const15(k=20)
+  Modelica.Blocks.Sources.Constant const15(k=0.01)
     annotation (Placement(transformation(extent={{140,38},{132,46}})));
   Modelica.Blocks.Math.Add add8(k1=-1)
     annotation (Placement(transformation(extent={{192,56},{172,76}})));
@@ -301,42 +301,38 @@ equation
   connect(realExpression.y, TCV_Power.u_s) annotation (Line(points={{128.7,-26},
           {132,-26},{132,-38},{54,-38},{54,-2},{20,-2},{20,4},{-60,4},{-60,-12},
           {-52,-12}}, color={0,0,127}));
-  connect(add5.u1, SHS_Throttle.y)
+  connect(add5.u1, Charge_OnOff_Throttle.y)
     annotation (Line(points={{60,-60},{69,-60}}, color={0,0,127}));
   connect(add5.u2, const10.y) annotation (Line(points={{60,-72},{66,-72},{66,
           -82},{73.6,-82}}, color={0,0,127}));
-  connect(SHS_Throttle.u_s, add6.y) annotation (Line(points={{92,-60},{104,-60},
-          {104,-58},{113,-58}}, color={0,0,127}));
+  connect(Charge_OnOff_Throttle.u_s, add6.y) annotation (Line(points={{92,-60},
+          {104,-60},{104,-58},{113,-58}}, color={0,0,127}));
   connect(realExpression.y, add6.u1) annotation (Line(points={{128.7,-26},{146,
           -26},{146,-52},{136,-52}}, color={0,0,127}));
   connect(add6.u2, const12.y)
     annotation (Line(points={{136,-64},{157,-64}}, color={0,0,127}));
-  connect(const13.y, SHS_Throttle.u_m)
+  connect(const13.y, Charge_OnOff_Throttle.u_m)
     annotation (Line(points={{89.6,-28},{80,-28},{80,-48}}, color={0,0,127}));
   connect(actuatorBus.SHS_throttle, add5.y) annotation (Line(
       points={{30,-100},{30,-66},{37,-66}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(actuatorBus.condensor_pump, add7.y) annotation (Line(
-      points={{30,-100},{30,58},{95,58}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
-  connect(add7.u1, Discharge_MassFlow.y)
-    annotation (Line(points={{118,64},{129,64}}, color={0,0,127}));
+  connect(add7.u1, Discharge_OnOff_Throttle.y)
+    annotation (Line(points={{118,64},{131,64}}, color={0,0,127}));
   connect(add7.u2, const15.y) annotation (Line(points={{118,52},{122,52},{122,
           46},{131.6,46},{131.6,42}}, color={0,0,127}));
-  connect(Discharge_MassFlow.u_s, add8.y) annotation (Line(points={{152,64},{
-          161,64},{161,66},{171,66}}, color={0,0,127}));
-  connect(Discharge_MassFlow.u_m, const14.y)
-    annotation (Line(points={{140,76},{140,96},{147.6,96}}, color={0,0,127}));
+  connect(Discharge_OnOff_Throttle.u_s, add8.y) annotation (Line(points={{154,
+          64},{161,64},{161,66},{171,66}}, color={0,0,127}));
+  connect(Discharge_OnOff_Throttle.u_m, const14.y)
+    annotation (Line(points={{142,76},{142,96},{147.6,96}}, color={0,0,127}));
   connect(add8.u2, const16.y)
     annotation (Line(points={{194,60},{215,60}}, color={0,0,127}));
   connect(realExpression.y, add8.u1) annotation (Line(points={{128.7,-26},{174,
           -26},{174,-18},{206,-18},{206,72},{194,72}}, color={0,0,127}));
-end CS_IntermediateControl_PID_TESUC_ImpControl;
+  connect(actuatorBus.Discharge_OnOff_Throttle, add7.y) annotation (Line(
+      points={{30,-100},{30,58},{95,58}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+end CS_IntermediateControl_PID_TESUC_ImpControl_2;

@@ -1,5 +1,5 @@
 within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
-model Two_Tank_SHS_System_NTU_GMI_TempControl
+model Two_Tank_SHS_System_NTU_GMI_TempControl_2
     extends BaseClasses.Partial_SubSystem_A(    redeclare replaceable CS_Boiler_04 CS,
     redeclare replaceable ED_Dummy ED,
     redeclare replaceable Data.Data_SHS data(DHX_v_shell=1.0));
@@ -157,7 +157,7 @@ model Two_Tank_SHS_System_NTU_GMI_TempControl
     use_T_in=false,
     m_flow=-m_flow_min,
     T=413.15,
-    nPorts=2) annotation (Placement(transformation(extent={{-126,24},{-106,44}})));
+    nPorts=2) annotation (Placement(transformation(extent={{-126,-44},{-106,-24}})));
   Modelica.Blocks.Sources.RealExpression Level_Hot_Tank1(y=CHX.Shell.medium.h)
     annotation (Placement(transformation(extent={{-128,-98},{-108,-78}})));
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
@@ -192,16 +192,16 @@ model Two_Tank_SHS_System_NTU_GMI_TempControl
         rotation=270,
         origin={-44,-54})));
 
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_ch_a(redeclare package Medium =
-        Charging_Medium)                                                                           annotation (Placement(
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_ch_a(redeclare package Medium
+      = Charging_Medium)                                                                           annotation (Placement(
         transformation(extent={{-108,-72},{-88,-52}}), iconTransformation(
           extent={{-108,-72},{-88,-52}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_State port_ch_b(redeclare package Medium =
-        Charging_Medium)                                                                            annotation (Placement(
+  TRANSFORM.Fluid.Interfaces.FluidPort_State port_ch_b(redeclare package Medium
+      = Charging_Medium)                                                                            annotation (Placement(
         transformation(extent={{-108,44},{-88,64}}), iconTransformation(extent={
             {-108,44},{-88,64}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_dch_a(redeclare package Medium =
-        Discharging_Medium)                                                                            annotation (Placement(
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_dch_a(redeclare package Medium
+      = Discharging_Medium)                                                                            annotation (Placement(
         transformation(extent={{88,48},{108,68}}), iconTransformation(extent={{88,
             48},{108,68}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_State port_dch_b(redeclare package
@@ -213,19 +213,25 @@ model Two_Tank_SHS_System_NTU_GMI_TempControl
       redeclare package Medium =
         Storage_Medium, R=100)
     annotation (Placement(transformation(extent={{-4,-86},{16,-66}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
-        Storage_Medium)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
+      = Storage_Medium)
     annotation (Placement(transformation(extent={{-34,-86},{-14,-66}})));
   Modelica.Blocks.Sources.RealExpression Coolant_Water_temp(y=sensor_T1.T)
     annotation (Placement(transformation(extent={{-68,76},{-48,96}})));
   Modelica.Blocks.Sources.RealExpression Cold_Tank_Temp(y=cold_tank.T)
     annotation (Placement(transformation(extent={{-68,96},{-48,116}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{-82,-40},{-62,-20}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T2(redeclare package Medium =
-        Storage_Medium)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium
+      = Modelica.Media.Water.StandardWater)
+    annotation (Placement(transformation(extent={{-78,-40},{-58,-20}})));
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T2(redeclare package Medium
+      = Storage_Medium)
     annotation (Placement(transformation(extent={{36,34},{56,54}})));
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
+      = Modelica.Media.Water.StandardWater) annotation (Placement(
+        transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={-86,6})));
 equation
   connect(volume.port_a, Discharging_Valve.port_b)
     annotation (Line(points={{68,-22},{68,-32}},   color={0,127,255}));
@@ -307,7 +313,7 @@ equation
   connect(CHX.Shell_in, boundary2.ports[1]) annotation (Line(points={{-46,-64},
           {-46,-70},{-58,-70},{-58,-92},{-64,-92}},color={0,127,255}));
   connect(CHX.Shell_out, boundary4.ports[1]) annotation (Line(points={{-46,-44},
-          {-46,-36},{-84,-36},{-84,34.5},{-106,34.5}},
+          {-46,-36},{-100,-36},{-100,-33.5},{-106,-33.5}},
                                       color={0,127,255}));
   connect(hot_tank.port_a, resistance.port_b) annotation (Line(points={{36,
           -79.6},{36,-76},{13,-76}},     color={0,127,255}));
@@ -322,9 +328,7 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(CHX.Shell_out, sensor_T1.port_b) annotation (Line(points={{-46,-44},{
-          -46,-34},{-56,-34},{-56,-30},{-62,-30}}, color={0,127,255}));
-  connect(port_ch_b, sensor_T1.port_a) annotation (Line(points={{-98,54},{-84,
-          54},{-84,32},{-86,32},{-86,-30},{-82,-30}}, color={0,127,255}));
+          -46,-36},{-58,-36},{-58,-30}},           color={0,127,255}));
   connect(port_ch_a, CHX.Shell_in) annotation (Line(points={{-98,-62},{-76,-62},
           {-76,-64},{-46,-64}}, color={0,127,255}));
   connect(sensorBus.Coolant_Water_temp, Coolant_Water_temp.y) annotation (Line(
@@ -345,6 +349,16 @@ equation
       index=-1,
       extent={{-3,6},{-3,6}},
       horizontalAlignment=TextAlignment.Right));
+  connect(sensor_m_flow.port_a, sensor_T1.port_a) annotation (Line(points={{-86,
+          -4},{-86,-30},{-78,-30}}, color={0,127,255}));
+  connect(sensor_m_flow.port_b, port_ch_b) annotation (Line(points={{-86,16},{
+          -88,16},{-88,54},{-98,54}}, color={0,127,255}));
+  connect(sensorBus.ChargeSteam_mFlow, sensor_m_flow.m_flow) annotation (Line(
+      points={{-30,100},{-30,62},{-80,62},{-80,24},{-102,24},{-102,6},{-89.6,6}},
+
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   annotation (experiment(
       StopTime=432000,
       Interval=37,
@@ -613,4 +627,4 @@ equation
           fillColor={85,85,255},
           fillPattern=FillPattern.HorizontalCylinder,
           lineThickness=1)}));
-end Two_Tank_SHS_System_NTU_GMI_TempControl;
+end Two_Tank_SHS_System_NTU_GMI_TempControl_2;
