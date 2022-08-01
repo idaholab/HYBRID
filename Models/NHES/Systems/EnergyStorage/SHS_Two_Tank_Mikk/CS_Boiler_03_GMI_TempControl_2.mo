@@ -23,9 +23,9 @@ model CS_Boiler_03_GMI_TempControl_2
     annotation (Placement(transformation(extent={{-56,-26},{-50,-20}})));
   Modelica.Blocks.Math.Min min2
     annotation (Placement(transformation(extent={{-80,-32},{-72,-24}})));
-  Modelica.Blocks.Sources.Constant one4(k=1.25)
+  Modelica.Blocks.Sources.Constant one4(k=5)
     annotation (Placement(transformation(extent={{-94,-32},{-90,-28}})));
-  Modelica.Blocks.Sources.Constant one5(k=-0.25)
+  Modelica.Blocks.Sources.Constant one5(k=-4)
     annotation (Placement(transformation(extent={{-68,-24},{-62,-18}})));
   TRANSFORM.Controls.LimPID PID3(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -73,7 +73,7 @@ model CS_Boiler_03_GMI_TempControl_2
   Modelica.Blocks.Math.Product product3
     annotation (Placement(transformation(extent={{-86,2},{-78,10}})));
   Modelica.Blocks.Sources.Constant one1(k=18)
-    annotation (Placement(transformation(extent={{-138,4},{-128,14}})));
+    annotation (Placement(transformation(extent={{-118,4},{-108,14}})));
   Modelica.Blocks.Sources.Constant one9(k=0.015)
     annotation (Placement(transformation(extent={{-86,16},{-80,22}})));
   Modelica.Blocks.Math.Add add4
@@ -173,8 +173,8 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(one1.y, product3.u1) annotation (Line(points={{-127.5,9},{-120,8.4},{
-          -86.8,8.4}}, color={0,0,127}));
+  connect(one1.y, product3.u1) annotation (Line(points={{-107.5,9},{-107.5,8.4},
+          {-86.8,8.4}}, color={0,0,127}));
   connect(add4.y, PID5.u_s) annotation (Line(points={{-63.7,13},{-62,13},{-62,
           -14},{-48,-14},{-48,-17},{-44.6,-17}}, color={0,0,127}));
   connect(one9.y, add4.u1) annotation (Line(points={{-79.7,19},{-76,19},{-76,

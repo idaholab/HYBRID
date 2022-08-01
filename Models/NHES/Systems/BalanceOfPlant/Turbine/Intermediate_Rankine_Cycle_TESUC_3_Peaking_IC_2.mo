@@ -261,7 +261,7 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2 "Two stage BOP model"
                                            firstfeedpump1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_input=false,
-    p_nominal=1200000,
+    p_nominal=1400000,
     allowFlowReversal=false)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=0,

@@ -66,7 +66,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2
     annotation (Placement(transformation(extent={{-70,30},{-50,50}})));
   TRANSFORM.Controls.LimPID FWCP_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2.5e-6,
+    k=2.5e-5,
     Ti=20,
     yMax=250,
     yMin=-72,
@@ -112,7 +112,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2
     k_s=1,
     k_m=1,
     yMax=0,
-    yMin=-1 + 0.0001,
+    yMin=-1 + 0.001,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
     annotation (Placement(transformation(extent={{98,28},{78,8}})));
@@ -124,7 +124,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2
     annotation (Placement(transformation(extent={{58,-76},{38,-56}})));
   TRANSFORM.Controls.LimPID Charge_OnOff_Throttle(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-5e-8,
+    k=-5e-9,
     Ti=5,
     k_s=1,
     k_m=1,
@@ -145,7 +145,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2
     annotation (Placement(transformation(extent={{116,48},{96,68}})));
   TRANSFORM.Controls.LimPID Discharge_OnOff_Throttle(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-2e-8,
+    k=-2e-9,
     Ti=5,
     k_s=1,
     k_m=1,
