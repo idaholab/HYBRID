@@ -28,7 +28,8 @@ model CS_SMR_Tave
     annotation (Placement(transformation(extent={{-10,130},{10,150}})));
   GenericModular_PWR.Data.Data_GenericModule data(
     Q_total=190e6,
-    Q_total_el=48e6,                              length_steamGenerator_tube=
+    Q_total_el=48e6,
+    T_hot=590.15,                                 length_steamGenerator_tube=
         36)
     annotation (Placement(transformation(extent={{74,142},{90,158}})));
   Modelica.Blocks.Math.Add Sum_Hot_and_Cold_Leg

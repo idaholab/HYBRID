@@ -4,6 +4,8 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2 "Two stage BOP model"
     redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
     redeclare Data.IntermediateTurbine data(
+      V_FeedwaterMixVolume=10,
+      V_Header=10,
       valve_SHS_mflow=30,
       valve_SHS_dp_nominal=1200000,
       valve_TCV_LPT_mflow=30,
@@ -261,7 +263,7 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2 "Two stage BOP model"
                                            firstfeedpump1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_input=false,
-    p_nominal=1400000,
+    p_nominal=2000000,
     allowFlowReversal=false)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=0,

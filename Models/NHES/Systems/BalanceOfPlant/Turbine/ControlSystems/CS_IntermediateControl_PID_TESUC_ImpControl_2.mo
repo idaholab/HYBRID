@@ -48,7 +48,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2
     p_steam=3398000,
     p_steam_vent=15000000,
     T_Steam_Ref=579.75,
-    Q_Nom=40e6,
+    Q_Nom=46.5e6,
     T_Feedwater=421.15,
     T_SHS_Return=491.15)
     annotation (Placement(transformation(extent={{-98,12},{-78,32}})));
@@ -65,15 +65,18 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2
   Modelica.Blocks.Sources.Constant const3(k=data.p_steam)
     annotation (Placement(transformation(extent={{-70,30},{-50,50}})));
   TRANSFORM.Controls.LimPID FWCP_Speed(
-    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    controllerType=Modelica.Blocks.Types.SimpleController.PID,
     k=2.5e-5,
     Ti=20,
+    Td=0.1,
     yMax=250,
-    yMin=-72,
+    yMin=-67,
+    wp=0,
+    wd=1,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-40,30},{-20,50}})));
-  Modelica.Blocks.Sources.Constant const4(k=72.1)
+  Modelica.Blocks.Sources.Constant const4(k=67)
     annotation (Placement(transformation(extent={{-14,48},{-6,56}})));
   Modelica.Blocks.Math.Add         add
     annotation (Placement(transformation(extent={{2,36},{22,56}})));
@@ -124,7 +127,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2
     annotation (Placement(transformation(extent={{58,-76},{38,-56}})));
   TRANSFORM.Controls.LimPID Charge_OnOff_Throttle(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-5e-9,
+    k=-1e-9,
     Ti=5,
     k_s=1,
     k_m=1,
@@ -145,7 +148,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2
     annotation (Placement(transformation(extent={{116,48},{96,68}})));
   TRANSFORM.Controls.LimPID Discharge_OnOff_Throttle(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-2e-9,
+    k=-0.5e-9,
     Ti=5,
     k_s=1,
     k_m=1,

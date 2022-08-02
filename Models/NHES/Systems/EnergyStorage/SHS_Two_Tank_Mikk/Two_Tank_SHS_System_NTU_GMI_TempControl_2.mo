@@ -163,9 +163,9 @@ model Two_Tank_SHS_System_NTU_GMI_TempControl_2
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
     delay1(Ti=0.5)
     annotation (Placement(transformation(extent={{-102,-90},{-94,-86}})));
-  Modelica.Blocks.Logical.Hysteresis hysteresis(uLow=3, uHigh=97)
+  Modelica.Blocks.Logical.Hysteresis hysteresis(uLow=3, uHigh=497)
     annotation (Placement(transformation(extent={{-98,80},{-86,68}})));
-  Modelica.Blocks.Sources.RealExpression Level_Hot_Tank2(y=100 - hot_tank.level)
+  Modelica.Blocks.Sources.RealExpression Level_Hot_Tank2(y=500 - hot_tank.level)
     annotation (Placement(transformation(extent={{-134,64},{-114,84}})));
   Modelica.Blocks.Sources.RealExpression Charging_Temperature(y=sensor_T.T)
     annotation (Placement(transformation(extent={{-104,132},{-84,152}})));
@@ -355,10 +355,10 @@ equation
           -88,16},{-88,54},{-98,54}}, color={0,127,255}));
   connect(sensorBus.ChargeSteam_mFlow, sensor_m_flow.m_flow) annotation (Line(
       points={{-30,100},{-30,62},{-80,62},{-80,24},{-102,24},{-102,6},{-89.6,6}},
-
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
+
   annotation (experiment(
       StopTime=432000,
       Interval=37,

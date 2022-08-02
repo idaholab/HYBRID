@@ -37,7 +37,7 @@ model CS_Boiler_03_GMI_TempControl_2
     y_start=1)
     annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-    Discharging_Valve_Position(min=1e-3) annotation (Placement(transformation(
+    Discharging_Valve_Position(min=1e-2) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=180,
         origin={12,64})));
@@ -72,7 +72,7 @@ model CS_Boiler_03_GMI_TempControl_2
     annotation (Placement(transformation(extent={{-52,50},{-46,56}})));
   Modelica.Blocks.Math.Product product3
     annotation (Placement(transformation(extent={{-86,2},{-78,10}})));
-  Modelica.Blocks.Sources.Constant one1(k=18)
+  Modelica.Blocks.Sources.Constant one1(k=24)
     annotation (Placement(transformation(extent={{-118,4},{-108,14}})));
   Modelica.Blocks.Sources.Constant one9(k=0.015)
     annotation (Placement(transformation(extent={{-86,16},{-80,22}})));

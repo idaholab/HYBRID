@@ -61,11 +61,11 @@ model SMR_SHS_Test_Config_Peaking_ImpControl_2
       CS,
     redeclare replaceable
       NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
-      ht_level_max=100,
+      ht_level_max=500,
       ht_area=100,
       ht_surface_pressure=120000,
       hot_tank_init_temp=513.15,
-      cold_tank_level_max=100,
+      cold_tank_level_max=500,
       cold_tank_area=100,
       ct_surface_pressure=120000,
       cold_tank_init_temp=453.15,
@@ -83,7 +83,7 @@ model SMR_SHS_Test_Config_Peaking_ImpControl_2
     redeclare package Storage_Medium =
         NHES.Media.Hitec.Hitec,
     m_flow_min=0.1,
-    tank_height=100,
+    tank_height=500,
     Steam_Output_Temp=stateSensor6.temperature.T)
     annotation (Placement(transformation(extent={{-20,-76},{20,-36}})));
 
@@ -123,11 +123,20 @@ model SMR_SHS_Test_Config_Peaking_ImpControl_2
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{68,-60},{48,-50}})));
   Modelica.Blocks.Sources.Sine sine(
-    amplitude=20e6,
-    f=1/10000,
+    amplitude=30e6,
+    f=1/20000,
     offset=40e6,
-    startTime=1000)
+    startTime=2000)
     annotation (Placement(transformation(extent={{-26,72},{-6,92}})));
+  Modelica.Blocks.Sources.Trapezoid trapezoid(
+    amplitude=41e6,
+    rising=100,
+    width=8000,
+    falling=100,
+    period=16000,
+    offset=26e6,
+    startTime=2000)
+    annotation (Placement(transformation(extent={{20,72},{40,92}})));
 equation
 
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)
