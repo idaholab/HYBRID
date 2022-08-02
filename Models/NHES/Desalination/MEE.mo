@@ -1319,6 +1319,227 @@ package MEE "Multi Effect Evaporators"
                 thickness=1,
                 arrow={Arrow.None,Arrow.Filled})}));
       end Single_Effect_FullCond;
+
+      model Single_Effect_Flashing
+        "Single effect evaporator for desalination, uses heat transfer correlations to calc heat exchange"
+
+        parameter Modelica.Units.SI.Mass S_start=20  annotation (Dialog(tab="Initialization"));
+        parameter Modelica.Units.SI.Temperature Tsys=350 "Evaporator T";
+        parameter Modelica.Units.SI.Volume V=1;
+        parameter Modelica.Units.SI.Area A=1;
+        parameter Real KV=-0.03;
+        parameter Modelica.Units.SI.Area Ax=1e4;
+        parameter Modelica.Units.SI.Diameter Do=0.05;
+        parameter Modelica.Units.SI.Thickness th=0.007;
+        parameter Modelica.Units.SI.AbsolutePressure pT
+                                                       "Init Tube pressure";
+
+        TRANSFORM.Fluid.Interfaces.FluidPort_Flow Brine_Inlet_Port(redeclare
+            package
+            Medium =         NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
+          annotation (Placement(transformation(extent={{90,-10},{110,10}}),
+              iconTransformation(extent={{90,-10},{110,10}})));
+        TRANSFORM.Fluid.Interfaces.FluidPort_State Brine_Outlet_Port(redeclare
+            package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
+          annotation (Placement(transformation(extent={{-110,-10},{-90,10}}),
+              iconTransformation(extent={{-110,-10},{-90,10}})));
+        TRANSFORM.Fluid.Interfaces.FluidPort_State Steam_Outlet_Port(redeclare
+            package Medium = Modelica.Media.Water.StandardWater)
+          annotation (Placement(transformation(extent={{-10,90},{10,110}})));
+        TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance
+          Steam_Outlet_Resistance(R=1)       annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={0,46})));
+        TRANSFORM.Controls.LimPID         PID(
+          controllerType=Modelica.Blocks.Types.SimpleController.PI,
+          k=KV,
+          Ti=0.75,
+          Td=10,
+          yMax=1,
+          yMin=0,
+          wp=1,
+          wd=1) annotation (Placement(transformation(extent={{-46,70},{-66,90}})));
+        Modelica.Blocks.Sources.RealExpression Level_Set(y=0.5) annotation (Placement(transformation(extent={{-14,70},
+                  {-34,90}})));
+        NHES.Desalination.MEE.Components.Evaporator_Brine_Flash Evaporator(
+          redeclare package MediumB = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+          p_start=100000,
+          T_st=Tsys,
+          V=V,
+          A=A) annotation (Placement(transformation(extent={{20,-20},{-20,20}})));
+
+        TRANSFORM.Fluid.Interfaces.FluidPort_Flow Tube_Inlet(redeclare package Medium =
+              Modelica.Media.Water.StandardWater)
+          annotation (Placement(transformation(extent={{-108,-50},{-88,-30}}), iconTransformation(extent={{-108,
+                  -50},{-88,-30}})));
+        TRANSFORM.Fluid.Interfaces.FluidPort_State Tube_Outlet(redeclare
+            package
+            Medium = Modelica.Media.Water.StandardWater)
+          annotation (Placement(transformation(extent={{92,-50},{112,-30}}), iconTransformation(extent={{92,-50},
+                  {112,-30}})));
+        NHES.Desalination.MEE.Components.SEE_Tube_Side_FilmBoiling sEE_Tube_Side(
+          p_start=pT,
+          Ax=Ax,
+          Do=Do,
+          th=th,
+          k=83) annotation (Placement(transformation(extent={{-20,-60},{20,
+                  -20}})));
+        TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance Tube_intlet_Resistance(
+            redeclare package Medium = Modelica.Media.Water.StandardWater, R=5)
+          annotation (Placement(transformation(extent={{-70,-50},{-50,-30}})));
+        TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance Tube_Outlet_Resistance(
+            redeclare package Medium = Modelica.Media.Water.StandardWater, R=5)
+          annotation (Placement(transformation(extent={{52,-50},{72,-30}})));
+        NHES.Fluid.Valves.ValveLinear
+                                 valveLinear(
+          redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+          dp_nominal=1000,
+          m_flow_nominal=1)
+          annotation (Placement(transformation(extent={{-50,-10},{-70,10}})));
+
+        TRANSFORM.Fluid.Interfaces.FluidPort_Flow BrineCon_Inlet_Port(
+            redeclare package Medium = NHES.Media.SeaWater (ThermoStates=
+                  Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
+          annotation (Placement(transformation(extent={{90,-90},{110,-70}}),
+              iconTransformation(extent={{-10,-110},{10,-90}})));
+      equation
+        connect(Brine_Inlet_Port, Brine_Inlet_Port)
+          annotation (Line(points={{100,0},{100,0}}, color={0,127,255}));
+        connect(Level_Set.y, PID.u_s) annotation (Line(points={{-35,80},{-44,80}}, color={0,0,127}));
+        connect(Evaporator.RelLevel, PID.u_m) annotation (Line(points={{-22,14},
+                {-26,14},{-26,50},{-56,50},{-56,68}},
+                                             color={0,0,127}));
+        connect(Evaporator.steam_port, Steam_Outlet_Resistance.port_a)
+          annotation (Line(points={{0,20},{-4.44089e-16,39}}, color={0,127,255}));
+        connect(Tube_Inlet,Tube_Inlet)
+          annotation (Line(points={{-98,-40},{-98,-40}},   color={0,127,255}));
+        connect(sEE_Tube_Side.Steam_Inlet_Port, Tube_intlet_Resistance.port_b)
+          annotation (Line(points={{-20,-40},{-53,-40}}, color={0,127,255}));
+        connect(Tube_Inlet, Tube_intlet_Resistance.port_a)
+          annotation (Line(points={{-98,-40},{-67,-40}}, color={0,127,255}));
+        connect(sEE_Tube_Side.Liquid_Outlet_Port, Tube_Outlet_Resistance.port_a)
+          annotation (Line(points={{20,-40},{55,-40}}, color={0,127,255}));
+        connect(Tube_Outlet, Tube_Outlet_Resistance.port_b)
+          annotation (Line(points={{102,-40},{69,-40}}, color={0,127,255}));
+        connect(Evaporator.Brine_Inlet_port, Brine_Inlet_Port) annotation (Line(
+              points={{20,0},{100,0}},               color={0,127,255}));
+        connect(sEE_Tube_Side.Heat_Port, Evaporator.Heat_Port)
+          annotation (Line(points={{0,-30},{0,-20}}, color={191,0,0}));
+        connect(valveLinear.opening, PID.y) annotation (Line(points={{-60,8},{
+                -60,64},{-72,64},{-72,80},{-67,80}},
+                                             color={0,0,127}));
+        connect(Evaporator.Brine_Outlet_port, valveLinear.port_a) annotation (Line(
+              points={{-20,0},{-50,0}},                 color={0,127,255}));
+        connect(Steam_Outlet_Resistance.port_b, Steam_Outlet_Port) annotation (Line(
+              points={{4.44089e-16,53},{4.44089e-16,76.5},{0,76.5},{0,100}}, color={0,
+                127,255}));
+        connect(valveLinear.port_b, Brine_Outlet_Port)
+          annotation (Line(points={{-70,0},{-100,0}}, color={0,127,255}));
+        connect(BrineCon_Inlet_Port, Evaporator.BrineCon_Inlet_port)
+          annotation (Line(points={{100,-80},{42,-80},{42,-16},{20,-16}}, color=
+               {0,127,255}));
+        annotation (Icon(graphics={
+              Ellipse(
+                extent={{-60,60},{60,100}},
+                lineColor={0,0,0},
+                startAngle=0,
+                endAngle=360,
+                fillColor={164,189,255},
+                fillPattern=FillPattern.Solid,
+                lineThickness=0.5),
+              Ellipse(
+                extent={{-60,-100},{60,-60}},
+                lineColor={0,0,0},
+                fillColor={28,108,200},
+                fillPattern=FillPattern.Solid,
+                lineThickness=0.5),
+              Rectangle(
+                extent={{-60,80},{60,-80}},
+                lineColor={28,108,200},
+                fillColor={28,108,200},
+                fillPattern=FillPattern.Solid),
+              Rectangle(
+                extent={{-60,80},{60,28}},
+                lineColor={164,189,255},
+                fillColor={164,189,255},
+                fillPattern=FillPattern.Solid),
+              Ellipse(
+                extent={{-42,26},{-8,40}},
+                lineThickness=1,
+                fillColor={164,189,255},
+                fillPattern=FillPattern.Solid,
+                pattern=LinePattern.None),
+              Ellipse(
+                extent={{-4,26},{38,40}},
+                lineThickness=1,
+                fillColor={164,189,255},
+                fillPattern=FillPattern.Solid,
+                pattern=LinePattern.None,
+                startAngle=0,
+                endAngle=360),
+              Ellipse(
+                extent={{38,26},{60,30}},
+                lineThickness=1,
+                fillColor={164,189,255},
+                fillPattern=FillPattern.Solid,
+                pattern=LinePattern.None,
+                lineColor={0,0,0},
+                closure=EllipseClosure.Chord),
+              Ellipse(
+                extent={{-60,26},{-42,30}},
+                lineThickness=1,
+                fillColor={28,108,200},
+                fillPattern=FillPattern.Solid,
+                pattern=LinePattern.None,
+                lineColor={0,0,0}),
+              Line(
+                points={{-60,28},{-50,30},{-30,26},{-6,28},{-4,28},{20,26},{28,28},{56,26},{60,28}},
+                color={0,0,0},
+                smooth=Smooth.Bezier,
+                thickness=1),
+              Line(
+                points={{-60,80},{-60,-80}},
+                color={0,0,0},
+                thickness=0.5),
+              Line(
+                points={{-60,-80}},
+                color={0,0,0},
+                thickness=0.5,
+                smooth=Smooth.Bezier),
+              Line(
+                points={{60,80},{60,-80}},
+                color={0,0,0},
+                thickness=0.5),
+              Line(
+                points={{-70,-40},{-50,-40},{-50,-20},{-30,-60},{-30,-40},{-10,-40},{-10,-20},{10,-60},{10,-40},{30,-40}},
+                color={0,0,0},
+                thickness=1),
+              Line(
+                points={{30,-40},{30,-20},{50,-60},{50,-40},{70,-40}},
+                color={0,0,0},
+                thickness=1),
+              Line(
+                points={{-100,-40},{-78,-40},{-60,-40}},
+                color={0,0,0},
+                thickness=1,
+                arrow={Arrow.None,Arrow.Filled}),
+              Line(
+                points={{90,-40},{70,-40}},
+                color={0,0,0},
+                thickness=1,
+                arrow={Arrow.Filled,Arrow.None}),
+              Line(
+                points={{90,0},{60,0}},
+                color={28,108,200},
+                thickness=1,
+                arrow={Arrow.None,Arrow.Filled}),
+              Line(
+                points={{-60,0},{-90,0}},
+                color={28,108,200},
+                thickness=1,
+                arrow={Arrow.None,Arrow.Filled})}));
+      end Single_Effect_Flashing;
     end Brine_Models;
   end Single_Effect;
 
@@ -2334,6 +2555,446 @@ package MEE "Multi Effect Evaporators"
       annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
             coordinateSystem(preserveAspectRatio=false)));
     end GOR;
+
+    model TCV
+      import Modelica.Units.SI;
+      import Modelica.Fluid.Types.Dynamics;
+      replaceable package Medium = Modelica.Media.Water.StandardWater;
+      Medium.ThermodynamicState Ptherm;
+      Medium.ThermodynamicState Etherm;
+      Medium.ThermodynamicState Ctherm;
+
+      parameter SI.Area A1=0.5;
+      parameter SI.Area A2=0.5;
+      parameter SI.Area A3=1;
+      SI.AbsolutePressure Pp(start=3e5);
+      parameter SI.AbsolutePressure Pe=5e3 "Vaccum Pressure";
+      SI.AbsolutePressure Pc(start=1.5e5);
+      SI.MassFlowRate mp;
+      SI.MassFlowRate me;
+      SI.MassFlowRate mc;
+      SI.Velocity U1;
+      SI.Velocity U2;
+      SI.Velocity U3;
+      SI.SpecificEnthalpy hp;
+      SI.SpecificEnthalpy he;
+      SI.SpecificEnthalpy hc;
+      SI.Density rhop;
+      SI.Density rhoe;
+      SI.Density rhoc;
+
+      TRANSFORM.Fluid.Interfaces.FluidPort_Flow  primarysteam(redeclare package
+          Medium = Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{170,-10},{190,10}}),
+            iconTransformation(extent={{170,-10},{190,10}})));
+      TRANSFORM.Fluid.Interfaces.FluidPort_State mixturesteam(redeclare package
+          Medium = Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{-190,-8},{-170,12}}),
+            iconTransformation(extent={{-190,-8},{-170,12}})));
+      TRANSFORM.Fluid.Interfaces.FluidPort_Flow  secondarysteam(redeclare
+          package Medium =
+                   Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{120,-70},{140,-50}}),
+            iconTransformation(extent={{120,-70},{140,-50}})));
+    equation
+      Ptherm=Medium.setState_ph(Pp,hp);
+      Etherm=Medium.setState_ph(Pe,he);
+      Ctherm=Medium.setState_ph(Pc,hc);
+      rhop=Medium.density(Ptherm);
+      rhoe=Medium.density(Etherm);
+      rhoc=Medium.density(Ctherm);
+      mp=rhop*A1*U1;
+      me=rhoe*A2*U2;
+      mc=rhoc*A3*U3;
+      mp+me+mc=0;
+      mp*hp+me*he+mc*hc=0;
+      Pp*A1+mp*U1+Pe*A2+me*U2-Pc*A3+mc*U3=0;
+
+      //ports
+      mp=primarysteam.m_flow;
+      me=secondarysteam.m_flow;
+      mc=mixturesteam.m_flow;
+      hp=actualStream(primarysteam.h_outflow);
+      primarysteam.h_outflow=hp;
+      he=actualStream(secondarysteam.h_outflow);
+      secondarysteam.h_outflow=he;
+      hc=mixturesteam.h_outflow;
+      Pp=primarysteam.p;
+      Pe=secondarysteam.p;
+      Pc=mixturesteam.p;
+      annotation (Icon(coordinateSystem(extent={{-180,-60},{180,60}}), graphics={
+            Rectangle(
+              extent={{100,-40},{160,40}},
+              lineColor={0,0,0},
+              fillColor={238,46,47},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{166,20},{138,-20}},
+              lineColor={238,46,47},
+              fillColor={238,46,47},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{120,-28},{140,-48}},
+              lineColor={238,46,47},
+              fillColor={238,46,47},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{100,-16},{-160,-40},{-160,40},{100,16},{100,-16}},
+              lineColor={0,0,0},
+              fillColor={238,46,47},
+              fillPattern=FillPattern.Solid),
+            Text(
+              extent={{-64,68},{64,46}},
+              textColor={0,0,0},
+              textString="%name"),
+            Rectangle(
+              extent={{146,6},{166,-6}},
+              lineColor={0,0,0},
+              fillColor={0,0,0},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{146,-6},{126,0},{146,6},{146,-6}},
+              lineColor={0,0,0},
+              fillColor={0,0,0},
+              fillPattern=FillPattern.Solid),
+            Polygon(
+              points={{128,-14},{-12,-22},{-12,22},{128,14},{128,-14}},
+              fillColor={238,46,47},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None)}),                           Diagram(
+            coordinateSystem(extent={{-180,-60},{180,60}})));
+    end TCV;
+
+    model Evaporator_Brine_Flash
+      "Evaporator for desalinaition, this model has a single heat port and use SeaWater Media Package;"
+
+      import Modelica.Fluid.Types.Dynamics;
+
+    replaceable package MediumW = Modelica.Media.Water.StandardWater;
+    replaceable package MediumB = NHES.Media.SeaWater;
+
+      MediumW.ThermodynamicState vapourState "Thermodynamic state of the vapour";
+      MediumW.SaturationProperties sat;
+      MediumB.ThermodynamicState bstate "Thermodynamic state of the brine";
+
+      outer Modelica.Fluid.System system "System properties";
+    // Initialization
+      parameter Modelica.Units.SI.Pressure p_start=103e5 "Initial pressure"
+        annotation (Dialog(tab="Initialization"));
+      parameter Modelica.Units.SI.Mass Mm_start=20 "Initial Mixure Mass"
+        annotation (Dialog(tab="Initialization"));
+      parameter Real RelLevel_start=0.5 "Initial Level" annotation(Dialog(tab="Initialization"));
+
+     /* Assumptions */
+      parameter Boolean allowFlowReversal=system.allowFlowReversal
+        "= true to allow flow reversal, false restrics to design direction"
+      annotation(Dialog(tab="Assumptions"));
+
+      Modelica.Fluid.Interfaces.FluidPort_a Brine_Inlet_port(
+        p(start=p_start),
+        redeclare package Medium = MediumB (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+        m_flow(min=if allowFlowReversal then -Modelica.Constants.inf else 0))
+        annotation (Placement(transformation(extent={{-110,-10},{-90,10}}),
+            iconTransformation(extent={{-110,-10},{-90,10}})));
+
+     Modelica.Fluid.Interfaces.FluidPort_b Brine_Outlet_port(
+        p(start=p_start),
+        redeclare package Medium = MediumB (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+        m_flow(max=if allowFlowReversal then +Modelica.Constants.inf else 0))
+        annotation (Placement(transformation(extent={{90,-10},{110,10}}),
+            iconTransformation(extent={{90,-10},{110,10}})));
+
+    Modelica.Fluid.Interfaces.FluidPort_b steam_port(
+        p(start=p_start),
+        redeclare package Medium = MediumW,
+        m_flow(max=if allowFlowReversal then +Modelica.Constants.inf else 0))
+        annotation (Placement(transformation(extent={{-10,90},{10,110}}),
+            iconTransformation(extent={{-10,90},{10,110}})));
+
+     Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a Heat_Port
+        annotation (Placement(transformation(extent={{-10,-110},{10,-90}})));
+      parameter Modelica.Units.SI.Temperature T_st=300 "init temp";
+      parameter Modelica.Units.SI.Volume V;
+      parameter Modelica.Units.SI.Area A;
+      Modelica.Units.SI.Height level;
+
+      Real alphag
+                 "(start=0.5)";
+      MediumW.AbsolutePressure p;
+      //(start=p_start, fixed=true);
+      Modelica.Units.SI.SpecificEnthalpy h_b_in;
+      Modelica.Units.SI.SpecificEnthalpy h_b_out;
+      Modelica.Units.SI.SpecificEnthalpy h_con;
+      Modelica.Units.SI.SpecificEnthalpy h_steam;
+      Modelica.Units.SI.MassFlowRate m_T;
+      Modelica.Units.SI.MassFlowRate m_b_in;
+      Modelica.Units.SI.MassFlowRate m_b_out;
+      Modelica.Units.SI.MassFlowRate m_b_con;
+      Modelica.Units.SI.MassFlowRate m_steam
+                                            "(start=1)";
+      Modelica.Units.SI.Density rho_g;
+      Modelica.Units.SI.Density rho_b;
+      Modelica.Units.SI.Mass Mm(start=Mm_start);
+      Modelica.Units.SI.Mass Mg;
+      Modelica.Units.SI.Mass M;
+      Modelica.Units.SI.Mass Sa;
+      Modelica.Units.SI.Energy E;
+      Modelica.Units.SI.SpecificInternalEnergy u_g;
+      Modelica.Units.SI.SpecificInternalEnergy u_b;
+      Modelica.Units.SI.Power Qhx;
+      Modelica.Units.SI.Volume Vg;
+      Modelica.Units.SI.Volume Vm;
+      Modelica.Units.SI.Velocity velg;
+      Modelica.Units.SI.SurfaceTension sigma;
+      Modelica.Units.SI.EnergyDensity rub;
+      Modelica.Units.SI.EnergyDensity rug;
+      Modelica.Units.SI.EnergyDensity rum;
+      Modelica.Units.SI.MassFraction [2] Xin;
+      Modelica.Units.SI.MassFraction [2] Xcon;
+      Modelica.Units.SI.MassFraction [2] Xo;
+      Modelica.Units.SI.MassFraction Cs_in;
+      Modelica.Units.SI.MassFraction Cs_out(start=Cs_in, fixed=true);
+      Modelica.Units.SI.MassFraction Cs_con(start=Cs_in, fixed=true);
+      Modelica.Units.SI.Temperature T(start=T_st,fixed=true);
+      Modelica.Units.SI.SpecificEnergy chemp;
+      Modelica.Units.SI.SpecificGibbsFreeEnergy gW;
+
+      Modelica.Blocks.Interfaces.RealOutput RelLevel( start=RelLevel_start, fixed=true, quantity="Relative Level")
+        annotation (Placement(transformation(extent={{100,60},{120,80}}),
+            iconTransformation(extent={{100,60},{120,80}})));
+      Modelica.Fluid.Interfaces.FluidPort_a BrineCon_Inlet_port(
+        p(start=p_start),
+        redeclare package Medium = MediumB (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+        m_flow(min=if allowFlowReversal then -Modelica.Constants.inf else 0))
+        annotation (Placement(transformation(extent={{-110,-90},{-90,-70}}),
+            iconTransformation(extent={{-110,-90},{-90,-70}})));
+
+    equation
+      der(Mg)=m_T+m_steam;
+      der(Mm)=m_b_con+m_b_in+m_b_out-m_T;
+      der(E)=m_b_con*h_con+m_steam*h_steam + m_b_in*h_b_in + m_b_out*h_b_out + Qhx;
+      der(Sa)=m_b_con*Cs_con+m_b_in*Cs_in+m_b_out*Cs_out;
+
+    //Definitions  & Stae Eqs
+      bstate=MediumB.setState_pTX(p,T,Xo);
+      h_b_out=MediumB.specificEnthalpy(bstate);
+      rho_b=MediumB.density(bstate);
+      u_b=MediumB.specificInternalEnergy(bstate);
+      chemp=MediumB.mu_pTX(p,T,Xo);
+
+      Xin[2]=Cs_in;
+      Xcon[2]=Cs_con;
+      Xo[2]=Cs_out;
+      Xo[1]=1-Cs_out;
+
+      h_steam=MediumW.specificEnthalpy(vapourState);
+      gW=MediumW.specificGibbsEnergy(vapourState);
+      vapourState = MediumW.setState_pT(p, T);
+      rho_g = MediumW.density(vapourState);
+      u_g= MediumW.specificInternalEnergy(vapourState);
+
+      gW=chemp;
+
+      sat.psat = p;
+      sat.Tsat = MediumW.saturationTemperature(p);
+      sigma=MediumW.surfaceTension(sat);
+
+      rug=rho_g*u_g;
+      rub=rho_b*u_b;
+      rum=(1-alphag)*rub+alphag*rug;
+
+      M=Mg+Mm;
+      Mg=Vg*rho_g;
+      Mm=Vm*((1-alphag)*rho_b+alphag*rho_g);
+      E=Vm*rum+Vg*rug;
+      Sa= Vm*(1-alphag)*rho_b*Cs_out;
+      V=Vg+Vm;
+      m_T=alphag*rho_g*velg*A;
+      velg=(1.41*3.28084/(1-alphag))*(sigma*9.81*(rho_b-rho_g)/(rho_b^2))^0.25;
+
+     // m_b_out=h_f;
+      level=Vm/A;
+      RelLevel=level/(V/A);
+
+      Brine_Inlet_port.p = p;
+      BrineCon_Inlet_port.p=p;
+      m_b_in=Brine_Inlet_port.m_flow;
+      m_b_con=BrineCon_Inlet_port.m_flow;
+      h_b_in =inStream(Brine_Inlet_port.h_outflow);
+      h_con =inStream(BrineCon_Inlet_port.h_outflow);
+      Xin=inStream(Brine_Inlet_port.Xi_outflow);
+      Xcon=inStream(BrineCon_Inlet_port.Xi_outflow);
+      Brine_Inlet_port.h_outflow = inStream(Brine_Outlet_port.h_outflow);
+      Brine_Inlet_port.Xi_outflow = inStream(Brine_Outlet_port.Xi_outflow);
+      BrineCon_Inlet_port.h_outflow = inStream(Brine_Outlet_port.h_outflow);
+      BrineCon_Inlet_port.Xi_outflow = inStream(Brine_Outlet_port.Xi_outflow);
+
+      Brine_Outlet_port.p = p;
+      m_b_out=Brine_Outlet_port.m_flow;
+      Brine_Outlet_port.h_outflow=h_b_out;
+      Brine_Outlet_port.Xi_outflow=Xo;
+
+      steam_port.p = p;
+      m_steam=steam_port.m_flow;
+      steam_port.h_outflow = h_steam;
+
+      Heat_Port.T=T;
+      Qhx =Heat_Port.Q_flow
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(coordinateSystem(preserveAspectRatio=false)));
+
+        annotation (Dialog(tab="Initialization"),
+                  Icon(graphics={
+            Ellipse(
+              extent={{-60,60},{60,100}},
+              lineColor={0,0,0},
+              startAngle=0,
+              endAngle=360,
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid,
+              lineThickness=0.5),
+            Ellipse(
+              extent={{-60,-100},{60,-60}},
+              lineColor={0,0,0},
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid,
+              lineThickness=0.5),
+            Rectangle(
+              extent={{-60,80},{60,-80}},
+              lineColor={28,108,200},
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{-60,80},{60,28}},
+              lineColor={164,189,255},
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid),
+            Ellipse(
+              extent={{-42,26},{-8,40}},
+              lineThickness=1,
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None),
+            Ellipse(
+              extent={{-4,26},{38,40}},
+              lineThickness=1,
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              startAngle=0,
+              endAngle=360),
+            Ellipse(
+              extent={{38,26},{60,30}},
+              lineThickness=1,
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              lineColor={0,0,0},
+              closure=EllipseClosure.Chord),
+            Ellipse(
+              extent={{-60,26},{-42,30}},
+              lineThickness=1,
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              lineColor={0,0,0}),
+            Line(
+              points={{-60,28},{-50,30},{-30,26},{-6,28},{-4,28},{20,26},{28,28},{56,26},{60,28}},
+              color={0,0,0},
+              smooth=Smooth.Bezier,
+              thickness=1),
+            Line(
+              points={{-60,80},{-60,-80}},
+              color={0,0,0},
+              thickness=0.5),
+            Line(
+              points={{60,80},{60,-80}},
+              color={0,0,0},
+              thickness=0.5),
+            Line(
+              points={{60,0},{90,0}},
+              color={28,108,200},
+              thickness=1,
+              arrow={Arrow.None,Arrow.Filled}),
+            Line(
+              points={{-90,0},{-60,0}},
+              color={28,108,200},
+              thickness=1,
+              arrow={Arrow.None,Arrow.Filled}),
+            Line(
+              points={{-90,-80},{-60,-80}},
+              color={28,108,200},
+              thickness=1,
+              arrow={Arrow.None,Arrow.Filled})}));
+    end Evaporator_Brine_Flash;
+
+    model TVC
+      import Modelica.Units.SI;
+      import Modelica.Fluid.Types.Dynamics;
+      replaceable package Medium = Modelica.Media.Water.StandardWater;
+
+      SI.AbsolutePressure Pp(start=3e5);
+      parameter SI.AbsolutePressure Pe=5e3 "Vaccum Pressure";
+      SI.AbsolutePressure Pc(start=1.5e5);
+      SI.MassFlowRate mp;
+      SI.MassFlowRate me;
+      SI.MassFlowRate mc;
+      SI.SpecificEnthalpy hp;
+      SI.SpecificEnthalpy he;
+      SI.SpecificEnthalpy hc;
+      Real MR;
+      Real CR;
+      Real ER(start=15);
+
+      TRANSFORM.Fluid.Interfaces.FluidPort_Flow  primarysteam(redeclare package
+          Medium = Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+      TRANSFORM.Fluid.Interfaces.FluidPort_State mixturesteam(redeclare package
+          Medium = Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+      TRANSFORM.Fluid.Interfaces.FluidPort_Flow  secondarysteam(redeclare
+          package Medium =
+                   Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{-10,-110},{10,-90}})));
+    equation
+      //bals
+      mp+me+mc=0;
+      mp*hp+me*he+mc*hc=0;
+      //ratios
+      MR=mp/me;
+      CR=Pc/Pe;
+      ER=Pp/Pe;
+      if ER<10 then
+        MR=-1.61061763080868 + 11.0331387899116 * log(CR) +13.5281254171601/ER-
+        14.9338191429307*(log(CR)^2)-34.4397376531113/(ER^2)-48.4767172051364 *
+        log(CR)/ER+ 6.46223679313751*(log(CR)^3)+29.9699902855834/(ER^3)+
+        70.8113406477665* (log(CR)/(ER^2))+ 46.9590107717394*(log(CR)^2)/ER;
+      elseif ER<100 then
+        MR=-3.20842210618164 + 3.93335312452389 *CR + 27.2360043794853/ER
+        -1.19206948677452 *(CR^2)-141.423288255019/(ER^2)-22.5455184193569
+        *CR/ER +0.125812687624122 *(CR^3)+348.506574704109/(ER^3)+41.7960967174647
+        *CR/(ER^2)+6.43992939366982 *(CR^2)/ER;
+      else
+        MR=-1.93422581403321 + 2.152523807931* CR +113.490932154749/ER
+        -0.522221061154973* (CR^2)-14735.9653361836/(ER^2)-31.8519701023059*
+        CR/ER +0.047506773195604*(CR^3)+900786.044551787/(ER^3)-495.581541338594*
+        CR/(ER^2)+10.0251265889018 *(CR^2)/ER;
+      end if;
+
+      //ports
+      mp=primarysteam.m_flow;
+      me=secondarysteam.m_flow;
+      mc=mixturesteam.m_flow;
+      hp=actualStream(primarysteam.h_outflow);
+      primarysteam.h_outflow=hp;
+      he=actualStream(secondarysteam.h_outflow);
+      secondarysteam.h_outflow=he;
+      hc=mixturesteam.h_outflow;
+      Pp=primarysteam.p;
+      Pe=secondarysteam.p;
+      Pc=mixturesteam.p;
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end TVC;
   end Components;
 
   package Examples
@@ -3620,659 +4281,6 @@ package MEE "Multi Effect Evaporators"
   end BaseClasses;
 
   package Multiple_Effect
-    model MEE_PF "Test of a single effect with constant UA"
-
-      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Steam_Exit(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        p=10000,
-        nPorts=1) annotation (Placement(transformation(extent={{10,-10},{-10,10}},
-            rotation=90,
-            origin={352,148})));
-
-      Single_Effect.Brine_Models.Single_Effect effect1(
-        Tsys=data.T1 + 5,
-        V=0.5,
-        A=1,
-        KV=-0.1,
-        Ax=data.Ax1,
-        Do(displayUnit="m"),
-        pT=data.PS)
-        annotation (Placement(transformation(extent={{-378,-30},{-318,30}})));
-      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Tube_Inlet(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        use_m_flow_in=false,
-        m_flow=1,
-        h=2725.9e3,
-        nPorts=1) annotation (Placement(transformation(extent={{-410,-22},{-390,
-                -2}})));
-      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Brine_Oulet1(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        p=data.PS,
-        nPorts=1) annotation (Placement(transformation(extent={{-406,-54},{-386,
-                -34}})));
-      Single_Effect.Brine_Models.Single_Effect effect2(
-        Tsys=data.T2 + 5,
-        V=0.5,
-        A=1,
-        KV=-0.1,
-        Ax=data.Ax2,
-        pT=95000)
-        annotation (Placement(transformation(extent={{-282,-30},{-222,30}})));
-      Single_Effect.Brine_Models.Single_Effect effect3(
-        Tsys=data.T3 + 5,
-        V=0.5,
-        A=1,
-        KV=-0.1,
-        Ax=data.Ax3,
-        pT=90000)
-        annotation (Placement(transformation(extent={{-178,-26},{-118,34}})));
-      Single_Effect.Brine_Models.Single_Effect effect4(
-        Tsys=data.T4 + 5,
-        V=0.5,
-        A=1,
-        KV=-0.1,
-        Ax=data.Ax4,
-        pT=85000)
-        annotation (Placement(transformation(extent={{-78,-28},{-18,32}})));
-      Single_Effect.Brine_Models.Single_Effect effect5(
-        Tsys=data.T5 + 5,
-        V=0.5,
-        A=1,
-        KV=-0.1,
-        Ax=data.Ax5,
-        pT=80000)
-        annotation (Placement(transformation(extent={{20,-30},{80,30}})));
-      Single_Effect.Brine_Models.Single_Effect effect6(
-        Tsys=data.T6 + 5,
-        V=0.5,
-        A=1,
-        KV=-0.1,
-        Ax=data.Ax6,
-        pT=75000)
-        annotation (Placement(transformation(extent={{120,-30},{180,30}})));
-      Single_Effect.Brine_Models.Single_Effect effect7(
-        Tsys=data.T7 + 5,
-        V=0.5,
-        A=1,
-        KV=-0.1,
-        Ax=data.Ax7,
-        pT=70000)
-        annotation (Placement(transformation(extent={{218,-28},{278,32}})));
-      Single_Effect.Brine_Models.Single_Effect effect8(
-        Tsys=data.T8 + 5,
-        V=0.5,
-        A=1,
-        KV=-0.1,
-        Ax=data.Ax8,
-        pT=65000)
-        annotation (Placement(transformation(extent={{322,-30},{382,30}})));
-      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Brine_Oulet2(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        p=10000,
-        nPorts=7) annotation (Placement(transformation(extent={{-320,-80},{-300,
-                -60}})));
-      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Brine_Inlet8(
-        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-        use_m_flow_in=false,
-        m_flow=4,
-        h=350500,
-        X={0.92,0.08},
-        nPorts=1) annotation (Placement(transformation(extent={{-280,40},{-300,
-                60}})));
-      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Brine_Oulet9(
-        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-        p=10000,
-        X={0.92,0.08},
-        nPorts=8) annotation (Placement(transformation(extent={{-454,62},{-432,
-                82}})));
-
-      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Brine_Inlet9(
-        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-        use_m_flow_in=false,
-        m_flow=4,
-        h=350500,
-        X={0.92,0.08},
-        nPorts=1) annotation (Placement(transformation(extent={{-182,46},{-202,
-                66}})));
-
-      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Brine_Inlet6(
-        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-        use_m_flow_in=false,
-        m_flow=4,
-        h=350500,
-        X={0.92,0.08},
-        nPorts=1) annotation (Placement(transformation(extent={{-82,42},{-102,
-                62}})));
-
-      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Brine_Inlet1(
-        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-        use_m_flow_in=false,
-        m_flow=4,
-        h=350500,
-        X={0.92,0.08},
-        nPorts=1) annotation (Placement(transformation(extent={{20,40},{0,60}})));
-
-      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Brine_Inlet2(
-        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-        use_m_flow_in=false,
-        m_flow=4,
-        h=350500,
-        X={0.92,0.08},
-        nPorts=1) annotation (Placement(transformation(extent={{124,40},{104,60}})));
-
-      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Brine_Inlet3(
-        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-        use_m_flow_in=false,
-        m_flow=4,
-        h=350500,
-        X={0.92,0.08},
-        nPorts=1) annotation (Placement(transformation(extent={{220,44},{200,64}})));
-
-      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Brine_Inlet4(
-        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-        use_m_flow_in=false,
-        m_flow=4,
-        h=350500,
-        X={0.92,0.08},
-        nPorts=1) annotation (Placement(transformation(extent={{304,34},{284,54}})));
-
-      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Brine_Inlet5(
-        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-        use_m_flow_in=false,
-        m_flow=4,
-        h=350500,
-        X={0.92,0.08},
-        nPorts=1) annotation (Placement(transformation(extent={{428,32},{408,52}})));
-
-      Data.MEE_Data data(nE=8)
-        annotation (Placement(transformation(extent={{-460,140},{-398,200}})));
-      TRANSFORM.Fluid.Valves.ValveLinear CV1(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        dp_nominal=3000,
-        m_flow_nominal=1) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={-218,-50})));
-      TRANSFORM.Fluid.Valves.ValveLinear CV2(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        dp_nominal=10000,
-        m_flow_nominal=1) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={-120,-50})));
-      TRANSFORM.Fluid.Valves.ValveLinear CV3(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        dp_nominal=3000,
-        m_flow_nominal=1) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={-20,-52})));
-      TRANSFORM.Fluid.Valves.ValveLinear CV4(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        dp_nominal=3000,
-        m_flow_nominal=1) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={80,-50})));
-      TRANSFORM.Fluid.Valves.ValveLinear CV5(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        dp_nominal=3000,
-        m_flow_nominal=1) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={180,-48})));
-      TRANSFORM.Fluid.Valves.ValveLinear CV6(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        dp_nominal=3000,
-        m_flow_nominal=1) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={280,-50})));
-      TRANSFORM.Fluid.Valves.ValveLinear CV7(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        dp_nominal=3000,
-        m_flow_nominal=1) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={380,-50})));
-      TRANSFORM.Fluid.Valves.ValveLinear CV8(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        dp_nominal=3000,
-        m_flow_nominal=1) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=90,
-            origin={352,70})));
-      BaseClasses.SignalSubBus_SensorOutput sensorSubBus annotation (Placement(
-            transformation(extent={{-80,120},{-20,182}}), iconTransformation(
-              extent={{-80,120},{-20,182}})));
-      BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus annotation (
-          Placement(transformation(extent={{20,120},{80,180}}),
-            iconTransformation(extent={{20,120},{80,180}})));
-      Modelica.Blocks.Sources.RealExpression T1_set(y=data.T1)
-        annotation (Placement(transformation(extent={{-260,174},{-240,194}})));
-      Modelica.Blocks.Sources.RealExpression T2_set(y=data.T2)
-        annotation (Placement(transformation(extent={{-260,154},{-240,174}})));
-      Modelica.Blocks.Sources.RealExpression T8_set(y=data.T8)
-        annotation (Placement(transformation(extent={{-220,114},{-200,134}})));
-      Modelica.Blocks.Sources.RealExpression T3_set(y=data.T3)
-        annotation (Placement(transformation(extent={{-260,134},{-240,154}})));
-      Modelica.Blocks.Sources.RealExpression T4_set(y=data.T4)
-        annotation (Placement(transformation(extent={{-260,114},{-240,134}})));
-      Modelica.Blocks.Sources.RealExpression T5_set(y=data.T5)
-        annotation (Placement(transformation(extent={{-220,174},{-200,194}})));
-      Modelica.Blocks.Sources.RealExpression T6_set(y=data.T6)
-        annotation (Placement(transformation(extent={{-220,154},{-200,174}})));
-      Modelica.Blocks.Sources.RealExpression T7_set(y=data.T7)
-        annotation (Placement(transformation(extent={{-220,134},{-200,154}})));
-      Modelica.Fluid.Sensors.Temperature temperature1(redeclare package Medium =
-            Modelica.Media.Water.StandardWater)
-        annotation (Placement(transformation(extent={{-358,54},{-338,74}})));
-      Modelica.Fluid.Sensors.Temperature temperature2(redeclare package Medium =
-            Modelica.Media.Water.StandardWater)
-        annotation (Placement(transformation(extent={{-260,54},{-240,74}})));
-      Modelica.Fluid.Sensors.Temperature temperature3(redeclare package Medium =
-            Modelica.Media.Water.StandardWater)
-        annotation (Placement(transformation(extent={{-160,56},{-140,76}})));
-      Modelica.Fluid.Sensors.Temperature temperature4(redeclare package Medium =
-            Modelica.Media.Water.StandardWater)
-        annotation (Placement(transformation(extent={{-58,52},{-38,72}})));
-      Modelica.Fluid.Sensors.Temperature temperature5(redeclare package Medium =
-            Modelica.Media.Water.StandardWater)
-        annotation (Placement(transformation(extent={{50,50},{70,70}})));
-      Modelica.Fluid.Sensors.Temperature temperature6(redeclare package Medium =
-            Modelica.Media.Water.StandardWater)
-        annotation (Placement(transformation(extent={{144,50},{164,70}})));
-      Modelica.Fluid.Sensors.Temperature temperature7(redeclare package Medium =
-            Modelica.Media.Water.StandardWater)
-        annotation (Placement(transformation(extent={{238,50},{258,70}})));
-      Modelica.Fluid.Sensors.Temperature temperature8(redeclare package Medium =
-            Modelica.Media.Water.StandardWater)
-        annotation (Placement(transformation(extent={{368,60},{388,80}})));
-      ControlSystems.CS_TemperatureControlSystem
-                               CS
-        annotation (Placement(transformation(extent={{-42,220},{16,256}})));
-    equation
-      connect(Tube_Inlet.ports[1], effect1.Tube_Inlet)
-        annotation (Line(points={{-390,-12},{-377.4,-12}}, color={0,127,255}));
-      connect(Brine_Oulet1.ports[1], effect1.Tube_Outlet) annotation (Line(
-            points={{-386,-44},{-304,-44},{-304,-12},{-317.4,-12}}, color={0,
-              127,255}));
-      connect(effect1.Steam_Outlet_Port, effect2.Tube_Inlet) annotation (Line(
-            points={{-348,30},{-348,36},{-290,36},{-290,-12},{-281.4,-12}},
-            color={0,127,255}));
-      connect(effect2.Steam_Outlet_Port, effect3.Tube_Inlet) annotation (Line(
-            points={{-252,30},{-252,36},{-190,36},{-190,-8},{-177.4,-8}},
-            color={0,127,255}));
-      connect(effect3.Steam_Outlet_Port, effect4.Tube_Inlet) annotation (Line(
-            points={{-148,34},{-90,34},{-90,-10},{-77.4,-10}}, color={0,127,255}));
-      connect(effect4.Steam_Outlet_Port, effect5.Tube_Inlet) annotation (Line(
-            points={{-48,32},{-48,36},{-6,36},{-6,-4},{12,-4},{12,-12},{20.6,
-              -12}}, color={0,127,255}));
-      connect(effect5.Steam_Outlet_Port, effect6.Tube_Inlet) annotation (Line(
-            points={{50,30},{50,36},{98,36},{98,-2},{110,-2},{110,-12},{120.6,
-              -12}}, color={0,127,255}));
-      connect(effect6.Steam_Outlet_Port, effect7.Tube_Inlet) annotation (Line(
-            points={{150,30},{150,36},{210,36},{210,-10},{218.6,-10}}, color={0,
-              127,255}));
-      connect(effect7.Steam_Outlet_Port, effect8.Tube_Inlet) annotation (Line(
-            points={{248,32},{248,36},{310,36},{310,-12},{322.6,-12}}, color={0,
-              127,255}));
-      connect(effect1.Brine_Inlet_Port, Brine_Inlet8.ports[1]) annotation (Line(
-            points={{-318,0},{-308,0},{-308,50},{-300,50}}, color={0,127,255}));
-      connect(effect1.Brine_Outlet_Port, Brine_Oulet9.ports[1]) annotation (
-          Line(points={{-378,0},{-420,0},{-420,70.25},{-432,70.25}},
-            color={0,127,255}));
-      connect(Brine_Inlet9.ports[1], effect2.Brine_Inlet_Port) annotation (Line(
-            points={{-202,56},{-214,56},{-214,6},{-212,6},{-212,0},{-222,0}},
-            color={0,127,255}));
-      connect(Brine_Inlet6.ports[1], effect3.Brine_Inlet_Port) annotation (Line(
-            points={{-102,52},{-104,52},{-104,4},{-118,4}}, color={0,127,255}));
-      connect(Brine_Inlet1.ports[1], effect4.Brine_Inlet_Port) annotation (Line(
-            points={{0,50},{-2,50},{-2,34},{-10,34},{-10,2},{-18,2}}, color={0,
-              127,255}));
-      connect(Brine_Inlet2.ports[1], effect5.Brine_Inlet_Port) annotation (Line(
-            points={{104,50},{96,50},{96,0},{80,0}}, color={0,127,255}));
-      connect(Brine_Inlet3.ports[1], effect6.Brine_Inlet_Port) annotation (Line(
-            points={{200,54},{192,54},{192,0},{180,0}}, color={0,127,255}));
-      connect(Brine_Inlet4.ports[1], effect7.Brine_Inlet_Port) annotation (Line(
-            points={{284,44},{278,44},{278,2}}, color={0,127,255}));
-      connect(Brine_Inlet5.ports[1], effect8.Brine_Inlet_Port) annotation (Line(
-            points={{408,42},{386,42},{386,0},{382,0}}, color={0,127,255}));
-      connect(effect2.Tube_Outlet, CV1.port_a) annotation (Line(points={{-221.4,
-              -12},{-218,-12},{-218,-40}}, color={0,127,255}));
-      connect(CV1.port_b, Brine_Oulet2.ports[1]) annotation (Line(points={{-218,
-              -60},{-218,-71.7143},{-300,-71.7143}}, color={0,127,255}));
-      connect(CV7.port_a, effect8.Tube_Outlet) annotation (Line(points={{380,
-              -40},{380,-12},{382.6,-12}}, color={0,127,255}));
-      connect(CV6.port_a, effect7.Tube_Outlet) annotation (Line(points={{280,
-              -40},{280,-10},{278.6,-10}}, color={0,127,255}));
-      connect(CV5.port_a, effect6.Tube_Outlet) annotation (Line(points={{180,
-              -38},{180,-12},{180.6,-12}}, color={0,127,255}));
-      connect(CV4.port_a, effect5.Tube_Outlet) annotation (Line(points={{80,-40},
-              {80,-26},{80,-12},{80.6,-12}}, color={0,127,255}));
-      connect(CV3.port_a, effect4.Tube_Outlet) annotation (Line(points={{-20,-42},
-              {-20,-10},{-17.4,-10}},      color={0,127,255}));
-      connect(CV2.port_a, effect3.Tube_Outlet) annotation (Line(points={{-120,
-              -40},{-120,-8},{-117.4,-8}},   color={0,127,255}));
-      connect(CV2.port_b, Brine_Oulet2.ports[2]) annotation (Line(points={{-120,
-              -60},{-120,-71.1429},{-300,-71.1429}}, color={0,127,255}));
-      connect(CV3.port_b, Brine_Oulet2.ports[3]) annotation (Line(points={{-20,-62},
-              {-20,-70.5714},{-300,-70.5714}},      color={0,127,255}));
-      connect(CV4.port_b, Brine_Oulet2.ports[4]) annotation (Line(points={{80,
-              -60},{80,-70},{-300,-70}}, color={0,127,255}));
-      connect(CV5.port_b, Brine_Oulet2.ports[5]) annotation (Line(points={{180,-58},
-              {180,-69.4286},{-300,-69.4286}},      color={0,127,255}));
-      connect(CV6.port_b, Brine_Oulet2.ports[6]) annotation (Line(points={{280,-60},
-              {280,-68.8571},{-300,-68.8571}},      color={0,127,255}));
-      connect(CV7.port_b, Brine_Oulet2.ports[7]) annotation (Line(points={{380,-60},
-              {380,-68.2857},{-300,-68.2857}},      color={0,127,255}));
-      connect(effect8.Steam_Outlet_Port, CV8.port_a)
-        annotation (Line(points={{352,30},{352,60}}, color={0,127,255}));
-      connect(CV8.port_b, Steam_Exit.ports[1])
-        annotation (Line(points={{352,80},{352,138}}, color={0,127,255}));
-      connect(actuatorSubBus.CV1_opening, CV1.opening) annotation (Line(
-          points={{50.15,150.15},{48,150.15},{48,104},{-108,104},{-108,-32},{
-              -136,-32},{-136,-50},{-210,-50}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(actuatorSubBus.CV2_opening, CV2.opening) annotation (Line(
-          points={{50.15,150.15},{48,150.15},{48,108},{-104,108},{-104,28},{
-              -100,28},{-100,-50},{-112,-50}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(actuatorSubBus.CV3_opening, CV3.opening) annotation (Line(
-          points={{50.15,150.15},{48,150.15},{48,96},{-8,96},{-8,-8},{4,-8},{4,
-              -52},{-12,-52}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(actuatorSubBus.CV4_opening, CV4.opening) annotation (Line(
-          points={{50.15,150.15},{48,150.15},{48,40},{92,40},{92,-32},{96,-32},
-              {96,-50},{88,-50}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-3,6},{-3,6}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(actuatorSubBus.CV5_opening, CV5.opening) annotation (Line(
-          points={{50.15,150.15},{48,150.15},{48,-32},{196,-32},{196,-48},{188,
-              -48}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-3,6},{-3,6}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(actuatorSubBus.CV6_opening, CV6.opening) annotation (Line(
-          points={{50.15,150.15},{48,150.15},{48,-72},{292,-72},{292,-64},{296,
-              -64},{296,-50},{288,-50}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(actuatorSubBus.CV7_opening, CV7.opening) annotation (Line(
-          points={{50.15,150.15},{48,150.15},{48,-76},{400,-76},{400,-50},{388,
-              -50}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(actuatorSubBus.CV8_opening, CV8.opening) annotation (Line(
-          points={{50.15,150.15},{48,150.15},{48,108},{328,108},{328,70},{344,
-              70}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(sensorSubBus.T1set, T1_set.y) annotation (Line(
-          points={{-49.85,151.155},{-49.85,200},{-228,200},{-228,184},{-239,184}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-
-      connect(sensorSubBus.T2set, T2_set.y) annotation (Line(
-          points={{-49.85,151.155},{-49.85,204},{-232,204},{-232,180},{-228,180},
-              {-228,164},{-239,164}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T3set, T3_set.y) annotation (Line(
-          points={{-49.85,151.155},{-188,151.155},{-188,108},{-208,108},{-208,
-              104},{-228,104},{-228,144},{-239,144}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T4set, T4_set.y) annotation (Line(
-          points={{-49.85,151.155},{-228,151.155},{-228,124},{-239,124}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T5set, T5_set.y) annotation (Line(
-          points={{-49.85,151.155},{-188,151.155},{-188,184},{-199,184}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T6set, T6_set.y) annotation (Line(
-          points={{-49.85,151.155},{-180,151.155},{-180,164},{-199,164}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T7set, T7_set.y) annotation (Line(
-          points={{-49.85,151.155},{-52,151.155},{-52,144},{-199,144}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T8set, T8_set.y) annotation (Line(
-          points={{-49.85,151.155},{-49.85,116},{-184,116},{-184,124},{-199,124}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-
-      connect(effect1.Steam_Outlet_Port, temperature1.port)
-        annotation (Line(points={{-348,30},{-348,54}}, color={0,127,255}));
-      connect(effect2.Steam_Outlet_Port, temperature2.port) annotation (Line(
-            points={{-252,30},{-252,42},{-250,42},{-250,54}}, color={0,127,255}));
-      connect(effect3.Steam_Outlet_Port, temperature3.port) annotation (Line(
-            points={{-148,34},{-148,44},{-150,44},{-150,56}}, color={0,127,255}));
-      connect(effect4.Steam_Outlet_Port, temperature4.port)
-        annotation (Line(points={{-48,32},{-48,52}}, color={0,127,255}));
-      connect(effect5.Steam_Outlet_Port, temperature5.port) annotation (Line(
-            points={{50,30},{50,40},{60,40},{60,50}}, color={0,127,255}));
-      connect(effect6.Steam_Outlet_Port, temperature6.port) annotation (Line(
-            points={{150,30},{150,44},{154,44},{154,50}}, color={0,127,255}));
-      connect(effect7.Steam_Outlet_Port, temperature7.port)
-        annotation (Line(points={{248,32},{248,50}}, color={0,127,255}));
-      connect(effect8.Steam_Outlet_Port, temperature8.port) annotation (Line(
-            points={{352,30},{352,48},{378,48},{378,60}}, color={0,127,255}));
-      connect(sensorSubBus.T1, temperature1.T) annotation (Line(
-          points={{-49.85,151.155},{-328,151.155},{-328,64},{-341,64}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T2, temperature2.T) annotation (Line(
-          points={{-49.85,151.155},{-268,151.155},{-268,96},{-232,96},{-232,64},
-              {-243,64}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T3, temperature3.T) annotation (Line(
-          points={{-49.85,151.155},{-49.85,108},{-92,108},{-92,112},{-132,112},
-              {-132,66},{-143,66}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T4, temperature4.T) annotation (Line(
-          points={{-49.85,151.155},{-49.85,80},{-28,80},{-28,62},{-41,62}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(sensorSubBus.T5, temperature5.T) annotation (Line(
-          points={{-49.85,151.155},{-49.85,100},{76,100},{76,60},{67,60}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(sensorSubBus.T6, temperature6.T) annotation (Line(
-          points={{-49.85,151.155},{-49.85,92},{108,92},{108,104},{172,104},{
-              172,60},{161,60}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(sensorSubBus.T7, temperature7.T) annotation (Line(
-          points={{-49.85,151.155},{-49.85,96},{112,96},{112,100},{264,100},{
-              264,60},{255,60}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(sensorSubBus.T8, temperature8.T) annotation (Line(
-          points={{-49.85,151.155},{-49.85,192},{400,192},{400,70},{385,70}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(effect2.Brine_Outlet_Port, Brine_Oulet9.ports[2]) annotation (
-          Line(points={{-282,0},{-300,0},{-300,-48},{-376,-48},{-376,-60},{-420,
-              -60},{-420,70.75},{-432,70.75}}, color={0,127,255}));
-      connect(effect3.Brine_Outlet_Port, Brine_Oulet9.ports[3]) annotation (
-          Line(points={{-178,4},{-208,4},{-208,80},{-420,80},{-420,71.25},{-432,
-              71.25}}, color={0,127,255}));
-      connect(effect4.Brine_Outlet_Port, Brine_Oulet9.ports[4]) annotation (
-          Line(points={{-78,2},{-80,2},{-80,36},{-192,36},{-192,32},{-208,32},{
-              -208,80},{-420,80},{-420,71.75},{-432,71.75}}, color={0,127,255}));
-      connect(effect5.Brine_Outlet_Port, Brine_Oulet9.ports[5]) annotation (
-          Line(points={{20,0},{-8,0},{-8,40},{-76,40},{-76,36},{-192,36},{-192,
-              32},{-208,32},{-208,80},{-420,80},{-420,72.25},{-432,72.25}},
-            color={0,127,255}));
-      connect(effect6.Brine_Outlet_Port, Brine_Oulet9.ports[6]) annotation (
-          Line(points={{120,0},{120,-4},{88,-4},{88,44},{32,44},{32,68},{-24,68},
-              {-24,40},{-76,40},{-76,36},{-192,36},{-192,32},{-208,32},{-208,80},
-              {-420,80},{-420,72.75},{-432,72.75}}, color={0,127,255}));
-      connect(effect7.Brine_Outlet_Port, Brine_Oulet9.ports[7]) annotation (
-          Line(points={{218,2},{188,2},{188,40},{136,40},{136,68},{80,68},{80,
-              44},{32,44},{32,68},{-24,68},{-24,40},{-76,40},{-76,36},{-192,36},
-              {-192,32},{-208,32},{-208,80},{-420,80},{-420,73.25},{-432,73.25}},
-            color={0,127,255}));
-      connect(effect8.Brine_Outlet_Port, Brine_Oulet9.ports[8]) annotation (
-          Line(points={{322,0},{312,0},{312,72},{260,72},{260,76},{184,76},{184,
-              40},{136,40},{136,68},{80,68},{80,44},{32,44},{32,68},{-24,68},{
-              -24,40},{-76,40},{-76,36},{-192,36},{-192,32},{-208,32},{-208,80},
-              {-420,80},{-420,73.75},{-432,73.75}}, color={0,127,255}));
-      connect(sensorSubBus, CS.sensorBus) annotation (Line(
-          points={{-50,151},{-50,208},{-21.7,208},{-21.7,220}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(actuatorSubBus, CS.actuatorBus) annotation (Line(
-          points={{50,150},{48,150},{48,208},{-4.3,208},{-4.3,220}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-3,-6},{-3,-6}},
-          horizontalAlignment=TextAlignment.Right));
-      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-460,-120},{
-                460,120}})),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-460,-120},
-                {460,200}})),
-        experiment(
-          StopTime=100,
-          Interval=0.5,
-          __Dymola_Algorithm="Esdirk45a"));
-    end MEE_PF;
 
     model MEE_PF8
         extends BaseClasses.Partial_SubSystem_A(
@@ -4889,678 +4897,6 @@ package MEE "Multi Effect Evaporators"
 "), Bitmap(extent={{-90,-82},{90,58}}, fileName=
                   "modelica://NHES/Resources/Images/Desalination/MEE_Icon.png")}));
     end MEE_PF8;
-
-    model MEE_PFpump "Test of a single effect with constant UA"
-
-      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Steam_Exit(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        p=10000,
-        nPorts=1) annotation (Placement(transformation(extent={{10,-10},{-10,10}},
-            rotation=90,
-            origin={352,148})));
-
-      Single_Effect.Brine_Models.Single_Effect effect1(
-        Tsys=data.T1 + 5,
-        V=0.5,
-        A=1,
-        KV=-0.1,
-        Ax=data.Ax1,
-        Do(displayUnit="m"),
-        pT=data.PS)
-        annotation (Placement(transformation(extent={{-378,-30},{-318,30}})));
-      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Tube_Inlet(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        use_m_flow_in=false,
-        m_flow=1,
-        h=2725.9e3,
-        nPorts=1) annotation (Placement(transformation(extent={{-410,-22},{-390,
-                -2}})));
-      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Brine_Oulet1(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        p=data.PS,
-        nPorts=1) annotation (Placement(transformation(extent={{-406,-54},{-386,
-                -34}})));
-      Single_Effect.Brine_Models.Single_Effect effect2(
-        Tsys=data.T2 + 5,
-        V=0.5,
-        A=1,
-        KV=-0.1,
-        Ax=data.Ax2,
-        pT=95000)
-        annotation (Placement(transformation(extent={{-282,-30},{-222,30}})));
-      Single_Effect.Brine_Models.Single_Effect effect3(
-        Tsys=data.T3 + 5,
-        V=0.5,
-        A=1,
-        KV=-0.1,
-        Ax=data.Ax3,
-        pT=90000)
-        annotation (Placement(transformation(extent={{-178,-26},{-118,34}})));
-      Single_Effect.Brine_Models.Single_Effect effect4(
-        Tsys=data.T4 + 5,
-        V=0.5,
-        A=1,
-        KV=-0.1,
-        Ax=data.Ax4,
-        pT=85000)
-        annotation (Placement(transformation(extent={{-78,-28},{-18,32}})));
-      Single_Effect.Brine_Models.Single_Effect effect5(
-        Tsys=data.T5 + 5,
-        V=0.5,
-        A=1,
-        KV=-0.1,
-        Ax=data.Ax5,
-        pT=80000)
-        annotation (Placement(transformation(extent={{20,-30},{80,30}})));
-      Single_Effect.Brine_Models.Single_Effect effect6(
-        Tsys=data.T6 + 5,
-        V=0.5,
-        A=1,
-        KV=-0.1,
-        Ax=data.Ax6,
-        pT=75000)
-        annotation (Placement(transformation(extent={{120,-30},{180,30}})));
-      Single_Effect.Brine_Models.Single_Effect effect7(
-        Tsys=data.T7 + 5,
-        V=0.5,
-        A=1,
-        KV=-0.1,
-        Ax=data.Ax7,
-        pT=70000)
-        annotation (Placement(transformation(extent={{218,-28},{278,32}})));
-      Single_Effect.Brine_Models.Single_Effect effect8(
-        Tsys=data.T8 + 5,
-        V=0.5,
-        A=1,
-        KV=-0.1,
-        Ax=data.Ax8,
-        pT=65000)
-        annotation (Placement(transformation(extent={{322,-30},{382,30}})));
-      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Cond(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        p=10000,
-        nPorts=7)
-        annotation (Placement(transformation(extent={{-320,-80},{-300,-60}})));
-      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Brine_Oulet9(
-        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-        p=10000,
-        X={0.92,0.08},
-        nPorts=8) annotation (Placement(transformation(extent={{-454,62},{-432,
-                82}})));
-
-      Data.MEE_Data data(nE=8)
-        annotation (Placement(transformation(extent={{-460,140},{-398,200}})));
-      TRANSFORM.Fluid.Valves.ValveLinear CV1(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        dp_nominal=3000,
-        m_flow_nominal=1) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={-218,-50})));
-      TRANSFORM.Fluid.Valves.ValveLinear CV2(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        dp_nominal=10000,
-        m_flow_nominal=1) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={-120,-50})));
-      TRANSFORM.Fluid.Valves.ValveLinear CV3(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        dp_nominal=3000,
-        m_flow_nominal=1) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={-20,-52})));
-      TRANSFORM.Fluid.Valves.ValveLinear CV4(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        dp_nominal=3000,
-        m_flow_nominal=1) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={80,-50})));
-      TRANSFORM.Fluid.Valves.ValveLinear CV5(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        dp_nominal=3000,
-        m_flow_nominal=1) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={180,-48})));
-      TRANSFORM.Fluid.Valves.ValveLinear CV6(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        dp_nominal=3000,
-        m_flow_nominal=1) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={280,-50})));
-      TRANSFORM.Fluid.Valves.ValveLinear CV7(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        dp_nominal=3000,
-        m_flow_nominal=1) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=270,
-            origin={380,-50})));
-      TRANSFORM.Fluid.Valves.ValveLinear CV8(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        dp_nominal=3000,
-        m_flow_nominal=1) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=90,
-            origin={352,70})));
-      BaseClasses.SignalSubBus_SensorOutput sensorSubBus annotation (Placement(
-            transformation(extent={{-80,120},{-20,182}}), iconTransformation(
-              extent={{-80,120},{-20,182}})));
-      BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus annotation (
-          Placement(transformation(extent={{20,120},{80,180}}),
-            iconTransformation(extent={{20,120},{80,180}})));
-      Modelica.Blocks.Sources.RealExpression T1_set(y=data.T1)
-        annotation (Placement(transformation(extent={{-260,174},{-240,194}})));
-      Modelica.Blocks.Sources.RealExpression T2_set(y=data.T2)
-        annotation (Placement(transformation(extent={{-260,154},{-240,174}})));
-      Modelica.Blocks.Sources.RealExpression T8_set(y=data.T8)
-        annotation (Placement(transformation(extent={{-220,114},{-200,134}})));
-      Modelica.Blocks.Sources.RealExpression T3_set(y=data.T3)
-        annotation (Placement(transformation(extent={{-260,134},{-240,154}})));
-      Modelica.Blocks.Sources.RealExpression T4_set(y=data.T4)
-        annotation (Placement(transformation(extent={{-260,114},{-240,134}})));
-      Modelica.Blocks.Sources.RealExpression T5_set(y=data.T5)
-        annotation (Placement(transformation(extent={{-220,174},{-200,194}})));
-      Modelica.Blocks.Sources.RealExpression T6_set(y=data.T6)
-        annotation (Placement(transformation(extent={{-220,154},{-200,174}})));
-      Modelica.Blocks.Sources.RealExpression T7_set(y=data.T7)
-        annotation (Placement(transformation(extent={{-220,134},{-200,154}})));
-      Modelica.Fluid.Sensors.Temperature temperature1(redeclare package Medium =
-            Modelica.Media.Water.StandardWater)
-        annotation (Placement(transformation(extent={{-358,54},{-338,74}})));
-      Modelica.Fluid.Sensors.Temperature temperature2(redeclare package Medium =
-            Modelica.Media.Water.StandardWater)
-        annotation (Placement(transformation(extent={{-260,54},{-240,74}})));
-      Modelica.Fluid.Sensors.Temperature temperature3(redeclare package Medium =
-            Modelica.Media.Water.StandardWater)
-        annotation (Placement(transformation(extent={{-160,56},{-140,76}})));
-      Modelica.Fluid.Sensors.Temperature temperature4(redeclare package Medium =
-            Modelica.Media.Water.StandardWater)
-        annotation (Placement(transformation(extent={{-58,52},{-38,72}})));
-      Modelica.Fluid.Sensors.Temperature temperature5(redeclare package Medium =
-            Modelica.Media.Water.StandardWater)
-        annotation (Placement(transformation(extent={{50,50},{70,70}})));
-      Modelica.Fluid.Sensors.Temperature temperature6(redeclare package Medium =
-            Modelica.Media.Water.StandardWater)
-        annotation (Placement(transformation(extent={{144,50},{164,70}})));
-      Modelica.Fluid.Sensors.Temperature temperature7(redeclare package Medium =
-            Modelica.Media.Water.StandardWater)
-        annotation (Placement(transformation(extent={{238,50},{258,70}})));
-      Modelica.Fluid.Sensors.Temperature temperature8(redeclare package Medium =
-            Modelica.Media.Water.StandardWater)
-        annotation (Placement(transformation(extent={{368,60},{388,80}})));
-      ControlSystems.CS_TemperatureControlSystem
-                               CS
-        annotation (Placement(transformation(extent={{-42,220},{16,256}})));
-      Fluid.Valves.FCV BrinePump4(redeclare package Medium =
-            NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
-        annotation (Placement(transformation(
-            extent={{10,-10},{-10,10}},
-            rotation=90,
-            origin={-300,60})));
-      Fluid.Valves.FCV BrinePump1(redeclare package Medium =
-            NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
-        annotation (Placement(transformation(
-            extent={{10,-10},{-10,10}},
-            rotation=90,
-            origin={-212,60})));
-      Fluid.Valves.FCV BrinePump2(redeclare package Medium =
-            NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
-        annotation (Placement(transformation(
-            extent={{10,-10},{-10,10}},
-            rotation=90,
-            origin={-112,60})));
-      Fluid.Valves.FCV BrinePump3(redeclare package Medium =
-            NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
-        annotation (Placement(transformation(
-            extent={{10,-10},{-10,10}},
-            rotation=90,
-            origin={10,54})));
-      Fluid.Valves.FCV BrinePump5(redeclare package Medium =
-            NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
-        annotation (Placement(transformation(
-            extent={{10,-10},{-10,10}},
-            rotation=90,
-            origin={118,52})));
-      Fluid.Valves.FCV BrinePump6(redeclare package Medium =
-            NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
-        annotation (Placement(transformation(
-            extent={{10,-10},{-10,10}},
-            rotation=90,
-            origin={224,54})));
-      Fluid.Valves.FCV BrinePump7(redeclare package Medium =
-            NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
-        annotation (Placement(transformation(
-            extent={{10,-10},{-10,10}},
-            rotation=90,
-            origin={332,44})));
-      Fluid.Valves.FCV BrinePump8(redeclare package Medium =
-            NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
-        annotation (Placement(transformation(
-            extent={{10,-10},{-10,10}},
-            rotation=90,
-            origin={402,42})));
-      TRANSFORM.Fluid.FittingsAndResistances.MultiPort multiPort(redeclare
-          package Medium = NHES.Media.SeaWater, nPorts_b=8)
-        annotation (Placement(transformation(extent={{250,140},{242,160}})));
-      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary(
-        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-        p=200000,
-        T=353.15,
-        X={0.92,0.08},
-        nPorts=1)
-        annotation (Placement(transformation(extent={{448,82},{428,102}})));
-
-    equation
-      connect(Tube_Inlet.ports[1], effect1.Tube_Inlet)
-        annotation (Line(points={{-390,-12},{-377.4,-12}}, color={0,127,255}));
-      connect(Brine_Oulet1.ports[1], effect1.Tube_Outlet) annotation (Line(
-            points={{-386,-44},{-304,-44},{-304,-12},{-317.4,-12}}, color={0,
-              127,255}));
-      connect(effect1.Steam_Outlet_Port, effect2.Tube_Inlet) annotation (Line(
-            points={{-348,30},{-348,36},{-290,36},{-290,-12},{-281.4,-12}},
-            color={0,127,255}));
-      connect(effect2.Steam_Outlet_Port, effect3.Tube_Inlet) annotation (Line(
-            points={{-252,30},{-252,36},{-190,36},{-190,-8},{-177.4,-8}},
-            color={0,127,255}));
-      connect(effect3.Steam_Outlet_Port, effect4.Tube_Inlet) annotation (Line(
-            points={{-148,34},{-90,34},{-90,-10},{-77.4,-10}}, color={0,127,255}));
-      connect(effect4.Steam_Outlet_Port, effect5.Tube_Inlet) annotation (Line(
-            points={{-48,32},{-48,36},{-6,36},{-6,-4},{12,-4},{12,-12},{20.6,
-              -12}}, color={0,127,255}));
-      connect(effect5.Steam_Outlet_Port, effect6.Tube_Inlet) annotation (Line(
-            points={{50,30},{50,36},{98,36},{98,-2},{110,-2},{110,-12},{120.6,
-              -12}}, color={0,127,255}));
-      connect(effect6.Steam_Outlet_Port, effect7.Tube_Inlet) annotation (Line(
-            points={{150,30},{150,36},{210,36},{210,-10},{218.6,-10}}, color={0,
-              127,255}));
-      connect(effect7.Steam_Outlet_Port, effect8.Tube_Inlet) annotation (Line(
-            points={{248,32},{248,36},{310,36},{310,-12},{322.6,-12}}, color={0,
-              127,255}));
-      connect(effect1.Brine_Outlet_Port, Brine_Oulet9.ports[1]) annotation (
-          Line(points={{-378,0},{-420,0},{-420,70.25},{-432,70.25}},
-            color={0,127,255}));
-      connect(effect2.Tube_Outlet, CV1.port_a) annotation (Line(points={{-221.4,
-              -12},{-218,-12},{-218,-40}}, color={0,127,255}));
-      connect(CV1.port_b, Cond.ports[1]) annotation (Line(points={{-218,-60},{
-              -218,-71.7143},{-300,-71.7143}}, color={0,127,255}));
-      connect(CV7.port_a, effect8.Tube_Outlet) annotation (Line(points={{380,
-              -40},{380,-12},{382.6,-12}}, color={0,127,255}));
-      connect(CV6.port_a, effect7.Tube_Outlet) annotation (Line(points={{280,
-              -40},{280,-10},{278.6,-10}}, color={0,127,255}));
-      connect(CV5.port_a, effect6.Tube_Outlet) annotation (Line(points={{180,
-              -38},{180,-12},{180.6,-12}}, color={0,127,255}));
-      connect(CV4.port_a, effect5.Tube_Outlet) annotation (Line(points={{80,-40},
-              {80,-26},{80,-12},{80.6,-12}}, color={0,127,255}));
-      connect(CV3.port_a, effect4.Tube_Outlet) annotation (Line(points={{-20,-42},
-              {-20,-10},{-17.4,-10}},      color={0,127,255}));
-      connect(CV2.port_a, effect3.Tube_Outlet) annotation (Line(points={{-120,
-              -40},{-120,-8},{-117.4,-8}},   color={0,127,255}));
-      connect(CV2.port_b, Cond.ports[2]) annotation (Line(points={{-120,-60},{
-              -120,-71.1429},{-300,-71.1429}}, color={0,127,255}));
-      connect(CV3.port_b, Cond.ports[3]) annotation (Line(points={{-20,-62},{
-              -20,-70.5714},{-300,-70.5714}}, color={0,127,255}));
-      connect(CV4.port_b, Cond.ports[4]) annotation (Line(points={{80,-60},{80,
-              -70},{-300,-70}}, color={0,127,255}));
-      connect(CV5.port_b, Cond.ports[5]) annotation (Line(points={{180,-58},{
-              180,-69.4286},{-300,-69.4286}}, color={0,127,255}));
-      connect(CV6.port_b, Cond.ports[6]) annotation (Line(points={{280,-60},{
-              280,-68.8571},{-300,-68.8571}}, color={0,127,255}));
-      connect(CV7.port_b, Cond.ports[7]) annotation (Line(points={{380,-60},{
-              380,-68.2857},{-300,-68.2857}}, color={0,127,255}));
-      connect(effect8.Steam_Outlet_Port, CV8.port_a)
-        annotation (Line(points={{352,30},{352,60}}, color={0,127,255}));
-      connect(CV8.port_b, Steam_Exit.ports[1])
-        annotation (Line(points={{352,80},{352,138}}, color={0,127,255}));
-      connect(actuatorSubBus.CV1_opening, CV1.opening) annotation (Line(
-          points={{50.15,150.15},{48,150.15},{48,104},{-108,104},{-108,-32},{
-              -136,-32},{-136,-50},{-210,-50}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(actuatorSubBus.CV2_opening, CV2.opening) annotation (Line(
-          points={{50.15,150.15},{48,150.15},{48,108},{-104,108},{-104,28},{
-              -100,28},{-100,-50},{-112,-50}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(actuatorSubBus.CV3_opening, CV3.opening) annotation (Line(
-          points={{50.15,150.15},{48,150.15},{48,96},{-8,96},{-8,-8},{4,-8},{4,
-              -52},{-12,-52}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(actuatorSubBus.CV4_opening, CV4.opening) annotation (Line(
-          points={{50.15,150.15},{48,150.15},{48,40},{92,40},{92,-32},{96,-32},
-              {96,-50},{88,-50}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-3,6},{-3,6}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(actuatorSubBus.CV5_opening, CV5.opening) annotation (Line(
-          points={{50.15,150.15},{48,150.15},{48,-32},{196,-32},{196,-48},{188,
-              -48}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-3,6},{-3,6}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(actuatorSubBus.CV6_opening, CV6.opening) annotation (Line(
-          points={{50.15,150.15},{48,150.15},{48,-72},{292,-72},{292,-64},{296,
-              -64},{296,-50},{288,-50}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(actuatorSubBus.CV7_opening, CV7.opening) annotation (Line(
-          points={{50.15,150.15},{48,150.15},{48,-76},{400,-76},{400,-50},{388,
-              -50}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(actuatorSubBus.CV8_opening, CV8.opening) annotation (Line(
-          points={{50.15,150.15},{48,150.15},{48,108},{328,108},{328,70},{344,
-              70}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(sensorSubBus.T1set, T1_set.y) annotation (Line(
-          points={{-49.85,151.155},{-49.85,200},{-228,200},{-228,184},{-239,184}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-
-      connect(sensorSubBus.T2set, T2_set.y) annotation (Line(
-          points={{-49.85,151.155},{-49.85,204},{-232,204},{-232,180},{-228,180},
-              {-228,164},{-239,164}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T3set, T3_set.y) annotation (Line(
-          points={{-49.85,151.155},{-188,151.155},{-188,108},{-208,108},{-208,
-              104},{-228,104},{-228,144},{-239,144}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T4set, T4_set.y) annotation (Line(
-          points={{-49.85,151.155},{-228,151.155},{-228,124},{-239,124}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T5set, T5_set.y) annotation (Line(
-          points={{-49.85,151.155},{-188,151.155},{-188,184},{-199,184}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T6set, T6_set.y) annotation (Line(
-          points={{-49.85,151.155},{-180,151.155},{-180,164},{-199,164}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T7set, T7_set.y) annotation (Line(
-          points={{-49.85,151.155},{-52,151.155},{-52,144},{-199,144}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T8set, T8_set.y) annotation (Line(
-          points={{-49.85,151.155},{-49.85,116},{-184,116},{-184,124},{-199,124}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-
-      connect(effect1.Steam_Outlet_Port, temperature1.port)
-        annotation (Line(points={{-348,30},{-348,54}}, color={0,127,255}));
-      connect(effect2.Steam_Outlet_Port, temperature2.port) annotation (Line(
-            points={{-252,30},{-252,42},{-250,42},{-250,54}}, color={0,127,255}));
-      connect(effect3.Steam_Outlet_Port, temperature3.port) annotation (Line(
-            points={{-148,34},{-148,44},{-150,44},{-150,56}}, color={0,127,255}));
-      connect(effect4.Steam_Outlet_Port, temperature4.port)
-        annotation (Line(points={{-48,32},{-48,52}}, color={0,127,255}));
-      connect(effect5.Steam_Outlet_Port, temperature5.port) annotation (Line(
-            points={{50,30},{50,40},{60,40},{60,50}}, color={0,127,255}));
-      connect(effect6.Steam_Outlet_Port, temperature6.port) annotation (Line(
-            points={{150,30},{150,44},{154,44},{154,50}}, color={0,127,255}));
-      connect(effect7.Steam_Outlet_Port, temperature7.port)
-        annotation (Line(points={{248,32},{248,50}}, color={0,127,255}));
-      connect(effect8.Steam_Outlet_Port, temperature8.port) annotation (Line(
-            points={{352,30},{352,48},{378,48},{378,60}}, color={0,127,255}));
-      connect(sensorSubBus.T1, temperature1.T) annotation (Line(
-          points={{-49.85,151.155},{-328,151.155},{-328,64},{-341,64}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T2, temperature2.T) annotation (Line(
-          points={{-49.85,151.155},{-268,151.155},{-268,96},{-232,96},{-232,64},
-              {-243,64}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T3, temperature3.T) annotation (Line(
-          points={{-49.85,151.155},{-49.85,108},{-92,108},{-92,112},{-132,112},
-              {-132,66},{-143,66}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(sensorSubBus.T4, temperature4.T) annotation (Line(
-          points={{-49.85,151.155},{-49.85,80},{-28,80},{-28,62},{-41,62}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(sensorSubBus.T5, temperature5.T) annotation (Line(
-          points={{-49.85,151.155},{-49.85,100},{76,100},{76,60},{67,60}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(sensorSubBus.T6, temperature6.T) annotation (Line(
-          points={{-49.85,151.155},{-49.85,92},{108,92},{108,104},{172,104},{
-              172,60},{161,60}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(sensorSubBus.T7, temperature7.T) annotation (Line(
-          points={{-49.85,151.155},{-49.85,96},{112,96},{112,100},{264,100},{
-              264,60},{255,60}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(sensorSubBus.T8, temperature8.T) annotation (Line(
-          points={{-49.85,151.155},{-49.85,192},{400,192},{400,70},{385,70}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(effect2.Brine_Outlet_Port, Brine_Oulet9.ports[2]) annotation (
-          Line(points={{-282,0},{-300,0},{-300,-48},{-376,-48},{-376,-60},{-420,
-              -60},{-420,70.75},{-432,70.75}}, color={0,127,255}));
-      connect(effect3.Brine_Outlet_Port, Brine_Oulet9.ports[3]) annotation (
-          Line(points={{-178,4},{-208,4},{-208,80},{-420,80},{-420,71.25},{-432,
-              71.25}}, color={0,127,255}));
-      connect(effect4.Brine_Outlet_Port, Brine_Oulet9.ports[4]) annotation (
-          Line(points={{-78,2},{-80,2},{-80,36},{-192,36},{-192,32},{-208,32},{
-              -208,80},{-420,80},{-420,71.75},{-432,71.75}}, color={0,127,255}));
-      connect(effect5.Brine_Outlet_Port, Brine_Oulet9.ports[5]) annotation (
-          Line(points={{20,0},{-8,0},{-8,40},{-76,40},{-76,36},{-192,36},{-192,
-              32},{-208,32},{-208,80},{-420,80},{-420,72.25},{-432,72.25}},
-            color={0,127,255}));
-      connect(effect6.Brine_Outlet_Port, Brine_Oulet9.ports[6]) annotation (
-          Line(points={{120,0},{120,-4},{88,-4},{88,44},{32,44},{32,68},{-24,68},
-              {-24,40},{-76,40},{-76,36},{-192,36},{-192,32},{-208,32},{-208,80},
-              {-420,80},{-420,72.75},{-432,72.75}}, color={0,127,255}));
-      connect(effect7.Brine_Outlet_Port, Brine_Oulet9.ports[7]) annotation (
-          Line(points={{218,2},{188,2},{188,40},{136,40},{136,68},{80,68},{80,
-              44},{32,44},{32,68},{-24,68},{-24,40},{-76,40},{-76,36},{-192,36},
-              {-192,32},{-208,32},{-208,80},{-420,80},{-420,73.25},{-432,73.25}},
-            color={0,127,255}));
-      connect(effect8.Brine_Outlet_Port, Brine_Oulet9.ports[8]) annotation (
-          Line(points={{322,0},{312,0},{312,72},{260,72},{260,76},{184,76},{184,
-              40},{136,40},{136,68},{80,68},{80,44},{32,44},{32,68},{-24,68},{
-              -24,40},{-76,40},{-76,36},{-192,36},{-192,32},{-208,32},{-208,80},
-              {-420,80},{-420,73.75},{-432,73.75}}, color={0,127,255}));
-      connect(sensorSubBus, CS.sensorBus) annotation (Line(
-          points={{-50,151},{-50,208},{-21.7,208},{-21.7,220}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-6,3},{-6,3}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(actuatorSubBus, CS.actuatorBus) annotation (Line(
-          points={{50,150},{48,150},{48,208},{-4.3,208},{-4.3,220}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-3,-6},{-3,-6}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(effect8.Brine_Inlet_Port, BrinePump8.port_b) annotation (Line(
-            points={{382,0},{402,0},{402,32}}, color={0,127,255}));
-      connect(BrinePump7.port_b, effect7.Brine_Inlet_Port) annotation (Line(
-            points={{332,34},{332,32},{288,32},{288,2},{278,2}}, color={0,127,
-              255}));
-      connect(effect6.Brine_Inlet_Port, BrinePump6.port_b) annotation (Line(
-            points={{180,0},{180,4},{204,4},{204,44},{224,44}}, color={0,127,
-              255}));
-      connect(BrinePump5.port_b, effect5.Brine_Inlet_Port) annotation (Line(
-            points={{118,42},{96,42},{96,48},{80,48},{80,0}}, color={0,127,255}));
-      connect(BrinePump3.port_b, effect4.Brine_Inlet_Port) annotation (Line(
-            points={{10,44},{8,44},{8,24},{-18,24},{-18,2}}, color={0,127,255}));
-      connect(BrinePump2.port_b, effect3.Brine_Inlet_Port) annotation (Line(
-            points={{-112,50},{-118,50},{-118,4}}, color={0,127,255}));
-      connect(effect2.Brine_Inlet_Port, BrinePump1.port_b) annotation (Line(
-            points={{-222,0},{-212,0},{-212,50}}, color={0,127,255}));
-      connect(BrinePump4.port_b, effect1.Brine_Inlet_Port) annotation (Line(
-            points={{-300,50},{-300,0},{-318,0}}, color={0,127,255}));
-      connect(multiPort.ports_b[1], BrinePump8.port_a) annotation (Line(points=
-              {{242,148.25},{232,148.25},{232,128},{402,128},{402,52}}, color={
-              0,127,255}));
-      connect(multiPort.ports_b[2], BrinePump7.port_a) annotation (Line(points=
-              {{242,148.75},{232,148.75},{232,128},{332,128},{332,54}}, color={
-              0,127,255}));
-      connect(multiPort.ports_b[3], BrinePump6.port_a) annotation (Line(points=
-              {{242,149.25},{232,149.25},{232,64},{224,64}}, color={0,127,255}));
-      connect(multiPort.ports_b[4], BrinePump5.port_a) annotation (Line(points=
-              {{242,149.75},{232,149.75},{232,76},{118,76},{118,62}}, color={0,
-              127,255}));
-      connect(multiPort.ports_b[5], BrinePump3.port_a) annotation (Line(points=
-              {{242,150.25},{232,150.25},{232,76},{10,76},{10,64}}, color={0,
-              127,255}));
-      connect(multiPort.ports_b[6], BrinePump2.port_a) annotation (Line(points=
-              {{242,150.75},{232,150.75},{232,76},{-52,76},{-52,80},{-112,80},{
-              -112,70}}, color={0,127,255}));
-      connect(multiPort.ports_b[7], BrinePump1.port_a) annotation (Line(points=
-              {{242,151.25},{232,151.25},{232,76},{-52,76},{-52,80},{-136,80},{
-              -136,84},{-204,84},{-204,70},{-212,70}}, color={0,127,255}));
-      connect(multiPort.ports_b[8], BrinePump4.port_a) annotation (Line(points=
-              {{242,151.75},{232,151.75},{232,76},{-52,76},{-52,80},{-136,80},{
-              -136,84},{-300,84},{-300,70}}, color={0,127,255}));
-      connect(boundary.ports[1], multiPort.port_a) annotation (Line(points={{
-              428,92},{324,92},{324,150},{250,150}}, color={0,127,255}));
-      annotation (
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-460,-120},{
-                460,120}})),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-460,-120},
-                {460,200}})),
-        experiment(
-          StopTime=100,
-          Interval=0.5,
-          __Dymola_Algorithm="Esdirk45a"));
-    end MEE_PFpump;
 
     model MEE_PF8_FC
         extends BaseClasses.Partial_SubSystem_A(
@@ -6970,7 +6306,7 @@ package MEE "Multi Effect Evaporators"
       Components.PreHeater preHeater(redeclare package Medium_1 =
             Modelica.Media.Water.StandardWater, redeclare package Medium_2 =
             NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
-        annotation (Placement(transformation(extent={{458,6},{498,46}})));
+        annotation (Placement(transformation(extent={{460,20},{500,60}})));
     equation
       connect(effect1.Steam_Outlet_Port,effect2. Tube_Inlet) annotation (Line(
             points={{-358,-18},{-358,-12},{-296,-12},{-296,-60},{-287.4,-60}},
@@ -7142,16 +6478,15 @@ package MEE "Multi Effect Evaporators"
         annotation (Line(points={{-210,40},{-310,40}}, color={0,127,255}));
       connect(CV3.port_b, Condensate_Oulet) annotation (Line(points={{446,-110},
               {446,-140},{-558,-140}}, color={0,127,255}));
-      connect(preHeater.port_b1, CV3.port_a) annotation (Line(points={{478.1,
-              6.2},{476,6.2},{476,-52},{446,-52},{446,-90}},   color={0,127,255}));
+      connect(preHeater.port_b1, CV3.port_a) annotation (Line(points={{480.1,
+              20.2},{480,20.2},{480,-30},{446,-30},{446,-90}}, color={0,127,255}));
       connect(preHeater.port_a2, Saltwater_Input)
-        annotation (Line(points={{498.2,26},{498.2,24},{536,24},{536,40},{560,
-              40}},                                    color={0,127,255}));
+        annotation (Line(points={{500.2,40},{560,40}}, color={0,127,255}));
       connect(effect3.Steam_Outlet_Port, preHeater.port_a1) annotation (Line(
-            points={{-154,-16},{-154,-4},{428,-4},{428,46},{478,46}},
+            points={{-154,-16},{-154,-4},{444,-4},{444,72},{480,72},{480,60}},
             color={0,127,255}));
-      connect(preHeater.port_b2, BrineFCV3.port_a) annotation (Line(points={{458,26},
-              {-88,26},{-88,52},{-110,52},{-110,40}},         color={0,127,255}));
+      connect(preHeater.port_b2, BrineFCV3.port_a) annotation (Line(points={{
+              460,40},{-32,40},{-32,52},{-110,52},{-110,40}}, color={0,127,255}));
       connect(actuatorBus.CV3_opening, CV3.opening) annotation (Line(
           points={{30.1,100.1},{422,100.1},{422,-58},{476,-58},{476,-100},{454,
               -100}},
@@ -7170,6 +6505,1061 @@ package MEE "Multi Effect Evaporators"
 "), Bitmap(extent={{-90,-82},{90,58}}, fileName=
                   "modelica://NHES/Resources/Images/Desalination/MEE_Icon.png")}));
     end MEE_PF3;
+
+    model MEETVC7
+      extends NHES.Desalination.MEE.BaseClasses.Partial_SubSystem_A(
+        redeclare replaceable NHES.Desalination.MEE.ControlSystems.CS_Dummy CS,
+        redeclare replaceable NHES.Desalination.MEE.ControlSystems.ED_Dummy ED,
+        redeclare NHES.Desalination.MEE.Data.MEE7_Data data);
+
+      NHES.Desalination.MEE.Single_Effect.Brine_Models.Single_Effect effect1(
+        Tsys=data.T1 + 5,
+        V=0.5,
+        A=1,
+        KV=-0.35,
+        Ax=data.Ax1,
+        Do(displayUnit="m"),
+        pT=data.PS)
+        annotation (Placement(transformation(extent={{-386,-80},{-326,-20}})));
+      NHES.Desalination.MEE.Single_Effect.Brine_Models.Single_Effect_Flashing effect2(
+        Tsys=data.T2 + 5,
+        V=0.5,
+        A=1,
+        KV=-0.35,
+        Ax=data.Ax2,
+        pT=95000)
+        annotation (Placement(transformation(extent={{-288,-78},{-228,-18}})));
+      NHES.Desalination.MEE.Single_Effect.Brine_Models.Single_Effect_Flashing effect3(
+        Tsys=data.T3 + 5,
+        V=0.5,
+        A=1,
+        KV=-0.35,
+        Ax=data.Ax3,
+        pT=90000)
+        annotation (Placement(transformation(extent={{-184,-76},{-124,-16}})));
+      NHES.Desalination.MEE.Single_Effect.Brine_Models.Single_Effect_Flashing effect4(
+        Tsys=data.T4 + 5,
+        V=0.5,
+        A=1,
+        KV=-0.35,
+        Ax=data.Ax4,
+        pT=85000)
+        annotation (Placement(transformation(extent={{-84,-78},{-24,-18}})));
+      NHES.Desalination.MEE.Single_Effect.Brine_Models.Single_Effect_Flashing effect5(
+        Tsys=data.T5 + 5,
+        V=0.5,
+        A=1,
+        KV=-0.35,
+        Ax=data.Ax5,
+        pT=80000) annotation (Placement(transformation(extent={{12,-76},{72,-16}})));
+      NHES.Desalination.MEE.Single_Effect.Brine_Models.Single_Effect_Flashing effect6(
+        Tsys=data.T6 + 5,
+        V=0.5,
+        A=1,
+        KV=-0.35,
+        Ax=data.Ax6,
+        pT=75000)
+        annotation (Placement(transformation(extent={{114,-78},{174,-18}})));
+      NHES.Desalination.MEE.Single_Effect.Brine_Models.Single_Effect_Flashing effect7(
+        Tsys=data.T7 + 5,
+        V=0.5,
+        A=1,
+        KV=-0.35,
+        Ax=data.Ax7,
+        pT=70000)
+        annotation (Placement(transformation(extent={{212,-76},{272,-16}})));
+      TRANSFORM.Fluid.Valves.ValveLinear CV1(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        dp_nominal=3000,
+        m_flow_nominal=1) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-224,-98})));
+      TRANSFORM.Fluid.Valves.ValveLinear CV2(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        dp_nominal=10000,
+        m_flow_nominal=1) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-126,-98})));
+      TRANSFORM.Fluid.Valves.ValveLinear CV3(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        dp_nominal=3000,
+        m_flow_nominal=1) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-26,-100})));
+      TRANSFORM.Fluid.Valves.ValveLinear CV4(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        dp_nominal=3000,
+        m_flow_nominal=1) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={74,-98})));
+      TRANSFORM.Fluid.Valves.ValveLinear CV5(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        dp_nominal=3000,
+        m_flow_nominal=1) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={174,-96})));
+      TRANSFORM.Fluid.Valves.ValveLinear CV6(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        dp_nominal=3000,
+        m_flow_nominal=1) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={274,-98})));
+      TRANSFORM.Fluid.Valves.ValveLinear CV7(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        dp_nominal=1000,
+        m_flow_nominal=1) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={350,-98})));
+      Modelica.Blocks.Sources.RealExpression T1_set(y=data.T1)
+        annotation (Placement(transformation(extent={{-176,162},{-156,182}})));
+      Modelica.Blocks.Sources.RealExpression T2_set(y=data.T2)
+        annotation (Placement(transformation(extent={{-176,152},{-156,172}})));
+      Modelica.Blocks.Sources.RealExpression T3_set(y=data.T3)
+        annotation (Placement(transformation(extent={{-176,142},{-156,162}})));
+      Modelica.Blocks.Sources.RealExpression T4_set(y=data.T4)
+        annotation (Placement(transformation(extent={{-176,132},{-156,152}})));
+      Modelica.Blocks.Sources.RealExpression T5_set(y=data.T5)
+        annotation (Placement(transformation(extent={{-136,162},{-116,182}})));
+      Modelica.Blocks.Sources.RealExpression T6_set(y=data.T6)
+        annotation (Placement(transformation(extent={{-136,152},{-116,172}})));
+      Modelica.Blocks.Sources.RealExpression T7_set(y=data.T7)
+        annotation (Placement(transformation(extent={{-136,142},{-116,162}})));
+      Modelica.Fluid.Sensors.Temperature temperature1(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{-364,6},{-344,26}})));
+      Modelica.Fluid.Sensors.Temperature temperature2(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{-268,4},{-248,24}})));
+      Modelica.Fluid.Sensors.Temperature temperature3(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{-164,6},{-144,26}})));
+      Modelica.Fluid.Sensors.Temperature temperature4(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{-64,4},{-44,24}})));
+      Modelica.Fluid.Sensors.Temperature temperature5(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{44,2},{64,22}})));
+      Modelica.Fluid.Sensors.Temperature temperature6(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{138,2},{158,22}})));
+      Modelica.Fluid.Sensors.Temperature temperature7(redeclare package Medium
+          = Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{232,2},{252,22}})));
+      NHES.Fluid.Valves.FCV BrineFCV1(
+        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=
+                Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+        m_target=data.m1,
+        dp_nom=1000) annotation (Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={-310,30})));
+
+      NHES.Fluid.Valves.FCV BrineFCV2(
+        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=
+                Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+        m_target=data.m2,
+        dp_nom=1000) annotation (Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={-210,28})));
+
+      NHES.Fluid.Valves.FCV BrineFCV3(
+        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=
+                Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+        m_target=data.m3,
+        dp_nom=1000) annotation (Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={-110,30})));
+
+      NHES.Fluid.Valves.FCV BrineFCV4(
+        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=
+                Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+        m_target=data.m4,
+        dp_nom=1000) annotation (Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={-10,30})));
+
+      NHES.Fluid.Valves.FCV FCV5(
+        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=
+                Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+        m_target=data.m5,
+        dp_nom=1000) annotation (Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={90,30})));
+
+      NHES.Fluid.Valves.FCV BrineFCV6(
+        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=
+                Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+        m_target=data.m6,
+        dp_nom=1000) annotation (Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={190,30})));
+
+      NHES.Fluid.Valves.FCV BrineFCV7(
+        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=
+                Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+        m_target=data.m7,
+        dp_nom=1000) annotation (Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={290,30})));
+
+      NHES.Desalination.MEE.Components.PreHeater preHeater(redeclare package
+          Medium_1 = Modelica.Media.Water.StandardWater, redeclare package
+          Medium_2 =
+            NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
+        annotation (Placement(transformation(extent={{330,-66},{370,-26}})));
+      TRANSFORM.Fluid.Sensors.Pressure pressure1
+        annotation (Placement(transformation(extent={{-392,22},{-372,42}})));
+      TRANSFORM.Fluid.Sensors.Pressure pressure2
+        annotation (Placement(transformation(extent={{-284,-4},{-264,16}})));
+      TRANSFORM.Fluid.Sensors.Pressure pressure3
+        annotation (Placement(transformation(extent={{-182,12},{-162,32}})));
+      TRANSFORM.Fluid.Sensors.Pressure pressure4
+        annotation (Placement(transformation(extent={{-78,-4},{-58,16}})));
+      TRANSFORM.Fluid.Sensors.Pressure pressure5
+        annotation (Placement(transformation(extent={{6,-4},{26,16}})));
+      TRANSFORM.Fluid.Sensors.Pressure pressure6
+        annotation (Placement(transformation(extent={{116,2},{136,22}})));
+      TRANSFORM.Fluid.Sensors.Pressure pressure7
+        annotation (Placement(transformation(extent={{208,-2},{228,18}})));
+      Modelica.Blocks.Sources.RealExpression P1_set(y=data.P1)
+        annotation (Placement(transformation(extent={{-256,162},{-236,182}})));
+      Modelica.Blocks.Sources.RealExpression P2_set(y=data.P2)
+        annotation (Placement(transformation(extent={{-256,152},{-236,172}})));
+      Modelica.Blocks.Sources.RealExpression P3_set(y=data.P3)
+        annotation (Placement(transformation(extent={{-256,142},{-236,162}})));
+      Modelica.Blocks.Sources.RealExpression P4_set(y=data.P4)
+        annotation (Placement(transformation(extent={{-256,132},{-236,152}})));
+      Modelica.Blocks.Sources.RealExpression P5_set(y=data.P5)
+        annotation (Placement(transformation(extent={{-216,162},{-196,182}})));
+      Modelica.Blocks.Sources.RealExpression P6_set(y=data.P6)
+        annotation (Placement(transformation(extent={{-216,152},{-196,172}})));
+      Modelica.Blocks.Sources.RealExpression P7_set(y=data.P7)
+        annotation (Placement(transformation(extent={{-216,142},{-196,162}})));
+      NHES.Desalination.MEE.Components.TCV TVC(Pe=10000)
+        annotation (Placement(transformation(extent={{-20,56},{52,80}})));
+      Modelica.Blocks.Sources.RealExpression MP_set(y=data.MP)
+        annotation (Placement(transformation(extent={{-216,132},{-196,152}})));
+      TRANSFORM.Fluid.Valves.ValveLinear CVM(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        dp_nominal=3000,
+        m_flow_nominal=1) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-318,-98})));
+      NHES.Desalination.MEE.Components.TCV tCV1(
+        Pp(start=100000),
+        Pe=10000,
+        Pc(start=80000))
+        annotation (Placement(transformation(extent={{416,46},{368,62}})));
+      TRANSFORM.Fluid.Valves.ValveLinear valveLinear(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        dp_nominal=10000,
+        m_flow_nominal=1)
+        annotation (Placement(transformation(extent={{326,28},{346,48}})));
+      TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow
+        annotation (Placement(transformation(extent={{-244,68},{-224,88}})));
+      TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1
+        annotation (Placement(transformation(extent={{190,60},{170,80}})));
+      TRANSFORM.Fluid.Sensors.Pressure sensor_p
+        annotation (Placement(transformation(extent={{-296,-76},{-316,-56}})));
+      TRANSFORM.Fluid.Valves.ValveLinear valveLinear1(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        dp_nominal=10000,
+        m_flow_nominal=1) annotation (Placement(transformation(
+            extent={{-10,10},{10,-10}},
+            rotation=90,
+            origin={42,18})));
+      Modelica.Blocks.Sources.RealExpression nM_set(y=data.mM)
+        annotation (Placement(transformation(extent={{-136,132},{-116,152}})));
+      TRANSFORM.Fluid.Sensors.MassFlowRate mE
+        annotation (Placement(transformation(extent={{472,48},{452,68}})));
+    equation
+      connect(effect1.Steam_Outlet_Port,effect2. Tube_Inlet) annotation (Line(
+            points={{-356,-20},{-356,-12},{-296,-12},{-296,-60},{-287.4,-60}},
+            color={0,127,255}));
+      connect(effect2.Steam_Outlet_Port,effect3. Tube_Inlet) annotation (Line(
+            points={{-258,-18},{-258,-12},{-196,-12},{-196,-58},{-183.4,-58}},
+            color={0,127,255}));
+      connect(effect3.Steam_Outlet_Port,effect4. Tube_Inlet) annotation (Line(
+            points={{-154,-16},{-154,-10},{-96,-10},{-96,-60},{-83.4,-60}},
+                                                               color={0,127,255}));
+      connect(effect4.Steam_Outlet_Port,effect5. Tube_Inlet) annotation (Line(
+            points={{-54,-18},{-54,-10},{0,-10},{0,-58},{12.6,-58}},
+                     color={0,127,255}));
+      connect(effect5.Steam_Outlet_Port,effect6. Tube_Inlet) annotation (Line(
+            points={{42,-16},{42,-12},{96,-12},{96,-60},{114.6,-60}},
+                     color={0,127,255}));
+      connect(effect6.Steam_Outlet_Port,effect7. Tube_Inlet) annotation (Line(
+            points={{144,-18},{144,-12},{204,-12},{204,-58},{212.6,-58}},
+                                                                       color={0,
+              127,255}));
+      connect(effect2.Tube_Outlet,CV1. port_a) annotation (Line(points={{-227.4,
+              -60},{-224,-60},{-224,-88}}, color={0,127,255}));
+      connect(CV6.port_a,effect7. Tube_Outlet) annotation (Line(points={{274,-88},
+              {274,-58},{272.6,-58}},      color={0,127,255}));
+      connect(CV5.port_a,effect6. Tube_Outlet) annotation (Line(points={{174,-86},
+              {174,-60},{174.6,-60}},      color={0,127,255}));
+      connect(CV4.port_a,effect5. Tube_Outlet) annotation (Line(points={{74,-88},
+              {74,-58},{72.6,-58}},          color={0,127,255}));
+      connect(CV3.port_a,effect4. Tube_Outlet) annotation (Line(points={{-26,-90},
+              {-26,-60},{-23.4,-60}},      color={0,127,255}));
+      connect(CV2.port_a,effect3. Tube_Outlet) annotation (Line(points={{-126,
+              -88},{-126,-58},{-123.4,-58}}, color={0,127,255}));
+      connect(effect1.Steam_Outlet_Port,temperature1. port)
+        annotation (Line(points={{-356,-20},{-356,-6},{-354,-6},{-354,6}},
+                                                       color={0,127,255}));
+      connect(effect2.Steam_Outlet_Port,temperature2. port) annotation (Line(
+            points={{-258,-18},{-258,4}},                     color={0,127,255}));
+      connect(effect3.Steam_Outlet_Port,temperature3. port) annotation (Line(
+            points={{-154,-16},{-154,6}},                     color={0,127,255}));
+      connect(effect4.Steam_Outlet_Port,temperature4. port)
+        annotation (Line(points={{-54,-18},{-54,4}}, color={0,127,255}));
+      connect(effect5.Steam_Outlet_Port,temperature5. port) annotation (Line(
+            points={{42,-16},{42,-12},{70,-12},{70,-2}},
+                                                      color={0,127,255}));
+      connect(effect6.Steam_Outlet_Port,temperature6. port) annotation (Line(
+            points={{144,-18},{144,-4},{148,-4},{148,2}}, color={0,127,255}));
+      connect(effect7.Steam_Outlet_Port,temperature7. port)
+        annotation (Line(points={{242,-16},{242,2}}, color={0,127,255}));
+      connect(sensorBus.T1set, T1_set.y) annotation (Line(
+          points={{-29.9,100.1},{-30,100.1},{-30,180},{-150,180},{-150,172},{
+              -155,172}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.T2set, T2_set.y) annotation (Line(
+          points={{-29.9,100.1},{-30,100.1},{-30,180},{-150,180},{-150,162},{
+              -155,162}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.T4set, T4_set.y) annotation (Line(
+          points={{-29.9,100.1},{-30,100.1},{-30,180},{-150,180},{-150,142},{
+              -155,142}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.T5set, T5_set.y) annotation (Line(
+          points={{-29.9,100.1},{-30,100.1},{-30,180},{-106,180},{-106,172},{
+              -115,172}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.T6set, T6_set.y) annotation (Line(
+          points={{-29.9,100.1},{-30,100.1},{-30,180},{-106,180},{-106,162},{
+              -115,162}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.T3set, T3_set.y) annotation (Line(
+          points={{-29.9,100.1},{-30,100.1},{-30,180},{-150,180},{-150,152},{
+              -155,152}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.T7set, T7_set.y) annotation (Line(
+          points={{-29.9,100.1},{-29.9,104},{-30,104},{-30,180},{-106,180},{
+              -106,152},{-115,152}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(BrineFCV7.port_b, effect7.Brine_Inlet_Port) annotation (Line(
+            points={{290,20},{288,20},{288,-46},{272,-46}}, color={0,127,255}));
+      connect(BrineFCV6.port_b, effect6.Brine_Inlet_Port) annotation (Line(
+            points={{190,20},{188,20},{188,-48},{174,-48}}, color={0,127,255}));
+      connect(FCV5.port_b, effect5.Brine_Inlet_Port) annotation (Line(points={{90,20},
+              {88,20},{88,-46},{72,-46}},        color={0,127,255}));
+      connect(BrineFCV4.port_b, effect4.Brine_Inlet_Port) annotation (Line(
+            points={{-10,20},{-10,-48},{-24,-48}}, color={0,127,255}));
+      connect(BrineFCV3.port_b, effect3.Brine_Inlet_Port) annotation (Line(
+            points={{-110,20},{-110,-46},{-124,-46}}, color={0,127,255}));
+      connect(BrineFCV2.port_b, effect2.Brine_Inlet_Port) annotation (Line(
+            points={{-210,18},{-210,-48},{-228,-48}}, color={0,127,255}));
+      connect(BrineFCV1.port_b, effect1.Brine_Inlet_Port) annotation (Line(
+            points={{-310,20},{-310,-50},{-326,-50}}, color={0,127,255}));
+      connect(sensorBus.T1, temperature1.T) annotation (Line(
+          points={{-29.9,100.1},{-29.9,100},{-30,100},{-30,52},{-347,52},{-347,
+              16}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,6},{-3,6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T2, temperature2.T) annotation (Line(
+          points={{-29.9,100.1},{-29.9,102},{-30,102},{-30,52},{-251,52},{-251,
+              14}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,6},{-3,6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T3, temperature3.T) annotation (Line(
+          points={{-29.9,100.1},{-29.9,98},{-30,98},{-30,52},{-147,52},{-147,16}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,6},{-3,6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T4, temperature4.T) annotation (Line(
+          points={{-29.9,100.1},{-29.9,100},{-30,100},{-30,52},{-47,52},{-47,14}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,6},{-3,6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T5, temperature5.T) annotation (Line(
+          points={{-29.9,100.1},{-30,100.1},{-30,52},{62,52},{62,8},{63,8}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,6},{-3,6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T6, temperature6.T) annotation (Line(
+          points={{-29.9,100.1},{-29.9,52},{156,52},{156,12},{155,12}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.T7, temperature7.T) annotation (Line(
+          points={{-29.9,100.1},{-29.9,52},{250,52},{250,32},{249,32},{249,12}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,6},{-3,6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(actuatorBus.CV1_opening, CV1.opening) annotation (Line(
+          points={{30.1,100.1},{422,100.1},{422,-114},{-200,-114},{-200,-98},{
+              -216,-98}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(actuatorBus.CV2_opening, CV2.opening) annotation (Line(
+          points={{30.1,100.1},{422,100.1},{422,-114},{-106,-114},{-106,-98},{
+              -118,-98}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,-6},{-3,-6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(actuatorBus.CV3_opening, CV3.opening) annotation (Line(
+          points={{30.1,100.1},{422,100.1},{422,-114},{-8,-114},{-8,-100},{-18,
+              -100}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(actuatorBus.CV4_opening, CV4.opening) annotation (Line(
+          points={{30.1,100.1},{422,100.1},{422,-114},{96,-114},{96,-98},{82,
+              -98}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,6},{-3,6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(actuatorBus.CV5_opening, CV5.opening) annotation (Line(
+          points={{30.1,100.1},{30,100.1},{30,100},{422,100},{422,-114},{200,
+              -114},{200,-96},{182,-96}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,6},{-3,6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(actuatorBus.CV6_opening, CV6.opening) annotation (Line(
+          points={{30.1,100.1},{422,100.1},{422,-114},{296,-114},{296,-98},{282,
+              -98}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(CV1.port_b, Condensate_Oulet) annotation (Line(points={{-224,-108},
+              {-224,-140},{-558,-140}}, color={0,127,255}));
+      connect(CV2.port_b, Condensate_Oulet) annotation (Line(points={{-126,-108},
+              {-126,-140},{-558,-140}}, color={0,127,255}));
+      connect(CV3.port_b, Condensate_Oulet) annotation (Line(points={{-26,-110},
+              {-26,-140},{-558,-140}}, color={0,127,255}));
+      connect(CV4.port_b, Condensate_Oulet) annotation (Line(points={{74,-108},
+              {74,-140},{-558,-140}}, color={0,127,255}));
+      connect(CV5.port_b, Condensate_Oulet) annotation (Line(points={{174,-106},
+              {174,-140},{-558,-140}}, color={0,127,255}));
+      connect(CV6.port_b, Condensate_Oulet) annotation (Line(points={{274,-108},
+              {274,-140},{-558,-140}}, color={0,127,255}));
+      connect(BrineFCV6.port_a, FCV5.port_a)
+        annotation (Line(points={{190,40},{90,40}}, color={0,127,255}));
+      connect(BrineFCV4.port_a, BrineFCV3.port_a)
+        annotation (Line(points={{-10,40},{-110,40}}, color={0,127,255}));
+      connect(BrineFCV3.port_a, BrineFCV2.port_a)
+        annotation (Line(points={{-110,40},{-160,40},{-160,38},{-210,38}},
+                                                       color={0,127,255}));
+      connect(BrineFCV2.port_a, BrineFCV1.port_a)
+        annotation (Line(points={{-210,38},{-260,38},{-260,40},{-310,40}},
+                                                       color={0,127,255}));
+      connect(CV7.port_b, Condensate_Oulet) annotation (Line(points={{350,-108},
+              {348,-108},{348,-140},{-558,-140}}, color={0,127,255}));
+      connect(preHeater.port_b1, CV7.port_a) annotation (Line(points={{350.1,
+              -65.8},{350.1,-76.9},{350,-76.9},{350,-88}}, color={0,127,255}));
+      connect(pressure1.port, effect1.Steam_Outlet_Port) annotation (Line(
+            points={{-382,22},{-382,-4},{-356,-4},{-356,-20}}, color={0,127,255}));
+      connect(pressure2.port, effect2.Steam_Outlet_Port) annotation (Line(
+            points={{-274,-4},{-274,-18},{-258,-18}}, color={0,127,255}));
+      connect(pressure3.port, effect3.Steam_Outlet_Port) annotation (Line(
+            points={{-172,12},{-172,-4},{-154,-4},{-154,-16}}, color={0,127,255}));
+      connect(pressure4.port, effect4.Steam_Outlet_Port) annotation (Line(
+            points={{-68,-4},{-68,-18},{-54,-18}}, color={0,127,255}));
+      connect(pressure5.port, effect5.Steam_Outlet_Port) annotation (Line(
+            points={{16,-4},{16,-16},{42,-16}}, color={0,127,255}));
+      connect(pressure6.port, effect6.Steam_Outlet_Port) annotation (Line(
+            points={{126,2},{126,-4},{144,-4},{144,-18}}, color={0,127,255}));
+      connect(pressure7.port, effect7.Steam_Outlet_Port) annotation (Line(
+            points={{218,-2},{228,-2},{228,-16},{242,-16}}, color={0,127,255}));
+      connect(sensorBus.p1set, P1_set.y) annotation (Line(
+          points={{-29.9,100.1},{-30,100.1},{-30,180},{-222,180},{-222,172},{
+              -235,172}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.p2set, P2_set.y) annotation (Line(
+          points={{-29.9,100.1},{-30,100.1},{-30,180},{-222,180},{-222,162},{
+              -235,162}},
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      annotation (                                                   Diagram(
+            coordinateSystem(preserveAspectRatio=false)), Icon(graphics={Text(
+              extent={{-38,74},{38,42}},
+              textColor={0,0,0},
+              textString="%name
+"), Bitmap(extent={{-90,-82},{90,58}}, fileName=
+                  "modelica://NHES/Resources/Images/Desalination/MEE_Icon.png")}));
+    end MEE_PF6;
+
+    model MEE_PF3
+        extends BaseClasses.Partial_SubSystem_A(
+        redeclare replaceable ControlSystems.CS_Dummy CS,
+        redeclare replaceable ControlSystems.ED_Dummy ED,
+        redeclare Data.MEE_Data data);
+
+      Single_Effect.Brine_Models.Single_Effect effect1(
+        Tsys=data.T1 + 5,
+        V=0.5,
+        A=1,
+        KV=-0.35,
+        Ax=data.Ax1,
+        Do(displayUnit="m"),
+        pT=data.PS)
+        annotation (Placement(transformation(extent={{-388,-78},{-328,-18}})));
+      Single_Effect.Brine_Models.Single_Effect effect2(
+        Tsys=data.T2 + 5,
+        V=0.5,
+        A=1,
+        KV=-0.35,
+        Ax=data.Ax2,
+        pT=95000)
+        annotation (Placement(transformation(extent={{-288,-78},{-228,-18}})));
+      Single_Effect.Brine_Models.Single_Effect effect3(
+        Tsys=data.T3 + 5,
+        V=0.5,
+        A=1,
+        KV=-0.35,
+        Ax=data.Ax3,
+        pT=90000)
+        annotation (Placement(transformation(extent={{-184,-76},{-124,-16}})));
+      TRANSFORM.Fluid.Valves.ValveLinear CV1(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        dp_nominal=3000,
+        m_flow_nominal=1) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-224,-98})));
+      TRANSFORM.Fluid.Valves.ValveLinear CV2(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        dp_nominal=10000,
+        m_flow_nominal=1) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-126,-98})));
+      TRANSFORM.Fluid.Valves.ValveLinear CV3(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        dp_nominal=1000,
+        m_flow_nominal=1) annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={446,-100})));
+      Modelica.Blocks.Sources.RealExpression T1_set(y=data.T1)
+        annotation (Placement(transformation(extent={{-266,126},{-246,146}})));
+      Modelica.Blocks.Sources.RealExpression T2_set(y=data.T2)
+        annotation (Placement(transformation(extent={{-266,106},{-246,126}})));
+      Modelica.Blocks.Sources.RealExpression T8_set(y=data.T8)
+        annotation (Placement(transformation(extent={{-226,66},{-206,86}})));
+      Modelica.Blocks.Sources.RealExpression T3_set(y=data.T3)
+        annotation (Placement(transformation(extent={{-266,86},{-246,106}})));
+      Modelica.Blocks.Sources.RealExpression T4_set(y=data.T4)
+        annotation (Placement(transformation(extent={{-266,66},{-246,86}})));
+      Modelica.Blocks.Sources.RealExpression T5_set(y=data.T5)
+        annotation (Placement(transformation(extent={{-226,126},{-206,146}})));
+      Modelica.Blocks.Sources.RealExpression T6_set(y=data.T6)
+        annotation (Placement(transformation(extent={{-226,106},{-206,126}})));
+      Modelica.Blocks.Sources.RealExpression T7_set(y=data.T7)
+        annotation (Placement(transformation(extent={{-226,86},{-206,106}})));
+      Modelica.Fluid.Sensors.Temperature temperature1(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{-364,6},{-344,26}})));
+      Modelica.Fluid.Sensors.Temperature temperature2(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{-268,4},{-248,24}})));
+      Modelica.Fluid.Sensors.Temperature temperature3(redeclare package Medium =
+            Modelica.Media.Water.StandardWater)
+        annotation (Placement(transformation(extent={{-164,6},{-144,26}})));
+      Fluid.Valves.FCV BrineFCV1(
+        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+        m_target=data.m1,
+        dp_nom=1000) annotation (Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={-310,30})));
+
+      Fluid.Valves.FCV BrineFCV2(
+        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+        m_target=data.m2,
+        dp_nom=1000) annotation (Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={-210,30})));
+
+      Fluid.Valves.FCV BrineFCV3(
+        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+        m_target=data.m3,
+        dp_nom=1000) annotation (Placement(transformation(
+            extent={{10,-10},{-10,10}},
+            rotation=90,
+            origin={-110,30})));
+
+      Components.PreHeater preHeater(redeclare package Medium_1 =
+            Modelica.Media.Water.StandardWater, redeclare package Medium_2 =
+            NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
+        annotation (Placement(transformation(extent={{458,6},{498,46}})));
+    equation
+      connect(effect1.Steam_Outlet_Port,effect2. Tube_Inlet) annotation (Line(
+            points={{-358,-18},{-358,-12},{-296,-12},{-296,-60},{-287.4,-60}},
+            color={0,127,255}));
+      connect(effect2.Steam_Outlet_Port,effect3. Tube_Inlet) annotation (Line(
+            points={{-258,-18},{-258,-12},{-196,-12},{-196,-58},{-183.4,-58}},
+            color={0,127,255}));
+      connect(effect2.Tube_Outlet,CV1. port_a) annotation (Line(points={{-227.4,
+              -60},{-224,-60},{-224,-88}}, color={0,127,255}));
+      connect(CV2.port_a,effect3. Tube_Outlet) annotation (Line(points={{-126,
+              -88},{-126,-58},{-123.4,-58}}, color={0,127,255}));
+      connect(effect1.Steam_Outlet_Port,temperature1. port)
+        annotation (Line(points={{-358,-18},{-358,-6},{-354,-6},{-354,6}},
+                                                       color={0,127,255}));
+      connect(effect2.Steam_Outlet_Port,temperature2. port) annotation (Line(
+            points={{-258,-18},{-258,4}},                     color={0,127,255}));
+      connect(effect3.Steam_Outlet_Port,temperature3. port) annotation (Line(
+            points={{-154,-16},{-154,6}},                     color={0,127,255}));
+      connect(sensorBus.T1set, T1_set.y) annotation (Line(
+          points={{-29.9,100.1},{-112,100.1},{-112,100},{-196,100},{-196,60},{
+              -240,60},{-240,136},{-245,136}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.p3set, P3_set.y) annotation (Line(
+          points={{-29.9,100.1},{-30,100.1},{-30,180},{-222,180},{-222,152},{
+              -235,152}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.p4set, P4_set.y) annotation (Line(
+          points={{-29.9,100.1},{-30,100.1},{-30,180},{-222,180},{-222,142},{
+              -235,142}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.p5set, P5_set.y) annotation (Line(
+          points={{-29.9,100.1},{-30,100.1},{-30,180},{-182,180},{-182,172},{
+              -195,172}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.p6set, P6_set.y) annotation (Line(
+          points={{-29.9,100.1},{-30,100.1},{-30,180},{-182,180},{-182,162},{
+              -195,162}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.p7set, P7_set.y) annotation (Line(
+          points={{-29.9,100.1},{-30,100.1},{-30,180},{-182,180},{-182,152},{
+              -195,152}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.p1, pressure1.p) annotation (Line(
+          points={{-29.9,100.1},{-29.9,100},{-30,100},{-30,52},{-360,52},{-360,
+              32},{-376,32}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.p2, pressure2.p) annotation (Line(
+          points={{-29.9,100.1},{-29.9,96},{-30,96},{-30,52},{-268,52},{-268,6}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.p3, pressure3.p) annotation (Line(
+          points={{-29.9,100.1},{-29.9,100},{-30,100},{-30,52},{-166,52},{-166,
+              22}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.p4, pressure4.p) annotation (Line(
+          points={{-29.9,100.1},{-29.9,98},{-30,98},{-30,52},{-60,52},{-60,6},{
+              -62,6}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,6},{-3,6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.p5, pressure5.p) annotation (Line(
+          points={{-29.9,100.1},{-29.9,100},{-30,100},{-30,52},{22,52},{22,6}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,6},{-3,6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.p6, pressure6.p) annotation (Line(
+          points={{-29.9,100.1},{-29.9,52},{132,52},{132,12}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.p7, pressure7.p) annotation (Line(
+          points={{-29.9,100.1},{-29.9,52},{224,52},{224,8}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(actuatorBus.CV7_opening, CV7.opening) annotation (Line(
+          points={{30.1,100.1},{422,100.1},{422,-114},{368,-114},{368,-98},{358,
+              -98}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(effect7.Steam_Outlet_Port, preHeater.port_a1) annotation (Line(
+            points={{242,-16},{240,-16},{240,-8},{260,-8},{260,-4},{350,-4},{
+              350,-26}}, color={0,127,255}));
+      connect(sensorBus.MPset, MP_set.y) annotation (Line(
+          points={{-30,100},{-30,180},{-182,180},{-182,142},{-195,142}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(effect1.Tube_Outlet, CVM.port_a) annotation (Line(points={{-325.4,
+              -62},{-318,-62},{-318,-88}}, color={0,127,255}));
+      connect(CVM.port_b, Condensate_Oulet) annotation (Line(points={{-318,-108},
+              {-318,-140},{-558,-140}}, color={0,127,255}));
+      connect(actuatorBus.MCV_opening, CVM.opening) annotation (Line(
+          points={{30,100},{422,100},{422,-112},{-294,-112},{-294,-98},{-310,
+              -98}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(effect1.Brine_Outlet_Port, effect2.BrineCon_Inlet_Port)
+        annotation (Line(points={{-386,-50},{-392,-50},{-392,-84},{-258,-84},{
+              -258,-78}}, color={0,127,255}));
+      connect(effect2.Brine_Outlet_Port, effect3.BrineCon_Inlet_Port)
+        annotation (Line(points={{-288,-48},{-288,-86},{-154,-86},{-154,-76}},
+            color={0,127,255}));
+      connect(effect3.Brine_Outlet_Port, effect4.BrineCon_Inlet_Port)
+        annotation (Line(points={{-184,-46},{-184,-84},{-54,-84},{-54,-78}},
+            color={0,127,255}));
+      connect(effect4.Brine_Outlet_Port, effect5.BrineCon_Inlet_Port)
+        annotation (Line(points={{-84,-48},{-86,-48},{-86,-86},{42,-86},{42,-76}},
+            color={0,127,255}));
+      connect(effect5.Brine_Outlet_Port, effect6.BrineCon_Inlet_Port)
+        annotation (Line(points={{12,-46},{12,-84},{144,-84},{144,-78}}, color=
+              {0,127,255}));
+      connect(effect6.Brine_Outlet_Port, effect7.BrineCon_Inlet_Port)
+        annotation (Line(points={{114,-48},{114,-86},{242,-86},{242,-76}},
+            color={0,127,255}));
+      connect(Steam_Input, tCV1.primarysteam) annotation (Line(points={{-558,40},
+              {-558,116},{412,116},{412,70},{352,70},{352,54},{368,54}},color={
+              0,127,255}));
+      connect(valveLinear.port_b, tCV1.secondarysteam) annotation (Line(points={{346,38},
+              {360,38},{360,46},{374.667,46}},           color={0,127,255}));
+      connect(effect7.Steam_Outlet_Port, valveLinear.port_a) annotation (Line(
+            points={{242,-16},{240,-16},{240,-8},{260,-8},{260,-4},{316,-4},{
+              316,38},{326,38}}, color={0,127,255}));
+      connect(effect6.Steam_Outlet_Port, valveLinear.port_a) annotation (Line(
+            points={{144,-18},{144,-12},{232,-12},{232,-4},{240,-4},{240,-8},{
+              260,-8},{260,-4},{316,-4},{316,38},{326,38}}, color={0,127,255}));
+      connect(effect5.Steam_Outlet_Port, valveLinear.port_a) annotation (Line(
+            points={{42,-16},{42,-12},{136,-12},{136,-4},{184,-4},{184,-12},{
+              232,-12},{232,-4},{240,-4},{240,-8},{260,-8},{260,-4},{316,-4},{
+              316,38},{326,38}}, color={0,127,255}));
+      connect(sensor_m_flow.port_b,TVC. mixturesteam) annotation (Line(points={{-224,78},
+              {-224,76},{-60,76},{-60,68.4},{-20,68.4}},           color={0,127,
+              255}));
+      connect(sensor_m_flow.port_a, effect1.Tube_Inlet) annotation (Line(points=
+             {{-244,78},{-426,78},{-426,-62},{-385.4,-62}}, color={0,127,255}));
+      connect(Steam_Input, sensor_m_flow1.port_a) annotation (Line(points={{-558,40},
+              {-558,116},{412,116},{412,70},{190,70}},     color={0,127,255}));
+      connect(sensor_m_flow1.port_b,TVC. primarysteam)
+        annotation (Line(points={{170,70},{112,70},{112,68},{52,68}},
+                                                    color={0,127,255}));
+      connect(sensorBus.mTVC, sensor_m_flow.m_flow) annotation (Line(
+          points={{-30,100},{-234,100},{-234,81.6}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,6},{-3,6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(CVM.port_a, sensor_p.port) annotation (Line(points={{-318,-88},{
+              -318,-76},{-306,-76}}, color={0,127,255}));
+      connect(sensorBus.MP, sensor_p.p) annotation (Line(
+          points={{-30,100},{-30,52},{-312,52},{-312,-66}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,6},{-3,6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(valveLinear1.port_a, effect5.Steam_Outlet_Port)
+        annotation (Line(points={{42,8},{42,-16}}, color={0,127,255}));
+      connect(valveLinear1.port_b,TVC. secondarysteam)
+        annotation (Line(points={{42,28},{42,56}}, color={0,127,255}));
+      connect(actuatorBus.TCVCV_opening, valveLinear1.opening) annotation (Line(
+          points={{30,100},{58,100},{58,18},{50,18}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(Saltwater_Input, preHeater.port_a2) annotation (Line(points={{560,
+              40},{502,40},{502,-46},{370.2,-46}}, color={0,127,255}));
+      connect(BrineFCV7.port_a, BrineFCV6.port_a)
+        annotation (Line(points={{290,40},{190,40}}, color={0,127,255}));
+      connect(preHeater.port_b2, BrineFCV7.port_a) annotation (Line(points={{
+              330,-46},{316,-46},{316,0},{308,0},{308,40},{290,40}}, color={0,
+              127,255}));
+      connect(FCV5.port_a, BrineFCV4.port_a)
+        annotation (Line(points={{90,40},{-10,40}}, color={0,127,255}));
+      connect(effect7.Brine_Outlet_Port, Saltwater_Reject_Oulet) annotation (
+          Line(points={{212,-46},{200,-46},{200,-70},{536,-70},{536,-40},{560,
+              -40}}, color={0,127,255}));
+      connect(sensorBus.mMset, nM_set.y) annotation (Line(
+          points={{-30,100},{-30,180},{-106,180},{-106,142},{-115,142}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(tCV1.mixturesteam, mE.port_b) annotation (Line(points={{416,
+              54.2667},{416,58},{452,58}}, color={0,127,255}));
+      connect(mE.port_a, Water_Outlet) annotation (Line(points={{472,58},{472,
+              56},{536,56},{536,-40},{-558,-40}},
+                                               color={0,127,255}));
+      connect(sensorBus.mE, mE.m_flow) annotation (Line(
+          points={{-30,100},{462,100},{462,61.6}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,6},{-3,6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(actuatorBus.ECV_opening, valveLinear.opening) annotation (Line(
+          points={{30,100},{336,100},{336,46}},
+      connect(CV1.port_b, Condensate_Oulet) annotation (Line(points={{-224,-108},
+              {-224,-140},{-558,-140}}, color={0,127,255}));
+      connect(CV2.port_b, Condensate_Oulet) annotation (Line(points={{-126,-108},
+              {-126,-140},{-558,-140}}, color={0,127,255}));
+      connect(effect2.Brine_Outlet_Port, Saltwater_Reject_Oulet) annotation (
+          Line(points={{-288,-48},{-288,-128},{530,-128},{530,-40},{560,-40}},
+            color={0,127,255}));
+      connect(effect3.Brine_Outlet_Port, Saltwater_Reject_Oulet) annotation (
+          Line(points={{-184,-46},{-184,-128},{530,-128},{530,-40},{560,-40}},
+            color={0,127,255}));
+      connect(effect1.Brine_Outlet_Port, Saltwater_Reject_Oulet) annotation (
+          Line(points={{-388,-48},{-388,-128},{530,-128},{530,-40},{560,-40}},
+            color={0,127,255}));
+      connect(BrineFCV3.port_a, BrineFCV2.port_a)
+        annotation (Line(points={{-110,40},{-210,40}}, color={0,127,255}));
+      connect(BrineFCV2.port_a, BrineFCV1.port_a)
+        annotation (Line(points={{-210,40},{-310,40}}, color={0,127,255}));
+      connect(CV3.port_b, Condensate_Oulet) annotation (Line(points={{446,-110},
+              {446,-140},{-558,-140}}, color={0,127,255}));
+      connect(preHeater.port_b1, CV3.port_a) annotation (Line(points={{478.1,
+              6.2},{476,6.2},{476,-52},{446,-52},{446,-90}},   color={0,127,255}));
+      connect(preHeater.port_a2, Saltwater_Input)
+        annotation (Line(points={{498.2,26},{498.2,24},{536,24},{536,40},{560,
+              40}},                                    color={0,127,255}));
+      connect(effect3.Steam_Outlet_Port, preHeater.port_a1) annotation (Line(
+            points={{-154,-16},{-154,-4},{428,-4},{428,46},{478,46}},
+            color={0,127,255}));
+      connect(preHeater.port_b2, BrineFCV3.port_a) annotation (Line(points={{458,26},
+              {-88,26},{-88,52},{-110,52},{-110,40}},         color={0,127,255}));
+      connect(actuatorBus.CV3_opening, CV3.opening) annotation (Line(
+          points={{30.1,100.1},{422,100.1},{422,-58},{476,-58},{476,-100},{454,
+              -100}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,6},{-3,6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.mM, sensor_m_flow1.m_flow) annotation (Line(
+          points={{-30,100},{76,100},{76,102},{180,102},{180,73.6}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,6},{-3,6}},
+          horizontalAlignment=TextAlignment.Right));
+      annotation (                                                   Diagram(
+            coordinateSystem(preserveAspectRatio=false)), Icon(graphics={Text(
+              extent={{-38,70},{38,38}},
+              textColor={0,0,0},
+              textString="%name
+"), Bitmap(extent={{-90,-82},{90,58}}, fileName="modelica://NHES/Resources/Images/Desalination/MEE_Icon.png")}));
+    end MEETVC7;
   end Multiple_Effect;
 
   package Data
@@ -7364,6 +7754,110 @@ package MEE "Multi Effect Evaporators"
       annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
             coordinateSystem(preserveAspectRatio=false)));
     end MEE_Data;
+
+    model MEE7_Data
+      extends NHES.Desalination.MEE.BaseClasses.Record_Data;
+      parameter Integer nE(max=16)=8   "Number of Effects";
+
+      //Temperatures
+      parameter Modelica.Units.SI.AbsolutePressure PS=1e5 "Steam Supply Pressure";
+      parameter Modelica.Units.SI.Temperature T1=353 "Effect #1 Temperature"
+      annotation (Dialog(tab="Temperatures"));
+      parameter Modelica.Units.SI.Temperature T2=353-1*(80-55)/nE "Effect #2 Temperature"
+      annotation (Dialog(tab="Temperatures",enable=nE>1));
+      parameter Modelica.Units.SI.Temperature T3=353-2*(80-55)/nE "Effect #3 Temperature"
+      annotation (Dialog(tab="Temperatures",enable=nE>2));
+      parameter Modelica.Units.SI.Temperature T4=353-3*(80-55)/nE "Effect #4 Temperature"
+      annotation (Dialog(tab="Temperatures",enable=nE>3));
+      parameter Modelica.Units.SI.Temperature T5=353-4*(80-55)/nE "Effect #5 Temperature"
+      annotation (Dialog(tab="Temperatures",enable=nE>4));
+      parameter Modelica.Units.SI.Temperature T6=353-5*(80-55)/nE "Effect #6 Temperature"
+      annotation (Dialog(tab="Temperatures",enable=nE>5));
+      parameter Modelica.Units.SI.Temperature T7=353-6*(80-55)/nE "Effect #7 Temperature"
+      annotation (Dialog(tab="Temperatures",enable=nE>6));
+      parameter Modelica.Units.SI.Temperature T8=353-7*(80-55)/nE "Effect #8 Temperature"
+      annotation (Dialog(tab="Temperatures",enable=nE>7));
+
+      parameter Modelica.Units.SI.Pressure P1=353 "Effect #1 Pressure"
+      annotation (Dialog(tab="Pressures"));
+      parameter Modelica.Units.SI.Pressure P2=0.7e5
+                                                  -1*((0.7e5
+                                                           -0.15e5))
+                                                                   /nE "Effect #2 Pressure"
+      annotation (Dialog(tab="Pressures",enable=nE>1));
+      parameter Modelica.Units.SI.Pressure P3=0.7e5
+                                                  -2*((0.7e5
+                                                           -0.15e5))
+                                                                   /nE "Effect #3 Pressure"
+      annotation (Dialog(tab="Pressures",enable=nE>2));
+      parameter Modelica.Units.SI.Pressure P4=0.7e5
+                                                  -3*((0.7e5
+                                                           -0.15e5))
+                                                                   /nE "Effect #4 Pressure"
+      annotation (Dialog(tab="Pressures",enable=nE>3));
+      parameter Modelica.Units.SI.Pressure P5=0.7e5
+                                                  -4*((0.7e5
+                                                           -0.15e5))
+                                                                   /nE "Effect #5 Pressure"
+      annotation (Dialog(tab="Pressures",enable=nE>4));
+      parameter Modelica.Units.SI.Pressure P6=0.7e5
+                                                  -5*((0.7e5
+                                                           -0.15e5))
+                                                                   /nE "Effect #6 Pressure"
+      annotation (Dialog(tab="Pressures",enable=nE>5));
+      parameter Modelica.Units.SI.Pressure P7=0.7e5
+                                                  -6*((0.7e5
+                                                           -0.15e5))
+                                                                   /nE "Effect #7 Pressure"
+      annotation (Dialog(tab="Pressures",enable=nE>6));
+      parameter Modelica.Units.SI.Pressure P8=0.7e5
+                                                  -7*((0.7e5
+                                                           -0.15e5))
+                                                                   /nE "Effect #8 Pressure"
+      annotation (Dialog(tab="Pressures",enable=nE>7));
+      //Heat Transfer Area
+      parameter Modelica.Units.SI.Area Ax1=3.26e4 "Effect #1 Heat Transfer Area"
+      annotation (Dialog(tab="Heat Transfer Area"));
+      parameter Modelica.Units.SI.Area Ax2=1e6 "Effect #2 Heat Transfer Area"
+      annotation (Dialog(tab="Heat Transfer Area",enable=nE>1));
+      parameter Modelica.Units.SI.Area Ax3=5e5 "Effect #3 Heat Transfer Area"
+      annotation (Dialog(tab="Heat Transfer Area",enable=nE>2));
+      parameter Modelica.Units.SI.Area Ax4=3.1e5 "Effect #4 Heat Transfer Area"
+      annotation (Dialog(tab="Heat Transfer Area",enable=nE>3));
+      parameter Modelica.Units.SI.Area Ax5=2e5 "Effect #5 Heat Transfer Area"
+      annotation (Dialog(tab="Heat Transfer Area",enable=nE>4));
+      parameter Modelica.Units.SI.Area Ax6=8.8e4 "Effect #6 Heat Transfer Area"
+      annotation (Dialog(tab="Heat Transfer Area",enable=nE>5));
+      parameter Modelica.Units.SI.Area Ax7=8.2e4 "Effect #7 Heat Transfer Area"
+      annotation (Dialog(tab="Heat Transfer Area",enable=nE>6));
+      parameter Modelica.Units.SI.Area Ax8=7.3e4 "Effect #8 Heat Transfer Area"
+      annotation (Dialog(tab="Heat Transfer Area",enable=nE>7));
+
+      //Brine Flow Rate
+      parameter Modelica.Units.SI.MassFlowRate m1=4 "Effect #1 Brine Flow"
+      annotation (Dialog(tab="Brine Flow"));
+      parameter Modelica.Units.SI.MassFlowRate m2=4 "Effect #2 Brine Flow"
+      annotation (Dialog(tab="Brine Flow",enable=nE>1));
+      parameter Modelica.Units.SI.MassFlowRate m3=4 "Effect #3 Brine Flow"
+      annotation (Dialog(tab="Brine Flow",enable=nE>2));
+      parameter Modelica.Units.SI.MassFlowRate m4=4 "Effect #4 Brine Flow"
+      annotation (Dialog(tab="Brine Flow",enable=nE>3));
+      parameter Modelica.Units.SI.MassFlowRate m5=4 "Effect #5 Brine Flow"
+      annotation (Dialog(tab="Brine Flow",enable=nE>4));
+      parameter Modelica.Units.SI.MassFlowRate m6=4 "Effect #6 Brine Flow"
+      annotation (Dialog(tab="Brine Flow",enable=nE>5));
+      parameter Modelica.Units.SI.MassFlowRate m7=4 "Effect #7 Brine Flow"
+      annotation (Dialog(tab="Brine Flow",enable=nE>6));
+      parameter Modelica.Units.SI.MassFlowRate m8=4 "Effect #8 Brine Flow"
+      annotation (Dialog(tab="Brine Flow",enable=nE>7));
+
+     parameter Modelica.Units.SI.AbsolutePressure MP=2e5;
+     parameter Modelica.Units.SI.MassFlowRate mM=2;
+
+      annotation (Dialog(tab="Temperatures",enable=nE>15),
+                  Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end MEE7_Data;
   end Data;
 
   package ControlSystems
@@ -8018,25 +8512,341 @@ package MEE "Multi Effect Evaporators"
         Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
                 100,100}})));
     end CS_PressureControlSystem;
+
+    model CS_TemperatureControlSystemMEETCV7
+
+      extends NHES.Desalination.MEE.BaseClasses.Partial_ControlSystem;
+
+      TRANSFORM.Controls.LimPID PID1(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-0.3,
+        yMax=1,
+        yMin=0)   annotation (Placement(transformation(extent={{-20,-60},{0,-40}})));
+      TRANSFORM.Controls.LimPID PID2(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-0.3,
+        yMax=1,
+        yMin=0)   annotation (Placement(transformation(extent={{-20,-20},{0,0}})));
+      TRANSFORM.Controls.LimPID PID3(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-0.3,
+        yMax=1,
+        yMin=0)   annotation (Placement(transformation(extent={{-20,20},{0,40}})));
+      TRANSFORM.Controls.LimPID PID4(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-0.3,
+        yMax=1,
+        yMin=0)   annotation (Placement(transformation(extent={{-20,62},{0,82}})));
+      TRANSFORM.Controls.LimPID PID5(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-0.3,
+        yMax=1,
+        yMin=0)   annotation (Placement(transformation(extent={{-60,-40},{-40,-20}})));
+      TRANSFORM.Controls.LimPID PID6(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-0.3,
+        yMax=1,
+        yMin=0)   annotation (Placement(transformation(extent={{-60,0},{-40,20}})));
+      TRANSFORM.Controls.LimPID PID7(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-0.3,
+        yMax=1,
+        yMin=0)   annotation (Placement(transformation(extent={{-60,40},{-40,60}})));
+      TRANSFORM.Controls.LimPID PID8(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-0.6,
+        yMax=1,
+        yMin=0)   annotation (Placement(transformation(extent={{-60,80},{-40,100}})));
+      TRANSFORM.Controls.LimPID PID9(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-0.3,
+        yMax=1,
+        yMin=0)   annotation (Placement(transformation(extent={{60,-60},{80,-40}})));
+      TRANSFORM.Controls.LimPID PID10(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-0.3,
+        yMax=1,
+        yMin=0)   annotation (Placement(transformation(extent={{60,-20},{80,0}})));
+    equation
+      connect(sensorBus.T1set, PID1.u_s) annotation (Line(
+          points={{-29.9,-99.9},{-30,-99.9},{-30,-50},{-22,-50}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T2set, PID2.u_s) annotation (Line(
+          points={{-29.9,-99.9},{-29.9,-10},{-22,-10}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T3set, PID3.u_s) annotation (Line(
+          points={{-29.9,-99.9},{-29.9,30},{-22,30}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T4set, PID4.u_s) annotation (Line(
+          points={{-29.9,-99.9},{-29.9,72},{-22,72}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T5set, PID5.u_s) annotation (Line(
+          points={{-29.9,-99.9},{-29.9,-62},{-70,-62},{-70,-30},{-62,-30}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T6set, PID6.u_s) annotation (Line(
+          points={{-29.9,-99.9},{-29.9,-62},{-70,-62},{-70,10},{-62,10}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T7set, PID7.u_s) annotation (Line(
+          points={{-29.9,-99.9},{-29.9,-62},{-70,-62},{-70,50},{-62,50}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T1, PID1.u_m) annotation (Line(
+          points={{-29.9,-99.9},{-29.9,-68},{-10,-68},{-10,-62}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,-6},{-3,-6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T2, PID2.u_m) annotation (Line(
+          points={{-29.9,-99.9},{-29.9,-62},{-30,-62},{-30,-28},{-10,-28},{-10,
+              -22}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T3, PID3.u_m) annotation (Line(
+          points={{-29.9,-99.9},{-29.9,12},{-10,12},{-10,18}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,-6},{-3,-6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T4, PID4.u_m) annotation (Line(
+          points={{-29.9,-99.9},{-29.9,52},{-10,52},{-10,60}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,-6},{-3,-6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T5, PID5.u_m) annotation (Line(
+          points={{-29.9,-99.9},{-29.9,-50},{-50,-50},{-50,-42}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,-6},{-3,-6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T6, PID6.u_m) annotation (Line(
+          points={{-29.9,-99.9},{-29.9,-8},{-50,-8},{-50,-2}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,-6},{-3,-6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.T7, PID7.u_m) annotation (Line(
+          points={{-29.9,-99.9},{-29.9,32},{-50,32},{-50,38}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,-6},{-3,-6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(actuatorBus.CV1_opening, PID1.y) annotation (Line(
+          points={{30.1,-99.9},{30.1,-50},{1,-50}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(actuatorBus.CV2_opening, PID2.y) annotation (Line(
+          points={{30.1,-99.9},{30.1,-10},{1,-10}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(actuatorBus.CV3_opening, PID3.y) annotation (Line(
+          points={{30.1,-99.9},{30.1,30},{1,30}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(actuatorBus.CV4_opening, PID4.y) annotation (Line(
+          points={{30.1,-99.9},{30.1,72},{1,72}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(actuatorBus.CV5_opening, PID5.y) annotation (Line(
+          points={{30.1,-99.9},{30.1,-30},{-39,-30}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(actuatorBus.CV6_opening, PID6.y) annotation (Line(
+          points={{30.1,-99.9},{30.1,-48},{30,-48},{30,10},{-39,10}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(actuatorBus.CV7_opening, PID7.y) annotation (Line(
+          points={{30.1,-99.9},{30.1,50},{-39,50}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.MPset, PID8.u_s) annotation (Line(
+          points={{-30,-100},{-30,-62},{-70,-62},{-70,90},{-62,90}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.MP, PID8.u_m) annotation (Line(
+          points={{-30,-100},{-30,72},{-50,72},{-50,78}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,-6},{-3,-6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(actuatorBus.MCV_opening, PID8.y) annotation (Line(
+          points={{30,-100},{30,90},{-39,90}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.mTVC, PID9.u_m) annotation (Line(
+          points={{-30,-100},{-30,-68},{70,-68},{70,-62}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,-6},{-3,-6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(actuatorBus.TCVCV_opening, PID9.y) annotation (Line(
+          points={{30,-100},{30,-76},{90,-76},{90,-50},{81,-50}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.mMset, PID9.u_s) annotation (Line(
+          points={{-30,-100},{-30,-68},{48,-68},{48,-50},{58,-50}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.mM, PID10.u_s) annotation (Line(
+          points={{-30,-100},{-30,-68},{48,-68},{48,-10},{58,-10}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(sensorBus.mE, PID10.u_m) annotation (Line(
+          points={{-30,-100},{-30,-68},{48,-68},{48,-28},{70,-28},{70,-22}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,-6},{-3,-6}},
+          horizontalAlignment=TextAlignment.Right));
+
+      connect(actuatorBus.ECV_opening, PID10.y) annotation (Line(
+          points={{30,-100},{30,-76},{90,-76},{90,-10},{81,-10}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      annotation (
+        defaultComponentName="CS",
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}})),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}})));
+    end CS_TemperatureControlSystemMEETCV7;
   end ControlSystems;
 
-  model Q_UA "Q calculation from using a constant UA value"
-    parameter Modelica.Units.SI.ThermalConductance UA;
-    SI.HeatFlowRate Q;
-    SI.Temperature T1;
-    SI.Temperature T2;
-    TRANSFORM.HeatAndMassTransfer.Interfaces.HeatPort_Flow port_a1
-      annotation (Placement(transformation(extent={{-10,90},{10,110}})));
-    TRANSFORM.HeatAndMassTransfer.Interfaces.HeatPort_Flow port_a2
-      annotation (Placement(transformation(extent={{-10,-110},{10,-90}})));
-  equation
-    port_a1.T=T1;
-    port_a2.T=T2;
-    Q=UA*(T1-T2);
-    port_a1.Q_flow=-Q;
-    port_a2.Q_flow=Q;
-
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-          coordinateSystem(preserveAspectRatio=false)));
-  end Q_UA;
 end MEE;
