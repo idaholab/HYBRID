@@ -7,6 +7,7 @@ model Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle
     redeclare Data.IntermediateTurbine data(
       V_FeedwaterMixVolume=10,
       V_Header=10,
+      R_entry=8e4,
       valve_SHS_mflow=30,
       valve_SHS_dp_nominal=1200000,
       valve_TCV_LPT_mflow=30,
@@ -14,6 +15,9 @@ model Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle
       InternalBypassValve_mflow_small=0,
       InternalBypassValve_p_spring=15000000,
       InternalBypassValve_K=40,
+      LPT_p_in_nominal=1200000,
+      LPT_T_in_nominal=491.15,
+      LPT_nominal_mflow=26.83,
       firstfeedpump_p_nominal=2000000,
       secondfeedpump_p_nominal=2000000));
 
@@ -81,20 +85,31 @@ model Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle
   TRANSFORM.Fluid.Valves.ValveLinear Discharge_OnOff(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_start=400,
-    dp_nominal=500000,
-    m_flow_nominal=10) annotation (Placement(transformation(
+    dp_nominal=100000,
+    m_flow_nominal=26) annotation (Placement(transformation(
         extent={{8,8},{-8,-8}},
         rotation=180,
         origin={126,-146})));
-  TRANSFORM.Fluid.Machines.Pump_PressureBooster
-                                           firstfeedpump1(
+  TRANSFORM.Fluid.Machines.Pump_Controlled firstfeedpump1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
-    use_input=false,
-    p_nominal=1800000,
-    allowFlowReversal=false)
+    p_a_start=10000,
+    p_b_start=1100000,
+    N_nominal=1500,
+    dp_nominal=2000000,
+    m_flow_nominal=26,
+    controlType="RPM",
+    use_port=true)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=0,
-        origin={94,-148})));
+        origin={94,-142})));
+  TRANSFORM.Fluid.Sensors.Pressure     sensor_p(redeclare package Medium =
+        Modelica.Media.Water.StandardWater, redeclare function iconUnit =
+        TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_bar)
+                                                       annotation (Placement(
+        transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=0,
+        origin={-124,60})));
 initial equation
 
 equation
@@ -146,17 +161,39 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(firstfeedpump1.port_a, Condenser.port_b) annotation (Line(points={{84,
-          -148},{78,-148},{78,-128},{146,-128},{146,-112}}, color={0,127,255}));
+  connect(firstfeedpump1.port_a, Condenser.port_b) annotation (Line(points={{84,-142},
+          {78,-142},{78,-128},{146,-128},{146,-112}},       color={0,127,255}));
   connect(firstfeedpump1.port_b, Discharge_OnOff.port_a) annotation (Line(
-        points={{104,-148},{112,-148},{112,-146},{118,-146}}, color={0,127,255}));
+        points={{104,-142},{112,-142},{112,-146},{118,-146}}, color={0,127,255}));
   connect(TCV_LPT.port_a, LPT.portHP)
     annotation (Line(points={{96,72},{52,72},{52,-30}}, color={0,127,255}));
-  connect(sensor_T3.port_a, port_a) annotation (Line(points={{144,72},{148,72},
-          {148,42},{-160,42},{-160,40}}, color={0,127,255}));
   connect(Discharge_OnOff.port_b, port_b) annotation (Line(points={{134,-146},{
           144,-146},{144,-160},{-144,-160},{-144,-40},{-160,-40}}, color={0,127,
           255}));
+  connect(actuatorBus.Feed_Pump_Speed, firstfeedpump1.inputSignal) annotation (
+      Line(
+      points={{30,100},{112,100},{112,102},{206,102},{206,-138},{114,-138},{114,
+          -132},{94,-132},{94,-135}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-3,6},{-3,6}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(sensorBus.Steam_Pressure,sensor_p. p) annotation (Line(
+      points={{-30,100},{-30,60},{-130,60}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(port_a, sensor_p.port) annotation (Line(points={{-160,40},{-124,40},{
+          -124,50}}, color={0,127,255}));
+  connect(sensor_p.port, sensor_T3.port_a) annotation (Line(points={{-124,50},{
+          -124,40},{150,40},{150,72},{144,72}}, color={0,127,255}));
 annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-24,2},{24,-2}},

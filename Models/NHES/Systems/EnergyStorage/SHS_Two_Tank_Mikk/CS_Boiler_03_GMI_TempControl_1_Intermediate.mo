@@ -1,5 +1,5 @@
 within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
-model CS_Boiler_03_GMI_TempControl_2
+model CS_Boiler_03_GMI_TempControl_1_Intermediate
 
   extends BaseClasses.Partial_ControlSystem;
 
@@ -72,7 +72,7 @@ model CS_Boiler_03_GMI_TempControl_2
     annotation (Placement(transformation(extent={{-52,50},{-46,56}})));
   Modelica.Blocks.Math.Product product3
     annotation (Placement(transformation(extent={{-86,2},{-78,10}})));
-  Modelica.Blocks.Sources.Constant one1(k=26)
+  Modelica.Blocks.Sources.Constant one1(k=24)
     annotation (Placement(transformation(extent={{-118,4},{-108,14}})));
   Modelica.Blocks.Sources.Constant one9(k=0.015)
     annotation (Placement(transformation(extent={{-86,16},{-80,22}})));
@@ -189,4 +189,4 @@ annotation(defaultComponentName="changeMe_CS", Icon(graphics={
           fillColor={255,255,237},
           fillPattern=FillPattern.Solid,
           textString="Change Me")}));
-end CS_Boiler_03_GMI_TempControl_2;
+end CS_Boiler_03_GMI_TempControl_1_Intermediate;

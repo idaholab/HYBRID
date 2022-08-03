@@ -63,7 +63,7 @@ model CS_IntermediateControl_PID_TESUC_1_intermediate
     startTime=20000)
     annotation (Placement(transformation(extent={{68,74},{82,88}})));
   Modelica.Blocks.Sources.Constant const3(k=data.p_steam)
-    annotation (Placement(transformation(extent={{-70,30},{-50,50}})));
+    annotation (Placement(transformation(extent={{-72,30},{-52,50}})));
   TRANSFORM.Controls.LimPID FWCP_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PID,
     k=2.5e-5,
@@ -212,7 +212,7 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(const3.y, FWCP_Speed.u_s)
-    annotation (Line(points={{-49,40},{-42,40}}, color={0,0,127}));
+    annotation (Line(points={{-51,40},{-42,40}}, color={0,0,127}));
   connect(FWCP_Speed.y, add.u2)
     annotation (Line(points={{-19,40},{0,40}}, color={0,0,127}));
   connect(const4.y, add.u1)

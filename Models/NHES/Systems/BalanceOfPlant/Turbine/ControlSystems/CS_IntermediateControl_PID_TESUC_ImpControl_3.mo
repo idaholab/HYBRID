@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_IntermediateControl_PID_TESUC_ImpControl_2
+model CS_IntermediateControl_PID_TESUC_ImpControl_3
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
   extends NHES.Icons.DummyIcon;
@@ -65,18 +65,17 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2
   Modelica.Blocks.Sources.Constant const3(k=data.p_steam)
     annotation (Placement(transformation(extent={{-70,30},{-50,50}})));
   TRANSFORM.Controls.LimPID FWCP_mflow(
-    controllerType=Modelica.Blocks.Types.SimpleController.PID,
-    k=2.5e-5,
-    Ti=20,
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    k=2.5e-4,
+    Ti=30,
     Td=0.1,
-    yMax=250,
-    yMin=-67,
-    wp=0,
+    yMax=2500,
+    yMin=-1450,
     wd=1,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-40,30},{-20,50}})));
-  Modelica.Blocks.Sources.Constant const4(k=67)
+  Modelica.Blocks.Sources.Constant const4(k=1500)
     annotation (Placement(transformation(extent={{-14,48},{-6,56}})));
   Modelica.Blocks.Math.Add         add
     annotation (Placement(transformation(extent={{2,36},{22,56}})));
@@ -98,11 +97,11 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2
     Ti=5,
     Td=0.1,
     yMax=100,
-    yMin=-19.9,
+    yMin=-66,
     initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-46,-80},{-34,-68}})));
-  Modelica.Blocks.Sources.Constant const1(k=data.T_SHS_Return)
+  Modelica.Blocks.Sources.Constant const1(k=data.m_flow_reactor)
     annotation (Placement(transformation(extent={{-92,-88},{-72,-68}})));
   Modelica.Blocks.Sources.Constant const6(k=20)
     annotation (Placement(transformation(extent={{-26,-84},{-18,-76}})));
@@ -262,17 +261,9 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(sensorBus.SHS_Return_T, SHS_Pump_MFR.u_m) annotation (Line(
-      points={{-30,-100},{-40,-100},{-40,-81.2}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
-  connect(const1.y, SHS_Pump_MFR.u_s) annotation (Line(points={{-71,-78},{-56,-78},
-          {-56,-74},{-47.2,-74}}, color={0,0,127}));
+  connect(const1.y, SHS_Pump_MFR.u_s) annotation (Line(points={{-71,-78},{-64,
+          -78},{-64,-70},{-56,-70},{-56,-74},{-47.2,-74}},
+                                  color={0,0,127}));
   connect(SHS_Pump_MFR.y, add3.u1) annotation (Line(points={{-33.4,-74},{-32,-74},
           {-32,-72},{-10,-72},{-10,-68},{-4,-68}}, color={0,0,127}));
   connect(const6.y, add3.u2) annotation (Line(points={{-17.6,-80},{-16,-80},{-16,
@@ -338,4 +329,4 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-end CS_IntermediateControl_PID_TESUC_ImpControl_2;
+end CS_IntermediateControl_PID_TESUC_ImpControl_3;

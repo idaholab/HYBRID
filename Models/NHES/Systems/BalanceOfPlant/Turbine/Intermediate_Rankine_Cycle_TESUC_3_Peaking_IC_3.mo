@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
-model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2 "Two stage BOP model"
+model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_3 "Two stage BOP model"
   extends BaseClasses.Partial_SubSystem_C(
     redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
@@ -114,7 +114,7 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2 "Two stage BOP model"
     annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=180,
-        origin={-132,40})));
+        origin={-102,40})));
 
   TRANSFORM.Fluid.Volumes.MixingVolume header(
     use_T_start=false,
@@ -126,17 +126,19 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2 "Two stage BOP model"
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
         (V=1),
     redeclare package Medium = Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{-122,32},{-102,52}})));
+    annotation (Placement(transformation(extent={{-92,30},{-72,50}})));
 
-  TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump_SimpleMassFlow1(
-    use_input=true,
+  TRANSFORM.Fluid.Machines.Pump_Controlled     pump_SimpleMassFlow1(
+    dp_nominal=1000000,
     m_flow_nominal=data.controlledfeedpump_mflow_nominal,
     redeclare package Medium =
-        Modelica.Media.Water.StandardWater)              annotation (
+        Modelica.Media.Water.StandardWater,
+    controlType="RPM",
+    use_port=true)                                       annotation (
       Placement(transformation(
         extent={{-11,-11},{11,11}},
         rotation=180,
-        origin={-121,-41})));
+        origin={-105,-41})));
 
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -177,7 +179,7 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2 "Two stage BOP model"
     m_flow_nominal=15) annotation (Placement(transformation(
         extent={{8,8},{-8,-8}},
         rotation=180,
-        origin={-74,22})));
+        origin={-60,24})));
   TRANSFORM.Fluid.Machines.SteamTurbine HPT(
     nUnits=1,
     energyDynamics=TRANSFORM.Types.Dynamics.DynamicFreeInitial,
@@ -268,6 +270,14 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2 "Two stage BOP model"
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=0,
         origin={94,-148})));
+  TRANSFORM.Fluid.Valves.ValveLinear RMF(
+    redeclare package Medium = Modelica.Media.Water.StandardWater,
+    m_flow_start=400,
+    dp_nominal=10000,
+    m_flow_nominal=67) annotation (Placement(transformation(
+        extent={{8,8},{-8,-8}},
+        rotation=180,
+        origin={-136,-42})));
 initial equation
 
 equation
@@ -318,16 +328,13 @@ equation
       index=-1,
       extent={{-3,6},{-3,6}},
       horizontalAlignment=TextAlignment.Right));
-  connect(port_a, R_entry.port_a)
-    annotation (Line(points={{-160,40},{-139,40}}, color={0,127,255}));
   connect(R_entry.port_b, header.port_a[1])
-    annotation (Line(points={{-125,40},{-122,40},{-122,42},{-118,42}},
-                                                   color={0,127,255}));
+    annotation (Line(points={{-95,40},{-88,40}},   color={0,127,255}));
   connect(header.port_b[1], TCV.port_a)
-    annotation (Line(points={{-106,41.5},{-60,41.5},{-60,40},{-12,40}},
+    annotation (Line(points={{-76,39.5},{-76,40},{-12,40}},
                                                   color={0,127,255}));
-  connect(PRV.port_a, TCV.port_a) annotation (Line(points={{-120,74},{-104,74},
-          {-104,40},{-12,40}}, color={0,127,255}));
+  connect(PRV.port_a, TCV.port_a) annotation (Line(points={{-120,74},{-60,74},{
+          -60,40},{-12,40}},   color={0,127,255}));
   connect(boundary.ports[1],PRV. port_b)
     annotation (Line(points={{-148,74},{-136,74}}, color={0,127,255}));
   connect(actuatorBus.TBV,PRV. opening) annotation (Line(
@@ -341,10 +348,8 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(firstfeedpump.port_b, sensor_T4.port_b) annotation (Line(points={{30,-128},
           {10,-128}},                              color={0,127,255}));
-  connect(port_b, pump_SimpleMassFlow1.port_b) annotation (Line(points={{-160,-40},
-          {-132,-40},{-132,-41}},                            color={0,127,255}));
   connect(pump_SimpleMassFlow1.port_a, sensor_T2.port_b) annotation (Line(
-        points={{-110,-41},{-110,-42},{-82,-42}},                    color={0,
+        points={{-94,-41},{-94,-42},{-82,-42}},                      color={0,
           127,255}));
   connect(Condenser.port_b, firstfeedpump.port_a) annotation (Line(points={{146,
           -112},{146,-128},{50,-128}},          color={0,127,255}));
@@ -358,13 +363,13 @@ equation
   connect(FeedwaterMixVolume.port_b[2], sensor_T4.port_a) annotation (Line(
         points={{-24,-40},{-20,-40},{-20,-128},{-10,-128}},
         color={0,127,255}));
-  connect(InternalBypass.port_a, header.port_b[2]) annotation (Line(points={{
-          -82,22},{-94,22},{-94,24},{-106,24},{-106,42.5}}, color={0,127,255}));
+  connect(InternalBypass.port_a, header.port_b[2]) annotation (Line(points={{-68,24},
+          {-76,24},{-76,40.5}},                             color={0,127,255}));
   connect(InternalBypass.port_b, R_InternalBypass.port_a) annotation (Line(
-        points={{-66,22},{-44,22},{-44,20},{-24,20},{-24,5}}, color={0,127,255}));
+        points={{-52,24},{-24,24},{-24,5}},                   color={0,127,255}));
   connect(actuatorBus.Divert_Valve_Position, InternalBypass.opening)
     annotation (Line(
-      points={{30,100},{-74,100},{-74,28.4}},
+      points={{30,100},{-64,100},{-64,36},{-60,36},{-60,30.4}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -434,12 +439,30 @@ equation
           -148},{78,-148},{78,-128},{146,-128},{146,-112}}, color={0,127,255}));
   connect(firstfeedpump1.port_b, Discharge_OnOff.port_a) annotation (Line(
         points={{104,-148},{112,-148},{112,-146},{118,-146}}, color={0,127,255}));
-  connect(actuatorBus.Feed_Pump_Speed, pump_SimpleMassFlow1.in_m_flow)
+  connect(actuatorBus.Feed_Pump_Speed, pump_SimpleMassFlow1.inputSignal)
     annotation (Line(
-      points={{30,100},{-92,100},{-92,-56},{-121,-56},{-121,-49.03}},
+      points={{30,100},{-56,100},{-56,-60},{-105,-60},{-105,-48.7}},
       color={111,216,99},
       pattern=LinePattern.Dash,
-      thickness=0.5));
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-3,-6},{-3,-6}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(port_b, RMF.port_a) annotation (Line(points={{-160,-40},{-152,-40},{
+          -152,-42},{-144,-42}}, color={0,127,255}));
+  connect(RMF.port_b, pump_SimpleMassFlow1.port_b) annotation (Line(points={{
+          -128,-42},{-122,-42},{-122,-41},{-116,-41}}, color={0,127,255}));
+  connect(actuatorBus.Reactor_mflow, RMF.opening) annotation (Line(
+      points={{30,100},{-92,100},{-92,-20},{-130,-20},{-130,-24},{-136,-24},{
+          -136,-35.6}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-3,6},{-3,6}},
+      horizontalAlignment=TextAlignment.Right));
 annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-24,2},{24,-2}},
@@ -623,4 +646,4 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
     Documentation(info="<html>
 <p>A two stage turbine rankine cycle with feedwater heating internal to the system - can be externally bypassed or LPT can be bypassed both will feedwater heat post bypass</p>
 </html>"));
-end Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2;
+end Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_3;

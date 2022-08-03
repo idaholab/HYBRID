@@ -70,6 +70,7 @@ model SMR_SHS_Test_Config_Peaking_ImpControl_2
       ct_surface_pressure=120000,
       cold_tank_init_temp=453.15,
       m_flow_ch_min=0.1,
+      DHX_NTU=10,
       DHX_K_tube(unit="1/m4"),
       DHX_K_shell(unit="1/m4"),
       DHX_p_start_tube=120000,

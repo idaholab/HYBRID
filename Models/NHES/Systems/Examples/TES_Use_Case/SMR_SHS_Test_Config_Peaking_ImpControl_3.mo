@@ -1,5 +1,5 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model SMR_SHS_Test_Config_Independent
+model SMR_SHS_Test_Config_Peaking_ImpControl_3
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
  Real demandChange=
@@ -14,8 +14,7 @@ model SMR_SHS_Test_Config_Independent
       T(displayUnit="degC") = 580.05,
       h=2997670),
     redeclare PrimaryHeatSystem.SMR_Generic.CS_SMR_Tave CS(W_turbine=
-          intermediate_Rankine_Cycle_TESUC.powerSensor.power, W_Setpoint=
-          trapezoid.y),
+          intermediate_Rankine_Cycle_TESUC.powerSensor.power, W_Setpoint=sine.y),
     port_a_nominal(
       m_flow=67.07,
       T(displayUnit="degC") = 422.05,
@@ -30,7 +29,7 @@ model SMR_SHS_Test_Config_Independent
     port_b3_nominal_m_flow={-0.67},
     nPorts_b3=1)
     annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_1_Independent
+  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2
     intermediate_Rankine_Cycle_TESUC(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
@@ -38,10 +37,10 @@ model SMR_SHS_Test_Config_Independent
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_1_intermediate
-      CS(electric_demand=trapezoid.y))
+      BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_ImpControl_2
+      CS(electric_demand=sine.y))
     annotation (Placement(transformation(extent={{62,-20},{102,20}})));
-  SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
+  SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
     annotation (Placement(transformation(extent={{112,-22},{152,22}})));
   ElectricalGrid.InfiniteGrid.Infinite EG
     annotation (Placement(transformation(extent={{160,-20},{200,20}})));
@@ -71,7 +70,6 @@ model SMR_SHS_Test_Config_Independent
       ct_surface_pressure=120000,
       cold_tank_init_temp=453.15,
       m_flow_ch_min=0.1,
-      DHX_NTU=7,
       DHX_K_tube(unit="1/m4"),
       DHX_K_shell(unit="1/m4"),
       DHX_p_start_tube=120000,
@@ -87,7 +85,7 @@ model SMR_SHS_Test_Config_Independent
     m_flow_min=0.1,
     tank_height=500,
     Steam_Output_Temp=stateSensor6.temperature.T)
-    annotation (Placement(transformation(extent={{-18,-76},{22,-36}})));
+    annotation (Placement(transformation(extent={{-20,-76},{20,-36}})));
 
   Fluid.Sensors.stateDisplay stateDisplay1
     annotation (Placement(transformation(extent={{-52,28},{-6,58}})));
@@ -139,23 +137,13 @@ model SMR_SHS_Test_Config_Independent
     offset=26e6,
     startTime=2000)
     annotation (Placement(transformation(extent={{20,72},{40,92}})));
-  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle
-    intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(    port_a_nominal(
-      p=EM.port_b2_nominal.p,
-      h=EM.port_b2_nominal.h,
-      m_flow=-EM.port_b2_nominal.m_flow),
-    port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
-    redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_1_Intermediate_SmallCycle
-      CS(electric_demand=trapezoid.y))
-    annotation (Placement(transformation(extent={{108,-84},{146,-42}})));
 equation
 
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)
     annotation (Line(points={{28,-6},{44,-6},{44,-8},{62,-8}},
                                                color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC.portElec_b, SY.port_a[1])
-    annotation (Line(points={{102,0},{108,0},{108,-1.1},{112,-1.1}}, color={255,
+    annotation (Line(points={{102,0},{108,0},{108,0},{112,0}},       color={255,
           0,0}));
   connect(SY.port_Grid, EG.portElec_a)
     annotation (Line(points={{152,0},{160,0}}, color={255,0,0}));
@@ -181,19 +169,19 @@ equation
         points={{-76,-44.16},{-76,-50},{-44,-50},{-44,-12},{-33.035,-12},{-33.035,
           -5.96}}, color={0,0,0}));
   connect(stateSensor4.port_b, two_Tank_SHS_System_NTU.port_ch_a)
-    annotation (Line(points={{-24,-68},{-17.6,-68.4}}, color={0,127,255}));
+    annotation (Line(points={{-24,-68},{-19.6,-68.4}}, color={0,127,255}));
   connect(stateSensor4.port_a, EM.port_b3[1]) annotation (Line(points={{-38,-68},
           {-38,-24},{16,-24},{16,-18}}, color={0,127,255}));
   connect(stateDisplay4.statePort, stateSensor4.statePort) annotation (Line(
         points={{-76,-94.16},{-76,-100},{-30.965,-100},{-30.965,-67.96}}, color=
          {0,0,0}));
   connect(two_Tank_SHS_System_NTU.port_ch_b, stateSensor5.port_a) annotation (
-      Line(points={{-17.6,-45.2},{-24,-45.2},{-24,-30},{16,-30}}, color={0,127,255}));
+      Line(points={{-19.6,-45.2},{-24,-45.2},{-24,-30},{16,-30}}, color={0,127,255}));
   connect(stateDisplay5.statePort, stateSensor5.statePort) annotation (Line(
         points={{4,-94.16},{4,-100},{32,-100},{32,-34},{23.035,-34},{23.035,-29.96}},
         color={0,0,0}));
   connect(two_Tank_SHS_System_NTU.port_dch_b, stateSensor6.port_a) annotation (
-      Line(points={{22,-68.4},{48,-68.4},{48,-68}}, color={0,127,255}));
+      Line(points={{20,-68.4},{48,-68.4},{48,-68}}, color={0,127,255}));
   connect(stateSensor6.statePort, stateDisplay7.statePort) annotation (Line(
         points={{55.035,-67.96},{55.035,-74},{56,-74},{56,-82},{72,-82},{72,-96.16}},
                                                                     color={0,0,0}));
@@ -201,22 +189,16 @@ equation
         points={{57.95,-54.975},{62,-54.975},{62,-50},{78,-50},{78,-44.16}},
                         color={0,0,0}));
   connect(two_Tank_SHS_System_NTU.port_dch_a, stateSensor7.port_b) annotation (
-      Line(points={{21.6,-44.4},{42,-44.4},{42,-55},{48,-55}},          color={0,
+      Line(points={{19.6,-44.4},{42,-44.4},{42,-55},{48,-55}},          color={0,
           127,255}));
+  connect(stateSensor6.port_b, intermediate_Rankine_Cycle_TESUC.port_a2)
+    annotation (Line(points={{62,-68},{108,-68},{108,13.6},{101.6,13.6}}, color=
+         {0,127,255}));
+  connect(stateSensor7.port_a, intermediate_Rankine_Cycle_TESUC.port_b1)
+    annotation (Line(points={{68,-55},{68,-54},{106,-54},{106,-10.4},{101.6,-10.4}},
+        color={0,127,255}));
   connect(stateSensor5.port_b, intermediate_Rankine_Cycle_TESUC.port_a1)
     annotation (Line(points={{30,-30},{69.2,-30},{69.2,-19.2}}, color={0,127,255}));
-  connect(stateSensor6.port_b,
-    intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_a)
-    annotation (Line(points={{62,-68},{100,-68},{100,-60},{102,-60},{102,-50},{
-          108,-50},{108,-54.6}},
-                             color={0,127,255}));
-  connect(stateSensor7.port_a,
-    intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_b)
-    annotation (Line(points={{68,-55},{68,-71.4},{108,-71.4}}, color={0,127,255}));
-  connect(intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.portElec_b,
-    SY.port_a[2]) annotation (Line(points={{146,-63},{152,-63},{152,-26},{108,
-          -26},{108,1.1},{112,1.1}},
-                                color={255,0,0}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{200,100}}), graphics={
         Ellipse(lineColor = {75,138,73},
@@ -239,4 +221,4 @@ equation
 <p>System is based upon report: Frick, Konor L. Status Report on the NuScale Module Developed in the Modelica Framework. United States: N. p., 2019. Web. doi:10.2172/1569288.</p>
 </html>"),
     __Dymola_experimentSetupOutput(events=false));
-end SMR_SHS_Test_Config_Independent;
+end SMR_SHS_Test_Config_Peaking_ImpControl_3;
