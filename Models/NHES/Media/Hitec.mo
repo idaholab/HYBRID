@@ -98,7 +98,7 @@ Properties have been calculated based on a weighted average basis between T_min 
       input SI.Temperature T;
       output SI.SpecificHeatCapacity cp;
     algorithm
-      cp:=1833.15-T;
+      cp:=1833.15-1.0*T;
     end cp_T;
   end Utilities_Hitec;
 end Hitec;
