@@ -29,7 +29,7 @@ model SMR_SHS_Test_Config_Peaking_ImpControl_3
     port_b3_nominal_m_flow={-0.67},
     nPorts_b3=1)
     annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2
+  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_3
     intermediate_Rankine_Cycle_TESUC(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
@@ -37,7 +37,7 @@ model SMR_SHS_Test_Config_Peaking_ImpControl_3
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_ImpControl_2
+      BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_ImpControl_3
       CS(electric_demand=sine.y))
     annotation (Placement(transformation(extent={{62,-20},{102,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
