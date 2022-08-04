@@ -69,7 +69,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_3
     k=2.5e-4,
     Ti=30,
     Td=0.1,
-    yMax=2500,
+    yMax=8000,
     yMin=-1450,
     wd=1,
     initType=Modelica.Blocks.Types.Init.InitialState,
@@ -91,19 +91,19 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_3
     annotation (Placement(transformation(extent={{-38,72},{-18,92}})));
   Modelica.Blocks.Sources.Constant const9(k=data.p_steam_vent)
     annotation (Placement(transformation(extent={{-78,72},{-58,92}})));
-  TRANSFORM.Controls.LimPID SHS_Pump_MFR(
+  TRANSFORM.Controls.LimPID MFlow_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2e-3,
+    k=5e-6,
     Ti=5,
     Td=0.1,
-    yMax=100,
-    yMin=-66,
+    yMax=0,
+    yMin=-1,
     initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-46,-80},{-34,-68}})));
   Modelica.Blocks.Sources.Constant const1(k=data.m_flow_reactor)
     annotation (Placement(transformation(extent={{-92,-88},{-72,-68}})));
-  Modelica.Blocks.Sources.Constant const6(k=20)
+  Modelica.Blocks.Sources.Constant const6(k=1)
     annotation (Placement(transformation(extent={{-26,-84},{-18,-76}})));
   Modelica.Blocks.Math.Add         add3
     annotation (Placement(transformation(extent={{-2,-84},{18,-64}})));
@@ -126,7 +126,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_3
     annotation (Placement(transformation(extent={{58,-76},{38,-56}})));
   TRANSFORM.Controls.LimPID Charge_OnOff_Throttle(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-1e-9,
+    k=-0.5e-8,
     Ti=5,
     k_s=1,
     k_m=1,
@@ -147,7 +147,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_3
     annotation (Placement(transformation(extent={{116,48},{96,68}})));
   TRANSFORM.Controls.LimPID Discharge_OnOff_Throttle(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-0.5e-9,
+    k=-0.25e-8,
     Ti=5,
     k_s=1,
     k_m=1,
@@ -261,10 +261,9 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(const1.y, SHS_Pump_MFR.u_s) annotation (Line(points={{-71,-78},{-64,
-          -78},{-64,-70},{-56,-70},{-56,-74},{-47.2,-74}},
-                                  color={0,0,127}));
-  connect(SHS_Pump_MFR.y, add3.u1) annotation (Line(points={{-33.4,-74},{-32,-74},
+  connect(const1.y, MFlow_Valve.u_s) annotation (Line(points={{-71,-78},{-64,-78},
+          {-64,-70},{-56,-70},{-56,-74},{-47.2,-74}}, color={0,0,127}));
+  connect(MFlow_Valve.y, add3.u1) annotation (Line(points={{-33.4,-74},{-32,-74},
           {-32,-72},{-10,-72},{-10,-68},{-4,-68}}, color={0,0,127}));
   connect(const6.y, add3.u2) annotation (Line(points={{-17.6,-80},{-16,-80},{-16,
           -76},{-8,-76},{-8,-86},{-4,-86},{-4,-80}}, color={0,0,127}));
@@ -326,6 +325,16 @@ equation
           -26},{174,-18},{206,-18},{206,72},{194,72}}, color={0,0,127}));
   connect(actuatorBus.Discharge_OnOff_Throttle, add7.y) annotation (Line(
       points={{30,-100},{30,58},{95,58}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Reactor_mflow, MFlow_Valve.u_m) annotation (Line(
+      points={{-30,-100},{-30,-86},{-40,-86},{-40,-81.2}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.Reactor_mflow, add3.y) annotation (Line(
+      points={{30,-100},{30,-74},{19,-74}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
