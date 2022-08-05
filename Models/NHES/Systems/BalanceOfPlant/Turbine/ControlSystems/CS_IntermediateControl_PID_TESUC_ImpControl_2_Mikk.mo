@@ -107,7 +107,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2_Mikk
     annotation (Placement(transformation(extent={{140,38},{132,46}})));
   Modelica.Blocks.Sources.Constant const1(k=data.p_steam)
     annotation (Placement(transformation(extent={{-92,-48},{-72,-28}})));
-  Modelica.Blocks.Logical.GreaterThreshold greaterThreshold(threshold=40e6)
+  Modelica.Blocks.Logical.GreaterThreshold greaterThreshold(threshold=42e6)
     annotation (Placement(transformation(extent={{240,8},{260,28}})));
   StagebyStageTurbineSecondary.Control_and_Distribution.PI_Control_Reset_Input
                                                                     PI_DFV(

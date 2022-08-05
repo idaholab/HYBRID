@@ -235,8 +235,8 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_AR "Two stage BOP model"
         extent={{8,8},{-8,-8}},
         rotation=180,
         origin={126,-146})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Modelica.Media.Water.StandardWater)            annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)            annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
@@ -390,8 +390,8 @@ equation
       thickness=0.5));
   connect(const.y, Discharge_OnOff.opening) annotation (Line(points={{71,-146},
           {76,-146},{76,-132},{126,-132},{126,-139.6}}, color={0,0,127}));
-  connect(Discharge_OnOff.port_a, firstfeedpump.port_a) annotation (Line(points
-        ={{118,-146},{114,-146},{114,-128},{50,-128}}, color={0,127,255}));
+  connect(Discharge_OnOff.port_a, firstfeedpump.port_a) annotation (Line(points=
+         {{118,-146},{114,-146},{114,-128},{50,-128}}, color={0,127,255}));
   connect(Discharge_OnOff.port_b, tee.port_3)
     annotation (Line(points={{134,-146},{134,4},{100,4}}, color={0,127,255}));
 annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={

@@ -39,12 +39,12 @@ model SMR_SHS_Test_Config_Independent_2
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
-      CS(electric_demand=sine.y))
-    annotation (Placement(transformation(extent={{62,-20},{102,20}})));
+      CS(electric_demand=sine.y, Overall_Power=sensorW.W))
+    annotation (Placement(transformation(extent={{60,-20},{100,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
     annotation (Placement(transformation(extent={{112,-22},{152,22}})));
   ElectricalGrid.InfiniteGrid.Infinite EG
-    annotation (Placement(transformation(extent={{160,-20},{200,20}})));
+    annotation (Placement(transformation(extent={{200,-20},{240,20}})));
   BaseClasses.Data_Capacity dataCapacity(IP_capacity(displayUnit="MW")=
       53303300, BOP_capacity(displayUnit="MW") = 1165000000)
     annotation (Placement(transformation(extent={{-100,82},{-80,102}})));
@@ -127,7 +127,7 @@ model SMR_SHS_Test_Config_Independent_2
   Modelica.Blocks.Sources.Sine sine(
     amplitude=15e6,
     f=1/20000,
-    offset=40e6,
+    offset=42e6,
     startTime=2000)
     annotation (Placement(transformation(extent={{-26,72},{-6,92}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
@@ -150,16 +150,16 @@ model SMR_SHS_Test_Config_Independent_2
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_1_Intermediate_SmallCycle_AR
       CS(electric_demand=sine.y))
     annotation (Placement(transformation(extent={{108,-84},{146,-42}})));
+  TRANSFORM.Electrical.Sensors.PowerSensor sensorW
+    annotation (Placement(transformation(extent={{166,-10},{186,10}})));
 equation
 
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)
-    annotation (Line(points={{28,-6},{44,-6},{44,-8},{62,-8}},
+    annotation (Line(points={{28,-6},{44,-6},{44,-8},{60,-8}},
                                                color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC.portElec_b, SY.port_a[1])
-    annotation (Line(points={{102,0},{108,0},{108,-1.1},{112,-1.1}}, color={255,
+    annotation (Line(points={{100,0},{108,0},{108,-1.1},{112,-1.1}}, color={255,
           0,0}));
-  connect(SY.port_Grid, EG.portElec_a)
-    annotation (Line(points={{152,0},{160,0}}, color={255,0,0}));
   connect(SMR_Taveprogram.port_b, stateSensor1.port_a) annotation (Line(points={{
           -51.0909,12.7692},{-51.0909,11},{-38,11}},  color={0,127,255}));
   connect(stateSensor1.port_b, EM.port_a1) annotation (Line(points={{-24,11},{-22,
@@ -170,7 +170,7 @@ equation
   connect(EM.port_b2, stateSensor2.port_a) annotation (Line(points={{28,10},{30,
           10},{30,12},{34,12},{34,9},{38,9}}, color={0,127,255}));
   connect(stateSensor2.port_b, intermediate_Rankine_Cycle_TESUC.port_a)
-    annotation (Line(points={{52,9},{54,9},{54,10},{62,10},{62,8}}, color={0,127,
+    annotation (Line(points={{52,9},{54,9},{54,10},{60,10},{60,8}}, color={0,127,
           255}));
   connect(stateSensor2.statePort, stateDisplay2.statePort) annotation (Line(
         points={{45.035,9.045},{45.035,37.1},{47,37.1}}, color={0,0,0}));
@@ -205,7 +205,7 @@ equation
       Line(points={{21.6,-44.4},{42,-44.4},{42,-55},{48,-55}},          color={0,
           127,255}));
   connect(stateSensor5.port_b, intermediate_Rankine_Cycle_TESUC.port_a1)
-    annotation (Line(points={{30,-30},{69.2,-30},{69.2,-19.2}}, color={0,127,255}));
+    annotation (Line(points={{30,-30},{67.2,-30},{67.2,-19.2}}, color={0,127,255}));
   connect(stateSensor6.port_b,
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_a)
     annotation (Line(points={{62,-68},{100,-68},{100,-60},{102,-60},{102,-50},{
@@ -218,6 +218,10 @@ equation
     SY.port_a[2]) annotation (Line(points={{146,-63},{152,-63},{152,-26},{108,
           -26},{108,1.1},{112,1.1}},
                                 color={255,0,0}));
+  connect(SY.port_Grid, sensorW.port_a)
+    annotation (Line(points={{152,0},{166,0}}, color={255,0,0}));
+  connect(sensorW.port_b, EG.portElec_a)
+    annotation (Line(points={{186,0},{200,0}}, color={255,0,0}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{200,100}}), graphics={
         Ellipse(lineColor = {75,138,73},

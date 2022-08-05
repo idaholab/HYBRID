@@ -6,6 +6,9 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
 
   input Real electric_demand
   annotation(Dialog(tab="General"));
+  input Real Overall_Power
+  annotation(Dialog(tab="General"));
+
 
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -103,10 +106,13 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
     annotation (Placement(transformation(extent={{92,-80},{112,-60}})));
   Modelica.Blocks.Math.Min min2
     annotation (Placement(transformation(extent={{174,-80},{194,-60}})));
-  Modelica.Blocks.Sources.Constant const6(k=46e6)
+  Modelica.Blocks.Sources.Constant const6(k=42e6)
     annotation (Placement(transformation(extent={{50,-76},{74,-52}})));
-  Modelica.Blocks.Sources.Constant const12(k=46.001e6)
-    annotation (Placement(transformation(extent={{140,-84},{164,-60}})));
+  Modelica.Blocks.Sources.Constant const12(k=42.001e6)
+    annotation (Placement(transformation(extent={{116,-58},{140,-34}})));
+  Modelica.Blocks.Sources.RealExpression
+                                   realExpression1(y=Overall_Power)
+    annotation (Placement(transformation(extent={{80,24},{94,36}})));
 equation
   connect(const5.y,Turb_Divert_Valve. u_s)
     annotation (Line(points={{-83,-126},{-64,-126}}, color={0,0,127}));
@@ -219,11 +225,6 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.Power, min1.u2) annotation (Line(
-      points={{-30,-100},{-30,-74},{90,-74},{90,-76}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(min1.u1, const6.y)
     annotation (Line(points={{90,-64},{75.2,-64}}, color={0,0,127}));
   connect(Charge_OnOff_Throttle.u_m, min1.y) annotation (Line(points={{142,-76},
@@ -233,7 +234,9 @@ equation
   connect(min2.y, Charge_OnOff_Throttle.u_s) annotation (Line(points={{195,-70},
           {238,-70},{238,-88},{154,-88}}, color={0,0,127}));
   connect(min2.u2, const12.y) annotation (Line(points={{172,-76},{168,-76},{168,
-          -72},{165.2,-72}}, color={0,0,127}));
+          -46},{141.2,-46}}, color={0,0,127}));
+  connect(realExpression1.y, min1.u2) annotation (Line(points={{94.7,30},{98,30},
+          {98,-16},{84,-16},{84,-76},{90,-76}}, color={0,0,127}));
   annotation (Diagram(graphics={Text(
           extent={{-70,-142},{-20,-160}},
           textColor={28,108,200},
