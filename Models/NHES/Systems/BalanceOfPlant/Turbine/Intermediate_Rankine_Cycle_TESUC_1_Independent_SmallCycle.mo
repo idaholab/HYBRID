@@ -95,7 +95,7 @@ model Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle
     p_a_start=10000,
     p_b_start=1100000,
     N_nominal=1500,
-    dp_nominal=2000000,
+    dp_nominal=1800000,
     m_flow_nominal=26,
     controlType="RPM",
     use_port=true)
