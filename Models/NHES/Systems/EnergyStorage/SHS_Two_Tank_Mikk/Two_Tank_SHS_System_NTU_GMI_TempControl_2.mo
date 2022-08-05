@@ -157,7 +157,7 @@ model Two_Tank_SHS_System_NTU_GMI_TempControl_2
     use_T_in=false,
     m_flow=-m_flow_min,
     T=413.15,
-    nPorts=2) annotation (Placement(transformation(extent={{-126,-44},{-106,-24}})));
+    nPorts=1) annotation (Placement(transformation(extent={{-126,-44},{-106,-24}})));
   Modelica.Blocks.Sources.RealExpression Level_Hot_Tank1(y=CHX.Shell.medium.h)
     annotation (Placement(transformation(extent={{-128,-98},{-108,-78}})));
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
@@ -313,7 +313,7 @@ equation
   connect(CHX.Shell_in, boundary2.ports[1]) annotation (Line(points={{-46,-64},
           {-46,-70},{-58,-70},{-58,-92},{-64,-92}},color={0,127,255}));
   connect(CHX.Shell_out, boundary4.ports[1]) annotation (Line(points={{-46,-44},
-          {-46,-36},{-100,-36},{-100,-33.5},{-106,-33.5}},
+          {-46,-36},{-100,-36},{-100,-34},{-106,-34}},
                                       color={0,127,255}));
   connect(hot_tank.port_a, resistance.port_b) annotation (Line(points={{36,
           -79.6},{36,-76},{13,-76}},     color={0,127,255}));

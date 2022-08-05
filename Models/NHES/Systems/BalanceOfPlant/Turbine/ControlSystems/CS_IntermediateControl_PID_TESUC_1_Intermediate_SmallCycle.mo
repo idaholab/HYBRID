@@ -35,7 +35,7 @@ model CS_IntermediateControl_PID_TESUC_1_Intermediate_SmallCycle
     k_s=1,
     k_m=1,
     yMax=0,
-    yMin=-1 + 0.001,
+    yMin=-1 + 0.005,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
     annotation (Placement(transformation(extent={{98,28},{78,8}})));
@@ -72,7 +72,7 @@ model CS_IntermediateControl_PID_TESUC_1_Intermediate_SmallCycle
   TRANSFORM.Controls.LimPID FWCP_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=2.5e-4,
-    Ti=30,
+    Ti=5,
     Td=0.1,
     yMax=2500,
     yMin=0,
