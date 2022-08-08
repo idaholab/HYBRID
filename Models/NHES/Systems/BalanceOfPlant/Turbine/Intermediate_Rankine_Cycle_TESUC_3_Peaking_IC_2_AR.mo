@@ -4,16 +4,26 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_AR "Two stage BOP model"
     redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
     redeclare Data.IntermediateTurbine data(
+      p_condensor=8000,
       V_FeedwaterMixVolume=25,
       V_Header=10,
+      valve_TCV_mflow=67,
+      valve_TCV_dp_nominal=100000,
       valve_SHS_mflow=30,
-      valve_SHS_dp_nominal=1200000,
+      valve_SHS_dp_nominal=700000,
       valve_TCV_LPT_mflow=30,
       valve_TCV_LPT_dp_nominal=10000,
       InternalBypassValve_mflow_small=0,
       InternalBypassValve_p_spring=15000000,
       InternalBypassValve_K=40,
-      firstfeedpump_p_nominal=2000000,
+      HPT_p_exit_nominal=700000,
+      HPT_T_in_nominal=579.15,
+      HPT_nominal_mflow=67,
+      LPT_p_in_nominal=700000,
+      LPT_p_exit_nominal=7000,
+      LPT_T_in_nominal=523.15,
+      LPT_nominal_mflow=20,
+      firstfeedpump_p_nominal=2500000,
       secondfeedpump_p_nominal=2000000));
 
   Data.IntermediateTurbineInitialisation init(
@@ -175,7 +185,7 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_AR "Two stage BOP model"
   TRANSFORM.Fluid.Valves.ValveLinear InternalBypass(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_start=400,
-    dp_nominal=1500000,
+    dp_nominal=1000000,
     m_flow_nominal=15) annotation (Placement(transformation(
         extent={{8,8},{-8,-8}},
         rotation=180,

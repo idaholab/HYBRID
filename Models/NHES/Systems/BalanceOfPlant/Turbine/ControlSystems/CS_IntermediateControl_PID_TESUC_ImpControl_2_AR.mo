@@ -51,7 +51,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
     p_steam=3398000,
     p_steam_vent=15000000,
     T_Steam_Ref=579.75,
-    Q_Nom=46.5e6,
+    Q_Nom=48.57e6,
     T_Feedwater=421.15,
     T_SHS_Return=491.15)
     annotation (Placement(transformation(extent={{-98,12},{-78,32}})));
@@ -89,7 +89,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
     annotation (Placement(transformation(extent={{112,-106},{92,-86}})));
   TRANSFORM.Controls.LimPID Charge_OnOff_Throttle(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-4e-9,
+    k=-4e-7,
     Ti=1,
     k_s=1,
     k_m=1,
@@ -106,9 +106,9 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
     annotation (Placement(transformation(extent={{92,-80},{112,-60}})));
   Modelica.Blocks.Math.Min min2
     annotation (Placement(transformation(extent={{174,-80},{194,-60}})));
-  Modelica.Blocks.Sources.Constant const6(k=42e6)
+  Modelica.Blocks.Sources.Constant const6(k=48.57e6)
     annotation (Placement(transformation(extent={{50,-76},{74,-52}})));
-  Modelica.Blocks.Sources.Constant const12(k=42.001e6)
+  Modelica.Blocks.Sources.Constant const12(k=48.571e6)
     annotation (Placement(transformation(extent={{116,-58},{140,-34}})));
   Modelica.Blocks.Sources.RealExpression
                                    realExpression1(y=Overall_Power)
