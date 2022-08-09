@@ -37,8 +37,8 @@ model SMR_SHS_Test_Config_Peaking_ImpControl_2_Mikk
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_ImpControl_2_Mikk
-      CS(electric_demand=sine.y))
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_ImpControl_3_AR
+      CS(electric_demand=sum1.y))
     annotation (Placement(transformation(extent={{62,-20},{102,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
     annotation (Placement(transformation(extent={{112,-22},{152,22}})));
@@ -57,7 +57,7 @@ model SMR_SHS_Test_Config_Peaking_ImpControl_2_Mikk
   EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl_2
     two_Tank_SHS_System_NTU(
     redeclare
-      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_2
+      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_4
       CS,
     redeclare replaceable
       NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
@@ -124,9 +124,9 @@ model SMR_SHS_Test_Config_Peaking_ImpControl_2_Mikk
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{68,-60},{48,-50}})));
   Modelica.Blocks.Sources.Sine sine(
-    amplitude=-15e6,
+    amplitude=-20e6,
     f=1/20000,
-    offset=40e6,
+    offset=48e6,
     startTime=12000)
     annotation (Placement(transformation(extent={{-26,72},{-6,92}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
@@ -138,6 +138,28 @@ model SMR_SHS_Test_Config_Peaking_ImpControl_2_Mikk
     offset=26e6,
     startTime=2000)
     annotation (Placement(transformation(extent={{20,72},{40,92}})));
+  Modelica.Blocks.Sources.Trapezoid trapezoid1(
+    amplitude=-20.58e6,
+    rising=100,
+    width=9800,
+    falling=100,
+    period=20000,
+    offset=47e6,
+    startTime=2000)
+    annotation (Placement(transformation(extent={{76,74},{96,94}})));
+  Modelica.Blocks.Sources.Trapezoid trapezoid2(
+    amplitude=20.14e6,
+    rising=100,
+    width=7800,
+    falling=100,
+    period=20000,
+    offset=0,
+    startTime=14000)
+    annotation (Placement(transformation(extent={{76,42},{96,62}})));
+  Modelica.Blocks.Math.Add         add
+    annotation (Placement(transformation(extent={{118,58},{138,78}})));
+  Modelica.Blocks.Math.Sum sum1
+    annotation (Placement(transformation(extent={{146,28},{166,48}})));
 equation
 
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)
@@ -200,6 +222,12 @@ equation
         color={0,127,255}));
   connect(stateSensor5.port_b, intermediate_Rankine_Cycle_TESUC.port_a1)
     annotation (Line(points={{30,-30},{69.2,-30},{69.2,-19.2}}, color={0,127,255}));
+  connect(trapezoid2.y, add.u2) annotation (Line(points={{97,52},{110,52},{110,62},
+          {116,62}}, color={0,0,127}));
+  connect(trapezoid1.y, add.u1) annotation (Line(points={{97,84},{110,84},{110,74},
+          {116,74}}, color={0,0,127}));
+  connect(add.y, sum1.u[1]) annotation (Line(points={{139,68},{144,68},{144,48},
+          {134,48},{134,38},{144,38}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{200,100}}), graphics={
         Ellipse(lineColor = {75,138,73},
@@ -214,8 +242,8 @@ equation
                                 Diagram(coordinateSystem(preserveAspectRatio=
             false, extent={{-100,-100},{200,100}})),
     experiment(
-      StopTime=20000,
-      __Dymola_NumberOfIntervals=783,
+      StopTime=200000,
+      Interval=10,
       __Dymola_Algorithm="Esdirk45a"),
     Documentation(info="<html>
 <p>NuScale style reactor system. System has a nominal thermal output of 160MWt rather than the updated 200MWt.</p>

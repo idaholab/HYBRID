@@ -14,6 +14,8 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_Mikk
       InternalBypassValve_mflow_small=0,
       InternalBypassValve_p_spring=15000000,
       InternalBypassValve_K=40,
+      HPT_efficiency=1,
+      LPT_efficiency=1,
       firstfeedpump_p_nominal=2000000,
       secondfeedpump_p_nominal=2000000));
 
@@ -186,7 +188,8 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_Mikk
     energyDynamics=TRANSFORM.Types.Dynamics.DynamicFreeInitial,
     eta_mech=data.HPT_efficiency,
     redeclare model Eta_wetSteam =
-        TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant,
+        TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant (
+          eta_nominal=0.9),
     p_a_start=init.HPT_p_a_start,
     p_b_start=init.HPT_p_b_start,
     T_a_start=init.HPT_T_a_start,
@@ -208,7 +211,8 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_Mikk
     energyDynamics=TRANSFORM.Types.Dynamics.DynamicFreeInitial,
     eta_mech=data.LPT_efficiency,
     redeclare model Eta_wetSteam =
-        TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant,
+        TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant (
+          eta_nominal=0.9),
     p_a_start=init.LPT_p_a_start,
     p_b_start=init.LPT_p_b_start,
     T_a_start=init.LPT_T_a_start,
@@ -239,7 +243,7 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_Mikk
         origin={134,72})));
   TRANSFORM.Fluid.Valves.ValveLinear TCV_LPT(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
-    m_flow_start=400,
+    m_flow_start=100,
     dp_nominal=data.valve_TCV_LPT_dp_nominal,
     m_flow_nominal=data.valve_TCV_LPT_mflow) annotation (Placement(
         transformation(
@@ -257,8 +261,8 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_Mikk
   TRANSFORM.Fluid.Valves.ValveLinear Discharge_OnOff(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_start=400,
-    dp_nominal=500000,
-    m_flow_nominal=20) annotation (Placement(transformation(
+    dp_nominal=400000,
+    m_flow_nominal=26) annotation (Placement(transformation(
         extent={{8,8},{-8,-8}},
         rotation=180,
         origin={126,-146})));
@@ -271,8 +275,8 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_Mikk
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=0,
         origin={94,-148})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)            annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
+      = Modelica.Media.Water.StandardWater)            annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,

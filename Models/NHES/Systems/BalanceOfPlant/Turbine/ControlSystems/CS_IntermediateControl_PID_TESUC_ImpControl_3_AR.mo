@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_IntermediateControl_PID_TESUC_ImpControl_2_Mikk
+model CS_IntermediateControl_PID_TESUC_ImpControl_3_AR
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
   extends NHES.Icons.DummyIcon;
@@ -48,7 +48,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2_Mikk
     p_steam=3398000,
     p_steam_vent=15000000,
     T_Steam_Ref=579.75,
-    Q_Nom=46.5e6,
+    Q_Nom=48e6,
     T_Feedwater=421.15,
     T_SHS_Return=491.15)
     annotation (Placement(transformation(extent={{-98,12},{-78,32}})));
@@ -82,10 +82,6 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2_Mikk
     annotation (Placement(transformation(extent={{-58,134},{-38,154}})));
   Modelica.Blocks.Sources.Constant const9(k=data.p_steam_vent)
     annotation (Placement(transformation(extent={{-98,134},{-78,154}})));
-  Modelica.Blocks.Sources.Constant const11(k=0.001)
-    annotation (Placement(transformation(extent={{156,-10},{148,-2}})));
-  Modelica.Blocks.Math.Add         add4
-    annotation (Placement(transformation(extent={{128,0},{108,20}})));
   Modelica.Blocks.Math.Add         add5
     annotation (Placement(transformation(extent={{112,-106},{92,-86}})));
   TRANSFORM.Controls.LimPID Charge_OnOff_Throttle(
@@ -101,34 +97,8 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2_Mikk
     annotation (Placement(transformation(extent={{152,-78},{132,-98}})));
   Modelica.Blocks.Sources.Constant const10(k=0.015)
     annotation (Placement(transformation(extent={{152,-122},{144,-114}})));
-  Modelica.Blocks.Math.Add         add7
-    annotation (Placement(transformation(extent={{116,48},{96,68}})));
-  Modelica.Blocks.Sources.Constant const15(k=0.01)
-    annotation (Placement(transformation(extent={{140,38},{132,46}})));
   Modelica.Blocks.Sources.Constant const1(k=data.p_steam)
     annotation (Placement(transformation(extent={{-92,-48},{-72,-28}})));
-  Modelica.Blocks.Logical.GreaterThreshold greaterThreshold(threshold=48e6)
-    annotation (Placement(transformation(extent={{240,8},{260,28}})));
-  StagebyStageTurbineSecondary.Control_and_Distribution.PI_Control_Reset_Input
-                                                                    PI_DFV(
-    k=10,
-    Ti=25,
-    k_s=5e-9,
-    k_m=5e-9)
-    annotation (Placement(transformation(extent={{200,54},{180,74}})));
-  StagebyStageTurbineSecondary.Control_and_Distribution.PI_Control_Reset_Input
-                                                                    PI_DCV1(
-    k=10,
-    Ti=25,
-    k_s=5e-9,
-    k_m=5e-9)
-    annotation (Placement(transformation(extent={{186,6},{166,26}})));
-  StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-    minMaxFilter(max=1 - 0.001)
-    annotation (Placement(transformation(extent={{156,6},{136,26}})));
-  StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-    minMaxFilter1(max=1 - 0.01)
-    annotation (Placement(transformation(extent={{160,54},{140,74}})));
   Modelica.Blocks.Math.Min min1
     annotation (Placement(transformation(extent={{92,-80},{112,-60}})));
   Modelica.Blocks.Math.Min min2
@@ -137,6 +107,45 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2_Mikk
     annotation (Placement(transformation(extent={{50,-76},{74,-52}})));
   Modelica.Blocks.Sources.Constant const12(k=48.001e6)
     annotation (Placement(transformation(extent={{140,-84},{164,-60}})));
+  Modelica.Blocks.Sources.Constant const11(k=0.001)
+    annotation (Placement(transformation(extent={{156,32},{148,40}})));
+  Modelica.Blocks.Math.Add         add4
+    annotation (Placement(transformation(extent={{128,42},{108,62}})));
+  Modelica.Blocks.Math.Add         add7
+    annotation (Placement(transformation(extent={{116,90},{96,110}})));
+  Modelica.Blocks.Sources.Constant const15(k=0.01)
+    annotation (Placement(transformation(extent={{140,80},{132,88}})));
+  StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+    minMaxFilter(max=1 - 0.001)
+    annotation (Placement(transformation(extent={{156,48},{136,68}})));
+  StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+    minMaxFilter1(max=1 - 0.01)
+    annotation (Placement(transformation(extent={{160,96},{140,116}})));
+  Modelica.Blocks.Sources.RealExpression
+                                   realExpression1(y=electric_demand)
+    annotation (Placement(transformation(extent={{88,16},{102,28}})));
+  TRANSFORM.Controls.LimPID TCV_SHS(
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    k=2.5e-9,
+    Ti=5,
+    Td=0.1,
+    yMax=1,
+    yMin=0,
+    wd=1,
+    initType=Modelica.Blocks.Types.Init.NoInit,
+    xi_start=1500)
+    annotation (Placement(transformation(extent={{186,48},{166,68}})));
+  TRANSFORM.Controls.LimPID Discharge_OnOFF(
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    k=2.5e-9,
+    Ti=5,
+    Td=0.1,
+    yMax=1,
+    yMin=0,
+    wd=1,
+    initType=Modelica.Blocks.Types.Init.NoInit,
+    xi_start=1500)
+    annotation (Placement(transformation(extent={{206,96},{186,116}})));
 equation
   connect(const5.y,Turb_Divert_Valve. u_s)
     annotation (Line(points={{-83,-126},{-64,-126}}, color={0,0,127}));
@@ -222,18 +231,6 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(const11.y, add4.u2) annotation (Line(points={{147.6,-6},{140,-6},{140,
-          4},{130,4}},
-                   color={0,0,127}));
-  connect(actuatorBus.TCV_SHS, add4.y) annotation (Line(
-      points={{30,-100},{30,10},{107,10}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
   connect(add5.u1, Charge_OnOff_Throttle.y)
     annotation (Line(points={{114,-90},{114,-88},{131,-88}},
                                                  color={0,0,127}));
@@ -242,13 +239,6 @@ equation
                             color={0,0,127}));
   connect(actuatorBus.SHS_throttle, add5.y) annotation (Line(
       points={{30,-100},{30,-96},{91,-96}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(add7.u2, const15.y) annotation (Line(points={{118,52},{122,52},{122,
-          46},{131.6,46},{131.6,42}}, color={0,0,127}));
-  connect(actuatorBus.Discharge_OnOff_Throttle, add7.y) annotation (Line(
-      points={{30,-100},{30,58},{95,58}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -263,34 +253,6 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(TCV_Power.u_s, const1.y)
     annotation (Line(points={{-60,-38},{-71,-38}}, color={0,0,127}));
-  connect(realExpression.y, greaterThreshold.u) annotation (Line(points={{110.7,
-          -26},{224,-26},{224,18},{238,18}}, color={0,0,127}));
-  connect(greaterThreshold.y, PI_DFV.k_in) annotation (Line(points={{261,18},{
-          294,18},{294,14},{320,14},{320,72},{202,72}}, color={255,0,255}));
-  connect(PI_DFV.u_s, realExpression.y) annotation (Line(points={{202,64},{210,
-          64},{210,-26},{110.7,-26}}, color={0,0,127}));
-  connect(sensorBus.Power, PI_DFV.u_m) annotation (Line(
-      points={{-30,-100},{-30,-52},{194,-52},{194,52},{190,52}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorBus.Power, PI_DCV1.u_m) annotation (Line(
-      points={{-30,-100},{-30,-52},{186,-52},{186,-6},{176,-6},{176,4}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(realExpression.y, PI_DCV1.u_s) annotation (Line(points={{110.7,-26},{
-          188,-26},{188,16}}, color={0,0,127}));
-  connect(greaterThreshold.y, PI_DCV1.k_in) annotation (Line(points={{261,18},{
-          304,18},{304,38},{188,38},{188,24}}, color={255,0,255}));
-  connect(PI_DFV.y, minMaxFilter1.u)
-    annotation (Line(points={{179,64},{162,64}}, color={0,0,127}));
-  connect(minMaxFilter1.y, add7.u1)
-    annotation (Line(points={{138.6,64},{118,64}}, color={0,0,127}));
-  connect(add4.u1, minMaxFilter.y)
-    annotation (Line(points={{130,16},{134.6,16}}, color={0,0,127}));
-  connect(minMaxFilter.u, PI_DCV1.y)
-    annotation (Line(points={{158,16},{165,16}}, color={0,0,127}));
   connect(sensorBus.Condensor_Output_mflow, FWCP_mflow.u_m) annotation (Line(
       points={{-30,-100},{-120,-100},{-120,46},{-56,46},{-56,60}},
       color={239,82,82},
@@ -311,8 +273,59 @@ equation
           {238,-70},{238,-88},{154,-88}}, color={0,0,127}));
   connect(min2.u2, const12.y) annotation (Line(points={{172,-76},{168,-76},{168,
           -72},{165.2,-72}}, color={0,0,127}));
+  connect(const11.y,add4. u2) annotation (Line(points={{147.6,36},{140,36},{140,
+          46},{130,46}},
+                   color={0,0,127}));
+  connect(actuatorBus.TCV_SHS,add4. y) annotation (Line(
+      points={{30,-100},{30,52},{107,52}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(add7.u2,const15. y) annotation (Line(points={{118,94},{122,94},{122,
+          88},{131.6,88},{131.6,84}}, color={0,0,127}));
+  connect(actuatorBus.Discharge_OnOff_Throttle,add7. y) annotation (Line(
+      points={{30,-100},{30,100},{95,100}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(minMaxFilter1.y,add7. u1)
+    annotation (Line(points={{138.6,106},{118,106}},
+                                                   color={0,0,127}));
+  connect(add4.u1,minMaxFilter. y)
+    annotation (Line(points={{130,58},{134.6,58}}, color={0,0,127}));
+  connect(minMaxFilter.u,TCV_SHS. y)
+    annotation (Line(points={{158,58},{165,58}}, color={0,0,127}));
+  connect(sensorBus.Power,TCV_SHS. u_m) annotation (Line(
+      points={{-30,-100},{-30,-10},{176,-10},{176,46}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-3,-6},{-3,-6}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(realExpression1.y, TCV_SHS.u_s) annotation (Line(points={{102.7,22},{
+          192,22},{192,58},{188,58}}, color={0,0,127}));
+  connect(minMaxFilter1.u,Discharge_OnOFF. y)
+    annotation (Line(points={{162,106},{185,106}},
+                                                 color={0,0,127}));
+  connect(sensorBus.Power,Discharge_OnOFF. u_m) annotation (Line(
+      points={{-30,-100},{-30,-10},{206,-10},{206,80},{196,80},{196,94}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-3,-6},{-3,-6}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(realExpression1.y, Discharge_OnOFF.u_s) annotation (Line(points={{
+          102.7,22},{226,22},{226,106},{208,106}}, color={0,0,127}));
   annotation (Diagram(graphics={Text(
           extent={{-70,-142},{-20,-160}},
           textColor={28,108,200},
           textString="Feedwater")}));
-end CS_IntermediateControl_PID_TESUC_ImpControl_2_Mikk;
+end CS_IntermediateControl_PID_TESUC_ImpControl_3_AR;

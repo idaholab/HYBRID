@@ -136,7 +136,7 @@ model SMR_SHS_Test_Config_Independent_2
   Modelica.Blocks.Sources.Trapezoid trapezoid(
     amplitude=-20.58e6,
     rising=100,
-    width=8000,
+    width=9800,
     falling=100,
     period=20000,
     offset=47e6,
@@ -160,11 +160,11 @@ model SMR_SHS_Test_Config_Independent_2
   Modelica.Blocks.Sources.Trapezoid trapezoid1(
     amplitude=20.14e6,
     rising=100,
-    width=10000,
+    width=7800,
     falling=100,
     period=20000,
     offset=0,
-    startTime=12000)
+    startTime=14000)
     annotation (Placement(transformation(extent={{68,48},{88,68}})));
   Modelica.Blocks.Sources.Constant const(k=47.5e6)
     annotation (Placement(transformation(extent={{18,68},{38,88}})));
