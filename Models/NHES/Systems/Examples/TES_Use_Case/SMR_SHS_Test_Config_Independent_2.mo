@@ -42,7 +42,7 @@ model SMR_SHS_Test_Config_Independent_2
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
-      CS(electric_demand=demand_BOP.y[1], Overall_Power=sensorW.W))
+      CS(electric_demand=sum1.y, Overall_Power=sensorW.W))
     annotation (Placement(transformation(extent={{60,-20},{100,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
     annotation (Placement(transformation(extent={{112,-22},{152,22}})));
@@ -61,7 +61,7 @@ model SMR_SHS_Test_Config_Independent_2
   EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl_2
     two_Tank_SHS_System_NTU(
     redeclare
-      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_3
+      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_4
       CS,
     redeclare replaceable
       NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
@@ -83,7 +83,7 @@ model SMR_SHS_Test_Config_Independent_2
       charge_pump_m_flow_nominal=100,
       disvalve_m_flow_nom=250,
       disvalve_dp_nominal=100000,
-      chvalve_m_flow_nom=200,
+      chvalve_m_flow_nom=50,
       chvalve_dp_nominal=100000),
     redeclare package Storage_Medium =
         NHES.Media.Hitec.Hitec,
@@ -134,12 +134,12 @@ model SMR_SHS_Test_Config_Independent_2
     startTime=2000)
     annotation (Placement(transformation(extent={{-26,72},{-6,92}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
-    amplitude=-15.58e6,
+    amplitude=-20.58e6,
     rising=100,
     width=8000,
     falling=100,
     period=20000,
-    offset=42e6,
+    offset=47e6,
     startTime=2000)
     annotation (Placement(transformation(extent={{68,80},{88,100}})));
   BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle
@@ -151,20 +151,20 @@ model SMR_SHS_Test_Config_Independent_2
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_1_Intermediate_SmallCycle_AR_2
-      CS(electric_demand=demand_BOP.y[1]))
+      CS(electric_demand=sum1.y))
     annotation (Placement(transformation(extent={{108,-84},{146,-42}})));
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW
     annotation (Placement(transformation(extent={{166,-10},{186,10}})));
   Modelica.Blocks.Math.Add         add
     annotation (Placement(transformation(extent={{110,64},{130,84}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid1(
-    amplitude=25.14e6,
+    amplitude=20.14e6,
     rising=100,
-    width=8000,
+    width=10000,
     falling=100,
     period=20000,
     offset=0,
-    startTime=14000)
+    startTime=12000)
     annotation (Placement(transformation(extent={{68,48},{88,68}})));
   Modelica.Blocks.Sources.Constant const(k=47.5e6)
     annotation (Placement(transformation(extent={{18,68},{38,88}})));
@@ -175,6 +175,8 @@ model SMR_SHS_Test_Config_Independent_2
     timeScale=timeScale,
     fileName=fileName)
     annotation (Placement(transformation(extent={{-96,50},{-76,70}})));
+  Modelica.Blocks.Math.Sum sum1
+    annotation (Placement(transformation(extent={{138,34},{158,54}})));
 equation
 
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)
@@ -249,6 +251,8 @@ equation
           80},{108,80}}, color={0,0,127}));
   connect(trapezoid1.y, add.u2) annotation (Line(points={{89,58},{102,58},{102,
           68},{108,68}}, color={0,0,127}));
+  connect(add.y, sum1.u[1]) annotation (Line(points={{131,74},{136,74},{136,58},
+          {130,58},{130,44},{136,44}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{200,100}}), graphics={
         Ellipse(lineColor = {75,138,73},
