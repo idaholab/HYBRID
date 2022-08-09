@@ -10,7 +10,7 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_AR "Two stage BOP model"
       valve_TCV_mflow=67,
       valve_TCV_dp_nominal=100000,
       valve_SHS_mflow=30,
-      valve_SHS_dp_nominal=700000,
+      valve_SHS_dp_nominal=600000,
       valve_TCV_LPT_mflow=30,
       valve_TCV_LPT_dp_nominal=10000,
       InternalBypassValve_mflow_small=0,
@@ -19,10 +19,12 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_AR "Two stage BOP model"
       HPT_p_exit_nominal=700000,
       HPT_T_in_nominal=579.15,
       HPT_nominal_mflow=67,
+      HPT_efficiency=1,
       LPT_p_in_nominal=700000,
       LPT_p_exit_nominal=7000,
       LPT_T_in_nominal=523.15,
       LPT_nominal_mflow=20,
+      LPT_efficiency=1,
       firstfeedpump_p_nominal=2500000,
       secondfeedpump_p_nominal=2000000));
 
@@ -217,7 +219,8 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_AR "Two stage BOP model"
     energyDynamics=TRANSFORM.Types.Dynamics.DynamicFreeInitial,
     eta_mech=data.LPT_efficiency,
     redeclare model Eta_wetSteam =
-        TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant,
+        TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant (
+          eta_nominal=0.9),
     p_a_start=init.LPT_p_a_start,
     p_b_start=init.LPT_p_b_start,
     T_a_start=init.LPT_T_a_start,

@@ -90,7 +90,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
   TRANSFORM.Controls.LimPID Charge_OnOff_Throttle(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=-4e-7,
-    Ti=1,
+    Ti=5,
     k_s=1,
     k_m=1,
     yMax=1 - 0.015,

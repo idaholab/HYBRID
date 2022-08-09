@@ -2,6 +2,10 @@ within NHES.Systems.Examples.TES_Use_Case;
 model SMR_SHS_Test_Config_Independent_2
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
+ parameter SI.Time timeScale=60*60 "Time scale of first table column";
+ parameter String fileName=Modelica.Utilities.Files.loadResource(
+    "modelica://NHES/Resources/Data/RAVEN/DMM_Dissertation_Demand.txt")
+  "File where matrix is stored";
  Real demandChange=
  min(1.05,
  max(SC.W_totalSetpoint_BOP/SC.W_nominal_BOP*fracNominal_BOP
@@ -38,7 +42,7 @@ model SMR_SHS_Test_Config_Independent_2
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
-      CS(electric_demand=const.y, Overall_Power=sensorW.W))
+      CS(electric_demand=demand_BOP.y[1], Overall_Power=sensorW.W))
     annotation (Placement(transformation(extent={{60,-20},{100,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
     annotation (Placement(transformation(extent={{112,-22},{152,22}})));
@@ -53,7 +57,7 @@ model SMR_SHS_Test_Config_Independent_2
     W_nominal_BOP(displayUnit="MW") = 50000000,
     fileName=Modelica.Utilities.Files.loadResource(
         "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
-    annotation (Placement(transformation(extent={{160,60},{200,100}})));
+    annotation (Placement(transformation(extent={{158,60},{198,100}})));
   EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl_2
     two_Tank_SHS_System_NTU(
     redeclare
@@ -61,11 +65,11 @@ model SMR_SHS_Test_Config_Independent_2
       CS,
     redeclare replaceable
       NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
-      ht_level_max=500,
+      ht_level_max=1000,
       ht_area=100,
       ht_surface_pressure=120000,
       hot_tank_init_temp=513.15,
-      cold_tank_level_max=500,
+      cold_tank_level_max=1000,
       cold_tank_area=100,
       ct_surface_pressure=120000,
       cold_tank_init_temp=453.15,
@@ -84,7 +88,7 @@ model SMR_SHS_Test_Config_Independent_2
     redeclare package Storage_Medium =
         NHES.Media.Hitec.Hitec,
     m_flow_min=0.1,
-    tank_height=500,
+    tank_height=1000,
     Steam_Output_Temp=stateSensor6.temperature.T)
     annotation (Placement(transformation(extent={{-18,-76},{22,-36}})));
 
@@ -147,7 +151,7 @@ model SMR_SHS_Test_Config_Independent_2
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_1_Intermediate_SmallCycle_AR_2
-      CS(electric_demand=const.y))
+      CS(electric_demand=demand_BOP.y[1]))
     annotation (Placement(transformation(extent={{108,-84},{146,-42}})));
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW
     annotation (Placement(transformation(extent={{166,-10},{186,10}})));
@@ -164,6 +168,13 @@ model SMR_SHS_Test_Config_Independent_2
     annotation (Placement(transformation(extent={{68,48},{88,68}})));
   Modelica.Blocks.Sources.Constant const(k=47.5e6)
     annotation (Placement(transformation(extent={{18,68},{38,88}})));
+  Modelica.Blocks.Sources.CombiTimeTable demand_BOP(
+    tableOnFile=true,
+    startTime=0,
+    tableName="BOP",
+    timeScale=timeScale,
+    fileName=fileName)
+    annotation (Placement(transformation(extent={{-96,50},{-76,70}})));
 equation
 
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)

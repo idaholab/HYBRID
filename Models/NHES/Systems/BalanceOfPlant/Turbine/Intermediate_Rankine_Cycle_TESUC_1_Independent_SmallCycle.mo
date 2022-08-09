@@ -5,6 +5,7 @@ model Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle
     redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
     redeclare Data.IntermediateTurbine data(
+      p_condensor=7000,
       V_FeedwaterMixVolume=10,
       V_Header=10,
       R_entry=8e4,
@@ -16,8 +17,10 @@ model Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle
       InternalBypassValve_p_spring=15000000,
       InternalBypassValve_K=40,
       LPT_p_in_nominal=1200000,
+      LPT_p_exit_nominal=7000,
       LPT_T_in_nominal=491.15,
       LPT_nominal_mflow=26.83,
+      LPT_efficiency=1,
       firstfeedpump_p_nominal=2000000,
       secondfeedpump_p_nominal=2000000));
 
@@ -54,7 +57,8 @@ model Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle
     energyDynamics=TRANSFORM.Types.Dynamics.DynamicFreeInitial,
     eta_mech=data.LPT_efficiency,
     redeclare model Eta_wetSteam =
-        TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant,
+        TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant (
+          eta_nominal=0.9),
     p_a_start=init.LPT_p_a_start,
     p_b_start=init.LPT_p_b_start,
     T_a_start=init.LPT_T_a_start,
