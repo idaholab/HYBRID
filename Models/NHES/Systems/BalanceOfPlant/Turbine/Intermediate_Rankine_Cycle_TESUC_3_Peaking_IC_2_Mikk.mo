@@ -5,10 +5,13 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_Mikk
     redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
     redeclare Data.IntermediateTurbine data(
+      p_condensor=7000,
       V_FeedwaterMixVolume=25,
       V_Header=10,
-      valve_SHS_mflow=30,
-      valve_SHS_dp_nominal=1200000,
+      valve_TCV_mflow=67,
+      valve_TCV_dp_nominal=100000,
+      valve_SHS_mflow=20,
+      valve_SHS_dp_nominal=1300000,
       valve_TCV_LPT_mflow=30,
       valve_TCV_LPT_dp_nominal=10000,
       InternalBypassValve_mflow_small=0,
@@ -275,8 +278,8 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_Mikk
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=0,
         origin={94,-148})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Modelica.Media.Water.StandardWater)            annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)            annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,

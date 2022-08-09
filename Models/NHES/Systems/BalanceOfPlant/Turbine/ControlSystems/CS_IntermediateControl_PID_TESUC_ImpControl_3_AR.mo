@@ -95,7 +95,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_3_AR
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
     annotation (Placement(transformation(extent={{152,-78},{132,-98}})));
-  Modelica.Blocks.Sources.Constant const10(k=0.015)
+  Modelica.Blocks.Sources.Constant const10(k=0.010)
     annotation (Placement(transformation(extent={{152,-122},{144,-114}})));
   Modelica.Blocks.Sources.Constant const1(k=data.p_steam)
     annotation (Placement(transformation(extent={{-92,-48},{-72,-28}})));
