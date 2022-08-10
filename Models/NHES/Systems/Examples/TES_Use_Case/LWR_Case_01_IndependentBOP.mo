@@ -1,5 +1,6 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model SMR_SHS_Test_Config_Independent_SmallTanks
+model LWR_Case_01_IndependentBOP
+  "TES use case demonstration of a NuScale-style LWR operating within an energy arbitrage IES, storing and dispensing energy on demand from a two tank molten salt energy storage system nominally using HITEC salt to store heat."
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
  parameter SI.Time timeScale=60*60 "Time scale of first table column";
@@ -285,4 +286,4 @@ equation
 <p>System is based upon report: Frick, Konor L. Status Report on the NuScale Module Developed in the Modelica Framework. United States: N. p., 2019. Web. doi:10.2172/1569288.</p>
 </html>"),
     __Dymola_experimentSetupOutput(events=false));
-end SMR_SHS_Test_Config_Independent_SmallTanks;
+end LWR_Case_01_IndependentBOP;
