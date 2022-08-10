@@ -23,9 +23,9 @@ model CS_Boiler_03_GMI_TempControl_5
     annotation (Placement(transformation(extent={{-56,-26},{-50,-20}})));
   Modelica.Blocks.Math.Min min2
     annotation (Placement(transformation(extent={{-80,-32},{-72,-24}})));
-  Modelica.Blocks.Sources.Constant one4(k=5)
+  Modelica.Blocks.Sources.Constant one4(k=1.25)
     annotation (Placement(transformation(extent={{-94,-32},{-90,-28}})));
-  Modelica.Blocks.Sources.Constant one5(k=-4)
+  Modelica.Blocks.Sources.Constant one5(k=-0.25)
     annotation (Placement(transformation(extent={{-68,-24},{-62,-18}})));
   TRANSFORM.Controls.LimPID PID3(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -216,5 +216,10 @@ annotation(defaultComponentName="changeMe_CS", Icon(graphics={
           lineThickness=1,
           fillColor={255,255,237},
           fillPattern=FillPattern.Solid,
-          textString="Change Me")}));
+          textString="Change Me")}),
+    Diagram(graphics={Text(
+          extent={{-170,20},{-126,14}},
+          textColor={28,108,200},
+          textString="Don't set lower bound lower than -9
+"), Line(points={{-142,16},{-136,12}}, color={28,108,200})}));
 end CS_Boiler_03_GMI_TempControl_5;

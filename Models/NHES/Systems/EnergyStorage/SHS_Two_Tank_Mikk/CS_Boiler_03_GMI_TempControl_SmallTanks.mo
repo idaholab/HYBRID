@@ -1,5 +1,5 @@
 within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
-model CS_Boiler_03_GMI_TempControl_4_Mikk
+model CS_Boiler_03_GMI_TempControl_SmallTanks
 
   extends BaseClasses.Partial_ControlSystem;
 
@@ -25,7 +25,7 @@ model CS_Boiler_03_GMI_TempControl_4_Mikk
     annotation (Placement(transformation(extent={{-80,-32},{-72,-24}})));
   Modelica.Blocks.Sources.Constant one4(k=1.25)
     annotation (Placement(transformation(extent={{-94,-32},{-90,-28}})));
-  Modelica.Blocks.Sources.Constant one5(k=-1.0*(one4.k) + 1)
+  Modelica.Blocks.Sources.Constant one5(k=-0.25)
     annotation (Placement(transformation(extent={{-68,-24},{-62,-18}})));
   TRANSFORM.Controls.LimPID PID3(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -82,17 +82,15 @@ model CS_Boiler_03_GMI_TempControl_4_Mikk
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=-1e-2,
     Ti=20,
-    yMax=20,
-    yMin=-20,
+    yMax=40,
+    yMin=-9,
     initType=Modelica.Blocks.Types.Init.InitialOutput,
     y_start=1)
     annotation (Placement(transformation(extent={{-136,4},{-128,12}})));
   Modelica.Blocks.Math.Add add5
     annotation (Placement(transformation(extent={{-116,16},{-110,22}})));
-  Modelica.Blocks.Sources.Constant one10(k=28)
+  Modelica.Blocks.Sources.Constant one10(k=30)
     annotation (Placement(transformation(extent={{-148,26},{-142,32}})));
-  Modelica.Blocks.Sources.Constant one11(k=240 + 273.15)
-    annotation (Placement(transformation(extent={{-62,-18},{-56,-12}})));
 equation
 
   connect(product2.y, Charging_Valve_Position_MinMax.u) annotation (Line(points={{-11.7,
@@ -178,11 +176,18 @@ equation
       index=-1,
       extent={{-3,-6},{-3,-6}},
       horizontalAlignment=TextAlignment.Right));
+  connect(sensorBus.charge_m_flow, PID5.u_m) annotation (Line(
+      points={{-30,-100},{-30,-70},{-102,-70},{-102,-8},{-41,-8},{-41,-13.4}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   connect(sensorBus.ChargeSteam_mFlow, product3.u2) annotation (Line(
       points={{-30,-100},{-30,-70},{-102,-70},{-102,0},{-86.8,0},{-86.8,3.6}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(add4.y, PID5.u_s) annotation (Line(points={{-63.7,13},{-62,13},{-62,
+          -14},{-48,-14},{-48,-17},{-44.6,-17}}, color={0,0,127}));
   connect(one9.y, add4.u1) annotation (Line(points={{-79.7,19},{-76,19},{-76,
           14.8},{-70.6,14.8}}, color={0,0,127}));
   connect(product3.y, add4.u2) annotation (Line(points={{-77.6,6},{-74,6},{-74,
@@ -204,17 +209,6 @@ equation
       index=-1,
       extent={{-3,-6},{-3,-6}},
       horizontalAlignment=TextAlignment.Right));
-  connect(sensorBus.Charge_Temp, PID5.u_m) annotation (Line(
-      points={{-30,-100},{-30,-24},{-46,-24},{-46,-13.4},{-41,-13.4}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{6,3},{6,3}},
-      horizontalAlignment=TextAlignment.Left));
-  connect(PID5.u_s, one11.y) annotation (Line(points={{-44.6,-17},{-50,-17},{
-          -50,-15},{-55.7,-15}}, color={0,0,127}));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics={
         Text(
           extent={{-94,82},{94,74}},
@@ -222,5 +216,10 @@ annotation(defaultComponentName="changeMe_CS", Icon(graphics={
           lineThickness=1,
           fillColor={255,255,237},
           fillPattern=FillPattern.Solid,
-          textString="Change Me")}));
-end CS_Boiler_03_GMI_TempControl_4_Mikk;
+          textString="Change Me")}),
+    Diagram(graphics={Text(
+          extent={{-170,20},{-126,14}},
+          textColor={28,108,200},
+          textString="Don't set lower bound lower than -9
+"), Line(points={{-142,16},{-136,12}}, color={28,108,200})}));
+end CS_Boiler_03_GMI_TempControl_SmallTanks;

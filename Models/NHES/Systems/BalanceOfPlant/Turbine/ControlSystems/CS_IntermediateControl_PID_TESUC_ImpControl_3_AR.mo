@@ -95,7 +95,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_3_AR
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
     annotation (Placement(transformation(extent={{152,-78},{132,-98}})));
-  Modelica.Blocks.Sources.Constant const10(k=0.010)
+  Modelica.Blocks.Sources.Constant const10(k=0.015)
     annotation (Placement(transformation(extent={{152,-122},{144,-114}})));
   Modelica.Blocks.Sources.Constant const1(k=data.p_steam)
     annotation (Placement(transformation(extent={{-92,-48},{-72,-28}})));
@@ -107,7 +107,7 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_3_AR
     annotation (Placement(transformation(extent={{50,-76},{74,-52}})));
   Modelica.Blocks.Sources.Constant const12(k=52.001e6)
     annotation (Placement(transformation(extent={{140,-84},{164,-60}})));
-  Modelica.Blocks.Sources.Constant const11(k=0.001)
+  Modelica.Blocks.Sources.Constant const11(k=0.01)
     annotation (Placement(transformation(extent={{156,32},{148,40}})));
   Modelica.Blocks.Math.Add         add4
     annotation (Placement(transformation(extent={{128,42},{108,62}})));

@@ -150,7 +150,7 @@ model SMR_SHS_Test_Config_Peaking_ImpControl_2_Mikk
     period=20000,
     offset=47e6,
     startTime=2000)
-    annotation (Placement(transformation(extent={{76,74},{96,94}})));
+    annotation (Placement(transformation(extent={{64,84},{84,104}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid2(
     amplitude=20.14e6,
     rising=100,
@@ -159,18 +159,18 @@ model SMR_SHS_Test_Config_Peaking_ImpControl_2_Mikk
     period=20000,
     offset=0,
     startTime=14000)
-    annotation (Placement(transformation(extent={{76,42},{96,62}})));
+    annotation (Placement(transformation(extent={{94,96},{114,116}})));
   Modelica.Blocks.Math.Add         add
     annotation (Placement(transformation(extent={{118,58},{138,78}})));
   Modelica.Blocks.Math.Sum sum1
-    annotation (Placement(transformation(extent={{146,28},{166,48}})));
+    annotation (Placement(transformation(extent={{136,88},{156,108}})));
   Modelica.Blocks.Sources.CombiTimeTable demand_BOP(
     tableOnFile=true,
     startTime=0,
     tableName="BOP",
     timeScale=timeScale,
     fileName=fileName)
-    annotation (Placement(transformation(extent={{-88,46},{-68,66}})));
+    annotation (Placement(transformation(extent={{-80,62},{-60,82}})));
 equation
 
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)
@@ -233,12 +233,14 @@ equation
         color={0,127,255}));
   connect(stateSensor5.port_b, intermediate_Rankine_Cycle_TESUC.port_a1)
     annotation (Line(points={{30,-30},{69.2,-30},{69.2,-19.2}}, color={0,127,255}));
-  connect(trapezoid2.y, add.u2) annotation (Line(points={{97,52},{110,52},{110,62},
-          {116,62}}, color={0,0,127}));
-  connect(trapezoid1.y, add.u1) annotation (Line(points={{97,84},{110,84},{110,74},
-          {116,74}}, color={0,0,127}));
-  connect(demand_BOP.y[1], sum1.u[1]) annotation (Line(points={{-67,56},{-56,56},
-          {-56,62},{72,62},{72,38},{144,38}}, color={0,0,127}));
+  connect(trapezoid2.y, add.u2) annotation (Line(points={{115,106},{120,106},{
+          120,82},{108,82},{108,62},{116,62}},
+                     color={0,0,127}));
+  connect(trapezoid1.y, add.u1) annotation (Line(points={{85,94},{90,94},{90,78},
+          {110,78},{110,74},{116,74}},
+                     color={0,0,127}));
+  connect(add.y, sum1.u[1]) annotation (Line(points={{139,68},{144,68},{144,84},
+          {128,84},{128,98},{134,98}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{200,100}}), graphics={
         Ellipse(lineColor = {75,138,73},

@@ -43,11 +43,11 @@ model SMR_SHS_Test_Config_Independent_2
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
       CS(electric_demand=sum1.y, Overall_Power=sensorW.W))
-    annotation (Placement(transformation(extent={{60,-20},{100,20}})));
+    annotation (Placement(transformation(extent={{50,-20},{90,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
-    annotation (Placement(transformation(extent={{112,-22},{152,22}})));
+    annotation (Placement(transformation(extent={{98,-22},{138,22}})));
   ElectricalGrid.InfiniteGrid.Infinite EG
-    annotation (Placement(transformation(extent={{200,-20},{240,20}})));
+    annotation (Placement(transformation(extent={{160,-20},{200,20}})));
   BaseClasses.Data_Capacity dataCapacity(IP_capacity(displayUnit="MW")=
       53303300, BOP_capacity(displayUnit="MW") = 1165000000)
     annotation (Placement(transformation(extent={{-100,82},{-80,102}})));
@@ -99,7 +99,7 @@ model SMR_SHS_Test_Config_Independent_2
     annotation (Placement(transformation(extent={{-38,2},{-24,20}})));
   Fluid.Sensors.stateSensor stateSensor2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{38,0},{52,18}})));
+    annotation (Placement(transformation(extent={{32,0},{46,18}})));
   Fluid.Sensors.stateDisplay stateDisplay2
     annotation (Placement(transformation(extent={{24,26},{70,56}})));
   Fluid.Sensors.stateSensor stateSensor3(redeclare package Medium =
@@ -141,7 +141,7 @@ model SMR_SHS_Test_Config_Independent_2
     period=20000,
     offset=47e6,
     startTime=2000)
-    annotation (Placement(transformation(extent={{68,80},{88,100}})));
+    annotation (Placement(transformation(extent={{66,112},{86,132}})));
   BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
     port_a_nominal(
@@ -154,9 +154,9 @@ model SMR_SHS_Test_Config_Independent_2
       CS(electric_demand=sum1.y))
     annotation (Placement(transformation(extent={{108,-84},{146,-42}})));
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW
-    annotation (Placement(transformation(extent={{166,-10},{186,10}})));
+    annotation (Placement(transformation(extent={{142,-6},{156,6}})));
   Modelica.Blocks.Math.Add         add
-    annotation (Placement(transformation(extent={{110,64},{130,84}})));
+    annotation (Placement(transformation(extent={{108,96},{128,116}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid1(
     amplitude=20.14e6,
     rising=100,
@@ -165,7 +165,7 @@ model SMR_SHS_Test_Config_Independent_2
     period=20000,
     offset=0,
     startTime=14000)
-    annotation (Placement(transformation(extent={{68,48},{88,68}})));
+    annotation (Placement(transformation(extent={{66,76},{86,96}})));
   Modelica.Blocks.Sources.Constant const(k=47.5e6)
     annotation (Placement(transformation(extent={{18,68},{38,88}})));
   Modelica.Blocks.Sources.CombiTimeTable demand_BOP(
@@ -174,16 +174,16 @@ model SMR_SHS_Test_Config_Independent_2
     tableName="BOP",
     timeScale=timeScale,
     fileName=fileName)
-    annotation (Placement(transformation(extent={{-96,50},{-76,70}})));
+    annotation (Placement(transformation(extent={{-98,112},{-78,132}})));
   Modelica.Blocks.Math.Sum sum1
-    annotation (Placement(transformation(extent={{138,34},{158,54}})));
+    annotation (Placement(transformation(extent={{134,102},{154,122}})));
 equation
 
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)
-    annotation (Line(points={{28,-6},{44,-6},{44,-8},{60,-8}},
+    annotation (Line(points={{28,-6},{36,-6},{36,-8},{50,-8}},
                                                color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC.portElec_b, SY.port_a[1])
-    annotation (Line(points={{100,0},{108,0},{108,-1.1},{112,-1.1}}, color={255,
+    annotation (Line(points={{90,0},{98,0},{98,-1.1}},               color={255,
           0,0}));
   connect(SMR_Taveprogram.port_b, stateSensor1.port_a) annotation (Line(points={{
           -51.0909,12.7692},{-51.0909,11},{-38,11}},  color={0,127,255}));
@@ -192,13 +192,13 @@ equation
   connect(stateSensor1.statePort, stateDisplay1.statePort) annotation (Line(
         points={{-30.965,11.045},{-22,11.045},{-22,14},{-20,14},{-20,24},{-29,24},
           {-29,39.1}}, color={0,0,0}));
-  connect(EM.port_b2, stateSensor2.port_a) annotation (Line(points={{28,10},{30,
-          10},{30,12},{34,12},{34,9},{38,9}}, color={0,127,255}));
+  connect(EM.port_b2, stateSensor2.port_a) annotation (Line(points={{28,10},{32,
+          10},{32,9}},                        color={0,127,255}));
   connect(stateSensor2.port_b, intermediate_Rankine_Cycle_TESUC.port_a)
-    annotation (Line(points={{52,9},{54,9},{54,10},{60,10},{60,8}}, color={0,127,
+    annotation (Line(points={{46,9},{48,9},{48,8},{50,8}},          color={0,127,
           255}));
   connect(stateSensor2.statePort, stateDisplay2.statePort) annotation (Line(
-        points={{45.035,9.045},{45.035,37.1},{47,37.1}}, color={0,0,0}));
+        points={{39.035,9.045},{39.035,37.1},{47,37.1}}, color={0,0,0}));
   connect(SMR_Taveprogram.port_a, stateSensor3.port_b) annotation (Line(points={{
           -51.0909,-1.44615},{-46,-1.44615},{-46,-6},{-40,-6}},  color={0,127,255}));
   connect(stateSensor3.port_a, EM.port_b1)
@@ -230,7 +230,7 @@ equation
       Line(points={{21.6,-44.4},{42,-44.4},{42,-55},{48,-55}},          color={0,
           127,255}));
   connect(stateSensor5.port_b, intermediate_Rankine_Cycle_TESUC.port_a1)
-    annotation (Line(points={{30,-30},{67.2,-30},{67.2,-19.2}}, color={0,127,255}));
+    annotation (Line(points={{30,-30},{57.2,-30},{57.2,-19.2}}, color={0,127,255}));
   connect(stateSensor6.port_b,
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_a)
     annotation (Line(points={{62,-68},{100,-68},{100,-60},{102,-60},{102,-56},{
@@ -240,19 +240,22 @@ equation
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_b)
     annotation (Line(points={{68,-55},{68,-71.4},{108,-71.4}}, color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.portElec_b,
-    SY.port_a[2]) annotation (Line(points={{146,-63},{152,-63},{152,-26},{108,
-          -26},{108,1.1},{112,1.1}},
+    SY.port_a[2]) annotation (Line(points={{146,-63},{144,-63},{144,-28},{94,
+          -28},{94,0},{98,0},{98,1.1}},
                                 color={255,0,0}));
   connect(SY.port_Grid, sensorW.port_a)
-    annotation (Line(points={{152,0},{166,0}}, color={255,0,0}));
+    annotation (Line(points={{138,0},{142,0}}, color={255,0,0}));
   connect(sensorW.port_b, EG.portElec_a)
-    annotation (Line(points={{186,0},{200,0}}, color={255,0,0}));
-  connect(trapezoid.y, add.u1) annotation (Line(points={{89,90},{102,90},{102,
-          80},{108,80}}, color={0,0,127}));
-  connect(trapezoid1.y, add.u2) annotation (Line(points={{89,58},{102,58},{102,
-          68},{108,68}}, color={0,0,127}));
-  connect(add.y, sum1.u[1]) annotation (Line(points={{131,74},{136,74},{136,58},
-          {130,58},{130,44},{136,44}}, color={0,0,127}));
+    annotation (Line(points={{156,0},{160,0}}, color={255,0,0}));
+  connect(trapezoid.y, add.u1) annotation (Line(points={{87,122},{87,118},{100,
+          118},{100,112},{106,112}},
+                         color={0,0,127}));
+  connect(trapezoid1.y, add.u2) annotation (Line(points={{87,86},{100,86},{100,
+          100},{106,100}},
+                         color={0,0,127}));
+  connect(add.y, sum1.u[1]) annotation (Line(points={{129,106},{128,106},{128,
+          92},{98,92},{98,118},{132,118},{132,112}},
+                                       color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{200,100}}), graphics={
         Ellipse(lineColor = {75,138,73},
