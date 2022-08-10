@@ -2,6 +2,10 @@ within NHES.Systems.Examples.TES_Use_Case;
 model SMR_SHS_Test_Config_Peaking_ImpControl_2_Mikk
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
+ parameter SI.Time timeScale=60*60 "Time scale of first table column";
+ parameter String fileName=Modelica.Utilities.Files.loadResource(
+    "modelica://NHES/Resources/Data/RAVEN/DMM_Dissertation_Demand.txt")
+  "File where matrix is stored";
  Real demandChange=
  min(1.05,
  max(SC.W_totalSetpoint_BOP/SC.W_nominal_BOP*fracNominal_BOP
@@ -57,7 +61,7 @@ model SMR_SHS_Test_Config_Peaking_ImpControl_2_Mikk
   EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl_2
     two_Tank_SHS_System_NTU(
     redeclare
-      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_4
+      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_5
       CS,
     redeclare replaceable
       NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
@@ -70,7 +74,7 @@ model SMR_SHS_Test_Config_Peaking_ImpControl_2_Mikk
       ct_surface_pressure=120000,
       cold_tank_init_temp=453.15,
       m_flow_ch_min=0.1,
-      DHX_NTU=10,
+      DHX_NTU=20,
       DHX_K_tube(unit="1/m4"),
       DHX_K_shell(unit="1/m4"),
       DHX_p_start_tube=120000,
@@ -160,6 +164,13 @@ model SMR_SHS_Test_Config_Peaking_ImpControl_2_Mikk
     annotation (Placement(transformation(extent={{118,58},{138,78}})));
   Modelica.Blocks.Math.Sum sum1
     annotation (Placement(transformation(extent={{146,28},{166,48}})));
+  Modelica.Blocks.Sources.CombiTimeTable demand_BOP(
+    tableOnFile=true,
+    startTime=0,
+    tableName="BOP",
+    timeScale=timeScale,
+    fileName=fileName)
+    annotation (Placement(transformation(extent={{-88,46},{-68,66}})));
 equation
 
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)
@@ -226,8 +237,8 @@ equation
           {116,62}}, color={0,0,127}));
   connect(trapezoid1.y, add.u1) annotation (Line(points={{97,84},{110,84},{110,74},
           {116,74}}, color={0,0,127}));
-  connect(add.y, sum1.u[1]) annotation (Line(points={{139,68},{144,68},{144,48},
-          {134,48},{134,38},{144,38}}, color={0,0,127}));
+  connect(demand_BOP.y[1], sum1.u[1]) annotation (Line(points={{-67,56},{-56,56},
+          {-56,62},{72,62},{72,38},{144,38}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{200,100}}), graphics={
         Ellipse(lineColor = {75,138,73},

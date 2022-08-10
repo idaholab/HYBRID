@@ -192,16 +192,16 @@ model Two_Tank_SHS_System_NTU_GMI_TempControl_2
         rotation=270,
         origin={-44,-54})));
 
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_ch_a(redeclare package Medium
-      = Charging_Medium)                                                                           annotation (Placement(
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_ch_a(redeclare package Medium =
+        Charging_Medium)                                                                           annotation (Placement(
         transformation(extent={{-108,-72},{-88,-52}}), iconTransformation(
           extent={{-108,-72},{-88,-52}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_State port_ch_b(redeclare package Medium
-      = Charging_Medium)                                                                            annotation (Placement(
+  TRANSFORM.Fluid.Interfaces.FluidPort_State port_ch_b(redeclare package Medium =
+        Charging_Medium)                                                                            annotation (Placement(
         transformation(extent={{-108,44},{-88,64}}), iconTransformation(extent={
             {-108,44},{-88,64}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_dch_a(redeclare package Medium
-      = Discharging_Medium)                                                                            annotation (Placement(
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_dch_a(redeclare package Medium =
+        Discharging_Medium)                                                                            annotation (Placement(
         transformation(extent={{88,48},{108,68}}), iconTransformation(extent={{88,
             48},{108,68}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_State port_dch_b(redeclare package
@@ -213,21 +213,21 @@ model Two_Tank_SHS_System_NTU_GMI_TempControl_2
       redeclare package Medium =
         Storage_Medium, R=100)
     annotation (Placement(transformation(extent={{-4,-86},{16,-66}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
-      = Storage_Medium)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
+        Storage_Medium)
     annotation (Placement(transformation(extent={{-34,-86},{-14,-66}})));
   Modelica.Blocks.Sources.RealExpression Coolant_Water_temp(y=sensor_T1.T)
     annotation (Placement(transformation(extent={{-68,76},{-48,96}})));
   Modelica.Blocks.Sources.RealExpression Hot_Tank_Temp(y=hot_tank.T)
     annotation (Placement(transformation(extent={{-68,96},{-48,116}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium
-      = Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-78,-40},{-58,-20}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T2(redeclare package Medium
-      = Storage_Medium)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T2(redeclare package Medium =
+        Storage_Medium)
     annotation (Placement(transformation(extent={{36,34},{56,54}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,

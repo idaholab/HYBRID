@@ -103,9 +103,9 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_3_AR
     annotation (Placement(transformation(extent={{92,-80},{112,-60}})));
   Modelica.Blocks.Math.Min min2
     annotation (Placement(transformation(extent={{174,-80},{194,-60}})));
-  Modelica.Blocks.Sources.Constant const6(k=48e6)
+  Modelica.Blocks.Sources.Constant const6(k=52e6)
     annotation (Placement(transformation(extent={{50,-76},{74,-52}})));
-  Modelica.Blocks.Sources.Constant const12(k=48.001e6)
+  Modelica.Blocks.Sources.Constant const12(k=52.001e6)
     annotation (Placement(transformation(extent={{140,-84},{164,-60}})));
   Modelica.Blocks.Sources.Constant const11(k=0.001)
     annotation (Placement(transformation(extent={{156,32},{148,40}})));
