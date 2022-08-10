@@ -1,5 +1,5 @@
 within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
-model Two_Tank_SHS_System_NTU_GMI_TempControl_2
+model Two_Tank_SHS_System_NTU_GMI_TempControl_2_new_pumps
     extends BaseClasses.Partial_SubSystem_A(    redeclare replaceable CS_Boiler_04 CS,
     redeclare replaceable ED_Dummy ED,
     redeclare replaceable Data.Data_SHS data(DHX_v_shell=1.0));
@@ -79,7 +79,11 @@ model Two_Tank_SHS_System_NTU_GMI_TempControl_2
     diameter=data.discharge_pump_diameter,
     redeclare model FlowChar =
         TRANSFORM.Fluid.ClosureRelations.PumpCharacteristics.Models.Head.PerformanceCurve
-        (V_flow_curve={0,1,2}, head_curve={20,8,0}),
+        (V_flow_curve={0,0.5*(data.discharge_pump_m_flow_nominal/data.discharge_pump_rho_nominal),
+            (data.discharge_pump_m_flow_nominal/data.discharge_pump_rho_nominal)},
+          head_curve={(data.discharge_pump_dp_nominal/(9.81*data.discharge_pump_rho_nominal)),
+            (data.discharge_pump_dp_nominal/(9.81*data.discharge_pump_rho_nominal))
+            *0.4,0}),
     N_nominal=data.discharge_pump_rpm_nominal,
     diameter_nominal=data.discharge_pump_diameter_nominal,
     dp_nominal=data.discharge_pump_dp_nominal,
@@ -119,7 +123,11 @@ model Two_Tank_SHS_System_NTU_GMI_TempControl_2
     diameter=data.charge_pump_diamter,
     redeclare model FlowChar =
         TRANSFORM.Fluid.ClosureRelations.PumpCharacteristics.Models.Head.PerformanceCurve
-        (V_flow_curve={0,1,2}, head_curve={20,8,0}),
+        (V_flow_curve={0,0.5*(data.charge_pump_m_flow_nominal/data.charge_pump_rho_nominal),
+            (data.charge_pump_m_flow_nominal/data.charge_pump_rho_nominal)},
+          head_curve={(data.charge_pump_dp_nominal/(9.81*data.charge_pump_rho_nominal)),
+            (data.charge_pump_dp_nominal/(9.81*data.charge_pump_rho_nominal))*
+            0.4,0}),
     N_nominal=data.charge_pump_rpm_nominal,
     diameter_nominal=data.charge_pump_diameter_nominal,
     dp_nominal=data.charge_pump_dp_nominal,
@@ -214,25 +222,6 @@ model Two_Tank_SHS_System_NTU_GMI_TempControl_2
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={-86,6})));
-  Modelica.Fluid.Sources.MassFlowSource_h boundary2(
-    redeclare package Medium = Charging_Medium,
-    use_m_flow_in=false,
-    use_h_in=true,
-    m_flow=m_flow_min,
-    nPorts=1) annotation (Placement(transformation(extent={{-126,-182},{-106,
-            -162}})));
-  BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
-    delay1(Ti=0.5)
-    annotation (Placement(transformation(extent={{-144,-170},{-136,-166}})));
-  Modelica.Blocks.Sources.RealExpression Level_Hot_Tank1(y=CHX.Shell.medium.h)
-    annotation (Placement(transformation(extent={{-170,-178},{-150,-158}})));
-  Modelica.Fluid.Sources.MassFlowSource_T boundary4(
-    redeclare package Medium = Charging_Medium,
-    use_m_flow_in=false,
-    use_T_in=false,
-    m_flow=-m_flow_min,
-    T=413.15,
-    nPorts=2) annotation (Placement(transformation(extent={{-168,-56},{-148,-36}})));
 equation
   connect(volume.port_a, Discharging_Valve.port_b)
     annotation (Line(points={{68,-22},{68,-32}},   color={0,127,255}));
@@ -354,12 +343,6 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(CHX.Shell_in,boundary2. ports[1]) annotation (Line(points={{-46,-64},
-          {-46,-150},{-100,-150},{-100,-172},{-106,-172}},
-                                                   color={0,127,255}));
-  connect(CHX.Shell_out,boundary4. ports[1]) annotation (Line(points={{-46,-44},
-          {-46,-40},{-120,-40},{-120,-45.5},{-148,-45.5}},
-                                      color={0,127,255}));
   annotation (experiment(
       StopTime=432000,
       Interval=37,
@@ -628,4 +611,4 @@ equation
           fillColor={85,85,255},
           fillPattern=FillPattern.HorizontalCylinder,
           lineThickness=1)}));
-end Two_Tank_SHS_System_NTU_GMI_TempControl_2;
+end Two_Tank_SHS_System_NTU_GMI_TempControl_2_new_pumps;
