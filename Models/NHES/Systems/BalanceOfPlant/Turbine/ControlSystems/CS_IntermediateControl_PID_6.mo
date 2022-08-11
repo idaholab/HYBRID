@@ -13,8 +13,7 @@ model CS_IntermediateControl_PID_6
     Td=0.1,
     yMax=1,
     yMin=0,
-    initType=Modelica.Blocks.Types.Init.InitialState,
-    xi_start=1500)
+    initType=Modelica.Blocks.Types.Init.NoInit)
     annotation (Placement(transformation(extent={{-60,-58},{-40,-38}})));
   Modelica.Blocks.Sources.Constant const5(k=data.T_Feedwater)
     annotation (Placement(transformation(extent={{-92,-56},{-72,-36}})));
@@ -40,15 +39,12 @@ model CS_IntermediateControl_PID_6
     annotation (Placement(transformation(extent={{-32,-56},{-24,-48}})));
   Modelica.Blocks.Math.Add         add2
     annotation (Placement(transformation(extent={{-8,-56},{12,-36}})));
-  StagebyStageTurbineSecondary.Control_and_Distribution.Timer             timer(
-      Start_Time=1e-2)
-    annotation (Placement(transformation(extent={{-32,-44},{-24,-36}})));
   Data.Intermediate_Rankine_Setpoints data(
-    p_steam(displayUnit="Pa") = 1197000,
+    p_steam(displayUnit="bar") = 3400000,
     p_steam_vent(displayUnit="Pa") = 15000000,
-    T_Steam_Ref=491.15,
-    Q_Nom=18.57e6,
-    T_Feedwater=309.9)
+    T_Steam_Ref=579.15,
+    Q_Nom=30e6,
+    T_Feedwater=323.15)
     annotation (Placement(transformation(extent={{-98,12},{-78,32}})));
   Modelica.Blocks.Sources.Constant const(k=data.Q_Nom)
     annotation (Placement(transformation(extent={{62,-12},{82,8}})));
@@ -110,11 +106,6 @@ equation
   connect(add2.u2,const8. y) annotation (Line(points={{-10,-52},{-23.6,-52}},
                                                                          color=
           {0,0,127}));
-  connect(add2.u1,timer. y) annotation (Line(points={{-10,-40},{-23.44,-40}},
-                                                                color={0,0,127}));
-  connect(Turb_Divert_Valve.y,timer. u) annotation (Line(points={{-39,-48},{-36,
-          -48},{-36,-40},{-32.8,-40}},                               color={0,0,
-          127}));
   connect(actuatorBus.Divert_Valve_Position, add2.y) annotation (Line(
       points={{30,-100},{30,-46},{13,-46}},
       color={111,216,99},
@@ -188,4 +179,6 @@ equation
       horizontalAlignment=TextAlignment.Left));
   connect(TCV_Power.u_s, const.y) annotation (Line(points={{-52,-12},{-58,-12},
           {-58,4},{50,4},{50,18},{88,18},{88,-2},{83,-2}}, color={0,0,127}));
+  connect(Turb_Divert_Valve.y, add2.u1)
+    annotation (Line(points={{-39,-48},{-39,-40},{-10,-40}}, color={0,0,127}));
 end CS_IntermediateControl_PID_6;
