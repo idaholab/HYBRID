@@ -94,8 +94,8 @@ model Pebble_Bed_Brayton
     m_start_shell=dataInitial.Recuperator_m_Shell)
     annotation (Placement(transformation(extent={{10,-36},{-10,-16}})));
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
-      = Coolant_Medium) annotation (Placement(transformation(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
+        Coolant_Medium) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={28,-6})));

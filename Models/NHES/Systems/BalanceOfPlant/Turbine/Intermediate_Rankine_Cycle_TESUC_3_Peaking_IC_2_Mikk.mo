@@ -4,7 +4,7 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_Mikk
   extends BaseClasses.Partial_SubSystem_C(
     redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
-    redeclare Data.IntermediateTurbine data(
+    redeclare Data.TESTurbine data(
       p_condensor=7000,
       V_FeedwaterMixVolume=25,
       V_Header=10,

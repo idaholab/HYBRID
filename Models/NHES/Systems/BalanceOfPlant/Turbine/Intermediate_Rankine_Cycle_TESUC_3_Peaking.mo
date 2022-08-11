@@ -4,7 +4,7 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking
   extends BaseClasses.Partial_SubSystem_C(
     redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
-    redeclare Data.IntermediateTurbine data(
+    redeclare Data.TESTurbine data(
       InternalBypassValve_mflow_small=0,
       InternalBypassValve_p_spring=15000000,
       InternalBypassValve_K=40,

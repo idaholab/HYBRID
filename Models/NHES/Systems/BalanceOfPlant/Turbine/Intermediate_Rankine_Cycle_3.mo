@@ -3,7 +3,7 @@ model Intermediate_Rankine_Cycle_3 "Two stage BOP model"
   extends BaseClasses.Partial_SubSystem_C(
     redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
-    redeclare Data.IntermediateTurbine data);
+    redeclare Data.TESTurbine data);
 
     parameter Real IP_NTU = 20.0 "Intermediate pressure NTUHX NTU";
     parameter Modelica.Units.SI.Pressure pr3out=200000 annotation(dialog(tab = "Initialization", group = "Pressure"));

@@ -4,7 +4,7 @@ model Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle
   extends BaseClasses.Partial_SubSystem_C(
     redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
-    redeclare Data.IntermediateTurbine data(
+    redeclare Data.TESTurbine data(
       p_condensor=7000,
       V_FeedwaterMixVolume=10,
       V_Header=10,

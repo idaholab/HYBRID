@@ -96,8 +96,8 @@ model Pebble_Bed_Full_RX_Complete_Transient
     m_start_shell=dataInitial.Recuperator_m_Shell)
     annotation (Placement(transformation(extent={{18,-18},{-2,2}})));
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
-      = Coolant_Medium) annotation (Placement(transformation(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
+        Coolant_Medium) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={38,10})));
@@ -270,7 +270,6 @@ model Pebble_Bed_Full_RX_Complete_Transient
         TRANSFORM.Nuclear.ReactorKinetics.Data.DecayHeat.decayHeat_11_TRACEdefault,
     redeclare record Data_FP =
         TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
-
     rho_input=CR_reactivity.u,
     redeclare package Medium = Coolant_Medium,
     SF_start_power={0.2,0.3,0.3,0.2},

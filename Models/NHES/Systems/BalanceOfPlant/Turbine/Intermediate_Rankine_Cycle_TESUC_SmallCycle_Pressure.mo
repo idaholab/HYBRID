@@ -4,7 +4,7 @@ model Intermediate_Rankine_Cycle_TESUC_SmallCycle_Pressure
   extends BaseClasses.Partial_SubSystem_C(
     redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
-    redeclare Data.IntermediateTurbine data(
+    redeclare Data.TESTurbine data(
       p_steam_vent=15000000,
       T_Steam_Ref=491.15,
       Q_Nom=18.57e6,

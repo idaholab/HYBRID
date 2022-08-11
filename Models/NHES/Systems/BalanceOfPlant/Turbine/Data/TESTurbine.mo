@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.Data;
-model IntermediateTurbine
+model TESTurbine
 
   extends BaseClasses.Record_Data;
 
@@ -50,7 +50,6 @@ model IntermediateTurbine
   parameter TRANSFORM.Units.HydraulicResistance  R_feedwater = 1 "Hydraulic Resistance of LPT feedwater stream"
   annotation (Dialog(tab="General Parameters", group = "Resistances"));
 
-
   //Valve Parameters
   parameter Modelica.Units.SI.MassFlowRate valve_TCV_mflow = 300 "Turbine Control valve nominal mass flow"
   annotation (Dialog(tab="Valves", group="Turbine Control Valve"));
@@ -80,8 +79,6 @@ model IntermediateTurbine
   annotation (Dialog(tab="Valves", group="Internal Bypass Valve"));
   parameter Real InternalBypassValve_tau(unit="1/s") = 0.0001 "Internal Bypass valve time constant"
   annotation (Dialog(tab="Valves", group="Internal Bypass Valve"));
-
-
 
   //Turbine Parameters
   parameter Modelica.Units.SI.Pressure HPT_p_exit_nominal = 700000 "Nominal HPT outlet pressure"
@@ -137,8 +134,6 @@ model IntermediateTurbine
   parameter Modelica.Units.SI.Volume  BypassFeedHeater_V_shell = 5 "Shell side volume in bypass feedwater heater"
   annotation (Dialog(tab="Heat Exchangers", group="Bypass Feedwater Heater"));
 
-
-
   annotation (Dialog(tab="Turbines", group="Low Pressure Turbine"),
               Dialog(tab="System Setpoints"),
               Dialog(tab="System Setpoints"),
@@ -149,5 +144,4 @@ model IntermediateTurbine
           textString="IdealTurbine")}),
     Diagram(coordinateSystem(preserveAspectRatio=false)));
 
-
-end IntermediateTurbine;
+end TESTurbine;

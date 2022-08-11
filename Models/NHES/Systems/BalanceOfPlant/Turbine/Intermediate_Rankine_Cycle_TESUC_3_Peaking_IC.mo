@@ -3,7 +3,7 @@ model Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC "Two stage BOP model"
   extends BaseClasses.Partial_SubSystem_C(
     redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
-    redeclare Data.IntermediateTurbine data(
+    redeclare Data.TESTurbine data(
       valve_SHS_mflow=35,
       valve_SHS_dp_nominal=1000000,
       valve_TCV_LPT_mflow=30,

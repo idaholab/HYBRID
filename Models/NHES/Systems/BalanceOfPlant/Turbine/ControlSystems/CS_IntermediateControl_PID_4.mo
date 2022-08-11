@@ -28,7 +28,7 @@ model CS_IntermediateControl_PID_4
     yMin=-1 + 0.0001,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
-    annotation (Placement(transformation(extent={{-50,-2},{-30,-22}})));
+    annotation (Placement(transformation(extent={{-48,-2},{-28,-22}})));
   Modelica.Blocks.Sources.RealExpression
                                    realExpression(y=electric_demand_int)
     annotation (Placement(transformation(extent={{-94,-6},{-80,6}})));
@@ -67,7 +67,7 @@ model CS_IntermediateControl_PID_4
   TRANSFORM.Controls.LimPID FWCP_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=2.5e-7,
-    Ti=20,
+    Ti=10,
     yMax=250,
     yMin=-72,
     initType=Modelica.Blocks.Types.Init.InitialState,
@@ -99,14 +99,14 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.Power, TCV_Power.u_m) annotation (Line(
-      points={{-30,-100},{-100,-100},{-100,8},{-40,8},{-40,0}},
+      points={{-30,-100},{-100,-100},{-100,8},{-38,8},{-38,0}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(const7.y,add1. u2) annotation (Line(points={{-17.6,-24},{-10,-24}},
                                       color={0,0,127}));
   connect(TCV_Power.y, add1.u1)
-    annotation (Line(points={{-29,-12},{-10,-12}}, color={0,0,127}));
+    annotation (Line(points={{-27,-12},{-10,-12}}, color={0,0,127}));
   connect(add2.u2,const8. y) annotation (Line(points={{-10,-52},{-23.6,-52}},
                                                                          color=
           {0,0,127}));
@@ -133,6 +133,8 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
+  connect(trapezoid.y, TCV_Power.u_s) annotation (Line(points={{-77.3,-15},{-62,
+          -15},{-62,-12},{-50,-12}}, color={0,0,127}));
   connect(sensorBus.Steam_Pressure, FWCP_Speed.u_m) annotation (Line(
       points={{-30,-100},{-100,-100},{-100,8},{-30,8},{-30,28}},
       color={239,82,82},
@@ -186,6 +188,4 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(const.y, TCV_Power.u_s) annotation (Line(points={{83,-2},{88,-2},{88,
-          14},{-14,14},{-14,4},{-60,4},{-60,-12},{-52,-12}}, color={0,0,127}));
 end CS_IntermediateControl_PID_4;

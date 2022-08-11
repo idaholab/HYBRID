@@ -3,7 +3,7 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
   extends BaseClasses.Partial_SubSystem_C(
     redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
-    redeclare Data.IntermediateTurbine data);
+    redeclare Data.Turbine_2 data);
 
   Data.IntermediateTurbineInitialisation init
   annotation (Placement(transformation(extent={{68,120},{88,140}})));
@@ -201,7 +201,7 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
       redeclare package Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
         rotation=90,
-        origin={88,-110})));
+        origin={90,-110})));
 
   TRANSFORM.Fluid.Machines.Pump_PressureBooster SecondFeedwaterPump(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -359,7 +359,7 @@ equation
     annotation (Line(points={{34,-100},{34,-126},{40,-126}},
         color={0,127,255}));
   connect(MainFeedwaterHeater.Shell_out,R_feedwater. port_b) annotation (Line(
-        points={{60,-126},{88,-126},{88,-117}}, color={0,127,255}));
+        points={{60,-126},{90,-126},{90,-117}}, color={0,127,255}));
   connect(SecondFeedwaterPump.port_b, BypassFeedwaterHeater.Tube_in)
     annotation (Line(points={{6,-66},{6,-40},{0,-40}}, color={0,127,255}));
   connect(actuatorBus.Divert_Valve_Position, LPT_Bypass.opening) annotation (
@@ -445,8 +445,8 @@ equation
   connect(LPT.portLP, Condenser.port_a) annotation (Line(points={{50,-16},{60,
           -16},{60,-64},{154,-64},{154,-86},{153,-86},{153,-92}},
                                                          color={0,127,255}));
-  connect(R_feedwater.port_a, Condenser.port_a) annotation (Line(points={{88,-103},
-          {88,-78},{153,-78},{153,-92}},                 color={0,127,255}));
+  connect(R_feedwater.port_a, Condenser.port_a) annotation (Line(points={{90,-103},
+          {90,-78},{153,-78},{153,-92}},                 color={0,127,255}));
 annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-24,2},{24,-2}},
