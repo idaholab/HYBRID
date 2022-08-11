@@ -5,8 +5,8 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
     redeclare replaceable ControlSystems.ED_Dummy ED,
     redeclare Data.Turbine_2 data);
 
-  Data.Turbine_2_init init(InternalBypassValve_mflow_start=0.01)
-  annotation (Placement(transformation(extent={{68,122},{88,142}})));
+  Data.Turbine_2_init init
+  annotation (Placement(transformation(extent={{68,120},{88,140}})));
 
   TRANSFORM.Fluid.Machines.SteamTurbine HPT(
     nUnits=1,

@@ -7,7 +7,7 @@ model CS_IntermediateControl_PID_TESUC_1_Intermediate_SmallCycle_AR
   input Real electric_demand
   annotation(Dialog(tab="General"));
 
-  Data.Intermediate_Rankine_Setpoints data(
+  Data.TES_Setpoints data(
     p_steam=1200000,
     p_steam_vent=15000000,
     T_Steam_Ref=579.75,

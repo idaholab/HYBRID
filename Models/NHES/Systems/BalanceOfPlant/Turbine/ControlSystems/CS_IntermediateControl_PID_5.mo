@@ -43,7 +43,7 @@ model CS_IntermediateControl_PID_5
   StagebyStageTurbineSecondary.Control_and_Distribution.Timer             timer(
       Start_Time=1e-2)
     annotation (Placement(transformation(extent={{-32,-44},{-24,-36}})));
-  Data.Intermediate_Rankine_Setpoints data(
+  Data.TES_Setpoints data(
     p_steam=3500000,
     p_steam_vent=15000000,
     T_Steam_Ref=579.75,

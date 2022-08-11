@@ -10,7 +10,7 @@ model CS_IntermediateControl_PID_TESUC_1_Intermediate_SmallCycle
   Modelica.Blocks.Sources.RealExpression
                                    realExpression(y=electric_demand)
     annotation (Placement(transformation(extent={{114,-32},{128,-20}})));
-  Data.Intermediate_Rankine_Setpoints data(
+  Data.TES_Setpoints data(
     p_steam=1200000,
     p_steam_vent=15000000,
     T_Steam_Ref=579.75,

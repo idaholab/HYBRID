@@ -138,7 +138,7 @@ model Turbine_2
     Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
           lineColor={0,0,0},
           extent={{-100,-90},{100,-70}},
-          textString="Turbine_2")}),
+          textString="IdealTurbine")}),
     Diagram(coordinateSystem(preserveAspectRatio=false)));
 
 end Turbine_2;

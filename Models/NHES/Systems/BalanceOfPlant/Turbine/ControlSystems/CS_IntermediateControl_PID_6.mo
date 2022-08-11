@@ -39,7 +39,7 @@ model CS_IntermediateControl_PID_6
     annotation (Placement(transformation(extent={{-32,-56},{-24,-48}})));
   Modelica.Blocks.Math.Add         add2
     annotation (Placement(transformation(extent={{-8,-56},{12,-36}})));
-  Data.Intermediate_Rankine_Setpoints data(
+  Data.TES_Setpoints data(
     p_steam(displayUnit="bar") = 3400000,
     p_steam_vent(displayUnit="Pa") = 15000000,
     T_Steam_Ref=579.15,
