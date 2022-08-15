@@ -139,8 +139,9 @@ model SMR_SHS_Test_Config_Independent
     offset=26e6,
     startTime=2000)
     annotation (Placement(transformation(extent={{20,72},{40,92}})));
-  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle
-    intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(    port_a_nominal(
+  BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
+    intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
+    port_a_nominal(
       p=EM.port_b2_nominal.p,
       h=EM.port_b2_nominal.h,
       m_flow=-EM.port_b2_nominal.m_flow),

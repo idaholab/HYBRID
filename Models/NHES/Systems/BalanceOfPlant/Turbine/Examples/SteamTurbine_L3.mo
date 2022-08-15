@@ -2,17 +2,17 @@ within NHES.Systems.BalanceOfPlant.Turbine.Examples;
 model SteamTurbine_L3
   import NHES;
   extends Modelica.Icons.Example;
-  NHES.Systems.BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle
+  NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_1_Intermediate_SmallCycle_AR_2
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
       CS(electric_demand=sine.y),
     port_a_nominal(
       p=1200000,
       h=2e6,
       m_flow=26),
     port_b_nominal(p=1200000, h=1e6))
-          annotation (Placement(transformation(extent={{-32,-30},{28,30}})));
+    annotation (Placement(transformation(extent={{-32,-30},{28,30}})));
 
   TRANSFORM.Electrical.Sources.FrequencySource
                                      sinkElec(f=60)

@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_IntermediateControl_PID_TESUC_ImpControl_3_AR
+model CS_PowerBoostLoop_DivertPowerControl
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
   extends NHES.Icons.DummyIcon;
@@ -44,15 +44,16 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_3_AR
   StagebyStageTurbineSecondary.Control_and_Distribution.Timer             timer(
       Start_Time=1e-2)
     annotation (Placement(transformation(extent={{-32,-128},{-24,-120}})));
-  Data.TES_Setpoints data(
+  replaceable Data.TES_Setpoints data(
     p_steam=3398000,
     p_steam_vent=15000000,
     T_Steam_Ref=579.75,
-    Q_Nom=48e6,
+    Q_Nom=52e6,
     T_Feedwater=421.15,
-    T_SHS_Return=491.15)
+    T_SHS_Return=491.15,
+    m_flow_reactor=67.3)
     annotation (Placement(transformation(extent={{-98,12},{-78,32}})));
-  Modelica.Blocks.Sources.Constant const3(k=67.3)
+  Modelica.Blocks.Sources.Constant const3(k=data.m_flow_reactor)
     annotation (Placement(transformation(extent={{-96,62},{-76,82}})));
   TRANSFORM.Controls.LimPID FWCP_mflow(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -103,9 +104,9 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_3_AR
     annotation (Placement(transformation(extent={{92,-80},{112,-60}})));
   Modelica.Blocks.Math.Min min2
     annotation (Placement(transformation(extent={{174,-80},{194,-60}})));
-  Modelica.Blocks.Sources.Constant const6(k=52e6)
+  Modelica.Blocks.Sources.Constant const6(k=data.Q_Nom)
     annotation (Placement(transformation(extent={{50,-76},{74,-52}})));
-  Modelica.Blocks.Sources.Constant const12(k=52.001e6)
+  Modelica.Blocks.Sources.Constant const12(k=data.Q_Nom + 0.001e6)
     annotation (Placement(transformation(extent={{140,-84},{164,-60}})));
   Modelica.Blocks.Sources.Constant const11(k=0.01)
     annotation (Placement(transformation(extent={{156,32},{148,40}})));
@@ -328,4 +329,4 @@ equation
           extent={{-70,-142},{-20,-160}},
           textColor={28,108,200},
           textString="Feedwater")}));
-end CS_IntermediateControl_PID_TESUC_ImpControl_3_AR;
+end CS_PowerBoostLoop_DivertPowerControl;

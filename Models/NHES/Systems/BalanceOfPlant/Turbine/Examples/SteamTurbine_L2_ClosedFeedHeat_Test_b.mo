@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.Examples;
-model Intermediate_Rankine_Cycle_Test_d
+model SteamTurbine_L2_ClosedFeedHeat_Test_b
   import NHES;
 
   parameter Real IP_NTU = 20.0 "Intermediate pressure NTUHX NTU";
@@ -8,13 +8,41 @@ model Intermediate_Rankine_Cycle_Test_d
   extends Modelica.Icons.Example;
   NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_L2_ClosedFeedHeat BOP(
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_5
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp
       CS,
+    redeclare replaceable Data.Turbine_2 data(
+      V_tee=50,
+      valve_TCV_mflow=150,
+      valve_TCV_dp_nominal=100000,
+      valve_TBV_mflow=4,
+      valve_TBV_dp_nominal=2000000,
+      InternalBypassValve_p_spring=6500000,
+      InternalBypassValve_K(unit="1/(m.kg)"),
+      InternalBypassValve_tau(unit="1/s"),
+      MainFeedHeater_K_tube(unit="1/m4"),
+      MainFeedHeater_K_shell(unit="1/m4"),
+      BypassFeedHeater_K_tube(unit="1/m4"),
+      BypassFeedHeater_K_shell(unit="1/m4")),
     port_a_nominal(
       m_flow=67,
       p=3400000,
       h=3e6),
-    port_b_nominal(p=3500000, h=1e6))
+    port_b_nominal(p=3500000, h=1e6),
+    init(
+      tee_p_start=800000,
+      moisturesep_p_start=700000,
+      FeedwaterMixVolume_p_start=100000,
+      HPT_T_b_start=578.15,
+      MainFeedHeater_p_start_shell=100000,
+      MainFeedHeater_h_start_shell_inlet=2e6,
+      MainFeedHeater_h_start_shell_outlet=1.8e6,
+      MainFeedHeater_dp_init_shell=90000,
+      MainFeedHeater_m_start_tube=67,
+      MainFeedHeater_m_start_shell=67,
+      BypassFeedHeater_h_start_tube_inlet=1.1e6,
+      BypassFeedHeater_h_start_tube_outlet=1.2e6,
+      BypassFeedHeater_m_start_tube=67,
+      BypassFeedHeater_m_start_shell=4))
     annotation (Placement(transformation(extent={{0,-30},{60,30}})));
   TRANSFORM.Electrical.Sources.FrequencySource
                                      sinkElec(f=60)
@@ -35,31 +63,20 @@ model Intermediate_Rankine_Cycle_Test_d
     startTime=350,
     amplitude=2e8)
     annotation (Placement(transformation(extent={{-70,70},{-50,90}})));
-  NHES.Fluid.Pipes.StraightPipe_withWall pipe(
-    redeclare package Medium =
-        Modelica.Media.Water.StandardWater,
-    p_a_start=5000000,
-    p_b_start=5000000,
-    use_Ts_start=false,
-    h_a_start=3.6e6,
-    h_b_start=1.2e6,
-    m_flow_a_start=180,
-    length=10,
-    diameter=1,
-    redeclare package Wall_Material = NHES.Media.Solids.SS316,
-    th_wall=0.001) annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=90,
-        origin={-60,0})));
-  TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.HeatFlow boundary(use_port=
-        true, Q_flow=500e6)
-    annotation (Placement(transformation(extent={{-96,-10},{-76,10}})));
-  Modelica.Blocks.Sources.Pulse pulse(
-    amplitude=10e6,
-    period=5000,
-    offset=160e6,
-    startTime=3000)
-    annotation (Placement(transformation(extent={{-118,-10},{-98,10}})));
+  Modelica.Fluid.Sources.Boundary_pT sink(
+    redeclare package Medium = Modelica.Media.Water.StandardWater,
+    use_p_in=false,
+    nPorts=1,
+    p(displayUnit="bar") = 3400000,
+    T(displayUnit="degC") = 579.15)
+    annotation (Placement(transformation(extent={{-80,22},{-60,2}})));
+  Modelica.Fluid.Sources.Boundary_pT sink1(
+    redeclare package Medium = Modelica.Media.Water.StandardWater,
+    use_p_in=false,
+    nPorts=1,
+    p(displayUnit="bar") = 3400000,
+    T(displayUnit="degC") = 421.15)
+    annotation (Placement(transformation(extent={{-80,-6},{-60,-26}})));
 equation
 
   connect(stateDisplay1.statePort, stateSensor1.statePort) annotation (Line(
@@ -74,13 +91,12 @@ equation
     annotation (Line(points={{-18,12},{0,12}},   color={0,127,255}));
   connect(BOP.portElec_b, sinkElec.port)
     annotation (Line(points={{60,0},{70,0}}, color={255,0,0}));
-  connect(stateSensor.port_b, pipe.port_a) annotation (Line(points={{-38,-12},{-46,
-          -12},{-46,-14},{-60,-14},{-60,-10}}, color={0,127,255}));
-  connect(pipe.port_b, stateSensor1.port_a)
-    annotation (Line(points={{-60,10},{-60,12},{-38,12}}, color={0,127,255}));
-  connect(boundary.port, pipe.heatPorts[1])
-    annotation (Line(points={{-76,0},{-64.4,0},{-64.4,0.1}}, color={191,0,0}));
-  connect(pulse.y, boundary.Q_flow_ext)
-    annotation (Line(points={{-97,0},{-90,0}}, color={0,0,127}));
-  annotation (experiment(StopTime=50000, __Dymola_Algorithm="Dassl"));
-end Intermediate_Rankine_Cycle_Test_d;
+  connect(sink.ports[1], stateSensor1.port_a)
+    annotation (Line(points={{-60,12},{-38,12}}, color={0,127,255}));
+  connect(sink1.ports[1], stateSensor.port_b) annotation (Line(points={{-60,-16},
+          {-44,-16},{-44,-12},{-38,-12}}, color={0,127,255}));
+  annotation (experiment(
+      StopTime=50000,
+      Interval=5,
+      __Dymola_Algorithm="Esdirk45a"));
+end SteamTurbine_L2_ClosedFeedHeat_Test_b;

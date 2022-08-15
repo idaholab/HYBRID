@@ -2,7 +2,7 @@ within NHES.Systems.BalanceOfPlant.Turbine.Examples;
 model SteamTurbine_L4
   import NHES;
   extends Modelica.Icons.Example;
-  NHES.Systems.BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_4
+  NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_L2_ClosedFeedHeat
     intermediate_Rankine_Cycle_4_1(
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_6
@@ -12,7 +12,7 @@ model SteamTurbine_L4
       h=3e6,
       m_flow=67),
     port_b_nominal(p=3400000, h=1e6))
-          annotation (Placement(transformation(extent={{-30,-30},{30,30}})));
+    annotation (Placement(transformation(extent={{-30,-30},{30,30}})));
 
   TRANSFORM.Electrical.Sources.FrequencySource
                                      sinkElec(f=60)

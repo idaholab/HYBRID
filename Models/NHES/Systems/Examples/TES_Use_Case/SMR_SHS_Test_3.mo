@@ -36,8 +36,9 @@ model SMR_SHS_Test_3
       h=EM.port_b2_nominal.h,
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
-    redeclare BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_4 CS)
-    annotation (Placement(transformation(extent={{62,-20},{102,20}})));
+    redeclare
+      BalanceOfPlant.Turbine.ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp
+      CS) annotation (Placement(transformation(extent={{62,-20},{102,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
     annotation (Placement(transformation(extent={{112,-22},{152,22}})));
   ElectricalGrid.InfiniteGrid.Infinite EG

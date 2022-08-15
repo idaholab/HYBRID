@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
+model CS_DivertPowerControl
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
   extends NHES.Icons.DummyIcon;
@@ -8,7 +8,6 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
   annotation(Dialog(tab="General"));
   input Real Overall_Power
   annotation(Dialog(tab="General"));
-
 
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -47,15 +46,16 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
   StagebyStageTurbineSecondary.Control_and_Distribution.Timer             timer(
       Start_Time=1e-2)
     annotation (Placement(transformation(extent={{-32,-128},{-24,-120}})));
-  Data.TES_Setpoints data(
+  replaceable Data.TES_Setpoints data(
     p_steam=3398000,
     p_steam_vent=15000000,
     T_Steam_Ref=579.75,
     Q_Nom=48.57e6,
     T_Feedwater=421.15,
-    T_SHS_Return=491.15)
+    T_SHS_Return=491.15,
+    m_flow_reactor=67.3)
     annotation (Placement(transformation(extent={{-98,12},{-78,32}})));
-  Modelica.Blocks.Sources.Constant const3(k=67.3)
+  Modelica.Blocks.Sources.Constant const3(k=data.m_flow_reactor)
     annotation (Placement(transformation(extent={{-96,62},{-76,82}})));
   TRANSFORM.Controls.LimPID FWCP_mflow(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -106,9 +106,9 @@ model CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
     annotation (Placement(transformation(extent={{92,-80},{112,-60}})));
   Modelica.Blocks.Math.Min min2
     annotation (Placement(transformation(extent={{174,-80},{194,-60}})));
-  Modelica.Blocks.Sources.Constant const6(k=48.57e6)
+  Modelica.Blocks.Sources.Constant const6(k=data.Q_Nom)
     annotation (Placement(transformation(extent={{50,-76},{74,-52}})));
-  Modelica.Blocks.Sources.Constant const12(k=48.571e6)
+  Modelica.Blocks.Sources.Constant const12(k=data.Q_Nom + 0.001e6)
     annotation (Placement(transformation(extent={{116,-58},{140,-34}})));
   Modelica.Blocks.Sources.RealExpression
                                    realExpression1(y=Overall_Power)
@@ -241,4 +241,4 @@ equation
           extent={{-70,-142},{-20,-160}},
           textColor={28,108,200},
           textString="Feedwater")}));
-end CS_IntermediateControl_PID_TESUC_ImpControl_2_AR;
+end CS_DivertPowerControl;

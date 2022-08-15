@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_IntermediateControl_PID_TESUC_1_Intermediate_SmallCycle_AR_2
+model CS_SmallCycle_NoFeedHeat
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
   extends NHES.Icons.DummyIcon;
@@ -7,7 +7,7 @@ model CS_IntermediateControl_PID_TESUC_1_Intermediate_SmallCycle_AR_2
   input Real electric_demand
   annotation(Dialog(tab="General"));
 
-  Data.TES_Setpoints data(
+  replaceable Data.TES_Setpoints data(
     p_steam=1200000,
     p_steam_vent=15000000,
     T_Steam_Ref=579.75,
@@ -147,4 +147,4 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(realExpression.y, Discharge_OnOFF.u_s) annotation (Line(points={{80.7,
           -20},{204,-20},{204,64},{186,64}}, color={0,0,127}));
-end CS_IntermediateControl_PID_TESUC_1_Intermediate_SmallCycle_AR_2;
+end CS_SmallCycle_NoFeedHeat;

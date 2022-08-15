@@ -1,10 +1,10 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
-model Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle
-  "Two stage BOP model"
+model SteamTurbine_Basic_NoFeedHeat "Two stage BOP model"
   extends BaseClasses.Partial_SubSystem_C(
-    redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
+    redeclare replaceable
+      ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
-    redeclare Data.TESTurbine data(
+    redeclare replaceable Data.TESTurbine data(
       p_condensor=7000,
       V_FeedwaterMixVolume=10,
       V_Header=10,
@@ -24,7 +24,7 @@ model Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle
       firstfeedpump_p_nominal=2000000,
       secondfeedpump_p_nominal=2000000));
 
-  Data.IntermediateTurbineInitialisation init(
+  replaceable Data.IntermediateTurbineInitialisation init(
     FeedwaterMixVolume_p_start=3000000,
       FeedwaterMixVolume_h_start=2e6,
     InternalBypassValve_dp_start=3500000,
@@ -381,4 +381,4 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
     Documentation(info="<html>
 <p>A two stage turbine rankine cycle with feedwater heating internal to the system - can be externally bypassed or LPT can be bypassed both will feedwater heat post bypass</p>
 </html>"));
-end Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle;
+end SteamTurbine_Basic_NoFeedHeat;

@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_IntermediateControl_PID_4
+model CS_SteamTurbine_L2_PressurePowerFeedtemp
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
   extends NHES.Icons.DummyIcon;
@@ -178,4 +178,4 @@ equation
       horizontalAlignment=TextAlignment.Left));
   connect(const.y, TCV_Power.u_s) annotation (Line(points={{-63.3,-15},{-56,-15},
           {-56,-12},{-52,-12}}, color={0,0,127}));
-end CS_IntermediateControl_PID_4;
+end CS_SteamTurbine_L2_PressurePowerFeedtemp;

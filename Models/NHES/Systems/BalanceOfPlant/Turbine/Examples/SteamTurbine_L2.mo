@@ -2,17 +2,17 @@ within NHES.Systems.BalanceOfPlant.Turbine.Examples;
 model SteamTurbine_L2
   import NHES;
   extends Modelica.Icons.Example;
-  NHES.Systems.BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_AR
+  NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl
     intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_AR(
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl
       CS(electric_demand=sine.y, Overall_Power=sensorW.W),
     port_a_nominal(
       p=3400000,
       h=3e6,
       m_flow=67),
     port_b_nominal(p=3400000, h=1e6))
-          annotation (Placement(transformation(extent={{-30,-30},{30,30}})));
+    annotation (Placement(transformation(extent={{-30,-30},{30,30}})));
 
   TRANSFORM.Electrical.Sources.FrequencySource
                                      sinkElec(f=60)

@@ -113,7 +113,7 @@ model IntermediateTurbineInitialisation
   annotation (Dialog(tab="Heat Exchangers", group="Bypass Feedwater Heater"));
 
 
-  annotation (Dialog(tab="Turbines", group="Low Pressure Turbine"),
+  annotation (Dialog(tab="Initialization", group="init_file"),
               Dialog(tab="System Setpoints"),
               Dialog(tab="System Setpoints"),
     defaultComponentName="init",

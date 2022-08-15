@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.Examples;
-model SteamTurbine_L3_Test_a
+model SteamTurbine_PowerBoostLoop_Test_a
   import NHES;
 
   parameter Real IP_NTU = 20.0 "Intermediate pressure NTUHX NTU";
@@ -60,14 +60,7 @@ model SteamTurbine_L3_Test_a
     annotation (Placement(transformation(extent={{-38,72},{-18,92}})));
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW
     annotation (Placement(transformation(extent={{72,-6},{86,6}})));
-  Modelica.Fluid.Sources.MassFlowSource_h source1(
-    redeclare package Medium = Modelica.Media.Water.StandardWater,
-    use_m_flow_in=false,
-    m_flow=0,
-    h=2e6,
-    nPorts=1)
-    annotation (Placement(transformation(extent={{-18,-88},{2,-68}})));
-  NHES.Systems.BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_AR
+  NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop
     intermediate_Rankine_Cycle_TESUC(
     port_a_nominal(
       p=3400000,
@@ -75,9 +68,9 @@ model SteamTurbine_L3_Test_a
       m_flow=67),
     port_b_nominal(p=3400000, h=1e6),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
-      CS(electric_demand=sine1.y, Overall_Power=sensorW.W))
-    annotation (Placement(transformation(extent={{10,-18},{50,22}})));
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_PowerBoostLoop_DivertPowerControl
+      CS(electric_demand=sine1.y))
+    annotation (Placement(transformation(extent={{8,-18},{48,22}})));
 equation
 
   connect(stateDisplay1.statePort, stateSensor1.statePort) annotation (Line(
@@ -97,14 +90,14 @@ equation
   connect(sensorW.port_b, sinkElec.port)
     annotation (Line(points={{86,0},{96,0}}, color={255,0,0}));
   connect(stateSensor1.port_b, intermediate_Rankine_Cycle_TESUC.port_a)
-    annotation (Line(points={{-18,12},{4,12},{4,10},{10,10}}, color={0,127,255}));
+    annotation (Line(points={{-18,12},{4,12},{4,10},{8,10}},  color={0,127,255}));
   connect(stateSensor.port_a, intermediate_Rankine_Cycle_TESUC.port_b)
-    annotation (Line(points={{-18,-12},{4,-12},{4,-6},{10,-6}}, color={0,127,
+    annotation (Line(points={{-18,-12},{4,-12},{4,-6},{8,-6}},  color={0,127,
           255}));
-  connect(source1.ports[1], intermediate_Rankine_Cycle_TESUC.port_a1)
-    annotation (Line(points={{2,-78},{16,-78},{16,-22},{17.2,-22},{17.2,-17.2}},
-        color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC.portElec_b, sensorW.port_a)
-    annotation (Line(points={{50,2},{66,2},{66,0},{72,0}}, color={255,0,0}));
+    annotation (Line(points={{48,2},{66,2},{66,0},{72,0}}, color={255,0,0}));
+  connect(intermediate_Rankine_Cycle_TESUC.port_b1,
+    intermediate_Rankine_Cycle_TESUC.port_a2) annotation (Line(points={{47.6,
+          -8.4},{58,-8.4},{58,15.6},{47.6,15.6}}, color={0,127,255}));
   annotation (experiment(StopTime=50000, __Dymola_Algorithm="Esdirk45a"));
-end SteamTurbine_L3_Test_a;
+end SteamTurbine_PowerBoostLoop_Test_a;

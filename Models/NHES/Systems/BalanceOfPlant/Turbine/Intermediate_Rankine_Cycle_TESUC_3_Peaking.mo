@@ -2,7 +2,8 @@ within NHES.Systems.BalanceOfPlant.Turbine;
 model Intermediate_Rankine_Cycle_TESUC_3_Peaking
   "Two stage BOP model"
   extends BaseClasses.Partial_SubSystem_C(
-    redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
+    redeclare replaceable
+      ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
     redeclare Data.TESTurbine data(
       InternalBypassValve_mflow_small=0,

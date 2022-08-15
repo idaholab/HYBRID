@@ -33,7 +33,7 @@ model SMR_SHS_Test_Config_Independent_2
     port_b3_nominal_m_flow={-0.67},
     nPorts_b3=1)
     annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_AR
+  BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl
     intermediate_Rankine_Cycle_TESUC(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
@@ -41,7 +41,7 @@ model SMR_SHS_Test_Config_Independent_2
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl
       CS(electric_demand=sum1.y, Overall_Power=sensorW.W))
     annotation (Placement(transformation(extent={{50,-20},{90,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
@@ -142,7 +142,7 @@ model SMR_SHS_Test_Config_Independent_2
     offset=47e6,
     startTime=2000)
     annotation (Placement(transformation(extent={{66,112},{86,132}})));
-  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle
+  BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
@@ -150,7 +150,7 @@ model SMR_SHS_Test_Config_Independent_2
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_1_Intermediate_SmallCycle_AR_2
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
       CS(electric_demand=sum1.y))
     annotation (Placement(transformation(extent={{108,-84},{146,-42}})));
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW

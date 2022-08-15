@@ -34,7 +34,7 @@ model LWR_Case_01_IndependentBOP
     port_b3_nominal_m_flow={-0.67},
     nPorts_b3=1)
     annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2_AR
+  BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl
     intermediate_Rankine_Cycle_TESUC(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
@@ -42,7 +42,7 @@ model LWR_Case_01_IndependentBOP
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_ImpControl_2_AR
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl
       CS(electric_demand=sum1.y, Overall_Power=sensorW.W))
     annotation (Placement(transformation(extent={{50,-20},{90,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
@@ -85,12 +85,9 @@ model LWR_Case_01_IndependentBOP
       charge_pump_dp_nominal=1200000,
       charge_pump_m_flow_nominal=900,
       charge_pump_constantRPM=3000,
-      disvalve_m_flow_nom=900,
       disvalve_dp_nominal=100000,
       chvalve_m_flow_nom=900,
-      charge_pump_m_flow_nominal=100,
-      disvalve_m_flow_nom=250,
-      disvalve_dp_nominal=100000,
+      disvalve_m_flow_nom=900,
       chvalve_dp_nominal=100000),
     redeclare package Storage_Medium =
         NHES.Media.Hitec.Hitec,
@@ -149,7 +146,7 @@ model LWR_Case_01_IndependentBOP
     offset=47e6,
     startTime=2000)
     annotation (Placement(transformation(extent={{66,112},{86,132}})));
-  BalanceOfPlant.Turbine.Intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle
+  BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
@@ -157,9 +154,9 @@ model LWR_Case_01_IndependentBOP
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_IntermediateControl_PID_TESUC_1_Intermediate_SmallCycle_AR_2
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
       CS(electric_demand=sum1.y))
-    annotation (Placement(transformation(extent={{108,-84},{146,-42}})));
+    annotation (Placement(transformation(extent={{106,-86},{144,-44}})));
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW
     annotation (Placement(transformation(extent={{142,-6},{156,6}})));
   Modelica.Blocks.Math.Add         add
@@ -241,16 +238,14 @@ equation
     annotation (Line(points={{30,-30},{57.2,-30},{57.2,-19.2}}, color={0,127,255}));
   connect(stateSensor6.port_b,
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_a)
-    annotation (Line(points={{62,-68},{100,-68},{100,-60},{102,-60},{102,-56},{
-          108,-56},{108,-54.6}},
-                             color={0,127,255}));
+    annotation (Line(points={{62,-68},{100,-68},{100,-60},{102,-60},{102,-56},{106,
+          -56},{106,-56.6}}, color={0,127,255}));
   connect(stateSensor7.port_a,
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_b)
-    annotation (Line(points={{68,-55},{68,-71.4},{108,-71.4}}, color={0,127,255}));
+    annotation (Line(points={{68,-55},{68,-73.4},{106,-73.4}}, color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.portElec_b,
-    SY.port_a[2]) annotation (Line(points={{146,-63},{144,-63},{144,-28},{94,
-          -28},{94,0},{98,0},{98,1.1}},
-                                color={255,0,0}));
+    SY.port_a[2]) annotation (Line(points={{144,-65},{144,-28},{94,-28},{94,0},{
+          98,0},{98,1.1}},      color={255,0,0}));
   connect(SY.port_Grid, sensorW.port_a)
     annotation (Line(points={{138,0},{142,0}}, color={255,0,0}));
   connect(sensorW.port_b, EG.portElec_a)

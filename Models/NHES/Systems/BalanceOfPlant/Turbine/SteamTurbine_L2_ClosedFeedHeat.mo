@@ -1,7 +1,8 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
-model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
+model SteamTurbine_L2_ClosedFeedHeat "Two stage BOP model"
   extends BaseClasses.Partial_SubSystem_C(
-    redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
+    redeclare replaceable
+      ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
     redeclare replaceable Data.Turbine_2 data(InternalBypassValve_p_spring=
           6500000));
@@ -83,7 +84,6 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
         rotation=90,
         origin={82,24})));
 
-
   TRANSFORM.Fluid.Valves.ValveLinear LPT_Bypass(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     dp_nominal=data.valve_LPT_Bypass_dp_nominal,
@@ -92,7 +92,6 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
         rotation=90,
         origin={84,-26})));
 
-
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
                                        sensor_T2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)            annotation (Placement(
@@ -100,7 +99,6 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={-58,-40})));
-
 
   TRANSFORM.Fluid.Machines.Pump_PressureBooster
                                            firstfeedpump(redeclare package
@@ -113,7 +111,6 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
         rotation=0,
         origin={108,-144})));
 
-
   StagebyStageTurbineSecondary.StagebyStageTurbine.BaseClasses.TRANSFORMMoistureSeparator_MIKK
     Moisture_Separator(redeclare package Medium =
         Modelica.Media.Water.StandardWater,
@@ -124,14 +121,12 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
         (V=data.V_moistureseperator))
     annotation (Placement(transformation(extent={{58,30},{78,50}})));
 
-
   TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance R_InternalBypass(R=data.R_bypass,
       redeclare package Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={-24,-2})));
-
 
   Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase MainFeedwaterHeater(
     NTU=data.MainFeedHeater_NTU,
@@ -174,7 +169,6 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
     m_start_shell=init.BypassFeedHeater_m_start_shell)
     annotation (Placement(transformation(extent={{-20,-26},{0,-46}})));
 
-
   TRANSFORM.Fluid.Volumes.MixingVolume FeedwaterMixVolume(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
     p_start=init.FeedwaterMixVolume_p_start,
@@ -189,12 +183,10 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
         rotation=-90,
         origin={34,-94})));
 
-
   Electrical.Generator      generator1(J=data.generator_MoI)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={44,-38})));
-
 
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW
     annotation (Placement(transformation(extent={{110,-58},{130,-38}})));
@@ -258,7 +250,6 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
         rotation=180,
         origin={-128,74})));
 
-
   StagebyStageTurbineSecondary.Control_and_Distribution.SpringBallValve InternalBypassValve(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     dp_start=init.InternalBypassValve_dp_start,
@@ -270,7 +261,6 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
     tau=data.InternalBypassValve_tau)
     annotation (Placement(transformation(extent={{-82,10},{-62,30}})));
 
-
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
                                        sensor_T4(redeclare package Medium =
         Modelica.Media.Water.StandardWater)            annotation (Placement(
@@ -278,7 +268,6 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
         extent={{10,-10},{-10,10}},
         rotation=180,
         origin={80,-144})));
-
 
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
                                        sensor_T6(redeclare package Medium =
@@ -635,4 +624,4 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
     Documentation(info="<html>
 <p>A two stage turbine rankine cycle with feedwater heating internal to the system - can be externally bypassed or LPT can be bypassed both will feedwater heat post bypass</p>
 </html>"));
-end Intermediate_Rankine_Cycle_4;
+end SteamTurbine_L2_ClosedFeedHeat;
