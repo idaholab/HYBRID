@@ -35,7 +35,7 @@ model Turbine_2_init
   parameter Modelica.Units.SI.Volume  condensor_V_liquid_start = 1.2 "Condensor initial liquid volume"
   annotation (Dialog(tab="General Parameters", group = "Volumes"));
       //Temperatures
-  parameter Modelica.Units.SI.Temperature moisturesep_T_start = 338.15 "Moisture Seperator inital temperature"
+  parameter Modelica.Units.SI.Temperature moisturesep_T_start = 273.15 + 200 "Moisture Seperator inital temperature"
   annotation (Dialog(tab="General Parameters",group = "Temperatures"));
 
   //Valves
@@ -114,7 +114,7 @@ model Turbine_2_init
   annotation (Dialog(tab="Heat Exchangers", group="Bypass Feedwater Heater"));
 
 
-  annotation (Dialog(tab="Turbines", group="Low Pressure Turbine"),
+  annotation (Dialog(tab="Initialization"),
               Dialog(tab="System Setpoints"),
               Dialog(tab="System Setpoints"),
     defaultComponentName="init",

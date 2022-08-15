@@ -20,7 +20,7 @@ model Turbine_2
   parameter Modelica.Units.SI.Pressure p_in_nominal = 3447380 "Nominal input pressure"
   annotation (Dialog(tab="General Parameters", group="System"));
       //Component Pressures
-  parameter Modelica.Units.SI.Pressure p_condensor = 10000 "Condensor pressure"
+  parameter Modelica.Units.SI.Pressure p_condensor = 8000 "Condensor pressure"
   annotation (Dialog(tab="General Parameters",group = "Pressures"));
   parameter Modelica.Units.SI.Pressure p_boundary = 100000 "Boundary pressure for venting"
   annotation (Dialog(tab="General Parameters", group= "Pressures"));

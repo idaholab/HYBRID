@@ -3,10 +3,7 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
   extends BaseClasses.Partial_SubSystem_C(
     redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
-    redeclare Data.Turbine_2 data);
-
-  Data.Turbine_2_init init
-  annotation (Placement(transformation(extent={{68,120},{88,140}})));
+    redeclare replaceable Data.Turbine_2 data);
 
   TRANSFORM.Fluid.Machines.SteamTurbine HPT(
     nUnits=1,
@@ -102,7 +99,8 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
 
 
   TRANSFORM.Fluid.Machines.Pump_PressureBooster
-                                           firstfeedpump(redeclare package Medium =
+                                           firstfeedpump(redeclare package
+      Medium =
         Modelica.Media.Water.StandardWater,
     use_input=false,
     p_nominal=data.firstfeedpump_p_nominal,
@@ -285,6 +283,9 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={20,-132})));
+
+  replaceable Data.Turbine_2_init init
+    annotation (Placement(transformation(extent={{68,120},{88,140}})));
 
 initial equation
 

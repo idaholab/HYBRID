@@ -1,5 +1,5 @@
 within NHES.Systems.Examples;
-model SMR_highfidelity_Intermediate
+model SMR_highfidelity_L2_Turbine
   "High Fidelity Natural Circulation Model based on NuScale reactor. Hot channel calcs, pressurizer, and beginning of cycle reactivity feedback"
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
@@ -88,4 +88,4 @@ equation
       StopTime=10000,
       Interval=20,
       __Dymola_Algorithm="Esdirk45a"));
-end SMR_highfidelity_Intermediate;
+end SMR_highfidelity_L2_Turbine;
