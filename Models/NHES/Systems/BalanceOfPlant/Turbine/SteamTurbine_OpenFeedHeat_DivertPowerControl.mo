@@ -29,7 +29,7 @@ model SteamTurbine_OpenFeedHeat_DivertPowerControl "Two stage BOP model"
       firstfeedpump_p_nominal=2500000,
       secondfeedpump_p_nominal=2000000));
 
-  Data.IntermediateTurbineInitialisation init(
+  replaceable Data.IntermediateTurbineInitialisation init(
     FeedwaterMixVolume_p_start=3000000,
       FeedwaterMixVolume_h_start=2e6,
     InternalBypassValve_dp_start=3500000,
