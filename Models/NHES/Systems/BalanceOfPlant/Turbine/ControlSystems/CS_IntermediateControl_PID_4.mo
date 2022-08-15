@@ -8,19 +8,19 @@ model CS_IntermediateControl_PID_4
 
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2e-4,
+    k=5e-3,
     Ti=5,
     Td=0.1,
     yMax=1,
-    yMin=0.001,
+    yMin=0.05,
     initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1500)
-    annotation (Placement(transformation(extent={{-60,-58},{-40,-38}})));
+    annotation (Placement(transformation(extent={{-58,-58},{-38,-38}})));
   Modelica.Blocks.Sources.Constant const5(k=data.T_Feedwater)
     annotation (Placement(transformation(extent={{-92,-56},{-72,-36}})));
   TRANSFORM.Controls.LimPID TCV_Power(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=5e-8,
+    k=5e-7,
     Ti=30,
     k_s=1,
     k_m=1,
@@ -81,10 +81,10 @@ model CS_IntermediateControl_PID_4
     annotation (Placement(transformation(extent={{-78,72},{-58,92}})));
 equation
   connect(const5.y,Turb_Divert_Valve. u_s)
-    annotation (Line(points={{-71,-46},{-66,-46},{-66,-48},{-62,-48}},
+    annotation (Line(points={{-71,-46},{-66,-46},{-66,-48},{-60,-48}},
                                                      color={0,0,127}));
   connect(sensorBus.Feedwater_Temp,Turb_Divert_Valve. u_m) annotation (Line(
-      points={{-30,-100},{-50,-100},{-50,-60}},
+      points={{-30,-100},{-48,-100},{-48,-60}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -102,7 +102,7 @@ equation
           {0,0,127}));
   connect(add2.u1,timer. y) annotation (Line(points={{-10,-40},{-23.44,-40}},
                                                                 color={0,0,127}));
-  connect(Turb_Divert_Valve.y,timer. u) annotation (Line(points={{-39,-48},{-36,
+  connect(Turb_Divert_Valve.y,timer. u) annotation (Line(points={{-37,-48},{-36,
           -48},{-36,-40},{-32.8,-40}},                               color={0,0,
           127}));
   connect(actuatorBus.Divert_Valve_Position, add2.y) annotation (Line(

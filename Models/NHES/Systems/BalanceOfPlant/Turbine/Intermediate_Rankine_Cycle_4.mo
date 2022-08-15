@@ -9,6 +9,7 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
   TRANSFORM.Fluid.Machines.SteamTurbine HPT(
     nUnits=1,
     energyDynamics=TRANSFORM.Types.Dynamics.DynamicFreeInitial,
+    Q_units_start={1e7},
     eta_mech=data.HPT_efficiency,
     redeclare model Eta_wetSteam =
         TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant,
@@ -58,6 +59,7 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
   TRANSFORM.Fluid.Machines.SteamTurbine LPT(
     nUnits=1,
     energyDynamics=TRANSFORM.Types.Dynamics.DynamicFreeInitial,
+    Q_units_start={3e7},
     eta_mech=data.LPT_efficiency,
     redeclare model Eta_wetSteam =
         TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant,
@@ -75,7 +77,8 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
 
   TRANSFORM.Fluid.FittingsAndResistances.TeeJunctionVolume tee(redeclare
       package Medium = Modelica.Media.Water.StandardWater, V=data.V_tee,
-    p_start=init.tee_p_start)
+    p_start=init.tee_p_start,
+    T_start=init.moisturesep_T_start)
     annotation (Placement(transformation(extent={{-10,10},{10,-10}},
         rotation=90,
         origin={82,24})));
