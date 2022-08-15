@@ -3,7 +3,8 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
   extends BaseClasses.Partial_SubSystem_C(
     redeclare replaceable ControlSystems.CS_IntermediateControl_PID_4 CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
-    redeclare replaceable Data.Turbine_2 data);
+    redeclare replaceable Data.Turbine_2 data(InternalBypassValve_p_spring=
+          6500000));
 
   TRANSFORM.Fluid.Machines.SteamTurbine HPT(
     nUnits=1,
@@ -284,7 +285,7 @@ model Intermediate_Rankine_Cycle_4 "Two stage BOP model"
         rotation=180,
         origin={20,-132})));
 
-  replaceable Data.Turbine_2_init init
+  replaceable Data.Turbine_2_init init(FeedwaterMixVolume_h_start=2e6)
     annotation (Placement(transformation(extent={{68,120},{88,140}})));
 
 initial equation
