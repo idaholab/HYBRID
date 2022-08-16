@@ -13,3 +13,5 @@ CS_DivertPowerControl
 CS_SmallCycle_NoFeedHeat
 CS_OTSG_TCV_Pressure_TBV_Power_Control_Intermediate
 ObsoleteCS
+CS_DivertPowerControl_Argonne
+CS_SmallCycle_NoFeedHeat_Argonne
