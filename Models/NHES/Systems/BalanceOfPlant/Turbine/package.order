@@ -4,6 +4,7 @@ SteamTurbine_L2_ClosedFeedHeat
 SteamTurbine_Basic_NoFeedHeat
 SteamTurbine_OpenFeedHeat_DivertPowerControl
 SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop
+SteamTurbine_Basic_DirectCoupling
 HTGR_Rankine_Cycle
 Dummy_BOP
 ControlSystems

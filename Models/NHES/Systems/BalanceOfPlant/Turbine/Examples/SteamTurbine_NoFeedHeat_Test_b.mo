@@ -36,13 +36,13 @@ model SteamTurbine_NoFeedHeat_Test_b
   NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
     intermediate_Rankine_Cycle_TESUC(
     port_a_nominal(
-      p=1100000,
+      p=1200000,
       h=2e6,
       m_flow=26),
-    port_b_nominal(p=1300000, h=1e6),
+    port_b_nominal(p=1200000, h=1e6),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
-      CS(electric_demand=const.y, data(Q_Nom=0)))
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat_Argonne
+      CS(electric_demand_TES=const.y))
     annotation (Placement(transformation(extent={{10,-18},{50,22}})));
   Modelica.Blocks.Sources.Constant const(k=18e6)
     annotation (Placement(transformation(extent={{-2,70},{18,90}})));
@@ -58,7 +58,7 @@ model SteamTurbine_NoFeedHeat_Test_b
     use_p_in=false,
     nPorts=1,
     p(displayUnit="bar") = 1200000,
-    T(displayUnit="degC") = 421.15)
+    T(displayUnit="degC") = 309.15)
     annotation (Placement(transformation(extent={{-88,-6},{-68,-26}})));
 equation
 
