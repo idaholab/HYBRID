@@ -11,10 +11,11 @@ model CS_Rankine_Primary
     annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
   Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
     annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
-  HTGR_Rankine.Data.Data_CS data(
+  replaceable HTGR_Rankine.Data.Data_CS data(
     T_Rx_Exit_Ref=1023.15,
     m_flow_nom=250,
-    Q_Nom=45e6)
+    Q_Nom=45e6,
+    P_Steam_Ref=15000000)
     annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
   TRANSFORM.Controls.LimPID Blower_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,

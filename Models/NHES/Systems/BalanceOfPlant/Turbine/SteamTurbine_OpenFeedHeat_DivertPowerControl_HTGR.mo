@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
-model SteamTurbine_OpenFeedHeat_DivertPowerControl "Two stage BOP model"
+model SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR "Two stage BOP model"
   extends BaseClasses.Partial_SubSystem_C(
     redeclare replaceable
       ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp CS,
@@ -257,6 +257,12 @@ model SteamTurbine_OpenFeedHeat_DivertPowerControl "Two stage BOP model"
         origin={-136,-42})));
   Modelica.Blocks.Sources.Constant const(k=1)
     annotation (Placement(transformation(extent={{50,-156},{70,-136}})));
+  TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance R_entry1(R=10,
+      redeclare package Medium = Modelica.Media.Water.StandardWater)
+    annotation (Placement(transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=270,
+        origin={-92,-128})));
 initial equation
 
 equation
@@ -374,8 +380,6 @@ equation
           36},{90,36},{90,14}}, color={0,127,255}));
   connect(LPT.portHP, tee.port_1) annotation (Line(points={{52,-30},{66,-30},{
           66,-28},{90,-28},{90,-6}}, color={0,127,255}));
-  connect(port_a1, SHS_charge_control.port_a) annotation (Line(points={{-92,
-          -160},{-92,-102},{-70,-102}}, color={0,127,255}));
   connect(SHS_charge_control.port_b, FeedwaterMixVolume.port_b[3]) annotation (
       Line(points={{-54,-102},{-20,-102},{-20,-39.3333},{-24,-39.3333}}, color=
           {0,127,255}));
@@ -408,6 +412,10 @@ equation
          {{118,-146},{114,-146},{114,-128},{50,-128}}, color={0,127,255}));
   connect(Discharge_OnOff.port_b, tee.port_3)
     annotation (Line(points={{134,-146},{134,4},{100,4}}, color={0,127,255}));
+  connect(port_a1, R_entry1.port_a)
+    annotation (Line(points={{-92,-160},{-92,-135}}, color={0,127,255}));
+  connect(R_entry1.port_b, SHS_charge_control.port_a) annotation (Line(points={
+          {-92,-121},{-92,-102},{-70,-102}}, color={0,127,255}));
 annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-24,2},{24,-2}},
@@ -591,4 +599,4 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
     Documentation(info="<html>
 <p>A two stage turbine rankine cycle with feedwater heating internal to the system - can be externally bypassed or LPT can be bypassed both will feedwater heat post bypass</p>
 </html>"));
-end SteamTurbine_OpenFeedHeat_DivertPowerControl;
+end SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR;

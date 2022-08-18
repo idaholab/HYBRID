@@ -8728,8 +8728,8 @@ package ObsoleteRankines
           extent={{8,8},{-8,-8}},
           rotation=180,
           origin={126,-146})));
-    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-        = Modelica.Media.Water.StandardWater)            annotation (Placement(
+    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)            annotation (Placement(
           transformation(
           extent={{-10,-10},{10,10}},
           rotation=180,

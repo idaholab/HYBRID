@@ -3,7 +3,7 @@ model HTGR_PebbleBed_Primary_Loop
   extends BaseClasses.Partial_SubSystem_A(
     redeclare replaceable CS_Rankine_Primary CS,
     redeclare replaceable ED_Dummy ED,
-    redeclare Data.Data_HTGR_Pebble data(
+    redeclare replaceable Data.Data_HTGR_Pebble data(
       Q_total=600000000,
       Q_total_el=300000000,
       K_P_Release=10000,

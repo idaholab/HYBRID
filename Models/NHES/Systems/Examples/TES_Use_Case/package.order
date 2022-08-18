@@ -7,3 +7,6 @@ LWR_Case_01_IndependentBOP_IndependentControl_Argonne
 LWR_Case_02_DirectCoupling
 LWR_Case_03_OversizedTurbine
 ObsoleteTESUseCaseExamples
+HTGR_Case_01_IndependentBOP
+HTGR_Case_03_OversizedTurbine
+HTGR_Case_01_IndependentBOP_3

@@ -1,5 +1,5 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model LWR_Case_01_IndependentBOP
+model HTGR_Case_01_IndependentBOP_3
   "TES use case demonstration of a NuScale-style LWR operating within an energy arbitrage IES, storing and dispensing energy on demand from a two tank molten salt energy storage system nominally using HITEC salt to store heat."
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
@@ -12,38 +12,72 @@ model LWR_Case_01_IndependentBOP
  max(SC.W_totalSetpoint_BOP/SC.W_nominal_BOP*fracNominal_BOP
      + sum(EM.port_b3.m_flow./EM.port_b3_nominal_m_flow)*fracNominal_Other,
      0.5));
-  PrimaryHeatSystem.SMR_Generic.Components.SMR_Taveprogram_No_Pump
-                                                           SMR_Taveprogram(
-    port_b_nominal(
-      p(displayUnit="Pa") = 3398e3,
-      T(displayUnit="degC") = 580.05,
-      h=2997670),
-    redeclare PrimaryHeatSystem.SMR_Generic.CS_SMR_Tave CS(W_turbine=
-          intermediate_Rankine_Cycle_TESUC.powerSensor.power, W_Setpoint=sine.y),
-    port_a_nominal(
-      m_flow=67.07,
-      T(displayUnit="degC") = 422.05,
-      p=3447380))
-    annotation (Placement(transformation(extent={{-102,-26},{-52,30}})));
 
-  EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(port_a1_nominal(
-      p=SMR_Taveprogram.port_b_nominal.p,
-      h=SMR_Taveprogram.port_b_nominal.h,
-      m_flow=-SMR_Taveprogram.port_b_nominal.m_flow), port_b1_nominal(p=
-          SMR_Taveprogram.port_a_nominal.p, h=SMR_Taveprogram.port_a_nominal.h),
+  EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(
+    port_a1_nominal(
+      p=14000000,
+      h=4e6,
+      m_flow=50),
+    port_b1_nominal(p=14000000, h=2e6),
     port_b3_nominal_m_flow={-0.67},
     nPorts_b3=1)
-    annotation (Placement(transformation(extent={{-10,-18},{30,22}})));
-  BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl
+    annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
+  BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR
     intermediate_Rankine_Cycle_TESUC(
+    redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.TESTurbine
+      data(
+      p_in_nominal=14000000,
+      p_condensor=8000,
+      V_condensor=10000,
+      V_FeedwaterMixVolume=25,
+      V_Header=10,
+      valve_TCV_mflow=125,
+      valve_TCV_dp_nominal=500000,
+      valve_SHS_mflow=15,
+      valve_SHS_dp_nominal=5000000,
+      valve_TCV_LPT_mflow=30,
+      valve_TCV_LPT_dp_nominal=10000,
+      InternalBypassValve_mflow_small=0,
+      InternalBypassValve_p_spring=20000000,
+      InternalBypassValve_K(unit="1/(m.kg)") = 40,
+      InternalBypassValve_tau(unit="1/s"),
+      HPT_p_exit_nominal=2500000,
+      HPT_T_in_nominal=673.15,
+      HPT_nominal_mflow=50,
+      HPT_efficiency=1,
+      LPT_p_in_nominal=2500000,
+      LPT_p_exit_nominal=7000,
+      LPT_T_in_nominal=573.15,
+      LPT_nominal_mflow=50,
+      LPT_efficiency=1,
+      firstfeedpump_p_nominal=5500000,
+      secondfeedpump_p_nominal=5500000,
+      controlledfeedpump_mflow_nominal=75,
+      MainFeedHeater_K_tube(unit="1/m4"),
+      MainFeedHeater_K_shell(unit="1/m4"),
+      BypassFeedHeater_K_tube(unit="1/m4"),
+      BypassFeedHeater_K_shell(unit="1/m4")),
     port_a_nominal(
       p=EM.port_b2_nominal.p,
       h=EM.port_b2_nominal.h,
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl
-      CS(electric_demand=sum1.y, Overall_Power=sensorW.W))
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl_HTGR_3
+      CS(
+      electric_demand=sum1.y,
+      Overall_Power=sensorW.W,
+      data(
+        p_steam=14000000,
+        T_Feedwater=481.15,
+        p_steam_vent=15500000,
+        m_flow_reactor=50)),
+    init(
+      HPT_p_a_start=15000000,
+      HPT_p_b_start=2500000,
+      HPT_T_a_start=673.15,
+      HPT_T_b_start=573.15,
+      LPT_p_a_start=2500000))
     annotation (Placement(transformation(extent={{50,-20},{90,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
     annotation (Placement(transformation(extent={{98,-22},{138,22}})));
@@ -156,7 +190,7 @@ model LWR_Case_01_IndependentBOP
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
       CS(electric_demand=sum1.y))
-    annotation (Placement(transformation(extent={{106,-86},{144,-44}})));
+    annotation (Placement(transformation(extent={{104,-86},{142,-44}})));
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW
     annotation (Placement(transformation(extent={{142,-6},{156,6}})));
   Modelica.Blocks.Math.Add         add
@@ -182,40 +216,41 @@ model LWR_Case_01_IndependentBOP
     annotation (Placement(transformation(extent={{-98,112},{-78,132}})));
   Modelica.Blocks.Math.Sum sum1
     annotation (Placement(transformation(extent={{134,102},{154,122}})));
+  PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop
+                                         hTGR_PebbleBed_Primary_Loop(redeclare
+      PrimaryHeatSystem.HTGR.HTGR_Rankine.CS_Rankine_Primary CS(data(
+          T_Rx_Exit_Ref=579.15, P_Steam_Ref=3400000)))
+    annotation (Placement(transformation(extent={{-104,-22},{-56,24}})));
 equation
+    hTGR_PebbleBed_Primary_Loop.input_steam_pressure = intermediate_Rankine_Cycle_TESUC.sensor_p.p;
 
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)
-    annotation (Line(points={{30,-6},{36,-6},{36,-8},{50,-8}},
+    annotation (Line(points={{28,-6},{36,-6},{36,-8},{50,-8}},
                                                color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC.portElec_b, SY.port_a[1])
     annotation (Line(points={{90,0},{98,0},{98,-1.1}},               color={255,
           0,0}));
-  connect(SMR_Taveprogram.port_b, stateSensor1.port_a) annotation (Line(points={{
-          -51.0909,12.7692},{-51.0909,11},{-38,11}},  color={0,127,255}));
-  connect(stateSensor1.port_b, EM.port_a1) annotation (Line(points={{-24,11},{
-          -22,11},{-22,12},{-16,12},{-16,10},{-10,10}},
-                                                    color={0,127,255}));
+  connect(stateSensor1.port_b, EM.port_a1) annotation (Line(points={{-24,11},{-22,
+          11},{-22,12},{-16,12},{-16,10},{-12,10}}, color={0,127,255}));
   connect(stateSensor1.statePort, stateDisplay1.statePort) annotation (Line(
         points={{-30.965,11.045},{-22,11.045},{-22,14},{-20,14},{-20,24},{-29,24},
           {-29,39.1}}, color={0,0,0}));
-  connect(EM.port_b2, stateSensor2.port_a) annotation (Line(points={{30,10},{32,
+  connect(EM.port_b2, stateSensor2.port_a) annotation (Line(points={{28,10},{32,
           10},{32,9}},                        color={0,127,255}));
   connect(stateSensor2.port_b, intermediate_Rankine_Cycle_TESUC.port_a)
     annotation (Line(points={{46,9},{48,9},{48,8},{50,8}},          color={0,127,
           255}));
   connect(stateSensor2.statePort, stateDisplay2.statePort) annotation (Line(
         points={{39.035,9.045},{39.035,37.1},{47,37.1}}, color={0,0,0}));
-  connect(SMR_Taveprogram.port_a, stateSensor3.port_b) annotation (Line(points={{
-          -51.0909,-1.44615},{-46,-1.44615},{-46,-6},{-40,-6}},  color={0,127,255}));
   connect(stateSensor3.port_a, EM.port_b1)
-    annotation (Line(points={{-26,-6},{-10,-6}}, color={0,127,255}));
+    annotation (Line(points={{-26,-6},{-12,-6}}, color={0,127,255}));
   connect(stateDisplay3.statePort, stateSensor3.statePort) annotation (Line(
         points={{-76,-44.16},{-76,-50},{-44,-50},{-44,-12},{-33.035,-12},{-33.035,
           -5.96}}, color={0,0,0}));
   connect(stateSensor4.port_b, two_Tank_SHS_System_NTU.port_ch_a)
     annotation (Line(points={{-24,-68},{-15.6,-68.4}}, color={0,127,255}));
   connect(stateSensor4.port_a, EM.port_b3[1]) annotation (Line(points={{-38,-68},
-          {-38,-24},{18,-24},{18,-18}}, color={0,127,255}));
+          {-38,-24},{16,-24},{16,-18}}, color={0,127,255}));
   connect(stateDisplay4.statePort, stateSensor4.statePort) annotation (Line(
         points={{-76,-94.16},{-76,-100},{-30.965,-100},{-30.965,-67.96}}, color=
          {0,0,0}));
@@ -239,14 +274,15 @@ equation
     annotation (Line(points={{30,-30},{57.2,-30},{57.2,-19.2}}, color={0,127,255}));
   connect(stateSensor6.port_b,
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_a)
-    annotation (Line(points={{62,-68},{100,-68},{100,-60},{102,-60},{102,-56},{106,
-          -56},{106,-56.6}}, color={0,127,255}));
+    annotation (Line(points={{62,-68},{100,-68},{100,-60},{102,-60},{102,-56},{
+          104,-56},{104,-56.6}},
+                             color={0,127,255}));
   connect(stateSensor7.port_a,
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_b)
-    annotation (Line(points={{68,-55},{68,-73.4},{106,-73.4}}, color={0,127,255}));
+    annotation (Line(points={{68,-55},{68,-73.4},{104,-73.4}}, color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.portElec_b,
-    SY.port_a[2]) annotation (Line(points={{144,-65},{144,-28},{94,-28},{94,0},{
-          98,0},{98,1.1}},      color={255,0,0}));
+    SY.port_a[2]) annotation (Line(points={{142,-65},{142,-28},{94,-28},{94,0},
+          {98,0},{98,1.1}},     color={255,0,0}));
   connect(SY.port_Grid, sensorW.port_a)
     annotation (Line(points={{138,0},{142,0}}, color={255,0,0}));
   connect(sensorW.port_b, EG.portElec_a)
@@ -257,9 +293,14 @@ equation
   connect(trapezoid1.y, add.u2) annotation (Line(points={{87,86},{100,86},{100,
           100},{106,100}},
                          color={0,0,127}));
+  connect(hTGR_PebbleBed_Primary_Loop.port_b, stateSensor1.port_a) annotation (
+      Line(points={{-56.72,12.27},{-47.36,12.27},{-47.36,11},{-38,11}}, color={0,
+          127,255}));
+  connect(hTGR_PebbleBed_Primary_Loop.port_a, stateSensor3.port_b) annotation (
+      Line(points={{-56.72,-6.59},{-48.36,-6.59},{-48.36,-6},{-40,-6}}, color={0,
+          127,255}));
   connect(add.y, sum1.u[1]) annotation (Line(points={{129,106},{128,106},{128,
-          92},{98,92},{98,118},{132,118},{132,112}},
-                                       color={0,0,127}));
+          92},{98,92},{98,118},{132,118},{132,112}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{200,100}}), graphics={
         Ellipse(lineColor = {75,138,73},
@@ -282,4 +323,4 @@ equation
 <p>System is based upon report: Frick, Konor L. Status Report on the NuScale Module Developed in the Modelica Framework. United States: N. p., 2019. Web. doi:10.2172/1569288.</p>
 </html>"),
     __Dymola_experimentSetupOutput(events=false));
-end LWR_Case_01_IndependentBOP;
+end HTGR_Case_01_IndependentBOP_3;
