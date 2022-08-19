@@ -13,24 +13,69 @@ model HTGR_Case_03_OversizedTurbine
      + sum(EM.port_b3.m_flow./EM.port_b3_nominal_m_flow)*fracNominal_Other,
      0.5));
 
-  EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(port_a1_nominal(
-      p=SMR_Taveprogram.port_b_nominal.p,
-      h=SMR_Taveprogram.port_b_nominal.h,
-      m_flow=-SMR_Taveprogram.port_b_nominal.m_flow), port_b1_nominal(p=
-          SMR_Taveprogram.port_a_nominal.p, h=SMR_Taveprogram.port_a_nominal.h),
+  EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(
+    port_a1_nominal(
+      p=14000000,
+      h=2e6,
+      m_flow=50),
+    port_b1_nominal(p=14100000, h=2e6),
     port_b3_nominal_m_flow={-0.67},
     nPorts_b3=1)
     annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-  BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop
+  BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop_HTGR
     intermediate_Rankine_Cycle_TESUC(
+    redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.TESTurbine
+      data(
+      p_in_nominal=14000000,
+      p_condensor=7000,
+      V_condensor=10000,
+      V_FeedwaterMixVolume=25,
+      V_Header=10,
+      valve_TCV_mflow=50,
+      valve_TCV_dp_nominal=500000,
+      valve_SHS_mflow=15,
+      valve_SHS_dp_nominal=3000000,
+      valve_TCV_LPT_mflow=30,
+      valve_TCV_LPT_dp_nominal=10000,
+      valve_TBV_mflow=400,
+      InternalBypassValve_mflow_small=0,
+      InternalBypassValve_p_spring=15000000,
+      InternalBypassValve_K(unit="1/(m.kg)") = 40,
+      InternalBypassValve_tau(unit="1/s"),
+      HPT_p_exit_nominal=700000,
+      HPT_T_in_nominal=773.15,
+      HPT_efficiency=1,
+      LPT_p_in_nominal=700000,
+      LPT_efficiency=1,
+      firstfeedpump_p_nominal=6000000,
+      secondfeedpump_p_nominal=2500000,
+      controlledfeedpump_mflow_nominal=75,
+      MainFeedHeater_K_tube(unit="1/m4"),
+      MainFeedHeater_K_shell(unit="1/m4"),
+      BypassFeedHeater_K_tube(unit="1/m4"),
+      BypassFeedHeater_K_shell(unit="1/m4")),
     port_a_nominal(
       p=EM.port_b2_nominal.p,
       h=EM.port_b2_nominal.h,
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_PowerBoostLoop_DivertPowerControl
-      CS(electric_demand=sum1.y))
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_PowerBoostLoop_DivertPowerControl_HTGR
+      CS(electric_demand=sum1.y, data(
+        p_steam=14000000,
+        T_Feedwater=481.15,
+        p_steam_vent=16500000,
+        m_flow_reactor=50)),
+    init(
+      tee_p_start=700000,
+      FeedwaterMixVolume_p_start=5500000,
+      header_p_start=14000000,
+      moisturesep_T_start=481.15,
+      HPT_p_a_start=14000000,
+      HPT_p_b_start=700000,
+      HPT_T_a_start=773.15,
+      HPT_T_b_start=623.15,
+      LPT_T_a_start=623.15))
     annotation (Placement(transformation(extent={{62,-20},{102,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
     annotation (Placement(transformation(extent={{112,-22},{152,22}})));
@@ -161,13 +206,14 @@ model HTGR_Case_03_OversizedTurbine
     timeScale=timeScale,
     fileName=fileName)
     annotation (Placement(transformation(extent={{-80,62},{-60,82}})));
-  PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop
-                                         hTGR_PebbleBed_Primary_Loop(redeclare
-      PrimaryHeatSystem.HTGR.HTGR_Rankine.CS_Rankine_Primary CS(data(
-          T_Rx_Exit_Ref=579.15, P_Steam_Ref=3400000)))
+  PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_TESUC
+                                         hTGR_PebbleBed_Primary_Loop_TESUC(
+      redeclare PrimaryHeatSystem.HTGR.HTGR_Rankine.CS_Rankine_Primary CS(data(
+          P_Steam_Ref=14000000)))
     annotation (Placement(transformation(extent={{-94,-20},{-50,22}})));
 equation
-  hTGR_PebbleBed_Primary_Loop.input_steam_pressure = intermediate_Rankine_Cycle_TESUC.sensor_p.p;
+  hTGR_PebbleBed_Primary_Loop_TESUC.input_steam_pressure =
+    intermediate_Rankine_Cycle_TESUC.sensor_p.p;
 
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)
     annotation (Line(points={{28,-6},{44,-6},{44,-8},{62,-8}},
@@ -231,12 +277,13 @@ equation
   connect(trapezoid1.y, add.u1) annotation (Line(points={{85,94},{90,94},{90,78},
           {110,78},{110,74},{116,74}},
                      color={0,0,127}));
-  connect(add.y, sum1.u[1]) annotation (Line(points={{139,68},{144,68},{144,84},
-          {128,84},{128,98},{134,98}}, color={0,0,127}));
-  connect(hTGR_PebbleBed_Primary_Loop.port_b, stateSensor1.port_a)
+  connect(hTGR_PebbleBed_Primary_Loop_TESUC.port_b, stateSensor1.port_a)
     annotation (Line(points={{-50.66,11.29},{-38,11}}, color={0,127,255}));
-  connect(hTGR_PebbleBed_Primary_Loop.port_a, stateSensor3.port_b) annotation (
-      Line(points={{-50.66,-5.93},{-40,-5.93},{-40,-6}}, color={0,127,255}));
+  connect(hTGR_PebbleBed_Primary_Loop_TESUC.port_a, stateSensor3.port_b)
+    annotation (Line(points={{-50.66,-5.93},{-40,-5.93},{-40,-6}}, color={0,127,
+          255}));
+  connect(add.y, sum1.u[1]) annotation (Line(points={{139,68},{142,68},{142,86},
+          {128,86},{128,98},{134,98}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{200,100}}), graphics={
         Ellipse(lineColor = {75,138,73},
@@ -252,7 +299,7 @@ equation
             false, extent={{-100,-100},{200,100}})),
     experiment(
       StopTime=200000,
-      Interval=10,
+      Interval=0.5,
       __Dymola_Algorithm="Esdirk45a"),
     Documentation(info="<html>
 <p>NuScale style reactor system. System has a nominal thermal output of 160MWt rather than the updated 200MWt.</p>

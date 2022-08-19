@@ -17,3 +17,4 @@ CS_DivertPowerControl_Argonne
 CS_SmallCycle_NoFeedHeat_Argonne
 CS_DivertPowerControl_HTGR
 CS_DivertPowerControl_HTGR_3
+CS_PowerBoostLoop_DivertPowerControl_HTGR

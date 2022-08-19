@@ -1,32 +1,26 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
-model SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR "Two stage BOP model"
+model SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop_HTGR
+  "Two stage BOP model"
   extends BaseClasses.Partial_SubSystem_C(
     redeclare replaceable
       ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
     redeclare replaceable Data.TESTurbine data(
-      p_condensor=8000,
+      p_condensor=7000,
       V_FeedwaterMixVolume=25,
       V_Header=10,
       valve_TCV_mflow=67,
       valve_TCV_dp_nominal=100000,
       valve_SHS_mflow=30,
-      valve_SHS_dp_nominal=600000,
+      valve_SHS_dp_nominal=1200000,
       valve_TCV_LPT_mflow=30,
       valve_TCV_LPT_dp_nominal=10000,
       InternalBypassValve_mflow_small=0,
       InternalBypassValve_p_spring=15000000,
       InternalBypassValve_K=40,
-      HPT_p_exit_nominal=700000,
-      HPT_T_in_nominal=579.15,
-      HPT_nominal_mflow=67,
       HPT_efficiency=1,
-      LPT_p_in_nominal=700000,
-      LPT_p_exit_nominal=7000,
-      LPT_T_in_nominal=523.15,
-      LPT_nominal_mflow=20,
       LPT_efficiency=1,
-      firstfeedpump_p_nominal=2500000,
+      firstfeedpump_p_nominal=2000000,
       secondfeedpump_p_nominal=2000000));
 
   replaceable Data.IntermediateTurbineInitialisation init(
@@ -142,8 +136,14 @@ model SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR "Two stage BOP model"
     annotation (Placement(transformation(extent={{-122,32},{-102,52}})));
 
   TRANSFORM.Fluid.Machines.Pump                pump_SimpleMassFlow1(
+    p_a_start=5500000,
+    p_b_start=25000000,
+    use_T_start=false,
+    T_start=481.15,
+    h_start=1e6,
+    m_flow_start=50,
     N_nominal=1500,
-    dp_nominal=CS.data.p_steam,
+    dp_nominal=8500000,
     m_flow_nominal=data.controlledfeedpump_mflow_nominal,
     redeclare package Medium =
         Modelica.Media.Water.StandardWater,
@@ -188,7 +188,7 @@ model SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR "Two stage BOP model"
   TRANSFORM.Fluid.Valves.ValveLinear InternalBypass(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_start=400,
-    dp_nominal=1000000,
+    dp_nominal=1500000,
     m_flow_nominal=15) annotation (Placement(transformation(
         extent={{8,8},{-8,-8}},
         rotation=180,
@@ -196,9 +196,11 @@ model SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR "Two stage BOP model"
   TRANSFORM.Fluid.Machines.SteamTurbine HPT(
     nUnits=1,
     energyDynamics=TRANSFORM.Types.Dynamics.DynamicFreeInitial,
+    Q_units_start={2e7},
     eta_mech=data.HPT_efficiency,
     redeclare model Eta_wetSteam =
-        TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant,
+        TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant (
+          eta_nominal=0.9),
     p_a_start=init.HPT_p_a_start,
     p_b_start=init.HPT_p_b_start,
     T_a_start=init.HPT_T_a_start,
@@ -211,13 +213,15 @@ model SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR "Two stage BOP model"
   TRANSFORM.Fluid.FittingsAndResistances.TeeJunctionVolume tee(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     V=data.V_tee,
-    p_start=init.tee_p_start)
+    p_start=init.tee_p_start,
+    T_start=523.15)
     annotation (Placement(transformation(extent={{-10,10},{10,-10}},
         rotation=90,
         origin={90,4})));
   TRANSFORM.Fluid.Machines.SteamTurbine LPT(
     nUnits=1,
     energyDynamics=TRANSFORM.Types.Dynamics.DynamicFreeInitial,
+    Q_units_start={2e7},
     eta_mech=data.LPT_efficiency,
     redeclare model Eta_wetSteam =
         TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant (
@@ -233,6 +237,32 @@ model SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR "Two stage BOP model"
         extent={{10,10},{-10,-10}},
         rotation=90,
         origin={46,-40})));
+  Modelica.Fluid.Interfaces.FluidPort_a port_a2(redeclare package Medium =
+        Modelica.Media.Water.StandardWater, m_flow)
+    "Fluid connector a (positive design flow direction is from port_a to port_b)"
+    annotation (Placement(transformation(extent={{150,62},{170,82}}),
+        iconTransformation(extent={{88,58},{108,78}})));
+  Modelica.Fluid.Interfaces.FluidPort_b port_b1(redeclare package Medium =
+        Modelica.Media.Water.StandardWater, m_flow)
+    "Fluid connector b (positive design flow direction is from port_a to port_b)"
+    annotation (Placement(transformation(extent={{150,-156},{170,-136}}),
+        iconTransformation(extent={{88,-62},{108,-42}})));
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort
+                                       sensor_T3(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)            annotation (Placement(
+        transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=180,
+        origin={134,72})));
+  TRANSFORM.Fluid.Valves.ValveLinear TCV_LPT(
+    redeclare package Medium = Modelica.Media.Water.StandardWater,
+    m_flow_start=100,
+    dp_nominal=data.valve_TCV_LPT_dp_nominal,
+    m_flow_nominal=data.valve_TCV_LPT_mflow) annotation (Placement(
+        transformation(
+        extent={{8,8},{-8,-8}},
+        rotation=180,
+        origin={104,72})));
   TRANSFORM.Fluid.Valves.ValveLinear SHS_charge_control(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_start=400,
@@ -244,25 +274,26 @@ model SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR "Two stage BOP model"
   TRANSFORM.Fluid.Valves.ValveLinear Discharge_OnOff(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_start=400,
-    dp_nominal=100000000,
-    m_flow_nominal=20) annotation (Placement(transformation(
+    dp_nominal=400000,
+    m_flow_nominal=26) annotation (Placement(transformation(
         extent={{8,8},{-8,-8}},
         rotation=180,
         origin={126,-146})));
+  TRANSFORM.Fluid.Machines.Pump_PressureBooster
+                                           firstfeedpump1(
+    redeclare package Medium = Modelica.Media.Water.StandardWater,
+    use_input=false,
+    p_nominal=1400000,
+    allowFlowReversal=false)
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+        rotation=0,
+        origin={94,-148})));
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
         Modelica.Media.Water.StandardWater)            annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={-136,-42})));
-  Modelica.Blocks.Sources.Constant const(k=1)
-    annotation (Placement(transformation(extent={{50,-156},{70,-136}})));
-  TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance R_entry1(R=10,
-      redeclare package Medium = Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(
-        extent={{10,-10},{-10,10}},
-        rotation=270,
-        origin={-92,-128})));
 initial equation
 
 equation
@@ -380,6 +411,26 @@ equation
           36},{90,36},{90,14}}, color={0,127,255}));
   connect(LPT.portHP, tee.port_1) annotation (Line(points={{52,-30},{66,-30},{
           66,-28},{90,-28},{90,-6}}, color={0,127,255}));
+  connect(sensorBus.SHS_Return_T, sensor_T3.T) annotation (Line(
+      points={{-30,100},{-30,74},{88,74},{88,58},{134,58},{134,68.4}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-3,-6},{-3,-6}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(actuatorBus.TCV_SHS, TCV_LPT.opening) annotation (Line(
+      points={{30,100},{104,100},{104,78.4}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-3,6},{-3,6}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(port_a1, SHS_charge_control.port_a) annotation (Line(points={{-92,
+          -160},{-92,-102},{-70,-102}}, color={0,127,255}));
   connect(SHS_charge_control.port_b, FeedwaterMixVolume.port_b[3]) annotation (
       Line(points={{-54,-102},{-20,-102},{-20,-39.3333},{-24,-39.3333}}, color=
           {0,127,255}));
@@ -389,6 +440,24 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(TCV_LPT.port_b, sensor_T3.port_b)
+    annotation (Line(points={{112,72},{124,72}}, color={0,127,255}));
+  connect(sensor_T3.port_a, port_a2)
+    annotation (Line(points={{144,72},{160,72}}, color={0,127,255}));
+  connect(TCV_LPT.port_a, tee.port_3) annotation (Line(points={{96,72},{90,72},
+          {90,52},{104,52},{104,4},{100,4}}, color={0,127,255}));
+  connect(Discharge_OnOff.port_b, port_b1)
+    annotation (Line(points={{134,-146},{160,-146}}, color={0,127,255}));
+  connect(actuatorBus.Discharge_OnOff_Throttle, Discharge_OnOff.opening)
+    annotation (Line(
+      points={{30,100},{186,100},{186,-132},{126,-132},{126,-139.6}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(firstfeedpump1.port_a, Condenser.port_b) annotation (Line(points={{84,
+          -148},{78,-148},{78,-128},{146,-128},{146,-112}}, color={0,127,255}));
+  connect(firstfeedpump1.port_b, Discharge_OnOff.port_a) annotation (Line(
+        points={{104,-148},{112,-148},{112,-146},{118,-146}}, color={0,127,255}));
   connect(actuatorBus.Feed_Pump_Speed, pump_SimpleMassFlow1.inputSignal)
     annotation (Line(
       points={{30,100},{-92,100},{-92,-56},{-109,-56},{-109,-48.7}},
@@ -406,16 +475,6 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(const.y, Discharge_OnOff.opening) annotation (Line(points={{71,-146},
-          {76,-146},{76,-132},{126,-132},{126,-139.6}}, color={0,0,127}));
-  connect(Discharge_OnOff.port_a, firstfeedpump.port_a) annotation (Line(points=
-         {{118,-146},{114,-146},{114,-128},{50,-128}}, color={0,127,255}));
-  connect(Discharge_OnOff.port_b, tee.port_3)
-    annotation (Line(points={{134,-146},{134,4},{100,4}}, color={0,127,255}));
-  connect(port_a1, R_entry1.port_a)
-    annotation (Line(points={{-92,-160},{-92,-135}}, color={0,127,255}));
-  connect(R_entry1.port_b, SHS_charge_control.port_a) annotation (Line(points={
-          {-92,-121},{-92,-102},{-70,-102}}, color={0,127,255}));
 annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-24,2},{24,-2}},
@@ -599,4 +658,4 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
     Documentation(info="<html>
 <p>A two stage turbine rankine cycle with feedwater heating internal to the system - can be externally bypassed or LPT can be bypassed both will feedwater heat post bypass</p>
 </html>"));
-end SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR;
+end SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop_HTGR;
