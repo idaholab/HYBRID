@@ -622,4 +622,648 @@ package ObsoleteBOPExamples
             -60,-12},{-60,-10}}, color={0,127,255}));
     annotation (experiment(StopTime=500));
   end Intermediate_Rankine_Cycle_Test_a;
+
+  model SteamTurbine_NoFeedHeat_Test_c
+    import NHES;
+
+    parameter Real IP_NTU = 20.0 "Intermediate pressure NTUHX NTU";
+    parameter Modelica.Units.SI.Pressure pr3out=253000 annotation(dialog(tab = "Initialization", group = "Pressure"));
+
+    extends Modelica.Icons.Example;
+    TRANSFORM.Electrical.Sources.FrequencySource
+                                       sinkElec(f=60)
+      annotation (Placement(transformation(extent={{116,-10},{96,10}})));
+    Fluid.Sensors.stateSensor stateSensor(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
+      annotation (Placement(transformation(extent={{-18,-22},{-38,-2}})));
+    Fluid.Sensors.stateSensor stateSensor1(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
+      annotation (Placement(transformation(extent={{-38,2},{-18,22}})));
+    Fluid.Sensors.stateDisplay stateDisplay
+      annotation (Placement(transformation(extent={{-52,-60},{-8,-30}})));
+    Fluid.Sensors.stateDisplay stateDisplay1
+      annotation (Placement(transformation(extent={{-52,30},{-6,60}})));
+    Modelica.Blocks.Sources.Sine sine(
+      f=1/200,
+      offset=4e8,
+      startTime=350,
+      amplitude=2e8)
+      annotation (Placement(transformation(extent={{-70,70},{-50,90}})));
+    Modelica.Blocks.Sources.Sine sine1(
+      amplitude=10e6,
+      f=1/20000,
+      offset=38e6,
+      startTime=2000)
+      annotation (Placement(transformation(extent={{-38,72},{-18,92}})));
+    TRANSFORM.Electrical.Sensors.PowerSensor sensorW
+      annotation (Placement(transformation(extent={{72,-6},{86,6}})));
+    NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
+      intermediate_Rankine_Cycle_TESUC(
+      port_a_nominal(
+        p=3400000,
+        h=3e6,
+        m_flow=67),
+      port_b_nominal(p=3400000, h=1e6),
+      redeclare
+        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat_Argonne
+        CS(electric_demand_TES=const.y))
+      annotation (Placement(transformation(extent={{10,-18},{50,22}})));
+    Modelica.Fluid.Sources.Boundary_pT source(
+      redeclare package Medium = Modelica.Media.Water.StandardWater,
+      use_p_in=false,
+      nPorts=1,
+      p(displayUnit="bar") = 1200000,
+      T(displayUnit="degC") = 491.15)
+      annotation (Placement(transformation(extent={{-84,22},{-64,2}})));
+    Modelica.Fluid.Sources.MassFlowSource_h source1(
+      redeclare package Medium = Modelica.Media.Water.StandardWater,
+      nPorts=1,
+      use_m_flow_in=false,
+      m_flow=-26,
+      h=0.17e6)
+      annotation (Placement(transformation(extent={{-84,-30},{-64,-10}})));
+    Modelica.Blocks.Sources.Constant const(k=18e6)
+      annotation (Placement(transformation(extent={{10,68},{30,88}})));
+  equation
+
+    connect(stateDisplay1.statePort, stateSensor1.statePort) annotation (Line(
+          points={{-29,41.1},{-29,30},{-28,30},{-28,14},{-27.95,14},{-27.95,12.05}},
+                                                                     color={0,0,0}));
+    connect(stateDisplay.statePort, stateSensor.statePort) annotation (Line(
+          points={{-30,-48.9},{-30,-32},{-28,-32},{-28,-11.95},{-28.05,-11.95}},
+                                                             color={0,0,0}));
+    connect(sensorW.port_b, sinkElec.port)
+      annotation (Line(points={{86,0},{96,0}}, color={255,0,0}));
+    connect(stateSensor1.port_b, intermediate_Rankine_Cycle_TESUC.port_a)
+      annotation (Line(points={{-18,12},{4,12},{4,10},{10,10}}, color={0,127,255}));
+    connect(stateSensor.port_a, intermediate_Rankine_Cycle_TESUC.port_b)
+      annotation (Line(points={{-18,-12},{4,-12},{4,-6},{10,-6}}, color={0,127,
+            255}));
+    connect(intermediate_Rankine_Cycle_TESUC.portElec_b, sensorW.port_a)
+      annotation (Line(points={{50,2},{66,2},{66,0},{72,0}}, color={255,0,0}));
+    connect(source.ports[1], stateSensor1.port_a)
+      annotation (Line(points={{-64,12},{-38,12}}, color={0,127,255}));
+    connect(source1.ports[1], stateSensor.port_b) annotation (Line(points={{-64,
+            -20},{-44,-20},{-44,-12},{-38,-12}}, color={0,127,255}));
+    annotation (experiment(StopTime=50000, __Dymola_Algorithm="Esdirk45a"));
+  end SteamTurbine_NoFeedHeat_Test_c;
+
+  model SteamTurbine_NoFeedHeat_Test_b
+    import NHES;
+
+    parameter Real IP_NTU = 20.0 "Intermediate pressure NTUHX NTU";
+    parameter Modelica.Units.SI.Pressure pr3out=253000 annotation(dialog(tab = "Initialization", group = "Pressure"));
+
+    extends Modelica.Icons.Example;
+    TRANSFORM.Electrical.Sources.FrequencySource
+                                       sinkElec(f=60)
+      annotation (Placement(transformation(extent={{116,-10},{96,10}})));
+    Fluid.Sensors.stateSensor stateSensor(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
+      annotation (Placement(transformation(extent={{-18,-22},{-38,-2}})));
+    Fluid.Sensors.stateSensor stateSensor1(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
+      annotation (Placement(transformation(extent={{-38,2},{-18,22}})));
+    Fluid.Sensors.stateDisplay stateDisplay
+      annotation (Placement(transformation(extent={{-52,-60},{-8,-30}})));
+    Fluid.Sensors.stateDisplay stateDisplay1
+      annotation (Placement(transformation(extent={{-52,30},{-6,60}})));
+    Modelica.Blocks.Sources.Sine sine(
+      f=1/200,
+      offset=4e8,
+      startTime=350,
+      amplitude=2e8)
+      annotation (Placement(transformation(extent={{-70,70},{-50,90}})));
+    Modelica.Blocks.Sources.Sine sine1(
+      amplitude=10e6,
+      f=1/20000,
+      offset=38e6,
+      startTime=2000)
+      annotation (Placement(transformation(extent={{-38,72},{-18,92}})));
+    TRANSFORM.Electrical.Sensors.PowerSensor sensorW
+      annotation (Placement(transformation(extent={{72,-6},{86,6}})));
+    NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
+      intermediate_Rankine_Cycle_TESUC(
+      port_a_nominal(
+        p=1200000,
+        h=2e6,
+        m_flow=26),
+      port_b_nominal(p=1200000, h=1e6),
+      redeclare
+        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat_Argonne
+        CS(electric_demand_TES=const.y))
+      annotation (Placement(transformation(extent={{10,-18},{50,22}})));
+    Modelica.Blocks.Sources.Constant const(k=18e6)
+      annotation (Placement(transformation(extent={{-2,70},{18,90}})));
+    Modelica.Fluid.Sources.Boundary_pT sink(
+      redeclare package Medium = Modelica.Media.Water.StandardWater,
+      use_p_in=false,
+      nPorts=1,
+      p(displayUnit="bar") = 1200000,
+      T(displayUnit="degC") = 491.15)
+      annotation (Placement(transformation(extent={{-88,22},{-68,2}})));
+    Modelica.Fluid.Sources.Boundary_pT sink1(
+      redeclare package Medium = Modelica.Media.Water.StandardWater,
+      use_p_in=false,
+      nPorts=1,
+      p(displayUnit="bar") = 1200000,
+      T(displayUnit="degC") = 309.15)
+      annotation (Placement(transformation(extent={{-88,-6},{-68,-26}})));
+  equation
+
+    connect(stateDisplay1.statePort, stateSensor1.statePort) annotation (Line(
+          points={{-29,41.1},{-29,30},{-28,30},{-28,14},{-27.95,14},{-27.95,12.05}},
+                                                                     color={0,0,0}));
+    connect(stateDisplay.statePort, stateSensor.statePort) annotation (Line(
+          points={{-30,-48.9},{-30,-32},{-28,-32},{-28,-11.95},{-28.05,-11.95}},
+                                                             color={0,0,0}));
+    connect(sensorW.port_b, sinkElec.port)
+      annotation (Line(points={{86,0},{96,0}}, color={255,0,0}));
+    connect(stateSensor1.port_b, intermediate_Rankine_Cycle_TESUC.port_a)
+      annotation (Line(points={{-18,12},{4,12},{4,10},{10,10}}, color={0,127,255}));
+    connect(stateSensor.port_a, intermediate_Rankine_Cycle_TESUC.port_b)
+      annotation (Line(points={{-18,-12},{4,-12},{4,-6},{10,-6}}, color={0,127,
+            255}));
+    connect(intermediate_Rankine_Cycle_TESUC.portElec_b, sensorW.port_a)
+      annotation (Line(points={{50,2},{66,2},{66,0},{72,0}}, color={255,0,0}));
+    connect(sink.ports[1], stateSensor1.port_a)
+      annotation (Line(points={{-68,12},{-38,12}}, color={0,127,255}));
+    connect(sink1.ports[1], stateSensor.port_b) annotation (Line(points={{-68,-16},
+            {-52,-16},{-52,-12},{-38,-12}}, color={0,127,255}));
+    annotation (experiment(StopTime=50000, __Dymola_Algorithm="Esdirk45a"));
+  end SteamTurbine_NoFeedHeat_Test_b;
+
+  model SteamTurbine_NoFeedHeat_Test_a
+    import NHES;
+
+    parameter Real IP_NTU = 20.0 "Intermediate pressure NTUHX NTU";
+    parameter Modelica.Units.SI.Pressure pr3out=253000 annotation(dialog(tab = "Initialization", group = "Pressure"));
+
+    extends Modelica.Icons.Example;
+    TRANSFORM.Electrical.Sources.FrequencySource
+                                       sinkElec(f=60)
+      annotation (Placement(transformation(extent={{116,-10},{96,10}})));
+    Modelica.Blocks.Sources.Pulse pulse(
+      amplitude=5e6,
+      period=5000,
+      offset=60e6,
+      startTime=3000)
+      annotation (Placement(transformation(extent={{-118,-10},{-98,10}})));
+    Fluid.Sensors.stateSensor stateSensor(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
+      annotation (Placement(transformation(extent={{-18,-22},{-38,-2}})));
+    Fluid.Sensors.stateSensor stateSensor1(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
+      annotation (Placement(transformation(extent={{-38,2},{-18,22}})));
+    Fluid.Sensors.stateDisplay stateDisplay
+      annotation (Placement(transformation(extent={{-52,-60},{-8,-30}})));
+    Fluid.Sensors.stateDisplay stateDisplay1
+      annotation (Placement(transformation(extent={{-52,30},{-6,60}})));
+    Modelica.Blocks.Sources.Sine sine(
+      f=1/200,
+      offset=4e8,
+      startTime=350,
+      amplitude=2e8)
+      annotation (Placement(transformation(extent={{-70,70},{-50,90}})));
+    NHES.Fluid.Pipes.StraightPipe_withWall pipe(
+      redeclare package Medium =
+          Modelica.Media.Water.StandardWater,
+      p_a_start=1100000,
+      p_b_start=1200000,
+      use_Ts_start=true,
+      T_a_start=309.15,
+      T_b_start=491.15,
+      h_a_start=2e6,
+      h_b_start=1e6,
+      m_flow_a_start=26,
+      length=10,
+      diameter=1,
+      redeclare package Wall_Material = NHES.Media.Solids.SS316,
+      th_wall=0.001) annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=90,
+          origin={-60,0})));
+    TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.HeatFlow boundary(use_port=
+          true, Q_flow=500e6)
+      annotation (Placement(transformation(extent={{-96,-10},{-76,10}})));
+    Modelica.Blocks.Sources.Sine sine1(
+      amplitude=10e6,
+      f=1/20000,
+      offset=38e6,
+      startTime=2000)
+      annotation (Placement(transformation(extent={{-38,72},{-18,92}})));
+    TRANSFORM.Electrical.Sensors.PowerSensor sensorW
+      annotation (Placement(transformation(extent={{72,-6},{86,6}})));
+    NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
+      intermediate_Rankine_Cycle_TESUC(
+      port_a_nominal(
+        p=1200000,
+        h=2e6,
+        m_flow=26),
+      port_b_nominal(p=1200000, h=0.17e6),
+      redeclare
+        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
+        CS(electric_demand=const.y, data(Q_Nom=0)))
+      annotation (Placement(transformation(extent={{10,-18},{50,22}})));
+    Modelica.Blocks.Sources.Constant const(k=18e6)
+      annotation (Placement(transformation(extent={{-2,70},{18,90}})));
+  equation
+
+    connect(stateDisplay1.statePort, stateSensor1.statePort) annotation (Line(
+          points={{-29,41.1},{-29,30},{-28,30},{-28,14},{-27.95,14},{-27.95,12.05}},
+                                                                     color={0,0,0}));
+    connect(stateDisplay.statePort, stateSensor.statePort) annotation (Line(
+          points={{-30,-48.9},{-30,-32},{-28,-32},{-28,-11.95},{-28.05,-11.95}},
+                                                             color={0,0,0}));
+    connect(stateSensor.port_b, pipe.port_a) annotation (Line(points={{-38,-12},{-46,
+            -12},{-46,-14},{-60,-14},{-60,-10}}, color={0,127,255}));
+    connect(pipe.port_b, stateSensor1.port_a)
+      annotation (Line(points={{-60,10},{-60,12},{-38,12}}, color={0,127,255}));
+    connect(boundary.port, pipe.heatPorts[1])
+      annotation (Line(points={{-76,0},{-64.4,0},{-64.4,0.1}}, color={191,0,0}));
+    connect(pulse.y, boundary.Q_flow_ext)
+      annotation (Line(points={{-97,0},{-90,0}}, color={0,0,127}));
+    connect(sensorW.port_b, sinkElec.port)
+      annotation (Line(points={{86,0},{96,0}}, color={255,0,0}));
+    connect(stateSensor1.port_b, intermediate_Rankine_Cycle_TESUC.port_a)
+      annotation (Line(points={{-18,12},{4,12},{4,10},{10,10}}, color={0,127,255}));
+    connect(stateSensor.port_a, intermediate_Rankine_Cycle_TESUC.port_b)
+      annotation (Line(points={{-18,-12},{4,-12},{4,-6},{10,-6}}, color={0,127,
+            255}));
+    connect(intermediate_Rankine_Cycle_TESUC.portElec_b, sensorW.port_a)
+      annotation (Line(points={{50,2},{66,2},{66,0},{72,0}}, color={255,0,0}));
+    annotation (experiment(StopTime=50000, __Dymola_Algorithm="Esdirk45a"));
+  end SteamTurbine_NoFeedHeat_Test_a;
+
+  model SteamTurbine_PowerBoostLoop_Test_b
+    import NHES;
+
+    parameter Real IP_NTU = 20.0 "Intermediate pressure NTUHX NTU";
+    parameter Modelica.Units.SI.Pressure pr3out=253000 annotation(dialog(tab = "Initialization", group = "Pressure"));
+
+    extends Modelica.Icons.Example;
+    TRANSFORM.Electrical.Sources.FrequencySource
+                                       sinkElec(f=60)
+      annotation (Placement(transformation(extent={{116,-10},{96,10}})));
+    Fluid.Sensors.stateSensor stateSensor(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
+      annotation (Placement(transformation(extent={{-18,-22},{-38,-2}})));
+    Fluid.Sensors.stateSensor stateSensor1(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
+      annotation (Placement(transformation(extent={{-38,2},{-18,22}})));
+    Fluid.Sensors.stateDisplay stateDisplay
+      annotation (Placement(transformation(extent={{-52,-60},{-8,-30}})));
+    Fluid.Sensors.stateDisplay stateDisplay1
+      annotation (Placement(transformation(extent={{-52,30},{-6,60}})));
+    Modelica.Blocks.Sources.Sine sine(
+      f=1/200,
+      offset=4e8,
+      startTime=350,
+      amplitude=2e8)
+      annotation (Placement(transformation(extent={{-70,70},{-50,90}})));
+    Modelica.Blocks.Sources.Sine sine1(
+      amplitude=10e6,
+      f=1/20000,
+      offset=38e6,
+      startTime=2000)
+      annotation (Placement(transformation(extent={{-38,72},{-18,92}})));
+    TRANSFORM.Electrical.Sensors.PowerSensor sensorW
+      annotation (Placement(transformation(extent={{72,-6},{86,6}})));
+    NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop
+      intermediate_Rankine_Cycle_TESUC(
+      port_a_nominal(
+        p=3400000,
+        h=3e6,
+        m_flow=67),
+      port_b_nominal(p=3400000, h=1e6),
+      redeclare
+        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_PowerBoostLoop_DivertPowerControl
+        CS(electric_demand=sine1.y))
+      annotation (Placement(transformation(extent={{10,-18},{50,22}})));
+    Modelica.Fluid.Sources.Boundary_pT sink(
+      redeclare package Medium = Modelica.Media.Water.StandardWater,
+      use_p_in=false,
+      nPorts=1,
+      p(displayUnit="bar") = 3400000,
+      T(displayUnit="degC") = 579.15)
+      annotation (Placement(transformation(extent={{-84,22},{-64,2}})));
+    Modelica.Fluid.Sources.Boundary_pT sink1(
+      redeclare package Medium = Modelica.Media.Water.StandardWater,
+      use_p_in=false,
+      nPorts=1,
+      p(displayUnit="bar") = 3500000,
+      T(displayUnit="degC") = 421.15)
+      annotation (Placement(transformation(extent={{-84,-6},{-64,-26}})));
+  equation
+
+    connect(stateDisplay1.statePort, stateSensor1.statePort) annotation (Line(
+          points={{-29,41.1},{-29,30},{-28,30},{-28,14},{-27.95,14},{-27.95,12.05}},
+                                                                     color={0,0,0}));
+    connect(stateDisplay.statePort, stateSensor.statePort) annotation (Line(
+          points={{-30,-48.9},{-30,-32},{-28,-32},{-28,-11.95},{-28.05,-11.95}},
+                                                             color={0,0,0}));
+    connect(sensorW.port_b, sinkElec.port)
+      annotation (Line(points={{86,0},{96,0}}, color={255,0,0}));
+    connect(stateSensor1.port_b, intermediate_Rankine_Cycle_TESUC.port_a)
+      annotation (Line(points={{-18,12},{4,12},{4,10},{10,10}}, color={0,127,255}));
+    connect(stateSensor.port_a, intermediate_Rankine_Cycle_TESUC.port_b)
+      annotation (Line(points={{-18,-12},{4,-12},{4,-6},{10,-6}}, color={0,127,
+            255}));
+    connect(intermediate_Rankine_Cycle_TESUC.portElec_b, sensorW.port_a)
+      annotation (Line(points={{50,2},{66,2},{66,0},{72,0}}, color={255,0,0}));
+    connect(sink.ports[1], stateSensor1.port_a)
+      annotation (Line(points={{-64,12},{-38,12}}, color={0,127,255}));
+    connect(sink1.ports[1], stateSensor.port_b) annotation (Line(points={{-64,-16},
+            {-48,-16},{-48,-12},{-38,-12}}, color={0,127,255}));
+    connect(intermediate_Rankine_Cycle_TESUC.port_b1,
+      intermediate_Rankine_Cycle_TESUC.port_a2) annotation (Line(points={{49.6,
+            -8.4},{56,-8.4},{56,15.6},{49.6,15.6}}, color={0,127,255}));
+    annotation (experiment(StopTime=50000, __Dymola_Algorithm="Esdirk45a"));
+  end SteamTurbine_PowerBoostLoop_Test_b;
+
+  model SteamTurbine_PowerBoostLoop_Test_a
+    import NHES;
+
+    parameter Real IP_NTU = 20.0 "Intermediate pressure NTUHX NTU";
+    parameter Modelica.Units.SI.Pressure pr3out=253000 annotation(dialog(tab = "Initialization", group = "Pressure"));
+
+    extends Modelica.Icons.Example;
+    TRANSFORM.Electrical.Sources.FrequencySource
+                                       sinkElec(f=60)
+      annotation (Placement(transformation(extent={{116,-10},{96,10}})));
+    Fluid.Sensors.stateSensor stateSensor(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
+      annotation (Placement(transformation(extent={{-18,-22},{-38,-2}})));
+    Fluid.Sensors.stateSensor stateSensor1(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
+      annotation (Placement(transformation(extent={{-38,2},{-18,22}})));
+    Fluid.Sensors.stateDisplay stateDisplay
+      annotation (Placement(transformation(extent={{-52,-60},{-8,-30}})));
+    Fluid.Sensors.stateDisplay stateDisplay1
+      annotation (Placement(transformation(extent={{-52,30},{-6,60}})));
+    Modelica.Blocks.Sources.Sine sine(
+      f=1/200,
+      offset=4e8,
+      startTime=350,
+      amplitude=2e8)
+      annotation (Placement(transformation(extent={{-70,70},{-50,90}})));
+    NHES.Fluid.Pipes.StraightPipe_withWall pipe(
+      redeclare package Medium =
+          Modelica.Media.Water.StandardWater,
+      p_a_start=3400000,
+      p_b_start=3500000,
+      use_Ts_start=false,
+      T_a_start=421.15,
+      T_b_start=579.15,
+      h_a_start=3.6e6,
+      h_b_start=1.2e6,
+      m_flow_a_start=67,
+      length=10,
+      diameter=1,
+      redeclare package Wall_Material = NHES.Media.Solids.SS316,
+      th_wall=0.001) annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=90,
+          origin={-60,0})));
+    TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.HeatFlow boundary(use_port=
+          true, Q_flow=500e6)
+      annotation (Placement(transformation(extent={{-96,-10},{-76,10}})));
+    Modelica.Blocks.Sources.Pulse pulse(
+      amplitude=10e6,
+      period=5000,
+      offset=160e6,
+      startTime=3000)
+      annotation (Placement(transformation(extent={{-118,-10},{-98,10}})));
+    Modelica.Blocks.Sources.Sine sine1(
+      amplitude=10e6,
+      f=1/20000,
+      offset=38e6,
+      startTime=2000)
+      annotation (Placement(transformation(extent={{-38,72},{-18,92}})));
+    TRANSFORM.Electrical.Sensors.PowerSensor sensorW
+      annotation (Placement(transformation(extent={{72,-6},{86,6}})));
+    NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop
+      intermediate_Rankine_Cycle_TESUC(
+      port_a_nominal(
+        p=3400000,
+        h=3e6,
+        m_flow=67),
+      port_b_nominal(p=3400000, h=1e6),
+      redeclare
+        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_PowerBoostLoop_DivertPowerControl
+        CS(electric_demand=sine1.y))
+      annotation (Placement(transformation(extent={{8,-18},{48,22}})));
+  equation
+
+    connect(stateDisplay1.statePort, stateSensor1.statePort) annotation (Line(
+          points={{-29,41.1},{-29,30},{-28,30},{-28,14},{-27.95,14},{-27.95,12.05}},
+                                                                     color={0,0,0}));
+    connect(stateDisplay.statePort, stateSensor.statePort) annotation (Line(
+          points={{-30,-48.9},{-30,-32},{-28,-32},{-28,-11.95},{-28.05,-11.95}},
+                                                             color={0,0,0}));
+    connect(stateSensor.port_b, pipe.port_a) annotation (Line(points={{-38,-12},{-46,
+            -12},{-46,-14},{-60,-14},{-60,-10}}, color={0,127,255}));
+    connect(pipe.port_b, stateSensor1.port_a)
+      annotation (Line(points={{-60,10},{-60,12},{-38,12}}, color={0,127,255}));
+    connect(boundary.port, pipe.heatPorts[1])
+      annotation (Line(points={{-76,0},{-64.4,0},{-64.4,0.1}}, color={191,0,0}));
+    connect(pulse.y, boundary.Q_flow_ext)
+      annotation (Line(points={{-97,0},{-90,0}}, color={0,0,127}));
+    connect(sensorW.port_b, sinkElec.port)
+      annotation (Line(points={{86,0},{96,0}}, color={255,0,0}));
+    connect(stateSensor1.port_b, intermediate_Rankine_Cycle_TESUC.port_a)
+      annotation (Line(points={{-18,12},{4,12},{4,10},{8,10}},  color={0,127,255}));
+    connect(stateSensor.port_a, intermediate_Rankine_Cycle_TESUC.port_b)
+      annotation (Line(points={{-18,-12},{4,-12},{4,-6},{8,-6}},  color={0,127,
+            255}));
+    connect(intermediate_Rankine_Cycle_TESUC.portElec_b, sensorW.port_a)
+      annotation (Line(points={{48,2},{66,2},{66,0},{72,0}}, color={255,0,0}));
+    connect(intermediate_Rankine_Cycle_TESUC.port_b1,
+      intermediate_Rankine_Cycle_TESUC.port_a2) annotation (Line(points={{47.6,
+            -8.4},{58,-8.4},{58,15.6},{47.6,15.6}}, color={0,127,255}));
+    annotation (experiment(StopTime=50000, __Dymola_Algorithm="Esdirk45a"));
+  end SteamTurbine_PowerBoostLoop_Test_a;
+
+  model SteamTurbine_DivertPowerControl_Test_b
+    import NHES;
+
+    parameter Real IP_NTU = 20.0 "Intermediate pressure NTUHX NTU";
+    parameter Modelica.Units.SI.Pressure pr3out=253000 annotation(dialog(tab = "Initialization", group = "Pressure"));
+
+    extends Modelica.Icons.Example;
+    TRANSFORM.Electrical.Sources.FrequencySource
+                                       sinkElec(f=60)
+      annotation (Placement(transformation(extent={{116,-10},{96,10}})));
+    Fluid.Sensors.stateSensor stateSensor(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
+      annotation (Placement(transformation(extent={{-18,-22},{-38,-2}})));
+    Fluid.Sensors.stateSensor stateSensor1(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
+      annotation (Placement(transformation(extent={{-38,2},{-18,22}})));
+    Fluid.Sensors.stateDisplay stateDisplay
+      annotation (Placement(transformation(extent={{-52,-60},{-8,-30}})));
+    Fluid.Sensors.stateDisplay stateDisplay1
+      annotation (Placement(transformation(extent={{-52,30},{-6,60}})));
+    Modelica.Blocks.Sources.Sine sine(
+      f=1/200,
+      offset=4e8,
+      startTime=350,
+      amplitude=2e8)
+      annotation (Placement(transformation(extent={{-70,70},{-50,90}})));
+    Modelica.Blocks.Sources.Sine sine1(
+      amplitude=10e6,
+      f=1/20000,
+      offset=38e6,
+      startTime=2000)
+      annotation (Placement(transformation(extent={{-38,72},{-18,92}})));
+    TRANSFORM.Electrical.Sensors.PowerSensor sensorW
+      annotation (Placement(transformation(extent={{72,-6},{86,6}})));
+    NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl
+      intermediate_Rankine_Cycle_TESUC(
+      port_a_nominal(
+        p=3400000,
+        h=3e6,
+        m_flow=67),
+      port_b_nominal(p=3400000, h=1e6),
+      redeclare
+        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl
+        CS(electric_demand=sine1.y, Overall_Power=sensorW.W))
+      annotation (Placement(transformation(extent={{10,-18},{50,22}})));
+    Modelica.Fluid.Sources.Boundary_pT sink(
+      redeclare package Medium = Modelica.Media.Water.StandardWater,
+      use_p_in=false,
+      nPorts=1,
+      p(displayUnit="bar") = 3400000,
+      T(displayUnit="degC") = 579.15)
+      annotation (Placement(transformation(extent={{-84,22},{-64,2}})));
+    Modelica.Fluid.Sources.Boundary_pT sink1(
+      redeclare package Medium = Modelica.Media.Water.StandardWater,
+      use_p_in=false,
+      nPorts=1,
+      p(displayUnit="bar") = 3400000,
+      T(displayUnit="degC") = 421.15)
+      annotation (Placement(transformation(extent={{-84,-6},{-64,-26}})));
+  equation
+
+    connect(stateDisplay1.statePort, stateSensor1.statePort) annotation (Line(
+          points={{-29,41.1},{-29,30},{-28,30},{-28,14},{-27.95,14},{-27.95,12.05}},
+                                                                     color={0,0,0}));
+    connect(stateDisplay.statePort, stateSensor.statePort) annotation (Line(
+          points={{-30,-48.9},{-30,-32},{-28,-32},{-28,-11.95},{-28.05,-11.95}},
+                                                             color={0,0,0}));
+    connect(sensorW.port_b, sinkElec.port)
+      annotation (Line(points={{86,0},{96,0}}, color={255,0,0}));
+    connect(stateSensor1.port_b, intermediate_Rankine_Cycle_TESUC.port_a)
+      annotation (Line(points={{-18,12},{4,12},{4,10},{10,10}}, color={0,127,255}));
+    connect(stateSensor.port_a, intermediate_Rankine_Cycle_TESUC.port_b)
+      annotation (Line(points={{-18,-12},{4,-12},{4,-6},{10,-6}}, color={0,127,
+            255}));
+    connect(intermediate_Rankine_Cycle_TESUC.portElec_b, sensorW.port_a)
+      annotation (Line(points={{50,2},{66,2},{66,0},{72,0}}, color={255,0,0}));
+    connect(sink.ports[1], stateSensor1.port_a)
+      annotation (Line(points={{-64,12},{-38,12}}, color={0,127,255}));
+    connect(sink1.ports[1], stateSensor.port_b) annotation (Line(points={{-64,-16},
+            {-48,-16},{-48,-12},{-38,-12}}, color={0,127,255}));
+    annotation (experiment(StopTime=50000, __Dymola_Algorithm="Esdirk45a"));
+  end SteamTurbine_DivertPowerControl_Test_b;
+
+  model SteamTurbine_DivertPowerControl_Test_a
+    import NHES;
+
+    parameter Real IP_NTU = 20.0 "Intermediate pressure NTUHX NTU";
+    parameter Modelica.Units.SI.Pressure pr3out=253000 annotation(dialog(tab = "Initialization", group = "Pressure"));
+
+    extends Modelica.Icons.Example;
+    TRANSFORM.Electrical.Sources.FrequencySource
+                                       sinkElec(f=60)
+      annotation (Placement(transformation(extent={{116,-10},{96,10}})));
+    Fluid.Sensors.stateSensor stateSensor(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
+      annotation (Placement(transformation(extent={{-18,-22},{-38,-2}})));
+    Fluid.Sensors.stateSensor stateSensor1(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
+      annotation (Placement(transformation(extent={{-38,2},{-18,22}})));
+    Fluid.Sensors.stateDisplay stateDisplay
+      annotation (Placement(transformation(extent={{-52,-60},{-8,-30}})));
+    Fluid.Sensors.stateDisplay stateDisplay1
+      annotation (Placement(transformation(extent={{-52,30},{-6,60}})));
+    Modelica.Blocks.Sources.Sine sine(
+      f=1/200,
+      offset=4e8,
+      startTime=350,
+      amplitude=2e8)
+      annotation (Placement(transformation(extent={{-70,70},{-50,90}})));
+    NHES.Fluid.Pipes.StraightPipe_withWall pipe(
+      redeclare package Medium =
+          Modelica.Media.Water.StandardWater,
+      p_a_start=3400000,
+      p_b_start=3500000,
+      use_Ts_start=false,
+      T_a_start=421.15,
+      T_b_start=579.15,
+      h_a_start=3.6e6,
+      h_b_start=1.2e6,
+      m_flow_a_start=67,
+      length=10,
+      diameter=1,
+      redeclare package Wall_Material = NHES.Media.Solids.SS316,
+      th_wall=0.001) annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=90,
+          origin={-60,0})));
+    TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.HeatFlow boundary(use_port=
+          true, Q_flow=500e6)
+      annotation (Placement(transformation(extent={{-96,-10},{-76,10}})));
+    Modelica.Blocks.Sources.Pulse pulse(
+      amplitude=10e6,
+      period=5000,
+      offset=160e6,
+      startTime=3000)
+      annotation (Placement(transformation(extent={{-118,-10},{-98,10}})));
+    Modelica.Blocks.Sources.Sine sine1(
+      amplitude=10e6,
+      f=1/20000,
+      offset=38e6,
+      startTime=2000)
+      annotation (Placement(transformation(extent={{-38,72},{-18,92}})));
+    TRANSFORM.Electrical.Sensors.PowerSensor sensorW
+      annotation (Placement(transformation(extent={{72,-6},{86,6}})));
+    NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl
+      intermediate_Rankine_Cycle_TESUC(
+      port_a_nominal(
+        p=3400000,
+        h=3e6,
+        m_flow=67),
+      port_b_nominal(p=3400000, h=1e6),
+      redeclare
+        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl
+        CS(electric_demand=sine1.y, Overall_Power=sensorW.W))
+      annotation (Placement(transformation(extent={{10,-18},{50,22}})));
+  equation
+
+    connect(stateDisplay1.statePort, stateSensor1.statePort) annotation (Line(
+          points={{-29,41.1},{-29,30},{-28,30},{-28,14},{-27.95,14},{-27.95,12.05}},
+                                                                     color={0,0,0}));
+    connect(stateDisplay.statePort, stateSensor.statePort) annotation (Line(
+          points={{-30,-48.9},{-30,-32},{-28,-32},{-28,-11.95},{-28.05,-11.95}},
+                                                             color={0,0,0}));
+    connect(stateSensor.port_b, pipe.port_a) annotation (Line(points={{-38,-12},{-46,
+            -12},{-46,-14},{-60,-14},{-60,-10}}, color={0,127,255}));
+    connect(pipe.port_b, stateSensor1.port_a)
+      annotation (Line(points={{-60,10},{-60,12},{-38,12}}, color={0,127,255}));
+    connect(boundary.port, pipe.heatPorts[1])
+      annotation (Line(points={{-76,0},{-64.4,0},{-64.4,0.1}}, color={191,0,0}));
+    connect(pulse.y, boundary.Q_flow_ext)
+      annotation (Line(points={{-97,0},{-90,0}}, color={0,0,127}));
+    connect(sensorW.port_b, sinkElec.port)
+      annotation (Line(points={{86,0},{96,0}}, color={255,0,0}));
+    connect(stateSensor1.port_b, intermediate_Rankine_Cycle_TESUC.port_a)
+      annotation (Line(points={{-18,12},{4,12},{4,10},{10,10}}, color={0,127,255}));
+    connect(stateSensor.port_a, intermediate_Rankine_Cycle_TESUC.port_b)
+      annotation (Line(points={{-18,-12},{4,-12},{4,-6},{10,-6}}, color={0,127,
+            255}));
+    connect(intermediate_Rankine_Cycle_TESUC.portElec_b, sensorW.port_a)
+      annotation (Line(points={{50,2},{66,2},{66,0},{72,0}}, color={255,0,0}));
+    annotation (experiment(StopTime=50000, __Dymola_Algorithm="Esdirk45a"));
+  end SteamTurbine_DivertPowerControl_Test_a;
 end ObsoleteBOPExamples;

@@ -2,9 +2,6 @@ within NHES.Systems.BalanceOfPlant.Turbine.Examples;
 model SteamTurbine_L2_ClosedFeedHeat_Test_a
   import NHES;
 
-  parameter Real IP_NTU = 20.0 "Intermediate pressure NTUHX NTU";
-  parameter Modelica.Units.SI.Pressure pr3out=253000 annotation(dialog(tab = "Initialization", group = "Pressure"));
-
   extends Modelica.Icons.Example;
   NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_L2_ClosedFeedHeat BOP(
     redeclare
@@ -113,7 +110,7 @@ equation
   connect(pulse.y, boundary.Q_flow_ext)
     annotation (Line(points={{-97,0},{-90,0}}, color={0,0,127}));
   annotation (experiment(
-      StopTime=50000,
-      Interval=5,
+      StopTime=300,
+      Interval=10,
       __Dymola_Algorithm="Esdirk45a"));
 end SteamTurbine_L2_ClosedFeedHeat_Test_a;
