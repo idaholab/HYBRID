@@ -110,7 +110,7 @@ model LWR_Case_01_IndependentBOP
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-26,-14},{-40,2}})));
   Fluid.Sensors.stateDisplay stateDisplay3
-    annotation (Placement(transformation(extent={{-98,-56},{-54,-24}})));
+    annotation (Placement(transformation(extent={{-96,-56},{-52,-24}})));
   Fluid.Sensors.stateSensor stateSensor4(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-38,-76},{-24,-60}})));
@@ -210,8 +210,9 @@ equation
   connect(stateSensor3.port_a, EM.port_b1)
     annotation (Line(points={{-26,-6},{-10,-6}}, color={0,127,255}));
   connect(stateDisplay3.statePort, stateSensor3.statePort) annotation (Line(
-        points={{-76,-44.16},{-76,-50},{-44,-50},{-44,-12},{-33.035,-12},{-33.035,
-          -5.96}}, color={0,0,0}));
+        points={{-74,-44.16},{-74,-50},{-44,-50},{-44,-12},{-33.035,-12},{
+          -33.035,-5.96}},
+                   color={0,0,0}));
   connect(stateSensor4.port_b, two_Tank_SHS_System_NTU.port_ch_a)
     annotation (Line(points={{-24,-68},{-15.6,-68.4}}, color={0,127,255}));
   connect(stateSensor4.port_a, EM.port_b3[1]) annotation (Line(points={{-38,-68},

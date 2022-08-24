@@ -1,0 +1,5 @@
+model dsmodelIterationSelect
+  extends NHES.Systems.SecondaryEnergySupply.NaturalGasFiredTurbine.Examples.GTPP_Test;
+  annotation(__Dymola_SimulationIterationVariables={"SES.GTunit.air_in.p", 
+  "SES.GTunit.turbine.Tf"});
+end dsmodelIterationSelect;

@@ -88,7 +88,7 @@ model HTGR_Rankine_Cycle
     T_a_start=673.15,
     T_b_start=343.15,
     m_flow_nominal=200,
-    p_inlet_nominal=14000000,
+    p_inlet_nominal=2500000,
     p_outlet_nominal=8000,
     T_nominal=673.15) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
@@ -128,7 +128,7 @@ model HTGR_Rankine_Cycle
                                            pump1(redeclare package Medium =
         Modelica.Media.Water.StandardWater,
     use_input=false,
-    p_nominal=5500000,
+    p_nominal=2000000,
     allowFlowReversal=false)
     annotation (Placement(transformation(extent={{40,-74},{20,-54}})));
   StagebyStageTurbineSecondary.StagebyStageTurbine.BaseClasses.TRANSFORMMoistureSeparator_MIKK
