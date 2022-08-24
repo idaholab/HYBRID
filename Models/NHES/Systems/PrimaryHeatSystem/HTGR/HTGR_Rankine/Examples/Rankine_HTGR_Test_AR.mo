@@ -23,10 +23,8 @@ equation
   connect(hTGR_PebbleBed_Primary_Loop.port_a, hTGR_Rankine_Cycle.port_b)
     annotation (Line(points={{-41.05,1.43},{-28,0}},
         color={0,127,255}));
-  annotation (experiment(
-      StopTime=1000000,
-      __Dymola_NumberOfIntervals=500,
-      __Dymola_Algorithm="Esdirk45a"), Documentation(info="<html>
+  annotation (experiment(StopTime=1000000, __Dymola_Algorithm="Esdirk45a"),
+                                       Documentation(info="<html>
 <p>This test is effectively the same as the above &quot;Complex&quot; test but split between two models. </p>
 </html>"));
 end Rankine_HTGR_Test_AR;

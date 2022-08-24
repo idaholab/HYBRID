@@ -5,10 +5,10 @@ model CS_Rankine_Xe100_Based_Secondary_AR
 
   TRANSFORM.Controls.LimPID FWCP_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-1e-3,
+    k=-5e-3,
     Ti=30,
-    yMax=750,
-    yMin=-1000,
+    yMax=200,
+    yMin=-200,
     initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-40,16},{-20,36}})));

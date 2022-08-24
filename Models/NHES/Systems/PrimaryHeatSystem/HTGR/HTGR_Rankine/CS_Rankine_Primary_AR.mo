@@ -5,8 +5,11 @@ model CS_Rankine_Primary_AR
 
   TRANSFORM.Controls.LimPID     CR(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-6,
-    Ti=15,
+    k=5e-6,
+    Ti=60,
+    Td=0.1,
+    wp=0.9,
+    wd=0.1,
     initType=Modelica.Blocks.Types.Init.NoInit)
     annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
   Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
@@ -22,29 +25,25 @@ model CS_Rankine_Primary_AR
     k=1e-5,
     Ti=30,
     yMax=75,
-    yMin=45,
+    yMin=0,
     initType=Modelica.Blocks.Types.Init.NoInit)
     annotation (Placement(transformation(extent={{-36,14},{-16,-6}})));
   Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
     annotation (Placement(transformation(extent={{-80,-6},{-60,14}})));
-  Modelica.Blocks.Sources.Constant valvedelay1(k=1e6)
+  Modelica.Blocks.Sources.Constant valvedelay1(k=7e5)
     annotation (Placement(transformation(extent={{-44,74},{-24,94}})));
   Modelica.Blocks.Sources.ContinuousClock clock1(offset=0, startTime=0)
     annotation (Placement(transformation(extent={{-48,38},{-28,58}})));
   Modelica.Blocks.Logical.Greater greater1
     annotation (Placement(transformation(extent={{-4,74},{16,54}})));
-  Modelica.Blocks.Logical.Switch switch_P_setpoint_TCV1
-    annotation (Placement(transformation(extent={{74,54},{94,74}})));
-  Modelica.Blocks.Sources.Constant const3(k=data.P_Steam_Ref)
-    annotation (Placement(transformation(extent={{-80,112},{-60,132}})));
-  TRANSFORM.Controls.LimPID Blower_Speed1(
-    controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-6,
-    Ti=5,
-    yMax=75,
-    yMin=10,
-    initType=Modelica.Blocks.Types.Init.NoInit)
-    annotation (Placement(transformation(extent={{-36,132},{-16,112}})));
+  Modelica.Blocks.Logical.Switch MinPumpSpeed
+    annotation (Placement(transformation(extent={{60,54},{80,74}})));
+  Modelica.Blocks.Sources.Constant const3(k=10)
+    annotation (Placement(transformation(extent={{26,96},{46,116}})));
+  Modelica.Blocks.Sources.Constant const4(k=45)
+    annotation (Placement(transformation(extent={{28,28},{48,48}})));
+  Modelica.Blocks.Math.Add         add
+    annotation (Placement(transformation(extent={{14,-8},{34,12}})));
 equation
 
   connect(const1.y,CR. u_s) annotation (Line(points={{-59,-40},{-38,-40}},
@@ -68,12 +67,18 @@ equation
       thickness=0.5));
   connect(valvedelay1.y, greater1.u2) annotation (Line(points={{-23,84},{-14,84},
           {-14,72},{-6,72}}, color={0,0,127}));
-  connect(clock1.y, greater1.u1) annotation (Line(points={{-27,48},{-16,48},{
-          -16,64},{-6,64}}, color={0,0,127}));
-  connect(greater1.y, switch_P_setpoint_TCV1.u2)
-    annotation (Line(points={{17,64},{72,64}}, color={255,0,255}));
-  connect(actuatorBus.PR_Compressor, switch_P_setpoint_TCV1.y) annotation (Line(
-      points={{30,-100},{32,-100},{32,-34},{116,-34},{116,64},{95,64}},
+  connect(clock1.y, greater1.u1) annotation (Line(points={{-27,48},{-16,48},{-16,
+          64},{-6,64}}, color={0,0,127}));
+  connect(greater1.y, MinPumpSpeed.u2)
+    annotation (Line(points={{17,64},{58,64}}, color={255,0,255}));
+  connect(const3.y, MinPumpSpeed.u1) annotation (Line(points={{47,106},{50,106},
+          {50,72},{58,72}}, color={0,0,127}));
+  connect(const4.y, MinPumpSpeed.u3) annotation (Line(points={{49,38},{52,38},{52,
+          56},{58,56}}, color={0,0,127}));
+  connect(Blower_Speed.y, add.u2)
+    annotation (Line(points={{-15,4},{2,4},{2,-4},{12,-4}}, color={0,0,127}));
+  connect(actuatorBus.PR_Compressor, add.y) annotation (Line(
+      points={{30,-100},{30,-18},{42,-18},{42,2},{35,2}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -81,16 +86,7 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(sensorBus.Steam_Pressure, Blower_Speed1.u_m) annotation (Line(
-      points={{-30,-100},{-30,-96},{-96,-96},{-96,140},{-26,140},{-26,134}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(const3.y, Blower_Speed1.u_s)
-    annotation (Line(points={{-59,122},{-38,122}}, color={0,0,127}));
-  connect(Blower_Speed.y, switch_P_setpoint_TCV1.u3) annotation (Line(points={{
-          -15,4},{18,4},{18,2},{62,2},{62,56},{72,56}}, color={0,0,127}));
-  connect(Blower_Speed1.y, switch_P_setpoint_TCV1.u1) annotation (Line(points={
-          {-15,122},{10,122},{10,120},{56,120},{56,72},{72,72}}, color={0,0,127}));
+  connect(MinPumpSpeed.y, add.u1) annotation (Line(points={{81,64},{86,64},{86,
+          66},{88,66},{88,20},{6,20},{6,8},{12,8}}, color={0,0,127}));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics));
 end CS_Rankine_Primary_AR;
