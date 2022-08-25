@@ -5,9 +5,9 @@ model CS_Rankine_Primary_AR
 
   TRANSFORM.Controls.LimPID     CR(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=5e-6,
-    Ti=60,
-    Td=0.1,
+    k=1e-5,
+    Ti=120,
+    Td=100,
     wp=0.9,
     wd=0.1,
     initType=Modelica.Blocks.Types.Init.NoInit)
@@ -21,13 +21,16 @@ model CS_Rankine_Primary_AR
     P_Steam_Ref=14000000)
     annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
   TRANSFORM.Controls.LimPID Blower_Speed(
-    controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-5,
+    controllerType=Modelica.Blocks.Types.SimpleController.PID,
+    k=2e-6,
     Ti=30,
+    Td=1,
     yMax=75,
     yMin=0,
+    wp=0.5,
+    wd=0.5,
     initType=Modelica.Blocks.Types.Init.NoInit)
-    annotation (Placement(transformation(extent={{-36,14},{-16,-6}})));
+    annotation (Placement(transformation(extent={{-36,12},{-16,-8}})));
   Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
     annotation (Placement(transformation(extent={{-80,-6},{-60,14}})));
   Modelica.Blocks.Sources.Constant valvedelay1(k=7e5)
@@ -54,9 +57,10 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(const2.y, Blower_Speed.u_s)
-    annotation (Line(points={{-59,4},{-38,4}}, color={0,0,127}));
+    annotation (Line(points={{-59,4},{-48,4},{-48,2},{-38,2}},
+                                               color={0,0,127}));
   connect(sensorBus.Steam_Pressure, Blower_Speed.u_m) annotation (Line(
-      points={{-30,-100},{-30,-96},{-96,-96},{-96,22},{-26,22},{-26,16}},
+      points={{-30,-100},{-30,-96},{-96,-96},{-96,22},{-26,22},{-26,14}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -76,7 +80,7 @@ equation
   connect(const4.y, MinPumpSpeed.u3) annotation (Line(points={{49,38},{52,38},{52,
           56},{58,56}}, color={0,0,127}));
   connect(Blower_Speed.y, add.u2)
-    annotation (Line(points={{-15,4},{2,4},{2,-4},{12,-4}}, color={0,0,127}));
+    annotation (Line(points={{-15,2},{2,2},{2,-4},{12,-4}}, color={0,0,127}));
   connect(actuatorBus.PR_Compressor, add.y) annotation (Line(
       points={{30,-100},{30,-18},{42,-18},{42,2},{35,2}},
       color={111,216,99},

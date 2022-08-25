@@ -128,6 +128,7 @@ model HTGR_PebbleBed_Primary_Loop_STHX
         origin={-42,-79})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
     redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    use_T_in=true,
     p=4000000,
     T=573.15,
     nPorts=1)
@@ -138,7 +139,7 @@ model HTGR_PebbleBed_Primary_Loop_STHX
         rotation=270,
         origin={-39,63})));
   TRANSFORM.HeatExchangers.GenericDistributed_HX STHX(
-    nParallel=3,
+    nParallel=1,
     redeclare model FlowModel_shell =
         TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable,
     redeclare model FlowModel_tube =
@@ -185,6 +186,11 @@ model HTGR_PebbleBed_Primary_Loop_STHX
         rotation=90,
         origin={29,18})));
 
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium
+      = Coolant_Medium) annotation (Placement(transformation(
+        extent={{-5,-7},{5,7}},
+        rotation=180,
+        origin={7,-15})));
 initial equation
 
 equation
@@ -211,9 +217,6 @@ equation
     annotation (Line(points={{-60,-6},{-62,-6},{-62,-2},{-68,-2}},
                                                           color={0,127,255},
       thickness=0.5));
-  connect(compressor_Controlled.inlet,STHX. port_b_shell) annotation (Line(
-        points={{-48,-6},{22,-6},{22,2},{23.94,2},{23.94,6}},
-                                                      color={0,127,255}));
   connect(Primary_PRV.port_a,compressor_Controlled. inlet) annotation (Line(
         points={{-34,-56},{-28,-56},{-28,-38},{-38,-38},{-38,-26},{-40,-26},{
           -40,-6},{-48,-6}},
@@ -244,6 +247,12 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(sensor_T1.port_a, STHX.port_b_shell) annotation (Line(points={{12,-15},
+          {18,-15},{18,-14},{23.94,-14},{23.94,6}}, color={0,127,255}));
+  connect(sensor_T1.port_b, compressor_Controlled.inlet) annotation (Line(
+        points={{2,-15},{-40,-15},{-40,-6},{-48,-6}}, color={0,127,255}));
+  connect(boundary1.T_in, sensor_T1.T) annotation (Line(points={{-96,-54},{-124,
+          -54},{-124,-92},{7,-92},{7,-17.52}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           Bitmap(extent={{-80,-92},{78,84}}, fileName="modelica://NHES/Icons/PrimaryHeatSystemPackage/HTGRPB.jpg")}),
                                                                  Diagram(
