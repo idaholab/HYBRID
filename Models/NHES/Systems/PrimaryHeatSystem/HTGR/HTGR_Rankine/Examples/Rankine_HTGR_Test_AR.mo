@@ -28,5 +28,28 @@ equation
       Interval=10,
       __Dymola_Algorithm="Esdirk45a"), Documentation(info="<html>
 <p>This test is effectively the same as the above &quot;Complex&quot; test but split between two models. </p>
-</html>"));
+</html>"),
+    __Dymola_Commands(executeCall=Design.Experimentation.sweepParameter(
+          Design.Internal.Records.ModelDependencySetup(
+          Model=
+            "NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Examples.Rankine_HTGR_Test_AR",
+          dependencyParameters={Design.Internal.Records.DependencyParameter(
+            name="hTGR_PebbleBed_Primary_Loop.CS.const11.k", values=linspace(
+            1e-05,
+            1e-06,
+            6))},
+          VariablesToPlot={Design.Internal.Records.VariableToPlot(name=
+            "hTGR_PebbleBed_Primary_Loop.CS.CR.y"),
+            Design.Internal.Records.VariableToPlot(name=
+            "hTGR_PebbleBed_Primary_Loop.core.Q_total.y"),
+            Design.Internal.Records.VariableToPlot(name=
+            "hTGR_PebbleBed_Primary_Loop.core.fuelModel[2].T_Fuel")},
+          integrator=Design.Internal.Records.Integrator(
+            startTime=0,
+            stopTime=1004200,
+            numberOfIntervals=0,
+            outputInterval=10,
+            method="Esdirk45a",
+            tolerance=0.0001,
+            fixedStepSize=0)))));
 end Rankine_HTGR_Test_AR;

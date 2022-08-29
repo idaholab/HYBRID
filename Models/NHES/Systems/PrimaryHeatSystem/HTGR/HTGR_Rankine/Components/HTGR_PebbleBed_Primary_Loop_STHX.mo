@@ -59,6 +59,7 @@ model HTGR_PebbleBed_Primary_Loop_STHX
     annotation (Placement(transformation(extent={{-92,98},{-80,112}})));
   Nuclear.CoreSubchannels.Pebble_Bed_New
                                        core(
+    nV=8,
     redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
     redeclare package Pebble_Material = Media.Solids.Graphite_5,
     redeclare model Geometry = Nuclear.New_Geometries.PackedBed (d_pebble=2*
@@ -87,7 +88,7 @@ model HTGR_PebbleBed_Primary_Loop_STHX
         TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
     rho_input=CR_reactivity.y,
     redeclare package Medium = Coolant_Medium,
-    SF_start_power={0.3,0.25,0.25,0.2},
+    SF_start_power={0.15,0.15,0.125,0.125,0.125,0.125,0.1,0.1},
     nParallel=1,
     Fh=1.4,
     n_hot=25,
@@ -99,8 +100,8 @@ model HTGR_PebbleBed_Primary_Loop_STHX
         rotation=270,
         origin={-78,38})));
 
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Coolant_Medium) annotation (Placement(transformation(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Coolant_Medium) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={-78,-2})));
@@ -133,8 +134,8 @@ model HTGR_PebbleBed_Primary_Loop_STHX
     T=573.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-94,-68},{-74,-48}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
-      = Coolant_Medium) annotation (Placement(transformation(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
+        Coolant_Medium) annotation (Placement(transformation(
         extent={{-5,-7},{5,7}},
         rotation=270,
         origin={-39,63})));
@@ -144,7 +145,6 @@ model HTGR_PebbleBed_Primary_Loop_STHX
         TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable,
     redeclare model FlowModel_tube =
         TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.TwoPhase_Developed_2Region_NumStable,
-
     p_b_start_shell=3910000,
     p_a_start_tube=14100000,
     p_b_start_tube=14000000,
@@ -158,7 +158,6 @@ model HTGR_PebbleBed_Primary_Loop_STHX
     redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS304,
     redeclare model HeatTransfer_tube =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Alphas_TwoPhase_5Region,
-
     p_a_start_shell=3915000,
     T_a_start_shell=1023.15,
     T_b_start_shell=523.15,
@@ -186,8 +185,8 @@ model HTGR_PebbleBed_Primary_Loop_STHX
         rotation=90,
         origin={29,18})));
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium
-      = Coolant_Medium) annotation (Placement(transformation(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium =
+        Coolant_Medium) annotation (Placement(transformation(
         extent={{-5,-7},{5,7}},
         rotation=180,
         origin={7,-15})));

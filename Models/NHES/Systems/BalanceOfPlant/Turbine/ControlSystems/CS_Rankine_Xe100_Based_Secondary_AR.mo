@@ -81,7 +81,7 @@ model CS_Rankine_Xe100_Based_Secondary_AR
     annotation (Placement(transformation(extent={{-130,140},{-110,120}})));
   Modelica.Blocks.Logical.Switch switch_P_setpoint_TCV1
     annotation (Placement(transformation(extent={{-90,120},{-70,140}})));
-  Modelica.Blocks.Sources.Constant const1(k=-800)
+  Modelica.Blocks.Sources.Constant const1(k=-280)
     annotation (Placement(transformation(extent={{-122,150},{-114,158}})));
   Modelica.Blocks.Sources.Constant const2(k=-150)
     annotation (Placement(transformation(extent={{-124,96},{-116,104}})));
@@ -89,6 +89,7 @@ model CS_Rankine_Xe100_Based_Secondary_AR
     annotation (Placement(transformation(extent={{-64,154},{-56,162}})));
   PrimaryHeatSystem.HTGR.LimPID_AR PID(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    with_FF=true,
     k=-5e-1,
     Ti=30) annotation (Placement(transformation(extent={{-4,16},{16,36}})));
   Modelica.Blocks.Sources.Constant const11(k=-1e-1)
@@ -107,6 +108,16 @@ model CS_Rankine_Xe100_Based_Secondary_AR
     offset=-1e-1,
     startTime=8.7e5)
     annotation (Placement(transformation(extent={{-124,244},{-104,264}})));
+  Modelica.Blocks.Sources.Trapezoid trapezoid1(
+    amplitude=-280,
+    rising=780,
+    width=1020,
+    falling=780,
+    period=3600,
+    nperiod=1,
+    offset=0,
+    startTime=1e6 + 900)
+    annotation (Placement(transformation(extent={{-150,20},{-130,40}})));
 equation
 
   connect(const4.y, add.u1) annotation (Line(points={{50.4,76},{62,76}},
@@ -224,5 +235,7 @@ equation
           127}));
   connect(ramp.y, switch_P_setpoint_TCV2.u1) annotation (Line(points={{-103,254},
           {-96,254},{-96,222},{-88,222}}, color={0,0,127}));
+  connect(trapezoid1.y, PID.u_ff) annotation (Line(points={{-129,30},{-78,30},{
+          -78,40},{-12,40},{-12,34},{-6,34}}, color={0,0,127}));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics));
 end CS_Rankine_Xe100_Based_Secondary_AR;

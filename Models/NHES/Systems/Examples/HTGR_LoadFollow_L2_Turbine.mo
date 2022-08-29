@@ -102,9 +102,9 @@ model HTGR_LoadFollow_L2_Turbine
   Fluid.Sensors.stateSensor stateSensor3(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-44,-14},{-58,2}})));
-  PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_TESUC_NewBOP
+  PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_STHX
                                          hTGR_PebbleBed_Primary_Loop_TESUC(
-      redeclare PrimaryHeatSystem.HTGR.HTGR_Rankine.CS_Rankine_Primary_HTGR CS(data(
+      redeclare PrimaryHeatSystem.HTGR.HTGR_Rankine.CS_Rankine_Primary_AR CS(data(
           P_Steam_Ref=14000000)))
     annotation (Placement(transformation(extent={{-106,-20},{-62,22}})));
   Fluid.Sensors.stateDisplay stateDisplay3
