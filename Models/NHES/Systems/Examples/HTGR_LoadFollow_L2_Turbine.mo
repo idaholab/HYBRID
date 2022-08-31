@@ -16,10 +16,10 @@ model HTGR_LoadFollow_L2_Turbine
   BalanceOfPlant.Turbine.SteamTurbine_L5_ClosedFeedHeat_HTGR BOP(
     redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.Turbine_2
       data(
-      p_in_nominal=10000000,
+      p_in_nominal=8300000,
       R_bypass=1000,
       R_entry=1,
-      R_feedwater=10000,
+      R_feedwater=20000,
       valve_TCV_mflow=50,
       valve_TCV_dp_nominal=100000,
       valve_LPT_Bypass_mflow=15,
@@ -30,17 +30,18 @@ model HTGR_LoadFollow_L2_Turbine
       InternalBypassValve_p_spring=16000000,
       InternalBypassValve_K(unit="1/(m.kg)") = 1500,
       InternalBypassValve_tau(unit="1/s") = 300,
-      HPT_p_exit_nominal=500000,
+      HPT_p_exit_nominal=800000,
       HPT_T_in_nominal=813.15,
       HPT_nominal_mflow=45,
       HPT_efficiency=1,
-      LPT_p_in_nominal=500000,
+      LPT_p_in_nominal=800000,
       LPT_T_in_nominal=723.15,
       LPT_nominal_mflow=50,
       LPT_efficiency=1,
-      firstfeedpump_p_nominal=2500000,
+      firstfeedpump_p_nominal=3500000,
       secondfeedpump_p_nominal=1000000,
       controlledfeedpump_mflow_nominal=50,
+      MainFeedHeater_NTU=20,
       MainFeedHeater_K_tube(unit="1/m4"),
       MainFeedHeater_K_shell(unit="1/m4") = 17000,
       BypassFeedHeater_K_tube(unit="1/m4"),
@@ -161,7 +162,7 @@ equation
                                 Diagram(coordinateSystem(preserveAspectRatio=
             false, extent={{-100,-100},{220,100}})),
     experiment(
-      StopTime=10000,
+      StopTime=100000,
       Interval=3.5,
       __Dymola_Algorithm="Esdirk45a"));
 end HTGR_LoadFollow_L2_Turbine;
