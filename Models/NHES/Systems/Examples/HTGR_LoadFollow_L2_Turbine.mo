@@ -13,35 +13,36 @@ model HTGR_LoadFollow_L2_Turbine
      + sum(EM.port_b3.m_flow./EM.port_b3_nominal_m_flow)*fracNominal_Other,
      0.5));
 
-  BalanceOfPlant.Turbine.SteamTurbine_L2_ClosedFeedHeat_HTGR BOP(
+  BalanceOfPlant.Turbine.SteamTurbine_L5_ClosedFeedHeat_HTGR BOP(
     redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.Turbine_2
       data(
-      p_in_nominal=14000000,
+      p_in_nominal=10000000,
       R_bypass=1000,
       R_entry=1,
+      R_feedwater=10000,
       valve_TCV_mflow=50,
-      valve_TCV_dp_nominal=10000,
+      valve_TCV_dp_nominal=100000,
       valve_LPT_Bypass_mflow=15,
-      valve_LPT_Bypass_dp_nominal=100000,
+      valve_LPT_Bypass_dp_nominal=10000,
       valve_TBV_mflow=200,
       valve_TBV_dp_nominal=1500000,
       InternalBypassValve_mflow_small=1e-2,
-      InternalBypassValve_p_spring=14500000,
-      InternalBypassValve_K(unit="1/(m.kg)") = 15000,
+      InternalBypassValve_p_spring=16000000,
+      InternalBypassValve_K(unit="1/(m.kg)") = 1500,
       InternalBypassValve_tau(unit="1/s") = 300,
-      HPT_p_exit_nominal=400000,
-      HPT_T_in_nominal=923.15,
-      HPT_nominal_mflow=50,
+      HPT_p_exit_nominal=500000,
+      HPT_T_in_nominal=813.15,
+      HPT_nominal_mflow=45,
       HPT_efficiency=1,
-      LPT_p_in_nominal=400000,
-      LPT_T_in_nominal=473.15,
+      LPT_p_in_nominal=500000,
+      LPT_T_in_nominal=723.15,
       LPT_nominal_mflow=50,
       LPT_efficiency=1,
-      firstfeedpump_p_nominal=1000000,
-      secondfeedpump_p_nominal=2000000,
+      firstfeedpump_p_nominal=2500000,
+      secondfeedpump_p_nominal=1000000,
       controlledfeedpump_mflow_nominal=50,
       MainFeedHeater_K_tube(unit="1/m4"),
-      MainFeedHeater_K_shell(unit="1/m4"),
+      MainFeedHeater_K_shell(unit="1/m4") = 17000,
       BypassFeedHeater_K_tube(unit="1/m4"),
       BypassFeedHeater_K_shell(unit="1/m4")),
     port_a_nominal(
@@ -54,22 +55,28 @@ model HTGR_LoadFollow_L2_Turbine
       CS(electric_demand_int=SC.demand_BOP.y[1], data(
         p_steam=14000000,
         T_Feedwater=481.15,
-        p_steam_vent=14500000)),
+        p_steam_vent=16000000)),
     init(
       tee_p_start=2500000,
       moisturesep_p_start=2400000,
-      FeedwaterMixVolume_p_start=20000,
+      FeedwaterMixVolume_p_start=1000000,
       header_p_start=14000000,
+      FeedwaterMixVolume_h_start=3e6,
       moisturesep_T_start=573.15,
       HPT_p_a_start=14000000,
       HPT_p_b_start=2500000,
       HPT_T_a_start=673.15,
       LPT_p_a_start=2500000,
-      MainFeedHeater_p_start_tube=2500000,
-      MainFeedHeater_p_start_shell=2400000,
+      MainFeedHeater_p_start_tube=1000000,
+      MainFeedHeater_p_start_shell=1000000,
+      MainFeedHeater_h_start_tube_inlet=1.7e5,
+      MainFeedHeater_h_start_tube_outlet=6e5,
+      MainFeedHeater_h_start_shell_outlet=1e6,
+      MainFeedHeater_dp_init_tube=100000,
+      MainFeedHeater_m_start_shell=10,
       BypassFeedHeater_p_start_tube=5500000,
       BypassFeedHeater_p_start_shell=100000))
-    annotation (Placement(transformation(extent={{42,-20},{82,20}})));
+    annotation (Placement(transformation(extent={{44,-20},{84,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
     annotation (Placement(transformation(extent={{100,-22},{140,22}})));
   ElectricalGrid.InfiniteGrid.Infinite EG
@@ -104,7 +111,7 @@ model HTGR_LoadFollow_L2_Turbine
     annotation (Placement(transformation(extent={{-44,-14},{-58,2}})));
   PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_STHX
                                          hTGR_PebbleBed_Primary_Loop_TESUC(
-      redeclare PrimaryHeatSystem.HTGR.HTGR_Rankine.CS_Rankine_Primary_AR CS(data(
+      redeclare PrimaryHeatSystem.HTGR.HTGR_Rankine.CS_Rankine_Primary_AR2 CS(data(
           P_Steam_Ref=14000000)))
     annotation (Placement(transformation(extent={{-106,-20},{-62,22}})));
   Fluid.Sensors.stateDisplay stateDisplay3
@@ -113,7 +120,7 @@ equation
     hTGR_PebbleBed_Primary_Loop_TESUC.input_steam_pressure =
     BOP.sensor_p.p;
   connect(BOP.portElec_b, SY.port_a[1])
-    annotation (Line(points={{82,0},{100,0}}, color={255,0,0}));
+    annotation (Line(points={{84,0},{100,0}}, color={255,0,0}));
   connect(SY.port_Grid, EG.portElec_a)
     annotation (Line(points={{140,0},{160,0}}, color={255,0,0}));
   connect(stateSensor1.port_b, EM.port_a1) annotation (Line(points={{-38,11},{-38,
@@ -134,9 +141,9 @@ equation
     annotation (Line(points={{-62.66,-5.93},{-62.66,-6},{-58,-6}}, color={0,127,
           255}));
   connect(EM.port_a2, BOP.port_b) annotation (Line(points={{6,-6},{36,-6},{36,-8},
-          {42,-8}}, color={0,127,255}));
+          {44,-8}}, color={0,127,255}));
   connect(stateSensor2.port_b, BOP.port_a)
-    annotation (Line(points={{24,9},{24,8},{42,8}}, color={0,127,255}));
+    annotation (Line(points={{24,9},{24,8},{44,8}}, color={0,127,255}));
   connect(stateSensor2.statePort, stateDisplay2.statePort) annotation (Line(
         points={{17.035,9.045},{17.035,23.5225},{19,23.5225},{19,37.1}}, color={
           0,0,0}));
@@ -155,6 +162,6 @@ equation
             false, extent={{-100,-100},{220,100}})),
     experiment(
       StopTime=10000,
-      Interval=20,
+      Interval=3.5,
       __Dymola_Algorithm="Esdirk45a"));
 end HTGR_LoadFollow_L2_Turbine;

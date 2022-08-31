@@ -112,7 +112,7 @@ model HTGR_Rankine_Cycle_AR
   TRANSFORM.Fluid.Valves.ValveLinear LPT_Bypass(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     dp_nominal=100000,
-    m_flow_nominal=2.5) annotation (Placement(transformation(
+    m_flow_nominal=5)   annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
         origin={86,-34})));
@@ -137,8 +137,8 @@ model HTGR_Rankine_Cycle_AR
     T_start=573.15,                         redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume)
     annotation (Placement(transformation(extent={{56,30},{76,50}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium
-      = Modelica.Media.Water.StandardWater)            annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)            annotation (Placement(
         transformation(
         extent={{6,-7},{-6,7}},
         rotation=90,

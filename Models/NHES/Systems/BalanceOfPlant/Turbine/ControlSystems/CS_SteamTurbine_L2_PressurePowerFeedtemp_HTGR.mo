@@ -11,8 +11,8 @@ model CS_SteamTurbine_L2_PressurePowerFeedtemp_HTGR
     k=5e-6,
     Ti=15,
     Td=0.1,
-    yMax=1,
-    yMin=0.1,
+    yMax=0.9,
+    yMin=-0.09,
     initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-58,-58},{-38,-38}})));
@@ -20,23 +20,23 @@ model CS_SteamTurbine_L2_PressurePowerFeedtemp_HTGR
     annotation (Placement(transformation(extent={{-92,-56},{-72,-36}})));
   TRANSFORM.Controls.LimPID TCV_Power(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=5e-7,
-    Ti=30,
+    k=1e-11,
+    Ti=5,
     k_s=1,
     k_m=1,
-    yMax=0,
-    yMin=-1 + 0.05,
+    yMax=0.95,
+    yMin=-0.04,
     initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-50,-2},{-30,-22}})));
   Modelica.Blocks.Sources.RealExpression
                                    realExpression(y=electric_demand_int)
     annotation (Placement(transformation(extent={{-94,-6},{-80,6}})));
-  Modelica.Blocks.Sources.Constant const7(k=1)
+  Modelica.Blocks.Sources.Constant const7(k=0.01)
     annotation (Placement(transformation(extent={{-26,-28},{-18,-20}})));
   Modelica.Blocks.Math.Add         add1
     annotation (Placement(transformation(extent={{-8,-28},{12,-8}})));
-  Modelica.Blocks.Sources.Constant const8(k=0)
+  Modelica.Blocks.Sources.Constant const8(k=0.1)
     annotation (Placement(transformation(extent={{-32,-56},{-24,-48}})));
   Modelica.Blocks.Math.Add         add2
     annotation (Placement(transformation(extent={{-8,-56},{12,-36}})));
@@ -56,10 +56,10 @@ model CS_SteamTurbine_L2_PressurePowerFeedtemp_HTGR
     annotation (Placement(transformation(extent={{-180,44},{-160,64}})));
   TRANSFORM.Controls.LimPID FWCP_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-5,
-    Ti=5,
+    k=-1e-2,
+    Ti=30,
     yMax=3000,
-    yMin=-1000,
+    yMin=-200,
     initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-40,30},{-20,50}})));
@@ -79,23 +79,6 @@ model CS_SteamTurbine_L2_PressurePowerFeedtemp_HTGR
     annotation (Placement(transformation(extent={{-38,72},{-18,92}})));
   Modelica.Blocks.Sources.Constant const9(k=data.p_steam_vent)
     annotation (Placement(transformation(extent={{-78,72},{-58,92}})));
-  Modelica.Blocks.Sources.Constant const1(k=50)
-    annotation (Placement(transformation(extent={{-90,130},{-70,150}})));
-  TRANSFORM.Controls.LimPID FWCP_mflow(
-    controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=0.1,
-    Ti=20,
-    Td=0.1,
-    yMax=3000,
-    yMin=-750,
-    wd=1,
-    initType=Modelica.Blocks.Types.Init.InitialState,
-    xi_start=1500)
-    annotation (Placement(transformation(extent={{-60,130},{-40,150}})));
-  Modelica.Blocks.Sources.Constant const6(k=1200)
-    annotation (Placement(transformation(extent={{-34,148},{-26,156}})));
-  Modelica.Blocks.Math.Add         add3
-    annotation (Placement(transformation(extent={{-18,136},{2,156}})));
   Modelica.Blocks.Sources.ContinuousClock clock(offset=0, startTime=0)
     annotation (Placement(transformation(extent={{-222,-2},{-202,18}})));
   Modelica.Blocks.Sources.Constant valvedelay(k=0)
@@ -186,18 +169,6 @@ equation
       horizontalAlignment=TextAlignment.Left));
   connect(const.y, TCV_Power.u_s) annotation (Line(points={{-63.3,-15},{-56,-15},
           {-56,-12},{-52,-12}}, color={0,0,127}));
-  connect(const1.y,FWCP_mflow. u_s)
-    annotation (Line(points={{-69,140},{-62,140}},
-                                                 color={0,0,127}));
-  connect(FWCP_mflow.y, add3.u2)
-    annotation (Line(points={{-39,140},{-20,140}}, color={0,0,127}));
-  connect(const6.y, add3.u1)
-    annotation (Line(points={{-25.6,152},{-20,152}}, color={0,0,127}));
-  connect(sensorBus.Condensor_Output_mflow,FWCP_mflow. u_m) annotation (Line(
-      points={{-30,-100},{-114,-100},{-114,114},{-50,114},{-50,128}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(actuatorBus.Feed_Pump_Speed, add.y) annotation (Line(
       points={{30,-100},{30,46},{23,46}},
       color={111,216,99},
