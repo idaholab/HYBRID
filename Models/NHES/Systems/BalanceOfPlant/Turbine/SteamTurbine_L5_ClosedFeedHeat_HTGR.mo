@@ -167,7 +167,7 @@ model SteamTurbine_L5_ClosedFeedHeat_HTGR "Two stage BOP model"
   TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance R_feedwater(R=data.R_feedwater,
       redeclare package Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
-        rotation=90,
+        rotation=180,
         origin={90,-112})));
 
   TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance R_entry(R=data.R_entry,
@@ -305,8 +305,6 @@ equation
   connect(FeedwaterMixVolume.port_b[1], MainFeedwaterHeater.Shell_in)
     annotation (Line(points={{34,-100},{34,-126},{40,-126}},
         color={0,127,255}));
-  connect(MainFeedwaterHeater.Shell_out,R_feedwater. port_b) annotation (Line(
-        points={{60,-126},{90,-126},{90,-119}}, color={0,127,255}));
   connect(actuatorBus.Divert_Valve_Position, LPT_Bypass.opening) annotation (
       Line(
       points={{30,100},{114,100},{114,-26},{90,-26}},
@@ -366,8 +364,6 @@ equation
   connect(LPT.portLP, Condenser.port_a) annotation (Line(points={{50,-16},{60,
           -16},{60,-64},{154,-64},{154,-86},{153,-86},{153,-92}},
                                                          color={0,127,255}));
-  connect(R_feedwater.port_a, Condenser.port_a) annotation (Line(points={{90,-105},
-          {90,-78},{153,-78},{153,-92}},                 color={0,127,255}));
   connect(actuatorBus.Feed_Pump_Speed,pump_SimpleMassFlow2. inputSignal)
     annotation (Line(
       points={{30,100},{-56,100},{-56,-26},{-104,-26},{-104,-56},{-121,-56},{
@@ -382,6 +378,10 @@ equation
           127,255}));
   connect(sensor_T6.port_b, sensor_T2.port_a) annotation (Line(points={{10,-132},
           {-22,-132},{-22,-40},{-48,-40}}, color={0,127,255}));
+  connect(MainFeedwaterHeater.Shell_out, R_feedwater.port_a) annotation (Line(
+        points={{60,-126},{74,-126},{74,-112},{83,-112}}, color={0,127,255}));
+  connect(R_feedwater.port_b, Condenser.port_a) annotation (Line(points={{97,
+          -112},{116,-112},{116,-78},{153,-78},{153,-92}}, color={0,127,255}));
 annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-24,2},{24,-2}},
