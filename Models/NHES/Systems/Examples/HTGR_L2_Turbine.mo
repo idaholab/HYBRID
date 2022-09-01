@@ -32,20 +32,20 @@ model HTGR_L2_Turbine
       InternalBypassValve_p_spring=16000000,
       InternalBypassValve_K(unit="1/(m.kg)") = 1500,
       InternalBypassValve_tau(unit="1/s") = 300,
-      HPT_p_exit_nominal=1200000,
+      HPT_p_exit_nominal=2500000,
       HPT_T_in_nominal=813.15,
       HPT_nominal_mflow=44,
       HPT_efficiency=1,
-      LPT_p_in_nominal=800000,
-      LPT_T_in_nominal=723.15,
-      LPT_nominal_mflow=50,
+      LPT_p_in_nominal=1150000,
+      LPT_T_in_nominal=753.15,
+      LPT_nominal_mflow=28,
       LPT_efficiency=1,
       firstfeedpump_p_nominal=3500000,
       secondfeedpump_p_nominal=1000000,
       controlledfeedpump_mflow_nominal=50,
       MainFeedHeater_NTU=20,
       MainFeedHeater_K_tube(unit="1/m4"),
-      MainFeedHeater_K_shell(unit="1/m4") = 17000,
+      MainFeedHeater_K_shell(unit="1/m4") = 500,
       BypassFeedHeater_K_tube(unit="1/m4"),
       BypassFeedHeater_K_shell(unit="1/m4")),
     port_a_nominal(
@@ -164,7 +164,7 @@ equation
                                 Diagram(coordinateSystem(preserveAspectRatio=
             false, extent={{-100,-100},{220,100}})),
     experiment(
-      StopTime=100000,
+      StopTime=1000000,
       Interval=3.5,
       __Dymola_Algorithm="Esdirk45a"));
 end HTGR_L2_Turbine;

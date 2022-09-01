@@ -61,7 +61,7 @@ package HTGR_RankineCycles
     TRANSFORM.Fluid.Machines.SteamTurbine LPT(
       nUnits=1,
       energyDynamics=TRANSFORM.Types.Dynamics.DynamicFreeInitial,
-      Q_units_start={3e7},
+      Q_units_start={1e7},
       eta_mech=data.LPT_efficiency,
       redeclare model Eta_wetSteam =
           TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant,
@@ -69,7 +69,9 @@ package HTGR_RankineCycles
       p_b_start=init.LPT_p_b_start,
       T_a_start=init.LPT_T_a_start,
       T_b_start=init.LPT_T_b_start,
+      partialArc_nominal=2,
       m_flow_nominal=data.LPT_nominal_mflow,
+      use_Stodola=true,
       p_inlet_nominal= data.LPT_p_in_nominal,
       p_outlet_nominal=data.LPT_p_exit_nominal,
       T_nominal=data.LPT_T_in_nominal) annotation (Placement(transformation(
@@ -160,7 +162,7 @@ package HTGR_RankineCycles
     Electrical.Generator      generator1(J=data.generator_MoI)
       annotation (Placement(transformation(extent={{-10,-10},{10,10}},
           rotation=-90,
-          origin={44,-38})));
+          origin={10,-38})));
 
     TRANSFORM.Electrical.Sensors.PowerSensor sensorW
       annotation (Placement(transformation(extent={{110,-58},{130,-38}})));
@@ -169,7 +171,7 @@ package HTGR_RankineCycles
         redeclare package Medium = Modelica.Media.Water.StandardWater)
       annotation (Placement(transformation(extent={{10,-10},{-10,10}},
           rotation=180,
-          origin={92,-112})));
+          origin={114,-112})));
 
     TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance R_entry(R=data.R_entry,
         redeclare package Medium = Modelica.Media.Water.StandardWater)
@@ -239,6 +241,28 @@ package HTGR_RankineCycles
           extent={{-11,-11},{11,11}},
           rotation=180,
           origin={-121,-41})));
+    TRANSFORM.Fluid.Volumes.MixingVolume FeedwaterMixVolume1(
+      redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
+      p_start=init.FeedwaterMixVolume_p_start,
+      use_T_start=false,
+      h_start=init.FeedwaterMixVolume_h_start,
+      redeclare model Geometry =
+          TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
+          (V=data.V_FeedwaterMixVolume),
+      nPorts_a=1,
+      nPorts_b=1) annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=0,
+          origin={86,-112})));
+    TRANSFORM.Fluid.Valves.ValveLinear LPT_Bypass1(
+      redeclare package Medium = Modelica.Media.Water.StandardWater,
+      dp_nominal=10000,
+      m_flow_nominal=25)                            annotation (Placement(transformation(
+          extent={{10,10},{-10,-10}},
+          rotation=180,
+          origin={102,-76})));
+    Modelica.Blocks.Sources.Constant const(k=1)
+      annotation (Placement(transformation(extent={{168,-56},{188,-36}})));
   initial equation
 
   equation
@@ -298,9 +322,10 @@ package HTGR_RankineCycles
                    color={0,127,255}));
 
     connect(LPT.shaft_b, generator1.shaft_a)
-      annotation (Line(points={{44,-16},{44,-28}}, color={0,0,0}));
-    connect(generator1.portElec, sensorW.port_a) annotation (Line(points={{44,-48},
-            {110,-48}},                              color={255,0,0}));
+      annotation (Line(points={{44,-16},{44,-22},{10,-22},{10,-28}},
+                                                   color={0,0,0}));
+    connect(generator1.portElec, sensorW.port_a) annotation (Line(points={{10,-48},
+            {10,-52},{104,-52},{104,-48},{110,-48}}, color={255,0,0}));
     connect(sensorW.port_b, portElec_b) annotation (Line(points={{130,-48},{146,
             -48},{146,0},{160,0}},                     color={255,0,0}));
     connect(FeedwaterMixVolume.port_b[1], MainFeedwaterHeater.Shell_in)
@@ -362,9 +387,6 @@ package HTGR_RankineCycles
       annotation (Line(points={{40,-132},{30,-132}}, color={0,127,255}));
     connect(Condenser.port_b, firstfeedpump.port_a) annotation (Line(points={{146,
             -112},{146,-144},{118,-144}},         color={0,127,255}));
-    connect(LPT.portLP, Condenser.port_a) annotation (Line(points={{50,-16},{60,
-            -16},{60,-64},{154,-64},{154,-86},{153,-86},{153,-92}},
-                                                           color={0,127,255}));
     connect(actuatorBus.Feed_Pump_Speed,pump_SimpleMassFlow2. inputSignal)
       annotation (Line(
         points={{30,100},{-56,100},{-56,-26},{-104,-26},{-104,-56},{-121,-56},{
@@ -379,10 +401,21 @@ package HTGR_RankineCycles
             127,255}));
     connect(sensor_T6.port_b, sensor_T2.port_a) annotation (Line(points={{10,-132},
             {-22,-132},{-22,-40},{-48,-40}}, color={0,127,255}));
-    connect(MainFeedwaterHeater.Shell_out, R_feedwater.port_a) annotation (Line(
-          points={{60,-126},{74,-126},{74,-112},{85,-112}}, color={0,127,255}));
-    connect(R_feedwater.port_b, Condenser.port_a) annotation (Line(points={{99,
-            -112},{116,-112},{116,-78},{153,-78},{153,-92}}, color={0,127,255}));
+    connect(MainFeedwaterHeater.Shell_out, FeedwaterMixVolume1.port_a[1])
+      annotation (Line(points={{60,-126},{72,-126},{72,-112},{80,-112}}, color=
+            {0,127,255}));
+    connect(FeedwaterMixVolume1.port_b[1], R_feedwater.port_a)
+      annotation (Line(points={{92,-112},{107,-112}}, color={0,127,255}));
+    connect(const.y, LPT_Bypass1.opening) annotation (Line(points={{189,-46},{
+            189,-62},{102,-62},{102,-68}}, color={0,0,127}));
+    connect(R_feedwater.port_b, Condenser.port_a) annotation (Line(points={{121,
+            -112},{130,-112},{130,-84},{152,-84},{152,-88},{153,-88},{153,-92}},
+          color={0,127,255}));
+    connect(LPT_Bypass1.port_b, Condenser.port_a) annotation (Line(points={{112,
+            -76},{134,-76},{134,-84},{153,-84},{153,-92}}, color={0,127,255}));
+    connect(LPT_Bypass1.port_a, LPT.portLP) annotation (Line(points={{92,-76},{
+            54,-76},{54,-48},{58,-48},{58,-20},{50,-20},{50,-16}}, color={0,127,
+            255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           Rectangle(
             extent={{-24,2},{24,-2}},
@@ -726,11 +759,11 @@ package HTGR_RankineCycles
       T=573.15,
       nPorts=1)
       annotation (Placement(transformation(extent={{-116,62},{-96,82}})));
-    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium
-        = Modelica.Media.Water.StandardWater)
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
       annotation (Placement(transformation(extent={{-110,30},{-90,50}})));
-    TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium
-        = Modelica.Media.Water.StandardWater)
+    TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
       annotation (Placement(transformation(extent={{-110,-50},{-90,-30}})));
     TRANSFORM.Electrical.Interfaces.ElectricalPowerPort_Flow port_e
       annotation (Placement(transformation(extent={{90,-10},{110,10}})));
@@ -1687,8 +1720,8 @@ package HTGR_RankineCycles
       annotation (Placement(transformation(extent={{-10,-10},{10,10}},
           rotation=0,
           origin={94,-148})));
-    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-        = Modelica.Media.Water.StandardWater)            annotation (Placement(
+    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)            annotation (Placement(
           transformation(
           extent={{-10,-10},{10,10}},
           rotation=180,
@@ -2309,8 +2342,8 @@ package HTGR_RankineCycles
           extent={{8,8},{-8,-8}},
           rotation=180,
           origin={126,-146})));
-    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-        = Modelica.Media.Water.StandardWater)            annotation (Placement(
+    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)            annotation (Placement(
           transformation(
           extent={{-10,-10},{10,10}},
           rotation=180,
@@ -2815,11 +2848,11 @@ package HTGR_RankineCycles
       T=573.15,
       nPorts=1)
       annotation (Placement(transformation(extent={{-116,62},{-96,82}})));
-    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium
-        = Modelica.Media.Water.StandardWater)
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
       annotation (Placement(transformation(extent={{-110,30},{-90,50}})));
-    TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium
-        = Modelica.Media.Water.StandardWater)
+    TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
       annotation (Placement(transformation(extent={{-110,-50},{-90,-30}})));
     TRANSFORM.Electrical.Interfaces.ElectricalPowerPort_Flow port_e
       annotation (Placement(transformation(extent={{90,-10},{110,10}})));

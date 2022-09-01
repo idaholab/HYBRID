@@ -8,11 +8,11 @@ model CS_SteamTurbine_L2_PressurePowerFeedtemp_HTGR
 
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-6,
+    k=-5e-7,
     Ti=15,
     Td=0.1,
     yMax=0.9,
-    yMin=0,
+    yMin=-0.05,
     initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-58,-58},{-38,-38}})));
@@ -60,13 +60,13 @@ model CS_SteamTurbine_L2_PressurePowerFeedtemp_HTGR
     Ti=60,
     Td=200,
     yMax=3000,
-    yMin=-200,
+    yMin=-800,
     wp=0.5,
     wd=0.5,
     initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-40,30},{-20,50}})));
-  Modelica.Blocks.Sources.Constant const4(k=1600)
+  Modelica.Blocks.Sources.Constant const4(k=2600)
     annotation (Placement(transformation(extent={{-14,48},{-6,56}})));
   Modelica.Blocks.Math.Add         add
     annotation (Placement(transformation(extent={{2,36},{22,56}})));
