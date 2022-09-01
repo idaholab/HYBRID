@@ -1,11 +1,11 @@
-within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine;
-model CS_Rankine_DNE_04
+within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems;
+model CS_Rankine_DNE_PowerManuever
 
   extends HTGR_Rankine.BaseClasses.Partial_ControlSystem;
 
   TRANSFORM.Controls.LimPID     CR(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-7,
+    k=1e-6,
     Ti=15,
     initType=Modelica.Blocks.Types.Init.NoInit)
     annotation (Placement(transformation(extent={{-24,-76},{-14,-66}})));
@@ -13,20 +13,22 @@ model CS_Rankine_DNE_04
     annotation (Placement(transformation(extent={{-42,-74},{-36,-68}})));
   HTGR_Rankine.Data.Data_CS data(
     T_Rx_Exit_Ref=1023.15,
-    m_flow_nom=50,
-    Q_Nom=43750000)
+    m_flow_nom=250,
+    Q_Nom=43.75e6)
     annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
   TRANSFORM.Controls.LimPID Blower_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=0.05,
+    k=1e-5,
     Ti=30,
+    yMax=250,
+    yMin=25,
     initType=Modelica.Blocks.Types.Init.NoInit)
-    annotation (Placement(transformation(extent={{-6,-22},{2,-30}})));
-  Modelica.Blocks.Sources.Constant const2(k=48)
-    annotation (Placement(transformation(extent={{-20,-22},{-12,-30}})));
+    annotation (Placement(transformation(extent={{-2,-22},{6,-30}})));
+  Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
+    annotation (Placement(transformation(extent={{-20,-32},{-12,-24}})));
   TRANSFORM.Controls.LimPID FWCP_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-1e-3,
+    k=-1e-2,
     Ti=30,
     yMax=750,
     yMin=-1000,
@@ -41,25 +43,32 @@ model CS_Rankine_DNE_04
     annotation (Placement(transformation(extent={{-4,-4},{6,6}})));
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=5e-4,
-    Ti=1,
+    k=5e-6,
+    Ti=15,
     yMax=1 - 1e-6,
     yMin=0,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-42,82},{-34,74}})));
   Modelica.Blocks.Sources.Constant const5(k=data.T_Feedwater)
-    annotation (Placement(transformation(extent={{-62,72},{-50,84}})));
+    annotation (Placement(transformation(extent={{-60,72},{-48,84}})));
   TRANSFORM.Controls.LimPID TCV_Position(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-3,
+    k=1e-9,
     Ti=5,
     yMax=0,
     yMin=-1,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-34,44},{-26,52}})));
-  Modelica.Blocks.Sources.Constant const6(k=43.75e6)
+  Modelica.Blocks.Sources.Trapezoid trapezoid(
+    amplitude=0.0*data.Q_Nom,
+    rising=600,
+    width=1200,
+    falling=600,
+    period=86400,
+    offset=data.Q_Nom,
+    startTime=86400 + 900)
     annotation (Placement(transformation(extent={{-50,44},{-42,52}})));
   Modelica.Blocks.Sources.Constant const7(k=1)
     annotation (Placement(transformation(extent={{-20,52},{-14,58}})));
@@ -84,7 +93,7 @@ model CS_Rankine_DNE_04
     annotation (Placement(transformation(extent={{-20,20},{-8,32}})));
   TRANSFORM.Controls.LimPID     CR1(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-10,
+    k=1e-9,
     Ti=15,
     initType=Modelica.Blocks.Types.Init.NoInit)
     annotation (Placement(transformation(extent={{-22,-52},{-14,-60}})));
@@ -93,28 +102,22 @@ model CS_Rankine_DNE_04
   Modelica.Blocks.Math.Add         add3
     annotation (Placement(transformation(extent={{-2,-68},{6,-60}})));
   Modelica.Blocks.Sources.Constant const11(k=-0.01)
-    annotation (Placement(transformation(extent={{-14,-52},{-6,-44}})));
-  Modelica.Blocks.Math.Add3        add3_1
-    annotation (Placement(transformation(extent={{12,-36},{20,-28}})));
-  Modelica.Blocks.Sources.Constant const12(k=50)
-    annotation (Placement(transformation(extent={{-38,-36},{-30,-28}})));
-  Modelica.Blocks.Logical.GreaterThreshold greaterThreshold
-    annotation (Placement(transformation(extent={{-34,96},{-14,116}})));
+    annotation (Placement(transformation(extent={{-14,-48},{-6,-40}})));
+  Modelica.Blocks.Math.Add         add4(k2=-1)
+    annotation (Placement(transformation(extent={{-46,98},{-38,106}})));
+  Modelica.Blocks.Logical.GreaterEqualThreshold greaterEqualThreshold
+    annotation (Placement(transformation(extent={{-22,98},{-14,106}})));
   Modelica.Blocks.Logical.Switch switch1
-    annotation (Placement(transformation(extent={{10,116},{30,96}})));
-  Modelica.Blocks.Sources.Constant const13(k=0.0)
-    annotation (Placement(transformation(extent={{-34,124},{-26,132}})));
-  TRANSFORM.Controls.LimPID Blower_Speed1(
-    controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-9,
-    Ti=10,
-    initType=Modelica.Blocks.Types.Init.NoInit)
-    annotation (Placement(transformation(extent={{-4,-42},{4,-34}})));
-  Modelica.Blocks.Sources.Constant const14(k=140e5)
-    annotation (Placement(transformation(extent={{-24,-42},{-16,-34}})));
-  BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-    minMaxFilter(min=10, max=80)
-    annotation (Placement(transformation(extent={{66,-60},{86,-40}})));
+    annotation (Placement(transformation(extent={{4,98},{12,106}})));
+  Modelica.Blocks.Sources.Constant const6(k=1.0)
+    annotation (Placement(transformation(extent={{-12,110},{-4,118}})));
+  Modelica.Blocks.Sources.Constant const12(k=0.0)
+    annotation (Placement(transformation(extent={{-10,88},{-2,96}})));
+  Modelica.Blocks.Math.Product product1
+    annotation (Placement(transformation(extent={{12,84},{20,92}})));
+  BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
+    delay1(Ti=0.25)
+    annotation (Placement(transformation(extent={{32,100},{38,104}})));
 equation
 
   connect(const1.y,CR. u_s) annotation (Line(points={{-35.7,-71},{-25,-71}},
@@ -125,7 +128,7 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(const2.y, Blower_Speed.u_s)
-    annotation (Line(points={{-11.6,-26},{-6.8,-26}},
+    annotation (Line(points={{-11.6,-28},{-8,-28},{-8,-26},{-2.8,-26}},
                                                color={0,0,127}));
   connect(const3.y, FWCP_Speed.u_s) annotation (Line(points={{-49.6,-2},{-32.8,
           -2}},               color={0,0,127}));
@@ -144,20 +147,30 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(const5.y, Turb_Divert_Valve.u_s)
-    annotation (Line(points={{-49.4,78},{-42.8,78}}, color={0,0,127}));
+    annotation (Line(points={{-47.4,78},{-42.8,78}}, color={0,0,127}));
   connect(sensorBus.Feedwater_Temp, Turb_Divert_Valve.u_m) annotation (Line(
       points={{-30,-100},{-100,-100},{-100,92},{-38,92},{-38,82.8}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(const6.y, TCV_Position.u_s)
+  connect(trapezoid.y, TCV_Position.u_s)
     annotation (Line(points={{-41.6,48},{-34.8,48}}, color={0,0,127}));
+  connect(sensorBus.Power, TCV_Position.u_m) annotation (Line(
+      points={{-30,-100},{-100,-100},{-100,38},{-30,38},{-30,43.2}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   connect(const7.y, add1.u2) annotation (Line(points={{-13.7,55},{-12,55},{-12,
           54.4},{-2.8,54.4}},         color={0,0,127}));
   connect(TCV_Position.y, add1.u1) annotation (Line(points={{-25.6,48},{-14,48},
           {-14,49.6},{-2.8,49.6}},                color={0,0,127}));
   connect(actuatorBus.TCV_Position, add1.y) annotation (Line(
       points={{30,-100},{30,52},{6.4,52}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.Divert_Valve_Position, add2.y) annotation (Line(
+      points={{30,-100},{30,72},{6.4,72}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -180,6 +193,16 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(sensorBus.Steam_Pressure, Blower_Speed.u_m) annotation (Line(
+      points={{-30,-100},{-100,-100},{-100,-12},{2,-12},{2,-21.2}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.PR_Compressor, Blower_Speed.y) annotation (Line(
+      points={{30,-100},{30,-26},{6.4,-26}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   connect(sensorBus.thermal_power, CR1.u_m) annotation (Line(
       points={{-30,-100},{-100,-100},{-100,-46},{-18,-46},{-18,-51.2}},
       color={239,82,82},
@@ -196,56 +219,33 @@ equation
   connect(add3.u2, CR.y) annotation (Line(points={{-2.8,-66.4},{-12,-66.4},{-12,
           -71},{-13.5,-71}},
                      color={0,0,127}));
-  connect(add3_1.u2, const12.y)
-    annotation (Line(points={{11.2,-32},{-29.6,-32}}, color={0,0,127}));
-  connect(add3_1.u1, Blower_Speed.y) annotation (Line(points={{11.2,-28.8},{10,
-          -28.8},{10,-30},{2.4,-30},{2.4,-26}}, color={0,0,127}));
-  connect(sensorBus.Core_Mass_Flow, Blower_Speed.u_m) annotation (Line(
-      points={{-30,-100},{-100,-100},{-100,-18},{-2,-18},{-2,-21.2}},
+  connect(add3.u1, const11.y) annotation (Line(points={{-2.8,-61.6},{-2.8,-48},
+          {0,-48},{0,-44},{-5.6,-44}}, color={0,0,127}));
+  connect(sensorBus.Condensate_Pump_Pressure, add4.u2) annotation (Line(
+      points={{-30,-100},{-100,-100},{-100,99.6},{-46.8,99.6}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(add3.u1, const11.y) annotation (Line(points={{-2.8,-61.6},{-4,-61.6},
-          {-4,-48},{-5.6,-48}}, color={0,0,127}));
-  connect(sensorBus.Power, TCV_Position.u_m) annotation (Line(
-      points={{-30,-100},{-100,-100},{-100,38},{-30,38},{-30,43.2}},
+  connect(sensorBus.HPT_Outlet_Pressure, add4.u1) annotation (Line(
+      points={{-30,-100},{-100,-100},{-100,104.4},{-46.8,104.4}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.Bypass_flow, greaterThreshold.u) annotation (Line(
-      points={{-30,-100},{-30,-64},{-102,-64},{-102,106},{-36,106}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(greaterThreshold.y, switch1.u2)
-    annotation (Line(points={{-13,106},{8,106}}, color={255,0,255}));
-  connect(const13.y, switch1.u3) annotation (Line(points={{-25.6,128},{-6,128},
-          {-6,114},{8,114}}, color={0,0,127}));
-  connect(timer.y, switch1.u1) annotation (Line(points={{-13.44,78},{-10,78},{
-          -10,80},{-8,80},{-8,98},{8,98}}, color={0,0,127}));
-  connect(switch1.y, add2.u1) annotation (Line(points={{31,106},{40,106},{40,86},
-          {38,86},{38,82},{-6,82},{-6,74.4},{-2.8,74.4}}, color={0,0,127}));
-  connect(actuatorBus.Divert_Valve_Position, add2.y) annotation (Line(
-      points={{30,-100},{32,-100},{32,72},{6.4,72}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(const14.y, Blower_Speed1.u_s)
-    annotation (Line(points={{-15.6,-38},{-4.8,-38}}, color={0,0,127}));
-  connect(sensorBus.Steam_Pressure, Blower_Speed1.u_m) annotation (Line(
-      points={{-30,-100},{-30,-62},{-8,-62},{-8,-58},{-2,-58},{-2,-52},{0,-52},
-          {0,-42.8}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(Blower_Speed1.y, add3_1.u3) annotation (Line(points={{4.4,-38},{4.4,
-          -35.2},{11.2,-35.2}}, color={0,0,127}));
-  connect(add3_1.y, minMaxFilter.u) annotation (Line(points={{20.4,-32},{58,-32},
-          {58,-50},{64,-50}}, color={0,0,127}));
-  connect(actuatorBus.PR_Compressor, minMaxFilter.y) annotation (Line(
-      points={{30,-100},{96,-100},{96,-46},{87.4,-46},{87.4,-50}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
+  connect(greaterEqualThreshold.u, add4.y)
+    annotation (Line(points={{-22.8,102},{-37.6,102}}, color={0,0,127}));
+  connect(greaterEqualThreshold.y, switch1.u2)
+    annotation (Line(points={{-13.6,102},{3.2,102}}, color={255,0,255}));
+  connect(timer.y, product1.u2) annotation (Line(points={{-13.44,78},{-2,78},{
+          -2,85.6},{11.2,85.6}}, color={0,0,127}));
+  connect(add2.u1, product1.y) annotation (Line(points={{-2.8,74.4},{-4,74.4},{
+          -4,82},{6,82},{6,80},{24,80},{24,88},{20.4,88}}, color={0,0,127}));
+  connect(switch1.u3, const12.y) annotation (Line(points={{3.2,98.8},{0,98.8},{
+          0,92},{-1.6,92}}, color={0,0,127}));
+  connect(switch1.u1, const6.y) annotation (Line(points={{3.2,105.2},{-3.6,
+          105.2},{-3.6,114}}, color={0,0,127}));
+  connect(switch1.y, delay1.u)
+    annotation (Line(points={{12.4,102},{31.4,102}}, color={0,0,127}));
+  connect(product1.u1, delay1.y) annotation (Line(points={{11.2,90.4},{6,90.4},
+          {6,92},{46,92},{46,102},{38.42,102}}, color={0,0,127}));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics));
-end CS_Rankine_DNE_04;
+end CS_Rankine_DNE_PowerManuever;

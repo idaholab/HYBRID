@@ -1,7 +1,7 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Components;
 model HTGR_PebbleBed_Primary_Loop_STHX
   extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable CS_Rankine_Primary CS,
+    redeclare replaceable ControlSystems.CS_Rankine_Primary CS,
     redeclare replaceable ED_Dummy ED,
     redeclare replaceable Data.Data_HTGR_Pebble data(
       Q_total=600000000,

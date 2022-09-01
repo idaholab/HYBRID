@@ -1,5 +1,5 @@
-within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine;
-model CS_Rankine_Primary_AR2
+within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems;
+model CS_Rankine_Primary_TransientControl
 
   extends HTGR_Rankine.BaseClasses.Partial_ControlSystem;
 
@@ -32,7 +32,7 @@ model CS_Rankine_Primary_AR2
     annotation (Placement(transformation(extent={{60,54},{80,74}})));
   Modelica.Blocks.Sources.Constant const3(k=20)
     annotation (Placement(transformation(extent={{26,96},{46,116}})));
-  Modelica.Blocks.Sources.Constant const4(k=35)
+  Modelica.Blocks.Sources.Constant const4(k=45)
     annotation (Placement(transformation(extent={{28,28},{48,48}})));
   Modelica.Blocks.Math.Add         add
     annotation (Placement(transformation(extent={{14,-8},{34,12}})));
@@ -46,20 +46,22 @@ model CS_Rankine_Primary_AR2
     offset=0,
     startTime=1e6 + 900)
     annotation (Placement(transformation(extent={{-138,-26},{-118,-6}})));
-  LimPID_AR                        PID(
+  VarLimVarK_PID PID(
+    use_k_in=true,
+    use_lowlim_in=true,
+    use_uplim_in=true,
     controllerType=Modelica.Blocks.Types.SimpleController.PID,
     with_FF=true,
     k=1e-6,
     Ti=55,
     Td=1,
     yMax=50,
-    yMin=0)
-           annotation (Placement(transformation(extent={{-32,-10},{-12,10}})));
+    yMin=0) annotation (Placement(transformation(extent={{-32,-10},{-12,10}})));
   Modelica.Blocks.Sources.Constant const5(k=50)
     annotation (Placement(transformation(extent={{-96,14},{-86,24}})));
   Modelica.Blocks.Sources.Constant const6(k=0)
     annotation (Placement(transformation(extent={{-96,-30},{-86,-20}})));
-  Modelica.Blocks.Sources.Constant const11(k=2e-5)
+  Modelica.Blocks.Sources.Constant const11(k=2e-6)
     annotation (Placement(transformation(extent={{-128,26},{-120,34}})));
 equation
 
@@ -108,14 +110,15 @@ equation
   connect(PID.y, add.u2)
     annotation (Line(points={{-11,0},{4,0},{4,-4},{12,-4}}, color={0,0,127}));
   connect(const5.y, PID.upperlim) annotation (Line(points={{-85.5,19},{-42,19},
-          {-42,13.6},{-34,13.6}}, color={0,0,127}));
+          {-42,11},{-28,11}},     color={0,0,127}));
   connect(trapezoid1.y, PID.u_ff) annotation (Line(points={{-117,-16},{-46,-16},
           {-46,8},{-34,8}}, color={0,0,127}));
   connect(const2.y, PID.u_s) annotation (Line(points={{-59,4},{-40,4},{-40,0},{
           -34,0}}, color={0,0,127}));
   connect(const6.y, PID.lowerlim) annotation (Line(points={{-85.5,-25},{-40,-25},
-          {-40,-15},{-34.4,-15}}, color={0,0,127}));
+          {-40,11},{-22,11}},     color={0,0,127}));
   connect(const11.y, PID.prop_k) annotation (Line(points={{-119.6,30},{-38,30},
-          {-38,18.8},{-34,18.8}}, color={0,0,127}));
+          {-38,11.4},{-14.6,11.4}},
+                                  color={0,0,127}));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics));
-end CS_Rankine_Primary_AR2;
+end CS_Rankine_Primary_TransientControl;

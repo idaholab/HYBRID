@@ -1,16 +1,17 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Examples;
 model Rankine_HTGR_Test
   extends Modelica.Icons.Example;
-  BalanceOfPlant.Turbine.HTGR_Rankine_Cycle hTGR_Rankine_Cycle(redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_Rankine_Xe100_Based_Secondary_AR
-      CS)
-    annotation (Placement(transformation(extent={{-28,-18},{32,42}})));
+  BalanceOfPlant.Turbine.HTGR_RankineCycles.HTGR_Rankine_Cycle
+    hTGR_Rankine_Cycle(redeclare
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_Rankine_Xe100_Based_Secondary_TransientControl
+      CS) annotation (Placement(transformation(extent={{-28,-18},{32,42}})));
   TRANSFORM.Electrical.Sources.FrequencySource
                                      sinkElec(f=60)
     annotation (Placement(transformation(extent={{78,2},{58,22}})));
-  Components.HTGR_PebbleBed_Primary_Loop_STHX hTGR_PebbleBed_Primary_Loop(redeclare
-      NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.CS_Rankine_Primary CS)
-    annotation (Placement(transformation(extent={{-110,-18},{-40,40}})));
+  Components.HTGR_PebbleBed_Primary_Loop_STHX hTGR_PebbleBed_Primary_Loop(
+      redeclare
+      NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary
+      CS) annotation (Placement(transformation(extent={{-110,-18},{-40,40}})));
 equation
   hTGR_PebbleBed_Primary_Loop.input_steam_pressure = hTGR_Rankine_Cycle.sensor_p.p;
   connect(sinkElec.port, hTGR_Rankine_Cycle.port_e)

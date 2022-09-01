@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_Rankine_Xe100_Based_Secondary_AR
+model CS_Rankine_Xe100_Based_Secondary_TransientControl
 
   extends BaseClasses.Partial_ControlSystem;
 
@@ -87,7 +87,10 @@ model CS_Rankine_Xe100_Based_Secondary_AR
     annotation (Placement(transformation(extent={{-124,96},{-116,104}})));
   Modelica.Blocks.Sources.Constant const10(k=5000)
     annotation (Placement(transformation(extent={{-64,154},{-56,162}})));
-  PrimaryHeatSystem.HTGR.LimPID_AR PID(
+  PrimaryHeatSystem.HTGR.VarLimVarK_PID PID(
+    use_k_in=true,
+    use_lowlim_in=true,
+    use_uplim_in=true,
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     with_FF=true,
     k=-5e-1,
@@ -204,9 +207,9 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(const10.y, PID.upperlim) annotation (Line(points={{-55.6,158},{-24,
-          158},{-24,140},{-12,140},{-12,39.6},{-6,39.6}}, color={0,0,127}));
-  connect(switch_P_setpoint_TCV1.y, PID.lowerlim) annotation (Line(points={{-69,
-          130},{-36,130},{-36,124},{-6,124},{-6,50},{-14,50},{-14,11},{-6.4,11}},
+          158},{-24,140},{-12,140},{-12,37},{0,37}},      color={0,0,127}));
+  connect(switch_P_setpoint_TCV1.y, PID.lowerlim) annotation (Line(points={{-69,130},
+          {-36,130},{-36,124},{-6,124},{-6,50},{-14,50},{-14,37},{6,37}},
         color={0,0,127}));
   connect(sensorBus.Steam_Temperature, PID.u_m) annotation (Line(
       points={{-30,-100},{-104,-100},{-104,-8},{6,-8},{6,14}},
@@ -230,12 +233,12 @@ equation
   connect(const11.y, switch_P_setpoint_TCV2.u3) annotation (Line(points={{
           -111.6,186},{-104,186},{-104,188},{-98,188},{-98,206},{-88,206}},
         color={0,0,127}));
-  connect(switch_P_setpoint_TCV2.y, PID.prop_k) annotation (Line(points={{-65,
-          214},{-48,214},{-48,212},{-16,212},{-16,44.8},{-6,44.8}}, color={0,0,
+  connect(switch_P_setpoint_TCV2.y, PID.prop_k) annotation (Line(points={{-65,214},
+          {-48,214},{-48,212},{-16,212},{-16,37.4},{13.4,37.4}},    color={0,0,
           127}));
   connect(ramp.y, switch_P_setpoint_TCV2.u1) annotation (Line(points={{-103,254},
           {-96,254},{-96,222},{-88,222}}, color={0,0,127}));
   connect(trapezoid1.y, PID.u_ff) annotation (Line(points={{-129,30},{-78,30},{
           -78,40},{-12,40},{-12,34},{-6,34}}, color={0,0,127}));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics));
-end CS_Rankine_Xe100_Based_Secondary_AR;
+end CS_Rankine_Xe100_Based_Secondary_TransientControl;

@@ -1,4 +1,4 @@
-within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine;
+within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems;
 model CS_Rankine_DNE
 
   extends HTGR_Rankine.BaseClasses.Partial_ControlSystem;

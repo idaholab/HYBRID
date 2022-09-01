@@ -4,11 +4,11 @@ model HTGR_SHS_Peaking
   BalanceOfPlant.StagebyStageTurbineSecondary.NuScale_Modal_Secondary_Arbitrage_Ports
                                             nuScale_Modal_Secondary_Arbitrage_Ports
     annotation (Placement(transformation(extent={{-30,-22},{30,38}})));
-  PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop hTGR_PebbleBed_Primary_Loop(
-      redeclare
-      NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.CS_Rankine_Primary CS)
-    annotation (Placement(transformation(extent={{-114,-20},{-44,38}})));
-  EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU
+  PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop
+    hTGR_PebbleBed_Primary_Loop(redeclare
+      NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary
+      CS) annotation (Placement(transformation(extent={{-114,-20},{-44,38}})));
+  EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU
     two_Tank_SHS_System_NTU
     annotation (Placement(transformation(extent={{52,-22},{110,36}})));
 equation

@@ -22,7 +22,7 @@ model HTGR_Case_03_OversizedTurbine
     port_b3_nominal_m_flow={-0.67},
     nPorts_b3=1)
     annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-  BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop_HTGR
+  BalanceOfPlant.Turbine.HTGR_RankineCycles.SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop_HTGR
     intermediate_Rankine_Cycle_TESUC(
     redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.TESTurbine
       data(
@@ -91,13 +91,13 @@ model HTGR_Case_03_OversizedTurbine
     fileName=Modelica.Utilities.Files.loadResource(
         "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
     annotation (Placement(transformation(extent={{160,60},{200,100}})));
-  EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl_SmallTanks
+  EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_BestModel
     two_Tank_SHS_System_NTU(
     redeclare
-      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_SmallTanks
-      CS,
-    redeclare replaceable
-      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+      NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_BestExample CS,
+
+    redeclare replaceable NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS
+      data(
       ht_level_max=11.7,
       ht_area=3390,
       ht_surface_pressure=120000,
@@ -120,8 +120,7 @@ model HTGR_Case_03_OversizedTurbine
       disvalve_dp_nominal=100000,
       chvalve_m_flow_nom=900,
       chvalve_dp_nominal=100000),
-    redeclare package Storage_Medium =
-        NHES.Media.Hitec.Hitec,
+    redeclare package Storage_Medium = NHES.Media.Hitec.Hitec,
     m_flow_min=0.1,
     tank_height=11.7,
     Steam_Output_Temp=stateSensor6.temperature.T)
@@ -207,9 +206,9 @@ model HTGR_Case_03_OversizedTurbine
     fileName=fileName)
     annotation (Placement(transformation(extent={{-80,62},{-60,82}})));
   PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_TESUC
-                                         hTGR_PebbleBed_Primary_Loop_TESUC(
-      redeclare PrimaryHeatSystem.HTGR.HTGR_Rankine.CS_Rankine_Primary CS(data(
-          P_Steam_Ref=14000000)))
+    hTGR_PebbleBed_Primary_Loop_TESUC(redeclare
+      PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary CS(
+        data(P_Steam_Ref=14000000)))
     annotation (Placement(transformation(extent={{-94,-20},{-50,22}})));
 equation
   hTGR_PebbleBed_Primary_Loop_TESUC.input_steam_pressure =

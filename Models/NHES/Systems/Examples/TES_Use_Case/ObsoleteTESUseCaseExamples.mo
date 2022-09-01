@@ -59,13 +59,13 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{158,60},{198,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl_2_new_pumps
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI_TempControl_2_new_pumps
       two_Tank_SHS_System_NTU(
       redeclare
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_4
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TempControl_4
         CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_level_max=12,
         ht_area=3900,
         ht_zero_level_volume=0.25*3900,
@@ -93,8 +93,7 @@ package ObsoleteTESUseCaseExamples
         disvalve_dp_nominal=25000,
         chvalve_m_flow_nom=50,
         chvalve_dp_nominal=25000),
-      redeclare package Storage_Medium =
-          NHES.Media.Hitec.Hitec,
+      redeclare package Storage_Medium = NHES.Media.Hitec.Hitec,
       m_flow_min=0.1,
       tank_height=12,
       Steam_Output_Temp=stateSensor6.temperature.T)
@@ -344,13 +343,13 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl_SmallTanks
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_BestModel
       two_Tank_SHS_System_NTU(
       redeclare
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_SmallTanks
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_BestExample
         CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_level_max=11.7,
         ht_area=3390,
         ht_surface_pressure=120000,
@@ -373,8 +372,7 @@ package ObsoleteTESUseCaseExamples
         disvalve_dp_nominal=100000,
         chvalve_m_flow_nom=900,
         chvalve_dp_nominal=100000),
-      redeclare package Storage_Medium =
-          NHES.Media.Hitec.Hitec,
+      redeclare package Storage_Medium = NHES.Media.Hitec.Hitec,
       m_flow_min=0.1,
       tank_height=11.7,
       Steam_Output_Temp=stateSensor6.temperature.T)
@@ -613,13 +611,13 @@ package ObsoleteTESUseCaseExamples
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{158,60},{198,100}})));
 
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl_SmallTanks
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_BestModel
       two_Tank_SHS_System_NTU(
       redeclare
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_SmallTanks
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_BestExample
         CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_level_max=11.7,
         ht_area=3390,
         ht_surface_pressure=120000,
@@ -645,8 +643,7 @@ package ObsoleteTESUseCaseExamples
         disvalve_m_flow_nom=250,
         disvalve_dp_nominal=100000,
         chvalve_dp_nominal=100000),
-      redeclare package Storage_Medium =
-          NHES.Media.Hitec.Hitec,
+      redeclare package Storage_Medium = NHES.Media.Hitec.Hitec,
       m_flow_min=0.1,
       tank_height=11.7,
       Steam_Output_Temp=stateSensor6.temperature.T)
@@ -900,13 +897,13 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{158,60},{198,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl_2
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI_TempControl_2
       two_Tank_SHS_System_NTU(
       redeclare
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_4
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TempControl_4
         CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_level_max=1000,
         ht_area=100,
         ht_surface_pressure=120000,
@@ -927,8 +924,7 @@ package ObsoleteTESUseCaseExamples
         disvalve_dp_nominal=100000,
         chvalve_m_flow_nom=50,
         chvalve_dp_nominal=100000),
-      redeclare package Storage_Medium =
-          NHES.Media.Hitec.Hitec,
+      redeclare package Storage_Medium = NHES.Media.Hitec.Hitec,
       m_flow_min=0.1,
       tank_height=1000,
       Steam_Output_Temp=stateSensor6.temperature.T)
@@ -1181,13 +1177,13 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl_2
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI_TempControl_2
       two_Tank_SHS_System_NTU(
       redeclare
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_5
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TempControl_5
         CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_level_max=500,
         ht_area=100,
         ht_surface_pressure=120000,
@@ -1208,8 +1204,7 @@ package ObsoleteTESUseCaseExamples
         disvalve_dp_nominal=100000,
         chvalve_m_flow_nom=200,
         chvalve_dp_nominal=100000),
-      redeclare package Storage_Medium =
-          NHES.Media.Hitec.Hitec,
+      redeclare package Storage_Medium = NHES.Media.Hitec.Hitec,
       m_flow_min=0.1,
       tank_height=500,
       Steam_Output_Temp=stateSensor6.temperature.T)
@@ -1443,13 +1438,13 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl_2
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI_TempControl_2
       two_Tank_SHS_System_NTU(
       redeclare
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_2
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TempControl_2
         CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_level_max=500,
         ht_area=100,
         ht_surface_pressure=120000,
@@ -1469,8 +1464,7 @@ package ObsoleteTESUseCaseExamples
         disvalve_dp_nominal=100000,
         chvalve_m_flow_nom=200,
         chvalve_dp_nominal=100000),
-      redeclare package Storage_Medium =
-          NHES.Media.Hitec.Hitec,
+      redeclare package Storage_Medium = NHES.Media.Hitec.Hitec,
       m_flow_min=0.1,
       tank_height=500,
       Steam_Output_Temp=stateSensor6.temperature.T)
@@ -1668,13 +1662,13 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl_2
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI_TempControl_2
       two_Tank_SHS_System_NTU(
       redeclare
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_2
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TempControl_2
         CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_level_max=500,
         ht_area=100,
         ht_surface_pressure=120000,
@@ -1695,8 +1689,7 @@ package ObsoleteTESUseCaseExamples
         disvalve_dp_nominal=100000,
         chvalve_m_flow_nom=200,
         chvalve_dp_nominal=100000),
-      redeclare package Storage_Medium =
-          NHES.Media.Hitec.Hitec,
+      redeclare package Storage_Medium = NHES.Media.Hitec.Hitec,
       m_flow_min=0.1,
       tank_height=500,
       Steam_Output_Temp=stateSensor6.temperature.T)
@@ -1910,13 +1903,13 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl_2
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI_TempControl_2
       two_Tank_SHS_System_NTU(
       redeclare
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_2
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TempControl_2
         CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_level_max=500,
         ht_area=100,
         ht_surface_pressure=120000,
@@ -1937,8 +1930,7 @@ package ObsoleteTESUseCaseExamples
         disvalve_dp_nominal=100000,
         chvalve_m_flow_nom=200,
         chvalve_dp_nominal=100000),
-      redeclare package Storage_Medium =
-          NHES.Media.Hitec.Hitec,
+      redeclare package Storage_Medium = NHES.Media.Hitec.Hitec,
       m_flow_min=0.1,
       tank_height=500,
       Steam_Output_Temp=stateSensor6.temperature.T)
@@ -2135,13 +2127,13 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI_TempControl
       two_Tank_SHS_System_NTU(
       redeclare
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TempControl
         CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_level_max=100,
         ht_area=100,
         ht_surface_pressure=120000,
@@ -2161,8 +2153,7 @@ package ObsoleteTESUseCaseExamples
         disvalve_dp_nominal=100000,
         chvalve_m_flow_nom=200,
         chvalve_dp_nominal=100000),
-      redeclare package Storage_Medium =
-          NHES.Media.Hitec.Hitec,
+      redeclare package Storage_Medium = NHES.Media.Hitec.Hitec,
       m_flow_min=0.1,
       tank_height=100,
       Steam_Output_Temp=stateSensor6.temperature.T)
@@ -2349,13 +2340,13 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI_TempControl
       two_Tank_SHS_System_NTU(
       redeclare
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TempControl
         CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_area=100,
         hot_tank_init_temp=513.15,
         cold_tank_area=100,
@@ -2370,8 +2361,7 @@ package ObsoleteTESUseCaseExamples
         charge_pump_dp_nominal=10000,
         disvalve_m_flow_nom=100,
         chvalve_m_flow_nom=200),
-      redeclare package Storage_Medium =
-          NHES.Media.Hitec.Hitec,
+      redeclare package Storage_Medium = NHES.Media.Hitec.Hitec,
       m_flow_min=0.1,
       tank_height=15,
       Steam_Output_Temp=stateSensor6.temperature.T)
@@ -2591,11 +2581,13 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI
       two_Tank_SHS_System_NTU(
-      redeclare NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI CS,
+      redeclare
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Boiler_03_GMI
+        CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_area=100,
         hot_tank_init_temp=553.15,
         cold_tank_area=100,
@@ -2815,12 +2807,13 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI
       two_Tank_SHS_System_NTU(
       redeclare
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TESUC CS,
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TESUC
+        CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_area=100,
         hot_tank_init_temp=573.15,
         cold_tank_area=100,
@@ -3053,12 +3046,13 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_TESUC
-                                                                two_Tank_SHS_System_NTU(
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_TESUC
+      two_Tank_SHS_System_NTU(
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Basic_TESUC CS,
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Basic_TESUC
+        CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_area=100,
         cold_tank_area=100,
         m_flow_ch_min=0.1,
@@ -3280,10 +3274,13 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI two_Tank_SHS_System_NTU(
-      redeclare NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI CS,
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI
+      two_Tank_SHS_System_NTU(
+      redeclare
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Boiler_03_GMI
+        CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_area=100,
         cold_tank_area=100,
         m_flow_ch_min=0.1,
@@ -3504,12 +3501,13 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI
       two_Tank_SHS_System_NTU(
       redeclare
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TESUC CS,
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TESUC
+        CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_area=100,
         hot_tank_init_temp=573.15,
         cold_tank_area=100,
@@ -3742,12 +3740,13 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI
       two_Tank_SHS_System_NTU(
       redeclare
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TESUC CS,
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TESUC
+        CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_area=100,
         cold_tank_area=100,
         m_flow_ch_min=0.1,
@@ -4056,10 +4055,13 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI two_Tank_SHS_System_NTU(
-      redeclare NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI CS,
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI
+      two_Tank_SHS_System_NTU(
+      redeclare
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Boiler_03_GMI
+        CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_area=100,
         cold_tank_area=100,
         m_flow_ch_min=0.1,
@@ -4280,12 +4282,14 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_TESUC
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_TESUC
       two_Tank_SHS_System_NTU(
-      redeclare NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Basic_TESUC CS,
-      redeclare replaceable EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+      redeclare
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Basic_TESUC
+        CS,
+      redeclare replaceable EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
           DHX_K_tube(unit="1/m4"), DHX_K_shell(unit="1/m4")),
-                                   Produced_steam_flow=10)
+      Produced_steam_flow=10)
       annotation (Placement(transformation(extent={{-20,-78},{20,-38}})));
     TRANSFORM.Fluid.Valves.ValveLinear SHS_Throttle(
       redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -4431,14 +4435,17 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU
       two_Tank_SHS_System_NTU(
-      redeclare NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03 CS,
-      redeclare replaceable EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+      redeclare
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Boiler_03 CS,
+
+      redeclare replaceable EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         cold_tank_init_temp=453.15,
         DHX_K_tube(unit="1/m4"),
         DHX_K_shell(unit="1/m4"),
-        DHX_p_start_shell=200000), Produced_steam_flow=10)
+        DHX_p_start_shell=200000),
+      Produced_steam_flow=10)
       annotation (Placement(transformation(extent={{-20,-78},{20,-38}})));
     TRANSFORM.Fluid.Valves.ValveLinear TCV(
       redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -4578,9 +4585,9 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Uprate_timeSeries.txt"))
       annotation (Placement(transformation(extent={{158,60},{198,100}})));
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU
       two_Tank_SHS_System_NTU(redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         DHX_K_tube(unit="1/m4"),
         DHX_K_shell(unit="1/m4"),
         DHX_p_start_shell=500000), Produced_steam_flow=10)
@@ -4729,13 +4736,13 @@ package ObsoleteTESUseCaseExamples
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{158,60},{198,100}})));
 
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl_SmallTanks
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_BestModel
       two_Tank_SHS_System_NTU(
       redeclare
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_SmallTanks
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_BestExample
         CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_level_max=11.7,
         ht_area=3390,
         ht_surface_pressure=120000,
@@ -4758,8 +4765,7 @@ package ObsoleteTESUseCaseExamples
         chvalve_m_flow_nom=900,
         disvalve_m_flow_nom=900,
         chvalve_dp_nominal=100000),
-      redeclare package Storage_Medium =
-          NHES.Media.Hitec.Hitec,
+      redeclare package Storage_Medium = NHES.Media.Hitec.Hitec,
       m_flow_min=0.1,
       tank_height=11.7,
       Steam_Output_Temp=stateSensor6.temperature.T)
@@ -4852,9 +4858,9 @@ package ObsoleteTESUseCaseExamples
     Modelica.Blocks.Math.Sum sum1
       annotation (Placement(transformation(extent={{134,102},{154,122}})));
     PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop
-                                           hTGR_PebbleBed_Primary_Loop(redeclare
-        PrimaryHeatSystem.HTGR.HTGR_Rankine.CS_Rankine_Primary CS(data(
-            T_Rx_Exit_Ref=579.15, P_Steam_Ref=3400000)))
+      hTGR_PebbleBed_Primary_Loop(redeclare
+        PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary
+        CS(data(T_Rx_Exit_Ref=579.15, P_Steam_Ref=3400000)))
       annotation (Placement(transformation(extent={{-100,-22},{-52,24}})));
   equation
 
@@ -4981,7 +4987,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR
+    BalanceOfPlant.Turbine.HTGR_RankineCycles.SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR
       intermediate_Rankine_Cycle_TESUC(
       redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.TESTurbine
         data(
@@ -5054,13 +5060,13 @@ package ObsoleteTESUseCaseExamples
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{158,60},{198,100}})));
 
-    EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl_SmallTanks
+    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_BestModel
       two_Tank_SHS_System_NTU(
       redeclare
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_SmallTanks
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_BestExample
         CS,
       redeclare replaceable
-        NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_level_max=11.7,
         ht_area=3390,
         ht_surface_pressure=120000,
@@ -5083,8 +5089,7 @@ package ObsoleteTESUseCaseExamples
         chvalve_m_flow_nom=900,
         disvalve_m_flow_nom=900,
         chvalve_dp_nominal=100000),
-      redeclare package Storage_Medium =
-          NHES.Media.Hitec.Hitec,
+      redeclare package Storage_Medium = NHES.Media.Hitec.Hitec,
       m_flow_min=0.1,
       tank_height=11.7,
       Steam_Output_Temp=stateSensor6.temperature.T)
@@ -5177,9 +5182,9 @@ package ObsoleteTESUseCaseExamples
     Modelica.Blocks.Math.Sum sum1
       annotation (Placement(transformation(extent={{134,102},{154,122}})));
     PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop
-                                           hTGR_PebbleBed_Primary_Loop(redeclare
-        PrimaryHeatSystem.HTGR.HTGR_Rankine.CS_Rankine_Primary CS(data(
-            T_Rx_Exit_Ref=579.15, P_Steam_Ref=3400000)))
+      hTGR_PebbleBed_Primary_Loop(redeclare
+        PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary
+        CS(data(T_Rx_Exit_Ref=579.15, P_Steam_Ref=3400000)))
       annotation (Placement(transformation(extent={{-104,-22},{-56,24}})));
   equation
       hTGR_PebbleBed_Primary_Loop.input_steam_pressure = intermediate_Rankine_Cycle_TESUC.sensor_p.p;

@@ -74,13 +74,13 @@ model LWR_Case_02_DirectCoupling
     fileName=Modelica.Utilities.Files.loadResource(
         "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
     annotation (Placement(transformation(extent={{160,60},{200,100}})));
-  EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU_GMI_TempControl_SmallTanks
+  EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_BestModel
     two_Tank_SHS_System_NTU(
     redeclare
-      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03_GMI_TempControl_SmallTanks_2
+      NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_DirectCoupling
       CS,
-    redeclare replaceable
-      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+    redeclare replaceable NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS
+      data(
       ht_level_max=11.7,
       ht_area=3390,
       ht_surface_pressure=120000,
@@ -103,8 +103,7 @@ model LWR_Case_02_DirectCoupling
       disvalve_dp_nominal=100000,
       chvalve_m_flow_nom=2500,
       chvalve_dp_nominal=100000),
-    redeclare package Storage_Medium =
-        NHES.Media.Hitec.Hitec,
+    redeclare package Storage_Medium = NHES.Media.Hitec.Hitec,
     m_flow_min=0.1,
     tank_height=11.7,
     Steam_Output_Temp=stateSensor2.temperature.T)

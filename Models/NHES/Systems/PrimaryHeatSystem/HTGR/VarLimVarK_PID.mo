@@ -1,5 +1,5 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR;
-block LimPID_AR
+block VarLimVarK_PID
   "P, PI, PD, and PID controller with limited output, anti-windup compensation, setpoint weighting, feed forward, and reset"
   import InitPID =
          Modelica.Blocks.Types.Init;
@@ -8,6 +8,15 @@ block LimPID_AR
   extends Modelica.Blocks.Interfaces.SVcontrol;
   output Real controlError = u_s - u_m
     "Control error (set point - measurement)";
+  parameter Boolean use_k_in = false
+    "Get the controller gain from the input connector"
+    annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
+  parameter Boolean use_lowlim_in= false
+    "Get the lower limit from the input connector"
+    annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
+  parameter Boolean use_uplim_in = false
+    "Get the upper limit from the input connector"
+    annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
   parameter SimpleController controllerType=
          SimpleController.PID "Type of controller";
   parameter Boolean with_FF=false "enable feed-forward input signal"
@@ -147,6 +156,7 @@ block LimPID_AR
     annotation (Placement(transformation(extent={{-98,-30},{-86,-18}})));
   Modelica.Blocks.Sources.Constant null_bias(k=yb)
     annotation (Placement(transformation(extent={{20,-40},{40,-20}})));
+
 protected
   constant SI.Time unitTime=1  annotation(HideResult=true);
   parameter Boolean with_I = controllerType==SimpleController.PI or
@@ -161,25 +171,50 @@ protected
     if reset <> TRANSFORM.Types.Reset.Disabled
     "Signal source for integrator reset"
     annotation (Placement(transformation(extent={{-90,-100},{-70,-80}})));
+  Modelica.Blocks.Interfaces.RealInput k_in_internal
+    "Needed to connect to conditional connector";
+  Modelica.Blocks.Interfaces.RealInput lowlim_in_internal
+    "Needed to connect to conditional connector";
+  Modelica.Blocks.Interfaces.RealInput uplim_in_internal
+    "Needed to connect to conditional connector";
 public
   Modelica.Blocks.Math.Gain gain_u_ff(k=k_ff) if with_FF
     annotation (Placement(transformation(extent={{-96,74},{-84,86}})));
-  Modelica.Blocks.Interfaces.RealInput upperlim
-    "Connector of setpoint input signal"
-    annotation (Placement(transformation(extent={{-140,116},{-100,156}})));
-  Modelica.Blocks.Interfaces.RealInput lowerlim
-    "Connector of setpoint input signal"
-    annotation (Placement(transformation(extent={{-144,-170},{-104,-130}})));
+  Modelica.Blocks.Interfaces.RealInput upperlim if use_uplim_in
+    "Prescribed upper limit of output"
+    annotation (Placement(transformation(extent={{-20,-20},{20,20}},
+        rotation=-90,
+        origin={-60,110})));
+  Modelica.Blocks.Interfaces.RealInput lowerlim if use_lowlim_in
+    "Prescribed lower limit of output"
+    annotation (Placement(transformation(extent={{-20,-20},{20,20}},
+        rotation=-90,
+        origin={0,110})));
   Modelica.Blocks.Math.Product product1
     annotation (Placement(transformation(extent={{24,-10},{44,10}})));
-  Modelica.Blocks.Interfaces.RealInput prop_k
-    "Connector of setpoint input signal"
-    annotation (Placement(transformation(extent={{-140,168},{-100,208}})));
+  Modelica.Blocks.Interfaces.RealInput prop_k if use_k_in
+    "Prescribed proportional constant"
+    annotation (Placement(transformation(extent={{-20,-20},{20,20}},
+        rotation=-90,
+        origin={74,114})));
 initial equation
   if initType==InitPID.InitialOutput then
      y = y_start;
   end if;
+
 equation
+  connect(prop_k, k_in_internal);
+  connect(lowerlim, lowlim_in_internal);
+  connect(upperlim, uplim_in_internal);
+  if not use_k_in then
+    k_in_internal = k;
+  end if;
+  if not use_lowlim_in then
+    lowlim_in_internal = yMin;
+  end if;
+  if not use_uplim_in then
+    uplim_in_internal = yMax;
+  end if;
   assert(yMax >= yMin, "LimPID: Limits must be consistent. However, yMax (=" +
     String(yMax) + ") < yMin (=" + String(yMin) + ")");
   if initType ==InitPID.InitialOutput  and (y_start < yMin or y_start > yMax) then
@@ -255,16 +290,17 @@ equation
   connect(gain_u_ff.y, addFF.u1) annotation (Line(points={{-83.4,80},{44,80},{
           44,4},{49,4}},
                       color={0,0,127}));
-  connect(variableLimiter.limit1, upperlim) annotation (Line(points={{70,8},{64,
-          8},{64,132},{-120,132},{-120,136}}, color={0,0,127}));
-  connect(variableLimiter.limit2, lowerlim) annotation (Line(points={{70,-8},{
-          66,-8},{66,-142},{-124,-142},{-124,-150}}, color={0,0,127}));
+  connect(variableLimiter.limit1, uplim_in_internal) annotation (Line(points={{70,8},{
+          64,8},{64,74},{-60,74},{-60,110}},  color={0,0,127}));
+  connect(variableLimiter.limit2, lowlim_in_internal) annotation (Line(points={{70,-8},
+          {62,-8},{62,86},{0,86},{0,110}},           color={0,0,127}));
   connect(addPID.y, product1.u2) annotation (Line(points={{17,0},{16,0},{16,-14},
           {22,-14},{22,-6}}, color={0,0,127}));
   connect(addFF.u2, product1.y)
     annotation (Line(points={{49,0},{45,0}}, color={0,0,127}));
-  connect(product1.u1, prop_k) annotation (Line(points={{22,6},{16,6},{16,194},
-          {-120,194},{-120,188}}, color={0,0,127}));
+  connect(product1.u1, k_in_internal) annotation (Line(points={{22,6},{18,6},{
+          18,16},{74,16},{74,114}},
+                                  color={0,0,127}));
   annotation (defaultComponentName="PID",
     Icon(coordinateSystem(
         preserveAspectRatio=true,
@@ -362,4 +398,4 @@ equation
           extent={{-98,106},{-158,96}},
           lineColor={0,0,255},
           textString="(feed-forward)")}));
-end LimPID_AR;
+end VarLimVarK_PID;

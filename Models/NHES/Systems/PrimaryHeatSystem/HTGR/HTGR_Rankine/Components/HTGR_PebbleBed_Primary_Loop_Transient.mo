@@ -1,5 +1,5 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Components;
-model HTGR_PebbleBed_Primary_Loop_TESUC
+model HTGR_PebbleBed_Primary_Loop_Transient "Resized HX"
   extends BaseClasses.Partial_SubSystem_A(
     redeclare replaceable ControlSystems.CS_Rankine_Primary CS,
     redeclare replaceable ED_Dummy ED,
@@ -59,6 +59,7 @@ model HTGR_PebbleBed_Primary_Loop_TESUC
     annotation (Placement(transformation(extent={{-92,98},{-80,112}})));
   Nuclear.CoreSubchannels.Pebble_Bed_New
                                        core(
+    nV=8,
     redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
     redeclare package Pebble_Material = Media.Solids.Graphite_5,
     redeclare model Geometry = Nuclear.New_Geometries.PackedBed (d_pebble=2*
@@ -87,7 +88,7 @@ model HTGR_PebbleBed_Primary_Loop_TESUC
         TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_H3TeIXe_U235,
     rho_input=CR_reactivity.y,
     redeclare package Medium = Coolant_Medium,
-    SF_start_power={0.3,0.25,0.25,0.2},
+    SF_start_power={0.15,0.15,0.125,0.125,0.125,0.125,0.1,0.1},
     nParallel=1,
     Fh=1.4,
     n_hot=25,
@@ -99,8 +100,8 @@ model HTGR_PebbleBed_Primary_Loop_TESUC
         rotation=270,
         origin={-78,38})));
 
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
-        Coolant_Medium) annotation (Placement(transformation(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
+      = Coolant_Medium) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={-78,-2})));
@@ -128,17 +129,18 @@ model HTGR_PebbleBed_Primary_Loop_TESUC
         origin={-42,-79})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
     redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    use_T_in=true,
     p=4000000,
     T=573.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-94,-68},{-74,-48}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
-        Coolant_Medium) annotation (Placement(transformation(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
+      = Coolant_Medium) annotation (Placement(transformation(
         extent={{-5,-7},{5,7}},
         rotation=270,
         origin={-39,63})));
   TRANSFORM.HeatExchangers.GenericDistributed_HX STHX(
-    nParallel=3,
+    nParallel=1,
     redeclare model FlowModel_shell =
         TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable,
     redeclare model FlowModel_tube =
@@ -150,7 +152,7 @@ model HTGR_PebbleBed_Primary_Loop_TESUC
     T_a_start_tube=481.15,
     T_b_start_tube=813.15,
     h_a_start_tube=500e3,
-    h_b_start_tube=2e3,
+    h_b_start_tube=3000e3,
     exposeState_b_shell=true,
     exposeState_b_tube=true,
     redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS304,
@@ -160,7 +162,7 @@ model HTGR_PebbleBed_Primary_Loop_TESUC
     T_a_start_shell=1023.15,
     T_b_start_shell=523.15,
     m_flow_a_start_shell=50,
-    m_flow_a_start_tube=100,
+    m_flow_a_start_tube=50,
     redeclare package Medium_tube = Modelica.Media.Water.WaterIF97_ph,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.HeatExchanger.ShellAndTubeHX
@@ -183,6 +185,11 @@ model HTGR_PebbleBed_Primary_Loop_TESUC
         rotation=90,
         origin={29,18})));
 
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium
+      = Coolant_Medium) annotation (Placement(transformation(
+        extent={{-5,-7},{5,7}},
+        rotation=180,
+        origin={7,-15})));
 initial equation
 
 equation
@@ -209,9 +216,6 @@ equation
     annotation (Line(points={{-60,-6},{-62,-6},{-62,-2},{-68,-2}},
                                                           color={0,127,255},
       thickness=0.5));
-  connect(compressor_Controlled.inlet,STHX. port_b_shell) annotation (Line(
-        points={{-48,-6},{22,-6},{22,2},{23.94,2},{23.94,6}},
-                                                      color={0,127,255}));
   connect(Primary_PRV.port_a,compressor_Controlled. inlet) annotation (Line(
         points={{-34,-56},{-28,-56},{-28,-38},{-38,-38},{-38,-26},{-40,-26},{
           -40,-6},{-48,-6}},
@@ -242,6 +246,12 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(sensor_T1.port_a, STHX.port_b_shell) annotation (Line(points={{12,-15},
+          {18,-15},{18,-14},{23.94,-14},{23.94,6}}, color={0,127,255}));
+  connect(sensor_T1.port_b, compressor_Controlled.inlet) annotation (Line(
+        points={{2,-15},{-40,-15},{-40,-6},{-48,-6}}, color={0,127,255}));
+  connect(boundary1.T_in, sensor_T1.T) annotation (Line(points={{-96,-54},{-124,
+          -54},{-124,-92},{7,-92},{7,-17.52}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           Bitmap(extent={{-80,-92},{78,84}}, fileName="modelica://NHES/Icons/PrimaryHeatSystemPackage/HTGRPB.jpg")}),
                                                                  Diagram(
@@ -254,4 +264,4 @@ equation
 <p>The primary side of a HTGR reactor with a heat exchanger set up to send heat to a Rankine cycle to produce electricity. The pebble bed reactor core used is the same as in the Brayton cycle reactor style. </p>
 <p>This model is used in the third example in this package. As it is taken from the Rankine_Complex model, that model should be used as a reference. </p>
 </html>"));
-end HTGR_PebbleBed_Primary_Loop_TESUC;
+end HTGR_PebbleBed_Primary_Loop_Transient;

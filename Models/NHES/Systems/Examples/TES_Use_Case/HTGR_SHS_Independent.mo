@@ -7,13 +7,13 @@ model HTGR_SHS_Independent
   TRANSFORM.Electrical.Sources.FrequencySource
                                      sinkElec(f=60)
     annotation (Placement(transformation(extent={{168,-28},{148,-8}})));
-  PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop hTGR_PebbleBed_Primary_Loop(
-      redeclare
-      NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.CS_Rankine_Primary CS)
-    annotation (Placement(transformation(extent={{-114,-20},{-44,38}})));
-  EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System_NTU
+  PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop
+    hTGR_PebbleBed_Primary_Loop(redeclare
+      NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary
+      CS) annotation (Placement(transformation(extent={{-114,-20},{-44,38}})));
+  EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU
     two_Tank_SHS_System_NTU(redeclare
-      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Basic_TESUC CS)
+      NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Basic_TESUC CS)
     annotation (Placement(transformation(extent={{-24,-90},{32,-32}})));
   EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(
     port_a1_nominal(
@@ -24,7 +24,8 @@ model HTGR_SHS_Independent
           nuScale_Tave_enthalpy_Pressurizer_CR.port_a_nominal.h),
     nPorts_b3=1)
     annotation (Placement(transformation(extent={{-26,-20},{36,42}})));
-  BalanceOfPlant.Turbine.HTGR_Rankine_Cycle hTGR_Rankine_Cycle1
+  BalanceOfPlant.Turbine.HTGR_RankineCycles.HTGR_Rankine_Cycle
+    hTGR_Rankine_Cycle1
     annotation (Placement(transformation(extent={{62,-90},{122,-30}})));
 equation
   hTGR_PebbleBed_Primary_Loop.input_steam_pressure =BOP.sensor_p.p;

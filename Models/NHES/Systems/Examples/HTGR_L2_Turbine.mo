@@ -1,5 +1,5 @@
 within NHES.Systems.Examples;
-model HTGR_LoadFollow_L2_Turbine
+model HTGR_L2_Turbine
   "High Fidelity Natural Circulation Model based on NuScale reactor. Hot channel calcs, pressurizer, and beginning of cycle reactivity feedback"
    parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
@@ -13,7 +13,8 @@ model HTGR_LoadFollow_L2_Turbine
      + sum(EM.port_b3.m_flow./EM.port_b3_nominal_m_flow)*fracNominal_Other,
      0.5));
 
-  BalanceOfPlant.Turbine.SteamTurbine_L5_ClosedFeedHeat_HTGR BOP(
+  BalanceOfPlant.Turbine.HTGR_RankineCycles.SteamTurbine_L2_ClosedFeedHeat_HTGR
+    BOP(
     redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.Turbine_2
       data(
       p_in_nominal=7600000,
@@ -112,9 +113,9 @@ model HTGR_LoadFollow_L2_Turbine
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-44,-14},{-58,2}})));
   PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_STHX
-                                         hTGR_PebbleBed_Primary_Loop_TESUC(
-      redeclare PrimaryHeatSystem.HTGR.HTGR_Rankine.CS_Rankine_Primary_AR2 CS(data(
-          P_Steam_Ref=14000000)))
+    hTGR_PebbleBed_Primary_Loop_TESUC(redeclare
+      PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary_SS_ClosedFeedheat
+      CS(data(P_Steam_Ref=14000000)))
     annotation (Placement(transformation(extent={{-106,-20},{-62,22}})));
   Fluid.Sensors.stateDisplay stateDisplay3
     annotation (Placement(transformation(extent={{-120,-54},{-76,-22}})));
@@ -166,4 +167,4 @@ equation
       StopTime=100000,
       Interval=3.5,
       __Dymola_Algorithm="Esdirk45a"));
-end HTGR_LoadFollow_L2_Turbine;
+end HTGR_L2_Turbine;

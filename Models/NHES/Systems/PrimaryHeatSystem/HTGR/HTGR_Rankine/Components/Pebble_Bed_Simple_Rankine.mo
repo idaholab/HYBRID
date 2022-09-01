@@ -1,7 +1,7 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Components;
 model Pebble_Bed_Simple_Rankine
   extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable CS_Rankine CS,
+    redeclare replaceable ControlSystems.CS_Rankine CS,
     redeclare replaceable HTGR_Rankine.ED_Dummy ED,
     redeclare Data.Data_HTGR_Pebble data(
       Q_total=600000000,

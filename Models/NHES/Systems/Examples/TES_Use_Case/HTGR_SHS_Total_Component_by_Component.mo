@@ -1,16 +1,16 @@
 within NHES.Systems.Examples.TES_Use_Case;
 model HTGR_SHS_Total_Component_by_Component
   extends Modelica.Icons.Example;
-  PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop hTGR_PebbleBed_Primary_Loop(
-      redeclare
-      NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.CS_Rankine_Primary CS,
-      redeclare package Power_Medium =
+  PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop
+    hTGR_PebbleBed_Primary_Loop(redeclare
+      NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary
+      CS, redeclare package Power_Medium =
         NHES.Media.SolarSalt.ConstantPropertyLiquidSolarSalt)
     annotation (Placement(transformation(extent={{-98,40},{-32,100}})));
-  EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_Total_Power_Prod_RealHX
+  EnergyStorage.SHS_Two_Tank.Two_Tank_SHS_Total_Power_Prod_RealHX
     two_Tank_SHS_Total_Power_Prod_RealHX(
-    redeclare replaceable
-      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
+    redeclare replaceable NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS
+      data(
       hot_tank_init_temp=823.15,
       cold_tank_init_temp=648.15,
       DHX_NTU=0.8,
