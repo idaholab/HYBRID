@@ -254,15 +254,6 @@ package HTGR_RankineCycles
           extent={{-10,-10},{10,10}},
           rotation=0,
           origin={86,-112})));
-    TRANSFORM.Fluid.Valves.ValveLinear LPT_Bypass1(
-      redeclare package Medium = Modelica.Media.Water.StandardWater,
-      dp_nominal=10000,
-      m_flow_nominal=25)                            annotation (Placement(transformation(
-          extent={{10,10},{-10,-10}},
-          rotation=180,
-          origin={102,-76})));
-    Modelica.Blocks.Sources.Constant const(k=1)
-      annotation (Placement(transformation(extent={{168,-56},{188,-36}})));
   initial equation
 
   equation
@@ -406,16 +397,11 @@ package HTGR_RankineCycles
             {0,127,255}));
     connect(FeedwaterMixVolume1.port_b[1], R_feedwater.port_a)
       annotation (Line(points={{92,-112},{107,-112}}, color={0,127,255}));
-    connect(const.y, LPT_Bypass1.opening) annotation (Line(points={{189,-46},{
-            189,-62},{102,-62},{102,-68}}, color={0,0,127}));
     connect(R_feedwater.port_b, Condenser.port_a) annotation (Line(points={{121,
             -112},{130,-112},{130,-84},{152,-84},{152,-88},{153,-88},{153,-92}},
           color={0,127,255}));
-    connect(LPT_Bypass1.port_b, Condenser.port_a) annotation (Line(points={{112,
-            -76},{134,-76},{134,-84},{153,-84},{153,-92}}, color={0,127,255}));
-    connect(LPT_Bypass1.port_a, LPT.portLP) annotation (Line(points={{92,-76},{
-            54,-76},{54,-48},{58,-48},{58,-20},{50,-20},{50,-16}}, color={0,127,
-            255}));
+    connect(LPT.portLP, Condenser.port_a) annotation (Line(points={{50,-16},{52,
+            -16},{52,-74},{153,-74},{153,-92}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           Rectangle(
             extent={{-24,2},{24,-2}},

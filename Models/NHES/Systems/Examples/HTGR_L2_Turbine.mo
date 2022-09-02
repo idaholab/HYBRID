@@ -39,7 +39,7 @@ model HTGR_L2_Turbine
       HPT_efficiency=1,
       LPT_p_in_nominal=1150000,
       LPT_T_in_nominal=753.15,
-      LPT_nominal_mflow=40,
+      LPT_nominal_mflow=28,
       LPT_efficiency=1,
       firstfeedpump_p_nominal=3500000,
       secondfeedpump_p_nominal=1000000,
