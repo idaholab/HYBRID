@@ -4439,7 +4439,6 @@ package ObsoleteTESUseCaseExamples
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Boiler_03 CS,
-
       redeclare replaceable EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         cold_tank_init_temp=453.15,
         DHX_K_tube(unit="1/m4"),
@@ -4447,6 +4446,7 @@ package ObsoleteTESUseCaseExamples
         DHX_p_start_shell=200000),
       Produced_steam_flow=10)
       annotation (Placement(transformation(extent={{-20,-78},{20,-38}})));
+
     TRANSFORM.Fluid.Valves.ValveLinear TCV(
       redeclare package Medium = Modelica.Media.Water.StandardWater,
       m_flow_start=400,

@@ -6,6 +6,7 @@ SMR_Coupling_4_loop_control
 SMR_highfidelity
 SMR_highfidelity_L2_Turbine
 HTGR_L2_Turbine
+HTGR_Open_Turbine
 SMR_IES_CTES
 GenericModularPWR_park
 GenericModularPWR_stepdownturbines

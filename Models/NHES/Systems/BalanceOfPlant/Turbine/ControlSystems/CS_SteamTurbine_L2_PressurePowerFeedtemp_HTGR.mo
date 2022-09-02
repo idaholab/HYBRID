@@ -66,7 +66,7 @@ model CS_SteamTurbine_L2_PressurePowerFeedtemp_HTGR
     initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-40,30},{-20,50}})));
-  Modelica.Blocks.Sources.Constant const4(k=2600)
+  Modelica.Blocks.Sources.Constant const4(k=2800)
     annotation (Placement(transformation(extent={{-14,48},{-6,56}})));
   Modelica.Blocks.Math.Add         add
     annotation (Placement(transformation(extent={{2,36},{22,56}})));

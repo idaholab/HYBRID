@@ -63,7 +63,6 @@ model LWR_Case_03_OversizedTurbine
     two_Tank_SHS_System_NTU(
     redeclare
       NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_BestExample CS,
-
     redeclare replaceable NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS
       data(
       ht_level_max=11.7,
