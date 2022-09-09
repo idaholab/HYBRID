@@ -8,14 +8,14 @@ model CS_SteamTurbine_L2_PressurePowerFeedtemp_HTGR
 
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-5e-7,
+    k=-1e-7,
     Ti=15,
     Td=0.1,
     yMax=0.9,
-    yMin=-0.07,
+    yMin=-0.0935,
     initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1500)
-    annotation (Placement(transformation(extent={{-56,-58},{-36,-38}})));
+    annotation (Placement(transformation(extent={{-54,-60},{-34,-40}})));
   Modelica.Blocks.Sources.Constant const5(k=data.T_Feedwater)
     annotation (Placement(transformation(extent={{-92,-56},{-72,-36}})));
   TRANSFORM.Controls.LimPID TCV_Power(
@@ -55,13 +55,13 @@ model CS_SteamTurbine_L2_PressurePowerFeedtemp_HTGR
   Modelica.Blocks.Sources.Constant const3(k=540 + 273.15)
     annotation (Placement(transformation(extent={{-180,44},{-160,64}})));
   TRANSFORM.Controls.LimPID FWCP_Speed(
-    controllerType=Modelica.Blocks.Types.SimpleController.PID,
-    k=-1e-2,
-    Ti=60,
-    Td=200,
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    k=-5e-2,
+    Ti=120,
+    Td=1,
     yMax=3000,
-    yMin=-800,
-    wp=0.5,
+    yMin=-1500,
+    wp=1,
     wd=0.5,
     initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1500)
@@ -92,10 +92,10 @@ model CS_SteamTurbine_L2_PressurePowerFeedtemp_HTGR
     annotation (Placement(transformation(extent={{-138,14},{-118,34}})));
 equation
   connect(const5.y,Turb_Divert_Valve. u_s)
-    annotation (Line(points={{-71,-46},{-66,-46},{-66,-48},{-58,-48}},
+    annotation (Line(points={{-71,-46},{-66,-46},{-66,-50},{-56,-50}},
                                                      color={0,0,127}));
   connect(sensorBus.Feedwater_Temp,Turb_Divert_Valve. u_m) annotation (Line(
-      points={{-30,-100},{-46,-100},{-46,-60}},
+      points={{-30,-100},{-44,-100},{-44,-62}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -113,8 +113,8 @@ equation
           {0,0,127}));
   connect(add2.u1,timer. y) annotation (Line(points={{-10,-40},{-23.44,-40}},
                                                                 color={0,0,127}));
-  connect(Turb_Divert_Valve.y,timer. u) annotation (Line(points={{-35,-48},{-36,
-          -48},{-36,-40},{-32.8,-40}},                               color={0,0,
+  connect(Turb_Divert_Valve.y,timer. u) annotation (Line(points={{-33,-50},{-36,
+          -50},{-36,-40},{-32.8,-40}},                               color={0,0,
           127}));
   connect(actuatorBus.Divert_Valve_Position, add2.y) annotation (Line(
       points={{30,-100},{30,-46},{13,-46}},

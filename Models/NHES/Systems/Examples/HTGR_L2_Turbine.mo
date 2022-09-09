@@ -18,7 +18,7 @@ model HTGR_L2_Turbine
     BOP(
     redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.Turbine_2
       data(
-      p_in_nominal=7800000,
+      p_in_nominal=14000000,
       V_condensor=20000,
       R_bypass=1000,
       R_entry=1,
@@ -37,7 +37,7 @@ model HTGR_L2_Turbine
       HPT_T_in_nominal=813.15,
       HPT_nominal_mflow=44,
       HPT_efficiency=1,
-      LPT_p_in_nominal=1150000,
+      LPT_p_in_nominal=1400000,
       LPT_T_in_nominal=753.15,
       LPT_nominal_mflow=28,
       LPT_efficiency=1,
