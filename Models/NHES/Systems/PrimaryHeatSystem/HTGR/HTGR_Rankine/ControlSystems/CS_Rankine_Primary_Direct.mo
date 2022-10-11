@@ -5,8 +5,9 @@ model CS_Rankine_Primary_Direct
 
   TRANSFORM.Controls.LimPID     CR(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-9,
+    k=4.5e-9,
     Ti=15,
+    yb=-8e-3,
     initType=Modelica.Blocks.Types.Init.NoInit)
     annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
   Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
@@ -71,7 +72,7 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.mfeedpump,PID_FeedPump. y) annotation (Line(
-      points={{30,-100},{54,-100},{54,58},{1,58}},
+      points={{30,-100},{30,58},{1,58}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));

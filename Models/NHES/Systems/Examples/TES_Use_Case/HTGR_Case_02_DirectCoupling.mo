@@ -228,7 +228,7 @@ equation
             false, extent={{-100,-100},{200,100}})),
     experiment(
       StopTime=200000,
-      Interval=5,
+      Interval=7.5,
       __Dymola_Algorithm="Esdirk45a"),
     Documentation(info="<html>
 <p>NuScale style reactor system. System has a nominal thermal output of 160MWt rather than the updated 200MWt.</p>
