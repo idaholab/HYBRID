@@ -35,18 +35,31 @@ model NTU_HX_SinglePhase
   parameter Modelica.Units.SI.Length dh_Shell=0.0
     "Total shell-side change in height"
     annotation (Dialog(tab="General", group="Sizing"));
+
+
+    //Initialization parameters
   parameter Modelica.Units.SI.Pressure p_start_tube=101325 "Initial tube pressure"
     annotation (Dialog(tab="Initialization", group="Tube"));
-  parameter Modelica.Units.SI.SpecificEnthalpy h_start_tube_inlet=200e3 "Initial tube inlet enthalpy"
-    annotation (Dialog(tab="Initialization", group="Tube"));
-  parameter Modelica.Units.SI.SpecificEnthalpy h_start_tube_outlet=500e3 "initial tube outlet enthalpy"
-    annotation (Dialog(tab="Initialization", group="Tube"));
+    parameter Boolean use_T_start_tube = false annotation(Dialog(tab="Initialization", group = "Tube"));
+  parameter Modelica.Units.SI.Temperature T_start_tube_inlet=Tube_medium.temperature_phX(p_start_tube, h_start_tube_inlet, Tube_medium.X_default) "Initial tube inlet temperature"
+    annotation (Dialog(tab="Initialization", group="Tube", enable = use_T_start_tube));
+  parameter Modelica.Units.SI.Temperature T_start_tube_outlet=Tube_medium.temperature_phX(p_start_tube, h_start_tube_outlet, Tube_medium.X_default) "initial tube outlet temperature"
+    annotation (Dialog(tab="Initialization", group="Tube", enable = use_T_start_tube));
+  parameter Modelica.Units.SI.SpecificEnthalpy h_start_tube_inlet=Tube_medium.specificEnthalpy_pTX(p_start_tube, T_start_tube_inlet, Tube_medium.X_default) "Initial tube inlet enthalpy"
+    annotation (Dialog(tab="Initialization", group="Tube", enable = not use_T_start_tube));
+  parameter Modelica.Units.SI.SpecificEnthalpy h_start_tube_outlet=Tube_medium.specificEnthalpy_pTX(p_start_tube, T_start_tube_outlet, Tube_medium.X_default) "initial tube outlet enthalpy"
+    annotation (Dialog(tab="Initialization", group="Tube", enable = not use_T_start_tube));
   parameter Modelica.Units.SI.Pressure p_start_shell=1013250 "Initial shell pressure"
     annotation (Dialog(tab="Initialization", group="Shell"));
-  parameter Modelica.Units.SI.SpecificEnthalpy h_start_shell_inlet=1600e3  "Initial shell inlet enthalpy"
-    annotation (Dialog(tab="Initialization", group="Shell"));
-  parameter Modelica.Units.SI.SpecificEnthalpy h_start_shell_outlet=600e3 "Initial shell outlet enthalpy"
-    annotation (Dialog(tab="Initialization", group="Shell"));
+    parameter Boolean use_T_start_shell = false annotation(Dialog(tab= "Initialization", group = "Shell"));
+  parameter Modelica.Units.SI.Temperature T_start_shell_inlet=Shell_medium.temperature_phX(p_start_shell, h_start_shell_inlet, Shell_medium.X_default) "Initial tube inlet temperature"
+    annotation (Dialog(tab="Initialization", group="Shell", enable = use_T_start_shell));
+  parameter Modelica.Units.SI.Temperature T_start_shell_outlet=Shell_medium.temperature_phX(p_start_shell, h_start_shell_outlet, Shell_medium.X_default) "initial tube outlet temperature"
+    annotation (Dialog(tab="Initialization", group="Shell", enable = use_T_start_shell));
+  parameter Modelica.Units.SI.SpecificEnthalpy h_start_shell_inlet=Shell_medium.specificEnthalpy_pTX(p_start_shell, T_start_shell_inlet, Shell_medium.X_default)   "Initial shell inlet enthalpy"
+    annotation (Dialog(tab="Initialization", group="Shell", enable = not use_T_start_shell));
+  parameter Modelica.Units.SI.SpecificEnthalpy h_start_shell_outlet= Shell_medium.specificEnthalpy_pTX(p_start_shell, T_start_shell_outlet, Shell_medium.X_default) "Initial shell outlet enthalpy"
+    annotation (Dialog(tab="Initialization", group="Shell", enable = not use_T_start_shell));
   parameter Modelica.Units.SI.Pressure dp_init_tube=500000 "Initial pressure drop tube side"
     annotation (Dialog(tab="Initialization", group="Tube"));
   parameter Modelica.Units.SI.Pressure dp_init_shell=10000 "Initial pressure drop shell side"
@@ -61,16 +74,18 @@ model NTU_HX_SinglePhase
   parameter Modelica.Units.SI.MassFlowRate m_start_shell=10 "Initial shell mass flow rate"
     annotation (Dialog(tab="Initialization", group="Shell"));
 
+
+
   Modelica.Units.SI.Temperature Tin_t
     "Inlet temperature based on mass flow direction at midpoint of NTUHX";
   Modelica.Units.SI.Temperature Tin_s
     "Inlet shell temp based on mass flow direction at midpoint of NTUHX";
-  Modelica.Units.SI.Temperature Tex_t;
-  Modelica.Units.SI.Temperature Tex_s;
+//  Modelica.Units.SI.Temperature Tex_t;
+//  Modelica.Units.SI.Temperature Tex_s;
   Modelica.Units.SI.SpecificEnthalpy hin_t;
   Modelica.Units.SI.SpecificEnthalpy hin_s;
-  Modelica.Units.SI.SpecificEnthalpy hex_t;
-  Modelica.Units.SI.SpecificEnthalpy hex_s;
+//  Modelica.Units.SI.SpecificEnthalpy hex_t;
+//  Modelica.Units.SI.SpecificEnthalpy hex_s;
 
 //  Shell_medium.SaturationProperties sat_rec;
 
@@ -78,7 +93,8 @@ public
   TRANSFORM.Fluid.Volumes.MixingVolume Tube(
     redeclare package Medium = Tube_medium,
     p_start=p_start_tube - dp_general,
-    use_T_start=false,
+    use_T_start=use_T_start_tube,
+    T_start=0.5*T_start_tube_inlet + 0.5*T_start_tube_outlet,
     h_start=0.5*h_start_tube_inlet + 0.5*h_start_tube_outlet,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
@@ -105,7 +121,8 @@ public
   TRANSFORM.Fluid.Volumes.MixingVolume Shell(
     redeclare package Medium = Shell_medium,
     p_start=p_start_shell - dp_general,
-    use_T_start=false,
+    use_T_start=use_T_start_shell,
+    T_start=0.5*T_start_shell_inlet + 0.5*T_start_shell_outlet,
     h_start=0.5*h_start_shell_outlet + 0.5*h_start_shell_inlet,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
@@ -135,7 +152,7 @@ equation
 
    //Find the inlet temperatures and enthalpies given the flow direction
    if
-     (Tube_dp.m_flow > 0) then
+     (Tube_in.m_flow > 0) then
      Tin_t = Tube_medium.temperature_phX(Tube_in.p, hin_t,Tube_medium.X_default);
     // Tin_t = Tube_medium.temperature_ph(Tube_in.p,hin_t);
      hin_t = actualStream(Tube_in.h_outflow);
@@ -144,7 +161,7 @@ equation
      hin_t =actualStream(Tube_out.h_outflow);
    end if;
    if
-     (Shell_dp.m_flow > 0) then
+     (Shell_in.m_flow > 0) then
      Tin_s = Shell_medium.temperature_phX(Shell_in.p,hin_s,Shell_medium.X_default);
      hin_s = actualStream(Shell_in.h_outflow);
    else
@@ -152,8 +169,8 @@ equation
      hin_s =actualStream(Shell_out.h_outflow);
    end if;
  // "For sign consistency, Q>0 means that the shell side is heating the tube side, and Q<0 reverses the flow of heat. The clearest indicator of heat flow direction is temperature."
-  Q_max_s =abs(Shell_dp.m_flow)*(-Shell_medium.specificEnthalpy_pTX(Shell.medium.p,Tin_t,Shell_medium.X_default) + hin_s);
-  Q_max_t = abs(Tube_dp.m_flow)*(Tube_medium.specificEnthalpy_pTX(Tube_dp.port_a.p,Tin_s,Tube_medium.X_default) - hin_t);
+  Q_max_s =abs(Shell_in.m_flow)*(-Shell_medium.specificEnthalpy_pTX(Shell.medium.p,Tin_t,Shell_medium.X_default) + hin_s);
+  Q_max_t = abs(Tube_in.m_flow)*(Tube_medium.specificEnthalpy_pTX(Tube_dp.port_a.p,Tin_s,Tube_medium.X_default) - hin_t);
   //By using absolute values, the lesser positive or negative Q becomes the more limiting side.
     if
       (abs(Q_max_s) < abs(Q_max_t)) then
@@ -168,7 +185,7 @@ equation
   //We ignore that for this model as neither side is specified to be single or two-phase here. Additionally, the heat capacity ratio is no longer defined by m_flow*Cp, but instead we can define it by the maximum power ratio
   //by assuming Q_sh/tub = m_flow*Cp*dT, and so the dT values should cancel numerator & denominator
   if
-    (abs(Q_min) > 0) then
+    (abs(Q_min) > 0.0) then
 
       Cr = abs(Q_max)/abs(Q_min);
   else
@@ -212,21 +229,6 @@ equation
   end if;
 
 
-    //The values of hex_t, hex_s, Tex_t, and Tex_s are provided for ease of access purposes only. They are not required in the method.
-  if
-    (abs(Tube_dp.m_flow) <= 1e-8) then
-    hex_t = hin_t;
-    else
-    hex_t = hin_t + Q_max*(1-exp(-NTU))/(abs(Tube_dp.m_flow));
-  end if;
-  Tex_t = Tube_medium.temperature_phX(Tube_out.p,hex_t,Tube_medium.X_default);
-  Tex_s = Shell_medium.temperature_phX(Shell_out.p,hex_s,Shell_medium.X_default);
-  if
-    (abs(Shell_dp.m_flow) <= 1e-8) then
-    hex_s = hin_s;
-  else
-  hex_s = hin_s - Q_max*(1-exp(-NTU))/(abs(Shell_dp.m_flow));
-  end if;
   //Presentation values only
 
   annotation (

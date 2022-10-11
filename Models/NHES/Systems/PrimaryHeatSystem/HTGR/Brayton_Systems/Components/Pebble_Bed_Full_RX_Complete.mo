@@ -1,8 +1,10 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.Components;
 model Pebble_Bed_Full_RX_Complete
   extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable CS_Dummy CS,
-    redeclare replaceable ED_Dummy ED,
+    redeclare replaceable
+      NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.CS_Dummy CS,
+    redeclare replaceable
+      NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.ED_Dummy ED,
     redeclare Data.Data_HTGR_Pebble data(
       Q_total=600000000,
       Q_total_el=300000000,
@@ -18,7 +20,8 @@ model Pebble_Bed_Full_RX_Complete
       nRodFuel_assembly=264,
       nAssembly=12,
       HX_Reheat_Tube_Vol=0.1,
-      HX_Reheat_Shell_Vol=0.1));
+      HX_Reheat_Shell_Vol=0.1,
+      nPebble=1056000));
 
   replaceable package Coolant_Medium =
       Modelica.Media.IdealGases.SingleGases.He                                    constrainedby
@@ -73,9 +76,15 @@ model Pebble_Bed_Full_RX_Complete
     V_Tube=data.HX_Reheat_Tube_Vol,
     V_Shell=data.HX_Reheat_Shell_Vol,
     p_start_tube=dataInitial.Recuperator_P_Tube,
+    use_T_start_tube=true,
+    T_start_tube_inlet=773.15,
+    T_start_tube_outlet=573.15,
     h_start_tube_inlet=dataInitial.Recuperator_h_Tube_Inlet,
     h_start_tube_outlet=dataInitial.Recuperator_h_Tube_Outlet,
     p_start_shell=dataInitial.Recuperator_P_Tube,
+    use_T_start_shell=true,
+    T_start_shell_inlet=573.15,
+    T_start_shell_outlet=773.15,
     h_start_shell_inlet=dataInitial.Recuperator_h_Shell_Inlet,
     h_start_shell_outlet=dataInitial.HX_Aux_h_tube_out,
     dp_init_tube=dataInitial.Recuperator_dp_Tube,
@@ -87,8 +96,7 @@ model Pebble_Bed_Full_RX_Complete
     annotation (Placement(transformation(extent={{18,-18},{-2,2}})));
 
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
-        Coolant_Medium)
-    annotation (Placement(transformation(
+        Coolant_Medium) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={38,10})));
@@ -222,8 +230,7 @@ model Pebble_Bed_Full_RX_Complete
     annotation (Placement(transformation(extent={{80,124},{100,144}})));
 
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort Intercooler_Pre_Temp(redeclare
-      package Medium = Coolant_Medium) annotation (Placement(
-        transformation(
+      package Medium = Coolant_Medium) annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=90,
         origin={100,-16})));
@@ -240,9 +247,15 @@ model Pebble_Bed_Full_RX_Complete
     annotation (Placement(transformation(extent={{-102,-52},{-82,-32}})));
   Modelica.Blocks.Sources.Constant const1(k=850 + 273.15)
     annotation (Placement(transformation(extent={{-136,-52},{-116,-32}})));
-  Nuclear.CoreSubchannels.Pebble_Bed_2 core(
+
+  Nuclear.CoreSubchannels.Pebble_Bed_New
+                                       core(
     redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
     redeclare package Pebble_Material = Media.Solids.Graphite_5,
+    redeclare model Geometry = Nuclear.New_Geometries.PackedBed (
+        d_pebble=2*data.r_Pebble,
+        nPebble=data.Pebble,
+        packing_factor=0.55),
     redeclare model HeatTransfer =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple,
     Q_fission_input=600000000,
@@ -267,21 +280,12 @@ model Pebble_Bed_Full_RX_Complete
     redeclare package Medium = Coolant_Medium,
     SF_start_power={0.2,0.3,0.3,0.2},
     nParallel=data.nAssembly,
-    redeclare model Geometry =
-        TRANSFORM.Nuclear.ClosureRelations.Geometry.Models.CoreSubchannels.Assembly
-        (
-        width_FtoF_inner=data.sizeAssembly*data.pitch_fuelRod,
-        rs_outer={data.r_pellet_fuelRod,data.r_pellet_fuelRod + data.th_gap_fuelRod,
-            data.r_outer_fuelRod},
-        length=data.length_core,
-        nPins=data.nRodFuel_assembly,
-        nPins_nonFuel=data.nRodNonFuel_assembly,
-        angle=1.5707963267949),
     toggle_ReactivityFP=false,
-    Q_shape={0.00921016,0.022452442,0.029926363,0.035801439,0.040191759,0.04361119,
-        0.045088573,0.046395024,0.049471251,0.050548587,0.05122695,0.051676198,0.051725935,
-        0.048691804,0.051083234,0.050675546,0.049468838,0.047862888,0.045913065,
-        0.041222844,0.038816801,0.035268536,0.029550046,0.022746578,0.011373949},
+    Q_shape={0.00921016,0.022452442,0.029926363,0.035801439,0.040191759,
+        0.04361119,0.045088573,0.046395024,0.049471251,0.050548587,0.05122695,
+        0.051676198,0.051725935,0.048691804,0.051083234,0.050675546,0.049468838,
+        0.047862888,0.045913065,0.041222844,0.038816801,0.035268536,0.029550046,
+        0.022746578,0.011373949},
     Fh=1.4,
     n_hot=25,
     Teffref_fuel=1273.15,
@@ -290,7 +294,7 @@ model Pebble_Bed_Full_RX_Complete
     T_outlet=1123.15) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
-        origin={-36,-64})));
+        origin={-36,-62})));
 
 initial equation
 
@@ -341,15 +345,15 @@ equation
           {-76,-64},{-66,-64},{-66,-32}},      color={0,127,255}));
   connect(const1.y,CR. u_s) annotation (Line(points={{-115,-42},{-104,-42}},
                                  color={0,0,127}));
-  connect(Core_Inlet_T.port_b, core.port_a) annotation (Line(points={{-8,-52},{
-          -8,-64},{-26,-64}},   color={0,127,255}));
-  connect(Core_Outlet.port_a, core.port_b) annotation (Line(points={{-66,-32},{
-          -66,-64},{-46,-64}},              color={0,127,255}));
   connect(Core_Outlet.port_b, turbine.inlet) annotation (Line(points={{-66,-20},
           {-66,0},{-67.2,0},{-67.2,4.6}},
                                        color={0,127,255}));
   connect(sensor_T.port_b, Precooler.port_a)
     annotation (Line(points={{38,20},{38,32}}, color={0,127,255}));
+  connect(Core_Inlet_T.port_b, core.port_a)
+    annotation (Line(points={{-8,-52},{-8,-62},{-26,-62}}, color={0,127,255}));
+  connect(Core_Outlet.port_a, core.port_b) annotation (Line(points={{-66,-32},{
+          -66,-62},{-46,-62}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           Bitmap(extent={{-80,-90},{78,86}}, fileName=
               "modelica://NHES/Icons/PrimaryHeatSystemPackage/HTGRPB.jpg")}),

@@ -202,7 +202,7 @@ equation
     annotation (Line(points={{-34,40},{30,40}}, color={0,127,255}));
   connect(actuatorBus.opening_valve_toBOP, valve_b2.opening)
     annotation (Line(
-      points={{30.1,100.1},{100,100.1},{100,60},{40,60},{40,48}},
+      points={{30.1,100.1},{60,100.1},{60,60},{40,60},{40,48}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));

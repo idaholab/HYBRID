@@ -1,0 +1,6 @@
+model dsmodelIterationSelect
+  extends NHES.Desalination.ReverseOsmosis.Examples.RO_2nd_pass;
+  annotation(__Dymola_SimulationIterationVariables={"VesselsStage2.stateBulk.T",
+   "VesselsStage2.stateBulk.p", "VesselsStage2.stateFeed.T", "VesselsStage2.Vzb",
+   "VesselsStage2.Osmotic_P_Pa", "VesselsStage2.Sp"});
+end dsmodelIterationSelect;

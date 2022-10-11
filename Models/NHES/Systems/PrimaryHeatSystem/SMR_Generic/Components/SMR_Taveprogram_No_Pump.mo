@@ -231,6 +231,9 @@ Real Tave=(Tcore_inlet.T+Tcore_exit.T)/2.0;
   Modelica.Fluid.Sensors.SpecificEnthalpy Feed_Enthalpy(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{46,-26},{64,-8}})));
+  Modelica.Blocks.Sources.RealExpression p_pressurizer(y=pressurizer.p)
+    "Approximate nuclear fuel consumption [kg/s]"
+    annotation (Placement(transformation(extent={{-96,100},{-84,112}})));
 equation
 
   connect(Lower_Riser.port_b, Upper_Riser.port_a)
@@ -313,6 +316,11 @@ equation
       index=-1,
       extent={{-3,-6},{-3,-6}},
       horizontalAlignment=TextAlignment.Right));
+  connect(sensorBus.p_pressurizer, p_pressurizer.y) annotation (Line(
+      points={{-29.9,100.1},{-80,100.1},{-80,106},{-83.4,106}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-120,
             -120},{100,140}}),
                          graphics={Bitmap(extent={{-114,-90},{110,90}},fileName=

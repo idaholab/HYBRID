@@ -1,0 +1,20 @@
+model dsmodelIterationSelect
+  extends NHES.Systems.BalanceOfPlant.Turbine.Examples.SteamTurbine_L2_ClosedFeedHeat_Test_b;
+  annotation(__Dymola_SimulationIterationVariables={"BOP.BypassFeedwaterHeater.Tube.medium.p",
+   "BOP.BypassFeedwaterHeater.Tube.medium.h", "BOP.MainFeedwaterHeater.Tube.medium.p",
+   "BOP.MainFeedwaterHeater.Tube.medium.h", "der(BOP.BypassFeedwaterHeater.Tube.medium.h)",
+   "der(BOP.BypassFeedwaterHeater.Tube.medium.p)", "der(BOP.MainFeedwaterHeater.Tube.medium.h)",
+   "der(BOP.MainFeedwaterHeater.Tube.medium.p)", "BOP.Condenser.V_liquid", 
+  "BOP.MainFeedwaterHeater.Shell_out.m_flow", "BOP.Condenser.E", 
+  "BOP.Condenser.m_total", "BOP.Moisture_Separator.U", "BOP.Moisture_Separator.m",
+   "BOP.tee.U", "BOP.tee.m", "BOP.tee.medium.p", "BOP.tee.medium.h", 
+  "BOP.Moisture_Separator.medium.h", "BOP.FeedwaterMixVolume.U", 
+  "BOP.FeedwaterMixVolume.m", "BOP.FeedwaterMixVolume.medium.p", 
+  "BOP.MainFeedwaterHeater.Shell.U", "BOP.MainFeedwaterHeater.Shell.m", 
+  "BOP.MainFeedwaterHeater.Shell.medium.p", "BOP.MainFeedwaterHeater.Shell.medium.h",
+   "BOP.FeedwaterMixVolume.medium.h", "BOP.BypassFeedwaterHeater.Shell_out.m_flow",
+   "BOP.HPT.portHP.p", "der(BOP.Moisture_Separator.medium.h)", "der(BOP.tee.medium.p)",
+   "der(BOP.tee.medium.h)", "der(BOP.MainFeedwaterHeater.Shell.medium.h)", 
+  "der(BOP.FeedwaterMixVolume.medium.h)", "der(BOP.MainFeedwaterHeater.Shell.medium.p)",
+   "BOP.R_InternalBypass.port_a.m_flow"});
+end dsmodelIterationSelect;

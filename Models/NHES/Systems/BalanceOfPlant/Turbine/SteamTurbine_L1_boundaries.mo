@@ -185,7 +185,7 @@ model SteamTurbine_L1_boundaries
     eOn=0.1*reservoir.level_start)
     annotation (Placement(transformation(extent={{-62,-50},{-42,-30}})));
   Modelica.Blocks.Sources.RealExpression level_setpoint(y=reservoir.level_start)
-    annotation (Placement(transformation(extent={{-94,-50},{-74,-30}})));
+    annotation (Placement(transformation(extent={{-94,-42},{-74,-22}})));
   Modelica.Blocks.Sources.RealExpression level_measure(y=reservoir.level)
     "noEvent(if time < 10 then reservoir.level_start else reservoir.level)"
     annotation (Placement(transformation(extent={{-94,-62},{-74,-42}})));
@@ -302,7 +302,8 @@ end for;
   connect(level_measure.y, PID1.u_m)
     annotation (Line(points={{-73,-52},{-52,-52}}, color={0,0,127}));
   connect(level_setpoint.y, PID1.u_s)
-    annotation (Line(points={{-73,-40},{-64,-40}}, color={0,0,127}));
+    annotation (Line(points={{-73,-32},{-68,-32},{-68,-40},{-64,-40}},
+                                                   color={0,0,127}));
   connect(PID1.y, boundary2.m_flow_in) annotation (Line(points={{-41,-40},{-38,
           -40},{-38,-52},{-28,-52}}, color={0,0,127}));
   connect(boundary2.ports[1], multiPort.ports_b[2])

@@ -1,0 +1,10 @@
+model dsmodelIterationSelect
+  extends NHES.Desalination.ReverseOsmosis.Examples.RO_module;
+  annotation(__Dymola_SimulationIterationVariables={"rO_unit.VesselsStage1.stateBulk.T",
+   "rO_unit.VesselsStage1.stateBulk.p", "rO_unit.VesselsStage2.stateBulk.T", 
+  "rO_unit.VesselsStage2.stateBulk.p", "rO_unit.VesselsStage1.stateFeed.T", 
+  "rO_unit.VesselsStage1.Vzb", "rO_unit.VesselsStage1.Osmotic_P_Pa", 
+  "rO_unit.VesselsStage2.stateFeed.T", "rO_unit.VesselsStage2.Vzb", 
+  "rO_unit.VesselsStage2.Osmotic_P_Pa", "rO_unit.VesselsStage2.Sp", 
+  "rO_unit.VesselsStage1.Sp", "rO_unit.flowJoin.medium.T"});
+end dsmodelIterationSelect;

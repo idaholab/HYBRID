@@ -1,8 +1,10 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.Components;
 model Pebble_Bed_Brayton
   extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable CS_Dummy CS,
-    redeclare replaceable ED_Dummy ED,
+    redeclare replaceable
+      NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.CS_Dummy CS,
+    redeclare replaceable
+      NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.ED_Dummy ED,
     redeclare Data.Data_HTGR_Pebble data(
       Q_total=600000000,
       Q_total_el=300000000,
@@ -21,7 +23,8 @@ model Pebble_Bed_Brayton
       HP_Comp_Efficiency=0.88,
       HX_Reheat_NTU=15,
       HX_Reheat_Tube_Vol=0.1,
-      HX_Reheat_Shell_Vol=0.1));
+      HX_Reheat_Shell_Vol=0.1,
+      nPebble=1056000));
 
   replaceable package Coolant_Medium =
      Modelica.Media.IdealGases.SingleGases.He  constrainedby
@@ -72,9 +75,15 @@ model Pebble_Bed_Brayton
     V_Tube=data.HX_Reheat_Tube_Vol,
     V_Shell=data.HX_Reheat_Shell_Vol,
     p_start_tube=dataInitial.Recuperator_P_Tube,
+    use_T_start_tube=true,
+    T_start_tube_inlet=673.15,
+    T_start_tube_outlet=673.15,
     h_start_tube_inlet=dataInitial.Recuperator_h_Tube_Inlet,
     h_start_tube_outlet=dataInitial.Recuperator_h_Tube_Outlet,
     p_start_shell=dataInitial.Recuperator_P_Tube,
+    use_T_start_shell=true,
+    T_start_shell_inlet=673.15,
+    T_start_shell_outlet=673.15,
     h_start_shell_inlet=dataInitial.Recuperator_h_Shell_Inlet,
     h_start_shell_outlet=dataInitial.HX_Aux_h_tube_out,
     dp_init_tube=dataInitial.Recuperator_dp_Tube,
@@ -86,8 +95,8 @@ model Pebble_Bed_Brayton
     annotation (Placement(transformation(extent={{10,-36},{-10,-16}})));
 
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
-        Coolant_Medium)
-    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+        Coolant_Medium) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
         rotation=90,
         origin={28,-6})));
   TRANSFORM.Fluid.Volumes.SimpleVolume Precooler(
@@ -228,6 +237,9 @@ model Pebble_Bed_Brayton
     V_Tube=3,
     V_Shell=3,
     p_start_tube=5920000,
+    use_T_start_tube=true,
+    T_start_tube_inlet=1123.15,
+    T_start_tube_outlet=1123.15,
     h_start_tube_inlet=3600e3,
     h_start_tube_outlet=2900e3,
     p_start_shell=1000000,
@@ -243,8 +255,7 @@ model Pebble_Bed_Brayton
         rotation=270,
         origin={-84,4})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort Intercooler_Pre_Temp(redeclare
-      package Medium = Coolant_Medium) annotation (Placement(
-        transformation(
+      package Medium = Coolant_Medium) annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=90,
         origin={84,-18})));
@@ -264,9 +275,24 @@ model Pebble_Bed_Brayton
       Placement(transformation(extent={{-110,-56},{-90,-36}}),
                                                              iconTransformation(
           extent={{-110,-56},{-90,-36}})));
-  Nuclear.CoreSubchannels.Pebble_Bed_2 core(
+
+  TRANSFORM.Electrical.Interfaces.ElectricalPowerPort_Flow port_a annotation (
+      Placement(transformation(extent={{90,-10},{110,10}}),
+        iconTransformation(extent={{90,-10},{110,10}})));
+  TRANSFORM.Blocks.RealExpression CR_reactivity
+    annotation (Placement(transformation(extent={{78,94},{90,108}})));
+  Modelica.Blocks.Sources.RealExpression PR_Compressor(y=core.port_a.m_flow)
+    "total thermal power"
+    annotation (Placement(transformation(extent={{-104,94},{-92,106}})));
+  Nuclear.CoreSubchannels.Pebble_Bed_New
+                                       core(
+    nPebble=1056000,
     redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
     redeclare package Pebble_Material = Media.Solids.Graphite_5,
+    redeclare model Geometry = Nuclear.New_Geometries.PackedBed (
+        d_pebble=2*data.r_Pebble,
+        nPebble=data.Pebble,
+        packing_factor=0.55),
     redeclare model HeatTransfer =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple,
     Q_fission_input=600000000,
@@ -291,21 +317,12 @@ model Pebble_Bed_Brayton
     redeclare package Medium = Coolant_Medium,
     SF_start_power={0.2,0.3,0.3,0.2},
     nParallel=data.nAssembly,
-    redeclare model Geometry =
-        TRANSFORM.Nuclear.ClosureRelations.Geometry.Models.CoreSubchannels.Assembly
-        (
-        width_FtoF_inner=data.sizeAssembly*data.pitch_fuelRod,
-        rs_outer={data.r_pellet_fuelRod,data.r_pellet_fuelRod + data.th_gap_fuelRod,
-            data.r_outer_fuelRod},
-        length=data.length_core,
-        nPins=data.nRodFuel_assembly,
-        nPins_nonFuel=data.nRodNonFuel_assembly,
-        angle=1.5707963267949),
     toggle_ReactivityFP=false,
-    Q_shape={0.00921016,0.022452442,0.029926363,0.035801439,0.040191759,0.04361119,
-        0.045088573,0.046395024,0.049471251,0.050548587,0.05122695,0.051676198,0.051725935,
-        0.048691804,0.051083234,0.050675546,0.049468838,0.047862888,0.045913065,
-        0.041222844,0.038816801,0.035268536,0.029550046,0.022746578,0.011373949},
+    Q_shape={0.00921016,0.022452442,0.029926363,0.035801439,0.040191759,
+        0.04361119,0.045088573,0.046395024,0.049471251,0.050548587,0.05122695,
+        0.051676198,0.051725935,0.048691804,0.051083234,0.050675546,0.049468838,
+        0.047862888,0.045913065,0.041222844,0.038816801,0.035268536,0.029550046,
+        0.022746578,0.011373949},
     Fh=1.4,
     n_hot=25,
     Teffref_fuel=1273.15,
@@ -314,16 +331,8 @@ model Pebble_Bed_Brayton
     T_outlet=1123.15) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
-        origin={-52,-46})));
+        origin={-50,-46})));
 
-  TRANSFORM.Electrical.Interfaces.ElectricalPowerPort_Flow port_a annotation (
-      Placement(transformation(extent={{90,-10},{110,10}}),
-        iconTransformation(extent={{90,-10},{110,10}})));
-  TRANSFORM.Blocks.RealExpression CR_reactivity
-    annotation (Placement(transformation(extent={{78,94},{90,108}})));
-  Modelica.Blocks.Sources.RealExpression PR_Compressor(y=core.port_a.m_flow)
-    "total thermal power"
-    annotation (Placement(transformation(extent={{-104,94},{-92,106}})));
 initial equation
 
 equation
@@ -379,11 +388,6 @@ equation
   connect(Steam_Offtake.Shell_out, auxiliary_heating_port_b) annotation (Line(
         points={{-86,-6},{-86,-46},{-100,-46}},
         color={0,0,0}));
-  connect(core.port_a, Core_Inlet_T.port_b) annotation (Line(points={{-42,-46},{
-          -32,-46}},                      color={0,127,255}));
-  connect(core.port_b, Core_Outlet.port_a) annotation (Line(points={{-62,-46},{-72,
-          -46},{-72,-38}},
-                 color={0,127,255}));
   connect(actuatorBus.CR_Reactivity, CR_reactivity.u) annotation (Line(
       points={{30,100},{30,101},{76.8,101}},
       color={111,216,99},
@@ -406,6 +410,10 @@ equation
       index=-1,
       extent={{-3,6},{-3,6}},
       horizontalAlignment=TextAlignment.Right));
+  connect(Core_Inlet_T.port_b, core.port_a)
+    annotation (Line(points={{-32,-46},{-40,-46}}, color={0,127,255}));
+  connect(Core_Outlet.port_a, core.port_b) annotation (Line(points={{-72,-38},{
+          -72,-46},{-60,-46}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           Bitmap(extent={{-80,-92},{78,84}}, fileName="modelica://NHES/Icons/PrimaryHeatSystemPackage/HTGRPB.jpg")}),
                                                                  Diagram(

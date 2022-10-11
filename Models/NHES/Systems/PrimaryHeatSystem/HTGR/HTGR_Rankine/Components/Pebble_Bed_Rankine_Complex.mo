@@ -1,7 +1,7 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Components;
 model Pebble_Bed_Rankine_Complex
   extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable CS_Rankine_DNE CS,
+    redeclare replaceable ControlSystems.CS_Rankine_DNE_PowerManuever CS,
     redeclare replaceable HTGR_Rankine.ED_Dummy ED,
     redeclare Data.Data_HTGR_Pebble data(
       Q_total=600000000,
@@ -21,8 +21,11 @@ model Pebble_Bed_Rankine_Complex
       HX_Reheat_Shell_Vol=0.1,
       HX_Reheat_Buffer_Vol=0.1));
     Real eff;
+    Modelica.Units.SI.Pressure condenser_pump_outlet;
+ //   Modelica.Units.SI.Pressure condenser_pump_actual;
   replaceable package Coolant_Medium =
-       Modelica.Media.IdealGases.SingleGases.He  constrainedby Modelica.Media.Interfaces.PartialMedium                     annotation(choicesAllMatching = true,dialog(group="Media"));
+       Modelica.Media.IdealGases.SingleGases.He  constrainedby
+    Modelica.Media.Interfaces.PartialMedium                                                                                annotation(choicesAllMatching = true,dialog(group="Media"));
   replaceable package Fuel_Medium =  TRANSFORM.Media.Solids.UO2                                   annotation(choicesAllMatching = true,dialog(group = "Media"));
   replaceable package Pebble_Medium =
       Media.Solids.Graphite_5                                                                                   annotation(dialog(group = "Media"),choicesAllMatching=true);
@@ -77,8 +80,7 @@ model Pebble_Bed_Rankine_Complex
       R=1000)
     annotation (Placement(transformation(extent={{-70,28},{-58,42}})));
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
-        Coolant_Medium) annotation (Placement(
-        transformation(
+        Coolant_Medium) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={-80,-40})));
@@ -144,19 +146,17 @@ model Pebble_Bed_Rankine_Complex
     p_b_start=8000,
     T_a_start=673.15,
     T_b_start=343.15,
-    m_flow_nominal=200,
+    m_flow_nominal=80,
     p_inlet_nominal=14000000,
-    p_outlet_nominal=2500000,
-    T_nominal=673.15)
+    p_outlet_nominal=3000000,
+    T_nominal=813.15)
     annotation (Placement(transformation(extent={{38,26},{58,46}})));
   TRANSFORM.Electrical.PowerConverters.Generator_Basic generator
     annotation (Placement(transformation(extent={{64,-28},{44,-8}})));
   TRANSFORM.Blocks.RealExpression CR_reactivity
     annotation (Placement(transformation(extent={{68,94},{80,108}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort
-                                       sensor_T(redeclare package Medium =
-        Coolant_Medium) annotation (Placement(
-        transformation(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
+        Coolant_Medium) annotation (Placement(transformation(
         extent={{-5,-7},{5,7}},
         rotation=270,
         origin={-43,27})));
@@ -174,18 +174,16 @@ model Pebble_Bed_Rankine_Complex
     controlType="RPM",
     use_port=true)
     annotation (Placement(transformation(extent={{8,-50},{-12,-70}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort
-                                       sensor_T1(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)            annotation (Placement(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium =
+        Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{6,6},{-6,-6}},
         rotation=180,
         origin={20,30})));
-  TRANSFORM.Fluid.Sensors.Pressure     sensor_p(redeclare package Medium =
+  TRANSFORM.Fluid.Sensors.Pressure sensor_p(redeclare package Medium =
         Modelica.Media.Water.StandardWater, redeclare function iconUnit =
-        TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_bar)
-                                                       annotation (Placement(
-        transformation(
+        TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_bar) annotation (
+      Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=0,
         origin={-18,54})));
@@ -262,10 +260,10 @@ model Pebble_Bed_Rankine_Complex
     p_b_start=8000,
     T_a_start=673.15,
     T_b_start=343.15,
-    m_flow_nominal=200,
-    p_inlet_nominal=14000000,
+    m_flow_nominal=90,
+    p_inlet_nominal=3000000,
     p_outlet_nominal=8000,
-    T_nominal=673.15) annotation (Placement(transformation(
+    T_nominal=523.15) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
         origin={74,4})));
@@ -288,13 +286,12 @@ model Pebble_Bed_Rankine_Complex
   TRANSFORM.Fluid.Valves.ValveLinear LPT_Bypass(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     dp_nominal=100000,
-    m_flow_nominal=2.5) annotation (Placement(transformation(
+    m_flow_nominal=5.0) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
         origin={100,2})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort
-                                       sensor_T2(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)            annotation (Placement(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T2(redeclare package Medium =
+        Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
@@ -302,17 +299,17 @@ model Pebble_Bed_Rankine_Complex
   TRANSFORM.Fluid.Machines.Pump_PressureBooster
                                            pump1(redeclare package Medium =
         Modelica.Media.Water.StandardWater,
-    use_input=false,
-    p_nominal=5500000,
+    use_input=true,
+    p_nominal=3300000,
     allowFlowReversal=false)
-    annotation (Placement(transformation(extent={{60,-70},{40,-50}})));
+    annotation (Placement(transformation(extent={{60,-50},{40,-70}})));
   BalanceOfPlant.StagebyStageTurbineSecondary.StagebyStageTurbine.BaseClasses.TRANSFORMMoistureSeparator_MIKK
     Moisture_Separator(redeclare package Medium =
         Modelica.Media.Water.StandardWater, redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume)
     annotation (Placement(transformation(extent={{58,32},{78,52}})));
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)            annotation (Placement(
+        Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{8,-6},{-8,6}},
         rotation=90,
@@ -332,11 +329,38 @@ model Pebble_Bed_Rankine_Complex
     T=573.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-82,62},{-62,82}})));
+  Modelica.Blocks.Sources.RealExpression Pump_Pressure(y=condenser_pump_outlet)
+    annotation (Placement(transformation(extent={{22,-94},{34,-80}})));
+  TRANSFORM.Fluid.Valves.ValveLinear Primary_PRV(
+    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    dp_nominal=8000000,
+    m_flow_nominal=1) annotation (Placement(transformation(
+        extent={{-8,8},{8,-8}},
+        rotation=180,
+        origin={-116,28})));
+  TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
+    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    p=4000000,
+    T=573.15,
+    nPorts=1)
+    annotation (Placement(transformation(extent={{-152,18},{-132,38}})));
+  Modelica.Blocks.Sources.RealExpression Thermal_Power1(y=1.0)
+    annotation (Placement(transformation(extent={{-136,42},{-124,56}})));
+  Modelica.Blocks.Sources.RealExpression Thermal_Power3(y=condenser_pump_outlet)
+    annotation (Placement(transformation(extent={{-92,116},{-80,130}})));
+  Modelica.Blocks.Sources.RealExpression Thermal_Power4(y=HPT.portLP.p)
+    annotation (Placement(transformation(extent={{-92,128},{-80,142}})));
 initial equation
-
+  condenser_pump_outlet = 33e5;
 equation
  // Q_Recup =nTU_HX_SinglePhase.geometry.nTubes*abs(sum(nTU_HX_SinglePhase.tube.heatTransfer.Q_flows));
   eff = generator.power/core.Q_total.y;
+  if volume1.medium.sat.Tsat > 212+273.15 then
+  der(condenser_pump_outlet)/10 = sensor_T2.T-208-273.15*(condenser_pump_outlet-20e5)/(20e5);
+  else
+    der(condenser_pump_outlet) = 1;
+  end if;
+
   connect(sensor_m_flow.port_b, core.port_a) annotation (Line(points={{-90,-40},
           {-96,-40},{-96,-16},{-82,-16},{-82,-8}},
                                 color={0,127,255},
@@ -507,12 +531,32 @@ equation
           {-26,46},{-26,72},{-38,72}}, color={0,127,255}));
   connect(TBV.port_b, boundary.ports[1]) annotation (Line(points={{-54,72},{-62,
           72}},                                      color={0,127,255}));
+  connect(Primary_PRV.port_b, boundary1.ports[1])
+    annotation (Line(points={{-124,28},{-132,28}}, color={0,127,255}));
+  connect(Thermal_Power1.y, Primary_PRV.opening) annotation (Line(points={{-123.4,
+          49},{-116,49},{-116,34.4}}, color={0,0,127}));
+  connect(Pump_Pressure.y, pump1.in_p) annotation (Line(points={{34.6,-87},{38,-87},
+          {38,-74},{50,-74},{50,-67.3}}, color={0,0,127}));
+  connect(Primary_PRV.port_a, compressor_Controlled.inlet) annotation (Line(
+        points={{-108,28},{-96,28},{-96,-16},{-126,-16},{-126,-68},{-46,-68},{-46,
+          -42},{-52,-42}}, color={0,127,255}));
+  connect(sensorBus.HPT_Outlet_Pressure, Thermal_Power4.y) annotation (Line(
+      points={{-30,100},{-28,100},{-28,135},{-79.4,135}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Condensate_Pump_Pressure, Thermal_Power3.y) annotation (
+      Line(
+      points={{-30,100},{-30,123},{-79.4,123}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           Bitmap(extent={{-80,-92},{78,84}}, fileName="modelica://NHES/Icons/PrimaryHeatSystemPackage/HTGRPB.jpg")}),
                                                                  Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     experiment(
-      StopTime=86400,
+      StopTime=90000,
       Interval=30,
       __Dymola_Algorithm="Esdirk45a"),
     Documentation(info="<html>
