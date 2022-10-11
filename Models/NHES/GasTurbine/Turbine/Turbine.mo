@@ -13,6 +13,7 @@ equation
   PR = PR0*(w/w0);
 
   annotation (Documentation(info="<html>
+<p>This turbine model does not support two-phase media such as CoolProp from an ExternalMedia package. Use single-phase fluids such as those built from the NASA Glenn coefficients from MSL. </p>
 </html>"),
          Diagram(graphics));
 end Turbine;

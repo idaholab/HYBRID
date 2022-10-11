@@ -13,7 +13,7 @@ model SteamTurbine_L1_FMU_adaptor
     port_b_nominal(p=1000000, h=BOP.Medium.specificEnthalpy_pT(BOP.port_b_nominal.p,
           318.95)),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ContolSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
       CS(
       delayStartTCV=20,
       p_nominal=3447400,

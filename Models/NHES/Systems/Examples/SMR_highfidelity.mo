@@ -39,7 +39,7 @@ model SMR_highfidelity
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ContolSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
       CS(
       delayStartTCV=100,
       p_nominal=3447400,

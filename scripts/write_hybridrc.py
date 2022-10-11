@@ -91,6 +91,7 @@ if __name__ == '__main__':
   eggDir = os.path.dirname(path)
   pathToDymolaMos = os.path.join(eggDir,"..","..","..","insert","dymola.mos")
   eggFound = True
+  modified = False
   if not os.path.exists(path):
     eggFound = False
     path = "INVALID:" + path
@@ -98,13 +99,16 @@ if __name__ == '__main__':
     warningMessage+= '.hybridrc file will be created but the DYMOLA_PATH will be set to INVALID. Please modify it manually!\n'
     warnings.warn(warningMessage)
   dymolaMosFound = True
-  if (not os.path.exists(pathToDymolaMos) and modify_mos) or not modify_mos:
+  #below needs to be changed. It shouldn't say it hasn't been found just because
+  #the user didn't enter modify_mos.
+  # if (not os.path.exists(pathToDymolaMos) and modify_mos) or not modify_mos:
+  if not os.path.exists(pathToDymolaMos):
     dymolaMosFound = False
     if modify_mos:
       warningMessage = '\n\nPATH to Dymola is not correct. "dymola.mos" has not been found at: ' + os.path.dirname(pathToDymolaMos) +'\n'
     else:
       warningMessage = '\n\n--modify-mos is False (or not inputted).\n'
-    warningMessage+= 'the "dymola.mos" file will need to be modified manually adding the following: \n'
+    warningMessage+= 'the "dymola.mos" file will need to be modified manually if not already by adding the following: \n'
     transform = os.path.abspath(os.path.expanduser(os.path.join(cwd,"TRANSFORM-Library","TRANSFORM","package.mo")))
     warningMessage = warningMessage+'openModel("'+transform.strip()+'")\n'
     nhes = os.path.abspath(os.path.expanduser(os.path.join(cwd,"NHES","package.mo")))
@@ -119,7 +123,8 @@ if __name__ == '__main__':
     else:
       print("dymola path set to : " + path)
 
-  if dymolaMosFound and modify_mos:
+  # if dymolaMosFound and modify_mos:
+  if dymolaMosFound:
     # modify the dymola.mos
     lines = []
     found = {"transform-library":False, "nhes":False}
@@ -133,8 +138,7 @@ if __name__ == '__main__':
     
     if dymolaMosOpenable:
       with open(pathToDymolaMos, "r") as dymolaMos:
-        print('Found "dymola.mos" file:')
-        modified = False
+        ('Found "dymola.mos" file:')
         # parse line by line
         for cnt, line in enumerate(dymolaMos.readlines()):
           if line.strip().startswith("openModel"):
@@ -142,17 +146,25 @@ if __name__ == '__main__':
               found["transform-library"] = True
             elif "nhes" in line.lower():
               found["nhes"] = True
-          lines.append(line)
+          if modify_mos:
+            lines.append(line)
           print(line)
-      if not found["transform-library"] or not found["nhes"]:
+      if found["transform-library"] and found["nhes"]:
         modified = True
-      if not found["transform-library"]:
-        transform = os.path.abspath(os.path.expanduser(os.path.join(cwd,"TRANSFORM-Library","TRANSFORM","package.mo")))
-        lines.append('openModel("'+transform.strip()+'")\n')
-      if not found["nhes"]:
-        nhes = os.path.abspath(os.path.expanduser(os.path.join(cwd,"NHES","package.mo")))
-        lines.append('openModel("'+nhes.strip()+'")\n')
-      if modified:
+      else:
+        if not found["transform-library"]:
+          transform = os.path.abspath(os.path.expanduser(os.path.join(cwd,"TRANSFORM-Library","TRANSFORM","package.mo")))
+          lines.append('openModel("'+transform.strip()+'")\n')
+        if not found["nhes"]:
+          nhes = os.path.abspath(os.path.expanduser(os.path.join(cwd,"NHES","package.mo")))
+          lines.append('openModel("'+nhes.strip()+'")\n')
+        if not modify_mos:
+          warningMessage= 'the "dymola.mos" file will need to be modified manually adding the following if not already: \n'
+          for line in lines:
+            warningMessage += line
+          warnings.warn(warningMessage)
+        
+      if not modified and modify_mos:
         dymolaMosModifiable = True
         try:
           fo = open(pathToDymolaMos, "w")
@@ -165,6 +177,7 @@ if __name__ == '__main__':
             for line in lines:
               dymolaMos.write(line)
               print(line)
+          modified = True
         else:
           # not possible to be modified
           warningMessage = '\n\n"dymola.mos" failed to open in WRITE mode (it is not possible to modify it)\n'
@@ -176,16 +189,19 @@ if __name__ == '__main__':
           warnings.warn(warningMessage)
     else:
       # failed to open
-      warningMessage = '\n\n"dymola.mos" failed to open at: ' + os.path.dirname(pathToDymolaMos) +'\n'
-      warningMessage+= 'the "dymola.mos" file will need to be modified manually adding the following: \n'
+      if modify_mos:
+        warningMessage = '\n\n"dymola.mos" failed to open at: ' + os.path.dirname(pathToDymolaMos) +'\n'
+      else:
+        warningMessage = ''
+      warningMessage+= 'the "dymola.mos" file will need to be modified manually adding the following if not already: \n'
       transform = os.path.abspath(os.path.expanduser(os.path.join(cwd,"TRANSFORM-Library","TRANSFORM","package.mo")))
       warningMessage = warningMessage+'openModel("'+transform.strip()+'")\n'
       nhes = os.path.abspath(os.path.expanduser(os.path.join(cwd,"NHES","package.mo")))
       warningMessage = warningMessage + 'openModel("'+nhes.strip()+'")\n'
       warnings.warn(warningMessage)
-  if dymolaMosFound and eggFound:
+  if modified and eggFound:
     print('INSTALLATION COMPLETED! dymola.egg and dymola.mos HAVE BEEN FOUND AND MODIFIED!')
-  elif not dymolaMosFound and eggFound and modify_mos:
+  elif not modified and eggFound:
     print('INSTALLATION PARTIALLY COMPLETED! dymola.egg HAS BEEN FOUND but dymola.mos must be MANUALLY modified (Check Warnings above)!')
   else:
     print('INSTALLATION **FAILED**! Check Warnings above!')

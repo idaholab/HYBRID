@@ -4,6 +4,9 @@ TightlyCoupled_SteamFlowCtrl_FY18_TES
 SMR_Coupling_Test
 SMR_Coupling_4_loop_control
 SMR_highfidelity
+SMR_highfidelity_L2_Turbine
+HTGR_L2_Turbine
+HTGR_Open_Turbine
 SMR_IES_CTES
 GenericModularPWR_park
 GenericModularPWR_stepdownturbines
@@ -13,3 +16,4 @@ IES_SMR_Rx_GasTurbine
 TightlyCoupled_SteamFlowCtrl_microgrid
 BaseClasses
 FMIs
+TES_Use_Case

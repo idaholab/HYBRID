@@ -90,5 +90,26 @@ source $SCRIPT_DIR/raven/scripts/establish_conda_env.sh --load
 PATHSEP=`/usr/bin/env python -c 'import os; print(os.pathsep)'`
 export PYTHONPATH="$DYMOLA_PATH"${PATHSEP}$PYTHONPATH
 echo PYTHONPATH $PYTHONPATH
+
+i=0
+SHOWPLOTS=false
+ORIG_ARGS=("$@")
+NEW_ARGS=()
+while [ $i -lt ${#ORIG_ARGS[@]} ]; do
+  arg=${ORIG_ARGS[$i]}
+  if [ $arg == "-p" ]; then
+	SHOWPLOTS=true
+  else
+    NEW_ARGS+=($arg)
+  fi
+  i=$((i + 1))
+done
+
+set +e
 #/usr/bin/env python $SCRIPT_DIR/raven/rook/main.py --unkillable --config-file=$SCRIPT_DIR/scripts/rook.ini --update-or-add-env-variables PYTHONPATH="$DYMOLA_PATH" --add-path "$DYMOLA_PATH" "$@"
-/usr/bin/env python $SCRIPT_DIR/raven/rook/main.py --unkillable --config-file=$SCRIPT_DIR/scripts/rook.ini "$@"
+/usr/bin/env python $SCRIPT_DIR/raven/rook/main.py --unkillable --config-file=$SCRIPT_DIR/scripts/rook.ini "${NEW_ARGS[@]}"
+
+if [ $SHOWPLOTS == true ]; then
+	echo "Preparing Differ Plots..."
+	/usr/bin/env python $SCRIPT_DIR/scripts/testers/showPlots.py
+fi

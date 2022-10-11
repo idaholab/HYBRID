@@ -1,6 +1,6 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
 model Dummy_BOP
-  extends BaseClasses.Partial_SubSystem;
+  extends BaseClasses.Partial_SubSystem_A;
 
   extends NHES.Icons.DummyIcon;
 

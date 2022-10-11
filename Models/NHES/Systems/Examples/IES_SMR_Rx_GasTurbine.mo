@@ -35,7 +35,7 @@ model IES_SMR_Rx_GasTurbine
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      BalanceOfPlant.Turbine.ContolSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
+      BalanceOfPlant.Turbine.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
       CS(
       delayStartTCV=0,
       W_totalSetpoint=SC.W_totalSetpoint_BOP,

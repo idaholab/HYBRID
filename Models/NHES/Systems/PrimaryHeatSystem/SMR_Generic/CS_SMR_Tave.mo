@@ -19,15 +19,18 @@ model CS_SMR_Tave
     annotation (Placement(transformation(extent={{-50,110},{-30,130}})));
   TRANSFORM.Controls.LimPID PID_CR(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    initType=Modelica.Blocks.Types.Init.SteadyState,
+    initType=Modelica.Blocks.Types.Init.NoInit,
     Ti=5,
     k_s=1000*1/data.Q_total,
     k_m=1000*1/data.Q_total)
     annotation (Placement(transformation(extent={{30,130},{50,110}})));
   Modelica.Blocks.Logical.Switch switch_CR
     annotation (Placement(transformation(extent={{-10,130},{10,150}})));
-  GenericModular_PWR.Data.Data_GenericModule data(length_steamGenerator_tube=
-        36, T_avg=556.15)
+  GenericModular_PWR.Data.Data_GenericModule data(
+    Q_total=190e6,
+    Q_total_el=48e6,
+    T_hot=590.15,                                 length_steamGenerator_tube=
+        36)
     annotation (Placement(transformation(extent={{74,142},{90,158}})));
   Modelica.Blocks.Math.Add Sum_Hot_and_Cold_Leg
     annotation (Placement(transformation(extent={{-182,144},{-162,164}})));
@@ -42,7 +45,7 @@ model CS_SMR_Tave
     yMin=34.0,
     y_start=67,
     k=0.0001,
-    initType=Modelica.Blocks.Types.Init.SteadyState,
+    initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1.0,
     k_s=1/72,
     k_m=1/72)
