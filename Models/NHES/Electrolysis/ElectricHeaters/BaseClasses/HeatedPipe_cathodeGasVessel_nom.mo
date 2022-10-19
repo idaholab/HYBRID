@@ -7,8 +7,8 @@ model HeatedPipe_cathodeGasVessel_nom
 
   // ---------- Fluid packages -------------------------------------------------
   replaceable package Medium =
-      Electrolysis.Media.Electrolysis.CathodeGas constrainedby
-    Modelica.Media.Interfaces.PartialMedium "Working fluid model";
+      Electrolysis.Media.Electrolysis.CathodeGas constrainedby Modelica.Media.Interfaces.PartialMedium
+                                            "Working fluid model";
 
   // ---------- Define constants -----------------------------------------------
   constant Modelica.Media.IdealGases.Common.DataRecord

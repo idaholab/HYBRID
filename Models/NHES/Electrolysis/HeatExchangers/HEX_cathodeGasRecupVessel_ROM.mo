@@ -7,12 +7,10 @@ model HEX_cathodeGasRecupVessel_ROM
 
   // ---------- Fluid packages -------------------------------------------------
   replaceable package Medium_tube =
-      Electrolysis.Media.Electrolysis.CathodeGas constrainedby
-    Modelica.Media.Interfaces.PartialMedium
+      Electrolysis.Media.Electrolysis.CathodeGas constrainedby Modelica.Media.Interfaces.PartialMedium
     "Working fluid model in tube side of a heat exchanger" annotation (choicesAllMatching = true,Dialog(group="Working fluids (Medium)"));
   replaceable package Medium_shell =
-      Electrolysis.Media.Electrolysis.CathodeGas constrainedby
-    Modelica.Media.Interfaces.PartialMedium
+      Electrolysis.Media.Electrolysis.CathodeGas constrainedby Modelica.Media.Interfaces.PartialMedium
     "Working fluid model in shell side of a heat exchanger" annotation (choicesAllMatching = true,Dialog(group="Working fluids (Medium)"));
 
   // ---------- Define constants -----------------------------------------------

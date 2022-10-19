@@ -5,8 +5,8 @@ model TeeJunction
 
   // ---------- Fluid package -------------------------------------------------_
   replaceable package Medium =
-      Electrolysis.Media.Electrolysis.CathodeGas constrainedby
-    Modelica.Media.Interfaces.PartialMedium "Medium model"
+      Electrolysis.Media.Electrolysis.CathodeGas constrainedby Modelica.Media.Interfaces.PartialMedium
+                                            "Medium model"
                    annotation (choicesAllMatching = true);
 
   // ---------- Define constants -----------------------------------------------

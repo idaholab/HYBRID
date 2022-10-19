@@ -3,8 +3,7 @@ model Junction_pureComponent "Junction: one input to one output"
   import      Modelica.Units.SI;
 
   // ---------- Fluid package -------------------------------------------------_
-  replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby
-    Modelica.Media.Interfaces.PartialPureSubstance
+  replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialPureSubstance
     "Working fluid model in shell side of a heat exchanger" annotation (choicesAllMatching = true);
 
   // ---------- Define parameters ----------------------------------------------

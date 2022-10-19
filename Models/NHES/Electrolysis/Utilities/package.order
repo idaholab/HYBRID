@@ -8,3 +8,8 @@ massToMoleFractions
 moleToMassFractions
 OptionsGasSpecies
 OptionsInit
+GibbsEnergy_NASA_7Term
+integralGibbsEnergy_NASA_7Term
+Average
+RealExpression_Vector
+IdealCondenser_AS2022

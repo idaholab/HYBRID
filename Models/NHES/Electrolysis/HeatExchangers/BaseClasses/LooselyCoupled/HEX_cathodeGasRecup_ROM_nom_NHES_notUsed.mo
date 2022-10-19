@@ -7,12 +7,10 @@ model HEX_cathodeGasRecup_ROM_nom_NHES_notUsed
 
   // ---------- Fluid packages -------------------------------------------------
   replaceable package Medium_tube =
-      Modelica.Media.Water.StandardWater                               constrainedby
-    Modelica.Media.Interfaces.PartialPureSubstance
+      Modelica.Media.Water.StandardWater                               constrainedby Modelica.Media.Interfaces.PartialPureSubstance
     "Working fluid model in tube side of a heat exchanger";
   replaceable package Medium_shell =
-      Electrolysis.Media.Electrolysis.CathodeGas constrainedby
-    Modelica.Media.Interfaces.PartialMedium
+      Electrolysis.Media.Electrolysis.CathodeGas constrainedby Modelica.Media.Interfaces.PartialMedium
     "Working fluid model in shell side of a heat exchanger";
 
   // ---------- Define constants -----------------------------------------------

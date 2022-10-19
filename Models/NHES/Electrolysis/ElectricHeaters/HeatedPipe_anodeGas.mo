@@ -6,8 +6,8 @@ model HeatedPipe_anodeGas "Pipe with heat exchange"
 
   // ---------- Fluid packages -------------------------------------------------
   replaceable package Medium =
-      Electrolysis.Media.Electrolysis.AnodeGas_air constrainedby
-    Modelica.Media.Interfaces.PartialMedium "Working fluid model" annotation (choicesAllMatching = true,Dialog(group="Working fluids (Medium)"));
+      Electrolysis.Media.Electrolysis.AnodeGas_air constrainedby Modelica.Media.Interfaces.PartialMedium
+                                            "Working fluid model" annotation (choicesAllMatching = true,Dialog(group="Working fluids (Medium)"));
 
   // ---------- Define constants -----------------------------------------------
   constant Modelica.Media.IdealGases.Common.DataRecord

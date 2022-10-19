@@ -5,11 +5,9 @@ model CascadeCtrlVolume_yH2 "Joins two gas flows"
 
   // ---------- Fluid packages -------------------------------------------------
   replaceable package MixtureGas =
-      Electrolysis.Media.Electrolysis.CathodeGas constrainedby
-    Modelica.Media.Interfaces.PartialMedium
+      Electrolysis.Media.Electrolysis.CathodeGas constrainedby Modelica.Media.Interfaces.PartialMedium
     "Medium model for mixture gas in the mixer" annotation (choicesAllMatching = true, Dialog(group="Working fluids (Medium)"));
-  replaceable package Steam = Modelica.Media.Water.StandardWater constrainedby
-    Modelica.Media.Interfaces.PartialPureSubstance
+  replaceable package Steam = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialPureSubstance
     "Medium model for pure steam in the mixer" annotation (choicesAllMatching = true, Dialog(group="Working fluids (Medium)"));
 
   parameter Boolean allowFlowReversal = system.allowFlowReversal

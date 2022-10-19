@@ -7,8 +7,8 @@ model HeatedPipe_fixedTamb
 
   // ---------- Fluid packages -------------------------------------------------
   replaceable package Medium =
-      Electrolysis.Media.Electrolysis.CathodeGas constrainedby
-    Modelica.Media.Interfaces.PartialMedium "Working fluid model"
+      Electrolysis.Media.Electrolysis.CathodeGas constrainedby Modelica.Media.Interfaces.PartialMedium
+                                            "Working fluid model"
                           annotation (choicesAllMatching = true,Dialog(group="Working fluids (Medium)"));
 
   // ---------- Define constants -----------------------------------------------

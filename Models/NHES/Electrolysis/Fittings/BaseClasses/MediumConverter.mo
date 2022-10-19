@@ -5,12 +5,10 @@ model MediumConverter "Convert the medium from one type to another"
 
   // ---------- Fluid packages -------------------------------------------------
   replaceable package Medium_port_a =
-      Modelica.Media.Water.StandardWater                                 constrainedby
-    Modelica.Media.Interfaces.PartialPureSubstance
+      Modelica.Media.Water.StandardWater                                 constrainedby Modelica.Media.Interfaces.PartialPureSubstance
     "Medium model at port_a in the component" annotation (choicesAllMatching = true, Dialog(group="Working fluids (Medium)"));
   replaceable package Medium_port_b =
-      Electrolysis.Media.Electrolysis.CathodeGas constrainedby
-    Modelica.Media.Interfaces.PartialMedium
+      Electrolysis.Media.Electrolysis.CathodeGas constrainedby Modelica.Media.Interfaces.PartialMedium
     "Medium model at port b in the component" annotation (choicesAllMatching = true, Dialog(group="Working fluids (Medium)"));
 
   // ---------- Define constants -----------------------------------------------

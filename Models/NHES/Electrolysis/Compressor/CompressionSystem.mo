@@ -3,11 +3,11 @@ model CompressionSystem
 
   outer Modelica.Fluid.System system "System wide properties";
   replaceable package Medium_working =
-        Electrolysis.Media.Electrolysis.AnodeGas_air constrainedby
-    Modelica.Media.Interfaces.PartialMedium               annotation (
+        Electrolysis.Media.Electrolysis.AnodeGas_air constrainedby Modelica.Media.Interfaces.PartialMedium
+                                                          annotation (
       __Dymola_choicesAllMatching=true, Dialog(tab="General", group="Overall"));
-  replaceable package Medium_utility = Modelica.Media.Water.StandardWater constrainedby
-    Modelica.Media.Interfaces.PartialMedium "Working fluid for the cold utility" annotation (__Dymola_choicesAllMatching=true, Dialog(tab="General", group="Overall"));
+  replaceable package Medium_utility = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium
+                                            "Working fluid for the cold utility" annotation (__Dymola_choicesAllMatching=true, Dialog(tab="General", group="Overall"));
 
   parameter Boolean allowFlowReversal = system.allowFlowReversal
     "= true to allow flow reversal, false restricts to design direction" annotation(Dialog(tab="Assumptions"));

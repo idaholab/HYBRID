@@ -7,8 +7,8 @@ model HeatedPipe_anodeGas_nom_LC
 
   // ---------- Fluid packages -------------------------------------------------
   replaceable package Medium =
-      Electrolysis.Media.Electrolysis.AnodeGas_air constrainedby
-    Modelica.Media.Interfaces.PartialMedium "Working fluid model";
+      Electrolysis.Media.Electrolysis.AnodeGas_air constrainedby Modelica.Media.Interfaces.PartialMedium
+                                            "Working fluid model";
 
   // ---------- Define constants -----------------------------------------------
   constant Modelica.Media.IdealGases.Common.DataRecord

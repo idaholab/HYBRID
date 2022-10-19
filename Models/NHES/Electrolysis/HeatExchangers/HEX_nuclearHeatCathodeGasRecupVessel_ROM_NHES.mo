@@ -6,11 +6,9 @@ model HEX_nuclearHeatCathodeGasRecupVessel_ROM_NHES
   import gasProperties = Modelica.Media.IdealGases.Common.SingleGasesData;
 
   // ---------- Fluid packages -------------------------------------------------
-  replaceable package Medium_tube = Modelica.Media.Water.StandardWater constrainedby
-    Modelica.Media.Interfaces.PartialPureSubstance
+  replaceable package Medium_tube = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialPureSubstance
     "Working fluid model in tube side of a heat exchanger" annotation (choicesAllMatching = true,Dialog(group="Working fluids (Medium)"));
-  replaceable package Medium_shell = Modelica.Media.Water.StandardWater constrainedby
-    Modelica.Media.Interfaces.PartialPureSubstance
+  replaceable package Medium_shell = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialPureSubstance
     "Working fluid model in shell side of a heat exchanger" annotation (choicesAllMatching = true,Dialog(group="Working fluids (Medium)"));
 
   // ---------- Define parameters ----------------------------------------------

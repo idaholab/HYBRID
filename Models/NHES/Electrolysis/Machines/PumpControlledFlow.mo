@@ -65,8 +65,8 @@ model PumpControlledFlow "This pump ideally controls the discharge pressure."
     N_nominal=N_nominal,
     rho_nominal=rho_nominal,
     redeclare function efficiencyCharacteristic =
-        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency
-        (eta_nominal=eta_nominal),
+        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency (
+         eta_nominal=eta_nominal),
     energyDynamics=energyDynamics,
     massDynamics=massDynamics,
     p_a_start=p_a_start,

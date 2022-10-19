@@ -83,8 +83,8 @@ model PumpControlledPressureVessel
     m_flow_start=m_flow_start,
     N_const=N_nominal,
     redeclare function efficiencyCharacteristic =
-        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency
-        (eta_nominal=eta_nominal),
+        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency (
+         eta_nominal=eta_nominal),
     energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyStateInitial,
     massDynamics=Modelica.Fluid.Types.Dynamics.SteadyStateInitial)
     annotation (Placement(transformation(extent={{20,-10},{40,10}})));

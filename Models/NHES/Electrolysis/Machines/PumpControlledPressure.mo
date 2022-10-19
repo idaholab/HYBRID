@@ -19,8 +19,8 @@ model PumpControlledPressure
     redeclare package Medium = Medium,
     N_nominal=1498.66,
     redeclare function efficiencyCharacteristic =
-        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency
-        (eta_nominal=0.8),
+        Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.constantEfficiency (
+         eta_nominal=0.8),
     redeclare function flowCharacteristic =
         Modelica.Fluid.Machines.BaseClasses.PumpCharacteristics.quadraticFlow (
          V_flow_nominal={0.0214424,0.0107212,0.00134015}, head_nominal={50,

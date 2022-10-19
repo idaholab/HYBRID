@@ -6,8 +6,7 @@ model HeatedPipe_cathodeGas_nom_LC_1stEH
   //import gasProperties = Modelica.Media.IdealGases.Common.SingleGasesData;
 
   // ---------- Fluid packages -------------------------------------------------
-  replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby
-    Modelica.Media.Interfaces.PartialPureSubstance
+  replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialPureSubstance
     "Working fluid model in tube side of a heat exchanger";
 
   // ---------- Define parameters ----------------------------------------------
