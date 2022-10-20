@@ -27,6 +27,9 @@ package Medium_cw = Modelica.Media.Water.StandardWater;
 package Medium_TEDS =
       TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C;
 
+parameter SI.Pressure P_Release = p_vc_rp/2.975 "Boundary release valve pressure downstream of precooler" annotation(dialog(group = "System Boundary Conditions"));
+
+
 parameter SI.Length d_outer_4in = TRANSFORM.Units.Conversions.Functions.Distance_m.from_in(4.5);
 parameter SI.Length th_4in_sch40 = TRANSFORM.Units.Conversions.Functions.Distance_m.from_in(0.237);
 parameter SI.Length d_inner_4in = d_outer_4in - 2*th_4in_sch40;
@@ -59,14 +62,19 @@ parameter SI.Length d_vc_rp = d_inner_4in;
 parameter SI.Length length_vc_rp = TRANSFORM.Units.Conversions.Functions.Distance_m.from_ft(18);//length_dummy;
 parameter SI.Pressure p_vc_rp = TRANSFORM.Units.Conversions.Functions.Pressure_Pa.from_bar(11.4) + p_atm;
 parameter SI.Temperature T_vc_rp = TRANSFORM.Units.Conversions.Functions.Temperature_K.from_degC(602);
+parameter SI.Temperature T_TEDS_rp = TRANSFORM.Units.Conversions.Functions.Temperature_K.from_degC(378);
 
 // Recuperator (rp)
-parameter SI.Power Q_flow_rp = m_flow*(Medium.specificEnthalpy_pT(p_vc_rp,T_vc_rp) - Medium.specificEnthalpy_pT(p_rp_hx,T_rp_hx));
+//parameter SI.Power Q_flow_rp = m_flow*(Medium.specificEnthalpy_pT(p_vc_rp,T_vc_rp) - Medium.specificEnthalpy_pT(p_rp_hx,T_rp_hx));
+parameter SI.Power Q_flow_rp = m_flow*(Medium.specificEnthalpy_pT(p_rp_vc,T_rp_vc) - Medium.specificEnthalpy_pT(p_co_rp,T_co_rp));
 parameter SI.PressureDifference dp_rp_hot = p_rp_hx - p_vc_rp;
 parameter SI.TemperatureDifference dT_rp_hot = T_rp_hx - T_vc_rp;
 parameter SI.Pressure dp_rp_cold = p_rp_vc - p_co_rp;
 parameter SI.TemperatureDifference dT_rp_cold = T_rp_vc - T_co_rp;
-parameter SI.ThermalConductance UA_rp = 47.599945;//47.874603; // Calculated from PID
+parameter SI.ThermalConductance UA_rp = 261.842;// calculated from MAGNET_TEDS_Boundaries_1
+//
+parameter SI.ThermalConductance UA_rp_MAGNET = 48.7654;// Calculated from MAGNET_insulated_pipes_SS
+//47.874603;// calculated by Scott Greenwood
 
 // Piping: Recuperator to Rejection Heat Exchanger (rp_hx)
 parameter SI.Length d_rp_hx = d_inner_3in;
@@ -76,11 +84,13 @@ parameter SI.Temperature T_rp_hx = TRANSFORM.Units.Conversions.Functions.Tempera
 
 // Rejection Heat Exchanger to Chilled Water (hx)
 parameter SI.Power Q_flow_hx = m_flow*(Medium.specificEnthalpy_pT(p_rp_hx,T_rp_hx) - Medium.specificEnthalpy_pT(p_hx_co,T_hx_co));
+//parameter SI.Power Q_flow_hx = m_flow*(Medium.specificEnthalpy_pT(p_hx_cw,T_hx_cw) - Medium.specificEnthalpy_pT(p_cw_hx,T_cw_hx));
 parameter SI.PressureDifference dp_hx_hot = p_hx_co - p_rp_hx;
 parameter SI.TemperatureDifference dT_hx_hot = T_hx_co - T_rp_hx;
 parameter SI.TemperatureDifference dT_hx_cold = 50; //guess
 parameter SI.MassFlowRate m_flow_cw = Q_flow_hx/(Medium_cw.specificEnthalpy_pT(p_hx_cw,T_hx_cw) - Medium_cw.specificEnthalpy_pT(p_cw_hx,T_cw_hx)); //guess
-parameter SI.ThermalConductance UA_hx = 380.68774;//698.87; // Calculated from PID
+parameter SI.ThermalConductance UA_hx = 380.68774;// Calculated from MAGNET_insulated_pipes_SS
+parameter SI.ThermalConductance UA_hx_MAGNET = 698.87; // Calculated by SCott Greenwood from PID
 
 // Piping: Chilled Water to Rejection Heat Exchanger (cw_hx)
 // parameter SI.Length d_cw_hx = d_inner_4in; //guess
@@ -119,14 +129,20 @@ parameter SI.Temperature T_ps = TRANSFORM.Units.Conversions.Functions.Temperatur
 parameter SI.Temperature T_hot_side = TRANSFORM.Units.Conversions.Functions.Temperature_K.from_degC(325);
 parameter SI.Temperature T_cold_side = TRANSFORM.Units.Conversions.Functions.Temperature_K.from_degC(225);
 
+// Gas Turbine
+parameter SI.Power GT_demand = 30e3; //kW
+parameter Real eta_mech = 0.98 "Mechanical efficiency";
+
 // MAGNET_TEDS_HX
-parameter SI.MassFlowRate m_flow_TEDS = 0.689;
+parameter SI.ThermalConductance UA_MAGNET_TEDS = 73.33; // Calculated from PID
 parameter SI.Pressure p_TEDS_out = TRANSFORM.Units.Conversions.Functions.Pressure_Pa.from_bar(0.18);
 parameter SI.Pressure p_TEDS_in = p_TEDS_out +100;
-parameter SI.Power Q_MAGNET_TEDS = m_flow_TEDS*(Medium_TEDS.specificEnthalpy_pT(p_TEDS_out, T_hot_side) - Medium_TEDS.specificEnthalpy_pT(p_TEDS_in,T_cold_side));
+parameter SI.Power Q_MAGNET_TEDS = TEDS_nominal_flow_rate*(Medium_TEDS.specificEnthalpy_pT(p_TEDS_out, T_hot_side) - Medium_TEDS.specificEnthalpy_pT(p_TEDS_in,T_cold_side));
+parameter SI.MassFlowRate TEDS_nominal_flow_rate = 0.689;
+parameter SI.MassFlowRate m_flow_TEDS = TEDS_nominal_flow_rate;
   annotation (defaultComponentName="data",Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     Documentation(info="<html>
 <p><img src=\"modelica://TRANSFORM_Examples/Resources/Images/magnetSystemBasic.png\"/></p>
-</html>"));
+</html>"));                                             //0.735; // Modeling the Idaho National Laboratory Thermal-Energy Distribution System (TEDS) in the Modelica Ecosystem
 end Data_base_An;
