@@ -50,7 +50,7 @@ protected
     nV=10,
     V_1=1,
     V_2=1,
-    UA=data.UA_hx_MAGNET,
+    UA=data.UA_hx,
     p_a_start_1=data.p_rp_hx,
     p_b_start_1=data.p_hx_co,
     T_a_start_1=data.T_rp_hx,
@@ -116,7 +116,7 @@ protected
     nV=10,
     V_1=1,
     V_2=1,
-    UA=data.UA_rp_MAGNET,
+    UA=data.UA_rp,
     p_a_start_1=data.p_vc_rp,
     p_b_start_1=data.p_rp_hx,
     T_a_start_1=data.T_vc_rp,
@@ -541,7 +541,7 @@ public
     p_b_start_2=data.p_TEDS_out,
     T_a_start_2=data.T_cold_side,
     T_b_start_2=data.T_hot_side,
-    m_flow_start_2=data.TEDS_nominal_flow_rate)
+    m_flow_start_2=data.m_flow_TEDS)
     annotation (Placement(transformation(extent={{266,-92},{246,-72}})));
   Modelica.Fluid.Pipes.DynamicPipe pipe2(
     redeclare package Medium =
