@@ -14,6 +14,7 @@ GenericModularPWR_multimodule
 SMR_Coupling_4_loop_control_FMUME
 IES_SMR_Rx_GasTurbine
 TightlyCoupled_SteamFlowCtrl_microgrid
+FARM_Control_BOP_TES_SES_Test
 BaseClasses
 FMIs
 TES_Use_Case
