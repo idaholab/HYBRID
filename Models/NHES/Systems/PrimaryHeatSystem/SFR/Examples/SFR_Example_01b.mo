@@ -15,8 +15,8 @@ model SFR_Example_01b
     p=100000,
     T=1073.15,
     nPorts=1) annotation (Placement(transformation(extent={{106,-10},{86,10}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
-      = Coolant)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
+        Coolant)
     annotation (Placement(transformation(extent={{6,-10},{26,10}})));
   TRANSFORM.Controls.LimPID CR(k=1e-8, initType=Modelica.Blocks.Types.Init.InitialOutput)
     annotation (Placement(transformation(extent={{6,32},{26,52}})));
@@ -45,10 +45,8 @@ model SFR_Example_01b
     R_R4=43,
     redeclare model FlowModel =
         TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Turbulent_MSL,
-
     redeclare model HeatTransfer =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_SinglePhase_2Region,
-
     Q_nominal=100000000,
     rho_input=CR.y,
     dBeta=-0.0034,
@@ -65,6 +63,7 @@ model SFR_Example_01b
              annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-34,0})));
+
 equation
   connect(boundary1.ports[1], sensor_T.port_b)
     annotation (Line(points={{86,0},{26,0}}, color={0,127,255}));
