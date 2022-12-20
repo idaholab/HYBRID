@@ -136,7 +136,7 @@ model SteamTurbine_OpenFeedHeat_DivertPowerControl_Test
   Modelica.Blocks.Sources.Pulse pulse_BOP(
     period=7200,
     offset=17,
-    startTime=4500,
+    startTime=2500,
     amplitude=10)
     annotation (Placement(transformation(extent={{-106,4},{-94,16}})));
   Modelica.Blocks.Math.Add add_BOP
@@ -218,7 +218,7 @@ equation
                                 Diagram(coordinateSystem(preserveAspectRatio=
             false, extent={{-120,-60},{160,100}})),
     experiment(
-      StopTime=7200,
+      StopTime=5000,
       Interval=10,
       Tolerance=1e-06,
       __Dymola_Algorithm="Esdirk45a"),
