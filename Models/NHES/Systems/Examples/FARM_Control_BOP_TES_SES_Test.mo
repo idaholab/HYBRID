@@ -116,7 +116,7 @@ model FARM_Control_BOP_TES_SES_Test
   Modelica.Blocks.Sources.Pulse pulse_BOP(
     period=7200,
     offset=7,
-    startTime=4500,
+    startTime=2000,
     amplitude=10)
     annotation (Placement(transformation(extent={{-146,-16},{-134,-4}})));
   Modelica.Blocks.Math.Add add_BOP
@@ -128,7 +128,7 @@ model FARM_Control_BOP_TES_SES_Test
   Modelica.Blocks.Sources.Pulse pulse_SES(
     period=7200,
     offset=13,
-    startTime=3600,
+    startTime=1500,
     amplitude=13)
     annotation (Placement(transformation(extent={{-146,-96},{-134,-84}})));
   Modelica.Blocks.Math.Gain MW_W_Gain_SES(k=1e6)
@@ -138,7 +138,7 @@ model FARM_Control_BOP_TES_SES_Test
   Modelica.Blocks.Sources.Pulse pulse_TES(
     period=7200,
     offset=0,
-    startTime=5400,
+    startTime=2500,
     amplitude=14)
     annotation (Placement(transformation(extent={{-146,-56},{-134,-44}})));
   Modelica.Blocks.Math.Gain MW_W_Gain_TES(k=1e6)
@@ -298,8 +298,8 @@ equation
                                 Diagram(coordinateSystem(preserveAspectRatio=
             false, extent={{-160,-100},{160,100}})),
     experiment(
-      StopTime=43200,
-      Interval=1,
+      StopTime=10800,
+      Interval=10,
       Tolerance=1e-06,
       __Dymola_Algorithm="Esdirk45a"),
     Documentation(info="<html>

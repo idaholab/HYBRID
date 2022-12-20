@@ -1,0 +1,12 @@
+[Tests]
+ [./]
+  type = 'HYBRIDTester'
+  input = 'FARM_Control_BOP_TES_SES_Test.mos'
+  workingDir = '.'
+  output = 'FARM_Control_BOP_TES_SES_Test.mat'
+  dymola_mats = 'FARM_Control_BOP_TES_SES_Test.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+  skip = "failing"
+ [../]
+[]
