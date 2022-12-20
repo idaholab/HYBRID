@@ -1,0 +1,11 @@
+[Tests]
+ [./]
+  type = 'HYBRIDTester'
+  input = 'Two_Tank_Test_ANL.mos'
+  workingDir = '.'
+  output = 'Two_Tank_SHS_HT_Power_Test.mat'
+  dymola_mats = 'Two_Tank_SHS_HT_Power_Test.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]

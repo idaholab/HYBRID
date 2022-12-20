@@ -561,9 +561,9 @@ package SHS_Two_Tank
       Modelica.Blocks.Math.Add add_TES
         annotation (Placement(transformation(extent={{-100,-16},{-80,4}})));
       Modelica.Blocks.Sources.Pulse pulse_TES(
-        period=14400,
+        period=7200,
         offset=0,
-        startTime=5400,
+        startTime=2400,
         amplitude=-4.5)
         annotation (Placement(transformation(extent={{-120,-20},{-108,-8}})));
       Modelica.Blocks.Math.Gain MW_W_Gain_TES(k=1e6)
@@ -662,7 +662,7 @@ package SHS_Two_Tank
                                     Diagram(coordinateSystem(preserveAspectRatio=
                 false, extent={{-140,-60},{140,80}})),
         experiment(
-          StopTime=86400,
+          StopTime=7000,
           Interval=10,
           Tolerance=1e-06,
           __Dymola_Algorithm="Esdirk45a"),
