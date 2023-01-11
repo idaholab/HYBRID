@@ -1,5 +1,5 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Examples;
-model Rankine_HTGR_Test_Transient
+model Rankine_HTGR_ThreeStageTurbine_Transient
   extends Modelica.Icons.Example;
 
   Real Thermal_Power_Norm;
@@ -74,4 +74,4 @@ equation
             method="Esdirk45a",
             tolerance=0.0001,
             fixedStepSize=0)))));
-end Rankine_HTGR_Test_Transient;
+end Rankine_HTGR_ThreeStageTurbine_Transient;
