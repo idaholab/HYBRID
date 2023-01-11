@@ -62,8 +62,8 @@ model HTGR_Rankine_Cycle
     p_start=3900000,
     T_start=723.15,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=2),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=2),
     use_TraceMassPort=false)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
         rotation=180,
@@ -99,14 +99,14 @@ model HTGR_Rankine_Cycle
     p_start=3900000,
     T_start=473.15,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=5.0),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=5.0),
     use_TraceMassPort=false)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=180,
         origin={-4,-40})));
-  TRANSFORM.Fluid.FittingsAndResistances.TeeJunctionVolume tee(redeclare
-      package Medium = Modelica.Media.Water.StandardWater, V=5)
+  TRANSFORM.Fluid.FittingsAndResistances.TeeJunctionVolume tee(redeclare package
+              Medium = Modelica.Media.Water.StandardWater, V=5)
     annotation (Placement(transformation(extent={{-10,10},{10,-10}},
         rotation=90,
         origin={76,26})));

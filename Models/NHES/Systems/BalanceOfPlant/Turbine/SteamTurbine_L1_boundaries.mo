@@ -23,7 +23,7 @@ model SteamTurbine_L1_boundaries
     d_nominal=Medium.density_ph(steamTurbine.p_inlet_nominal, port_a_nominal.h),
     p_a_start=header.p_start -valve_TCV.dp_start,
     p_inlet_nominal=port_a_nominal.p -valve_TCV.dp_nominal)
-    annotation (Placement(transformation(extent={{40,-10},{60,10}})));
+    annotation (Placement(transformation(extent={{42,-10},{62,10}})));
   Electrical.Generator      generator1(J=1e4)
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW
@@ -43,8 +43,8 @@ model SteamTurbine_L1_boundaries
     redeclare package Medium = Medium,
     use_T_start=false,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=0.01),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=0.01),
     p_start=p_condenser,
     h_start=steamTurbine.h_b_start)
     annotation (Placement(transformation(extent={{58,-30},{78,-10}})));
@@ -65,8 +65,8 @@ model SteamTurbine_L1_boundaries
     redeclare package Medium = Medium,
     p_start=port_b_start.p,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=5),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=5),
     use_T_start=false,
     h_start=port_b_start.h)
     annotation (Placement(transformation(extent={{-70,-90},{-90,-70}})));
@@ -109,8 +109,8 @@ model SteamTurbine_L1_boundaries
     use_T_start=false,
     h_start=port_a_start.h,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=0.01),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=0.01),
     redeclare package Medium = Medium,
     p_start=p_condenser)
                    "included for numeric purposes"
@@ -137,8 +137,8 @@ model SteamTurbine_L1_boundaries
     nPorts_a=1,
     nPorts_b=3,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=1),
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
+         V=1),
     redeclare package Medium = Medium)
     annotation (Placement(transformation(extent={{-120,30},{-100,50}})));
   TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance4(R=1,
@@ -152,18 +152,18 @@ model SteamTurbine_L1_boundaries
     p=port_a3_nominal_p,
     h=port_a3_nominal_h) if nPorts_a3 > 0
     annotation (Placement(transformation(extent={{50,-150},{30,-130}})));
-   TRANSFORM.Fluid.Valves.CheckValve checkValve[nPorts_a3](redeclare package
-      Medium =  Medium, m_flow_start=port_a3_start_m_flow) if nPorts_a3 > 0
+   TRANSFORM.Fluid.Valves.CheckValve checkValve[nPorts_a3](redeclare package Medium =
+                Medium, m_flow_start=port_a3_start_m_flow) if nPorts_a3 > 0
      annotation (Placement(transformation(extent={{0,-150},{20,-130}})));
    TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h boundary_m_flow_a3[
      nPorts_a3](
      redeclare package Medium = Medium,
      each nPorts=1,
     each use_m_flow_in=true,
-    each use_h_in=true)  if nPorts_a3 > 0
+    each use_h_in=true) if  nPorts_a3 > 0
      annotation (Placement(transformation(extent={{72,-150},{92,-130}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate massFlowRate[nPorts_a3](redeclare
-      package Medium = Medium) if nPorts_a3 > 0
+  TRANSFORM.Fluid.Sensors.MassFlowRate massFlowRate[nPorts_a3](redeclare package Medium =
+                       Medium) if nPorts_a3 > 0
     annotation (Placement(transformation(extent={{-30,-150},{-10,-130}})));
   TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort
                                            specificEnthalpy[nPorts_a3](
@@ -211,7 +211,7 @@ end for;
   connect(sensorW.port_b, portElec_b)
     annotation (Line(points={{150,0},{160,0}}, color={255,0,0}));
   connect(steamTurbine.portLP, volume.port_a)
-    annotation (Line(points={{60,6},{60,-20},{62,-20}},   color={0,127,255}));
+    annotation (Line(points={{62,6},{62,-20}},            color={0,127,255}));
   connect(boundary.port,feedWaterHeater. heatPort)
     annotation (Line(points={{-82,-100},{-80,-100},{-80,-86}},
                                                              color={191,0,0}));
@@ -249,8 +249,8 @@ end for;
                                                       color={0,127,255}));
   connect(resistance.port_b, multiPort1.ports_b[2]) annotation (Line(points={{80,-37},
           {80,-62}},                        color={0,127,255}));
-  connect(valve_BV.port_a, header.port_b[1]) annotation (Line(points={{-80,0},{
-          -100,0},{-100,39.3333},{-104,39.3333}}, color={0,127,255}));
+  connect(valve_BV.port_a, header.port_b[1]) annotation (Line(points={{-80,0},{-100,0},{-100,39.3333},{-104,39.3333}},
+                                                  color={0,127,255}));
   connect(valve_TCV.port_a, header.port_b[2]) annotation (Line(points={{-80,40},
           {-92,40},{-92,40},{-104,40}},     color={0,127,255}));
   connect(port_a, resistance4.port_a)
@@ -270,13 +270,13 @@ end for;
                                                                       color={0,0,
           127}));
   connect(steamTurbine.shaft_b, powerSensor.flange_a)
-    annotation (Line(points={{60,0},{70,0}}, color={0,0,0}));
+    annotation (Line(points={{62,0},{70,0}}, color={0,0,0}));
   connect(powerSensor.flange_b, generator1.shaft_a)
     annotation (Line(points={{90,0},{100,0}}, color={0,0,0}));
   connect(valve_TCV.port_b, steamTurbine.portHP)
-    annotation (Line(points={{-60,40},{40,40},{40,6}}, color={0,127,255}));
-  connect(pressure.port, header.port_b[3]) annotation (Line(points={{-100,50},{
-          -100,40},{-104,40},{-104,40.6667}},     color={0,127,255}));
+    annotation (Line(points={{-60,40},{42,40},{42,6}}, color={0,127,255}));
+  connect(pressure.port, header.port_b[3]) annotation (Line(points={{-100,50},{-100,40},{-104,40},{-104,40.6667}},
+                                                  color={0,127,255}));
   connect(actuatorBus.opening_TCV,valve_TCV. opening)
     annotation (Line(
       points={{30.1,100.1},{30.1,100.1},{-8,100.1},{-8,102},{-70,102},{-70,48}},
@@ -307,8 +307,8 @@ end for;
           -40},{-38,-52},{-28,-52}}, color={0,0,127}));
   connect(boundary2.ports[1], multiPort.ports_b[2])
     annotation (Line(points={{-8,-60},{2,-60},{2,-76}}, color={0,127,255}));
-  annotation (defaultComponentName="BOP", Icon(coordinateSystem(extent={{-100,-100},
-            {100,100}}),                       graphics={
+  annotation (defaultComponentName="BOP", Icon(coordinateSystem(extent={{-160,-160},{160,140}}),
+                                               graphics={
         Rectangle(
           extent={{-2.09756,2},{83.9024,-2}},
           lineColor={0,0,0},

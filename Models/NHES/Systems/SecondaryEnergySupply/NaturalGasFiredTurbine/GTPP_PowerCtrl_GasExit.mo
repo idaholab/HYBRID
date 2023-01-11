@@ -7,7 +7,7 @@ model GTPP_PowerCtrl_GasExit
     redeclare replaceable NHES.Systems.SecondaryEnergySupply.NaturalGasFiredTurbine.ED_Dummy ED,
     redeclare NHES.Systems.SecondaryEnergySupply.NaturalGasFiredTurbine.Data.GTPP_PowerCtrl data);
 
-  final parameter Modelica.Units.SI.Power capacity_nom(displayUnit="MW")=35e6 "Nominal electrical power generation";
+  final parameter Modelica.Units.SI.Power capacity_nom(displayUnit="MW")=35E6 "Nominal electrical power generation";
   parameter Modelica.Units.SI.Power capacity(displayUnit="MW")=capacity_nom "System capacity";
   final parameter Real capacityScaler = capacity/capacity_nom "Scaler that sizes the capacity of the GTPP";
 

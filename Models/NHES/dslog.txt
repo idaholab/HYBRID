@@ -1,0 +1,71 @@
+Error: The following error was detected at time: 0
+  IF97 medium function tsat called with too low pressure
+p = -1.47579e+07 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(HP_Steam.ports[1].p, 2590000.0, 0, 0)
+Modelica.Media.Water.IF97_Utilities.T_ph(turbine.port_a.p, sensor_m_flow.port_b.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.temperature_ph_Unique10(turbine.port_a.p, sensor_m_flow.port_b.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique15(turbine.port_a.p, sensor_m_flow.port_b....
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+  IF97 medium function tsat called with too low pressure
+p = -1.12494e+06 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(HP_Steam.ports[1].p, 2590000.0, 0, 0)
+Modelica.Media.Water.IF97_Utilities.T_ph(turbine.port_a.p, sensor_m_flow.port_b.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.temperature_ph_Unique10(turbine.port_a.p, sensor_m_flow.port_b.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique15(turbine.port_a.p, sensor_m_flow.port_b....
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (g.gStp^2) / (g.gSpp) = (0) / (0)
+
+The stack of functions is:
+NHES.Media.SeaWater.IAPWS_Utilities.sesWaterBaseProp_pT
+NHES.Media.SeaWater.IAPWS_Utilities.mu_props_pT(
+mEE_PF8_FC.effect1.Brine_Inlet_Port.p, 
+mEE_PF8_FC.effect1.Evaporator.T, 
+mEE_PF8_FC.effect1.Evaporator.Xo, 
+NHES.Media.SeaWater.IAPWS_Utilities.sesWaterBaseProp_pT(mEE_PF8_FC.effect1.Brine_Inlet_Port.p, mEE_PF8_FC.effect1.Evaporator.T, mEE_PF8_FC.effect1.Evaporator.Xo))
+mEE_PF8_FC.effect1.Evaporator.IAPWS_Utilities.mu_pTX_Unique29(mEE_PF8_FC.eff...
+
+First evaluation failed for non-linear solver.
+
+Error: The following error was detected at time: 0
+
+Model error - division by zero: (g.gStp^2) / (g.gSpp) = (0) / (0)
+
+The stack of functions is:
+NHES.Media.SeaWater.IAPWS_Utilities.sesWaterBaseProp_pT
+NHES.Media.SeaWater.IAPWS_Utilities.mu_props_pT(
+mEE_PF8_FC.effect1.Brine_Inlet_Port.p, 
+mEE_PF8_FC.effect1.Evaporator.T, 
+mEE_PF8_FC.effect1.Evaporator.Xo, 
+NHES.Media.SeaWater.IAPWS_Utilities.sesWaterBaseProp_pT(mEE_PF8_FC.effect1.Brine_Inlet_Port.p, mEE_PF8_FC.effect1.Evaporator.T, mEE_PF8_FC.effect1.Evaporator.Xo))
+mEE_PF8_FC.effect1.Evaporator.IAPWS_Utilities.mu_pTX_Unique29(mEE_PF8_FC.eff...
+
+Non-linear solver will attempt to handle this problem.
+
+Model: NHES.Desalination.MEE.Examples.RankineMEE
+Integration started at 0 using integration method:
+RK-method: esdirk45a
+Local extrapolation
+FSAL
+Continuous extension
+

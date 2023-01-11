@@ -2,7 +2,8 @@ within NHES.Systems.BalanceOfPlant.Turbine.Examples;
 model SteamTurbine_L1_boundaries_Test_b
   import NHES;
   extends Modelica.Icons.Example;
-  NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries BOP(
+  NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_L1_boundariesMEE
+                                                                 BOP(
     nPorts_a3=1,
     port_a3_nominal_m_flow={10},
     port_a_nominal(
@@ -69,16 +70,19 @@ equation
   connect(sink.ports[1], stateSensor.port_b) annotation (Line(points={{-68,-12},
           {-64,-12},{-60,-12}}, color={0,127,255}));
   connect(stateSensor.port_a, BOP.port_b)
-    annotation (Line(points={{-40,-12},{-30,-12}}, color={0,127,255}));
+    annotation (Line(points={{-40,-12},{-30,-12},{-30,-6},{-25,-6}},
+                                                   color={0,127,255}));
   connect(stateSensor1.port_b, BOP.port_a)
-    annotation (Line(points={{-40,12},{-30,12}}, color={0,127,255}));
-  connect(source1.ports[1], BOP.port_a3[1]) annotation (Line(points={{-20,-80},
-          {-12,-80},{-12,-30}}, color={0,127,255}));
+    annotation (Line(points={{-40,12},{-30,12},{-30,10},{-25,10}},
+                                                 color={0,127,255}));
+  connect(source1.ports[1], BOP.port_a3[1]) annotation (Line(points={{-20,-80},{-20,-80},{-20,-18}},
+                                color={0,127,255}));
   connect(source.ports[1], stateSensor1.port_a)
     annotation (Line(points={{-68,12},{-60,12}}, color={0,127,255}));
   connect(pulse.y, source.m_flow_in)
     annotation (Line(points={{-99,20},{-88,20}}, color={0,0,127}));
   connect(BOP.portElec_b, sinkElec.port)
-    annotation (Line(points={{30,0},{70,0}}, color={255,0,0}));
+    annotation (Line(points={{-8.33333,2},{44,2},{44,0},{70,0}},
+                                             color={255,0,0}));
   annotation (experiment(StopTime=1000, __Dymola_NumberOfIntervals=1000));
 end SteamTurbine_L1_boundaries_Test_b;

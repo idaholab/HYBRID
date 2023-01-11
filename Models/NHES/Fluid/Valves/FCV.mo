@@ -14,8 +14,8 @@ model FCV "Flow Control Valve"
     redeclare package Medium = Medium,           dp_nominal=dp_nom,
       m_flow_nominal=m_nom)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Medium, precision=3)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Medium, precision=3)
     annotation (Placement(transformation(extent={{20,-10},{40,10}})));
   TRANSFORM.Controls.LimPID PID(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -44,54 +44,54 @@ equation
     annotation (Line(points={{-10,0},{-100,0}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Polygon(
-          points={{20,-35},{60,-50},{20,-65},{20,-35}},
+          points={{20,-45},{60,-60},{20,-75},{20,-45}},
           lineColor={0,128,255},
           smooth=Smooth.None,
           fillColor={0,128,255},
           fillPattern=FillPattern.Solid,
           visible=DynamicSelect(true, showDesignFlowDirection)),
         Polygon(
-          points={{20,-40},{50,-50},{20,-60},{20,-40}},
+          points={{20,-50},{50,-60},{20,-70},{20,-50}},
           lineColor={255,255,255},
           smooth=Smooth.None,
           fillColor={255,255,255},
           fillPattern=FillPattern.Solid,
           visible=DynamicSelect(true, showDesignFlowDirection)),
         Line(
-          points={{55,-50},{-60,-50}},
+          points={{55,-60},{-60,-60}},
           color={0,128,255},
           smooth=Smooth.None,
           visible=DynamicSelect(true, showDesignFlowDirection)),
         Text(
-          extent={{-149,-58},{151,-98}},
+          extent={{-149,-68},{151,-108}},
           lineColor={0,0,255},
           textString="%name",
           visible=DynamicSelect(true, showName)),
-        Line(points={{0,60},{0,10}}),
+        Line(points={{0,50},{0,0}}),
         Rectangle(
-          extent={{-20,70},{20,60}},
+          extent={{-20,60},{20,50}},
           lineColor={0,0,0},
           fillColor={0,0,0},
           fillPattern=FillPattern.Solid),
         Polygon(
-          points={{-100,60},{100,-40},{100,60},{0,10},{-100,-40},{-100,60}},
+          points={{-100,50},{100,-50},{100,50},{0,0},{-100,-50},{-100,50}},
           fillColor={255,255,255},
           fillPattern=FillPattern.Solid),
         Polygon(
-          points={{-100,10},{100,10},{100,10},{0,10},{-100,10},{-100,10}},
+          points={{-100,0},{100,0},{100,0},{0,0},{-100,0},{-100,0}},
           fillColor={0,255,0},
           lineColor={255,255,255},
           fillPattern=FillPattern.Solid),
-        Polygon(points={{-100,60},{100,-40},{100,60},{0,10},{-100,-40},{-100,60}},
+        Polygon(points={{-100,50},{100,-50},{100,50},{0,0},{-100,-50},{-100,50}},
                     lineColor={0,0,0}),
         Polygon(
-          points={{-22,64},{24,66},{14,78},{-4,82},{-16,76},{-22,64}},
+          points={{-22,54},{24,56},{14,68},{-4,72},{-16,66},{-22,54}},
           lineColor={0,0,0},
           smooth=Smooth.Bezier,
           fillColor={0,0,0},
           fillPattern=FillPattern.Solid),
         Polygon(
-          points={{22,64},{-24,66},{-14,78},{4,82},{16,76},{22,64}},
+          points={{22,54},{-24,56},{-14,68},{4,72},{16,66},{22,54}},
           lineColor={0,0,0},
           smooth=Smooth.Bezier,
           fillColor={0,0,0},

@@ -22,10 +22,10 @@ model CS_GTPP_fixedCapacity_stepInput
           rotation=-90,
           origin={-48,28})));
   Modelica.Blocks.Sources.Ramp loadSignal2(
-    duration=0,
-    offset=0,
-    startTime=40,
-    height=3.5*1e6*3.1)        annotation (Placement(transformation(
+    duration=100,
+    offset=30e6,
+    startTime=2100,
+    height=10e6)               annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-70,50})));
@@ -46,7 +46,7 @@ equation
   connect(feedback_W_gen.y, FBctrl_powerGeneration.u)
     annotation (Line(points={{-31,0},{-18,0},{-12,0}}, color={0,0,127}));
   connect(sensorBus.W_gen, feedback_W_gen.u2) annotation (Line(
-      points={{-30,-100},{-40,-100},{-40,-100},{-40,-100},{-40,-8}},
+      points={{-29.9,-99.9},{-40,-99.9},{-40,-100},{-40,-100},{-40,-8}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
