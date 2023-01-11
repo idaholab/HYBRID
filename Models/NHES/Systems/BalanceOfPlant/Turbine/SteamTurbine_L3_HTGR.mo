@@ -2,7 +2,7 @@ within NHES.Systems.BalanceOfPlant.Turbine;
 model SteamTurbine_L3_HTGR
   extends BaseClasses.Partial_SubSystem(
     redeclare replaceable
-      ControlSystems.CS_Rankine_Xe100_Based_Secondary_TransientControl_3staged_Turbine_PressControl_TCVcontrol_simplified
+      ControlSystems.CS_threeStagedTurbine_HTGR
       CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
     redeclare Data.IdealTurbine data);
@@ -142,8 +142,8 @@ model SteamTurbine_L3_HTGR
     p_nominal=5500000,
     allowFlowReversal=false)
     annotation (Placement(transformation(extent={{40,-92},{20,-72}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium
-      = Modelica.Media.Water.StandardWater)            annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)            annotation (Placement(
         transformation(
         extent={{7,-8},{-7,8}},
         rotation=90,
@@ -220,8 +220,8 @@ model SteamTurbine_L3_HTGR
     T=573.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-104,-42},{-84,-22}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Modelica.Media.Water.StandardWater)            annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)            annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,

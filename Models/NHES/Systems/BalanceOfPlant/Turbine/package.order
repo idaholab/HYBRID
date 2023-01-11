@@ -1,6 +1,7 @@
 Examples
 SteamTurbine_L1_boundaries
 SteamTurbine_L2_ClosedFeedHeat
+SteamTurbine_L3_HTGR
 SteamTurbine_Basic_NoFeedHeat
 SteamTurbine_OpenFeedHeat_DivertPowerControl
 SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop
