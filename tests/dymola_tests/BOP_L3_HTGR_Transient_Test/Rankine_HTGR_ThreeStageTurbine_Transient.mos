@@ -1,1 +1,1 @@
-simulateModel("NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Examples.Rankine_HTGR_ThreeStageTurbine_Transient", stopTime=1070000, numberOfIntervals=0, outputInterval=1000, method="Esdirk45a", resultFile="Rankine_HTGR_ThreeStageTurbine_Transient");
+simulateModel("NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Examples.Rankine_HTGR_ThreeStageTurbine_Transient", stopTime=50000, numberOfIntervals=0, outputInterval=1000, method="Esdirk45a", resultFile="Rankine_HTGR_ThreeStageTurbine_Transient");
