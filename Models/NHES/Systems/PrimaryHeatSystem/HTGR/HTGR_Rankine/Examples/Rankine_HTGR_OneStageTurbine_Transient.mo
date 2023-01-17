@@ -133,7 +133,8 @@ equation
   connect(add.u1, RPM_basis.y) annotation (Line(points={{9.2,-68.4},{10,-68.4},
           {10,-68},{12,-68},{12,-57},{17.7,-57}}, color={0,0,127}));
   annotation (experiment(
-      StopTime=100000,
+      StopTime=60000,
       __Dymola_NumberOfIntervals=200,
-      __Dymola_Algorithm="Esdirk34a"));
+      __Dymola_Algorithm="Esdirk34a"), __Dymola_experimentSetupOutput(events=
+          false));
 end Rankine_HTGR_OneStageTurbine_Transient;
