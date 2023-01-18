@@ -136,5 +136,10 @@ equation
       StopTime=60000,
       __Dymola_NumberOfIntervals=200,
       __Dymola_Algorithm="Esdirk34a"), __Dymola_experimentSetupOutput(events=
-          false));
+          false),
+    Documentation(info="<html>
+<p>Test of Pebble_Bed_One-Stage_Rankine. The simulation should experience transient where external electricity demand is oscilating and control valves are opening and closing corresponding to the required power demand. </p>
+<p>If one would like to test transient scenario where electric power demand changes, one needs to change ElectricPowerDemand block in the model. </p>
+<p>This transient model is designed to benchmark system variables with Pebble_Bed_Three-Stage_Rankine Model (See Rankine_HTGR_ThreeStageTurbine_Transient model).</p>
+</html>"));
 end Rankine_HTGR_OneStageTurbine_Transient;
