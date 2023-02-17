@@ -7,7 +7,7 @@ model SFR_Example_04
       Medium_IHX_Loop = IL_Medium)
     annotation (Placement(transformation(extent={{-120,-20},{-32,50}})));
   Components.SFR_02_NTUHX sFR_02_NTUHX(redeclare replaceable CS_01 CS(
-        rho_CR_Init=-0.5),             redeclare package Medium_IHX_Loop =
+        rho_CR_Init=-1.0),             redeclare package Medium_IHX_Loop =
         IL_Medium)
     annotation (Placement(transformation(extent={{-214,-20},{-130,50}})));
   TRANSFORM.Electrical.Sources.FrequencySource

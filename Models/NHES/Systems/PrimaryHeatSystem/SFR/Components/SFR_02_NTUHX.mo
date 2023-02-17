@@ -52,6 +52,8 @@ model SFR_02_NTUHX
     redeclare package Fuel_Cladding_R1 = Media.Solids.HT9,
     redeclare record Data_PG =
         TRANSFORM.Nuclear.ReactorKinetics.Data.PrecursorGroups.precursorGroups_6_TRACEdefault,
+
+    Q_fission_start(displayUnit="MW") = 100000000,
     T_Gap_Init_R1=773.15,
     T_Clad_Init_R1=673.15,
     T_Gap_Init_R2=773.15,
@@ -68,7 +70,8 @@ model SFR_02_NTUHX
         TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Turbulent_MSL,
     redeclare model HeatTransfer =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_SinglePhase_2Region,
-    Q_nominal=100000000,
+
+    Q_nominal(displayUnit="MW") = 100000000,
     rho_input=CR.y,
     dBeta=-0.0034,
     alpha_Reg1=-9.22e-4,
