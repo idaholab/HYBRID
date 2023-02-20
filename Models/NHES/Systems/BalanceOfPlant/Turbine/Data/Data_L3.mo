@@ -13,8 +13,7 @@ model Data_L3 "Density inputs have large effects on nominal turbine pressures"
 
   parameter Modelica.Units.SI.Temperature Tin=573.15 "Inlet Steam Temperature" annotation(Dialog(group="Temperature Sets"));
   parameter Modelica.Units.SI.Temperature Tfeed=331.65 "Target Feed Water Temperature" annotation(Dialog(group="Temperature Sets"));
-  parameter Modelica.Units.SI.MassFlowRate mdpt_HPFH=0.002
-                                                          "High pressure feedwater heating flow" annotation(Dialog(group="Feed Heating Flow"));
+
 
   parameter Modelica.Units.SI.Density d_HPT_in = 15.07744  "HPT inlet density"  annotation(Dialog(group="Density Sets"));
   parameter Modelica.Units.SI.Density d_LPT1_in = 1.81354   "LPT1 inlet density"  annotation(Dialog(group="Density Sets"));
@@ -26,6 +25,10 @@ model Data_L3 "Density inputs have large effects on nominal turbine pressures"
   parameter Modelica.Units.SI.Pressure LPT2_p_in=p_i2 annotation(Dialog(tab="Initialization"));
   parameter Modelica.Units.SI.Pressure LPT2_p_out=cond_p annotation(Dialog(tab="Initialization"));
 
+  parameter Modelica.Units.SI.MassFlowRate mdot_total=5.5 "Nominal Total Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
+  parameter Modelica.Units.SI.MassFlowRate mdot_fh =0.1
+                                                       "Nominal Controlled Feed Heating Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
+  parameter Modelica.Units.SI.MassFlowRate mdpt_HPFH=0.002 "Set High pressure feedwater heating flow (Used in models with both LP and HP feed heating)" annotation(Dialog(group="Flow Rate Sets"));
   parameter Modelica.Units.SI.MassFlowRate mdot_hpt= 5.5 "Nominal Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
   parameter Modelica.Units.SI.MassFlowRate mdot_lpt1= 5.5 "Nominal Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
   parameter Modelica.Units.SI.MassFlowRate mdot_lpt2= 4.794 "Nominal Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));

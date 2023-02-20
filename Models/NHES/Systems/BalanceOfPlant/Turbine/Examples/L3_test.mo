@@ -1,5 +1,6 @@
 within NHES.Systems.BalanceOfPlant.Turbine.Examples;
 model L3_test
+  extends Modelica.Icons.Example;
   NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_L3_LPOFWH pHTGR_BOPinit2_1
     annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT bypassdump(
@@ -44,7 +45,7 @@ equation
     Icon(coordinateSystem(preserveAspectRatio=false)),
     Diagram(coordinateSystem(preserveAspectRatio=false)),
     experiment(
-      StopTime=4000,
+      StopTime=20000,
       Interval=20,
       __Dymola_Algorithm="Esdirk45a"));
 end L3_test;

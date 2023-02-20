@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_L3
+model CS_L3_SMR
 
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
@@ -29,7 +29,7 @@ model CS_L3
     Ti=360,
     yMax=1,
     yMin=0)
-    annotation (Placement(transformation(extent={{-10,0},{10,20}})));
+    annotation (Placement(transformation(extent={{-12,0},{8,20}})));
   TRANSFORM.Controls.LimPID LPT1_BV_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=-1e-8,
     Ti=300,
@@ -37,7 +37,7 @@ model CS_L3
     yMin=0)
     annotation (Placement(transformation(extent={{-10,-40},{10,-20}})));
   TRANSFORM.Controls.LimPID LPT2_BV_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-5,
+    k=1e-3,
     Ti=15,
     yMax=1,
     yMin=0)
@@ -63,7 +63,7 @@ model CS_L3
     annotation (Placement(transformation(extent={{4,64},{24,84}})));
   Modelica.Blocks.Logical.Switch switch2
     annotation (Placement(transformation(extent={{38,72},{58,92}})));
-  Modelica.Blocks.Sources.BooleanStep booleanStep(startTime=4000)
+  Modelica.Blocks.Sources.BooleanStep booleanStep(startTime=2)
     annotation (Placement(transformation(extent={{-10,114},{10,134}})));
   Modelica.Blocks.Logical.Switch switch3
     annotation (Placement(transformation(extent={{-54,60},{-34,80}})));
@@ -110,9 +110,9 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(P_in_set.y, TCV_PID.u_s)
-    annotation (Line(points={{-79,10},{-12,10}}, color={0,0,127}));
+    annotation (Line(points={{-79,10},{-14,10}}, color={0,0,127}));
   connect(sensorBus.Steam_Pressure, TCV_PID.u_m) annotation (Line(
-      points={{-30,-100},{-30,-10},{0,-10},{0,-2}},
+      points={{-30,-100},{-30,-10},{-2,-10},{-2,-2}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -121,7 +121,7 @@ equation
       extent={{-3,-6},{-3,-6}},
       horizontalAlignment=TextAlignment.Right));
   connect(actuatorBus.opening_TCV, TCV_PID.y) annotation (Line(
-      points={{30.1,-99.9},{30,-99.9},{30,10},{11,10}},
+      points={{30.1,-99.9},{30,-99.9},{30,10},{9,10}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -195,4 +195,4 @@ annotation(defaultComponentName="changeMe_CS", Icon(graphics),
       StopTime=1000,
       Interval=5,
       __Dymola_Algorithm="Esdirk45a"));
-end CS_L3;
+end CS_L3_SMR;

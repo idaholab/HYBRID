@@ -141,7 +141,8 @@ model SteamTurbine_L3_LPOFWH
   TRANSFORM.Fluid.Valves.ValveLinear LPT2_bypass_valve(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     dp_nominal=10000,
-    m_flow_nominal=0.1) annotation (Placement(transformation(
+    m_flow_nominal=data.mdot_fh*1.5)
+                        annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={60,0})));
@@ -162,7 +163,7 @@ model SteamTurbine_L3_LPOFWH
   TRANSFORM.Fluid.Valves.ValveLinear TCV(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     dp_nominal=50000,
-    m_flow_nominal=data.mdot_hpt)
+    m_flow_nominal=data.mdot_total)
                               annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=180,
