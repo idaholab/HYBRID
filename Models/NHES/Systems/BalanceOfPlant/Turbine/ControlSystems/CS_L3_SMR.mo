@@ -25,7 +25,7 @@ model CS_L3_SMR
     yMin=data.mdot_hpt*0.1)
     annotation (Placement(transformation(extent={{-10,80},{10,100}})));
   TRANSFORM.Controls.LimPID TCV_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-3e-9,
+    k=-7e-9,
     Ti=360,
     yMax=1,
     yMin=0)

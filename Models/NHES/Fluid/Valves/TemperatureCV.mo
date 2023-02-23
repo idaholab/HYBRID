@@ -1,5 +1,23 @@
 within NHES.Fluid.Valves;
 model TemperatureCV "Temperature Control Valve"
+  replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
+    annotation (choicesAllMatching=true);
+  parameter Boolean Use_input=true "Constant output value";
+  parameter Modelica.Units.SI.Temperature Temp_target=150+273.15
+    "Target Temperature" annotation(Dialog(enable= not Use_input));
+  parameter Modelica.Blocks.Interfaces.RealOutput ValvePos_start=0.1
+    "Initail Valve Position" annotation(Dialog(group="Initialization"));
+  parameter Modelica.Units.SI.Time init_time=0 "Time instant of step start" annotation(Dialog(group="Initialization"));
+  parameter Real PID_k=1e-2 "Controller gain: +/- for direct/reverse acting" annotation(Dialog(group="PI Parameters"));
+  parameter Modelica.Units.SI.Time PID_Ti=0.5
+    "Time constant of Integrator block" annotation(Dialog(group="PI Parameters"));
+  parameter Real PID_wp=1 "Set-point weight for Proportional block (0..1)" annotation(Dialog(group="PI Parameters"));
+  parameter Real PID_Ni=0.9
+    "Ni*Ti is time constant of anti-windup compensation" annotation(Dialog(group="PI Parameters"));
+  parameter Modelica.Media.Interfaces.PartialMedium.MassFlowRate m_flow_nominal=10
+    "Nominal mass flowrate at full opening" annotation(Dialog(group="Valve Nominal Values"));
+  parameter Modelica.Units.SI.AbsolutePressure dp_nominal=1e5
+    "Nominal pressure drop at full opening" annotation(Dialog(group="Valve Nominal Values"));
   TRANSFORM.Fluid.Valves.ValveLinear valveLinear(redeclare package Medium =
         Medium,
     dp_nominal=dp_nominal,
@@ -8,7 +26,7 @@ model TemperatureCV "Temperature Control Valve"
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
                                        sensor_T(     redeclare package Medium
       = Medium)
-    annotation (Placement(transformation(extent={{20,10},{40,-10}})));
+    annotation (Placement(transformation(extent={{-82,10},{-62,-10}})));
   TRANSFORM.Controls.LimPID PID(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=PID_k,
@@ -25,8 +43,7 @@ model TemperatureCV "Temperature Control Valve"
         origin={0,30})));
   Modelica.Blocks.Sources.RealExpression initValvePos(y=ValvePos_start)
     annotation (Placement(transformation(extent={{40,32},{20,52}})));
-  parameter Modelica.Blocks.Interfaces.RealOutput ValvePos_start=0.1
-    "Initail Valve Position";
+
   Modelica.Blocks.Logical.Switch initSwitch annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
@@ -34,12 +51,11 @@ model TemperatureCV "Temperature Control Valve"
         origin={-30,16})));
   Modelica.Blocks.Sources.RealExpression Temperature_nom(y=Temp_target)
     annotation (Placement(transformation(extent={{-120,100},{-100,120}})));
-  parameter Modelica.Units.SI.Temperature Temp_target=150+273.15
-    "Target Mass Flow Rate";
+
   Modelica.Blocks.Sources.BooleanStep booleanStep(startTime=init_time,
       startValue=true)
     annotation (Placement(transformation(extent={{-80,-42},{-60,-22}})));
-  parameter Modelica.Units.SI.Time init_time=0 "Time instant of step start";
+
   Modelica.Blocks.Logical.Switch inputSwitch annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
@@ -47,19 +63,13 @@ model TemperatureCV "Temperature Control Valve"
         origin={-70,70})));
   Modelica.Blocks.Sources.BooleanConstant booleanConstant(k=Use_input)
     annotation (Placement(transformation(extent={{-120,60},{-100,80}})));
-  parameter Boolean Use_input=true "Constant output value";
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium =
         Medium)
     annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_b(redeclare package Medium =
         Medium)
     annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-  parameter Real PID_k=1e-3  "Controller gain: +/- for direct/reverse acting";
-  parameter Modelica.Units.SI.Time PID_Ti=0.5
-    "Time constant of Integrator block";
-  parameter Real PID_wp=1 "Set-point weight for Proportional block (0..1)";
-  parameter Real PID_Ni=0.9
-    "Ni*Ti is time constant of anti-windup compensation";
+
   Modelica.Blocks.Interfaces.RealInput target_value if Use_input annotation (
       Placement(transformation(
         origin={0,80},
@@ -68,12 +78,7 @@ model TemperatureCV "Temperature Control Valve"
         extent={{-20,-20},{20,20}},
         rotation=270,
         origin={0,80})));
-  replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
-    annotation (choicesAllMatching=true);
-  parameter Modelica.Media.Interfaces.PartialMedium.MassFlowRate m_flow_nominal=10
-    "Nominal mass flowrate at full opening";
-  parameter Modelica.Units.SI.AbsolutePressure dp_nominal=1e5
-    "Nominal pressure drop at full opening";
+
   Modelica.Blocks.Sources.RealExpression zero(y=0) if not Use_input
     annotation (Placement(transformation(extent={{-120,28},{-100,48}})));
 equation
@@ -97,18 +102,18 @@ equation
           50},{-42,50}}, color={0,0,127}));
   connect(inputSwitch.y, initSwitch.u1) annotation (Line(points={{-59,70},{-50,70},
           {-50,-10},{-22,-10},{-22,4}}, color={0,0,127}));
-  connect(port_a, valveLinear.port_a)
-    annotation (Line(points={{-100,0},{-10,0}}, color={0,127,255}));
-  connect(valveLinear.port_b, sensor_T.port_a)
-    annotation (Line(points={{10,0},{20,0}}, color={0,127,255}));
-  connect(sensor_T.port_b, port_b)
-    annotation (Line(points={{40,0},{100,0}}, color={0,127,255}));
   connect(target_value, inputSwitch.u1) annotation (Line(points={{0,80},{-50,80},
           {-50,68},{-56,68},{-56,52},{-82,52},{-82,62}}, color={0,0,127}));
   connect(zero.y, inputSwitch.u1)
     annotation (Line(points={{-99,38},{-82,38},{-82,62}}, color={0,0,127}));
-  connect(sensor_T.T, initSwitch.u3) annotation (Line(points={{30,-3.6},{30,-14},
-          {-32,-14},{-32,-4},{-38,-4},{-38,4}}, color={0,0,127}));
+  connect(sensor_T.T, initSwitch.u3) annotation (Line(points={{-72,-3.6},{-72,
+          -14},{-46,-14},{-46,4},{-38,4}},      color={0,0,127}));
+  connect(port_a, sensor_T.port_a)
+    annotation (Line(points={{-100,0},{-82,0}}, color={0,127,255}));
+  connect(sensor_T.port_b, valveLinear.port_a)
+    annotation (Line(points={{-62,0},{-10,0}}, color={0,127,255}));
+  connect(valveLinear.port_b, port_b)
+    annotation (Line(points={{10,0},{100,0}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Polygon(
           points={{20,-45},{60,-60},{20,-75},{20,-45}},
@@ -160,15 +165,15 @@ equation
           fillColor={0,0,0},
           fillPattern=FillPattern.Solid),
         Ellipse(
-          extent={{40,100},{80,60}},
+          extent={{-80,100},{-40,60}},
           lineColor={0,0,0},
           lineThickness=0.5),
         Text(
-          extent={{40,100},{80,60}},
+          extent={{-80,100},{-40,60}},
           textColor={0,0,0},
           textString="T"),
         Line(
-          points={{16,48},{42,72}},
+          points={{-42,72},{-16,48}},
           color={0,0,0},
           thickness=0.5)}),                 Diagram(coordinateSystem(
           preserveAspectRatio=false)));

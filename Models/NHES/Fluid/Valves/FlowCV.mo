@@ -1,12 +1,31 @@
 within NHES.Fluid.Valves;
 model FlowCV "Flow control valve"
-  TRANSFORM.Fluid.Valves.ValveLinear valveLinear(redeclare package Medium =
+
+   replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
+    annotation (choicesAllMatching=true);
+   parameter Boolean Use_input=true "Constant output value";
+   parameter Modelica.Units.SI.MassFlowRate FlowRate_target=10
+    "Target Mass Flow Rate" annotation(Dialog(enable= not Use_input));
+   parameter Modelica.Blocks.Interfaces.RealOutput ValvePos_start=0.1
+    "Initail Valve Position" annotation(Dialog(group="Initialization"));
+   parameter Modelica.Units.SI.Time init_time=0 "Time instant of step start" annotation(Dialog(group="Initialization"));
+   parameter Real PID_k=1e-2 "Controller gain: +/- for direct/reverse acting" annotation(Dialog(group="PI Parameters"));
+   parameter Modelica.Units.SI.Time PID_Ti=0.5
+    "Time constant of Integrator block" annotation(Dialog(group="PI Parameters"));
+   parameter Real PID_wp=1 "Set-point weight for Proportional block (0..1)" annotation(Dialog(group="PI Parameters"));
+   parameter Real PID_Ni=0.9
+    "Ni*Ti is time constant of anti-windup compensation" annotation(Dialog(group="PI Parameters"));
+   parameter Modelica.Media.Interfaces.PartialMedium.MassFlowRate m_flow_nominal=FlowRate_target
+    "Nominal mass flowrate at full opening" annotation(Dialog(group="Valve Nominal Values"));
+   parameter Modelica.Units.SI.AbsolutePressure dp_nominal=1e5
+    "Nominal pressure drop at full opening" annotation(Dialog(group="Valve Nominal Values"));
+   TRANSFORM.Fluid.Valves.ValveLinear valveLinear(redeclare package Medium =
         Medium,
     dp_nominal=dp_nominal,
     m_flow_nominal=m_flow_nominal)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Medium)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Medium)
     annotation (Placement(transformation(extent={{20,10},{40,-10}})));
   TRANSFORM.Controls.LimPID PID(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -24,8 +43,6 @@ model FlowCV "Flow control valve"
         origin={0,30})));
   Modelica.Blocks.Sources.RealExpression initValvePos(y=ValvePos_start)
     annotation (Placement(transformation(extent={{40,32},{20,52}})));
-  parameter Modelica.Blocks.Interfaces.RealOutput ValvePos_start=0.1
-    "Initail Valve Position";
   Modelica.Blocks.Logical.Switch initSwitch annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
@@ -33,12 +50,11 @@ model FlowCV "Flow control valve"
         origin={-30,16})));
   Modelica.Blocks.Sources.RealExpression flowRate_nom(y=FlowRate_target)
     annotation (Placement(transformation(extent={{-120,100},{-100,120}})));
-  parameter Modelica.Units.SI.MassFlowRate FlowRate_target=10
-    "Target Mass Flow Rate";
+
   Modelica.Blocks.Sources.BooleanStep booleanStep(startTime=init_time,
       startValue=true)
     annotation (Placement(transformation(extent={{-80,-42},{-60,-22}})));
-  parameter Modelica.Units.SI.Time init_time=0 "Time instant of step start";
+
   Modelica.Blocks.Logical.Switch inputSwitch annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
@@ -46,19 +62,14 @@ model FlowCV "Flow control valve"
         origin={-70,70})));
   Modelica.Blocks.Sources.BooleanConstant booleanConstant(k=Use_input)
     annotation (Placement(transformation(extent={{-120,60},{-100,80}})));
-  parameter Boolean Use_input=true "Constant output value";
+
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium =
         Medium)
     annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_b(redeclare package Medium =
         Medium)
     annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-  parameter Real PID_k=1e-2 "Controller gain: +/- for direct/reverse acting";
-  parameter Modelica.Units.SI.Time PID_Ti=0.5
-    "Time constant of Integrator block";
-  parameter Real PID_wp=1 "Set-point weight for Proportional block (0..1)";
-  parameter Real PID_Ni=0.9
-    "Ni*Ti is time constant of anti-windup compensation";
+
   Modelica.Blocks.Interfaces.RealInput target_value if Use_input annotation (
       Placement(transformation(
         origin={0,80},
@@ -67,12 +78,7 @@ model FlowCV "Flow control valve"
         extent={{-20,-20},{20,20}},
         rotation=270,
         origin={0,80})));
-  replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
-    annotation (choicesAllMatching=true);
-  parameter Modelica.Media.Interfaces.PartialMedium.MassFlowRate m_flow_nominal=FlowRate_target
-    "Nominal mass flowrate at full opening";
-  parameter Modelica.Units.SI.AbsolutePressure dp_nominal=1e5
-    "Nominal pressure drop at full opening";
+
   Modelica.Blocks.Sources.RealExpression zero(y=0) if not Use_input
     annotation (Placement(transformation(extent={{-120,28},{-100,48}})));
 equation
