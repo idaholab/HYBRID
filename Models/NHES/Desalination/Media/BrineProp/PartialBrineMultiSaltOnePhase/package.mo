@@ -101,7 +101,7 @@ constant Modelica.Units.SI.MolarMass[:] MM_vec=cat(
     input SpecificEnthalpy h "Specific enthalpy";
     input MassFraction X[nX] "Mass fractions";
     output Temperature T "Temperature";
-protected
+  protected
   Modelica.Units.SI.SpecificHeatCapacity c_p;
   Modelica.Units.SI.Temperature T_a=273.16;
     //  SI.Temperature T0_a=273.16;
@@ -211,7 +211,7 @@ protected
   end dynamicViscosity_pTX;
 
   redeclare replaceable function extends isobaricExpansionCoefficient
-protected
+  protected
   constant Modelica.Units.SI.Temperature Delta_T=1;
 
   algorithm
