@@ -31,10 +31,10 @@ model L3_test
   TRANSFORM.Electrical.Sources.FrequencySource boundary
     annotation (Placement(transformation(extent={{80,-10},{60,10}})));
 equation
-  connect(pHTGR_BOPinit2_1.port_b_liquid_return, pipe.port_a) annotation (
-      Line(points={{-40,-24},{-92,-24},{-92,-10}}, color={0,127,255}));
-  connect(pipe.port_b, pHTGR_BOPinit2_1.port_a_steam_in) annotation (Line(
-        points={{-92,10},{-92,24},{-40,24}}, color={0,127,255}));
+  connect(pHTGR_BOPinit2_1.port_b_feed, pipe.port_a) annotation (Line(points={{
+          -40,-24},{-92,-24},{-92,-10}}, color={0,127,255}));
+  connect(pipe.port_b, pHTGR_BOPinit2_1.port_a_steam)
+    annotation (Line(points={{-92,10},{-92,24},{-40,24}}, color={0,127,255}));
   connect(bypassdump.ports[1], pHTGR_BOPinit2_1.port_b_bypass)
     annotation (Line(points={{-58,0},{-40,0}}, color={0,127,255}));
   connect(steamdump.ports[1], pHTGR_BOPinit2_1.prt_b_steamdump)

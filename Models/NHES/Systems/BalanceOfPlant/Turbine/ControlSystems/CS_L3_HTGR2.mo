@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_L3_SMR2
+model CS_L3_HTGR2
 
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
@@ -19,13 +19,13 @@ model CS_L3_SMR2
                           Placement(transformation(extent={{-100,-40},{-80,
             -20}})));
   TRANSFORM.Controls.LimPID FeedPump_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=5e-1,
+    k=-5e-4,
     Ti=30,
     yMax=2*data.mdot_total,
     yMin=data.mdot_total*0.5)
     annotation (Placement(transformation(extent={{-10,80},{10,100}})));
   TRANSFORM.Controls.LimPID TCV_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-3e-9,
+    k=-5e-9,
     Ti=360,
     yMax=1,
     yMin=0)
@@ -37,8 +37,8 @@ model CS_L3_SMR2
     yMin=0)
     annotation (Placement(transformation(extent={{-10,-40},{10,-20}})));
   TRANSFORM.Controls.LimPID LPT2_BV_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-4,
-    Ti=15,
+    k=5e-7,
+    Ti=20,
     yMax=1,
     yMin=0)
     annotation (Placement(transformation(extent={{-10,44},{10,64}})));
@@ -64,7 +64,7 @@ model CS_L3_SMR2
     annotation (Placement(transformation(extent={{4,62},{24,82}})));
   Modelica.Blocks.Logical.Switch switch2
     annotation (Placement(transformation(extent={{38,72},{58,92}})));
-  Modelica.Blocks.Sources.BooleanStep booleanStep(startTime=2)
+  Modelica.Blocks.Sources.BooleanStep booleanStep(startTime=4000)
     annotation (Placement(transformation(extent={{-10,114},{10,134}})));
   Modelica.Blocks.Logical.Switch switch3
     annotation (Placement(transformation(extent={{-54,60},{-34,80}})));
@@ -74,7 +74,7 @@ model CS_L3_SMR2
     annotation (Placement(transformation(extent={{156,82},{176,102}})));
   Modelica.Blocks.Logical.Switch switch5
     annotation (Placement(transformation(extent={{204,40},{224,60}})));
-  Modelica.Blocks.Sources.RealExpression T_in_set2(y=1)
+  Modelica.Blocks.Sources.RealExpression T_in_set2(y=0.03)
     annotation (Placement(transformation(extent={{170,32},{190,52}})));
 
 equation
@@ -200,22 +200,22 @@ equation
           {138,22},{16,22},{16,42},{0,42}}, color={0,0,127}));
   connect(T_feed_set.y, LPT2_BV_PID.u_s) annotation (Line(points={{-79,50},{-40,
           50},{-40,54},{-12,54}}, color={0,0,127}));
-  connect(LPT2_BV_PID.y, switch5.u1) annotation (Line(points={{11,54},{188,54},{
-          188,58},{202,58}},  color={0,0,127}));
+  connect(LPT2_BV_PID.y, switch5.u1) annotation (Line(points={{11,54},{188,54},
+          {188,58},{202,58}}, color={0,0,127}));
+  connect(T_in_set2.y, switch5.u3)
+    annotation (Line(points={{191,42},{202,42}}, color={0,0,127}));
   connect(actuatorBus.LPT2_BV, switch5.y) annotation (Line(
-      points={{30,-100},{30,20},{232,20},{232,50},{225,50}},
+      points={{30,-100},{30,8},{254,8},{254,50},{225,50}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
       string="%first",
       index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
-  connect(T_in_set2.y, switch5.u3)
-    annotation (Line(points={{191,42},{202,42}}, color={0,0,127}));
+      extent={{6,3},{6,3}},
+      horizontalAlignment=TextAlignment.Left));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics),
     experiment(
       StopTime=1000,
       Interval=5,
       __Dymola_Algorithm="Esdirk45a"));
-end CS_L3_SMR2;
+end CS_L3_HTGR2;

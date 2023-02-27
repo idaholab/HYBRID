@@ -16,48 +16,55 @@ model Rankine_HTGR_ThreeStageTurbine_OFWH
     annotation (Placement(transformation(extent={{-42,34},{-2,64}})));
   Fluid.Sensors.stateDisplay stateDisplay1
     annotation (Placement(transformation(extent={{-42,-10},{-2,-40}})));
-  BalanceOfPlant.Turbine.SteamTurbine_L3_HPOFWH
-                         BOP(redeclare replaceable
-      BalanceOfPlant.Turbine.ControlSystems.CS_L3_HTGR CS(data(
-        Power_nom=1e12,
+  BalanceOfPlant.Turbine.SteamTurbine_L3_HPOFWH BOP(
+    redeclare replaceable
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_L3_HTGR CS(data(
+        Power_nom=80e6,
         HPT_p_in=14000000,
         p_dump=16000000,
         Tin=788.15,
         Tfeed=481.15,
         d_HPT_in(displayUnit="kg/m3") = 43.049187,
-        d_LPT1_in(displayUnit="kg/m3") = 1.7833416,
+        d_LPT1_in(displayUnit="kg/m3") = 1.783316,
         d_LPT2_in(displayUnit="kg/m3"),
         mdot_total=50.55,
-        mdot_hpt=50.55)), redeclare replaceable
-      BalanceOfPlant.Turbine.Data.Data_L3 data(
-      Power_nom=50e6,
+        mdot_fh=10.6,
+        mdot_hpt=39.945,
+        mdot_lpt1=39.945,
+        mdot_lpt2=35.7553,
+        eta_t=0.9,
+        eta_mech=0.95)),
+    redeclare replaceable BalanceOfPlant.Turbine.Data.Data_L3 data(
+      Power_nom=80e6,
       HPT_p_in=14000000,
       p_dump=16000000,
-      p_i1=1000000,
-      p_i2=150000,
       Tin=788.15,
-      Tfeed=373.15,
+      Tfeed=481.15,
       d_HPT_in(displayUnit="kg/m3") = 43.049187,
-      d_LPT1_in(displayUnit="kg/m3") = 1.7833416,
-      d_LPT2_in(displayUnit="kg/m3") = 0.8625464,
+      d_LPT1_in(displayUnit="kg/m3") = 1.783316,
+      d_LPT2_in(displayUnit="kg/m3"),
       mdot_total=50.55,
       mdot_fh=10.6,
       mdot_hpt=39.945,
       mdot_lpt1=39.945,
-      mdot_lpt2=35.7553))
-    annotation (Placement(transformation(extent={{40,-20},{100,40}})));
+      mdot_lpt2=35.7553,
+      eta_t=0.9,
+      eta_mech=0.95),
+    OFWH_1(T_start=333.15),
+    OFWH_2(T_start=353.15))
+    annotation (Placement(transformation(extent={{58,-26},{138,54}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT bypassdump(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=280000,
-    nPorts=2)
-    annotation (Placement(transformation(extent={{14,4},{34,24}})));
+    nPorts=1)
+    annotation (Placement(transformation(extent={{0,-66},{20,-46}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT steamdump(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
-    p=10000000,
+    p=3400000,
     nPorts=1)
-    annotation (Placement(transformation(extent={{12,44},{32,64}})));
+    annotation (Placement(transformation(extent={{0,74},{20,94}})));
   TRANSFORM.Electrical.Sources.FrequencySource boundary
-    annotation (Placement(transformation(extent={{172,4},{152,24}})));
+    annotation (Placement(transformation(extent={{180,4},{160,24}})));
 equation
   hTGR_PebbleBed_Primary_Loop.input_steam_pressure =BOP.TCV.port_a.p;
   connect(hTGR_PebbleBed_Primary_Loop.port_b, stateSensor1.port_a) annotation (
@@ -69,22 +76,20 @@ equation
   connect(stateSensor2.statePort, stateDisplay1.statePort)
     annotation (Line(points={{-22.04,0.05},{-22,-21.1}}, color={0,0,0}));
   connect(bypassdump.ports[1],BOP. port_b_bypass)
-    annotation (Line(points={{34,14},{36,14},{36,10},{40,10}},
-                                               color={0,127,255}));
+    annotation (Line(points={{20,-56},{48,-56},{48,14},{58,14}},
+                                             color={0,127,255}));
   connect(steamdump.ports[1],BOP. prt_b_steamdump)
-    annotation (Line(points={{32,54},{40,54},{40,40}},
-                                                 color={0,127,255}));
+    annotation (Line(points={{20,84},{50,84},{50,54},{58,54}},
+                                               color={0,127,255}));
   connect(boundary.port,BOP. port_a_elec)
-    annotation (Line(points={{152,14},{110,14},{110,10},{100,10}},
-                                             color={255,0,0}));
-  connect(stateSensor1.port_b, BOP.port_a_steam_in) annotation (Line(points={{-14,26},
-          {0,26},{0,28},{40,28}},       color={0,127,255}));
-  connect(BOP.port_b_liquid_return, stateSensor2.port_a) annotation (Line(
-        points={{40,-8},{2,-8},{2,0},{-14,0}},   color={0,127,255}));
-  connect(bypassdump.ports[2], BOP.port_b_bypass) annotation (Line(points={{34,
-          14},{36,14},{36,10},{40,10}}, color={0,127,255}));
+    annotation (Line(points={{160,14},{138,14}},
+                                               color={255,0,0}));
+  connect(BOP.port_a_steam, stateSensor1.port_b) annotation (Line(points={{58,
+          38},{4,38},{4,26},{-14,26}}, color={0,127,255}));
+  connect(stateSensor2.port_a, BOP.port_b_feed) annotation (Line(points={{-14,0},
+          {48,0},{48,-10},{58,-10}}, color={0,127,255}));
   annotation (experiment(
-      StopTime=100000,
+      StopTime=2000000,
       Interval=100,
       __Dymola_Algorithm="Esdirk45a"), Documentation(info="<html>
 <p>Test of Pebble_Bed_Three-Stage_Rankine. The simulation should experience transient where external electricity demand is oscilating and control valves are opening and closing corresponding to the required power demand. </p>

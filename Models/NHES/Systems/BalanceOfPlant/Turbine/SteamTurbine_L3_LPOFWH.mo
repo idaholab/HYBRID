@@ -8,11 +8,11 @@ model SteamTurbine_L3_LPOFWH
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.ED_Dummy ED,
     redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.Data_L3 data);
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_steam_in(redeclare package
-      Medium =         Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_steam(redeclare package
+      Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-110,50},{-90,70}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_State port_b_liquid_return(
-      redeclare package Medium = Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Interfaces.FluidPort_State port_b_feed(redeclare package
+      Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-110,-70},{-90,-50}})));
   TRANSFORM.Fluid.Machines.SteamTurbine HPT(
     eta_mech=data.eta_mech,
@@ -120,13 +120,13 @@ model SteamTurbine_L3_LPOFWH
         origin={100,44})));
   TRANSFORM.Electrical.Interfaces.ElectricalPowerPort_Flow port_a_elec
     annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-  Fluid.Machines.Pump_Pressure                  pump(redeclare package Medium =
-        Modelica.Media.Water.StandardWater,
+  Fluid.Machines.Pump_Pressure                  pump(redeclare package Medium
+      = Modelica.Media.Water.StandardWater,
     p_nominal=data.p_i2 - 0.2e5,
     eta=data.eta_p)
     annotation (Placement(transformation(extent={{66,-70},{46,-50}})));
-  Fluid.Machines.Pump_Pressure                  pump1(redeclare package Medium =
-        Modelica.Media.Water.StandardWater,
+  Fluid.Machines.Pump_Pressure                  pump1(redeclare package Medium
+      = Modelica.Media.Water.StandardWater,
     use_input=false,
     p_nominal=data.p_i2,
     eta=data.eta_p)
@@ -182,13 +182,13 @@ model SteamTurbine_L3_LPOFWH
         extent={{10,10},{-10,-10}},
         rotation=90,
         origin={100,20})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_State port_b_condensor(redeclare package
-      Medium =         Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_cond(redeclare package
+      Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{90,-50},{110,-30}})));
 equation
   connect(TBV.port_a, SteamHeader.port_b)
     annotation (Line(points={{-74,72},{-74,60},{-80,60}}, color={0,127,255}));
-  connect(SteamHeader.port_a, port_a_steam_in)
+  connect(SteamHeader.port_a, port_a_steam)
     annotation (Line(points={{-92,60},{-100,60}}, color={0,127,255}));
   connect(TBV.port_b, prt_b_steamdump) annotation (Line(points={{-74,92},{-74,
           100},{-100,100}}, color={0,127,255}));
@@ -221,7 +221,7 @@ equation
           {34,-46},{-14,-46},{-14,-60},{-22,-60}},         color={0,127,255}));
   connect(FWCP.port_a, OFWH_2.port_a)
     annotation (Line(points={{-46,-60},{-34,-60}}, color={0,127,255}));
-  connect(FWCP.port_b, port_b_liquid_return)
+  connect(FWCP.port_b, port_b_feed)
     annotation (Line(points={{-66,-60},{-100,-60}}, color={0,127,255}));
   connect(HPT.portLP, LPT1_bypass.port_1)
     annotation (Line(points={{-26,60},{-20,60}}, color={0,127,255}));
@@ -312,8 +312,8 @@ equation
     annotation (Line(points={{100,34},{100,30}}, color={255,0,0}));
   connect(port_a_elec, sensorW.port_b)
     annotation (Line(points={{100,0},{100,10}}, color={255,0,0}));
-  connect(condenser.port_a, port_b_condensor) annotation (Line(points={{93,
-          -43},{93,-40},{100,-40}}, color={0,127,255}));
+  connect(condenser.port_a, port_a_cond)
+    annotation (Line(points={{93,-43},{93,-40},{100,-40}}, color={0,127,255}));
   connect(actuatorBus.Feed_Pump_Speed, FWCP.inputSignal) annotation (Line(
       points={{30,100},{30,-18},{-22,-18},{-22,-36},{-56,-36},{-56,-52.7}},
       color={111,216,99},
