@@ -15,9 +15,11 @@ model SFR_Example_02
     p=100000,
     T=673.15,
     nPorts=1) annotation (Placement(transformation(extent={{86,24},{66,44}})));
-  Modelica.Blocks.Sources.Constant const(k=270 + 273.15)
+  Modelica.Blocks.Sources.Constant const(k=245 + 273.15)
     annotation (Placement(transformation(extent={{126,-4},{106,16}})));
-  Components.SFR_02_NTUHX sFR_02_NTUHX(redeclare package Medium_IHX_Loop =
+  Components.SFR_02_NTUHX sFR_02_NTUHX(redeclare
+      NHES.Systems.PrimaryHeatSystem.SFR.CS_01 CS(rho_CR_Init=-1),
+                                       redeclare package Medium_IHX_Loop =
         IL_Medium)
     annotation (Placement(transformation(extent={{-108,-22},{-30,56}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium = IL_Medium)
