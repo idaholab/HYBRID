@@ -46,7 +46,7 @@ equation
   connect(stateSensor2.statePort, stateDisplay1.statePort)
     annotation (Line(points={{-22.04,0.05},{-22,-21.1}}, color={0,0,0}));
   annotation (experiment(
-      StopTime=1070000,
+      StopTime=50000,
       Interval=1000,
       __Dymola_Algorithm="Esdirk45a"), Documentation(info="<html>
 <p>Test of Pebble_Bed_Three-Stage_Rankine. The simulation should experience transient where external electricity demand is oscilating and control valves are opening and closing corresponding to the required power demand. </p>

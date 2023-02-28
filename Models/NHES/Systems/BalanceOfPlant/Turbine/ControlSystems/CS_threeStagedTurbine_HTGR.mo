@@ -118,12 +118,12 @@ model CS_threeStagedTurbine_HTGR
   Modelica.Blocks.Sources.Trapezoid trap_LTV1bypass_power(
     amplitude=-16e6,
     rising=7200,
-    width=36000,
+    width=3600,
     falling=7200,
-    period=86400,
+    period=21600,
     nperiod=-1,
     offset=44e6,
-    startTime=1e5)
+    startTime=1e4)
     annotation (Placement(transformation(extent={{-150,112},{-134,128}})));
   Modelica.Blocks.Sources.Constant RPM_TEST(k=1000)
     annotation (Placement(transformation(extent={{42,90},{50,98}})));
