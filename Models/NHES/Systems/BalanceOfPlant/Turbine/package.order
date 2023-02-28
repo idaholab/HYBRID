@@ -6,6 +6,7 @@ SteamTurbine_Basic_NoFeedHeat
 SteamTurbine_OpenFeedHeat_DivertPowerControl
 SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop
 SteamTurbine_Basic_DirectCoupling
+SteamTurbine_Basic_NoFeedHeat_mFlow_Control
 Dummy_BOP
 ControlSystems
 Data
