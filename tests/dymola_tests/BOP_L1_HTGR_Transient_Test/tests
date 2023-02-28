@@ -1,0 +1,12 @@
+[Tests]
+ [./]
+  #REQUIREMENT: R-F-1
+  type = 'HYBRIDTester'
+  input = 'Rankine_HTGR_OneStageTurbine_Transient.mos'
+  workingDir = '.'
+  output = 'Rankine_HTGR_OneStageTurbine_Transient.mat'
+  dymola_mats = 'Rankine_HTGR_OneStageTurbine_Transient.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]
