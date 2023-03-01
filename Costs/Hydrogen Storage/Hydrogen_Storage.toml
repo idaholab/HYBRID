@@ -1,0 +1,12 @@
+[HydrogenStorage]
+Lifetime = 30 #years
+
+	[HydrogenStorage.Economics]
+	capex = 600 # $/kg Reference is INL/EXT-19-55395
+	FOM = 0 
+	VOM = 0 # Just a placeholder to make sure it passes through
+	reference_size = 1 #kg of Storage
+	Economies_of_scale = 1
+	Amortization_lifetime= 5 #years
+
+

@@ -1,0 +1,12 @@
+[HTSE]
+Lifetime = 20 #years
+
+	[HTSE.Economics]
+	capex = 545263737 #Reference is INL/EXT-19-55395
+	FOM = 70752705 
+	VOM = 100 # Just a placeholder to make sure it passes through
+	reference_size = 7.4 #kg/s of Hydrogen
+	Economies_of_scale = 0.955
+	Amortization_lifetime= 15 #years
+
+
