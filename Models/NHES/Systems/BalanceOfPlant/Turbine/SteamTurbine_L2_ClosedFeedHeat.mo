@@ -333,14 +333,14 @@ equation
   connect(R_InternalBypass.port_b, BypassFeedwaterHeater.Shell_in) annotation (
       Line(points={{-24,-9},{-24,-34},{-20,-34}}, color={0,127,255}));
   connect(BypassFeedwaterHeater.Shell_out, FeedwaterMixVolume.port_a[1])
-    annotation (Line(points={{0,-34},{30,-34},{30,-80},{33.3333,-80},{33.3333,
+    annotation (Line(points={{0,-34},{30,-34},{30,-80},{33.6667,-80},{33.6667,
           -88}},                   color={0,127,255}));
   connect(LPT_Bypass.port_b, FeedwaterMixVolume.port_a[2])
     annotation (Line(points={{84,-36},{84,-44},{72,-44},{72,-58},{34,-58},{34,
           -88}},                                          color={0,127,255}));
   connect(Moisture_Separator.port_Liquid, FeedwaterMixVolume.port_a[3])
-    annotation (Line(points={{64,36},{64,-44},{72,-44},{72,-58},{34.6667,-58},{
-          34.6667,-88}},
+    annotation (Line(points={{64,36},{64,-44},{72,-44},{72,-58},{34.3333,-58},{
+          34.3333,-88}},
                  color={0,127,255}));
 
   connect(LPT.shaft_b, generator1.shaft_a)
@@ -389,7 +389,7 @@ equation
   connect(R_entry.port_b, header.port_a[1])
     annotation (Line(points={{-125,40},{-118,40}}, color={0,127,255}));
   connect(header.port_b[1], TCV.port_a)
-    annotation (Line(points={{-106,39.5},{-60,39.5},{-60,40},{-12,40}},
+    annotation (Line(points={{-106,39.75},{-60,39.75},{-60,40},{-12,40}},
                                                   color={0,127,255}));
   connect(actuatorBus.Feed_Pump_Speed, pump_SimpleMassFlow1.in_m_flow)
     annotation (Line(
@@ -414,8 +414,8 @@ equation
       index=-1,
       extent={{-3,6},{-3,6}},
       horizontalAlignment=TextAlignment.Right));
-  connect(InternalBypassValve.port_a, header.port_b[2]) annotation (Line(points=
-         {{-82,20},{-104,20},{-104,40},{-106,40},{-106,40.5}}, color={0,127,255}));
+  connect(InternalBypassValve.port_a, header.port_b[2]) annotation (Line(points={{-82,20},
+          {-104,20},{-104,40},{-106,40},{-106,40.25}},         color={0,127,255}));
   connect(InternalBypassValve.port_b, R_InternalBypass.port_a)
     annotation (Line(points={{-62,20},{-24,20},{-24,5}}, color={0,127,255}));
   connect(firstfeedpump.port_b, sensor_T4.port_b) annotation (Line(points={{98,-144},

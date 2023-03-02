@@ -23,6 +23,7 @@ CS_SteamTurbine_L2_PressurePowerFeedtemp_HTGR
 CS_Rankine_Xe100_Based_Secondary_TransientControl
 CS_threeStagedTurbine_HTGR
 CS_L3
-CS_L3_HTGR2
 CS_L3_SMR
 CS_L3_HTGR
+CS_L3_SFR
+CS_L2

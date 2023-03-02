@@ -96,11 +96,11 @@ package HRSG "Heat Recovery Steam Generators"
         Medium =
           Modelica.Media.Water.StandardWater) annotation (Placement(transformation(extent={{-10,150},{10,170}}), iconTransformation(extent={{-10,150},
               {10,170}})));
-    Modelica.Fluid.Sensors.MassFlowRate massFlowRate(redeclare package Medium
-        = Modelica.Media.Water.StandardWater)
+    Modelica.Fluid.Sensors.MassFlowRate massFlowRate(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
       annotation (Placement(transformation(extent={{-104,28},{-84,48}})));
-    Modelica.Fluid.Sensors.MassFlowRate massFlowRate1(redeclare package Medium
-        = Modelica.Media.Water.StandardWater,                                                                        allowFlowReversal=false)
+    Modelica.Fluid.Sensors.MassFlowRate massFlowRate1(redeclare package Medium =
+          Modelica.Media.Water.StandardWater,                                                                        allowFlowReversal=false)
       annotation (Placement(transformation(extent={{-10,-10},{10,10}},
           rotation=90,
           origin={82,70})));

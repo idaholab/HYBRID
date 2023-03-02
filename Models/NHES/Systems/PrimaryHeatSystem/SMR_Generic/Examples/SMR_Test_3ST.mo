@@ -72,9 +72,9 @@ equation
   connect(boundary.port, BOP.port_a_elec)
     annotation (Line(points={{120,20},{100,20}},
                                                color={255,0,0}));
-  connect(nuScale_Tave_enthalpy_Pressurizer_CR.port_b, BOP.port_a_steam_in)
+  connect(nuScale_Tave_enthalpy_Pressurizer_CR.port_b, BOP.port_a_steam)
     annotation (Line(points={{-18.4,44},{20,44}}, color={0,127,255}));
-  connect(BOP.port_b_liquid_return, nuScale_Tave_enthalpy_Pressurizer_CR.port_a)
+  connect(BOP.port_b_feed, nuScale_Tave_enthalpy_Pressurizer_CR.port_a)
     annotation (Line(points={{20,-4},{-10,-4},{-10,17.6},{-18.4,17.6}}, color={
           0,127,255}));
   annotation (
