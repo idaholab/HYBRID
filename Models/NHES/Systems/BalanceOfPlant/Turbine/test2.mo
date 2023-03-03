@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
-model SteamTurbine_L1_boundaries
+model test2
 
   extends BaseClasses.Partial_SubSystem_B(
     redeclare replaceable ControlSystems.CS_Dummy CS,
@@ -471,4 +471,4 @@ end for;
           fillPattern=FillPattern.HorizontalCylinder)}),
     Diagram(coordinateSystem(extent={{-160,-160},{160,140}})),
     experiment(StopTime=1000));
-end SteamTurbine_L1_boundaries;
+end test2;
