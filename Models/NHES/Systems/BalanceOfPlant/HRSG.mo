@@ -208,7 +208,8 @@ package HRSG "Heat Recovery Steam Generators"
           extent={{-10,-10},{10,10}},
           rotation=180,
           origin={-58,38})));
-    NEUP.Steam_Drum steam_Drum(
+    Fluid.Vessels.Steam_Drum
+                    steam_Drum(
       p_start=P_sys,
       alphag_start=0.5,
       V_drum=10)

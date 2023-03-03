@@ -24,8 +24,8 @@ model TemperatureCV "Temperature Control Valve"
     m_flow_nominal=m_flow_nominal)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
-                                       sensor_T(     redeclare package Medium
-      = Medium)
+                                       sensor_T(     redeclare package Medium =
+        Medium)
     annotation (Placement(transformation(extent={{-82,10},{-62,-10}})));
   TRANSFORM.Controls.LimPID PID(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
