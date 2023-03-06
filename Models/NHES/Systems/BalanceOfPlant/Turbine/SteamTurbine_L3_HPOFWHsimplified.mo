@@ -176,7 +176,7 @@ model SteamTurbine_L3_HPOFWHsimplified
     annotation (Placement(transformation(extent={{90,-50},{110,-30}})));
   Fluid.Pipes.NonLinear_Break delay2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{-24,-62},{-32,-42}})));
+    annotation (Placement(transformation(extent={{-18,-56},{-26,-36}})));
   Fluid.Pipes.NonLinear_Break delay2_1(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-34,64},{-26,84}})));
@@ -306,10 +306,10 @@ equation
         ={{44,58},{46,58},{46,60},{74,60}}, color={0,127,255}));
   connect(port_b_feed, Feed_T.port)
     annotation (Line(points={{-100,-60},{-90,-60}}, color={0,127,255}));
-  connect(delay2.port_b, OFWH_2.port_b) annotation (Line(points={{-32,-52},{-30,
-          -52},{-30,-60},{-22,-60}}, color={0,127,255}));
-  connect(delay2.port_a, HPT_bypass_valve.port_b) annotation (Line(points={{-24,-52},
-          {-10,-52},{-10,-34},{-38,-34},{-38,-26}},      color={0,127,255}));
+  connect(delay2.port_b, OFWH_2.port_b) annotation (Line(points={{-26,-46},{-30,
+          -46},{-30,-60},{-22,-60}}, color={0,127,255}));
+  connect(delay2.port_a, HPT_bypass_valve.port_b) annotation (Line(points={{-18,-46},
+          {-10,-46},{-10,-34},{-38,-34},{-38,-26}},      color={0,127,255}));
   connect(delay2_1.port_a, TCV.port_b) annotation (Line(points={{-34,74},{-50,
           74},{-50,60},{-58,60}}, color={0,127,255}));
   connect(HPT.portHP, delay2_1.port_b) annotation (Line(points={{-42,60},{-46,
