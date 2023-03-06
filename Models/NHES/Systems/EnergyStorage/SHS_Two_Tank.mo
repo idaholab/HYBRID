@@ -581,11 +581,12 @@ package SHS_Two_Tank
         V_Shell=data.DHX_v_shell,
         p_start_tube=data.DHX_p_start_tube,
         use_T_start_tube=true,
-        T_start_tube_inlet=573.15,
-        T_start_tube_outlet=573.15,
+        T_start_tube_inlet=data.hot_tank_init_temp,
+        T_start_tube_outlet=data.cold_tank_init_temp,
         h_start_tube_inlet=data.DHX_h_start_tube_inlet,
         h_start_tube_outlet=data.DHX_h_start_tube_outlet,
         p_start_shell=data.DHX_p_start_shell,
+        use_T_start_shell=false,
         h_start_shell_inlet=data.DHX_h_start_shell_inlet,
         h_start_shell_outlet=data.DHX_h_start_shell_outlet,
         dp_init_tube=data.DHX_dp_init_tube,
@@ -595,7 +596,9 @@ package SHS_Two_Tank
             rotation=270,
             origin={72,20})));
       TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium
-          = Storage_Medium, redeclare model Geometry =
+          = Storage_Medium,
+        T_start=data.cold_tank_init_temp,
+                            redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=data.ctvolume_volume))
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},
@@ -623,6 +626,7 @@ package SHS_Two_Tank
       TRANSFORM.Fluid.Machines.Pump discharge_pump(
         redeclare package Medium = Storage_Medium,
         V=data.discharge_pump_volume,
+        T_start=data.hot_tank_init_temp,
         diameter=data.discharge_pump_diameter,
         redeclare model FlowChar =
             TRANSFORM.Fluid.ClosureRelations.PumpCharacteristics.Models.Head.PerformanceCurve
@@ -663,6 +667,7 @@ package SHS_Two_Tank
       TRANSFORM.Fluid.Machines.Pump charge_pump(
         redeclare package Medium = Storage_Medium,
         V=data.charge_pump_volume,
+        T_start=data.cold_tank_init_temp,
         diameter=data.charge_pump_diamter,
         redeclare model FlowChar =
             TRANSFORM.Fluid.ClosureRelations.PumpCharacteristics.Models.Head.PerformanceCurve
@@ -731,8 +736,8 @@ package SHS_Two_Tank
         V_Tube=10,
         V_Shell=25,
         use_T_start_tube=true,
-        T_start_tube_inlet=573.15,
-        T_start_tube_outlet=573.15,
+        T_start_tube_inlet=data.cold_tank_init_temp,
+        T_start_tube_outlet=data.hot_tank_init_temp,
         dp_init_tube=20000,
         Q_init=1)          annotation (Placement(transformation(
             extent={{10,-10},{-10,10}},
@@ -1253,8 +1258,8 @@ package SHS_Two_Tank
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={8,14})));
-      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium
-          = Storage_Medium, redeclare model Geometry =
+      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium =
+            Storage_Medium, redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=1.0))
         annotation (Placement(transformation(extent={{10,-10},{-10,10}},
@@ -1621,8 +1626,8 @@ package SHS_Two_Tank
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={8,14})));
-      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium
-          = Storage_Medium, redeclare model Geometry =
+      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium =
+            Storage_Medium, redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=1.0))
         annotation (Placement(transformation(extent={{10,-10},{-10,10}},
@@ -2265,8 +2270,8 @@ package SHS_Two_Tank
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={8,14})));
-      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium
-          = Storage_Medium, redeclare model Geometry =
+      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium =
+            Storage_Medium, redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=data.ctvolume_volume))
         annotation (Placement(transformation(extent={{10,-10},{-10,10}},
@@ -2872,8 +2877,8 @@ package SHS_Two_Tank
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={8,14})));
-      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium
-          = Storage_Medium, redeclare model Geometry =
+      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium =
+            Storage_Medium, redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=data.ctvolume_volume))
         annotation (Placement(transformation(extent={{10,-10},{-10,10}},
@@ -3457,8 +3462,8 @@ package SHS_Two_Tank
             extent={{-10,10},{10,-10}},
             rotation=270,
             origin={72,20})));
-      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium
-          = Storage_Medium, redeclare model Geometry =
+      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium =
+            Storage_Medium, redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=data.ctvolume_volume))
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},
@@ -4045,8 +4050,8 @@ package SHS_Two_Tank
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={8,14})));
-      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium
-          = Storage_Medium, redeclare model Geometry =
+      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium =
+            Storage_Medium, redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=data.ctvolume_volume))
         annotation (Placement(transformation(extent={{10,-10},{-10,10}},
@@ -4625,8 +4630,8 @@ package SHS_Two_Tank
             extent={{-10,10},{10,-10}},
             rotation=270,
             origin={72,20})));
-      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium
-          = Storage_Medium, redeclare model Geometry =
+      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium =
+            Storage_Medium, redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=data.ctvolume_volume))
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},
@@ -5251,8 +5256,8 @@ package SHS_Two_Tank
             extent={{-10,10},{10,-10}},
             rotation=270,
             origin={72,20})));
-      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium
-          = Storage_Medium, redeclare model Geometry =
+      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium =
+            Storage_Medium, redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=data.ctvolume_volume))
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},
@@ -5893,8 +5898,8 @@ package SHS_Two_Tank
             extent={{-10,10},{10,-10}},
             rotation=270,
             origin={72,20})));
-      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium
-          = Storage_Medium, redeclare model Geometry =
+      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium =
+            Storage_Medium, redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=data.ctvolume_volume))
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},
@@ -6519,8 +6524,8 @@ package SHS_Two_Tank
             extent={{-10,10},{10,-10}},
             rotation=270,
             origin={72,20})));
-      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium
-          = Storage_Medium, redeclare model Geometry =
+      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium =
+            Storage_Medium, redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=data.ctvolume_volume))
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},
@@ -9160,6 +9165,8 @@ package SHS_Two_Tank
     model CS_BestExample
 
       extends BaseClasses.Partial_ControlSystem;
+      parameter Modelica.Units.SI.Temperature hot_tank_temp = 240+273.15;
+      parameter Modelica.Units.SI.Temperature cold_tank_temp = 180+273.15;
 
       Data.Data_Default data
         annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
@@ -9226,11 +9233,11 @@ package SHS_Two_Tank
         initType=Modelica.Blocks.Types.Init.NoInit,
         y_start=0.0)
         annotation (Placement(transformation(extent={{-40,0},{-34,-6}})));
-      Modelica.Blocks.Sources.Constant one8(k=273.15 + 180)
+      Modelica.Blocks.Sources.Constant one8(k=cold_tank_temp)
         annotation (Placement(transformation(extent={{-52,50},{-46,56}})));
       Modelica.Blocks.Math.Product product3
         annotation (Placement(transformation(extent={{-86,2},{-78,10}})));
-      Modelica.Blocks.Sources.Constant one1(k=240 + 273.15)
+      Modelica.Blocks.Sources.Constant one1(k=hot_tank_temp)
         annotation (Placement(transformation(extent={{-160,2},{-150,12}})));
       Modelica.Blocks.Sources.Constant one9(k=0.015)
         annotation (Placement(transformation(extent={{-86,16},{-80,22}})));
@@ -9247,7 +9254,7 @@ package SHS_Two_Tank
         annotation (Placement(transformation(extent={{-136,4},{-128,12}})));
       Modelica.Blocks.Math.Add add5
         annotation (Placement(transformation(extent={{-116,16},{-110,22}})));
-      Modelica.Blocks.Sources.Constant one10(k=30)
+      Modelica.Blocks.Sources.Constant one10(k=15)
         annotation (Placement(transformation(extent={{-148,26},{-142,32}})));
     equation
 

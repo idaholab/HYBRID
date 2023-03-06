@@ -10,8 +10,10 @@ model HTGR_Case_02_DirectCoupling
     annotation (Placement(transformation(extent={{112,-22},{152,22}})));
   ElectricalGrid.InfiniteGrid.Infinite EG
     annotation (Placement(transformation(extent={{160,-20},{200,20}})));
-  BaseClasses.Data_Capacity dataCapacity(IP_capacity(displayUnit="MW")=
-      53303300, BOP_capacity(displayUnit="MW") = 1165000000)
+  BaseClasses.Data_Capacity dataCapacity(
+    IP_capacity(displayUnit="MW") = 1000000*(1.5*53.3033),
+    BOP_capacity(displayUnit="MW") = 1000000*(0.5*1165),
+    ES_capacity=40e6)
     annotation (Placement(transformation(extent={{-100,82},{-80,102}})));
   Modelica.Blocks.Sources.Constant delayStart(k=0)
     annotation (Placement(transformation(extent={{-60,80},{-40,100}})));

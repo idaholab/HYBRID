@@ -5,7 +5,7 @@ model HTGR_Case_03_OversizedTurbine
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
  parameter SI.Time timeScale=60*60 "Time scale of first table column";
  parameter String fileName=Modelica.Utilities.Files.loadResource(
-    "modelica://NHES/Resources/Data/RAVEN/DMM_Dissertation_Demand.txt")
+    "modelica://NHES/Resources/Data/RAVEN/DMM_Dissertation_Demand_02.txt")
   "File where matrix is stored";
  Real demandChange=
  min(1.05,
@@ -26,6 +26,7 @@ model HTGR_Case_03_OversizedTurbine
     intermediate_Rankine_Cycle_TESUC(
     redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.TESTurbine
       data(
+      Q_Nom=53.5e6,
       p_in_nominal=14000000,
       p_condensor=7000,
       V_condensor=10000,
@@ -61,8 +62,9 @@ model HTGR_Case_03_OversizedTurbine
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_PowerBoostLoop_DivertPowerControl_HTGR
-      CS(electric_demand=sum1.y, data(
+      CS(electric_demand=demand_BOP.y[1], data(
         p_steam=14000000,
+        Q_Nom=53.5e6,
         T_Feedwater=481.15,
         p_steam_vent=16500000,
         m_flow_reactor=50)),
