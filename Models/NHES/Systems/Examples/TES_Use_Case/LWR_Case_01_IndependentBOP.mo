@@ -131,7 +131,7 @@ model LWR_Case_01_IndependentBOP
     annotation (Placement(transformation(extent={{68,-60},{48,-50}})));
   Modelica.Blocks.Sources.Sine sine(
     amplitude=17.5e6,
-    f=1/20000,
+    f=1/19000,
     offset=42e6,
     startTime=2000)
     annotation (Placement(transformation(extent={{-26,72},{-6,92}})));
