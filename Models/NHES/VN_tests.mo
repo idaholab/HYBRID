@@ -137,4 +137,98 @@ package VN_tests
             -26},{-20,-26}}, color={255,0,255}));
     annotation (experiment(StopTime=12, __Dymola_Algorithm="Dassl"));
   end Logic;
+
+  model LooptyLoop
+
+    TRANSFORM.Fluid.Pipes.GenericPipe_MultiTransferSurface hotLeg(
+      redeclare package Medium = Modelica.Media.Water.StandardWater(extraPropertiesNames={"Tritium"}),
+      nParallel=1,
+      p_a_start=100000,
+      p_b_start=100000,
+      T_a_start=323.15,
+      m_flow_a_start=1,
+      redeclare model Geometry =
+          TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.StraightPipe
+          (dimension=0.05, nV=4),
+      redeclare model InternalHeatGen =
+          TRANSFORM.Fluid.ClosureRelations.InternalVolumeHeatGeneration.Models.DistributedVolume_1D.GenericHeatGeneration
+          (Q_gen=kinetics.Q_total/4),
+      redeclare model InternalTraceGen =
+          TRANSFORM.Fluid.ClosureRelations.InternalTraceGeneration.Models.DistributedVolume_Trace_1D.GenericTraceGeneration
+          (mC_gen={1e-4*kinetics.Q_total}))
+                                      annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=90,
+          origin={-30,6})));
+    TRANSFORM.Fluid.Pipes.GenericPipe_MultiTransferSurface coldLeg(
+      redeclare package Medium = Modelica.Media.Water.StandardWater(extraPropertiesNames={"Tritium"}),
+      nParallel=1,
+      p_a_start=100000,
+      p_b_start=100000,
+      T_a_start=323.15,
+      m_flow_a_start=1,
+      redeclare model Geometry =
+          TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.StraightPipe
+          (dimension=0.05, nV=4),
+      use_HeatTransfer=true,
+      redeclare model HeatTransfer =
+          TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_SinglePhase_2Region,
+      use_TraceMassTransfer=true,
+      redeclare model TraceMassTransfer =
+          TRANSFORM.Fluid.ClosureRelations.MassTransfer.Models.DistributedPipe_TraceMass_1D_MultiTransferSurface.AlphasM
+          (redeclare model DiffusionCoeff =
+              TRANSFORM.Media.ClosureModels.MassDiffusionCoefficient.Models.GenericCoefficient
+              (D_ab0=1), alphaM0={1000}),
+      exposeState_a=false,
+      exposeState_b=true) annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=-90,
+          origin={46,0})));
+
+    TRANSFORM.Fluid.Volumes.ExpansionTank tank(
+      redeclare package Medium = Modelica.Media.Water.StandardWater(extraPropertiesNames={"Tritium"}),
+      A=0.0005,
+      p_start=100000,
+      level_start=1,
+      h_start=tank.Medium.specificEnthalpy_pT(tank.p_start, 50 + 273.15))
+      annotation (Placement(transformation(extent={{-16,44},{4,64}})));
+    TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump(redeclare package Medium
+        = Modelica.Media.Water.StandardWater(extraPropertiesNames={"Tritium"}), m_flow_nominal=1)
+      annotation (Placement(transformation(extent={{8,-48},{-12,-28}})));
+    TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Temperature_multi
+      boundary(
+      nPorts=coldLeg.geometry.nV,
+      use_port=false,
+      T=fill(15 + 273.15, boundary.nPorts))
+      annotation (Placement(transformation(extent={{96,-10},{76,10}})));
+    TRANSFORM.Nuclear.ReactorKinetics.PointKinetics_L1_powerBased kinetics(
+      Q_nominal=40000,
+      nFeedback=1,
+      alphas_feedback={-2.5e-5},
+      vals_feedback={
+      if time < 5000
+        then
+        kinetics.vals_feedback_reference[1]
+        else
+      hotLeg.summary.T_effective},
+      vals_feedback_reference={92.67 + 273.15})
+      annotation (Placement(transformation(extent={{-98,10},{-78,30}})));
+    TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Mass.Concentration_multi
+      boundary1(nPorts=4)
+      annotation (Placement(transformation(extent={{90,32},{70,52}})));
+  equation
+    connect(pump.port_b, hotLeg.port_a) annotation (Line(points={{-12,-38},{-30,-38},
+            {-30,-4}}, color={0,127,255}));
+    connect(hotLeg.port_b, tank.port_a)
+      annotation (Line(points={{-30,16},{-30,48},{-13,48}}, color={0,127,255}));
+    connect(tank.port_b, coldLeg.port_a)
+      annotation (Line(points={{1,48},{46,48},{46,10}}, color={0,127,255}));
+    connect(coldLeg.port_b, pump.port_a)
+      annotation (Line(points={{46,-10},{46,-38},{8,-38}}, color={0,127,255}));
+    connect(boundary.port, coldLeg.heatPorts[:, 1]) annotation (Line(points={{76,0},
+            {64,0},{64,-8.88178e-16},{51,-8.88178e-16}}, color={191,0,0}));
+    connect(boundary1.port, coldLeg.massPorts[:, 1]) annotation (Line(points={{
+            70,42},{62,42},{62,4},{51,4}}, color={0,140,72}));
+    annotation (experiment(StopTime=10000, __Dymola_Algorithm="Esdirk34a"));
+  end LooptyLoop;
 end VN_tests;
