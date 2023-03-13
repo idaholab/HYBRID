@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
-model WaterCircTrial_2b
+model WaterCircTrial_3
   TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump_SimpleMassFlow1(
     m_flow_nominal=1,
     use_input=true,
@@ -9,13 +9,6 @@ model WaterCircTrial_2b
         extent={{-11,-11},{11,11}},
         rotation=180,
         origin={-11,-9})));
-
-  TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance1(
-      redeclare package Medium = Modelica.Media.Water.StandardWater, R=
-        100000000)
-    annotation (Placement(transformation(extent={{10,-10},{-10,10}},
-        rotation=180,
-        origin={-12,56})));
 
   Modelica.Blocks.Sources.Constant const(k=0.5)
     annotation (Placement(transformation(extent={{-156,40},{-142,54}})));
@@ -39,13 +32,13 @@ model WaterCircTrial_2b
     annotation (Placement(transformation(extent={{-62,2},{-42,22}})));
   TRANSFORM.Controls.LimPID Pump_Speed(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-0.001,
+    k=-0.005,
     Ti=100,
     yb=0.01,
     yMax=1,
     yMin=0.01,
-    wp=0.1,
-    Ni=0.01,
+    wp=0.8,
+    Ni=0.1,
     xi_start=0,
     y_start=0.01)
     annotation (Placement(transformation(extent={{-112,-88},{-98,-74}})));
@@ -115,6 +108,28 @@ model WaterCircTrial_2b
     offset=0.5,
     startTime=2000)
     annotation (Placement(transformation(extent={{-158,66},{-144,80}})));
+  TRANSFORM.Fluid.Machines.SteamTurbine steamTurbine(
+    redeclare package Medium = Modelica.Media.Water.StandardWater,
+    redeclare model Eta_wetSteam =
+        TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant,
+    use_T_start=false,
+    h_a_start=3375000,
+    m_flow_start=0.1,
+    m_flow_nominal=0.08,
+    use_T_nominal=false,
+    nUnits=2,
+    energyDynamics=TRANSFORM.Types.Dynamics.DynamicFreeInitial,
+    p_b_start=5000,
+    p_outlet_nominal=5000,
+    d_nominal=30,
+    p_a_start=400000,
+    p_inlet_nominal=5000000)
+    annotation (Placement(transformation(extent={{-30,54},{-10,74}})));
+
+  Electrical.Generator      generator1(J=1e4)
+    annotation (Placement(transformation(extent={{28,54},{48,74}})));
+  Modelica.Mechanics.Rotational.Sensors.PowerSensor powerSensor
+    annotation (Placement(transformation(extent={{-2,74},{18,54}})));
 equation
   connect(sensor_pT3.port, pump_SimpleMassFlow1.port_a)
     annotation (Line(points={{96,-8},{96,-9},{0,-9}},   color={0,127,255}));
@@ -122,18 +137,12 @@ equation
           -139.3,-70},{-120,-70},{-120,-81},{-113.4,-81}}, color={0,0,127}));
   connect(condenser.port_b, pump_SimpleMassFlow1.port_a)
     annotation (Line(points={{43,18},{0,18},{0,-9}}, color={0,127,255}));
-  connect(resistance1.port_b, condenser.port_a) annotation (Line(points={{-5,56},
-          {20,56},{20,50},{36,50},{36,33}}, color={0,127,255}));
   connect(sensor_pT2.port, condenser.port_a)
     annotation (Line(points={{36,70},{36,33}}, color={0,127,255}));
-  connect(sensor_pT1.port, resistance1.port_a)
-    annotation (Line(points={{-70,68},{-70,56},{-19,56}}, color={0,127,255}));
   connect(sensor_pT4.port, boundary.ports[1]) annotation (Line(points={{-109,62},
           {-102,62},{-102,38},{-104,38},{-104,39.75}}, color={0,127,255}));
   connect(boundary1.ports[1], resistance2.port_a)
     annotation (Line(points={{-138,-20},{-121,-20}}, color={0,127,255}));
-  connect(lmtd_HX1.port_b2, resistance1.port_a)
-    annotation (Line(points={{-76,36},{-76,56},{-19,56}}, color={0,127,255}));
   connect(lmtd_HX1.port_a1, boundary.ports[2]) annotation (Line(points={{-84,36},
           {-84,40.25},{-104,40.25}}, color={0,127,255}));
   connect(lmtd_HX1.port_a2, pump_SimpleMassFlow1.port_b)
@@ -144,15 +153,25 @@ equation
           {-116,2},{-116,-4},{-98,-4},{-98,-20},{-107,-20}}, color={0,127,255}));
   connect(sensor_pT0.port, pump_SimpleMassFlow1.port_b)
     annotation (Line(points={{-52,2},{-52,-9},{-22,-9}}, color={0,127,255}));
-  connect(ramp.y, boundary.m_flow_in) annotation (Line(points={{-143.3,73},{
-          -132,73},{-132,48},{-124,48}}, color={0,0,127}));
+  connect(ramp.y, boundary.m_flow_in) annotation (Line(points={{-143.3,73},{-132,
+          73},{-132,48},{-124,48}}, color={0,0,127}));
   connect(Pump_Speed.y, pump_SimpleMassFlow1.in_m_flow) annotation (Line(points
         ={{-97.3,-81},{-97.3,-82},{-11,-82},{-11,-17.03}}, color={0,0,127}));
-  connect(sensor_pT1.T, Pump_Speed.u_m) annotation (Line(points={{-64,75.8},{
-          -62,75.8},{-62,76},{-58,76},{-58,94},{-202,94},{-202,-92},{-105,-92},
-          {-105,-89.4}}, color={0,0,127}));
+  connect(sensor_pT1.T, Pump_Speed.u_m) annotation (Line(points={{-64,75.8},{-62,
+          75.8},{-62,76},{-58,76},{-58,94},{-202,94},{-202,-92},{-105,-92},{-105,
+          -89.4}}, color={0,0,127}));
+  connect(steamTurbine.portLP, condenser.port_a) annotation (Line(points={{-10,70},
+          {20,70},{20,44},{36,44},{36,33}}, color={0,127,255}));
+  connect(steamTurbine.portHP, lmtd_HX1.port_b2) annotation (Line(points={{-30,70},
+          {-54,70},{-54,42},{-76,42},{-76,36}}, color={0,127,255}));
+  connect(sensor_pT1.port, lmtd_HX1.port_b2) annotation (Line(points={{-70,68},{
+          -62,68},{-62,70},{-54,70},{-54,42},{-76,42},{-76,36}}, color={0,127,255}));
+  connect(steamTurbine.shaft_b, powerSensor.flange_a)
+    annotation (Line(points={{-10,64},{-2,64}}, color={0,0,0}));
+  connect(powerSensor.flange_b, generator1.shaft_a)
+    annotation (Line(points={{18,64},{28,64}}, color={0,0,0}));
   annotation (
     Diagram(coordinateSystem(extent={{-160,-100},{160,100}})),
     Icon(coordinateSystem(extent={{-160,-100},{160,100}})),
-    experiment(StopTime=1000, __Dymola_Algorithm="Esdirk34a"));
-end WaterCircTrial_2b;
+    experiment(StopTime=5000, __Dymola_Algorithm="Esdirk34a"));
+end WaterCircTrial_3;

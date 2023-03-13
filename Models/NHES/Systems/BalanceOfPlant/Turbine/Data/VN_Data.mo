@@ -1,8 +1,9 @@
 within NHES.Systems.BalanceOfPlant.Turbine.Data;
-model IdealTurbine
+model VN_Data
 
   extends BaseClasses.Record_Data;
 
+  parameter Modelica.Units.SI.Temperature T_Steam_Ref = 550+273.15 "Reference steam temperature";
 
   annotation (
     defaultComponentName="data",
@@ -11,4 +12,4 @@ model IdealTurbine
           extent={{-100,-90},{100,-70}},
           textString="IdealTurbine")}),
     Diagram(coordinateSystem(preserveAspectRatio=false)));
-end IdealTurbine;
+end VN_Data;
