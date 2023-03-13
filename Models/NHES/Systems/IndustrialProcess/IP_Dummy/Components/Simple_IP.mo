@@ -38,7 +38,8 @@ model Simple_IP
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-30,28},{-10,48}})));
-  TRANSFORM.Blocks.MassFlowRate sensor_m_flow(redeclare package Medium =
+  TRANSFORM.Fluid.Sensors.MassFlowRate
+                                sensor_m_flow(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-68,30},{-48,50}})));
   Modelica.Blocks.Sources.RealExpression realExpression(y=m_flow_return)
