@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
-model WaterCircTrial_6a
+model WaterCircTrial_6b
   TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump_SimpleMassFlow1(
     m_flow_nominal=1,
     use_input=true,
@@ -62,7 +62,7 @@ model WaterCircTrial_6a
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT5(redeclare package
       Medium = Modelica.Media.Air.DryAirNasa)
     annotation (Placement(transformation(extent={{-128,2},{-102,20}})));
-  Modelica.Blocks.Sources.Constant const2(k=0.09)
+  Modelica.Blocks.Sources.Constant const2(k=0.01)
     annotation (Placement(transformation(extent={{-100,-50},{-86,-36}})));
   Modelica.Fluid.Sources.MassFlowSource_T boundary(
     redeclare package Medium = Modelica.Media.Air.DryAirNasa,
@@ -155,17 +155,11 @@ model WaterCircTrial_6a
     m_flow_start=0.001,
     m_flow_small=1e-5,
     dp_nominal=200000,
-    m_flow_nominal=0.004)
+    m_flow_nominal=0.008)
                        annotation (Placement(transformation(
         extent={{8,8},{-8,-8}},
         rotation=180,
         origin={42,6})));
-  Modelica.Blocks.Sources.Ramp ramp1(
-    height=0.95,
-    duration=2000,
-    offset=0.001,
-    startTime=4000)
-    annotation (Placement(transformation(extent={{-16,206},{-2,220}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT_ext2(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{52,34},{72,54}})));
@@ -196,23 +190,21 @@ model WaterCircTrial_6a
         extent={{10,10},{-10,-10}},
         rotation=180,
         origin={14,-16})));
-  Modelica.Blocks.Sources.Constant const3(k=90 + 273)
+  Modelica.Blocks.Sources.Constant const3(k=100 + 273)
     annotation (Placement(transformation(extent={{-48,34},{-34,48}})));
-  TRANSFORM.Controls.LimPID Pump_Speed1(
+  TRANSFORM.Controls.LimPID FWH_ctr(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-0.005,
-    Ti=100,
-    yb=0.01,
+    k=0.1,
+    Ti=50,
+    yb=0.001,
     yMax=1,
     yMin=0.001,
     wp=0.8,
-    Ni=0.1,
-    xi_start=0.0005,
     y_start=0.01)
     annotation (Placement(transformation(extent={{-22,10},{-8,24}})));
   Modelica.Blocks.Sources.Constant const12(k=0.002)
     annotation (Placement(transformation(extent={{-104,198},{-86,216}})));
-  Modelica.Blocks.Sources.Constant valvedelay3(k=7000)
+  Modelica.Blocks.Sources.Constant valvedelay3(k=2500)
     annotation (Placement(transformation(extent={{-144,252},{-124,272}})));
   Modelica.Blocks.Sources.ContinuousClock clock3(offset=0, startTime=0)
     annotation (Placement(transformation(extent={{-144,212},{-124,232}})));
@@ -221,11 +213,13 @@ model WaterCircTrial_6a
   Modelica.Blocks.Logical.Switch switch_P_setpoint_TCV3
     annotation (Placement(transformation(extent={{-64,232},{-44,252}})));
   Modelica.Blocks.Sources.Ramp ramp2(
-    height=0.95,
+    height=0.4,
     duration=2000,
     offset=0.001,
     startTime=4000)
-    annotation (Placement(transformation(extent={{-98,272},{-84,286}})));
+    annotation (Placement(transformation(extent={{-92,274},{-78,288}})));
+  StagebyStageTurbineSecondary.Control_and_Distribution.Delay delay2(Ti=20)
+    annotation (Placement(transformation(extent={{8,236},{22,248}})));
 equation
   connect(sensor_pT3.port, pump_SimpleMassFlow1.port_a)
     annotation (Line(points={{146,-76},{146,-82},{114,-82},{114,-21},{102,-21}},
@@ -250,9 +244,6 @@ equation
           {-116,2},{-116,-4},{-98,-4},{-98,-20},{-107,-20}}, color={0,127,255}));
   connect(ramp.y, boundary.m_flow_in) annotation (Line(points={{-143.3,73},{-132,
           73},{-132,48},{-124,48}}, color={0,0,127}));
-  connect(Pump_Speed.y, pump_SimpleMassFlow1.in_m_flow) annotation (Line(points={{-97.3,
-          -81},{-97.3,-82},{66,-82},{66,-40},{91,-40},{91,-29.03}},
-                                                           color={0,0,127}));
   connect(sensor_pT1.T, Pump_Speed.u_m) annotation (Line(points={{-64,75.8},{-62,
           75.8},{-62,76},{-58,76},{-58,94},{-202,94},{-202,-92},{-105,-92},{-105,
           -89.4}}, color={0,0,127}));
@@ -287,22 +278,27 @@ equation
           6},{136,6},{136,3},{150,3}}, color={0,127,255}));
   connect(sensor_pT_ext2.port, InternalBypass.port_a) annotation (Line(points={
           {62,34},{62,22},{30,22},{30,6},{34,6}}, color={0,127,255}));
-  connect(sensor_pT0.T, Pump_Speed1.u_m) annotation (Line(points={{-46,9.8},{
-          -46,-8},{-15,-8},{-15,8.6}}, color={0,0,127}));
-  connect(const3.y, Pump_Speed1.u_s) annotation (Line(points={{-33.3,41},{-26,
-          41},{-26,22},{-28,22},{-28,17},{-23.4,17}}, color={0,0,127}));
+  connect(const3.y, FWH_ctr.u_s) annotation (Line(points={{-33.3,41},{-26,41},{
+          -26,22},{-28,22},{-28,17},{-23.4,17}}, color={0,0,127}));
   connect(valvedelay3.y,greater3. u2) annotation (Line(points={{-123,262},{-114,
           262},{-114,250},{-106,250}},color={0,0,127}));
   connect(clock3.y,greater3. u1) annotation (Line(points={{-123,222},{-116,222},
           {-116,242},{-106,242}}, color={0,0,127}));
-  connect(const12.y,switch_P_setpoint_TCV3. u3) annotation (Line(points={{-85.1,
-          207},{-74,207},{-74,234},{-66,234}},           color={0,0,127}));
   connect(greater3.y,switch_P_setpoint_TCV3. u2)
     annotation (Line(points={{-83,242},{-66,242}},   color={255,0,255}));
-  connect(ramp2.y, switch_P_setpoint_TCV3.u1) annotation (Line(points={{-83.3,
-          279},{-74,279},{-74,250},{-66,250}}, color={0,0,127}));
-  connect(ramp1.y, InternalBypass.opening)
-    annotation (Line(points={{-1.3,213},{42,213},{42,12.4}}, color={0,0,127}));
+  connect(ramp2.y, switch_P_setpoint_TCV3.u3) annotation (Line(points={{-77.3,
+          281},{-38,281},{-38,226},{-66,226},{-66,234}}, color={0,0,127}));
+  connect(sensor_pT0.T, FWH_ctr.u_m) annotation (Line(points={{-46,9.8},{-28,
+          9.8},{-28,8.6},{-15,8.6}}, color={0,0,127}));
+  connect(delay2.u, switch_P_setpoint_TCV3.y)
+    annotation (Line(points={{6.6,242},{-43,242}}, color={0,0,127}));
+  connect(FWH_ctr.y, switch_P_setpoint_TCV3.u1) annotation (Line(points={{-7.3,
+          17},{-6,17},{-6,26},{-32,26},{-32,258},{-66,258},{-66,250}}, color={0,
+          0,127}));
+  connect(delay2.y, InternalBypass.opening) annotation (Line(points={{22.98,242},
+          {42,242},{42,12.4}}, color={0,0,127}));
+  connect(Pump_Speed.y, pump_SimpleMassFlow1.in_m_flow) annotation (Line(points
+        ={{-97.3,-81},{-97.3,-82},{91,-82},{91,-29.03}}, color={0,0,127}));
   annotation (
     Diagram(coordinateSystem(extent={{-160,-100},{160,100}})),
     Icon(coordinateSystem(extent={{-160,-100},{160,100}})),
@@ -310,4 +306,4 @@ equation
       StopTime=10000,
       Tolerance=0.001,
       __Dymola_Algorithm="Esdirk34a"));
-end WaterCircTrial_6a;
+end WaterCircTrial_6b;
