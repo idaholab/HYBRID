@@ -1,7 +1,7 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Examples;
 model Rankine_HTGR_ThreeStageTurbine_OFWHextraction
   extends Modelica.Icons.Example;
-  parameter Modelica.Units.SI.AbsolutePressure P_ext=3e5;
+  parameter Real P_ext=3;
   parameter Modelica.Units.SI.AbsolutePressure P_use=2e5;
   parameter Modelica.Units.SI.Density d_ext=1.783341636 "kg/m3";
   parameter Modelica.Units.SI.MassFlowRate m_ext=4;
@@ -91,7 +91,7 @@ model Rankine_HTGR_ThreeStageTurbine_OFWHextraction
     Power_nom=80e6,
     HPT_p_in=14000000,
     p_dump=16000000,
-    p_i1=P_ext,
+    p_i1=P_ext*100000,
     Tin=788.15,
     Tfeed=481.15,
     d_HPT_in(displayUnit="kg/m3") = 43.049187,
@@ -107,7 +107,7 @@ model Rankine_HTGR_ThreeStageTurbine_OFWHextraction
     eta_t=0.9,
     eta_mech=0.99,
     eta_p=0.8)
-    annotation (Placement(transformation(extent={{-100,80},{-80,100}})));
+    annotation (Placement(transformation(extent={{-100,82},{-80,102}})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h
                                                  bypassdump1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -122,8 +122,11 @@ model Rankine_HTGR_ThreeStageTurbine_OFWHextraction
         extent={{10,10},{-10,-10}},
         rotation=90,
         origin={40,-50})));
+initial equation
+
 equation
-  assert(P_ext>=P_use,"Extraction Pressure is below usage pressure");
+ assert(P_ext*100000>P_use,"Extraction Pressure is below usage pressure",level = AssertionLevel.error);
+
   hTGR_PebbleBed_Primary_Loop.input_steam_pressure =BOP.TCV.port_a.p;
 
   eta_th=(-BOP.port_a_elec.W-BOP.pump.W-BOP.pump1.W-BOP.FWCP.W)/hTGR_PebbleBed_Primary_Loop.core.Q_total.y;
