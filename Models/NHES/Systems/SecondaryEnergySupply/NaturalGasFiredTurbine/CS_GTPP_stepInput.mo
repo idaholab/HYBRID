@@ -50,7 +50,7 @@ equation
   connect(feedback_W_gen.y, FBctrl_powerGeneration.u)
     annotation (Line(points={{-31,0},{-18,0},{-12,0}}, color={0,0,127}));
   connect(sensorBus.W_gen, feedback_W_gen.u2) annotation (Line(
-      points={{-30,-100},{-40,-100},{-40,-100},{-40,-8}},
+      points={{-29.9,-99.9},{-40,-99.9},{-40,-100},{-40,-8}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));

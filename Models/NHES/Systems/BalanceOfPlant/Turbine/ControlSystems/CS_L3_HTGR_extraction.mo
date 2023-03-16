@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_L3
+model CS_L3_HTGR_extraction
 
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
@@ -11,34 +11,34 @@ model CS_L3
     annotation (Placement(transformation(extent={{-100,40},{-80,60}})));
   Modelica.Blocks.Sources.RealExpression P_in_set(y=data.HPT_p_in)
     annotation (Placement(transformation(extent={{-100,0},{-80,20}})));
-  replaceable Modelica.Blocks.Sources.RealExpression Power_set(y=data.Power_nom)
-    annotation (choices(choice( redeclare Modelica.Blocks.Sources.Ramp Power_set),
-                        choice( redeclare Modelica.Blocks.Sources.Step Power_set),
-                        choice( redeclare Modelica.Blocks.Sources.Sine Power_set),
-                        choice( redeclare Modelica.Blocks.Sources.Trapezoid Power_set)),
-                          Placement(transformation(extent={{-100,-40},{-80,
-            -20}})));
+  replaceable Modelica.Blocks.Sources.RealExpression Steam_Extraction(y=data.m_ext)
+    annotation (choices(
+      choice(redeclare Modelica.Blocks.Sources.Ramp Power_set),
+      choice(redeclare Modelica.Blocks.Sources.Step Power_set),
+      choice(redeclare Modelica.Blocks.Sources.Sine Power_set),
+      choice(redeclare Modelica.Blocks.Sources.Trapezoid Power_set)), Placement(
+        transformation(extent={{-100,-40},{-80,-20}})));
   TRANSFORM.Controls.LimPID FeedPump_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-5e-1,
+    k=-5e-4,
     Ti=30,
     yMax=2*data.mdot_hpt,
-    yMin=data.mdot_hpt*0.1)
+    yMin=data.mdot_hpt*0.5)
     annotation (Placement(transformation(extent={{-10,80},{10,100}})));
   TRANSFORM.Controls.LimPID TCV_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-3e-9,
+    k=-5e-9,
     Ti=360,
     yMax=1,
     yMin=0)
-    annotation (Placement(transformation(extent={{-10,0},{10,20}})));
+    annotation (Placement(transformation(extent={{-12,0},{8,20}})));
   TRANSFORM.Controls.LimPID LPT1_BV_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-1e-8,
+    k=1e-3,
     Ti=300,
     yMax=1,
     yMin=0)
     annotation (Placement(transformation(extent={{-10,-40},{10,-20}})));
   TRANSFORM.Controls.LimPID LPT2_BV_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-5,
-    Ti=15,
+    k=5e-7,
+    Ti=20,
     yMax=1,
     yMin=0)
     annotation (Placement(transformation(extent={{-10,40},{10,60}})));
@@ -54,13 +54,13 @@ model CS_L3
   Modelica.Blocks.Sources.Ramp ramp(
     height=-1,
     duration=4000,
-    offset=0,
+    offset=1,
     startTime=8000)
     annotation (Placement(transformation(extent={{-66,-210},{-46,-190}})));
   Modelica.Blocks.Math.Product
                            product1
     annotation (Placement(transformation(extent={{96,-172},{116,-152}})));
-  Modelica.Blocks.Sources.RealExpression T_in_set1(y=data.mdot_hpt)
+  Modelica.Blocks.Sources.RealExpression T_in_set1(y=data.mdot_total)
     annotation (Placement(transformation(extent={{4,64},{24,84}})));
   Modelica.Blocks.Logical.Switch switch2
     annotation (Placement(transformation(extent={{38,72},{58,92}})));
@@ -68,52 +68,30 @@ model CS_L3
     annotation (Placement(transformation(extent={{-10,114},{10,134}})));
   Modelica.Blocks.Logical.Switch switch3
     annotation (Placement(transformation(extent={{-54,60},{-34,80}})));
+  Modelica.Blocks.Logical.Switch switch4
+    annotation (Placement(transformation(extent={{42,20},{62,40}})));
+  Modelica.Blocks.Sources.BooleanStep booleanStep1(startTime=40000)
+    annotation (Placement(transformation(extent={{86,74},{106,94}})));
+  Modelica.Blocks.Logical.Switch switch5
+    annotation (Placement(transformation(extent={{134,32},{154,52}})));
+  Modelica.Blocks.Sources.RealExpression T_in_set2(y=0.03)
+    annotation (Placement(transformation(extent={{100,24},{120,44}})));
+  Modelica.Blocks.Logical.Switch switch6
+    annotation (Placement(transformation(extent={{-14,-76},{6,-56}})));
+  Modelica.Blocks.Sources.BooleanStep booleanStep2(startTime=1.2e6)
+    annotation (Placement(transformation(extent={{30,-22},{50,-2}})));
+  Modelica.Blocks.Logical.Switch switch7
+    annotation (Placement(transformation(extent={{78,-64},{98,-44}})));
+  Modelica.Blocks.Sources.RealExpression ext_pos_start(y=0)
+    annotation (Placement(transformation(extent={{44,-72},{64,-52}})));
 equation
 
   connect(T_feed_set.y, LPT2_BV_PID.u_s)
     annotation (Line(points={{-79,50},{-12,50}}, color={0,0,127}));
-  connect(actuatorBus.LPT2_BV, LPT2_BV_PID.y) annotation (Line(
-      points={{30,-100},{30,50},{11,50}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{6,3},{6,3}},
-      horizontalAlignment=TextAlignment.Left));
-  connect(sensorBus.Feedwater_Temp, LPT2_BV_PID.u_m) annotation (Line(
-      points={{-30,-100},{-30,30},{0,30},{0,38}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-3,-6},{-3,-6}},
-      horizontalAlignment=TextAlignment.Right));
-  connect(Power_set.y, LPT1_BV_PID.u_s)
-    annotation (Line(points={{-79,-30},{-12,-30}}, color={0,0,127}));
-  connect(sensorBus.W_total, LPT1_BV_PID.u_m) annotation (Line(
-      points={{-29.9,-99.9},{-29.9,-50},{0,-50},{0,-42}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-3,-6},{-3,-6}},
-      horizontalAlignment=TextAlignment.Right));
-  connect(actuatorBus.LPT1_BV, LPT1_BV_PID.y) annotation (Line(
-      points={{30,-100},{30,-30},{11,-30}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{6,3},{6,3}},
-      horizontalAlignment=TextAlignment.Left));
   connect(P_in_set.y, TCV_PID.u_s)
-    annotation (Line(points={{-79,10},{-12,10}}, color={0,0,127}));
+    annotation (Line(points={{-79,10},{-14,10}}, color={0,0,127}));
   connect(sensorBus.Steam_Pressure, TCV_PID.u_m) annotation (Line(
-      points={{-30,-100},{-30,-10},{0,-10},{0,-2}},
+      points={{-30,-100},{-30,-10},{-2,-10},{-2,-2}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -122,7 +100,7 @@ equation
       extent={{-3,-6},{-3,-6}},
       horizontalAlignment=TextAlignment.Right));
   connect(actuatorBus.opening_TCV, TCV_PID.y) annotation (Line(
-      points={{30.1,-99.9},{30,-99.9},{30,10},{11,10}},
+      points={{30.1,-99.9},{30,-99.9},{30,10},{9,10}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -191,9 +169,75 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(T_in_set.y, switch3.u3) annotation (Line(points={{-79,90},{-64,90},
           {-64,62},{-56,62}}, color={0,0,127}));
+  connect(booleanStep1.y,switch5. u2)
+    annotation (Line(points={{107,84},{132,84},{132,42}}, color={255,0,255}));
+  connect(booleanStep1.y,switch4. u2) annotation (Line(points={{107,84},{112,84},
+          {112,50},{76,50},{76,14},{32,14},{32,30},{40,30}},
+                                                color={255,0,255}));
+  connect(T_feed_set.y,switch4. u3) annotation (Line(points={{-79,50},{-20,50},
+          {-20,26},{32,26},{32,22},{40,22}},
+                              color={0,0,127}));
+  connect(sensorBus.Feedwater_Temp,switch4. u1) annotation (Line(
+      points={{-30,-100},{-30,28},{26,28},{26,46},{40,46},{40,38}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(switch4.y, LPT2_BV_PID.u_m) annotation (Line(points={{63,30},{63,46},
+          {16,46},{16,30},{0,30},{0,38}},   color={0,0,127}));
+  connect(LPT2_BV_PID.y,switch5. u1) annotation (Line(points={{11,50},{124,50},
+          {124,58},{132,58},{132,50}},
+                              color={0,0,127}));
+  connect(T_in_set2.y,switch5. u3)
+    annotation (Line(points={{121,34},{132,34}}, color={0,0,127}));
+  connect(actuatorBus.LPT2_BV, switch5.y) annotation (Line(
+      points={{30,-100},{30,12},{162,12},{162,42},{155,42}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-3,-6},{-3,-6}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(Steam_Extraction.y, LPT1_BV_PID.u_s)
+    annotation (Line(points={{-79,-30},{-12,-30}}, color={0,0,127}));
+  connect(booleanStep2.y, switch7.u2)
+    annotation (Line(points={{51,-12},{76,-12},{76,-54}}, color={255,0,255}));
+  connect(booleanStep2.y, switch6.u2) annotation (Line(points={{51,-12},{56,-12},
+          {56,-34},{16,-34},{16,-50},{-24,-50},{-24,-66},{-16,-66}}, color={255,
+          0,255}));
+  connect(switch7.u3, ext_pos_start.y)
+    annotation (Line(points={{76,-62},{65,-62}}, color={0,0,127}));
+  connect(Steam_Extraction.y, switch6.u3) annotation (Line(points={{-79,-30},{
+          -28,-30},{-28,-74},{-16,-74}}, color={0,0,127}));
+  connect(switch6.y, LPT1_BV_PID.u_m) annotation (Line(points={{7,-66},{7,-48},
+          {-16,-48},{-16,-42},{0,-42}}, color={0,0,127}));
+  connect(actuatorBus.LPT1_BV, switch7.y) annotation (Line(
+      points={{30,-100},{68,-100},{68,-80},{118,-80},{118,-54},{99,-54}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{6,3},{6,3}},
+      horizontalAlignment=TextAlignment.Left));
+  connect(sensorBus.Extract_flow, switch6.u1) annotation (Line(
+      points={{-30,-100},{-30,-58},{-16,-58}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(LPT1_BV_PID.y, switch7.u1) annotation (Line(points={{11,-30},{66,-30},
+          {66,-46},{76,-46}}, color={0,0,127}));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics),
     experiment(
       StopTime=1000,
       Interval=5,
       __Dymola_Algorithm="Esdirk45a"));
-end CS_L3;
+end CS_L3_HTGR_extraction;

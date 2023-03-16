@@ -69,7 +69,7 @@ model SteamTurbine_Basic_DirectCoupling "Two stage BOP model"
     T_nominal=data.LPT_T_in_nominal) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
-        origin={46,-40})));
+        origin={46,-38})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
                                        sensor_T3(redeclare package Medium =
         Modelica.Media.Water.StandardWater)            annotation (Placement(
@@ -135,9 +135,10 @@ equation
   connect(powerSensor.flange_b, generator1.shaft_a) annotation (Line(points={{72,-76},
           {84,-76},{84,-82}},                      color={0,0,0}));
   connect(LPT.shaft_b, powerSensor.flange_a)
-    annotation (Line(points={{46,-50},{46,-76},{52,-76}}, color={0,0,0}));
-  connect(LPT.portLP, Condenser.port_a) annotation (Line(points={{52,-50},{52,-58},
-          {38,-58},{38,-112},{118,-112},{118,-84},{153,-84},{153,-92}}, color={0,
+    annotation (Line(points={{46,-48},{46,-76},{52,-76}}, color={0,0,0}));
+  connect(LPT.portLP, Condenser.port_a) annotation (Line(points={{52,-48},{52,
+          -58},{38,-58},{38,-112},{118,-112},{118,-84},{153,-84},{153,-92}},
+                                                                        color={0,
           127,255}));
   connect(sensorBus.SHS_Return_T, sensor_T3.T) annotation (Line(
       points={{-30,100},{-30,74},{88,74},{88,58},{134,58},{134,68.4}},
@@ -170,7 +171,7 @@ equation
   connect(firstfeedpump1.port_b, Discharge_OnOff.port_a) annotation (Line(
         points={{104,-142},{112,-142},{112,-146},{118,-146}}, color={0,127,255}));
   connect(TCV_LPT.port_a, LPT.portHP)
-    annotation (Line(points={{96,72},{52,72},{52,-30}}, color={0,127,255}));
+    annotation (Line(points={{96,72},{52,72},{52,-28}}, color={0,127,255}));
   connect(Discharge_OnOff.port_b, port_b) annotation (Line(points={{134,-146},{
           144,-146},{144,-160},{-144,-160},{-144,-40},{-160,-40}}, color={0,127,
           255}));

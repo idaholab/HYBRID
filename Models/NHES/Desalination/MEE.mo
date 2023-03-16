@@ -2646,7 +2646,7 @@ package MEE "Multi Effect Evaporators"
         PID_k=-1e-6,
         PID_Ti=2,
         m_flow_nominal=2,
-        dp_nominal=data.psys - fill(0.1, data.nE))
+        dp_nominal=(data.psys - fill(0.1e5, data.nE))*0.6)
         annotation (Placement(transformation(extent={{34,-50},{54,-30}})));
       TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance inlet_res[1](R=1)
         annotation (Placement(transformation(extent={{-78,30},{-58,50}})));
@@ -2703,8 +2703,9 @@ package MEE "Multi Effect Evaporators"
         PID_k=-1,
         m_flow_nominal=4) if not data.use_flowrates
         annotation (Placement(transformation(extent={{66,56},{46,76}})));
-      Modelica.Blocks.Sources.RealExpression X[data.nE](y=Effect.Evaporator.Cs_out) if not data.use_flowrates
-        annotation (Placement(transformation(extent={{100,76},{80,96}})));
+      Modelica.Blocks.Sources.RealExpression X[data.nE](y=Effect.Evaporator.Cs_out)
+                                                                                    if not data.use_flowrates
+        annotation (Placement(transformation(extent={{100,78},{80,98}})));
       Components.PreHeater preHeater(redeclare package Medium_1 =
             Modelica.Media.Water.StandardWater, redeclare package Medium_2 =
             NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
@@ -2782,7 +2783,7 @@ package MEE "Multi Effect Evaporators"
         annotation (Line(points={{-20,-8},{-28,-8},{-28,28},{0,28},{0,20}}, color={0,
               127,255}));
       connect(X.y, SCV.level_input)
-        annotation (Line(points={{79,86},{64,86},{64,74}}, color={0,0,127}));
+        annotation (Line(points={{79,88},{64,88},{64,74}}, color={0,0,127}));
       connect(multiPort_preheater.port_a, preHeater.port_b2)
         annotation (Line(points={{-24,70},{-10,70}}, color={0,127,255}));
       annotation (

@@ -1,5 +1,5 @@
 within NHES.Systems.SecondaryEnergySupply.NaturalGasFiredTurbine;
-model CS_GTPP
+model CS_GTPP_step
   extends
     NHES.Systems.SecondaryEnergySupply.NaturalGasFiredTurbine.BaseClasses.Partial_ControlSystem;
 
@@ -26,7 +26,11 @@ model CS_GTPP
     annotation (Placement(transformation(extent={{-90,-10},{-70,10}})));
   Modelica.Blocks.Logical.LessThreshold lessThreshold(threshold=delayStart)
     annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
-  Modelica.Blocks.Sources.Constant W_SES_nominal(k=W_SES_nom)
+  Modelica.Blocks.Sources.Ramp     W_SES_nominal(
+    height=5e6,
+    duration=100,
+    offset=30e6,
+    startTime=2100)
     annotation (Placement(transformation(extent={{-40,20},{-20,40}})));
   Modelica.Blocks.Logical.Switch switch
     annotation (Placement(transformation(extent={{0,-10},{20,10}})));
@@ -63,5 +67,9 @@ equation
     annotation (Line(points={{-53,-30},{-33.2,-30}}, color={0,0,127}));
   annotation (defaultComponentName="CS",
   Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-        coordinateSystem(preserveAspectRatio=false)));
-end CS_GTPP;
+        coordinateSystem(preserveAspectRatio=false)),
+    experiment(
+      StopTime=2000,
+      Interval=10,
+      __Dymola_Algorithm="Esdirk45a"));
+end CS_GTPP_step;
