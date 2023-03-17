@@ -6,7 +6,8 @@ model SFR_Example_03
   Components.SFR_Intermediate_Loop sFR_Intermediate_Loop(redeclare package
       Medium_IHX_Loop = IL_Medium)
     annotation (Placement(transformation(extent={{-18,-24},{66,42}})));
-  Components.SFR_02_NTUHX sFR_02_NTUHX(redeclare package Medium_IHX_Loop =
+  Components.SFR_02_NTUHX sFR_02_NTUHX(redeclare replaceable CS_01 CS(
+        rho_CR_Init=-1.0),             redeclare package Medium_IHX_Loop =
         IL_Medium)
     annotation (Placement(transformation(extent={{-140,-24},{-60,42}})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary(

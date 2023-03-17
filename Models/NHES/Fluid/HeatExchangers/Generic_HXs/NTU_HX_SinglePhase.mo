@@ -1,6 +1,7 @@
 within NHES.Fluid.HeatExchangers.Generic_HXs;
 model NTU_HX_SinglePhase
-  "Calculates Q as an internal heat generation in a control volume, as a source on one side and a sink on the other. This model allows both for flow reversal and for single phase flow on either or both sides of the HX."
+  "Calculates Q as an internal heat generation in a control volume, as a source on one side and a sink on the other. 
+  This model allows both for flow reversal and for single phase flow on either or both sides of the HX."
   import Modelica.Units.SI.*;
   import NHES;
   //user options

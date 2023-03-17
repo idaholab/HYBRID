@@ -15,51 +15,76 @@ model SFR_02_NTUHX
     annotation (Placement(transformation(extent={{-6,46},{14,66}})));
   TRANSFORM.Blocks.RealExpression CR
     annotation (Placement(transformation(extent={{88,92},{102,108}})));
-  Nuclear.CoreSubchannels.SFR      coreSubchannel1(
-    nAssembliesIF=11,
-    nAssembliesOF=31,
-    nAssembliesIRB=25,
-    nAssembliesRB=60,
+  Nuclear.CoreSubchannels.SFR_Individual_Geometries      coreSubchannel1(
+    nAssembliesReg1=11,
+    nAssembliesReg2=31,
+    nAssembliesReg3=25,
+    nAssembliesReg4=60,
     redeclare package Medium = Coolant,
-    redeclare package Rods_IF = Media.Solids.UPu10Zr20,
-    redeclare package Rods_OF = Media.Solids.UPu10Zr20,
-    redeclare package Rods_IRB = Media.Solids.UZr20,
-    redeclare package Rods_RB = Media.Solids.UZr20,
-    redeclare package Fuel_gap_material = Media.Solids.Sodium,
-    redeclare package Fuel_Cladding = Media.Solids.HT9,
-    redeclare model Geometry = NHES.Nuclear.New_Geometries.Generic_SFR (
+    redeclare package Rods_R1 = Media.Solids.UPu10Zr20,
+    redeclare package Rods_R2 = Media.Solids.UPu10Zr20,
+    redeclare package Rods_R3 = Media.Solids.UZr20,
+    redeclare package Rods_R4 = Media.Solids.UZr20,
+    redeclare package Fuel_gap_R1 = Media.Solids.Sodium,
+    redeclare model Geometry_R1 = NHES.Nuclear.New_Geometries.Generic_SFR (
         nPins=271,
         dimension=0.0074,
-        length=1.20,
+        length=1.2,
         angle=pi/2),
+          redeclare model Geometry_R2 = NHES.Nuclear.New_Geometries.Generic_SFR
+        (
+        nPins=271,
+        dimension=0.0074,
+        length=1.2,
+        angle=pi/2),
+          redeclare model Geometry_R3 = NHES.Nuclear.New_Geometries.Generic_SFR
+        (
+        nPins=271,
+        dimension=0.0074,
+        length=1.2,
+        angle=pi/2),
+          redeclare model Geometry_R4 = NHES.Nuclear.New_Geometries.Generic_SFR
+        (
+        nPins=271,
+        dimension=0.0074,
+        length=1.2,
+        angle=pi/2),
+    redeclare package Fuel_Cladding_R1 = Media.Solids.HT9,
+    redeclare record Data_PG =
+        TRANSFORM.Nuclear.ReactorKinetics.Data.PrecursorGroups.precursorGroups_6_TRACEdefault,
+
+    Q_fission_start(displayUnit="MW") = 100000000,
+    T_Gap_Init_R1=773.15,
+    T_Clad_Init_R1=673.15,
+    T_Gap_Init_R2=773.15,
+    T_Clad_Init_R2=673.15,
+    T_Gap_Init_R3=773.15,
+    T_Clad_Init_R3=673.15,
+    T_Gap_Init_R4=773.15,
+    T_Clad_Init_R4=673.15,
+    R_R3=43,
+    R_R1=17,
+    R_R2=17,
+    R_R4=43,
     redeclare model FlowModel =
         TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Turbulent_MSL,
     redeclare model HeatTransfer =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_SinglePhase_2Region,
-    Q_nominal=100000000,
+
+    Q_nominal(displayUnit="MW") = 100000000,
     rho_input=CR.y,
     dBeta=-0.0034,
-    alpha_IF=-9.22e-4,
-    alpha_OF=-9.22e-4,
-    alpha_IRB=-1.96e-3,
-    alpha_RB=-1.2e-3,
+    alpha_Reg1=-9.22e-4,
+    alpha_Reg2=-9.22e-4,
+    alpha_Reg3=-1.96e-3,
+    alpha_Reg4=-1.2e-3,
     alpha_coolant=0.0,
-    Teffref_fuel_IF=873.15,
-    Teffref_fuel_OF=873.15,
-    Teffref_fuel_IRB=873.15,
-    Teffref_fuel_RB=873.15,
     Teffref_coolant=648.15,
-    T_Gap_Init=773.15,
-    T_Clad_Init=673.15,
     p_a_start=170000,
     p_b_start=160000,
     T_a_start=595.15,
-    T_b_start=743.15,
-    internal_blanket_in_design=true,
-    R_IRB=43,
-    R_IF=17,
-    R_OF=17,
-    R_RB=43) annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+    T_b_start=743.15)
+             annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=90,
         origin={-62,0})));
 
@@ -113,6 +138,7 @@ model SFR_02_NTUHX
                                            IHX(
     tube_av_b=false,
     shell_av_b=false,
+    use_derQ=false,
     NTU=4.8,
     K_tube=100,
     K_shell=100,

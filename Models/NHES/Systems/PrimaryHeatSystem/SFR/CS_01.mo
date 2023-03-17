@@ -2,8 +2,9 @@ within NHES.Systems.PrimaryHeatSystem.SFR;
 model CS_01
 
   extends BaseClasses.Partial_ControlSystem;
-
-  TRANSFORM.Controls.LimPID CR(k=5e-6, initType=Modelica.Blocks.Types.Init.InitialOutput)
+  parameter Real rho_CR_Init = -0.01;
+  TRANSFORM.Controls.LimPID CR(k=5e-6, initType=Modelica.Blocks.Types.Init.InitialOutput,
+    y_start=rho_CR_Init)
     annotation (Placement(transformation(extent={{-20,-36},{0,-16}})));
   Modelica.Blocks.Sources.RealExpression realExpression(y=741.483)
     annotation (Placement(transformation(extent={{-56,-36},{-36,-16}})));
