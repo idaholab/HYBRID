@@ -31,7 +31,7 @@ model Turbine_2
   annotation (Dialog(tab="General Parameters", group = "Volumes"));
   parameter Modelica.Units.SI.Volume  V_moistureseperator = 0.01 "Moisture Seperator volume"
   annotation (Dialog(tab="General Parameters", group = "Volumes"));
-  parameter Modelica.Units.SI.Volume  V_FeedwaterMixVolume = 80 "Feedwater Mixing volume"
+  parameter Modelica.Units.SI.Volume  V_FeedwaterMixVolume = 0.5 "Feedwater Mixing volume"
   annotation (Dialog(tab="General Parameters", group = "Volumes"));
   parameter Modelica.Units.SI.Volume  V_Header = 1 "Header Mixing volume"
   annotation (Dialog(tab="General Parameters", group = "Volumes"));
