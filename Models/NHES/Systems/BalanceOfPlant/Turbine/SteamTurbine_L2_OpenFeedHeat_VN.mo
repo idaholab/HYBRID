@@ -1,8 +1,8 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
-model SteamTurbine_L2_ClosedFeedHeat_VN "Two stage BOP model"
+model SteamTurbine_L2_OpenFeedHeat_VN "Two stage BOP model"
   extends BaseClasses.Partial_SubSystem_C(
     redeclare replaceable
-      ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp CS,
+      ControlSystems.CS_SteamTurbine_L2_OFWH_VN               CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
     redeclare replaceable Data.Turbine_2 data(InternalBypassValve_p_spring=
           6500000));
@@ -38,7 +38,9 @@ model SteamTurbine_L2_ClosedFeedHeat_VN "Two stage BOP model"
         rotation=180,
         origin={22,40})));
 
-  TRANSFORM.Fluid.Sensors.Pressure     sensor_p(redeclare package Medium =
+  TRANSFORM.Fluid.Sensors.PressureTemperature
+                                       sensor_pT(
+                                                redeclare package Medium =
         Modelica.Media.Water.StandardWater, redeclare function iconUnit =
         TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_bar)
                                                        annotation (Placement(
@@ -84,14 +86,6 @@ model SteamTurbine_L2_ClosedFeedHeat_VN "Two stage BOP model"
         rotation=90,
         origin={82,24})));
 
-  TRANSFORM.Fluid.Valves.ValveLinear LPT_Bypass(
-    redeclare package Medium = Modelica.Media.Water.StandardWater,
-    dp_nominal=data.valve_LPT_Bypass_dp_nominal,
-    m_flow_nominal=data.valve_LPT_Bypass_mflow)   annotation (Placement(transformation(
-        extent={{10,10},{-10,-10}},
-        rotation=180,
-        origin={106,-78})));
-
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
                                        sensor_T2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)            annotation (Placement(
@@ -100,47 +94,16 @@ model SteamTurbine_L2_ClosedFeedHeat_VN "Two stage BOP model"
         rotation=180,
         origin={-58,-40})));
 
-  TRANSFORM.Fluid.Machines.Pump_PressureBooster
+  TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow
                                            firstfeedpump(redeclare package
       Medium =
         Modelica.Media.Water.StandardWater,
-    use_input=false,
-    p_nominal=data.firstfeedpump_p_nominal,
+    use_input=true,
+    m_flow_nominal=25,
     allowFlowReversal=false)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
         rotation=0,
         origin={108,-144})));
-
-  StagebyStageTurbineSecondary.StagebyStageTurbine.BaseClasses.TRANSFORMMoistureSeparator_MIKK
-    Moisture_Separator(redeclare package Medium =
-        Modelica.Media.Water.StandardWater,
-    p_start=init.moisturesep_p_start,
-    T_start=init.moisturesep_T_start,
-    redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=data.V_moistureseperator))
-    annotation (Placement(transformation(extent={{58,30},{78,50}})));
-
-  Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase MainFeedwaterHeater(
-    NTU=data.MainFeedHeater_NTU,
-    K_tube=data.MainFeedHeater_K_tube,
-    K_shell=data.MainFeedHeater_K_shell,
-    redeclare package Tube_medium = Modelica.Media.Water.StandardWater,
-    redeclare package Shell_medium = Modelica.Media.Water.StandardWater,
-    V_Tube=data.MainFeedHeater_V_tube,
-    V_Shell=data.MainFeedHeater_V_shell,
-    p_start_tube=init.MainFeedHeater_p_start_tube,
-    h_start_tube_inlet=init.MainFeedHeater_h_start_tube_inlet,
-    h_start_tube_outlet=init.MainFeedHeater_h_start_tube_outlet,
-    p_start_shell=init.MainFeedHeater_p_start_shell,
-    h_start_shell_inlet=init.MainFeedHeater_h_start_shell_inlet,
-    h_start_shell_outlet=init.MainFeedHeater_h_start_shell_outlet,
-    dp_init_tube=init.MainFeedHeater_dp_init_tube,
-    dp_init_shell=init.MainFeedHeater_dp_init_shell,
-    Q_init=init.MainFeedHeater_Q_init,
-    m_start_tube=init.MainFeedHeater_m_start_tube,
-    m_start_shell=init.MainFeedHeater_m_start_shell)
-    annotation (Placement(transformation(extent={{40,-118},{60,-138}})));
 
   TRANSFORM.Fluid.Volumes.MixingVolume FeedwaterMixVolume(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
@@ -154,7 +117,7 @@ model SteamTurbine_L2_ClosedFeedHeat_VN "Two stage BOP model"
     nPorts_b=1) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
-        origin={36,-74})));
+        origin={28,-54})));
 
   Electrical.Generator      generator1(J=data.generator_MoI)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
@@ -219,12 +182,57 @@ model SteamTurbine_L2_ClosedFeedHeat_VN "Two stage BOP model"
   replaceable Data.Turbine_2_init init(FeedwaterMixVolume_h_start=2e6)
     annotation (Placement(transformation(extent={{68,120},{88,140}})));
 
-  TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance R_InternalBypass1(R=data.R_bypass,
+  TRANSFORM.Fluid.Volumes.Deaerator deaerator(
+    redeclare model Geometry =
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.TwoVolume_withLevel.Cylinder
+        (
+        V_liquid=10,
+        length=5,
+        r_inner=2,
+        th_wall=0.1),
+    redeclare package Medium = Modelica.Media.Water.StandardWater,
+    level_start=4,
+    p_start=300000,
+    use_T_start=false,
+    d_wall=1000,
+    cp_wall=420,
+    Twall_start=373.15)
+    annotation (Placement(transformation(extent={{56,-122},{36,-102}})));
+  TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance R_entry1(R=data.R_entry,
       redeclare package Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
-        origin={90,-110})));
+        origin={30,-80})));
+  Modelica.Blocks.Sources.RealExpression FWTank_level(y=deaerator.level)
+    "level"
+    annotation (Placement(transformation(extent={{180,-138},{192,-126}})));
+  Modelica.Blocks.Sources.Constant const1(k=3)
+    annotation (Placement(transformation(extent={{178,-108},{192,-94}})));
+  TRANSFORM.Controls.LimPID Pump_Speed(
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    with_FF=false,
+    k=30,
+    Ti=500,
+    yb=0.01,
+    k_s=0.9,
+    k_m=0.9,
+    yMax=40,
+    yMin=2,
+    wp=1,
+    Ni=0.001,
+    xi_start=0,
+    y_start=0.01)
+    annotation (Placement(transformation(extent={{220,-120},{234,-106}})));
+  StagebyStageTurbineSecondary.StagebyStageTurbine.BaseClasses.TRANSFORMMoistureSeparator_MIKK
+    Moisture_Separator(
+    redeclare package Medium = Modelica.Media.Water.StandardWater,
+    p_start=init.moisturesep_p_start,
+    T_start=init.moisturesep_T_start,
+    redeclare model Geometry =
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
+        (V=data.V_moistureseperator))
+    annotation (Placement(transformation(extent={{58,24},{78,44}})));
 initial equation
 
 equation
@@ -232,11 +240,6 @@ equation
   connect(HPT.portHP, sensor_T1.port_b) annotation (Line(
       points={{32,38},{30,38},{30,40},{28,40}},
       color={0,127,255},
-      thickness=0.5));
-  connect(sensorBus.Steam_Temperature, sensor_T1.T) annotation (Line(
-      points={{-30,100},{4,100},{4,50},{22,50},{22,42.16}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
       thickness=0.5));
   connect(TCV.port_b, sensor_T1.port_a) annotation (Line(
       points={{4,40},{16,40}},
@@ -255,26 +258,14 @@ equation
       points={{52,32},{52,14},{44,14},{44,4}},
       color={0,0,0},
       pattern=LinePattern.Dash));
-  connect(HPT.portLP, Moisture_Separator.port_a) annotation (Line(
-      points={{52,38},{58,38},{58,40},{62,40}},
-      color={0,127,255},
-      thickness=0.5));
-  connect(Moisture_Separator.port_b, tee.port_2) annotation (Line(
-      points={{74,40},{82,40},{82,34}},
-      color={0,127,255},
-      thickness=0.5));
 
   connect(actuatorBus.opening_TCV, TCV.opening) annotation (Line(
       points={{30.1,100.1},{-4,100.1},{-4,46.4}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensor_p.port, TCV.port_a)
+  connect(sensor_pT.port, TCV.port_a)
     annotation (Line(points={{-18,50},{-18,40},{-12,40}}, color={0,127,255}));
-  connect(Moisture_Separator.port_Liquid, FeedwaterMixVolume.port_a[1])
-    annotation (Line(points={{64,36},{64,-44},{72,-44},{72,-58},{35.75,-58},{
-          35.75,-68}},
-                 color={0,127,255}));
 
   connect(LPT.shaft_b, generator1.shaft_a)
     annotation (Line(points={{44,-16},{44,-28}}, color={0,0,0}));
@@ -282,21 +273,8 @@ equation
           {110,-48}},                              color={255,0,0}));
   connect(sensorW.port_b, portElec_b) annotation (Line(points={{130,-48},{146,
           -48},{146,0},{160,0}},                     color={255,0,0}));
-  connect(FeedwaterMixVolume.port_b[1], MainFeedwaterHeater.Shell_in)
-    annotation (Line(points={{36,-80},{36,-126},{40,-126}},
-        color={0,127,255}));
-  connect(actuatorBus.Divert_Valve_Position, LPT_Bypass.opening) annotation (
-      Line(
-      points={{30,100},{30,54},{98,54},{98,-62},{106,-62},{106,-70}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{6,3},{6,3}},
-      horizontalAlignment=TextAlignment.Left));
-  connect(sensorBus.Steam_Pressure, sensor_p.p) annotation (Line(
-      points={{-30,100},{-30,60},{-24,60}},
+  connect(sensorBus.Steam_Pressure, sensor_pT.p) annotation (Line(
+      points={{-30,100},{-30,62.4},{-24,62.4}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -345,8 +323,6 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(firstfeedpump.port_b, sensor_T4.port_b) annotation (Line(points={{98,-144},
           {90,-144}},                              color={0,127,255}));
-  connect(sensor_T4.port_a, MainFeedwaterHeater.Tube_in) annotation (Line(
-        points={{70,-144},{64,-144},{64,-132},{60,-132}}, color={0,127,255}));
   connect(port_b, pump_SimpleMassFlow1.port_b) annotation (Line(points={{-160,-40},
           {-132,-40},{-132,-41}},                            color={0,127,255}));
   connect(pump_SimpleMassFlow1.port_a, sensor_T2.port_b) annotation (Line(
@@ -357,25 +333,42 @@ equation
   connect(LPT.portLP, Condenser.port_a) annotation (Line(points={{50,-16},{60,
           -16},{60,-64},{154,-64},{154,-86},{153,-86},{153,-92}},
                                                          color={0,127,255}));
-  connect(LPT_Bypass.port_b, Condenser.port_a) annotation (Line(points={{116,
-          -78},{153,-78},{153,-92}}, color={0,127,255}));
-  connect(tee.port_3, FeedwaterMixVolume.port_a[2]) annotation (Line(points={{
-          92,24},{96,24},{96,-46},{72,-46},{72,-58},{36.25,-58},{36.25,-68}},
+  connect(tee.port_3, FeedwaterMixVolume.port_a[1]) annotation (Line(points={{92,24},
+          {94,24},{94,12},{27.75,12},{27.75,-48}},
         color={0,127,255}));
-  connect(MainFeedwaterHeater.Shell_out, R_InternalBypass1.port_b) annotation (
-      Line(points={{60,-126},{90,-126},{90,-117}}, color={0,127,255}));
-  connect(R_InternalBypass1.port_a, LPT_Bypass.port_a)
-    annotation (Line(points={{90,-103},{90,-78},{96,-78}}, color={0,127,255}));
-  connect(MainFeedwaterHeater.Tube_out, sensor_T2.port_a) annotation (Line(
-        points={{40,-132},{-42,-132},{-42,-40},{-48,-40}}, color={0,127,255}));
+  connect(deaerator.feed, sensor_T4.port_a) annotation (Line(points={{53,-105},
+          {64,-105},{64,-144},{70,-144}}, color={0,127,255}));
+  connect(deaerator.steam, R_entry1.port_b) annotation (Line(points={{39,-105},
+          {39,-96},{46,-96},{46,-87},{30,-87}}, color={0,127,255}));
+  connect(R_entry1.port_a, FeedwaterMixVolume.port_b[1])
+    annotation (Line(points={{30,-73},{30,-60},{28,-60}}, color={0,127,255}));
+  connect(FWTank_level.y,Pump_Speed. u_m)
+    annotation (Line(points={{192.6,-132},{227,-132},{227,-121.4}},
+                                                           color={0,0,127}));
+  connect(const1.y,Pump_Speed. u_s) annotation (Line(points={{192.7,-101},{
+          192.7,-102},{214,-102},{214,-113},{218.6,-113}},
+                              color={0,0,127}));
+  connect(Pump_Speed.y, firstfeedpump.in_m_flow) annotation (Line(points={{
+          234.7,-113},{234.7,-136.7},{108,-136.7}}, color={0,0,127}));
+  connect(HPT.portLP, Moisture_Separator.port_a)
+    annotation (Line(points={{52,38},{52,34},{62,34}}, color={0,127,255}));
+  connect(Moisture_Separator.port_b, tee.port_2)
+    annotation (Line(points={{74,34},{82,34}}, color={0,127,255}));
+  connect(Moisture_Separator.port_Liquid, FeedwaterMixVolume.port_a[2])
+    annotation (Line(points={{64,30},{60,30},{60,12},{28.25,12},{28.25,-48}},
+        color={0,127,255}));
+  connect(sensorBus.Steam_Temperature, sensor_pT.T) annotation (Line(
+      points={{-30,100},{-30,57.8},{-24,57.8}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(deaerator.drain, sensor_T2.port_a) annotation (Line(points={{46,-120},
+          {46,-128},{-42,-128},{-42,-40},{-48,-40}}, color={0,127,255}));
 annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
-        Rectangle(
-          extent={{-24,2},{24,-2}},
-          lineColor={0,0,0},
-          fillColor={64,164,200},
-          fillPattern=FillPattern.HorizontalCylinder,
-          origin={20,-42},
-          rotation=180),
         Rectangle(
           extent={{-11.5,3},{11.5,-3}},
           lineColor={0,0,0},
@@ -390,13 +383,6 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           fillPattern=FillPattern.HorizontalCylinder,
           origin={-8.5,-31.5},
           rotation=360),
-        Rectangle(
-          extent={{-0.800004,5},{29.1996,-5}},
-          lineColor={0,0,0},
-          origin={-71.1996,-49},
-          rotation=0,
-          fillColor={0,0,255},
-          fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
           extent={{-18,3},{18,-3}},
           lineColor={0,0,0},
@@ -447,38 +433,38 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           fillColor={0,128,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Ellipse(
-          extent={{32,-42},{60,-68}},
+          extent={{32,-40},{60,-66}},
           lineColor={0,0,0},
           fillColor={255,255,255},
           fillPattern=FillPattern.Solid),
         Rectangle(
           extent={{-0.373344,2},{13.6267,-2}},
           lineColor={0,0,0},
-          origin={18.3733,-56},
+          origin={18.3733,-54},
           rotation=0,
           fillColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
           extent={{-0.341463,2},{13.6587,-2}},
           lineColor={0,0,0},
-          origin={20,-44.3415},
+          origin={20,-42.3415},
           rotation=-90,
           fillColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Rectangle(
           extent={{-1.41463,2.0001},{56.5851,-2.0001}},
           lineColor={0,0,0},
-          origin={18.5851,-46.0001},
+          origin={-25.4149,-62.0001},
           rotation=180,
           fillColor={0,0,255},
           fillPattern=FillPattern.HorizontalCylinder),
         Ellipse(
-          extent={{-46,-40},{-34,-52}},
+          extent={{-26,-56},{-14,-68}},
           lineColor={0,0,0},
           fillPattern=FillPattern.Sphere,
           fillColor={0,100,199}),
         Polygon(
-          points={{-44,-50},{-48,-54},{-32,-54},{-36,-50},{-44,-50}},
+          points={{-24,-66},{-28,-70},{-12,-70},{-16,-66},{-24,-66}},
           lineColor={0,0,255},
           pattern=LinePattern.None,
           fillColor={0,0,0},
@@ -510,13 +496,13 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           fillPattern=FillPattern.Solid,
           textString="G"),
         Text(
-          extent={{41,-62},{51,-48}},
+          extent={{41,-60},{51,-46}},
           lineColor={0,0,0},
           fillColor={255,255,255},
           fillPattern=FillPattern.Solid,
           textString="C"),
         Polygon(
-          points={{-39,-43},{-39,-49},{-43,-46},{-39,-43}},
+          points={{-19,-59},{-19,-65},{-23,-62},{-19,-59}},
           lineColor={0,0,0},
           pattern=LinePattern.None,
           fillPattern=FillPattern.HorizontalCylinder,
@@ -533,16 +519,46 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           fillPattern=FillPattern.Solid,
           textString="LPT"),
         Rectangle(
-          extent={{-4,-40},{22,-48}},
-          lineColor={238,46,47},
-          pattern=LinePattern.None,
-          lineThickness=1,
-          fillPattern=FillPattern.HorizontalCylinder,
-          fillColor={28,108,200}),
-        Line(
-          points={{-4,-44},{22,-44}},
-          color={255,0,0},
-          thickness=1)}),                                        Diagram(
+          extent={{-14,-40},{12,-50}},
+          lineColor={28,108,200},
+          fillColor={28,108,200},
+          fillPattern=FillPattern.Solid),
+        Ellipse(
+          extent={{-18,-40},{-8,-50}},
+          lineColor={28,108,200},
+          fillColor={28,108,200},
+          fillPattern=FillPattern.Solid),
+        Ellipse(
+          extent={{6,-40},{16,-50}},
+          lineColor={28,108,200},
+          fillColor={28,108,200},
+          fillPattern=FillPattern.Solid),
+        Ellipse(
+          extent={{-6,-36},{4,-46}},
+          lineColor={28,108,200},
+          fillColor={28,108,200},
+          fillPattern=FillPattern.Solid),
+        Rectangle(
+          extent={{-0.213341,2},{7.7867,-2}},
+          lineColor={0,0,0},
+          origin={14.2133,-44},
+          rotation=0,
+          fillColor={0,0,255},
+          fillPattern=FillPattern.HorizontalCylinder),
+        Rectangle(
+          extent={{-0.341463,2},{13.6587,-2}},
+          lineColor={0,0,0},
+          origin={-2,-62.3415},
+          rotation=90,
+          fillColor={0,0,255},
+          fillPattern=FillPattern.HorizontalCylinder),
+        Rectangle(
+          extent={{-0.373344,2},{13.6267,-2}},
+          lineColor={0,0,0},
+          origin={-1.6267,-62},
+          rotation=180,
+          fillColor={0,0,255},
+          fillPattern=FillPattern.HorizontalCylinder)}),         Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     experiment(
       StopTime=1000,
@@ -616,4 +632,4 @@ annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
 <p><b><span style=\"font-size: 18pt;\">Contact Deatils</span></b> </p>
 <p>This model was designed by Aidan Rigby (<a href=\"mailto:aidan.rigby@inl.gov\">aidan.rigby@inl.gov</a> , <a href=\"mailto:acrigby@wisc.edu\">acrigby@wisc.edu</a> ). All initial questions should be directed to Daniel Mikkelson (<a href=\"mailto:Daniel.Mikkelson@inl.gov\">Daniel.Mikkelson@inl.gov</a>). </p>
 </html>"));
-end SteamTurbine_L2_ClosedFeedHeat_VN;
+end SteamTurbine_L2_OpenFeedHeat_VN;
