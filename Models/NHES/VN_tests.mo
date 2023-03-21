@@ -192,8 +192,8 @@ package VN_tests
       level_start=1,
       h_start=tank.Medium.specificEnthalpy_pT(tank.p_start, 50 + 273.15))
       annotation (Placement(transformation(extent={{-16,44},{4,64}})));
-    TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump(redeclare package Medium
-        = Modelica.Media.Water.StandardWater(extraPropertiesNames={"Tritium"}), m_flow_nominal=1)
+    TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump(redeclare package Medium =
+          Modelica.Media.Water.StandardWater(extraPropertiesNames={"Tritium"}), m_flow_nominal=1)
       annotation (Placement(transformation(extent={{8,-48},{-12,-28}})));
     TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Temperature_multi
       boundary(
@@ -231,4 +231,81 @@ package VN_tests
             70,42},{62,42},{62,4},{51,4}}, color={0,140,72}));
     annotation (experiment(StopTime=10000, __Dymola_Algorithm="Esdirk34a"));
   end LooptyLoop;
+
+  model FW_tank
+
+    TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump(redeclare package Medium
+        = Modelica.Media.Water.StandardWater, m_flow_nominal=28)
+      annotation (Placement(transformation(extent={{-4,-50},{-24,-30}})));
+    TRANSFORM.Fluid.Volumes.BoilerDrum FW_tank(
+      redeclare model Geometry =
+          TRANSFORM.Fluid.ClosureRelations.Geometry.Models.TwoVolume_withLevel.Cylinder
+          (
+          orientation="Vertical",
+          length=10,
+          r_inner=2,
+          th_wall=0.03),
+      level_start=0.5,
+      p_liquid_start=500000,
+      p_vapor_start=500000,
+      use_LiquidHeatPort=false,
+      Twall_start=423.15)
+      annotation (Placement(transformation(extent={{-44,-22},{-26,0}})));
+    TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary3(
+      redeclare package Medium = Modelica.Media.Water.StandardWater,
+      use_m_flow_in=true,
+      m_flow=24,
+      T=313.15,
+      nPorts=1) annotation (Placement(transformation(extent={{12,-20},{-6,-2}})));
+    TRANSFORM.Fluid.Valves.ValveLinear valveLinear(
+      redeclare package Medium = Modelica.Media.Water.StandardWater,
+      dp_nominal=50000,
+      m_flow_nominal=10)
+      annotation (Placement(transformation(extent={{-58,10},{-78,30}})));
+    TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary(
+      redeclare package Medium = Modelica.Media.Water.StandardWater,
+      p=520000,
+      T=433.15,
+      nPorts=1)
+      annotation (Placement(transformation(extent={{-108,10},{-88,30}})));
+    Modelica.Blocks.Sources.Constant const(k=0.5)
+      annotation (Placement(transformation(extent={{-96,58},{-76,78}})));
+    TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary1(
+      redeclare package Medium = Modelica.Media.Water.StandardWater,
+      use_m_flow_in=false,
+      m_flow=0,
+      T=343.15,
+      nPorts=1) annotation (Placement(transformation(extent={{-58,-70},{-76,-52}})));
+    TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary2(
+      redeclare package Medium = Modelica.Media.Water.StandardWater,
+      p=520000,
+      nPorts=1)
+      annotation (Placement(transformation(extent={{-42,-84},{-22,-64}})));
+    Modelica.Blocks.Sources.Ramp ramp(
+      height=10,
+      duration=800,
+      offset=24,
+      startTime=8000)
+      annotation (Placement(transformation(extent={{34,-34},{48,-20}})));
+  equation
+    connect(pump.port_a, FW_tank.downcomerPort) annotation (Line(points={{-4,-40},
+            {0,-40},{0,-24},{-22,-24},{-22,-26},{-28.7,-26},{-28.7,-19.8}},
+          color={0,127,255}));
+    connect(FW_tank.steamPort, valveLinear.port_a) annotation (Line(points={{-28.7,
+            -2.64},{-28.7,20},{-58,20}}, color={0,127,255}));
+    connect(valveLinear.port_b,boundary. ports[1])
+      annotation (Line(points={{-78,20},{-88,20}}, color={0,127,255}));
+    connect(boundary3.ports[1], FW_tank.feedwaterPort)
+      annotation (Line(points={{-6,-11},{-26,-11}}, color={0,127,255}));
+
+    connect(boundary1.ports[1], FW_tank.riserPort) annotation (Line(points={{-76,
+            -61},{-76,-62},{-80,-62},{-80,-19.8},{-41.3,-19.8}}, color={0,127,
+            255}));
+    connect(pump.port_b, boundary2.ports[1]) annotation (Line(points={{-24,-40},{-28,
+            -40},{-28,-60},{-18,-60},{-18,-74},{-22,-74}}, color={0,127,255}));
+    connect(const.y, valveLinear.opening) annotation (Line(points={{-75,68},{-68,68},
+            {-68,60},{-42,60},{-42,34},{-66,34},{-66,28},{-68,28}}, color={0,0,127}));
+    connect(ramp.y, boundary3.m_flow_in) annotation (Line(points={{48.7,-27},{
+            48.7,-28},{52,-28},{52,-3.8},{12,-3.8}}, color={0,0,127}));
+  end FW_tank;
 end VN_tests;
