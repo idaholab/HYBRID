@@ -10,7 +10,8 @@ model PropsCalc2
     m_flow=0.908085*5,
     nPorts=1,
     T=1063.15) annotation (Placement(transformation(extent={{124,-52},{104,-32}})));
-  Modelica.Fluid.Sensors.MassFlowRate TubeFlowMeasure(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  Modelica.Fluid.Sensors.MassFlowRate TubeFlowMeasure(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{94,-52},{74,-32}})));
   Modelica.Blocks.Sources.Constant TubeFlowControl(k=13.47/3600) annotation (Placement(transformation(extent={{160,-44},{140,-24}})));
   Modelica.Fluid.Sources.Boundary_pT TubeSink(
@@ -18,9 +19,11 @@ model PropsCalc2
     p(displayUnit="Pa") = 103800,
     T=1063.15,
     nPorts=1) annotation (Placement(transformation(extent={{-42,-52},{-22,-32}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TubeTemp(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TubeTemp(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{64,-52},{44,-32}})));
-  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort TubeInEnth(redeclare package Medium = NHES.Electrolysis.Media.Electrolysis.CathodeGas) annotation (Placement(transformation(extent={{32,-52},
+  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort TubeInEnth(redeclare package Medium =
+        NHES.Electrolysis.Media.Electrolysis.CathodeGas)                                                                                 annotation (Placement(transformation(extent={{32,-52},
             {12,-32}})));
 equation
   connect(TubeFeed.ports[1], TubeFlowMeasure.port_a) annotation (Line(points={{104,-42},{94,-42}}, color={0,127,255}));

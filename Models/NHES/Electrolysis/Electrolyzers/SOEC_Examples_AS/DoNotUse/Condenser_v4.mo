@@ -22,17 +22,23 @@ model Condenser_v4
 //   SI.SpecificEnthalpy q=sink.medium.h;
 //   SI.SpecificEnthalpy q2=sink1.medium.h;
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellInTemp(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellInTemp(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-98,0},{-78,20}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellOutTemp(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellOutTemp(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{80,0},{100,20}})));
   TRANSFORM.Fluid.Pipes.GenericPipe_MultiTransferSurface
-                                       pipe(  redeclare package Medium = Media.Electrolysis.CathodeGas,
+                                       pipe(  redeclare package Medium =
+        Media.Electrolysis.CathodeGas,
     T_a_start=424.15,
     T_b_start=424.15,
-    redeclare model Geometry = TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.StraightPipe (dimension=0.01, nSurfaces=1),
+    redeclare model Geometry =
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.StraightPipe
+        (                                                                                                          dimension=0.01, nSurfaces=1),
     use_HeatTransfer=true,
-    redeclare model HeatTransfer = TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Ideal)
+    redeclare model HeatTransfer =
+        TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Ideal)
                                                                                                                            annotation (Placement(transformation(extent={{-30,-18},
             {22,38}})));
   TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.HeatFlow boundary(use_port=false, Q_flow=-500)
