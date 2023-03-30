@@ -1,28 +1,26 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Examples;
-model Rankine_HTGR_Test_Transient
+model Rankine_HTGR_Test_TransientVN3
   extends Modelica.Icons.Example;
-  BalanceOfPlant.Turbine.HTGR_RankineCycles.HTGR_Rankine_Cycle_Transient
-    hTGR_Rankine_Cycle(redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_Rankine_Xe100_Based_Secondary_TransientControl
-      CS) annotation (Placement(transformation(extent={{-28,-18},{32,42}})));
-  TRANSFORM.Electrical.Sources.FrequencySource
-                                     sinkElec(f=60)
-    annotation (Placement(transformation(extent={{78,2},{58,22}})));
-  Components.HTGR_PebbleBed_Primary_Loop_STHX hTGR_PebbleBed_Primary_Loop(
+  Components.HTGR_PebbleBed_Primary_Loop_HeOut hTGR_PebbleBed_Primary_Loop(
       redeclare
       ControlSystems.CS_VN
-      CS) annotation (Placement(transformation(extent={{-110,-18},{-40,40}})));
+      CS) annotation (Placement(transformation(extent={{-110,-16},{-40,42}})));
+  TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary(
+    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    p=4000000,
+    T=378.15,
+    nPorts=1) annotation (Placement(transformation(extent={{38,22},{18,42}})));
+  TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
+    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    p=4000000,
+    T=523.15,
+    nPorts=1) annotation (Placement(transformation(extent={{42,-22},{22,-2}})));
 equation
-  hTGR_PebbleBed_Primary_Loop.input_steam_pressure = hTGR_Rankine_Cycle.sensor_p.p;
-  connect(sinkElec.port, hTGR_Rankine_Cycle.port_e)
-    annotation (Line(points={{58,12},{32,12}}, color={255,0,0}));
-  connect(hTGR_PebbleBed_Primary_Loop.port_b, hTGR_Rankine_Cycle.port_a)
-    annotation (Line(points={{-41.05,25.21},{-42,25.21},{-42,24},{-28,24}},
-                                                                   color={0,127,
-          255}));
-  connect(hTGR_PebbleBed_Primary_Loop.port_a, hTGR_Rankine_Cycle.port_b)
-    annotation (Line(points={{-41.05,1.43},{-28,0}},
-        color={0,127,255}));
+  hTGR_PebbleBed_Primary_Loop.input_steam_pressure = 40;
+  connect(hTGR_PebbleBed_Primary_Loop.port_b, boundary.ports[1]) annotation (
+      Line(points={{-41.05,27.21},{12,27.21},{12,32},{18,32}}, color={0,127,255}));
+  connect(hTGR_PebbleBed_Primary_Loop.port_a, boundary1.ports[1]) annotation (
+      Line(points={{-41.05,3.43},{18,3.43},{18,-12},{22,-12}}, color={0,127,255}));
   annotation (experiment(
       StopTime=1004200,
       Interval=10,
@@ -52,4 +50,4 @@ equation
             method="Esdirk45a",
             tolerance=0.0001,
             fixedStepSize=0)))));
-end Rankine_HTGR_Test_Transient;
+end Rankine_HTGR_Test_TransientVN3;

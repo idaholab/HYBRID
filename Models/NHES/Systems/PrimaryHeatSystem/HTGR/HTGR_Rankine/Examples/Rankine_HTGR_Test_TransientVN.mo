@@ -1,5 +1,5 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Examples;
-model Rankine_HTGR_Test_Transient
+model Rankine_HTGR_Test_TransientVN
   extends Modelica.Icons.Example;
   BalanceOfPlant.Turbine.HTGR_RankineCycles.HTGR_Rankine_Cycle_Transient
     hTGR_Rankine_Cycle(redeclare
@@ -52,4 +52,4 @@ equation
             method="Esdirk45a",
             tolerance=0.0001,
             fixedStepSize=0)))));
-end Rankine_HTGR_Test_Transient;
+end Rankine_HTGR_Test_TransientVN;
