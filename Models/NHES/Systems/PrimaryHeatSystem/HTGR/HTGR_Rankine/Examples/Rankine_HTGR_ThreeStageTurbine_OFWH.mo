@@ -4,7 +4,7 @@ model Rankine_HTGR_ThreeStageTurbine_OFWH
 
   Components.HTGR_PebbleBed_Primary_Loop_STHX hTGR_PebbleBed_Primary_Loop(
       redeclare
-      NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary_SS
+      NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary_SS_RX
       CS) annotation (Placement(transformation(extent={{-100,-20},{-40,40}})));
   Fluid.Sensors.stateSensor stateSensor1(redeclare package Medium =
         Modelica.Media.Water.StandardWater)

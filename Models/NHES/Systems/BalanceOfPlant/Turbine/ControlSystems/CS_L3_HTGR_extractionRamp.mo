@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_L3_HTGR_extraction
+model CS_L3_HTGR_extractionRamp
 
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
@@ -20,12 +20,12 @@ model CS_L3_HTGR_extraction
         transformation(extent={{-100,-40},{-80,-20}})));
   TRANSFORM.Controls.LimPID FeedPump_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=-5e-4,
-    Ti=10,
-    yMax=2*data.mdot_total,
-    yMin=data.mdot_total*0.5)
+    Ti=30,
+    yMax=2*data.mdot_hpt,
+    yMin=data.mdot_hpt*0.5)
     annotation (Placement(transformation(extent={{-10,80},{10,100}})));
   TRANSFORM.Controls.LimPID TCV_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-5e-10,
+    k=-5e-9,
     Ti=360,
     yMax=1,
     yMin=0)
@@ -37,7 +37,7 @@ model CS_L3_HTGR_extraction
     yMin=0)
     annotation (Placement(transformation(extent={{-10,-40},{10,-20}})));
   TRANSFORM.Controls.LimPID LPT2_BV_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-7,
+    k=5e-7,
     Ti=20,
     yMax=1,
     yMin=0)
@@ -61,7 +61,7 @@ model CS_L3_HTGR_extraction
                            product1
     annotation (Placement(transformation(extent={{96,-172},{116,-152}})));
   Modelica.Blocks.Sources.RealExpression T_in_set1(y=data.mdot_total)
-    annotation (Placement(transformation(extent={{2,64},{22,84}})));
+    annotation (Placement(transformation(extent={{4,64},{24,84}})));
   Modelica.Blocks.Logical.Switch switch2
     annotation (Placement(transformation(extent={{38,72},{58,92}})));
   Modelica.Blocks.Sources.BooleanStep booleanStep(startTime=4000)
@@ -70,7 +70,7 @@ model CS_L3_HTGR_extraction
     annotation (Placement(transformation(extent={{-54,60},{-34,80}})));
   Modelica.Blocks.Logical.Switch switch4
     annotation (Placement(transformation(extent={{42,20},{62,40}})));
-  Modelica.Blocks.Sources.BooleanStep booleanStep1(startTime=1200000)
+  Modelica.Blocks.Sources.BooleanStep booleanStep1(startTime=40000)
     annotation (Placement(transformation(extent={{86,74},{106,94}})));
   Modelica.Blocks.Logical.Switch switch5
     annotation (Placement(transformation(extent={{134,32},{154,52}})));
@@ -82,11 +82,8 @@ model CS_L3_HTGR_extraction
     annotation (Placement(transformation(extent={{30,-22},{50,-2}})));
   Modelica.Blocks.Logical.Switch switch7
     annotation (Placement(transformation(extent={{78,-64},{98,-44}})));
-  Modelica.Blocks.Sources.Ramp           ext_pos_start(
-    height=0,
-    duration=1000,
-    startTime=2000)
-    annotation (Placement(transformation(extent={{-152,-68},{-132,-48}})));
+  Modelica.Blocks.Sources.RealExpression ext_pos_start(y=0)
+    annotation (Placement(transformation(extent={{44,-72},{64,-52}})));
 equation
 
   connect(T_feed_set.y, LPT2_BV_PID.u_s)
@@ -144,7 +141,7 @@ equation
   connect(FeedPump_PID.y, switch2.u1)
     annotation (Line(points={{11,90},{36,90}}, color={0,0,127}));
   connect(switch2.u3, T_in_set1.y)
-    annotation (Line(points={{36,74},{23,74}}, color={0,0,127}));
+    annotation (Line(points={{36,74},{25,74}}, color={0,0,127}));
   connect(booleanStep.y, switch2.u2) annotation (Line(points={{11,124},{36,
           124},{36,82}}, color={255,0,255}));
   connect(actuatorBus.Feed_Pump_Speed, switch2.y) annotation (Line(
@@ -212,6 +209,8 @@ equation
   connect(booleanStep2.y, switch6.u2) annotation (Line(points={{51,-12},{56,-12},
           {56,-34},{16,-34},{16,-50},{-24,-50},{-24,-66},{-16,-66}}, color={255,
           0,255}));
+  connect(switch7.u3, ext_pos_start.y)
+    annotation (Line(points={{76,-62},{65,-62}}, color={0,0,127}));
   connect(Steam_Extraction.y, switch6.u3) annotation (Line(points={{-79,-30},{
           -28,-30},{-28,-74},{-16,-74}}, color={0,0,127}));
   connect(switch6.y, LPT1_BV_PID.u_m) annotation (Line(points={{7,-66},{7,-48},
@@ -236,11 +235,9 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(LPT1_BV_PID.y, switch7.u1) annotation (Line(points={{11,-30},{66,-30},
           {66,-46},{76,-46}}, color={0,0,127}));
-  connect(ext_pos_start.y, switch7.u3) annotation (Line(points={{-131,-58},{-22,
-          -58},{-22,-52},{66,-52},{66,-62},{76,-62}}, color={0,0,127}));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics),
     experiment(
       StopTime=1000,
       Interval=5,
       __Dymola_Algorithm="Esdirk45a"));
-end CS_L3_HTGR_extraction;
+end CS_L3_HTGR_extractionRamp;

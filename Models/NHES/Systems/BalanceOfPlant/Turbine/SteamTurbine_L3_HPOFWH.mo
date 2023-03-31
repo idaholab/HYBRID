@@ -112,7 +112,7 @@ model SteamTurbine_L3_HPOFWH
       Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=270,
-        origin={100,44})));
+        origin={100,42})));
   TRANSFORM.Electrical.Interfaces.ElectricalPowerPort_Flow port_a_elec
     annotation (Placement(transformation(extent={{90,-10},{110,10}})));
   Fluid.Machines.Pump_Pressure                  pump(redeclare package Medium
@@ -197,7 +197,8 @@ equation
   connect(LPT1.shaft_b, LPT2.shaft_a)
     annotation (Line(points={{24,54},{24,40},{74,40},{74,54}}, color={0,0,0}));
   connect(LPT2.shaft_b, generator.shaft)
-    annotation (Line(points={{94,54},{100,54}}, color={0,0,0}));
+    annotation (Line(points={{94,54},{98,54},{98,52},{100,52}},
+                                                color={0,0,0}));
   connect(condenser.port_b, pump.port_a)
     annotation (Line(points={{86,-58},{86,-60},{66,-60}}, color={0,127,255}));
   connect(pump.port_b, OFWH_1.port_b)
@@ -303,7 +304,7 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(generator.port, sensorW.port_a)
-    annotation (Line(points={{100,34},{100,30}}, color={255,0,0}));
+    annotation (Line(points={{100,32},{100,30}}, color={255,0,0}));
   connect(port_a_elec, sensorW.port_b)
     annotation (Line(points={{100,0},{100,10}}, color={255,0,0}));
   connect(actuatorBus.Feed_Pump_Speed, FWCP.inputSignal) annotation (Line(
@@ -328,7 +329,7 @@ equation
         points={{-80,60},{-74,60},{-74,16},{-50,16},{-50,-6},{-38,-6}},
         color={0,127,255}));
   connect(sensorBus.Extract_flow, sensor_m_flow.m_flow) annotation (Line(
-      points={{-30,100},{-30,144},{-120,144},{-120,16},{-80,16},{-80,3.6}},
+      points={{-30,100},{-30,144},{-118,144},{-118,16},{-80,16},{-80,3.6}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(

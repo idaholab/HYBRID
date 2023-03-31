@@ -829,7 +829,9 @@ package HRSG "Heat Recovery Steam Generators"
       NHES.Systems.SecondaryEnergySupply.NaturalGasFiredTurbine.GTPP_PowerCtrl_GasExit
                      SES(capacity=35000000, redeclare
           NHES.Systems.SecondaryEnergySupply.NaturalGasFiredTurbine.CS_GTPP_step
-          CS(W_totalSetpoint=30))
+          CS(W_totalSetpoint=30,
+          W_SES_nominal(height=-10e6, offset=35e6),
+          W_totalSetpoint_SES(y=35e6)))
         annotation (Placement(transformation(extent={{-158,-48},{-98,12}})));
       GasTurbine.Sources.PrescribedFrequency
                              elecLoad(f=60)
@@ -981,8 +983,8 @@ package HRSG "Heat Recovery Steam Generators"
               180,0},{200,0},{200,-60},{-80,-60},{-80,-18},{-76,-18}}, color={
               255,0,0}));
       annotation (experiment(
-          StopTime=1000,
-          Interval=10,
+          StopTime=2000,
+          Interval=50,
           __Dymola_Algorithm="Esdirk45a"),
         Diagram(coordinateSystem(extent={{-160,-100},{340,100}})),
         Icon(coordinateSystem(extent={{-160,-100},{340,100}})));
@@ -995,7 +997,7 @@ package HRSG "Heat Recovery Steam Generators"
       NHES.Systems.SecondaryEnergySupply.NaturalGasFiredTurbine.GTPP_PowerCtrl_GasExit
                      SES(capacity=35000000, redeclare
           NHES.Systems.SecondaryEnergySupply.NaturalGasFiredTurbine.CS_GTPP_step
-          CS(W_totalSetpoint=30))
+          CS(W_totalSetpoint=30, W_SES_nominal(height=-10e6, offset=35e6)))
         annotation (Placement(transformation(extent={{-158,-48},{-98,12}})));
       GasTurbine.Sources.PrescribedFrequency
                              elecLoad(f=60)
@@ -1147,7 +1149,7 @@ package HRSG "Heat Recovery Steam Generators"
               180,0},{200,0},{200,-60},{-80,-60},{-80,-18},{-76,-18}}, color={
               255,0,0}));
       annotation (experiment(
-          StopTime=1000,
+          StopTime=2000,
           Interval=10,
           __Dymola_Algorithm="Esdirk45a"),
         Diagram(coordinateSystem(extent={{-160,-100},{340,100}})),
