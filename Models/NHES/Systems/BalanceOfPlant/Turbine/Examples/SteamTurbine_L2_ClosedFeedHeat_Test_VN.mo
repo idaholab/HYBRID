@@ -23,9 +23,9 @@ model SteamTurbine_L2_ClosedFeedHeat_Test_VN
       BypassFeedHeater_K_shell(unit="1/m4")),
     port_a_nominal(
       m_flow=67,
-      p=3400000,
+      p=10000000,
       h=3e6),
-    port_b_nominal(p=3500000, h=1e6),
+    port_b_nominal(p=10100000, h=1e6),
     init(
       tee_p_start=800000,
       moisturesep_p_start=700000,

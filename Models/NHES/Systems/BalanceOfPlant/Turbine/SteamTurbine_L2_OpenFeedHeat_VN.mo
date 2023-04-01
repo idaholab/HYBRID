@@ -21,6 +21,7 @@ model SteamTurbine_L2_OpenFeedHeat_VN "Two stage BOP model"
     m_flow_nominal=data.HPT_nominal_mflow,
     p_inlet_nominal= data.p_in_nominal,
     p_outlet_nominal=data.HPT_p_exit_nominal,
+    use_T_nominal=false,
     T_nominal=data.HPT_T_in_nominal)
     annotation (Placement(transformation(extent={{32,22},{52,42}})));
 

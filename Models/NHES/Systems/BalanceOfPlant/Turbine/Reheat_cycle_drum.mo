@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
-model Drum_boiler5
+model Reheat_cycle_drum
 
   Steam_Drum                         steam_Drum(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -22,18 +22,21 @@ model Drum_boiler5
     V_Tube=5,
     V_Shell=5,
     p_start_tube=18000000,
-    use_T_start_tube=true,
+    use_T_start_tube=false,
     T_start_tube_inlet=423.15,
     T_start_tube_outlet=573.15,
-    h_start_tube_inlet=706000,
-    h_start_tube_outlet=706000,
+    h_start_tube_inlet=623706,
+    h_start_tube_outlet=1494780,
     p_start_shell=5000000,
-    use_T_start_shell=true,
+    use_T_start_shell=false,
     T_start_shell_inlet=623.15,
     T_start_shell_outlet=473.15,
+    h_start_shell_inlet=3.26e6,
+    h_start_shell_outlet=2.46e6,
     dp_init_tube=50000,
     dp_init_shell=50000,
     Q_init=1,
+    m_start_tube=57,
     m_start_shell=68)                annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=270,
@@ -49,8 +52,8 @@ model Drum_boiler5
     V_Tube=5,
     V_Shell=5,
     p_start_tube=18000000,
-    h_start_tube_inlet=1755270,
-    h_start_tube_outlet=1900000,
+    h_start_tube_inlet=1.693e6,
+    h_start_tube_outlet=1.948e6,
     p_start_shell=5000000,
     use_T_start_shell=true,
     T_start_shell_inlet=773.15,
@@ -58,7 +61,7 @@ model Drum_boiler5
     dp_init_tube=50000,
     dp_init_shell=50000,
     Q_init=61000000,
-    m_start_tube=180,
+    m_start_tube=200,
     m_start_shell=68,
     Tube(medium(T(fixed=true))))     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
@@ -75,12 +78,14 @@ model Drum_boiler5
     V_Tube=5,
     V_Shell=5,
     p_start_tube=18000000,
-    h_start_tube_inlet=2507800,
-    h_start_tube_outlet=3460030,
+    h_start_tube_inlet=2509000,
+    h_start_tube_outlet=3509000,
     p_start_shell=5000000,
-    use_T_start_shell=true,
+    use_T_start_shell=false,
     T_start_shell_inlet=1013.15,
     T_start_shell_outlet=743.15,
+    h_start_shell_inlet=5.26e6,
+    h_start_shell_outlet=3.74e6,
     dp_init_tube=50000,
     dp_init_shell=50000,
     Q_init=50000000)                 annotation (Placement(transformation(
@@ -368,35 +373,6 @@ model Drum_boiler5
         origin={148,126})));
   Modelica.Blocks.Sources.Constant const8(k=0.7)
     annotation (Placement(transformation(extent={{276,138},{296,158}})));
-  Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase FWH(
-    tau=1,
-    NTU=2.5,
-    K_tube=100,
-    K_shell=100,
-    redeclare package Tube_medium = Modelica.Media.Water.StandardWater,
-    redeclare package Shell_medium = Modelica.Media.Water.StandardWater,
-    V_Tube=2,
-    V_Shell=1,
-    p_start_tube=18000000,
-    use_T_start_tube=true,
-    T_start_tube_inlet=303.15,
-    T_start_tube_outlet=423.15,
-    h_start_tube_inlet=1755270,
-    h_start_tube_outlet=1900000,
-    p_start_shell=800000,
-    use_T_start_shell=false,
-    T_start_shell_inlet=483.15,
-    T_start_shell_outlet=323.15,
-    h_start_shell_inlet=3e6,
-    h_start_shell_outlet=2e5,
-    dp_init_tube=50000,
-    dp_init_shell=50000,
-    Q_init=1000,
-    m_start_tube=60,
-    m_start_shell=1) annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=180,
-        origin={266,34})));
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=2e-3,
@@ -427,7 +403,7 @@ model Drum_boiler5
     initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=0.98)
     annotation (Placement(transformation(extent={{74,56},{88,42}})));
-  StagebyStageTurbineSecondary.Control_and_Distribution.Delay delay3(Ti=10)
+  StagebyStageTurbineSecondary.Control_and_Distribution.Delay delay3(Ti=50)
     annotation (Placement(transformation(extent={{96,44},{110,56}})));
   StagebyStageTurbineSecondary.Control_and_Distribution.Delay delay4(Ti=0.1)
     annotation (Placement(transformation(extent={{74,78},{88,90}})));
@@ -438,6 +414,36 @@ model Drum_boiler5
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT18(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{332,30},{352,50}})));
+  TRANSFORM.HeatExchangers.Simple_HX_A FWH(
+    redeclare package Medium_1 = Modelica.Media.Water.StandardWater,
+    redeclare package Medium_2 = Modelica.Media.Water.StandardWater,
+    nV=5,
+    V_1=0.02,
+    V_2=0.02,
+    surfaceArea=100,
+    alpha_1=3000,
+    alpha_2=2000,
+    p_a_start_1=800000,
+    p_b_start_1=800000,
+    use_Ts_start_1=false,
+    T_a_start_1=423.15,
+    T_b_start_1=293.15,
+    h_a_start_1=2.79229e6,
+    h_b_start_1=1.08e6,
+    m_flow_start_1=11,
+    p_a_start_2=1900000,
+    p_b_start_2=1900000,
+    use_Ts_start_2=false,
+    T_a_start_2=293.15,
+    T_b_start_2=773.15,
+    h_a_start_2=137700,
+    h_b_start_2=622634,
+    m_flow_start_2=57,
+    R_1=50,
+    R_2=50) annotation (Placement(transformation(
+        extent={{10,10},{-10,-10}},
+        rotation=180,
+        origin={272,28})));
 equation
   connect(const.y,PID. u_s)
     annotation (Line(points={{131,-8},{146,-8}}, color={0,0,127}));
@@ -519,10 +525,6 @@ equation
           -12,204},{10,204},{10,198}}, color={0,127,255}));
   connect(steamTurbine.portLP, sensor_pT14.port) annotation (Line(points={{142,
           68},{148,68},{148,80},{130,80},{130,86}}, color={0,127,255}));
-  connect(DHX3.Tube_out, sensor_pT15.port)
-    annotation (Line(points={{16,198},{16,248},{50,248}}, color={0,127,255}));
-  connect(DHX3.Tube_out, steamTurbine1.portHP)
-    annotation (Line(points={{16,198},{16,248},{72,248}}, color={0,127,255}));
   connect(steamTurbine1.shaft_b, steamTurbine.shaft_a) annotation (Line(points=
           {{92,242},{100,242},{100,62},{122,62}}, color={0,0,0}));
   connect(const6.y, PID2.u_s) annotation (Line(points={{-153,232},{-153,234},{
@@ -547,30 +549,20 @@ equation
           160},{16,160},{16,178}}, color={0,127,255}));
   connect(tee1.port_3, FeedwaterMixVolume.port_a[1]) annotation (Line(points={{
           158,126},{252,126},{252,102}}, color={0,127,255}));
-  connect(pump_SimpleMassFlow1.port_b, FWH.Tube_out) annotation (Line(points={{
-          368,31},{366,31},{366,30},{276,30}}, color={0,127,255}));
-  connect(R_InternalBypass1.port_b, FWH.Shell_in)
-    annotation (Line(points={{306,53},{306,36},{276,36}}, color={0,127,255}));
-  connect(FWH.Shell_out, FeedwaterMixVolume.port_b[1]) annotation (Line(points=
-          {{256,36},{250,36},{250,80},{252,80},{252,90}}, color={0,127,255}));
   connect(const9.y,Turb_Divert_Valve. u_s)
     annotation (Line(points={{177,212},{177,210},{188,210}},
                                                      color={0,0,127}));
-  connect(FWH.Tube_in, sensor_pT16.port)
-    annotation (Line(points={{256,30},{234,30}}, color={0,127,255}));
   connect(pump_SimpleMassFlow1.in_m_flow, PID.y)
     annotation (Line(points={{379,22.97},{379,-8},{169,-8}}, color={0,0,127}));
   connect(delay1.y, LPT_Bypass.opening) annotation (Line(points={{300.98,212},{
           322,212},{322,100}}, color={0,0,127}));
   connect(Turb_Divert_Valve.u_m, sensor_pT16.T) annotation (Line(points={{200,198},
-          {200,122},{240,122},{240,37.8}},
+          {200,112},{240,112},{240,37.8}},
         color={0,0,127}));
   connect(Turb_Divert_Valve.y, delay1.u) annotation (Line(points={{211,210},{
           214,210},{214,212},{284.6,212}}, color={0,0,127}));
   connect(R_InternalBypass1.port_b, sensor_pT17.port)
     annotation (Line(points={{306,53},{306,36},{294,36}}, color={0,127,255}));
-  connect(FWH.Tube_in, DHX.Tube_in) annotation (Line(points={{256,30},{250,30},
-          {250,-90},{30,-90},{30,-94},{-26,-94},{-26,-88}}, color={0,127,255}));
   connect(const7.y, Turb_Divert_Valve1.u_s) annotation (Line(points={{67,50},{
           69.8,50},{69.8,49},{72.6,49}}, color={0,0,127}));
   connect(Turb_Divert_Valve1.y, delay3.u) annotation (Line(points={{88.7,49},{
@@ -583,7 +575,24 @@ equation
           50},{116,50},{116,58},{127,58}}, color={0,0,127}));
   connect(pump_SimpleMassFlow1.port_b, sensor_pT18.port) annotation (Line(
         points={{368,31},{366,31},{366,30},{342,30}}, color={0,127,255}));
+  connect(FWH.port_b2, DHX.Tube_in) annotation (Line(points={{262,24},{256,24},
+          {256,-90},{30,-90},{30,-94},{-26,-94},{-26,-88}}, color={0,127,255}));
+  connect(FWH.port_a2, pump_SimpleMassFlow1.port_b) annotation (Line(points={{
+          282,24},{358,24},{358,31},{368,31}}, color={0,127,255}));
+  connect(FWH.port_b1, R_InternalBypass1.port_b) annotation (Line(points={{282,
+          32},{282,30},{306,30},{306,53}}, color={0,127,255}));
+  connect(FWH.port_a1, FeedwaterMixVolume.port_b[1])
+    annotation (Line(points={{262,32},{252,32},{252,90}}, color={0,127,255}));
+  connect(sensor_pT16.port, FWH.port_b2)
+    annotation (Line(points={{234,30},{234,24},{262,24}}, color={0,127,255}));
+  connect(steamTurbine1.portHP, sensor_pT15.port) annotation (Line(points={{72,
+          248},{66,248},{66,240},{50,240},{50,248}}, color={0,127,255}));
+  connect(DHX3.Tube_out, steamTurbine1.portHP) annotation (Line(points={{16,198},
+          {16,240},{66,240},{66,248},{72,248}}, color={0,127,255}));
   annotation (Diagram(coordinateSystem(extent={{-120,-120},{100,100}})), Icon(
         coordinateSystem(extent={{-120,-120},{100,100}})),
-    experiment(StopTime=1000, __Dymola_Algorithm="Esdirk34a"));
-end Drum_boiler5;
+    experiment(
+      StopTime=200,
+      Tolerance=0.005,
+      __Dymola_Algorithm="Esdirk34a"));
+end Reheat_cycle_drum;

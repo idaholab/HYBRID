@@ -280,7 +280,6 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(sensorBus.Feedwater_Temp, sensor_pT0.T) annotation (Line(
       points={{-32,112},{-202,112},{-202,-110},{-44,-110},{-44,9.8},{-46,9.8}},
-
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -288,6 +287,7 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
+
   connect(actuatorBus.FW_valve_opening, InternalBypass.opening) annotation (
       Line(
       points={{28,112},{42,112},{42,12.4}},
