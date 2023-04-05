@@ -234,8 +234,8 @@ package VN_tests
 
   model FW_tank
 
-    TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump(redeclare package Medium
-        = Modelica.Media.Water.StandardWater, m_flow_nominal=20)
+    TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump(redeclare package Medium =
+          Modelica.Media.Water.StandardWater, m_flow_nominal=20)
       annotation (Placement(transformation(extent={{-4,-50},{-24,-30}})));
     TRANSFORM.Fluid.Volumes.BoilerDrum FW_tank(
       redeclare model Geometry =
@@ -392,8 +392,8 @@ package VN_tests
 
   model FW_tank2
 
-    TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump(redeclare package Medium
-        = Modelica.Media.Water.StandardWater, m_flow_nominal=25)
+    TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump(redeclare package Medium =
+          Modelica.Media.Water.StandardWater, m_flow_nominal=57)
       annotation (Placement(transformation(extent={{-4,-50},{-24,-30}})));
     TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary3(
       redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -429,7 +429,7 @@ package VN_tests
     Modelica.Blocks.Sources.Ramp ramp1(
       height=0,
       duration=2000,
-      offset=6e5,
+      offset=8.3e5,
       startTime=2000)
       annotation (Placement(transformation(extent={{-148,20},{-134,34}})));
     TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT0(redeclare package
@@ -454,7 +454,7 @@ package VN_tests
       yb=0.01,
       k_s=0.9,
       k_m=0.9,
-      yMax=40,
+      yMax=80,
       yMin=2,
       wp=1,
       Ni=0.001,

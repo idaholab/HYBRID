@@ -1,11 +1,11 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
-model Reheat_cycle_drum
+model Reheat_cycle_drumOFH
 
   Steam_Drum                         steam_Drum(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p_start=20000000,
     V_drum=20)
-    annotation (Placement(transformation(extent={{0,4},{22,26}})));
+    annotation (Placement(transformation(extent={{22,4},{0,26}})));
   TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump(redeclare package Medium =
         Modelica.Media.Water.StandardWater, m_flow_nominal=200)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
@@ -314,7 +314,7 @@ model Reheat_cycle_drum
     V_liquid_start=0.5,
     set_m_flow=false,
     p=5000)
-    annotation (Placement(transformation(extent={{389,98},{409,118}})));
+    annotation (Placement(transformation(extent={{383,94},{403,114}})));
   TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump_SimpleMassFlow1(
     m_flow_nominal=1,
     use_input=true,
@@ -323,13 +323,13 @@ model Reheat_cycle_drum
       Placement(transformation(
         extent={{-11,-11},{11,11}},
         rotation=180,
-        origin={379,31})));
+        origin={385,-31})));
   Modelica.Blocks.Sources.Ramp ramp(
     height=-20,
-    duration=1000,
+    duration=2000,
     offset=68,
-    startTime=2500)
-    annotation (Placement(transformation(extent={{-272,2},{-258,16}})));
+    startTime=5000)
+    annotation (Placement(transformation(extent={{-174,-4},{-160,10}})));
   Modelica.Blocks.Sources.Constant const7(k=18e6)
     annotation (Placement(transformation(extent={{46,40},{66,60}})));
   Modelica.Blocks.Sources.Ramp ramp1(
@@ -340,11 +340,11 @@ model Reheat_cycle_drum
     annotation (Placement(transformation(extent={{76,14},{90,28}})));
   TRANSFORM.Fluid.Valves.ValveLinear LPT_Bypass(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
-    dp_nominal=750000,
+    dp_nominal=50000,
     m_flow_nominal=12)                            annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=180,
-        origin={322,92})));
+        origin={266,98})));
   TRANSFORM.Fluid.Volumes.MixingVolume FeedwaterMixVolume(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
     p_start=820000,
@@ -357,13 +357,7 @@ model Reheat_cycle_drum
     nPorts_b=1) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
-        origin={252,96})));
-  TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance R_InternalBypass1(R=1,
-      redeclare package Medium = Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(
-        extent={{10,-10},{-10,10}},
-        rotation=90,
-        origin={306,60})));
+        origin={252,116})));
   TRANSFORM.Fluid.FittingsAndResistances.TeeJunctionVolume tee1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     V=2,
@@ -372,14 +366,12 @@ model Reheat_cycle_drum
     annotation (Placement(transformation(extent={{-10,10},{10,-10}},
         rotation=90,
         origin={148,126})));
-  Modelica.Blocks.Sources.Constant const8(k=0.2)
-    annotation (Placement(transformation(extent={{278,128},{298,148}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT16(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{224,30},{244,50}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT17(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{284,36},{304,56}})));
+    annotation (Placement(transformation(extent={{224,76},{244,96}})));
   TRANSFORM.Controls.LimPID Turb_Divert_Valve1(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=-2e-7,
@@ -397,97 +389,108 @@ model Reheat_cycle_drum
   Modelica.Blocks.Sources.RealExpression Tsat3(y=
         sensor_pT17.Medium.saturationTemperature(sensor_pT17.p))
     "Heat loss/gain not accounted for in connections (e.g., energy vented to atmosphere) [W]"
-    annotation (Placement(transformation(extent={{282,62},{294,74}})));
+    annotation (Placement(transformation(extent={{222,102},{234,114}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT18(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{332,30},{352,50}})));
-  TRANSFORM.HeatExchangers.Simple_HX_A FWH(
-    redeclare package Medium_1 = Modelica.Media.Water.StandardWater,
-    redeclare package Medium_2 = Modelica.Media.Water.StandardWater,
-    nV=15,
-    counterCurrent=true,
-    V_1=0.95,
-    V_2=0.95,
-    surfaceArea=160,
-    alpha_1=3000,
-    alpha_2=2000,
-    p_a_start_1=800000,
-    p_b_start_1=800000,
-    use_Ts_start_1=false,
-    T_a_start_1=423.15,
-    T_b_start_1=293.15,
-    h_a_start_1=2.79229e6,
-    h_b_start_1=200000,
-    m_flow_start_1=11,
-    p_a_start_2=1900000,
-    p_b_start_2=1900000,
-    use_Ts_start_2=false,
-    T_a_start_2=293.15,
-    T_b_start_2=343.15,
-    h_a_start_2=137700,
-    h_b_start_2=622634,
-    m_flow_start_2=57,
-    R_1=5000,
-    R_2=500)
-            annotation (Placement(transformation(
-        extent={{10,10},{-10,-10}},
-        rotation=180,
-        origin={272,28})));
+    annotation (Placement(transformation(extent={{300,-22},{320,-2}})));
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-2e-2,
-    Ti=50,
+    k=-2e-1,
+    Ti=10,
     Td=0.1,
     yb=0.02,
     k_s=-1,
     k_m=-1,
-    yMax=0.8,
-    yMin=-0.15,
+    yMax=1,
+    yMin=0.15,
     initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1500)
     annotation (Placement(transformation(extent={{204,210},{224,230}})));
   Modelica.Blocks.Sources.Constant const9(k=273.15 + 165)
     annotation (Placement(transformation(extent={{170,212},{190,232}})));
-  StagebyStageTurbineSecondary.Control_and_Distribution.Delay delay1(Ti=5)
-    annotation (Placement(transformation(extent={{300,216},{314,228}})));
-  Modelica.Blocks.Sources.Ramp ramp2(
-    height=0.8,
-    duration=200,
-    offset=0.17,
-    startTime=500)
-    annotation (Placement(transformation(extent={{292,172},{306,186}})));
-  StagebyStageTurbineSecondary.Control_and_Distribution.Timer             timer(
-      Start_Time=400, init_mult=0.1)
-    annotation (Placement(transformation(extent={{262,190},{284,202}})));
-  Modelica.Blocks.Math.Add         add
-    annotation (Placement(transformation(extent={{344,154},{364,174}})));
   Modelica.Blocks.Sources.RealExpression Tsat4(y=
         sensor_pT14.Medium.saturationTemperature(sensor_pT14.p))
     "Heat loss/gain not accounted for in connections (e.g., energy vented to atmosphere) [W]"
     annotation (Placement(transformation(extent={{112,112},{124,124}})));
+  TRANSFORM.Fluid.Volumes.Deaerator deaerator(
+    redeclare model Geometry =
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.TwoVolume_withLevel.Cylinder
+        (
+        V_liquid=10,
+        length=10,
+        r_inner=2,
+        th_wall=0.1),
+    redeclare package Medium = Modelica.Media.Water.StandardWater,
+    energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    massDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
+    level_start=5,
+    p_start=650000,
+    use_T_start=false,
+    d_wall=1000,
+    cp_wall=420,
+    Twall_start=373.15)
+    annotation (Placement(transformation(extent={{298,56},{278,76}})));
+  Modelica.Blocks.Sources.RealExpression FWTank_level(y=deaerator.level)
+    "level"
+    annotation (Placement(transformation(extent={{496,2},{508,14}})));
+  Modelica.Blocks.Sources.Constant const10(k=7)
+    annotation (Placement(transformation(extent={{494,32},{508,46}})));
+  TRANSFORM.Controls.LimPID Pump_Speed(
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    with_FF=false,
+    k=30,
+    Ti=500,
+    yb=0.01,
+    k_s=0.9,
+    k_m=0.9,
+    yMax=80,
+    yMin=2,
+    wp=1,
+    Ni=0.001,
+    xi_start=0,
+    y_start=0.01)
+    annotation (Placement(transformation(extent={{536,20},{550,34}})));
+  StagebyStageTurbineSecondary.Control_and_Distribution.Timer             timer1(
+      Start_Time=100)
+    annotation (Placement(transformation(extent={{534,-34},{526,-26}})));
+  TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump_SimpleMassFlow2(
+    m_flow_nominal=57,
+    use_input=true,
+    redeclare package Medium = Modelica.Media.Water.StandardWater)
+                                                         annotation (
+      Placement(transformation(
+        extent={{11,-11},{-11,11}},
+        rotation=180,
+        origin={459,97})));
+  Modelica.Blocks.Sources.Ramp ramp2(
+    height=-20,
+    duration=1000,
+    offset=68,
+    startTime=5500)
+    annotation (Placement(transformation(extent={{-338,-22},{-324,-8}})));
   Modelica.Blocks.Math.Add         add1
-    annotation (Placement(transformation(extent={{-214,28},{-194,48}})));
+    annotation (Placement(transformation(extent={{-280,4},{-260,24}})));
   Modelica.Blocks.Sources.Ramp ramp3(
-    height=-15,
+    height=-10,
     duration=2001,
     offset=0,
-    startTime=4500)
-    annotation (Placement(transformation(extent={{-268,38},{-254,52}})));
+    startTime=10500)
+    annotation (Placement(transformation(extent={{-334,14},{-320,28}})));
   Modelica.Blocks.Math.Add         add2
-    annotation (Placement(transformation(extent={{-170,34},{-150,54}})));
+    annotation (Placement(transformation(extent={{-236,10},{-216,30}})));
   Modelica.Blocks.Sources.Ramp ramp4(
-    height=-10,
+    height=-5,
     duration=1001,
     offset=0,
-    startTime=7500)
-    annotation (Placement(transformation(extent={{-268,68},{-254,82}})));
+    startTime=16500)
+    annotation (Placement(transformation(extent={{-334,44},{-320,58}})));
 equation
   connect(const.y,PID. u_s)
     annotation (Line(points={{131,-8},{146,-8}}, color={0,0,127}));
   connect(const1.y, valveLinear.opening) annotation (Line(points={{-91,-68},{-78,
           -68},{-78,-74},{-70,-74}}, color={0,0,127}));
-  connect(steam_Drum.downcomer_port, pump.port_a) annotation (Line(points={{6.6,
-          4},{6.6,-6},{26,-6},{26,-12}}, color={0,127,255}));
+  connect(steam_Drum.downcomer_port, pump.port_a) annotation (Line(points={{15.4,4},
+          {15.4,-6},{26,-6},{26,-12}},   color={0,127,255}));
   connect(sensor_pT2.port, steam_Drum.steam_port)
     annotation (Line(points={{28,32},{28,26},{11,26}}, color={0,127,255}));
   connect(boundary5.ports[1], DHX2.Shell_in) annotation (Line(points={{-84,
@@ -499,19 +502,20 @@ equation
           {11,36},{-30,36},{-30,42}}, color={0,127,255}));
   connect(DHX1.Shell_in, boundary2.ports[1])
     annotation (Line(points={{-32,-24},{-32,-5},{-80,-5}}, color={0,127,255}));
-  connect(DHX1.Tube_out, steam_Drum.riser_port) annotation (Line(points={{-26,
-          -24},{-26,-12},{10,-12},{10,0},{12,0},{12,4},{15.4,4}}, color={0,127,
+  connect(DHX1.Tube_out, steam_Drum.riser_port) annotation (Line(points={{-26,-24},
+          {-26,-12},{10,-12},{10,0},{12,0},{12,4},{6.6,4}},       color={0,127,
           255}));
   connect(sensor_pT3.port, DHX1.Tube_out) annotation (Line(points={{-30,8},{-30,
           -18},{-26,-18},{-26,-24}}, color={0,127,255}));
   connect(DHX.Tube_out, steam_Drum.feed_port) annotation (Line(points={{-26,-68},
-          {-26,-50},{-14,-50},{-14,15},{0,15}}, color={0,127,255}));
+          {-26,-54},{36,-54},{36,15},{22,15}},  color={0,127,255}));
   connect(pump.port_b, DHX1.Tube_in)
     annotation (Line(points={{26,-32},{26,-44},{-26,-44}}, color={0,127,255}));
   connect(sensor_pT1.port, DHX.Tube_out) annotation (Line(points={{56,-56},{56,
           -62},{-26,-62},{-26,-68}}, color={0,127,255}));
   connect(PID.u_m, steam_Drum.RelLevel) annotation (Line(points={{158,-20},{158,
-          -28},{66,-28},{66,15},{22.22,15}}, color={0,0,127}));
+          -28},{72,-28},{72,24},{-6,24},{-6,16},{-4,16},{-4,15},{-0.22,15}},
+                                             color={0,0,127}));
   connect(DHX1.Shell_out, DHX.Shell_in)
     annotation (Line(points={{-32,-44},{-32,-68}}, color={0,127,255}));
   connect(DHX.Shell_out, boundary4.ports[1]) annotation (Line(points={{-32,-88},
@@ -570,24 +574,18 @@ equation
           -85.5,234},{-85.5,234.2},{-56,234.2}}, color={0,0,127}));
   connect(sensor_pT15.T, PID2.u_m) annotation (Line(points={{56,255.8},{84,
           255.8},{84,260},{-126,260},{-126,246}}, color={0,0,127}));
-  connect(steamTurbine1.portLP, condenser.port_a) annotation (Line(points={{92,
-          248},{384,248},{384,115},{392,115}}, color={0,127,255}));
-  connect(condenser.port_b, pump_SimpleMassFlow1.port_a)
-    annotation (Line(points={{399,100},{399,31},{390,31}}, color={0,127,255}));
-  connect(R_InternalBypass1.port_a,LPT_Bypass. port_a)
-    annotation (Line(points={{306,67},{306,92},{312,92}},  color={0,127,255}));
-  connect(LPT_Bypass.port_b, condenser.port_a) annotation (Line(points={{332,92},
-          {384,92},{384,115},{392,115}}, color={0,127,255}));
+  connect(steamTurbine1.portLP, condenser.port_a) annotation (Line(points={{92,248},
+          {384,248},{384,111},{386,111}},      color={0,127,255}));
   connect(steamTurbine.portLP, tee1.port_1)
     annotation (Line(points={{142,68},{148,68},{148,116}}, color={0,127,255}));
   connect(tee1.port_2, DHX3.Tube_in) annotation (Line(points={{148,136},{148,
           160},{16,160},{16,178}}, color={0,127,255}));
-  connect(tee1.port_3, FeedwaterMixVolume.port_a[1]) annotation (Line(points={{
-          158,126},{252,126},{252,102}}, color={0,127,255}));
+  connect(tee1.port_3, FeedwaterMixVolume.port_a[1]) annotation (Line(points={{158,126},
+          {236,126},{236,132},{252,132},{252,122}},
+                                         color={0,127,255}));
   connect(pump_SimpleMassFlow1.in_m_flow, PID.y)
-    annotation (Line(points={{379,22.97},{379,-8},{169,-8}}, color={0,0,127}));
-  connect(R_InternalBypass1.port_b, sensor_pT17.port)
-    annotation (Line(points={{306,53},{306,36},{294,36}}, color={0,127,255}));
+    annotation (Line(points={{385,-39.03},{385,-60},{176,-60},{176,-8},{169,-8}},
+                                                             color={0,0,127}));
   connect(const7.y, Turb_Divert_Valve1.u_s) annotation (Line(points={{67,50},{
           69.8,50},{69.8,49},{72.6,49}}, color={0,0,127}));
   connect(Turb_Divert_Valve1.y, delay3.u) annotation (Line(points={{88.7,49},{
@@ -599,17 +597,8 @@ equation
   connect(delay3.y, steamTurbine.partialArc) annotation (Line(points={{110.98,
           50},{116,50},{116,58},{127,58}}, color={0,0,127}));
   connect(pump_SimpleMassFlow1.port_b, sensor_pT18.port) annotation (Line(
-        points={{368,31},{366,31},{366,30},{342,30}}, color={0,127,255}));
-  connect(FWH.port_b2, DHX.Tube_in) annotation (Line(points={{262,24},{256,24},
-          {256,-90},{30,-90},{30,-94},{-26,-94},{-26,-88}}, color={0,127,255}));
-  connect(FWH.port_a2, pump_SimpleMassFlow1.port_b) annotation (Line(points={{
-          282,24},{358,24},{358,31},{368,31}}, color={0,127,255}));
-  connect(FWH.port_b1, R_InternalBypass1.port_b) annotation (Line(points={{282,
-          32},{282,30},{306,30},{306,53}}, color={0,127,255}));
-  connect(FWH.port_a1, FeedwaterMixVolume.port_b[1])
-    annotation (Line(points={{262,32},{252,32},{252,90}}, color={0,127,255}));
-  connect(sensor_pT16.port, FWH.port_b2)
-    annotation (Line(points={{234,30},{234,24},{262,24}}, color={0,127,255}));
+        points={{374,-31},{374,-32},{310,-32},{310,-22}},
+                                                      color={0,127,255}));
   connect(steamTurbine1.portHP, sensor_pT15.port) annotation (Line(points={{72,
           248},{66,248},{66,240},{50,240},{50,248}}, color={0,127,255}));
   connect(DHX3.Tube_out, steamTurbine1.portHP) annotation (Line(points={{16,198},
@@ -620,30 +609,50 @@ equation
   connect(Turb_Divert_Valve.u_m, sensor_pT16.T) annotation (Line(points={{214,208},
           {214,56},{250,56},{250,37.8},{240,37.8}},
         color={0,0,127}));
-  connect(Turb_Divert_Valve.y, timer.u) annotation (Line(points={{225,220},{250,
-          220},{250,196},{259.8,196}}, color={0,0,127}));
-  connect(timer.y, delay1.u) annotation (Line(points={{285.54,196},{292,196},{
-          292,222},{298.6,222}}, color={0,0,127}));
-  connect(const8.y, add.u2) annotation (Line(points={{299,138},{332,138},{332,
-          158},{342,158}}, color={0,0,127}));
-  connect(add.y, LPT_Bypass.opening) annotation (Line(points={{365,164},{370,
-          164},{370,110},{322,110},{322,100}}, color={0,0,127}));
-  connect(delay1.y, add.u1) annotation (Line(points={{314.98,222},{332,222},{
-          332,170},{342,170}}, color={0,0,127}));
-  connect(ramp3.y, add1.u1) annotation (Line(points={{-253.3,45},{-224,45},{
-          -224,44},{-216,44}}, color={0,0,127}));
-  connect(ramp.y, add1.u2) annotation (Line(points={{-257.3,9},{-226,9},{-226,
-          32},{-216,32}}, color={0,0,127}));
+  connect(FeedwaterMixVolume.port_b[1], LPT_Bypass.port_a) annotation (Line(
+        points={{252,110},{252,104},{256,104},{256,98}}, color={0,127,255}));
+  connect(LPT_Bypass.port_b, deaerator.steam)
+    annotation (Line(points={{276,98},{281,98},{281,73}}, color={0,127,255}));
+  connect(deaerator.drain, pump_SimpleMassFlow1.port_a) annotation (Line(points
+        ={{288,58},{288,40},{370,40},{370,42},{402,42},{402,-31},{396,-31}},
+        color={0,127,255}));
+  connect(pump_SimpleMassFlow1.port_b, DHX.Tube_in) annotation (Line(points={{
+          374,-31},{374,-92},{30,-92},{30,-94},{-26,-94},{-26,-88}}, color={0,
+          127,255}));
+  connect(FWTank_level.y,Pump_Speed. u_m)
+    annotation (Line(points={{508.6,8},{543,8},{543,18.6}},color={0,0,127}));
+  connect(const10.y, Pump_Speed.u_s) annotation (Line(points={{508.7,39},{528,
+          39},{528,27},{534.6,27}}, color={0,0,127}));
+  connect(Pump_Speed.y, timer1.u) annotation (Line(points={{550.7,27},{550.7,
+          -29.8},{534.8,-30}}, color={0,0,127}));
+  connect(pump_SimpleMassFlow2.port_a, condenser.port_b) annotation (Line(
+        points={{448,97},{412,97},{412,84},{393,84},{393,96}}, color={0,127,255}));
+  connect(sensor_pT17.port, deaerator.steam) annotation (Line(points={{234,76},
+          {258,76},{258,86},{281,86},{281,73}}, color={0,127,255}));
+  connect(sensor_pT16.port, pump_SimpleMassFlow1.port_a) annotation (Line(
+        points={{234,30},{262,30},{262,42},{288,42},{288,40},{370,40},{370,42},
+          {402,42},{402,-31},{396,-31}}, color={0,127,255}));
+  connect(LPT_Bypass.opening, Turb_Divert_Valve.y) annotation (Line(points={{
+          266,106},{284,106},{284,120},{272,120},{272,184},{244,184},{244,220},
+          {225,220}}, color={0,0,127}));
+  connect(timer1.y, pump_SimpleMassFlow2.in_m_flow) annotation (Line(points={{
+          525.44,-30},{525.44,-8},{459,-8},{459,88.97}}, color={0,0,127}));
+  connect(pump_SimpleMassFlow2.port_b, deaerator.feed)
+    annotation (Line(points={{470,97},{470,73},{295,73}}, color={0,127,255}));
+  connect(ramp3.y, add1.u1) annotation (Line(points={{-319.3,21},{-300.65,21},{
+          -300.65,20},{-282,20}}, color={0,0,127}));
+  connect(ramp2.y, add1.u2) annotation (Line(points={{-323.3,-15},{-292,-15},{
+          -292,8},{-282,8}}, color={0,0,127}));
   connect(add1.y, add2.u2)
-    annotation (Line(points={{-193,38},{-172,38}}, color={0,0,127}));
-  connect(boundary2.m_flow_in, add2.y) annotation (Line(points={{-98,2.2},{-144,
-          2.2},{-144,44},{-149,44}}, color={0,0,127}));
-  connect(ramp4.y, add2.u1) annotation (Line(points={{-253.3,75},{-182,75},{
-          -182,50},{-172,50}}, color={0,0,127}));
+    annotation (Line(points={{-259,14},{-238,14}}, color={0,0,127}));
+  connect(ramp4.y, add2.u1) annotation (Line(points={{-319.3,51},{-248,51},{
+          -248,26},{-238,26}}, color={0,0,127}));
+  connect(add2.y, boundary2.m_flow_in) annotation (Line(points={{-215,20},{-215,
+          16},{-98,16},{-98,2.2}}, color={0,0,127}));
   annotation (Diagram(coordinateSystem(extent={{-120,-120},{100,100}})), Icon(
         coordinateSystem(extent={{-120,-120},{100,100}})),
     experiment(
       StopTime=200,
       Tolerance=0.005,
       __Dymola_Algorithm="Esdirk34a"));
-end Reheat_cycle_drum;
+end Reheat_cycle_drumOFH;

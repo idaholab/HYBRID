@@ -332,10 +332,10 @@ model Drum_boiler5
     offset=1,
     startTime=5000)
     annotation (Placement(transformation(extent={{76,14},{90,28}})));
-  TRANSFORM.Fluid.Valves.ValveLinear LPT_Bypass(
+  TRANSFORM.Fluid.Valves.ValveLinear FWH_valve(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     dp_nominal=700000,
-    m_flow_nominal=15)                            annotation (Placement(transformation(
+    m_flow_nominal=15) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=180,
         origin={322,92})));
@@ -537,9 +537,9 @@ equation
     annotation (Line(points={{399,100},{399,31},{390,31}}, color={0,127,255}));
   connect(ramp.y, boundary2.m_flow_in) annotation (Line(points={{-159.3,3},{
           -158,3},{-158,2.2},{-98,2.2}}, color={0,0,127}));
-  connect(R_InternalBypass1.port_a,LPT_Bypass. port_a)
-    annotation (Line(points={{306,67},{306,92},{312,92}},  color={0,127,255}));
-  connect(LPT_Bypass.port_b, condenser.port_a) annotation (Line(points={{332,92},
+  connect(R_InternalBypass1.port_a, FWH_valve.port_a)
+    annotation (Line(points={{306,67},{306,92},{312,92}}, color={0,127,255}));
+  connect(FWH_valve.port_b, condenser.port_a) annotation (Line(points={{332,92},
           {384,92},{384,115},{392,115}}, color={0,127,255}));
   connect(steamTurbine.portLP, tee1.port_1)
     annotation (Line(points={{142,68},{148,68},{148,116}}, color={0,127,255}));
@@ -560,7 +560,7 @@ equation
     annotation (Line(points={{256,30},{234,30}}, color={0,127,255}));
   connect(pump_SimpleMassFlow1.in_m_flow, PID.y)
     annotation (Line(points={{379,22.97},{379,-8},{169,-8}}, color={0,0,127}));
-  connect(delay1.y, LPT_Bypass.opening) annotation (Line(points={{300.98,212},{
+  connect(delay1.y, FWH_valve.opening) annotation (Line(points={{300.98,212},{
           322,212},{322,100}}, color={0,0,127}));
   connect(Turb_Divert_Valve.u_m, sensor_pT16.T) annotation (Line(points={{200,198},
           {200,122},{240,122},{240,37.8}},
