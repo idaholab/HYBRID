@@ -115,13 +115,13 @@ model SteamTurbine_L3_HPOFWH
         origin={100,42})));
   TRANSFORM.Electrical.Interfaces.ElectricalPowerPort_Flow port_a_elec
     annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-  Fluid.Machines.Pump_Pressure                  pump(redeclare package Medium
-      = Modelica.Media.Water.StandardWater,
+  Fluid.Machines.Pump_Pressure                  pump(redeclare package Medium =
+        Modelica.Media.Water.StandardWater,
     p_nominal=data.p_i2,
     eta=data.eta_p)
     annotation (Placement(transformation(extent={{66,-70},{46,-50}})));
-  Fluid.Machines.Pump_Pressure                  pump1(redeclare package Medium
-      = Modelica.Media.Water.StandardWater,
+  Fluid.Machines.Pump_Pressure                  pump1(redeclare package Medium =
+        Modelica.Media.Water.StandardWater,
     use_input=false,
     p_nominal=data.HPT_p_in - 0.5e5,
     eta=data.eta_p)
@@ -132,7 +132,7 @@ model SteamTurbine_L3_HPOFWH
     T_start=333.15,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=2)) annotation (Placement(transformation(extent={{16,-70},{36,-50}})));
+        (V=2)) annotation (Placement(transformation(extent={{16,-72},{36,-52}})));
   TRANSFORM.Fluid.Valves.ValveLinear HPT_bypass_valve(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     dp_nominal=50000,
@@ -180,8 +180,8 @@ model SteamTurbine_L3_HPOFWH
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_cond(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{90,-50},{110,-30}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-70,-10},{-90,10}})));
 equation
   connect(TBV.port_a, SteamHeader.port_b)
@@ -202,9 +202,11 @@ equation
   connect(condenser.port_b, pump.port_a)
     annotation (Line(points={{86,-58},{86,-60},{66,-60}}, color={0,127,255}));
   connect(pump.port_b, OFWH_1.port_b)
-    annotation (Line(points={{46,-60},{32,-60}}, color={0,127,255}));
+    annotation (Line(points={{46,-60},{40,-60},{40,-62},{32,-62}},
+                                                 color={0,127,255}));
   connect(pump1.port_a, OFWH_1.port_a)
-    annotation (Line(points={{10,-60},{20,-60}},color={0,127,255}));
+    annotation (Line(points={{10,-60},{16,-60},{16,-62},{20,-62}},
+                                                color={0,127,255}));
   connect(pump1.port_b, OFWH_2.port_b)
     annotation (Line(points={{-10,-60},{-22,-60}}, color={0,127,255}));
   connect(FWCP.port_a, OFWH_2.port_a)
@@ -318,7 +320,7 @@ equation
       horizontalAlignment=TextAlignment.Right));
 
   connect(moistureSeperator.port_Liquid, OFWH_1.port_b) annotation (Line(
-        points={{34,54},{34,-46},{42,-46},{42,-60},{32,-60}}, color={0,127,
+        points={{34,54},{34,-46},{42,-46},{42,-62},{32,-62}}, color={0,127,
           255}));
   connect(moistureSeperator.port_b[1], LPT2.portHP) annotation (Line(points
         ={{44,58},{46,58},{46,60},{74,60}}, color={0,127,255}));

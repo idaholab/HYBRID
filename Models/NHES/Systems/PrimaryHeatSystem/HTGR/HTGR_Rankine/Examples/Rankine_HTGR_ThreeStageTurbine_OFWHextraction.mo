@@ -3,30 +3,28 @@ model Rankine_HTGR_ThreeStageTurbine_OFWHextraction
   extends Modelica.Icons.Example;
   parameter Real P_ext=138;
   parameter Real P_demand=1;
-  parameter Modelica.Units.SI.Density d_ext= 42.55457 "kg/m3";
-  parameter Modelica.Units.SI.MassFlowRate m_ext=0.5;
+  parameter Modelica.Units.SI.Density d_ext= 42.55456924 "kg/m3";
+  parameter Modelica.Units.SI.MassFlowRate m_ext=40;
   Real breaker;
   parameter Real Boo=1;
 
-
   Real eta_th "Thermal Cycle Efficiency";
 
-
-  Components.HTGR_PebbleBed_Primary_Loop_STHX hTGR_PebbleBed_Primary_Loop(
-      redeclare
+  NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_STHX
+    hTGR_PebbleBed_Primary_Loop(redeclare
       NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary_SS_RX
       CS) annotation (Placement(transformation(extent={{-100,-20},{-40,40}})));
-  Fluid.Sensors.stateSensor stateSensor1(redeclare package Medium =
+  NHES.Fluid.Sensors.stateSensor stateSensor1(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-30,16},{-14,36}})));
-  Fluid.Sensors.stateSensor stateSensor2(redeclare package Medium =
+  NHES.Fluid.Sensors.stateSensor stateSensor2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-14,-10},{-30,10}})));
-  Fluid.Sensors.stateDisplay stateDisplay2
+  NHES.Fluid.Sensors.stateDisplay stateDisplay2
     annotation (Placement(transformation(extent={{-42,34},{-2,64}})));
-  Fluid.Sensors.stateDisplay stateDisplay1
+  NHES.Fluid.Sensors.stateDisplay stateDisplay1
     annotation (Placement(transformation(extent={{-42,-10},{-2,-40}})));
-  BalanceOfPlant.Turbine.SteamTurbine_L3_HPOFWH BOP(
+  NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_L3_HPOFWH BOP(
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_L3_HTGR_extraction
       CS(
@@ -54,8 +52,8 @@ model Rankine_HTGR_ThreeStageTurbine_OFWHextraction
         eta_p=data.eta_p),
       Steam_Extraction(y=data.m_ext),
       booleanStep2(startTime=100000),
-      LPT1_BV_PID(k=1e-9,  Ti=300)),
-    redeclare replaceable BalanceOfPlant.Turbine.Data.Data_L3 data(
+      LPT1_BV_PID(k=5e-11,Ti=300)),
+    redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.Data_L3 data(
       Power_nom=data.Power_nom,
       HPT_p_in=data.HPT_p_in,
       p_dump=data.p_dump,
@@ -92,8 +90,8 @@ model Rankine_HTGR_ThreeStageTurbine_OFWHextraction
     nPorts=1)
     annotation (Placement(transformation(extent={{0,74},{20,94}})));
   TRANSFORM.Electrical.Sources.FrequencySource boundary
-    annotation (Placement(transformation(extent={{180,28},{160,48}})));
-  BalanceOfPlant.Turbine.Data.Data_L3_master data(
+    annotation (Placement(transformation(extent={{194,22},{174,42}})));
+  NHES.Systems.BalanceOfPlant.Turbine.Data.Data_L3_master data(
     Power_nom=80e6,
     HPT_p_in=14000000,
     p_dump=16000000,
@@ -103,11 +101,11 @@ model Rankine_HTGR_ThreeStageTurbine_OFWHextraction
     d_HPT_in(displayUnit="kg/m3") = 43.049187,
     d_LPT1_in(displayUnit="g/cm3") = d_ext,
     d_LPT2_in(displayUnit="kg/m3"),
-    mdot_total=40.44026,
-    mdot_fh=8.4934,
-    mdot_hpt=31.947,
-    mdot_lpt1=31.948,
-    mdot_lpt2=28.908,
+    mdot_total=40.44025635,
+    mdot_fh=8.5063954,
+    mdot_hpt=31.93386095,
+    mdot_lpt1=31.93386095,
+    mdot_lpt2=28.04335968,
     m_ext=m_ext,
     p_use=P_demand*100000,
     eta_t=0.9,
@@ -132,9 +130,9 @@ model Rankine_HTGR_ThreeStageTurbine_OFWHextraction
   Modelica.Blocks.Sources.RealExpression realExpression(y=P_demand*100000)
     annotation (Placement(transformation(extent={{-80,-64},{-60,-44}})));
   Modelica.Blocks.Continuous.Integrator integrator
-    annotation (Placement(transformation(extent={{124,74},{144,94}})));
-  Electrical.PowerSensor sensorW
-    annotation (Placement(transformation(extent={{132,50},{152,30}})));
+    annotation (Placement(transformation(extent={{170,66},{190,86}})));
+  NHES.Electrical.PowerSensor sensorW
+    annotation (Placement(transformation(extent={{140,42},{160,22}})));
 initial equation
 
 equation
@@ -170,12 +168,13 @@ equation
           {{43.6,-50},{184,-50},{184,6},{180,6}}, color={0,0,127}));
   connect(realExpression.y, bypassdump.p_in)
     annotation (Line(points={{-59,-54},{-26,-54}}, color={0,0,127}));
-  connect(BOP.port_a_elec, sensorW.port_a) annotation (Line(points={{120,10},{130,
-          10},{130,26},{128,26},{128,40},{132,40}}, color={255,0,0}));
-  connect(boundary.port, sensorW.port_b) annotation (Line(points={{160,38},{160,
-          40.2},{152,40.2}}, color={255,0,0}));
-  connect(sensorW.W, integrator.u) annotation (Line(points={{142,49.4},{142,70},
-          {112,70},{112,84},{122,84}}, color={0,0,127}));
+  connect(BOP.port_a_elec, sensorW.port_a) annotation (Line(points={{120,10},{
+          134,10},{134,32},{140,32}},               color={255,0,0}));
+  connect(boundary.port, sensorW.port_b) annotation (Line(points={{174,32},{167,
+          32},{167,32.2},{160,32.2}},
+                             color={255,0,0}));
+  connect(sensorW.W, integrator.u) annotation (Line(points={{150,41.4},{150,76},
+          {168,76}},                   color={0,0,127}));
   annotation (experiment(
       StopTime=10000000,
       Interval=500,

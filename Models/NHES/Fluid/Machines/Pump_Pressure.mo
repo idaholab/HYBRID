@@ -32,10 +32,10 @@ equation
   // Balance Equations
   //port_a.h_outflow = inStream(port_b.h_outflow);
   //port_b.h_outflow = inStream(port_a.h_outflow);
-  port_a.Xi_outflow = inStream(port_b.Xi_outflow);
-  port_b.Xi_outflow = inStream(port_a.Xi_outflow);
-  port_a.C_outflow = inStream(port_b.C_outflow);
-  port_b.C_outflow = inStream(port_a.C_outflow);
+  //port_a.Xi_outflow = inStream(port_b.Xi_outflow);
+  //port_b.Xi_outflow = inStream(port_a.Xi_outflow);
+  //port_a.C_outflow = inStream(port_b.C_outflow);
+  //port_b.C_outflow = inStream(port_a.C_outflow);
   annotation (defaultComponentName="pump",
     Icon(graphics={
         Rectangle(

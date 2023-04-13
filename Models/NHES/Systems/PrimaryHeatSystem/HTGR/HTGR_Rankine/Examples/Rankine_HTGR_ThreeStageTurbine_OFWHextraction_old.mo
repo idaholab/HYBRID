@@ -1,10 +1,10 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Examples;
-model Rankine_HTGR_ThreeStageTurbine_OFWHextraction2
+model Rankine_HTGR_ThreeStageTurbine_OFWHextraction_old
   extends Modelica.Icons.Example;
-  parameter Real P_ext=70;
-  parameter Real P_demand=69;
-  parameter Modelica.Units.SI.Density d_ext=24.64292526 "kg/m3";
-  parameter Modelica.Units.SI.MassFlowRate m_ext=40;
+  parameter Real P_ext=138;
+  parameter Real P_demand=1;
+  parameter Modelica.Units.SI.Density d_ext= 42.55457 "kg/m3";
+  parameter Modelica.Units.SI.MassFlowRate m_ext=0.5;
   Real breaker;
   parameter Real Boo=1;
 
@@ -12,7 +12,7 @@ model Rankine_HTGR_ThreeStageTurbine_OFWHextraction2
 
   Components.HTGR_PebbleBed_Primary_Loop_STHX hTGR_PebbleBed_Primary_Loop(
       redeclare
-      NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary_SS
+      NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary_SS_RX
       CS) annotation (Placement(transformation(extent={{-100,-20},{-40,40}})));
   Fluid.Sensors.stateSensor stateSensor1(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
@@ -51,15 +51,8 @@ model Rankine_HTGR_ThreeStageTurbine_OFWHextraction2
         eta_mech=data.eta_mech,
         eta_p=data.eta_p),
       Steam_Extraction(y=data.m_ext),
-      booleanStep2(startTime=4e5),
-      LPT1_BV_PID(k=1e-5, Ti=100),
-      ext_pos_start(height=1e-5/(P_ext - P_demand),
-        duration=1e4,
-        startTime=3e5),
-      FeedPump_PID(k=-1e-4),
-      ramp(startTime=0),
-      T_in_set2(y=0),
-      booleanStep1(startTime=1e5)),
+      booleanStep2(startTime=100000),
+      LPT1_BV_PID(k=1e-9,  Ti=300)),
     redeclare replaceable BalanceOfPlant.Turbine.Data.Data_L3 data(
       Power_nom=data.Power_nom,
       HPT_p_in=data.HPT_p_in,
@@ -84,13 +77,7 @@ model Rankine_HTGR_ThreeStageTurbine_OFWHextraction2
       eta_p=data.eta_p),
     OFWH_1(T_start=333.15),
     OFWH_2(T_start=353.15),
-    LPT1_bypass_valve(
-      m_flow_start=m_ext,
-                      dp_nominal(displayUnit="Pa") = 1, m_flow_nominal=10*m_ext),
-    LPT1(m_flow_start=data.d_LPT1_in - m_ext),
-    LPT2(m_flow_start=data.mdot_lpt2 - m_ext),
-    HPT_bypass_valve(m_flow_start=data.mdot_fh),
-    TCV(m_flow_start=data.mdot_total))
+    LPT1_bypass_valve(dp_nominal(displayUnit="Pa") = 1, m_flow_nominal=10*m_ext))
     annotation (Placement(transformation(extent={{60,-20},{120,40}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT bypassdump(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -114,11 +101,11 @@ model Rankine_HTGR_ThreeStageTurbine_OFWHextraction2
     d_HPT_in(displayUnit="kg/m3") = 43.049187,
     d_LPT1_in(displayUnit="g/cm3") = d_ext,
     d_LPT2_in(displayUnit="kg/m3"),
-    mdot_total=50.55,
-    mdot_fh=10.6,
-    mdot_hpt=39.945,
-    mdot_lpt1=39.945,
-    mdot_lpt2=35.7553,
+    mdot_total=40.44026,
+    mdot_fh=8.4934,
+    mdot_hpt=31.947,
+    mdot_lpt1=31.948,
+    mdot_lpt2=28.908,
     m_ext=m_ext,
     p_use=P_demand*100000,
     eta_t=0.9,
@@ -222,4 +209,4 @@ equation
             tolerance=0.0001,
             fixedStepSize=0)))),
     __Dymola_experimentSetupOutput(events=false));
-end Rankine_HTGR_ThreeStageTurbine_OFWHextraction2;
+end Rankine_HTGR_ThreeStageTurbine_OFWHextraction_old;
