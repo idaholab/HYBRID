@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
-model WaterCircTrial_6bCS_upcs
+model WaterCircTrial_6bCS_upcs2
   TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump_SimpleMassFlow1(
     m_flow_nominal=1,
     use_input=true,
@@ -8,7 +8,7 @@ model WaterCircTrial_6bCS_upcs
       Placement(transformation(
         extent={{-11,-11},{11,11}},
         rotation=180,
-        origin={91,-23})));
+        origin={151,-23})));
 
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT1(redeclare package
       Medium =
@@ -17,11 +17,11 @@ model WaterCircTrial_6bCS_upcs
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT2(redeclare package
       Medium =
         Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{140,84},{160,104}})));
+    annotation (Placement(transformation(extent={{200,84},{220,104}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT3(redeclare package
       Medium =
         Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{126,-46},{146,-26}})));
+    annotation (Placement(transformation(extent={{158,-22},{178,-2}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT0(redeclare package
       Medium =
         Modelica.Media.Water.StandardWater)
@@ -29,11 +29,11 @@ model WaterCircTrial_6bCS_upcs
   TRANSFORM.Fluid.Volumes.IdealCondenser
                                     condenser(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
-    V_total=1,
+    V_total=5,
     V_liquid_start=0.01,
     set_m_flow=false,
     p=5000)
-    annotation (Placement(transformation(extent={{147,-16},{167,4}})));
+    annotation (Placement(transformation(extent={{207,-16},{227,4}})));
   Modelica.Fluid.Sources.Boundary_pT boundary1(
     redeclare package Medium = Modelica.Media.Air.DryAirNasa,
     p=100000,
@@ -109,9 +109,9 @@ model WaterCircTrial_6bCS_upcs
     annotation (Placement(transformation(extent={{-30,54},{-10,74}})));
 
   Electrical.Generator      generator1(J=1e4, f_start=60)
-    annotation (Placement(transformation(extent={{114,54},{134,74}})));
+    annotation (Placement(transformation(extent={{174,54},{194,74}})));
   Modelica.Mechanics.Rotational.Sensors.PowerSensor powerSensor
-    annotation (Placement(transformation(extent={{84,74},{104,54}})));
+    annotation (Placement(transformation(extent={{144,74},{164,54}})));
   TRANSFORM.Fluid.Machines.SteamTurbine steamTurbine1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     redeclare model Eta_wetSteam =
@@ -130,10 +130,10 @@ model WaterCircTrial_6bCS_upcs
     p_a_start=400000,
     p_inlet_nominal=500000,
     d_nominal=9)
-    annotation (Placement(transformation(extent={{10,54},{30,74}})));
+    annotation (Placement(transformation(extent={{96,54},{116,74}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT_ext(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{-4,76},{16,96}})));
+    annotation (Placement(transformation(extent={{82,76},{102,96}})));
   TRANSFORM.Fluid.Valves.ValveLinear InternalBypass(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_start=0.001,
@@ -142,10 +142,10 @@ model WaterCircTrial_6bCS_upcs
     m_flow_nominal=2)  annotation (Placement(transformation(
         extent={{8,8},{-8,-8}},
         rotation=180,
-        origin={42,6})));
+        origin={138,4})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT_ext2(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{14,16},{34,36}})));
+    annotation (Placement(transformation(extent={{110,14},{130,34}})));
   TRANSFORM.HeatExchangers.Simple_HX_A lmtd_HX2(
     redeclare package Medium_1 = Modelica.Media.Water.StandardWater,
     redeclare package Medium_2 = Modelica.Media.Water.StandardWater,
@@ -172,7 +172,7 @@ model WaterCircTrial_6bCS_upcs
     R_2=50)  annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=180,
-        origin={14,-16})));
+        origin={110,-18})));
   replaceable ControlSystems.CS_SteamTSlidingP
                                     CS(
     Pump_Speed(
@@ -203,16 +203,74 @@ model WaterCircTrial_6bCS_upcs
   Modelica.Blocks.Sources.RealExpression Tsat1(y=
         sensor_pT_ext.Medium.saturationTemperature(sensor_pT_ext.p))
     "Heat loss/gain not accounted for in connections (e.g., energy vented to atmosphere) [W]"
-    annotation (Placement(transformation(extent={{0,94},{12,106}})));
+    annotation (Placement(transformation(extent={{86,94},{98,106}})));
+  Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase MainFeedwaterHeater(
+    NTU=2,
+    K_tube=100,
+    K_shell=100,
+    redeclare package Tube_medium = Modelica.Media.Water.StandardWater,
+    redeclare package Shell_medium = Modelica.Media.Water.StandardWater,
+    V_Tube=0.5,
+    V_Shell=0.5,
+    p_start_tube=1500000,
+    use_T_start_tube=true,
+    T_start_tube_inlet=323.15,
+    T_start_tube_outlet=333.15,
+    p_start_shell=200000,
+    use_T_start_shell=true,
+    T_start_shell_inlet=423.15,
+    T_start_shell_outlet=343.15,
+    dp_init_tube=20000,
+    dp_init_shell=20000,
+    Q_init=1000,
+    m_start_tube=1,
+    m_start_shell=1)
+    annotation (Placement(transformation(extent={{102,-70},{122,-90}})));
+  TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance R_InternalBypass1(R=10,
+      redeclare package Medium = Modelica.Media.Water.StandardWater)
+    annotation (Placement(transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=180,
+        origin={184,-78})));
+  TRANSFORM.Fluid.Valves.ValveLinear LPT_Bypass(
+    redeclare package Medium = Modelica.Media.Water.StandardWater,
+    dp_nominal=200000,
+    m_flow_nominal=5)                             annotation (Placement(transformation(
+        extent={{10,10},{-10,-10}},
+        rotation=180,
+        origin={222,-76})));
+  Modelica.Blocks.Sources.Constant const3(k=0.1)
+    annotation (Placement(transformation(extent={{194,-54},{208,-40}})));
+  Modelica.Fluid.Sources.MassFlowSource_T boundary2(
+    redeclare package Medium = Modelica.Media.Water.StandardWater,
+    use_m_flow_in=false,
+    m_flow=1,
+    T=323.15,
+    nPorts=1)
+    annotation (Placement(transformation(extent={{176,-142},{156,-122}})));
+  Modelica.Fluid.Sources.Boundary_pT boundary3(
+    redeclare package Medium = Modelica.Media.Water.StandardWater,
+    p=2500000,
+    T=323.15,
+    nPorts=1) annotation (Placement(transformation(extent={{34,-146},{54,-126}})));
+  TRANSFORM.Fluid.Valves.ValveLinear LPT_Bypass1(
+    redeclare package Medium = Modelica.Media.Water.StandardWater,
+    dp_nominal=20000,
+    m_flow_nominal=5)                             annotation (Placement(transformation(
+        extent={{-10,10},{10,-10}},
+        rotation=270,
+        origin={90,-54})));
+  Modelica.Blocks.Sources.Constant const1(k=0.1)
+    annotation (Placement(transformation(extent={{58,-52},{72,-38}})));
 equation
   connect(sensor_pT3.port, pump_SimpleMassFlow1.port_a)
-    annotation (Line(points={{136,-46},{136,-54},{114,-54},{114,-23},{102,-23}},
+    annotation (Line(points={{168,-22},{168,-23},{162,-23}},
                                                         color={0,127,255}));
   connect(condenser.port_b, pump_SimpleMassFlow1.port_a)
-    annotation (Line(points={{157,-14},{157,-23},{102,-23}},
+    annotation (Line(points={{217,-14},{217,-23},{162,-23}},
                                                      color={0,127,255}));
   connect(sensor_pT2.port, condenser.port_a)
-    annotation (Line(points={{150,84},{150,1}},color={0,127,255}));
+    annotation (Line(points={{210,84},{210,1}},color={0,127,255}));
   connect(sensor_pT4.port, boundary.ports[1]) annotation (Line(points={{-109,62},
           {-102,62},{-102,38},{-104,38},{-104,39.75}}, color={0,127,255}));
   connect(boundary1.ports[1], resistance2.port_a)
@@ -230,32 +288,38 @@ equation
   connect(sensor_pT1.port, lmtd_HX1.port_b2) annotation (Line(points={{-72,70},
           {-76,70},{-76,36}},                                    color={0,127,255}));
   connect(powerSensor.flange_b, generator1.shaft_a)
-    annotation (Line(points={{104,64},{114,64}},
+    annotation (Line(points={{164,64},{174,64}},
                                                color={0,0,0}));
   connect(steamTurbine.shaft_b, steamTurbine1.shaft_a)
-    annotation (Line(points={{-10,64},{10,64}}, color={0,0,0}));
+    annotation (Line(points={{-10,64},{96,64}}, color={0,0,0}));
   connect(steamTurbine1.shaft_b, powerSensor.flange_a)
-    annotation (Line(points={{30,64},{84,64}}, color={0,0,0}));
+    annotation (Line(points={{116,64},{144,64}},
+                                               color={0,0,0}));
   connect(steamTurbine.portLP, steamTurbine1.portHP)
-    annotation (Line(points={{-10,70},{10,70}}, color={0,127,255}));
-  connect(steamTurbine1.portLP, condenser.port_a) annotation (Line(points={{30,70},
-          {76,70},{76,84},{150,84},{150,1}},     color={0,127,255}));
+    annotation (Line(points={{-10,70},{96,70}}, color={0,127,255}));
+  connect(steamTurbine1.portLP, condenser.port_a) annotation (Line(points={{116,70},
+          {136,70},{136,84},{204,84},{204,10},{210,10},{210,1}},
+                                                 color={0,127,255}));
   connect(sensor_pT_ext.port, steamTurbine1.portHP)
-    annotation (Line(points={{6,76},{6,70},{10,70}}, color={0,127,255}));
+    annotation (Line(points={{92,76},{92,70},{96,70}},
+                                                     color={0,127,255}));
   connect(pump_SimpleMassFlow1.port_b, lmtd_HX2.port_a2) annotation (Line(
-        points={{80,-23},{52,-23},{52,-20},{24,-20}}, color={0,127,255}));
+        points={{140,-23},{130,-23},{130,-22},{120,-22}},
+                                                      color={0,127,255}));
   connect(lmtd_HX2.port_b2, lmtd_HX1.port_a2)
-    annotation (Line(points={{4,-20},{-76,-20},{-76,16}}, color={0,127,255}));
+    annotation (Line(points={{100,-22},{-52,-22},{-52,-4},{-76,-4},{-76,16}},
+                                                          color={0,127,255}));
   connect(sensor_pT0.port, lmtd_HX1.port_a2) annotation (Line(points={{-52,2},{
           -52,-20},{-76,-20},{-76,16}}, color={0,127,255}));
-  connect(lmtd_HX2.port_a1, steamTurbine1.portHP) annotation (Line(points={{4,
-          -12},{2,-12},{2,70},{10,70}}, color={0,127,255}));
-  connect(lmtd_HX2.port_b1, InternalBypass.port_a) annotation (Line(points={{24,
-          -12},{26,-12},{26,6},{34,6}}, color={0,127,255}));
-  connect(InternalBypass.port_b, condenser.port_a) annotation (Line(points={{50,6},{
-          150,6},{150,1}},             color={0,127,255}));
-  connect(sensor_pT_ext2.port, InternalBypass.port_a) annotation (Line(points={{24,16},
-          {26,16},{26,6},{34,6}},                 color={0,127,255}));
+  connect(lmtd_HX2.port_a1, steamTurbine1.portHP) annotation (Line(points={{100,-14},
+          {90,-14},{90,70},{96,70}},    color={0,127,255}));
+  connect(lmtd_HX2.port_b1, InternalBypass.port_a) annotation (Line(points={{120,-14},
+          {122,-14},{122,4},{130,4}},   color={0,127,255}));
+  connect(InternalBypass.port_b, condenser.port_a) annotation (Line(points={{146,4},
+          {202,4},{202,10},{210,10},{210,1}},
+                                       color={0,127,255}));
+  connect(sensor_pT_ext2.port, InternalBypass.port_a) annotation (Line(points={{120,14},
+          {124,14},{124,4},{130,4}},              color={0,127,255}));
   connect(sensorBus,ED. sensorBus) annotation (Line(
       points={{-32,128},{5.6,128},{5.6,150}},
       color={239,82,82},
@@ -287,7 +351,7 @@ equation
       horizontalAlignment=TextAlignment.Left));
   connect(actuatorBus.Feed_Pump_mFlow, pump_SimpleMassFlow1.in_m_flow)
     annotation (Line(
-      points={{28,128},{172,128},{172,-92},{91,-92},{91,-31.03}},
+      points={{28,128},{358,128},{358,-94},{151,-94},{151,-31.03}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -307,7 +371,7 @@ equation
 
   connect(actuatorBus.FW_valve_opening, InternalBypass.opening) annotation (
       Line(
-      points={{28,128},{42,128},{42,12.4}},
+      points={{28,128},{138,128},{138,10.4}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -317,8 +381,28 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(steamTurbine.portHP, sensor_pT1.port)
     annotation (Line(points={{-30,70},{-72,70}}, color={0,127,255}));
-  connect(steamTurbine1.portLP, sensor_pT2.port) annotation (Line(points={{30,
-          70},{76,70},{76,84},{150,84}}, color={0,127,255}));
+  connect(steamTurbine1.portLP, sensor_pT2.port) annotation (Line(points={{116,70},
+          {116,84},{210,84}},            color={0,127,255}));
+  connect(MainFeedwaterHeater.Shell_out, R_InternalBypass1.port_a)
+    annotation (Line(points={{122,-78},{177,-78}}, color={0,127,255}));
+  connect(R_InternalBypass1.port_b, LPT_Bypass.port_a) annotation (Line(points=
+          {{191,-78},{194,-78},{194,-76},{212,-76}}, color={0,127,255}));
+  connect(LPT_Bypass.port_b, condenser.port_a) annotation (Line(points={{232,
+          -76},{238,-76},{238,12},{210,12},{210,1}}, color={0,127,255}));
+  connect(const3.y, LPT_Bypass.opening) annotation (Line(points={{208.7,-47},{
+          208.7,-48},{228,-48},{228,-60},{222,-60},{222,-68}}, color={0,0,127}));
+  connect(condenser.port_b, sensor_pT3.port) annotation (Line(points={{217,-14},
+          {217,-22},{168,-22}}, color={0,127,255}));
+  connect(boundary2.ports[1], MainFeedwaterHeater.Tube_in) annotation (Line(
+        points={{156,-132},{128,-132},{128,-84},{122,-84}}, color={0,127,255}));
+  connect(MainFeedwaterHeater.Tube_out, boundary3.ports[1]) annotation (Line(
+        points={{102,-84},{90,-84},{90,-136},{54,-136}}, color={0,127,255}));
+  connect(MainFeedwaterHeater.Shell_in, LPT_Bypass1.port_b)
+    annotation (Line(points={{102,-78},{90,-78},{90,-64}}, color={0,127,255}));
+  connect(LPT_Bypass1.port_a, steamTurbine1.portHP)
+    annotation (Line(points={{90,-44},{90,70},{96,70}}, color={0,127,255}));
+  connect(const1.y, LPT_Bypass1.opening) annotation (Line(points={{72.7,-45},{
+          76,-45},{76,-54},{82,-54}}, color={0,0,127}));
   annotation (
     Diagram(coordinateSystem(extent={{-160,-100},{160,100}})),
     Icon(coordinateSystem(extent={{-160,-100},{160,100}})),
@@ -326,4 +410,4 @@ equation
       StopTime=10000,
       Tolerance=0.005,
       __Dymola_Algorithm="Esdirk34a"));
-end WaterCircTrial_6bCS_upcs;
+end WaterCircTrial_6bCS_upcs2;

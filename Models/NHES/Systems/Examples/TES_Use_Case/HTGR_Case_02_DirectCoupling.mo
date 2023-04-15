@@ -113,7 +113,9 @@ model HTGR_Case_02_DirectCoupling
   Modelica.Blocks.Math.Sum sum1
     annotation (Placement(transformation(extent={{136,88},{156,108}})));
   Modelica.Blocks.Sources.CombiTimeTable demand_BOP(
-    tableOnFile=true,
+    tableOnFile=false,
+    table=[0,47e6; 1,47e6; 1.5,27e6; 2,27e6; 2.2,67e6; 3,67e6; 4,50e6; 8,20e6;
+        15,70e6; 20,60e6],
     startTime=0,
     tableName="BOP",
     timeScale=timeScale,

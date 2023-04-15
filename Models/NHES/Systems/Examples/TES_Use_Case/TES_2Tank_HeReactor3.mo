@@ -3,7 +3,7 @@ model TES_2Tank_HeReactor3
   EnergyStorage.SHS_Two_Tank.Components.SHS2Tank_VNWorkingnew
     sHS2Tank_VNWorkingnew(
     redeclare package Storage_Medium =
-        NHES.Media.SolarSalt.ConstantPropertyLiquidSolarSalt,
+        NHES.Media.SolarSalt.ConstPropLiquidSolarSalt_NoLimit,
     redeclare package Charging_Medium =
         Modelica.Media.IdealGases.SingleGases.He,
     m_flow_min=0.1,

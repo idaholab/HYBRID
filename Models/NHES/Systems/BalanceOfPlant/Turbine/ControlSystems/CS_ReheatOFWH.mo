@@ -149,7 +149,6 @@ equation
       horizontalAlignment=TextAlignment.Left));
   connect(sensorBus.Deaerator_level, CondPumpSpeed.u_m) annotation (Line(
       points={{-30,-100},{-30,-44},{-120,-44},{-120,-16},{-143,-16},{-143,-11.4}},
-
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -157,6 +156,7 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
+
   connect(const9.y, FWH_Valve.u_s)
     annotation (Line(points={{-163,46},{-163,44},{-152,44}}, color={0,0,127}));
   connect(sensorBus.Feedwater_Temp, FWH_Valve.u_m) annotation (Line(
