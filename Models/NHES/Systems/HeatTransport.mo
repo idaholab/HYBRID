@@ -11,7 +11,7 @@ package HeatTransport
         pth=Supply_pipe_data.pth,
         ith=Supply_pipe_data.ith,
         nV=Supply_pipe_data.nV,
-        dH=Supply_pipe_data.dH));
+        dH=-Supply_pipe_data.dH));
          replaceable package S_Medium = Modelica.Media.Interfaces.PartialMedium
                                                                                 "Supply Media"
       annotation (Dialog(group="Fluid Medium"), __Dymola_choicesAllMatching=
@@ -141,8 +141,8 @@ package HeatTransport
       parameter Modelica.Units.SI.MassFlowRate R_m_flow_a_start=0 "Return Port a Initial Mass Flow Rate" annotation (Dialog(tab="Initialization",group="Return"));
       parameter Modelica.Units.SI.MassFlowRate R_m_flow_b_start=-R_m_flow_a_start "Return Port a Initial Mass Flow Rate" annotation (Dialog(tab="Initialization",group="Return"));
 
-    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_S(redeclare package Medium
-        = S_Medium)
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_S(redeclare package Medium =
+          S_Medium)
       annotation (Placement(transformation(extent={{-110,30},{-90,50}}),
           iconTransformation(extent={{-110,30},{-90,50}})));
     TRANSFORM.Fluid.Interfaces.FluidPort_State port_b_S(redeclare package
@@ -150,8 +150,8 @@ package HeatTransport
           S_Medium)
       annotation (Placement(transformation(extent={{90,30},{110,50}}),
           iconTransformation(extent={{90,30},{110,50}})));
-    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_R(redeclare package Medium
-        = R_Medium)
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_R(redeclare package Medium =
+          R_Medium)
       annotation (Placement(transformation(extent={{90,-48},{110,-28}}),
           iconTransformation(extent={{90,-48},{110,-28}})));
     TRANSFORM.Fluid.Interfaces.FluidPort_State port_b_R(redeclare package
@@ -232,17 +232,17 @@ package HeatTransport
     TRANSFORM.Fluid.Sensors.Pressure sensor_p_R_in(redeclare package Medium =
           R_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{40,-30},{60,-10}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_R_out(redeclare package Medium
-        = R_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_R_out(redeclare package Medium =
+          R_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{-90,-30},{-70,-10}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_in(redeclare package Medium
-        = S_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_in(redeclare package Medium =
+          S_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{-90,30},{-70,10}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_out(redeclare package Medium
-        = S_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_out(redeclare package Medium =
+          S_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{70,30},{90,10}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_R_in(redeclare package Medium
-        = R_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_R_in(redeclare package Medium =
+          R_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{70,-30},{90,-10}})));
     Modelica.Blocks.Math.Add Supply_dp(k2=-1)
       annotation (Placement(transformation(extent={{260,40},{280,60}})));
@@ -698,7 +698,7 @@ package HeatTransport
             thickness=1,
             visible=S_use_HeatTransfer),
           Text(
-            extent={{-100,-80},{100,-120}},
+            extent={{-100,-88},{100,-128}},
             textColor={28,108,200},
             textString="%name")}),
           Diagram(coordinateSystem(preserveAspectRatio=false)));
@@ -715,7 +715,7 @@ package HeatTransport
         pth=Supply_pipe_data.pth,
         ith=Supply_pipe_data.ith,
         nV=Supply_pipe_data.nV,
-        dH=Supply_pipe_data.dH));
+        dH=-Supply_pipe_data.dH));
          replaceable package S_Medium = Modelica.Media.Interfaces.PartialMedium
                                                                                 "Supply Media"
       annotation (Dialog(group="Fluid Medium"), __Dymola_choicesAllMatching=
@@ -845,8 +845,8 @@ package HeatTransport
       parameter Modelica.Units.SI.MassFlowRate R_m_flow_a_start=0 "Return Port a Initial Mass Flow Rate" annotation (Dialog(tab="Initialization",group="Return"));
       parameter Modelica.Units.SI.MassFlowRate R_m_flow_b_start=-R_m_flow_a_start "Return Port a Initial Mass Flow Rate" annotation (Dialog(tab="Initialization",group="Return"));
 
-    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_S(redeclare package Medium
-        = S_Medium)
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_S(redeclare package Medium =
+          S_Medium)
       annotation (Placement(transformation(extent={{-110,30},{-90,50}}),
           iconTransformation(extent={{-110,30},{-90,50}})));
     TRANSFORM.Fluid.Interfaces.FluidPort_State port_b_S(redeclare package
@@ -854,8 +854,8 @@ package HeatTransport
           S_Medium)
       annotation (Placement(transformation(extent={{90,30},{110,50}}),
           iconTransformation(extent={{90,30},{110,50}})));
-    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_R(redeclare package Medium
-        = R_Medium)
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_R(redeclare package Medium =
+          R_Medium)
       annotation (Placement(transformation(extent={{90,-48},{110,-28}}),
           iconTransformation(extent={{90,-48},{110,-28}})));
     TRANSFORM.Fluid.Interfaces.FluidPort_State port_b_R(redeclare package
@@ -936,17 +936,17 @@ package HeatTransport
     TRANSFORM.Fluid.Sensors.Pressure sensor_p_R_in(redeclare package Medium =
           R_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{40,-30},{60,-10}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_R_out(redeclare package Medium
-        = R_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_R_out(redeclare package Medium =
+          R_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{-90,-30},{-70,-10}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_in(redeclare package Medium
-        = S_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_in(redeclare package Medium =
+          S_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{-90,30},{-70,10}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_out(redeclare package Medium
-        = S_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_out(redeclare package Medium =
+          S_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{70,30},{90,10}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_R_in(redeclare package Medium
-        = R_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_R_in(redeclare package Medium =
+          R_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{70,-30},{90,-10}})));
     TRANSFORM.HeatAndMassTransfer.Resistances.Heat.Cylinder R_w_res[
       Return_pipe_data.nV](
@@ -1455,8 +1455,8 @@ package HeatTransport
   end HeatTransport_withCS;
 
   model HeatTransport_Oneway
-    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_S(redeclare package Medium
-        = S_Medium)
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_S(redeclare package Medium =
+          S_Medium)
       annotation (Placement(transformation(extent={{-110,-10},{-90,10}}),
           iconTransformation(extent={{-110,-10},{-90,10}})));
     TRANSFORM.Fluid.Interfaces.FluidPort_State port_b_S(redeclare package
@@ -1571,11 +1571,11 @@ package HeatTransport
     TRANSFORM.Fluid.Sensors.Pressure sensor_p_S_out(redeclare package Medium =
           S_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{40,-20},{60,-40}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_in(redeclare package Medium
-        = S_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_in(redeclare package Medium =
+          S_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{-90,-20},{-70,-40}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_out(redeclare package Medium
-        = S_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_out(redeclare package Medium =
+          S_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{70,-20},{90,-40}})));
     Modelica.Blocks.Math.Add Supply_dp(k2=-1)
       annotation (Placement(transformation(extent={{140,-10},{160,10}})));
@@ -1816,8 +1816,8 @@ package HeatTransport
   end HeatTransport_Oneway;
 
   model HeatTransport_Oneway_withCS
-    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_S(redeclare package Medium
-        = S_Medium)
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_S(redeclare package Medium =
+          S_Medium)
       annotation (Placement(transformation(extent={{-110,-10},{-90,10}}),
           iconTransformation(extent={{-110,-10},{-90,10}})));
     TRANSFORM.Fluid.Interfaces.FluidPort_State port_b_S(redeclare package
@@ -1932,11 +1932,11 @@ package HeatTransport
     TRANSFORM.Fluid.Sensors.Pressure sensor_p_S_out(redeclare package Medium =
           S_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{40,-20},{60,-40}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_in(redeclare package Medium
-        = S_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_in(redeclare package Medium =
+          S_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{-90,-20},{-70,-40}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_out(redeclare package Medium
-        = S_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_out(redeclare package Medium =
+          S_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{70,-20},{90,-40}})));
 
     TRANSFORM.HeatAndMassTransfer.Resistances.Heat.Cylinder S_i_res[
@@ -2667,125 +2667,6 @@ package HeatTransport
           __Dymola_Algorithm="Esdirk45a"));
     end HTtest4;
 
-    model HTtest5
-      extends Modelica.Icons.Example;
-      HeatTransport_withCS
-                    heatTransport_withCS(
-        Supply_pipe_data(D=0.25),
-        Return_pipe_data(D=0.25),
-        redeclare package S_Medium = Modelica.Media.Water.StandardWater,
-        redeclare package R_Medium = Modelica.Media.Water.StandardWater,
-        S_use_HeatTransfer=true,
-        S_use_wall_res=true,
-        S_use_ins_res=true,
-        R_use_HeatTransfer=true,
-        R_use_wall_res=true,
-        R_use_ins_res=true,
-        S_p_a_start=200000,
-        S_p_b_start=160000,
-        S_T_a_start=323.15,
-        S_T_b_start=318.15,
-        S_m_flow_a_start=50,
-        R_p_a_start=150000,
-        R_p_b_start=100000,
-        R_T_a_start=283.15,
-        R_T_b_start=284.15,
-        R_m_flow_a_start=50,
-        use_Supply_pump=false,
-        Supply_pump(m_flow_nominal=50),
-        S_with_Cond=false,
-        S_with_Conv=true,
-        R_with_Cond=false,
-        R_with_Conv=true)
-        annotation (Placement(transformation(extent={{-80,-80},{-20,-20}})));
-                  NHES.Systems.PrimaryHeatSystem.FourLoopPWR.Components.NSSS
-        PHS(redeclare
-          NHES.Systems.PrimaryHeatSystem.FourLoopPWR.CS_SteadyNominalPower CS(
-            delayStart_SGpump=500, delayStart_CR=200))
-        annotation (Placement(transformation(extent={{-160,20},{-100,80}})));
-                  NHES.Systems.EnergyManifold.SteamManifold.SteamManifold_L1_boundaries
-                                                                                EM(
-        port_a1_nominal(
-          p=PHS.port_b_nominal.p,
-          h=PHS.port_b_nominal.h,
-          m_flow=-PHS.port_b_nominal.m_flow),
-        port_b1_nominal(p=PHS.port_a_nominal.p, h=PHS.port_a_nominal.h),
-        port_b3_nominal_m_flow={-IP.port_a_nominal.m_flow},
-        nPorts_b3=1)
-        annotation (Placement(transformation(extent={{-80,20},{-20,80}})));
-                  NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries BOP(
-        port_a_nominal(
-          p=EM.port_b2_nominal.p,
-          h=EM.port_b2_nominal.h,
-          m_flow=-EM.port_b2_nominal.m_flow),
-        port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
-        port_a3_nominal_p={IP.port_b_nominal.p},
-        port_a3_nominal_h={IP.port_b_nominal.h},
-        port_a3_nominal_m_flow={-IP.port_b_nominal.m_flow},
-        redeclare
-          NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_PressureAndPowerControl
-          CS(p_nominal=BOP.port_a_nominal.p, W_totalSetpoint=SC.W_totalSetpoint_BOP),
-        nPorts_a3=1)
-        annotation (Placement(transformation(extent={{20,20},{80,80}})));
-
-                  NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.TightlyCoupled_SteamFlowCtrl_FY17
-        IP(
-        capacity=dataCapacity.IP_capacity,
-        port_a_nominal(m_flow=IP.capacityScaler_steamFlow*7.311637),
-        redeclare
-          NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.CS_TightlyCoupled_SteamFlowCtrl_stepInput_FY17
-          CS(capacityScaler=IP.capacityScaler),
-        flowSplit(port_2(h_outflow(start=2.95398e6, fixed=false))),
-        returnPump(PR0=62.7/51.3042, pstart_out=6270000),
-        hEX_nuclearHeatCathodeGasRecup_ROM(hShell_out(start=962881, fixed=false)))
-        annotation (Placement(transformation(extent={{20,-80},{80,-20}})));
-                  NHES.Systems.ElectricalGrid.InfiniteGrid.Infinite             EG
-        annotation (Placement(transformation(extent={{100,20},{160,80}})));
-    equation
-      connect(PHS.port_b,EM. port_a1) annotation (Line(points={{-100,62},{-80,
-              62}},                       color={0,127,255},
-          thickness=1));
-      connect(PHS.port_a,EM. port_b1) annotation (Line(points={{-100,38},{-80,
-              38}},                     color={0,127,255},
-          thickness=1));
-      connect(EM.port_a2,BOP. port_b) annotation (Line(points={{-20,38},{20,38}},
-                                      color={0,127,255},
-          thickness=1));
-      connect(EM.port_b2,BOP. port_a) annotation (Line(points={{-20,62},{20,62}},
-                                        color={0,127,255},
-          thickness=1));
-      connect(BOP.portElec_b, EG.portElec_a) annotation (Line(
-          points={{80,50},{100,50}},
-          color={255,0,0},
-          thickness=1));
-      connect(BOP.portElec_b, IP.portElec_a) annotation (Line(
-          points={{80,50},{88,50},{88,-50},{80,-50}},
-          color={255,0,0},
-          thickness=1));
-      connect(IP.port_b, heatTransport_withCS.port_a_R) annotation (Line(
-          points={{20,-62},{-20,-62},{-20,-61.4}},
-          color={0,127,255},
-          thickness=1));
-      connect(heatTransport_withCS.port_b_R, BOP.port_a3[1]) annotation (Line(
-          points={{-80,-62},{-106,-62},{-106,0},{38,0},{38,20}},
-          color={0,127,255},
-          thickness=1));
-      connect(EM.port_b3[1], heatTransport_withCS.port_a_S) annotation (Line(
-          points={{-38,20},{-38,-12},{-90,-12},{-90,-38},{-80,-38}},
-          color={0,127,255},
-          thickness=1));
-      connect(heatTransport_withCS.port_b_S, IP.port_a) annotation (Line(
-          points={{-20,-38},{20,-38}},
-          color={0,127,255},
-          thickness=1));
-      annotation (experiment(
-          StopTime=1000,
-          Interval=10,
-          __Dymola_Algorithm="Esdirk45a"),
-        Diagram(coordinateSystem(extent={{-180,-100},{180,100}})),
-        Icon(coordinateSystem(extent={{-180,-100},{180,100}})));
-    end HTtest5;
-
     model HTtest6
       extends Modelica.Icons.Example;
       TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
@@ -2793,14 +2674,14 @@ package HeatTransport
         p=100000,
         T=T_out,
         nPorts=1)
-        annotation (Placement(transformation(extent={{-102,-14},{-82,6}})));
+        annotation (Placement(transformation(extent={{-100,-22},{-80,-2}})));
       TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary2(
         redeclare package Medium = Medium,
         p=100000,
         T=T_in,
         nPorts=1)
-        annotation (Placement(transformation(extent={{-100,12},{-80,32}})));
-      HeatTransport heatTransport_withCS(
+        annotation (Placement(transformation(extent={{-100,2},{-80,22}})));
+      HeatTransport heatTransport(
         redeclare package S_Medium = Medium,
         redeclare package R_Medium = Medium,
         S_use_HeatTransfer=true,
@@ -2825,7 +2706,7 @@ package HeatTransport
         S_with_Conv=true,
         R_with_Cond=false,
         R_with_Conv=true)
-        annotation (Placement(transformation(extent={{-40,-20},{18,38}})));
+        annotation (Placement(transformation(extent={{-30,-30},{30,30}})));
       TRANSFORM.Fluid.Volumes.SimpleVolume volume(
         redeclare package Medium = Medium,
         p_start=100000,
@@ -2834,28 +2715,39 @@ package HeatTransport
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=1),
         use_HeatPort=true)
-        annotation (Placement(transformation(extent={{32,0},{52,20}})));
+        annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+            rotation=90,
+            origin={60,0})));
       replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
         annotation (choicesAllMatching=true);
       TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Temperature
         boundary(T=T_out)
-        annotation (Placement(transformation(extent={{26,-30},{46,-10}})));
+        annotation (Placement(transformation(extent={{106,-10},{86,10}})));
       parameter Modelica.Media.Interfaces.Types.Temperature T_in=363.15
         "Fixed value of temperature";
       parameter Modelica.Media.Interfaces.Types.Temperature T_out=303.15
         "Fixed value of temperature";
     equation
-      connect(boundary2.ports[1], heatTransport_withCS.port_a_S) annotation (Line(
-            points={{-80,22},{-48,22},{-48,20.6},{-40,20.6}},  color={0,127,255}));
-      connect(heatTransport_withCS.port_b_R, boundary1.ports[1]) annotation (Line(
-            points={{-40,-2.6},{-40,-4},{-82,-4}},              color={0,127,255}));
-      connect(heatTransport_withCS.port_a_R, volume.port_a) annotation (Line(
-            points={{18,-2.02},{28,-2.02},{28,10},{36,10}}, color={0,127,255}));
-      connect(volume.port_b, heatTransport_withCS.port_b_S) annotation (Line(
-            points={{48,10},{56,10},{56,28},{26,28},{26,20.6},{18,20.6}}, color
-            ={0,127,255}));
-      connect(boundary.port, volume.heatPort) annotation (Line(points={{46,-20},
-              {50,-20},{50,-4},{42,-4},{42,4}}, color={191,0,0}));
+      connect(boundary2.ports[1], heatTransport.port_a_S) annotation (Line(
+          points={{-80,12},{-30,12}},
+          color={0,127,255},
+          thickness=1));
+      connect(heatTransport.port_b_R, boundary1.ports[1]) annotation (Line(
+          points={{-30,-12},{-80,-12}},
+          color={0,127,255},
+          thickness=1));
+      connect(heatTransport.port_a_R, volume.port_a) annotation (Line(
+          points={{30,-11.4},{60,-11.4},{60,-6}},
+          color={0,127,255},
+          thickness=1));
+      connect(volume.port_b, heatTransport.port_b_S) annotation (Line(
+          points={{60,6},{60,12},{30,12}},
+          color={0,127,255},
+          thickness=1));
+      connect(boundary.port, volume.heatPort) annotation (Line(points={{86,0},{
+              76,0},{76,-3.88578e-16},{66,-3.88578e-16}},
+                                                color={191,0,0},
+          thickness=1));
       annotation (experiment(
           StopTime=1000,
           Interval=10,
