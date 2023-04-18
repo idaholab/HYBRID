@@ -88,14 +88,14 @@ model TEDS_initial_expdata "IC thermocline 70C, charge to 200F"
         extent={{6,6},{-6,-6}},
         rotation=0,
         origin={170,-142})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={84,42})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
@@ -186,8 +186,8 @@ model TEDS_initial_expdata "IC thermocline 70C, charge to 200F"
     annotation (Placement(transformation(extent={{-44,92},{-22,116}})));
   BaseClasses.SignalSubBus_SensorOutput sensorSubBus
     annotation (Placement(transformation(extent={{-10,94},{12,118}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=-90,
@@ -308,13 +308,15 @@ model TEDS_initial_expdata "IC thermocline 70C, charge to 200F"
   Modelica.Blocks.Math.Sum chromoloxHeater_Power(nin=Chromolox_Heater.geometry.nV)
     annotation (Placement(transformation(extent={{-72,86},{-60,98}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_charge_outlet(redeclare package
-      Medium = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+      Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
       precision=3) annotation (Placement(transformation(
         extent={{-12,13},{12,-13}},
         rotation=90,
         origin={154,-63})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Charge_Inlet(redeclare package
-      Medium = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+      Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
       precision=3) annotation (Placement(transformation(
         extent={{-8.5,12.5},{8.5,-12.5}},
         rotation=-90,
@@ -333,26 +335,29 @@ model TEDS_initial_expdata "IC thermocline 70C, charge to 200F"
         extent={{-12,-13},{12,13}},
         rotation=90,
         origin={80,-63})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate BOP_Mass_flow(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate BOP_Mass_flow(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={106,76})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_inlet_HX(redeclare package
-      Medium = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+      Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
       precision=3) annotation (Placement(transformation(
         extent={{-10,12},{10,-12}},
         rotation=0,
         origin={146,-142})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_chiller_before(redeclare package
-      Medium = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+      Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
       precision=3) annotation (Placement(transformation(
         extent={{-13,12},{13,-12}},
         rotation=270,
         origin={228,15})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_chiller_after(redeclare package
-      Medium = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+      Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
       precision=3) annotation (Placement(transformation(
         extent={{-13,13},{13,-13}},
         rotation=270,
@@ -370,8 +375,8 @@ model TEDS_initial_expdata "IC thermocline 70C, charge to 200F"
   Modelica.Blocks.Sources.RealExpression Heater_BOP_Demand(y=pump.port_a.p +
         2.0e4)
     annotation (Placement(transformation(extent={{-54,-180},{-32,-158}})));
-  Modelica.Fluid.Sensors.VolumeFlowRate volumeFlowRate(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+  Modelica.Fluid.Sensors.VolumeFlowRate volumeFlowRate(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
       allowFlowReversal=true) annotation (Placement(transformation(
         extent={{-7,-7},{7,7}},
         rotation=-90,
@@ -408,7 +413,7 @@ equation
           -146},{-95,-56}}, color={0,127,255}));
   connect(sensorSubBus.Valve_1_Opening,GBV201. opening) annotation (Line(
       points={{1,106},{26,106},{26,62},{79.2,62}},
-      color={239,82,82},
+      color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
       string="%first",
@@ -418,18 +423,18 @@ equation
   connect(control_System_Therminol_4_element_initial_exp_discharge.actuatorSubBus,
     actuatorSubBus) annotation (Line(
       points={{33,118.458},{33,104},{-33,104}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(control_System_Therminol_4_element_initial_exp_discharge.sensorSubBus,
     sensorSubBus) annotation (Line(
       points={{38.1333,118.092},{38.1333,106},{1,106}},
-      color={239,82,82},
+      color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorSubBus.Valve_2_Opening,GBV006. opening) annotation (Line(
       points={{1,106},{132,106},{132,80.8}},
-      color={239,82,82},
+      color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
       string="%first",
@@ -438,7 +443,7 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(sensorSubBus.Valve_3_Opening,GBV202. opening) annotation (Line(
       points={{1,106},{170,106},{170,66},{158.8,66}},
-      color={239,82,82},
+      color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
       string="%first",
@@ -447,7 +452,7 @@ equation
       horizontalAlignment=TextAlignment.Left));
   connect(sensorSubBus.Valve_4_Opening, BV204.opening) annotation (Line(
       points={{1,106},{202,106},{202,-128},{186.8,-128}},
-      color={239,82,82},
+      color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
       string="%first",
@@ -456,7 +461,7 @@ equation
       horizontalAlignment=TextAlignment.Left));
   connect(sensorSubBus.Valve_5_Opening,GBV203. opening) annotation (Line(
       points={{1,106},{26,106},{26,-116},{75.2,-116}},
-      color={239,82,82},
+      color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
       string="%first",
@@ -465,7 +470,7 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(sensorSubBus.Valve_6_Opening,GBV004. opening) annotation (Line(
       points={{1,106},{26,106},{26,-116},{-38,-116},{-38,-141.2}},
-      color={239,82,82},
+      color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
       string="%first",
@@ -506,7 +511,7 @@ equation
   connect(actuatorSubBus.Heater_Input, chromoloxHeater_Power.y) annotation (
       Line(
       points={{-33,104},{-50,104},{-50,92},{-59.4,92}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensor_m_flow3.port_a, T_discharge_outlet.port_b)
@@ -527,44 +532,44 @@ equation
   connect(actuatorSubBus.T_discharge_outlet, T_discharge_outlet.T) annotation (
       Line(
       points={{-33,104},{202,104},{202,9},{158.68,9}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorSubBus.T_discharge_inlet, T_discharge_Inlet.T) annotation (
       Line(
       points={{-33,104},{26,104},{26,-63},{75.32,-63}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorSubBus.T_charge_outlet, T_charge_outlet.T) annotation (Line(
       points={{-33,104},{202,104},{202,-63},{158.68,-63}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorSubBus.T_charge_inlet, T_Charge_Inlet.T) annotation (Line(
       points={{-33,104},{26,104},{26,3.5},{79,3.5}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorSubBus.Charging_flowrate, FM202.m_flow) annotation (Line(
       points={{-33,104},{202,104},{202,-101},{157.6,-101}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorSubBus.Discharge_FlowRate, sensor_m_flow3.m_flow) annotation (
      Line(
       points={{-33,104},{202,104},{202,40},{157.6,40}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorSubBus.Total_Mass_Flow_System, FM002.m_flow) annotation (Line(
       points={{-33,104},{240,104},{240,-160},{119,-160},{119,-145.6}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorSubBus.Heater_flowrate, FM003.m_flow) annotation (Line(
       points={{-33,104},{26,104},{26,-120},{-71,-120},{-71,-143.12}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(pipe2.port_b, BOP_Mass_flow.port_a)
@@ -574,7 +579,7 @@ equation
   connect(actuatorSubBus.heater_BOP_massflow, BOP_Mass_flow.m_flow) annotation (
      Line(
       points={{-33,104},{106,104},{106,79.6}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(pipe3.port_b, T_inlet_HX.port_b)
@@ -606,7 +611,7 @@ equation
   connect(actuatorSubBus.Volume_flow_rate, volumeFlowRate.V_flow) annotation (
       Line(
       points={{-33,104},{26,104},{26,23},{90.7,23}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
       string="%first",

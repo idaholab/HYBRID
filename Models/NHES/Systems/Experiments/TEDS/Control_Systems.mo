@@ -10,7 +10,7 @@ package Control_Systems "Range of all control Systems for TEDS"
   equation
     connect(actuatorSubBus.Valve1, gain.u) annotation (Line(
         points={{-38,-99},{-100,-99},{-100,-20},{8,-20}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",
@@ -19,7 +19,7 @@ package Control_Systems "Range of all control Systems for TEDS"
         horizontalAlignment=TextAlignment.Right));
     connect(sensorSubBus.Valve_1_Opening, gain.y) annotation (Line(
         points={{40,-99},{100,-99},{100,-20},{31,-20}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",
@@ -234,27 +234,27 @@ package Control_Systems "Range of all control Systems for TEDS"
             {90.35,-56},{94.8,-56}},      color={0,0,127}));
     connect(sensorSubBus.Valve_1_Opening, firstOrder.y) annotation (Line(
         points={{40,-99},{120,-99},{120,130},{110.6,130}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_2_Opening, firstOrder1.y) annotation (Line(
         points={{40,-99},{120,-99},{120,94},{110.6,94}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_4_Opening, firstOrder3.y) annotation (Line(
         points={{40,-99},{120,-99},{120,16},{108.6,16}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_5_Opening, firstOrder4.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-20},{108.6,-20}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_6_Opening, firstOrder5.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-56},{108.6,-56}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Valve1.y, PIDV1.u_s)
@@ -271,20 +271,20 @@ package Control_Systems "Range of all control Systems for TEDS"
             {72.6,93}}, color={0,0,127}));
     connect(sensorSubBus.Valve_3_Opening, firstOrder2.y) annotation (Line(
         points={{40,-99},{120,-99},{120,58},{110.6,58}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(const6.y, Chromolox_Heater_Control1.u_s) annotation (Line(points={{
             -69.4,80},{-60,80},{-60,82},{-51.2,82}}, color={0,0,127}));
     connect(sensorSubBus.Pump_Flow, Chromolox_Heater_Control1.y) annotation (Line(
         points={{40,-99},{14,-99},{14,82},{-37.4,82}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorSubBus.Heater_Input, Chromolox_Heater_Control1.u_m)
       annotation (Line(
         points={{-34,-99},{-100,-99},{-100,96},{-44,96},{-44,89.2}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
 
@@ -568,27 +568,27 @@ package Control_Systems "Range of all control Systems for TEDS"
             -57},{90.35,-56},{94.8,-56}}, color={0,0,127}));
     connect(sensorSubBus.Valve_1_Opening, firstOrder.y) annotation (Line(
         points={{40,-99},{120,-99},{120,130},{110.6,130}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_2_Opening, firstOrder1.y) annotation (Line(
         points={{40,-99},{120,-99},{120,94},{110.6,94}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_4_Opening, firstOrder3.y) annotation (Line(
         points={{40,-99},{120,-99},{120,16},{108.6,16}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_5_Opening, firstOrder4.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-20},{108.6,-20}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_6_Opening, firstOrder5.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-56},{108.6,-56}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Valve1.y, PIDV1.u_s)
@@ -607,20 +607,20 @@ package Control_Systems "Range of all control Systems for TEDS"
             {68.6,93}}, color={0,0,127}));
     connect(sensorSubBus.Valve_3_Opening, firstOrder2.y) annotation (Line(
         points={{40,-99},{120,-99},{120,58},{110.6,58}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
 
     connect(actuatorSubBus.Discharge_FlowRate, Discharge_mass_flow_sensor.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,-3},{-172.4,-3}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorSubBus.Charging_flowrate, Charge_mass_flow_sensor.u)
       annotation (Line(
         points={{-34,-99},{-148,-99},{-148,-100},{-180,-100},{-180,-22},{-172.4,-22}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(LoadTES.y[1], switch1.u1) annotation (Line(points={{-161.3,87},{-153.65,
@@ -655,12 +655,12 @@ package Control_Systems "Range of all control Systems for TEDS"
             23},{-24,23},{-24,46.8}}, color={0,0,127}));
     connect(actuatorSubBus.Heater_Input, add1.u2) annotation (Line(
         points={{-34,-99},{-70,-99},{-70,18.8},{-47.4,18.8}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Pump_Flow, switch3.y) annotation (Line(
         points={{40,-99},{4,-99},{4,-52.8}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Chromolox_Heater_Control1.y, switch3.u1) annotation (Line(points={{-17.4,
@@ -962,27 +962,27 @@ package Control_Systems "Range of all control Systems for TEDS"
             -57},{90.35,-56},{94.8,-56}}, color={0,0,127}));
     connect(sensorSubBus.Valve_1_Opening, firstOrder.y) annotation (Line(
         points={{40,-99},{120,-99},{120,130},{110.6,130}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_2_Opening, firstOrder1.y) annotation (Line(
         points={{40,-99},{120,-99},{120,94},{110.6,94}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_4_Opening, firstOrder3.y) annotation (Line(
         points={{40,-99},{120,-99},{120,16},{108.6,16}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_5_Opening, firstOrder4.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-20},{108.6,-20}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_6_Opening, firstOrder5.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-56},{108.6,-56}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Valve1.y, PIDV1.u_s)
@@ -1001,20 +1001,20 @@ package Control_Systems "Range of all control Systems for TEDS"
             {68.6,93}}, color={0,0,127}));
     connect(sensorSubBus.Valve_3_Opening, firstOrder2.y) annotation (Line(
         points={{40,-99},{120,-99},{120,58},{110.6,58}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
 
     connect(actuatorSubBus.Discharge_FlowRate, Discharge_mass_flow_sensor.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,-3},{-172.4,-3}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorSubBus.Charging_flowrate, Charge_mass_flow_sensor.u)
       annotation (Line(
         points={{-34,-99},{-148,-99},{-148,-100},{-180,-100},{-180,-22},{-172.4,-22}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Null.y, greaterEqual.u2) annotation (Line(points={{-165.4,34},{-164,34},
@@ -1048,12 +1048,12 @@ package Control_Systems "Range of all control Systems for TEDS"
             23},{-24,23},{-24,46.8}}, color={0,0,127}));
     connect(actuatorSubBus.Heater_Input, add1.u2) annotation (Line(
         points={{-34,-99},{-70,-99},{-70,18.8},{-47.4,18.8}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Pump_Flow, switch3.y) annotation (Line(
         points={{40,-99},{4,-99},{4,-52.8}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Timer.y, greaterEqual2.u2) annotation (Line(points={{-40.9,-19},{-34,-19},
@@ -1387,27 +1387,27 @@ package Control_Systems "Range of all control Systems for TEDS"
             {90.35,-56},{94.8,-56}},      color={0,0,127}));
     connect(sensorSubBus.Valve_1_Opening, firstOrder.y) annotation (Line(
         points={{40,-99},{120,-99},{120,130},{110.6,130}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_2_Opening, firstOrder1.y) annotation (Line(
         points={{40,-99},{120,-99},{120,94},{110.6,94}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_4_Opening, firstOrder3.y) annotation (Line(
         points={{40,-99},{120,-99},{120,16},{108.6,16}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_5_Opening, firstOrder4.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-20},{108.6,-20}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_6_Opening, firstOrder5.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-56},{108.6,-56}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Valve1.y, PIDV1.u_s)
@@ -1424,20 +1424,20 @@ package Control_Systems "Range of all control Systems for TEDS"
             {68.6,93}}, color={0,0,127}));
     connect(sensorSubBus.Valve_3_Opening, firstOrder2.y) annotation (Line(
         points={{40,-99},{120,-99},{120,58},{110.6,58}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
 
     connect(actuatorSubBus.Discharge_FlowRate, Discharge_mass_flow_sensor.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,-3},{-172.4,-3}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorSubBus.Charging_flowrate, Charge_mass_flow_sensor.u)
       annotation (Line(
         points={{-34,-99},{-148,-99},{-148,-100},{-180,-100},{-180,-22},{-172.4,-22}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Null.y, greaterEqual.u2) annotation (Line(points={{-165.4,34},{-164,34},
@@ -1466,12 +1466,12 @@ package Control_Systems "Range of all control Systems for TEDS"
             27.2},{-53.4,27.2}}, color={0,0,127}));
     connect(actuatorSubBus.Heater_Input, add1.u2) annotation (Line(
         points={{-34,-99},{-74,-99},{-74,18.8},{-53.4,18.8}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Pump_Flow, switch3.y) annotation (Line(
         points={{40,-99},{4,-99},{4,-52.8}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Timer.y, greaterEqual2.u2) annotation (Line(points={{-40.9,-19},{-34,-19},
@@ -1493,7 +1493,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Total_Mass_Flow_System, Mass_Pass_through.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,108},{-15,108},{-15,99}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Reference_total_mass_flow.y, Subtract1.u1) annotation (Line(points={{9,
@@ -1847,27 +1847,27 @@ package Control_Systems "Range of all control Systems for TEDS"
             {90.35,-56},{94.8,-56}},      color={0,0,127}));
     connect(sensorSubBus.Valve_1_Opening, firstOrder.y) annotation (Line(
         points={{40,-99},{120,-99},{120,130},{110.6,130}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_2_Opening, firstOrder1.y) annotation (Line(
         points={{40,-99},{120,-99},{120,94},{110.6,94}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_4_Opening, firstOrder3.y) annotation (Line(
         points={{40,-99},{120,-99},{120,16},{108.6,16}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_5_Opening, firstOrder4.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-20},{108.6,-20}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_6_Opening, firstOrder5.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-56},{108.6,-56}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Valve1.y, PIDV1.u_s)
@@ -1884,20 +1884,20 @@ package Control_Systems "Range of all control Systems for TEDS"
             {68.6,93}}, color={0,0,127}));
     connect(sensorSubBus.Valve_3_Opening, firstOrder2.y) annotation (Line(
         points={{40,-99},{120,-99},{120,58},{110.6,58}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
 
     connect(actuatorSubBus.Discharge_FlowRate, Discharge_mass_flow_sensor.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,-3},{-172.4,-3}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorSubBus.Charging_flowrate, Charge_mass_flow_sensor.u)
       annotation (Line(
         points={{-34,-99},{-148,-99},{-148,-100},{-180,-100},{-180,-22},{-172.4,-22}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Null.y, greaterEqual.u2) annotation (Line(points={{-165.4,34},{-164,34},
@@ -1924,12 +1924,12 @@ package Control_Systems "Range of all control Systems for TEDS"
             27.2},{-53.4,27.2}}, color={0,0,127}));
     connect(actuatorSubBus.Heater_Input, add1.u2) annotation (Line(
         points={{-34,-99},{-74,-99},{-74,18.8},{-53.4,18.8}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Pump_Flow, switch3.y) annotation (Line(
         points={{40,-99},{4,-99},{4,-52.8}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Timer.y, greaterEqual2.u2) annotation (Line(points={{-40.9,-19},{-34,-19},
@@ -1951,7 +1951,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Total_Mass_Flow_System, Mass_Pass_through.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,108},{-15,108},{-15,99}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Reference_total_mass_flow.y, Subtract1.u1) annotation (Line(points={{9,
@@ -1968,7 +1968,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Heater_flowrate, Heater_flowrate_sensor.u) annotation (
        Line(
         points={{-34,-99},{-180,-99},{-180,-44},{-172.4,-44}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Heater_Load.y, add.u2) annotation (Line(points={{-79.3,91},{-70,91},{-70,
@@ -2349,27 +2349,27 @@ package Control_Systems "Range of all control Systems for TEDS"
             {90.35,-56},{94.8,-56}},      color={0,0,127}));
     connect(sensorSubBus.Valve_1_Opening, firstOrder.y) annotation (Line(
         points={{40,-99},{120,-99},{120,130},{110.6,130}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_2_Opening, firstOrder1.y) annotation (Line(
         points={{40,-99},{120,-99},{120,94},{110.6,94}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_4_Opening, firstOrder3.y) annotation (Line(
         points={{40,-99},{120,-99},{120,16},{108.6,16}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_5_Opening, firstOrder4.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-20},{108.6,-20}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_6_Opening, firstOrder5.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-56},{108.6,-56}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Valve1.y, PIDV1.u_s)
@@ -2386,20 +2386,20 @@ package Control_Systems "Range of all control Systems for TEDS"
             {68.6,93}}, color={0,0,127}));
     connect(sensorSubBus.Valve_3_Opening, firstOrder2.y) annotation (Line(
         points={{40,-99},{120,-99},{120,58},{110.6,58}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
 
     connect(actuatorSubBus.Discharge_FlowRate, Discharge_mass_flow_sensor.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,9},{-172.4,9}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorSubBus.Charging_flowrate, Charge_mass_flow_sensor.u)
       annotation (Line(
         points={{-34,-99},{-148,-99},{-148,-100},{-180,-100},{-180,-4},{-172.4,-4}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Null.y, greaterEqual.u2) annotation (Line(points={{-165.4,34},{-164,34},
@@ -2424,12 +2424,12 @@ package Control_Systems "Range of all control Systems for TEDS"
             27.2},{-53.4,27.2}}, color={0,0,127}));
     connect(actuatorSubBus.Heater_Input, add1.u2) annotation (Line(
         points={{-34,-99},{-74,-99},{-74,18.8},{-53.4,18.8}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Pump_Flow, switch3.y) annotation (Line(
         points={{40,-99},{4,-99},{4,-52.8}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Timer.y, greaterEqual2.u2) annotation (Line(points={{-40.9,-19},{-34,-19},
@@ -2447,7 +2447,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Total_Mass_Flow_System, Mass_Pass_through.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,108},{-15,108},{-15,99}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Reference_total_mass_flow.y, Subtract1.u1) annotation (Line(points={{9,
@@ -2464,7 +2464,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Heater_flowrate, Heater_flowrate_sensor.u) annotation (
        Line(
         points={{-34,-99},{-180,-99},{-180,-18},{-172.4,-18}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Heater_Load.y, add.u2) annotation (Line(points={{-79.3,91},{-70,91},{-70,
@@ -2482,7 +2482,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.heater_BOP_massflow, Heater_BOP_mass_flow.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,-34},{-172.4,-34}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Load_TES.y, switch1.u1) annotation (Line(points={{-152.9,87},{-138,87},
@@ -2862,27 +2862,27 @@ package Control_Systems "Range of all control Systems for TEDS"
             {90.35,-56},{94.8,-56}},      color={0,0,127}));
     connect(sensorSubBus.Valve_1_Opening, firstOrder.y) annotation (Line(
         points={{40,-99},{120,-99},{120,130},{110.6,130}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_2_Opening, firstOrder1.y) annotation (Line(
         points={{40,-99},{120,-99},{120,94},{110.6,94}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_4_Opening, firstOrder3.y) annotation (Line(
         points={{40,-99},{120,-99},{120,16},{108.6,16}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_5_Opening, firstOrder4.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-20},{108.6,-20}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_6_Opening, firstOrder5.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-56},{108.6,-56}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Valve1.y, PIDV1.u_s)
@@ -2899,20 +2899,20 @@ package Control_Systems "Range of all control Systems for TEDS"
             {68.6,93}}, color={0,0,127}));
     connect(sensorSubBus.Valve_3_Opening, firstOrder2.y) annotation (Line(
         points={{40,-99},{120,-99},{120,58},{110.6,58}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
 
     connect(actuatorSubBus.Discharge_FlowRate, Discharge_mass_flow_sensor.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,9},{-172.4,9}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorSubBus.Charging_flowrate, Charge_mass_flow_sensor.u)
       annotation (Line(
         points={{-34,-99},{-148,-99},{-148,-100},{-180,-100},{-180,-4},{-172.4,-4}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Null.y, greaterEqual.u2) annotation (Line(points={{-165.4,34},{-164,34},
@@ -2937,12 +2937,12 @@ package Control_Systems "Range of all control Systems for TEDS"
             27.2},{-53.4,27.2}}, color={0,0,127}));
     connect(actuatorSubBus.Heater_Input, add1.u2) annotation (Line(
         points={{-34,-99},{-74,-99},{-74,18.8},{-53.4,18.8}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Pump_Flow, switch3.y) annotation (Line(
         points={{40,-99},{4,-99},{4,-52.8}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Timer.y, greaterEqual2.u2) annotation (Line(points={{-40.9,-19},{-34,-19},
@@ -2960,7 +2960,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Total_Mass_Flow_System, Mass_Pass_through.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,108},{-15,108},{-15,99}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Reference_total_mass_flow.y, Subtract1.u1) annotation (Line(points={{9,
@@ -2977,7 +2977,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Heater_flowrate, Heater_flowrate_sensor.u) annotation (
        Line(
         points={{-34,-99},{-180,-99},{-180,-18},{-172.4,-18}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Heater_Load.y, add.u2) annotation (Line(points={{-79.3,91},{-70,91},{-70,
@@ -2995,7 +2995,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.heater_BOP_massflow, Heater_BOP_mass_flow.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,-34},{-172.4,-34}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Load_TES.y, switch1.u1) annotation (Line(points={{-152.9,87},{-138,87},
@@ -3350,27 +3350,27 @@ package Control_Systems "Range of all control Systems for TEDS"
             {90.35,-56},{94.8,-56}},      color={0,0,127}));
     connect(sensorSubBus.Valve_1_Opening, firstOrder.y) annotation (Line(
         points={{40,-99},{120,-99},{120,130},{110.6,130}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_2_Opening, firstOrder1.y) annotation (Line(
         points={{40,-99},{120,-99},{120,94},{110.6,94}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_4_Opening, firstOrder3.y) annotation (Line(
         points={{40,-99},{120,-99},{120,16},{108.6,16}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_5_Opening, firstOrder4.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-20},{108.6,-20}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_6_Opening, firstOrder5.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-56},{108.6,-56}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Valve1.y, PIDV1.u_s)
@@ -3387,20 +3387,20 @@ package Control_Systems "Range of all control Systems for TEDS"
             {68.6,93}}, color={0,0,127}));
     connect(sensorSubBus.Valve_3_Opening, firstOrder2.y) annotation (Line(
         points={{40,-99},{120,-99},{120,58},{110.6,58}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
 
     connect(actuatorSubBus.Discharge_FlowRate, Discharge_mass_flow_sensor.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,9},{-172.4,9}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorSubBus.Charging_flowrate, Charge_mass_flow_sensor.u)
       annotation (Line(
         points={{-34,-99},{-148,-99},{-148,-100},{-180,-100},{-180,-4},{-172.4,-4}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Null.y, greaterEqual.u2) annotation (Line(points={{-165.4,34},{-164,34},
@@ -3413,7 +3413,7 @@ package Control_Systems "Range of all control Systems for TEDS"
             62.8},{-65.4,62.8}}, color={0,0,127}));
     connect(sensorSubBus.Pump_Flow, switch3.y) annotation (Line(
         points={{40,-99},{4,-99},{4,-52.8}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Timer.y, greaterEqual2.u2) annotation (Line(points={{-40.9,-19},{-34,-19},
@@ -3427,7 +3427,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Total_Mass_Flow_System, Mass_Pass_through.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,108},{-15,108},{-15,99}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Reference_total_mass_flow.y, Subtract1.u1) annotation (Line(points={{9,
@@ -3442,7 +3442,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Heater_flowrate, Heater_flowrate_sensor.u) annotation (
        Line(
         points={{-34,-99},{-180,-99},{-180,-18},{-172.4,-18}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Heater_Load.y, add.u2) annotation (Line(points={{-79.3,91},{-70,91},{-70,
@@ -3454,7 +3454,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.heater_BOP_massflow, Heater_BOP_mass_flow.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,-34},{-172.4,-34}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Load_TES.y, switch1.u1) annotation (Line(points={{-152.9,87},{-138,87},
@@ -3815,27 +3815,27 @@ package Control_Systems "Range of all control Systems for TEDS"
             {90.35,-56},{94.8,-56}},      color={0,0,127}));
     connect(sensorSubBus.Valve_1_Opening, firstOrder.y) annotation (Line(
         points={{40,-99},{120,-99},{120,130},{110.6,130}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_2_Opening, firstOrder1.y) annotation (Line(
         points={{40,-99},{120,-99},{120,94},{110.6,94}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_4_Opening, firstOrder3.y) annotation (Line(
         points={{40,-99},{120,-99},{120,16},{108.6,16}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_5_Opening, firstOrder4.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-20},{108.6,-20}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_6_Opening, firstOrder5.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-56},{108.6,-56}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Valve1.y, PIDV1.u_s)
@@ -3852,20 +3852,20 @@ package Control_Systems "Range of all control Systems for TEDS"
             {68.6,93}}, color={0,0,127}));
     connect(sensorSubBus.Valve_3_Opening, firstOrder2.y) annotation (Line(
         points={{40,-99},{120,-99},{120,58},{110.6,58}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
 
     connect(actuatorSubBus.Discharge_FlowRate, Discharge_mass_flow_sensor.u)
       annotation (Line(
         points={{-30,-95},{-180,-95},{-180,1},{-172.4,1}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorSubBus.Charging_flowrate, Charge_mass_flow_sensor.u)
       annotation (Line(
         points={{-30,-95},{-148,-95},{-148,-100},{-180,-100},{-180,-12},{-172.4,-12}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Null.y, greaterEqual.u2) annotation (Line(points={{-165.4,34},{-164,34},
@@ -3878,7 +3878,7 @@ package Control_Systems "Range of all control Systems for TEDS"
             62.8},{-65.4,62.8}}, color={0,0,127}));
     connect(sensorSubBus.Pump_Flow, switch3.y) annotation (Line(
         points={{40,-99},{4,-99},{4,-52.8}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Timer.y, greaterEqual2.u2) annotation (Line(points={{-40.9,-19},{-34,-19},
@@ -3892,7 +3892,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Total_Mass_Flow_System, Mass_Pass_through.u)
       annotation (Line(
         points={{-30,-95},{-180,-95},{-180,106},{-15,106},{-15,99}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Reference_total_mass_flow.y, Subtract1.u1) annotation (Line(points={{9,
@@ -3907,7 +3907,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Heater_flowrate, Heater_flowrate_sensor.u) annotation (
        Line(
         points={{-30,-95},{-180,-95},{-180,-26},{-172.4,-26}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Heater_Load.y, add.u2) annotation (Line(points={{-79.3,91},{-70,91},{-70,
@@ -3919,7 +3919,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.heater_BOP_massflow, Heater_BOP_mass_flow.u)
       annotation (Line(
         points={{-30,-95},{-180,-95},{-180,-42},{-172.4,-42}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Load_TES.y, switch1.u1) annotation (Line(points={{-152.9,85},{-138,
@@ -3934,7 +3934,7 @@ package Control_Systems "Range of all control Systems for TEDS"
           points={{15,35.5},{15,18.75},{10,18.75},{10,3.2}}, color={0,0,127}));
     connect(actuatorSubBus.Volume_flow_rate, Volume_flow_rate.u) annotation (Line(
         points={{-30,-95},{-180,-95},{-180,15},{-172.4,15}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",
@@ -4283,27 +4283,27 @@ package Control_Systems "Range of all control Systems for TEDS"
             {90.35,-56},{94.8,-56}},      color={0,0,127}));
     connect(sensorSubBus.Valve_1_Opening, firstOrder.y) annotation (Line(
         points={{40,-99},{120,-99},{120,130},{110.6,130}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_2_Opening, firstOrder1.y) annotation (Line(
         points={{40,-99},{120,-99},{120,94},{110.6,94}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_4_Opening, firstOrder3.y) annotation (Line(
         points={{40,-99},{120,-99},{120,16},{108.6,16}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_5_Opening, firstOrder4.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-20},{108.6,-20}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_6_Opening, firstOrder5.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-56},{108.6,-56}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Valve1.y, PIDV1.u_s)
@@ -4320,20 +4320,20 @@ package Control_Systems "Range of all control Systems for TEDS"
             {68.6,93}}, color={0,0,127}));
     connect(sensorSubBus.Valve_3_Opening, firstOrder2.y) annotation (Line(
         points={{40,-99},{120,-99},{120,58},{110.6,58}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
 
     connect(actuatorSubBus.Discharge_FlowRate, Discharge_mass_flow_sensor.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,9},{-172.4,9}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorSubBus.Charging_flowrate, Charge_mass_flow_sensor.u)
       annotation (Line(
         points={{-34,-99},{-148,-99},{-148,-100},{-180,-100},{-180,-4},{-172.4,-4}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Null.y, greaterEqual.u2) annotation (Line(points={{-165.4,34},{-164,34},
@@ -4346,7 +4346,7 @@ package Control_Systems "Range of all control Systems for TEDS"
             62.8},{-65.4,62.8}}, color={0,0,127}));
     connect(sensorSubBus.Pump_Flow, switch3.y) annotation (Line(
         points={{40,-99},{4,-99},{4,-52.8}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Timer.y, greaterEqual2.u2) annotation (Line(points={{-40.9,-19},{-34,-19},
@@ -4360,7 +4360,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Total_Mass_Flow_System, Mass_Pass_through.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,108},{-15,108},{-15,99}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Reference_total_mass_flow.y, Subtract1.u1) annotation (Line(points={{9,
@@ -4375,7 +4375,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Heater_flowrate, Heater_flowrate_sensor.u) annotation (
        Line(
         points={{-34,-99},{-180,-99},{-180,-18},{-172.4,-18}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Heater_Load.y, add.u2) annotation (Line(points={{-79.3,91},{-70,91},{-70,
@@ -4387,7 +4387,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.heater_BOP_massflow, Heater_BOP_mass_flow.u)
       annotation (Line(
         points={{-34,-99},{-180,-99},{-180,-34},{-172.4,-34}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Load_TES.y, switch1.u1) annotation (Line(points={{-152.9,87},{-138,87},
@@ -4747,27 +4747,27 @@ package Control_Systems "Range of all control Systems for TEDS"
             {90.35,-56},{94.8,-56}},      color={0,0,127}));
     connect(sensorSubBus.Valve_1_Opening, firstOrder.y) annotation (Line(
         points={{40,-99},{120,-99},{120,130},{110.6,130}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_2_Opening, firstOrder1.y) annotation (Line(
         points={{40,-99},{120,-99},{120,94},{110.6,94}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_4_Opening, firstOrder3.y) annotation (Line(
         points={{40,-99},{120,-99},{120,16},{108.6,16}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_5_Opening, firstOrder4.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-20},{108.6,-20}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_6_Opening, firstOrder5.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-56},{108.6,-56}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Valve1.y, PIDV1.u_s)
@@ -4784,20 +4784,20 @@ package Control_Systems "Range of all control Systems for TEDS"
             {68.6,93}}, color={0,0,127}));
     connect(sensorSubBus.Valve_3_Opening, firstOrder2.y) annotation (Line(
         points={{40,-99},{120,-99},{120,58},{110.6,58}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
 
     connect(actuatorSubBus.Discharge_FlowRate, Discharge_mass_flow_sensor.u)
       annotation (Line(
         points={{-30,-95},{-180,-95},{-180,1},{-172.4,1}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorSubBus.Charging_flowrate, Charge_mass_flow_sensor.u)
       annotation (Line(
         points={{-30,-95},{-148,-95},{-148,-100},{-180,-100},{-180,-12},{-172.4,-12}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Null.y, greaterEqual.u2) annotation (Line(points={{-165.4,34},{-164,34},
@@ -4810,7 +4810,7 @@ package Control_Systems "Range of all control Systems for TEDS"
             62.8},{-65.4,62.8}}, color={0,0,127}));
     connect(sensorSubBus.Pump_Flow, switch3.y) annotation (Line(
         points={{40,-99},{4,-99},{4,-52.8}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Timer.y, greaterEqual2.u2) annotation (Line(points={{-40.9,-19},{-34,-19},
@@ -4824,7 +4824,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Total_Mass_Flow_System, Mass_Pass_through.u)
       annotation (Line(
         points={{-30,-95},{-180,-95},{-180,106},{-15,106},{-15,99}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Reference_total_mass_flow.y, Subtract1.u1) annotation (Line(points={{9,
@@ -4839,7 +4839,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Heater_flowrate, Heater_flowrate_sensor.u) annotation (
        Line(
         points={{-30,-95},{-180,-95},{-180,-26},{-172.4,-26}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Heater_Load.y, add.u2) annotation (Line(points={{-79.3,91},{-70,91},{-70,
@@ -4851,7 +4851,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.heater_BOP_massflow, Heater_BOP_mass_flow.u)
       annotation (Line(
         points={{-30,-95},{-180,-95},{-180,-42},{-172.4,-42}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Load_TES.y, switch1.u1) annotation (Line(points={{-152.9,85},{-138,
@@ -4866,7 +4866,7 @@ package Control_Systems "Range of all control Systems for TEDS"
           points={{15,35.5},{15,18.75},{10,18.75},{10,3.2}}, color={0,0,127}));
     connect(actuatorSubBus.Volume_flow_rate, Volume_flow_rate.u) annotation (Line(
         points={{-30,-95},{-180,-95},{-180,15},{-172.4,15}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",
@@ -5222,27 +5222,27 @@ package Control_Systems "Range of all control Systems for TEDS"
             {90.35,-56},{94.8,-56}},      color={0,0,127}));
     connect(sensorSubBus.Valve_1_Opening, firstOrder.y) annotation (Line(
         points={{40,-99},{120,-99},{120,130},{110.6,130}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_2_Opening, firstOrder1.y) annotation (Line(
         points={{40,-99},{120,-99},{120,94},{110.6,94}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_4_Opening, firstOrder3.y) annotation (Line(
         points={{40,-99},{120,-99},{120,16},{108.6,16}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_5_Opening, firstOrder4.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-20},{108.6,-20}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_6_Opening, firstOrder5.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-56},{108.6,-56}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Valve1.y, PIDV1.u_s)
@@ -5259,20 +5259,20 @@ package Control_Systems "Range of all control Systems for TEDS"
             {68.6,93}}, color={0,0,127}));
     connect(sensorSubBus.Valve_3_Opening, firstOrder2.y) annotation (Line(
         points={{40,-99},{120,-99},{120,58},{110.6,58}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
 
     connect(actuatorSubBus.Discharge_FlowRate, Discharge_mass_flow_sensor.u)
       annotation (Line(
         points={{-30,-95},{-180,-95},{-180,1},{-172.4,1}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorSubBus.Charging_flowrate, Charge_mass_flow_sensor.u)
       annotation (Line(
         points={{-30,-95},{-148,-95},{-148,-100},{-180,-100},{-180,-12},{-172.4,-12}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Null.y, greaterEqual.u2) annotation (Line(points={{-165.4,34},{-164,34},
@@ -5285,7 +5285,7 @@ package Control_Systems "Range of all control Systems for TEDS"
             62.8},{-65.4,62.8}}, color={0,0,127}));
     connect(sensorSubBus.Pump_Flow, switch3.y) annotation (Line(
         points={{40,-99},{4,-99},{4,-52.8}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Timer.y, greaterEqual2.u2) annotation (Line(points={{-40.9,-19},{-34,-19},
@@ -5299,7 +5299,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Total_Mass_Flow_System, Mass_Pass_through.u)
       annotation (Line(
         points={{-30,-95},{-180,-95},{-180,106},{-15,106},{-15,99}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Reference_total_mass_flow.y, Subtract1.u1) annotation (Line(points={{9,
@@ -5314,7 +5314,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Heater_flowrate, Heater_flowrate_sensor.u) annotation (
        Line(
         points={{-30,-95},{-180,-95},{-180,-26},{-172.4,-26}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Heater_Load.y, add.u2) annotation (Line(points={{-79.3,91},{-70,91},{-70,
@@ -5326,7 +5326,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.heater_BOP_massflow, Heater_BOP_mass_flow.u)
       annotation (Line(
         points={{-30,-95},{-180,-95},{-180,-42},{-172.4,-42}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Load_TES.y, switch1.u1) annotation (Line(points={{-152.9,85},{-138,
@@ -5341,7 +5341,7 @@ package Control_Systems "Range of all control Systems for TEDS"
           points={{15,35.5},{15,18.75},{10,18.75},{10,3.2}}, color={0,0,127}));
     connect(actuatorSubBus.Volume_flow_rate, Volume_flow_rate.u) annotation (Line(
         points={{-30,-95},{-180,-95},{-180,15},{-172.4,15}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",
@@ -5693,27 +5693,27 @@ package Control_Systems "Range of all control Systems for TEDS"
             {90.35,-56},{94.8,-56}},      color={0,0,127}));
     connect(sensorSubBus.Valve_1_Opening, firstOrder.y) annotation (Line(
         points={{40,-99},{120,-99},{120,130},{110.6,130}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_2_Opening, firstOrder1.y) annotation (Line(
         points={{40,-99},{120,-99},{120,94},{110.6,94}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_4_Opening, firstOrder3.y) annotation (Line(
         points={{40,-99},{120,-99},{120,16},{108.6,16}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_5_Opening, firstOrder4.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-20},{108.6,-20}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_6_Opening, firstOrder5.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-56},{108.6,-56}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Valve1.y, PIDV1.u_s)
@@ -5730,20 +5730,20 @@ package Control_Systems "Range of all control Systems for TEDS"
             {68.6,93}}, color={0,0,127}));
     connect(sensorSubBus.Valve_3_Opening, firstOrder2.y) annotation (Line(
         points={{40,-99},{120,-99},{120,58},{110.6,58}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
 
     connect(actuatorSubBus.Discharge_FlowRate, Discharge_mass_flow_sensor.u)
       annotation (Line(
         points={{-30,-95},{-180,-95},{-180,1},{-172.4,1}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorSubBus.Charging_flowrate, Charge_mass_flow_sensor.u)
       annotation (Line(
         points={{-30,-95},{-148,-95},{-148,-100},{-180,-100},{-180,-12},{-172.4,-12}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Null.y, greaterEqual.u2) annotation (Line(points={{-165.4,34},{-164,34},
@@ -5756,7 +5756,7 @@ package Control_Systems "Range of all control Systems for TEDS"
             62.8},{-65.4,62.8}}, color={0,0,127}));
     connect(sensorSubBus.Pump_Flow, switch3.y) annotation (Line(
         points={{40,-99},{4,-99},{4,-52.8}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Timer.y, greaterEqual2.u2) annotation (Line(points={{-40.9,-19},{-34,-19},
@@ -5770,7 +5770,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Total_Mass_Flow_System, Mass_Pass_through.u)
       annotation (Line(
         points={{-30,-95},{-180,-95},{-180,106},{-15,106},{-15,99}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Reference_total_mass_flow.y, Subtract1.u1) annotation (Line(points={{9,
@@ -5785,7 +5785,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Heater_flowrate, Heater_flowrate_sensor.u) annotation (
        Line(
         points={{-30,-95},{-180,-95},{-180,-26},{-172.4,-26}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Heater_Load.y, add.u2) annotation (Line(points={{-79.3,91},{-70,91},{-70,
@@ -5797,7 +5797,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.heater_BOP_massflow, Heater_BOP_mass_flow.u)
       annotation (Line(
         points={{-30,-95},{-180,-95},{-180,-42},{-172.4,-42}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Load_TES.y, switch1.u1) annotation (Line(points={{-152.9,85},{-138,
@@ -5812,7 +5812,7 @@ package Control_Systems "Range of all control Systems for TEDS"
           points={{15,35.5},{15,18.75},{10,18.75},{10,3.2}}, color={0,0,127}));
     connect(actuatorSubBus.Volume_flow_rate, Volume_flow_rate.u) annotation (Line(
         points={{-30,-95},{-180,-95},{-180,15},{-172.4,15}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",
@@ -6164,27 +6164,27 @@ package Control_Systems "Range of all control Systems for TEDS"
             {90.35,-56},{94.8,-56}},      color={0,0,127}));
     connect(sensorSubBus.Valve_1_Opening, firstOrder.y) annotation (Line(
         points={{40,-99},{120,-99},{120,130},{110.6,130}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_2_Opening, firstOrder1.y) annotation (Line(
         points={{40,-99},{120,-99},{120,94},{110.6,94}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_4_Opening, firstOrder3.y) annotation (Line(
         points={{40,-99},{120,-99},{120,16},{108.6,16}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_5_Opening, firstOrder4.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-20},{108.6,-20}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_6_Opening, firstOrder5.y) annotation (Line(
         points={{40,-99},{120,-99},{120,-56},{108.6,-56}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Valve1.y, PIDV1.u_s)
@@ -6201,20 +6201,20 @@ package Control_Systems "Range of all control Systems for TEDS"
             {68.6,93}}, color={0,0,127}));
     connect(sensorSubBus.Valve_3_Opening, firstOrder2.y) annotation (Line(
         points={{40,-99},{120,-99},{120,58},{110.6,58}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
 
     connect(actuatorSubBus.Discharge_FlowRate, Discharge_mass_flow_sensor.u)
       annotation (Line(
         points={{-30,-95},{-180,-95},{-180,1},{-172.4,1}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorSubBus.Charging_flowrate, Charge_mass_flow_sensor.u)
       annotation (Line(
         points={{-30,-95},{-148,-95},{-148,-100},{-180,-100},{-180,-12},{-172.4,-12}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Null.y, greaterEqual.u2) annotation (Line(points={{-165.4,34},{-164,34},
@@ -6227,7 +6227,7 @@ package Control_Systems "Range of all control Systems for TEDS"
             62.8},{-65.4,62.8}}, color={0,0,127}));
     connect(sensorSubBus.Pump_Flow, switch3.y) annotation (Line(
         points={{40,-99},{4,-99},{4,-52.8}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Timer.y, greaterEqual2.u2) annotation (Line(points={{-40.9,-19},{-34,-19},
@@ -6241,7 +6241,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Total_Mass_Flow_System, Mass_Pass_through.u)
       annotation (Line(
         points={{-30,-95},{-180,-95},{-180,106},{-15,106},{-15,99}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Reference_total_mass_flow.y, Subtract1.u1) annotation (Line(points={{9,
@@ -6256,7 +6256,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.Heater_flowrate, Heater_flowrate_sensor.u) annotation (
        Line(
         points={{-30,-95},{-180,-95},{-180,-26},{-172.4,-26}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Heater_Load.y, add.u2) annotation (Line(points={{-79.3,91},{-70,91},{-70,
@@ -6268,7 +6268,7 @@ package Control_Systems "Range of all control Systems for TEDS"
     connect(actuatorSubBus.heater_BOP_massflow, Heater_BOP_mass_flow.u)
       annotation (Line(
         points={{-30,-95},{-180,-95},{-180,-42},{-172.4,-42}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(Load_TES.y, switch1.u1) annotation (Line(points={{-152.9,85},{-138,
@@ -6283,7 +6283,7 @@ package Control_Systems "Range of all control Systems for TEDS"
           points={{15,35.5},{15,18.75},{10,18.75},{10,3.2}}, color={0,0,127}));
     connect(actuatorSubBus.Volume_flow_rate, Volume_flow_rate.u) annotation (Line(
         points={{-30,-95},{-180,-95},{-180,15},{-172.4,15}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",

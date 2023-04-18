@@ -27,7 +27,8 @@ package Obselete_Files_from_Building
       annotation (Placement(transformation(extent={{-12,-10},{12,14}})));
 
     Modelica.Fluid.Sensors.Temperature temperature_entrance(redeclare package
-        Medium = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C)
+        Medium =
+          TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C)
       annotation (Placement(transformation(extent={{-36,-14},{-16,-34}})));
     Modelica.Fluid.Sensors.Temperature temperature_exit(redeclare package
         Medium =
@@ -158,8 +159,8 @@ package Obselete_Files_from_Building
           extent={{6,6},{-6,-6}},
           rotation=0,
           origin={124,-68})));
-    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-        = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+          TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
          3) annotation (Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=-90,
@@ -335,7 +336,7 @@ package Obselete_Files_from_Building
             -70},{-96,-70},{-96,12}}, color={0,127,255}));
     connect(sensorSubBus.Valve_1_Opening, Valve1.opening) annotation (Line(
         points={{-6,106},{-6,92},{34,92},{34,54},{79.2,54}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",
@@ -344,27 +345,27 @@ package Obselete_Files_from_Building
         horizontalAlignment=TextAlignment.Right));
     connect(actuatorSubBus.Valve1, const2.y) annotation (Line(
         points={{-29,106},{-50,106},{-50,94},{-73,94}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorSubBus.Demand, const6.y) annotation (Line(
         points={{-28.945,106.06},{-40,106.06},{-40,120},{-51,120}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(control_System_B_1_1.actuatorSubBus, actuatorSubBus) annotation (Line(
         points={{26,120.083},{26,106},{-29,106}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(control_System_B_1_1.sensorSubBus, sensorSubBus) annotation (Line(
         points={{32.7273,120.083},{32.7273,106},{-6,106}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_2_Opening, Valve2.opening) annotation (Line(
         points={{-6,106},{116,106},{116,80.8}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",
@@ -373,7 +374,7 @@ package Obselete_Files_from_Building
         horizontalAlignment=TextAlignment.Right));
     connect(sensorSubBus.Valve_3_Opening, Valve3.opening) annotation (Line(
         points={{-6,106},{170,106},{170,54},{158.8,54}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",
@@ -382,7 +383,7 @@ package Obselete_Files_from_Building
         horizontalAlignment=TextAlignment.Left));
     connect(sensorSubBus.Valve_4_Opening, valve4.opening) annotation (Line(
         points={{-6,106},{170,106},{170,-48},{154.8,-48}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",
@@ -391,7 +392,7 @@ package Obselete_Files_from_Building
         horizontalAlignment=TextAlignment.Left));
     connect(sensorSubBus.Valve_5_Opening, Valve5.opening) annotation (Line(
         points={{-6,106},{-6,92},{34,92},{34,-40},{81.2,-40}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",
@@ -400,7 +401,7 @@ package Obselete_Files_from_Building
         horizontalAlignment=TextAlignment.Right));
     connect(sensorSubBus.Valve_6_Opening, Valve6.opening) annotation (Line(
         points={{-6,106},{-6,88},{34,88},{34,-40},{22,-40},{22,-65.2}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",
@@ -658,8 +659,8 @@ package Obselete_Files_from_Building
           extent={{-6,-6},{6,6}},
           rotation=270,
           origin={104,-28})));
-    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-        = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+          TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
          3) annotation (Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=-90,
@@ -1022,8 +1023,8 @@ package Obselete_Files_from_Building
           extent={{-6,-6},{6,6}},
           rotation=270,
           origin={124,-26})));
-    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-        = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+          TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
          3) annotation (Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=-90,
@@ -1281,8 +1282,8 @@ package Obselete_Files_from_Building
           extent={{6,6},{-6,-6}},
           rotation=0,
           origin={124,-68})));
-    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-        = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+          TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
          3) annotation (Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=-90,
@@ -1464,7 +1465,7 @@ package Obselete_Files_from_Building
             -70},{-96,-70},{-96,12}}, color={0,127,255}));
     connect(sensorSubBus.Valve_1_Opening, valveLinear.opening) annotation (Line(
         points={{-6,106},{-6,92},{34,92},{34,54},{79.2,54}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",
@@ -1473,27 +1474,27 @@ package Obselete_Files_from_Building
         horizontalAlignment=TextAlignment.Right));
     connect(actuatorSubBus.Valve1, const2.y) annotation (Line(
         points={{-29,106},{-50,106},{-50,102},{-71,102}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorSubBus.Demand, const6.y) annotation (Line(
         points={{-28.945,106.06},{-40,106.06},{-40,120},{-51,120}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(control_System_B.actuatorSubBus, actuatorSubBus) annotation (Line(
         points={{4.76923,122.077},{4.76923,120},{-22,120},{-22,106},{-29,106}},
-        color={111,216,99},
+        color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(control_System_B.sensorSubBus, sensorSubBus) annotation (Line(
         points={{10.7692,122.077},{10.7692,106},{-6,106}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorSubBus.Valve_2_Opening, valveLinear4.opening) annotation (Line(
         points={{-6,106},{116,106},{116,80.8}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",
@@ -1502,7 +1503,7 @@ package Obselete_Files_from_Building
         horizontalAlignment=TextAlignment.Right));
     connect(sensorSubBus.Valve_3_Opening, valveLinear1.opening) annotation (Line(
         points={{-6,106},{170,106},{170,54},{158.8,54}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",
@@ -1511,7 +1512,7 @@ package Obselete_Files_from_Building
         horizontalAlignment=TextAlignment.Left));
     connect(sensorSubBus.Valve_4_Opening, valveLinear3.opening) annotation (Line(
         points={{-6,106},{170,106},{170,-48},{154.8,-48}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",
@@ -1520,7 +1521,7 @@ package Obselete_Files_from_Building
         horizontalAlignment=TextAlignment.Left));
     connect(sensorSubBus.Valve_5_Opening, valveLinear2.opening) annotation (Line(
         points={{-6,106},{-6,92},{34,92},{34,-36},{81.2,-36}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",
@@ -1529,7 +1530,7 @@ package Obselete_Files_from_Building
         horizontalAlignment=TextAlignment.Right));
     connect(sensorSubBus.Valve_6_Opening, valveLinear5.opening) annotation (Line(
         points={{-6,106},{-6,92},{34,92},{34,-36},{22,-36},{22,-65.2}},
-        color={239,82,82},
+        color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
         string="%first",

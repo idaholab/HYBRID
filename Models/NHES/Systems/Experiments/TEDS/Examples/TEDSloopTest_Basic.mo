@@ -75,12 +75,12 @@ model TEDSloopTest_Basic
   Data.Data_TEDS data(T_hot_side=598.15, T_cold_side=498.15)
     annotation (Placement(transformation(extent={{-100,124},{-80,144}})));
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3)
     annotation (Placement(transformation(extent={{-80,34},{-56,56}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3)
     annotation (Placement(transformation(extent={{-22,34},{2,58}})));
   Modelica.Fluid.Pipes.DynamicPipe pipe3(
@@ -95,20 +95,20 @@ model TEDSloopTest_Basic
         extent={{6,6},{-6,-6}},
         rotation=0,
         origin={156,-142})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={84,38})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={228,40})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(extent={{144,-134},{118,-154}})));
   TRANSFORM.Fluid.Valves.ValveLinear Valve1(
     redeclare package Medium =
@@ -157,14 +157,14 @@ model TEDSloopTest_Basic
         extent={{-6,-6},{6,6}},
         rotation=0,
         origin={116,76})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow4(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow4(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-12,-10},{12,10}},
         rotation=-90,
         origin={80,-98})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow6(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow6(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-11,-10},{11,10}},
         rotation=-90,
@@ -179,8 +179,8 @@ model TEDSloopTest_Basic
         extent={{-6,-6},{6,6}},
         rotation=0,
         origin={-10,-146})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow5(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow5(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(extent={{-24,-154},{-42,-138}})));
   Control_Systems.Control_System_Therminol_3_element
     control_System_Therminol_3_element(
@@ -189,8 +189,8 @@ model TEDSloopTest_Basic
     T_hot_design=598.15,
     T_cold_design=498.15)
     annotation (Placement(transformation(extent={{20,118},{42,140}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=-90,
@@ -269,12 +269,12 @@ model TEDSloopTest_Basic
         (CF=5))
     annotation (Placement(transformation(extent={{61,-164},{92,-134}})));
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T2(redeclare package Medium
-      = TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T2(redeclare package Medium =
+        TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
       precision=3)
     annotation (Placement(transformation(extent={{128,-200},{158,-176}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T3(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T3(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3)
     annotation (Placement(transformation(extent={{30,-130},{54,-156}})));
   Modelica.Blocks.Sources.Constant const(k=control_System_Therminol_3_element.T_hot_design)
@@ -301,13 +301,15 @@ model TEDSloopTest_Basic
   Modelica.Blocks.Math.Sum sum1(nin=pipe1.geometry.nV)
     annotation (Placement(transformation(extent={{-72,86},{-60,98}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_charge_outlet(redeclare package
-      Medium = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+      Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
       precision=3) annotation (Placement(transformation(
         extent={{-12,13},{12,-13}},
         rotation=90,
         origin={154,-63})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Charge_Inlet(redeclare package
-      Medium = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+      Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
       precision=3) annotation (Placement(transformation(
         extent={{-12,13},{12,-13}},
         rotation=-90,
@@ -384,7 +386,7 @@ equation
                                color={0,127,255}));
   connect(sensorSubBus.Valve_1_Opening, Valve1.opening) annotation (Line(
       points={{1,106},{26,106},{26,56},{79.2,56}},
-      color={239,82,82},
+      color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
       string="%first",
@@ -394,18 +396,18 @@ equation
   connect(control_System_Therminol_3_element.actuatorSubBus, actuatorSubBus)
     annotation (Line(
       points={{30.7067,118.092},{30.7067,106},{-31,106}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(control_System_Therminol_3_element.sensorSubBus, sensorSubBus)
     annotation (Line(
       points={{36.1333,118.092},{36.1333,106},{1,106}},
-      color={239,82,82},
+      color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorSubBus.Valve_2_Opening, Valve2.opening) annotation (Line(
       points={{1,106},{116,106},{116,80.8}},
-      color={239,82,82},
+      color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
       string="%first",
@@ -414,7 +416,7 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(sensorSubBus.Valve_3_Opening, Valve3.opening) annotation (Line(
       points={{1,106},{170,106},{170,66},{158.8,66}},
-      color={239,82,82},
+      color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
       string="%first",
@@ -423,7 +425,7 @@ equation
       horizontalAlignment=TextAlignment.Left));
   connect(sensorSubBus.Valve_4_Opening, valve4.opening) annotation (Line(
       points={{1,106},{202,106},{202,-128},{186.8,-128}},
-      color={239,82,82},
+      color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
       string="%first",
@@ -432,7 +434,7 @@ equation
       horizontalAlignment=TextAlignment.Left));
   connect(sensorSubBus.Valve_5_Opening, Valve5.opening) annotation (Line(
       points={{1,106},{26,106},{26,-116},{75.2,-116}},
-      color={239,82,82},
+      color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
       string="%first",
@@ -441,7 +443,7 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(sensorSubBus.Valve_6_Opening, Valve6.opening) annotation (Line(
       points={{1,106},{26,106},{26,-116},{-10,-116},{-10,-141.2}},
-      color={239,82,82},
+      color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
       string="%first",
@@ -484,14 +486,14 @@ equation
           50.32},{-10,84},{-116,84},{-116,53.2}}, color={0,0,127}));
   connect(sensorSubBus.Pump_Flow, pump1.in_m_flow) annotation (Line(
       points={{1,106},{26,106},{26,-116},{16,-116},{16,-141.62}},
-      color={239,82,82},
+      color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(realExpression.y, sum1.u) annotation (Line(points={{-73,64},{-70,64},{
           -70,84},{-80,84},{-80,92},{-73.2,92}}, color={0,0,127}));
   connect(actuatorSubBus.Heater_Input, sum1.y) annotation (Line(
       points={{-31,106},{-50,106},{-50,92},{-59.4,92}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensor_m_flow3.port_a, T_discharge_outlet.port_b)
@@ -513,41 +515,41 @@ equation
   connect(actuatorSubBus.T_discharge_outlet, T_discharge_outlet.T) annotation (
       Line(
       points={{-31,106},{202,106},{202,9},{158.68,9}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorSubBus.T_discharge_inlet, T_discharge_Inlet.T) annotation (
       Line(
       points={{-31,106},{26,106},{26,-63},{75.32,-63}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorSubBus.T_charge_outlet, T_charge_outlet.T) annotation (Line(
       points={{-31,106},{202,106},{202,-63},{158.68,-63}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorSubBus.T_charge_inlet, T_Charge_Inlet.T) annotation (Line(
       points={{-31,106},{26,106},{26,7},{79.32,7}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorSubBus.Charging_flowrate, sensor_m_flow6.m_flow) annotation (
       Line(
       points={{-31,106},{202,106},{202,-101},{157.6,-101}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorSubBus.Discharge_FlowRate, sensor_m_flow3.m_flow) annotation (
      Line(
       points={{-31,106},{202,106},{202,40},{157.6,40}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorSubBus.Total_Mass_Flow_System, sensor_m_flow1.m_flow)
     annotation (Line(
       points={{-31,106},{240,106},{240,-160},{131,-160},{131,-147.6}},
-      color={111,216,99},
+      color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   annotation (
