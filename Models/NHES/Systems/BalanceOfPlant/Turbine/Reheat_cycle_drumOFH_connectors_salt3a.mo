@@ -396,7 +396,7 @@ replaceable package Medium = Modelica.Media.Water.StandardWater annotation (__Dy
     startTime=500)
     annotation (Placement(transformation(extent={{-202,-42},{-190,-30}})));
   Modelica.Blocks.Sources.Ramp ramp1(
-    height=-0.2,
+    height=-0.0,
     duration=300,
     offset=1,
     startTime=4000)
@@ -667,8 +667,8 @@ equation
                                      color={0,0,127}));
   connect(ramp.y, valveLinear.opening) annotation (Line(points={{-189.4,-36},{
           -88,-36},{-88,-72},{-76,-72}}, color={0,0,127}));
-  connect(steamTurbine.partialArc, trapezoid.y) annotation (Line(points={{65,80},
-          {52,80},{52,96},{96,96},{96,114},{89,114}}, color={0,0,127}));
+  connect(ramp1.y, steamTurbine.partialArc) annotation (Line(points={{46.7,119},
+          {60,119},{60,96},{52,96},{52,80},{65,80}}, color={0,0,127}));
   annotation (Diagram(coordinateSystem(extent={{-120,-120},{300,220}})), Icon(
         coordinateSystem(extent={{-120,-120},{300,220}}), graphics={
                               Bitmap(extent={{-116,-124},{222,212}}, fileName=
