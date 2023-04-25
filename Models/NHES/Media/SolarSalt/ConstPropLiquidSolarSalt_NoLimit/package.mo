@@ -20,7 +20,7 @@ Properties have been calculated based on a weighted average basis between T_min 
     lambda_const=0.5,
     a_const=3300,
     T_min=373,
-    T_max=1150,
+    T_max=4150,
     T0=298.15,
     MM_const=0.072948,
     fluidConstants=SolarSaltConstants);

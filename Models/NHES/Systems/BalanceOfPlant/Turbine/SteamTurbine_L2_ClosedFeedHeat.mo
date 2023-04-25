@@ -4,8 +4,8 @@ model SteamTurbine_L2_ClosedFeedHeat "Two stage BOP model"
     redeclare replaceable
       ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,
-    redeclare replaceable Data.Turbine_2 data(InternalBypassValve_p_spring=
-          6500000));
+    redeclare replaceable Data.Turbine_2 data(valve_TCV_dp_nominal=500000,
+        InternalBypassValve_p_spring=6500000));
 
   TRANSFORM.Fluid.Machines.SteamTurbine HPT(
     nUnits=1,

@@ -105,13 +105,6 @@ model CS_ReheatOFWH
               annotation (Placement(transformation(extent={{-134,242},{-114,262}})));
   Modelica.Blocks.Sources.Constant const6(k=565 + 273.15)
     annotation (Placement(transformation(extent={{-172,240},{-152,260}})));
-  Modelica.Blocks.Math.Product product1
-    annotation (Placement(transformation(extent={{-168,-96},{-160,-88}})));
-  Modelica.Blocks.Sources.Constant const1(k=3.2)
-    annotation (Placement(transformation(extent={{-192,-118},{-178,-104}})));
-  StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-    minMaxFilter(min=30, max=500)
-    annotation (Placement(transformation(extent={{-90,-100},{-70,-80}})));
 equation
   connect(const.y,PID. u_s)
     annotation (Line(points={{-163,-50},{-148,-50}},
@@ -245,27 +238,4 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(const1.y, product1.u2) annotation (Line(points={{-177.3,-111},{-177.3,
-          -112},{-170,-112},{-170,-100},{-172,-100},{-172,-94.4},{-168.8,-94.4}},
-        color={0,0,127}));
-  connect(sensorBus.DrumIn_M_dot, product1.u1) annotation (Line(
-      points={{-30,-100},{-174,-100},{-174,-89.6},{-168.8,-89.6}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{6,3},{6,3}},
-      horizontalAlignment=TextAlignment.Left));
-  connect(actuatorBus.m_circ, minMaxFilter.y) annotation (Line(
-      points={{30,-100},{-8,-100},{-8,-78},{-64,-78},{-64,-90},{-68.6,-90}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{6,3},{6,3}},
-      horizontalAlignment=TextAlignment.Left));
-  connect(product1.y, minMaxFilter.u) annotation (Line(points={{-159.6,-92},{
-          -100,-92},{-100,-90},{-92,-90}}, color={0,0,127}));
 end CS_ReheatOFWH;

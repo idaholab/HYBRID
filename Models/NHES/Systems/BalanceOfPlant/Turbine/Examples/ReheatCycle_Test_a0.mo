@@ -1,15 +1,18 @@
 within NHES.Systems.BalanceOfPlant.Turbine.Examples;
-model ReheatCycle_Test_a
+model ReheatCycle_Test_a0
   import NHES;
   extends Modelica.Icons.Example;
-  NHES.Systems.BalanceOfPlant.Turbine.Reheat_cycle_drumOFH_connectors2
-    reheat_cycle_drumOFH_connectors2_1(pump(m_flow_nominal=190), steam_Drum(
-        p_start=15000000))
+  NHES.Systems.BalanceOfPlant.Turbine.Reheat_cycle_drumOFH_connectors
+    reheat_cycle_drumOFH_connectors2_1(pump(m_flow_nominal=200), steam_Drum(p_start=
+          20500000, alphag_start=0.8),
+    DHX1(Q_init=61000000),
+    CS(delay3(Ti=10)),
+    DHX(NTU=4.5, use_T_start_shell=false))
     annotation (Placement(transformation(extent={{12,-38},{110,42}})));
   Modelica.Blocks.Sources.Ramp ramp2(
     height=-20,
     duration=1000,
-    offset=206,
+    offset=68,
     startTime=5500)
     annotation (Placement(transformation(extent={{-304,-14},{-290,0}})));
   Modelica.Blocks.Math.Add         add1
@@ -29,16 +32,14 @@ model ReheatCycle_Test_a
     startTime=16500)
     annotation (Placement(transformation(extent={{-302,50},{-288,64}})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary2(
-    redeclare package Medium =
-        NHES.Media.SolarSalt.ConstPropLiquidSolarSalt_NoLimit,
+    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
     use_m_flow_in=true,
     m_flow=1.0,
     T=773.15,
     nPorts=1) annotation (Placement(transformation(extent={{-96,-56},{-78,-38}})));
   Modelica.Fluid.Sources.Boundary_pT boundary4(
-    redeclare package Medium =
-        NHES.Media.SolarSalt.ConstPropLiquidSolarSalt_NoLimit,
-    p=200000,
+    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    p=5000000,
     T=473.15,
     nPorts=1) annotation (Placement(transformation(extent={{-96,-112},{-76,-92}})));
   Modelica.Fluid.Sources.Boundary_pT boundary6(
@@ -97,4 +98,4 @@ equation
       StopTime=500,
       Tolerance=0.001,
       __Dymola_Algorithm="Esdirk34a"));
-end ReheatCycle_Test_a;
+end ReheatCycle_Test_a0;

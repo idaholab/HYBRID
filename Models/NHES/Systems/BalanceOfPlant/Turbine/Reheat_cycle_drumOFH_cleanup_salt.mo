@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
-model Reheat_cycle_drumOFH_cleanup
+model Reheat_cycle_drumOFH_cleanup_salt
 
   Steam_Drum                         steam_Drum(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -8,19 +8,20 @@ model Reheat_cycle_drumOFH_cleanup
     annotation (Placement(transformation(extent={{22,4},{0,26}})));
   TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump(redeclare package Medium =
         Modelica.Media.Water.StandardWater,
-    use_input=false,
-    m_flow_nominal=200)
+    use_input=true,
+    m_flow_nominal=210)
     annotation (Placement(transformation(extent={{10,10},{-10,-10}},
         rotation=90,
         origin={14,-26})));
   NHES.Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase
                                                       DHX(
     tau=10,
-    NTU=4.5,
+    NTU=4.0,
     K_tube=100,
-    K_shell=100,
+    K_shell=50,
     redeclare package Tube_medium = Modelica.Media.Water.StandardWater,
-    redeclare package Shell_medium = Modelica.Media.IdealGases.SingleGases.He,
+    redeclare package Shell_medium =
+        NHES.Media.SolarSalt.ConstPropLiquidSolarSalt_NoLimit,
     V_Tube=5,
     V_Shell=5,
     p_start_tube=18000000,
@@ -30,7 +31,7 @@ model Reheat_cycle_drumOFH_cleanup
     h_start_tube_inlet=623706,
     h_start_tube_outlet=1494780,
     p_start_shell=5000000,
-    use_T_start_shell=false,
+    use_T_start_shell=true,
     T_start_shell_inlet=623.15,
     T_start_shell_outlet=473.15,
     h_start_shell_inlet=3.26e6,
@@ -48,9 +49,10 @@ model Reheat_cycle_drumOFH_cleanup
     tau=1,
     NTU=5,
     K_tube=100,
-    K_shell=100,
+    K_shell=50,
     redeclare package Tube_medium = Modelica.Media.Water.StandardWater,
-    redeclare package Shell_medium = Modelica.Media.IdealGases.SingleGases.He,
+    redeclare package Shell_medium =
+        NHES.Media.SolarSalt.ConstPropLiquidSolarSalt_NoLimit,
     V_Tube=5,
     V_Shell=5,
     p_start_tube=18000000,
@@ -95,20 +97,23 @@ model Reheat_cycle_drumOFH_cleanup
         rotation=270,
         origin={-34,52})));
   TRANSFORM.Fluid.Valves.ValveLinear valveLinear(
-    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    redeclare package Medium =
+        NHES.Media.SolarSalt.ConstantPropertyLiquidSolarSalt,
     dp_nominal=50000,
     m_flow_nominal=50)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
         rotation=90,
         origin={-62,-74})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary2(
-    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    redeclare package Medium =
+        NHES.Media.SolarSalt.ConstPropLiquidSolarSalt_NoLimit,
     use_m_flow_in=true,
     m_flow=1.0,
     T=773.15,
     nPorts=1) annotation (Placement(transformation(extent={{-132,-20},{-114,-2}})));
   Modelica.Fluid.Sources.Boundary_pT boundary4(
-    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    redeclare package Medium =
+        NHES.Media.SolarSalt.ConstPropLiquidSolarSalt_NoLimit,
     p=5000000,
     T=473.15,
     nPorts=1) annotation (Placement(transformation(extent={{-128,-118},{-108,
@@ -148,13 +153,13 @@ model Reheat_cycle_drumOFH_cleanup
     "Heat loss/gain not accounted for in connections (e.g., energy vented to atmosphere) [W]"
     annotation (Placement(transformation(extent={{-26,10},{-14,22}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT4(redeclare package
-      Medium = Modelica.Media.IdealGases.SingleGases.He)
+      Medium = NHES.Media.SolarSalt.ConstPropLiquidSolarSalt_NoLimit)
     annotation (Placement(transformation(extent={{-66,-4},{-46,16}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT5(redeclare package
-      Medium = Modelica.Media.IdealGases.SingleGases.He)
+      Medium = NHES.Media.SolarSalt.ConstPropLiquidSolarSalt_NoLimit)
     annotation (Placement(transformation(extent={{-66,-44},{-46,-24}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT6(redeclare package
-      Medium = Modelica.Media.IdealGases.SingleGases.He)
+      Medium = NHES.Media.SolarSalt.ConstPropLiquidSolarSalt_NoLimit)
     annotation (Placement(transformation(extent={{-86,-108},{-66,-88}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT7(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
@@ -278,7 +283,7 @@ model Reheat_cycle_drumOFH_cleanup
   TRANSFORM.Fluid.Valves.ValveLinear LPT_Bypass(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     dp_nominal=50000,
-    m_flow_nominal=12)                            annotation (Placement(transformation(
+    m_flow_nominal=15)                            annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=180,
         origin={156,16})));
@@ -351,15 +356,15 @@ model Reheat_cycle_drumOFH_cleanup
         rotation=180,
         origin={267,-11})));
   Modelica.Blocks.Sources.Ramp ramp2(
-    height=-20,
+    height=-45,
     duration=1000,
-    offset=68,
+    offset=168,
     startTime=5500)
     annotation (Placement(transformation(extent={{-338,-22},{-324,-8}})));
   Modelica.Blocks.Math.Add         add1
     annotation (Placement(transformation(extent={{-280,4},{-260,24}})));
   Modelica.Blocks.Sources.Ramp ramp3(
-    height=-10,
+    height=-70,
     duration=2001,
     offset=0,
     startTime=10500)
@@ -367,10 +372,10 @@ model Reheat_cycle_drumOFH_cleanup
   Modelica.Blocks.Math.Add         add2
     annotation (Placement(transformation(extent={{-236,10},{-216,30}})));
   Modelica.Blocks.Sources.Ramp ramp4(
-    height=-5,
-    duration=1001,
+    height=-30,
+    duration=2001,
     offset=0,
-    startTime=16500)
+    startTime=15500)
     annotation (Placement(transformation(extent={{-334,44},{-320,58}})));
   replaceable ControlSystems.CS_ReheatOFWH CS constrainedby
     ControlSystems.CS_SteamTSlidingP annotation (choicesAllMatching=true,
@@ -386,12 +391,28 @@ model Reheat_cycle_drumOFH_cleanup
                             sensorBus
     annotation (Placement(transformation(extent={{-78,292},{-38,332}}),
         iconTransformation(extent={{-50,80},{-10,120}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(
-    redeclare package Medium = Modelica.Media.Water.StandardWater,
-    p_start=18000000,
-    use_T_start=false,
-    h_start=1494780)
-    annotation (Placement(transformation(extent={{20,-68},{32,-54}})));
+  Modelica.Blocks.Sources.RealExpression Tsat5(y=pump_SimpleMassFlow1.m_flow*
+        4.8)
+    "Heat loss/gain not accounted for in connections (e.g., energy vented to atmosphere) [W]"
+    annotation (Placement(transformation(extent={{78,-44},{90,-32}})));
+  Modelica.Blocks.Sources.Ramp ramp1(
+    height=-200,
+    duration=1,
+    offset=200,
+    startTime=1500)
+    annotation (Placement(transformation(extent={{90,-82},{104,-68}})));
+  Modelica.Blocks.Sources.ContinuousClock clock(offset=0, startTime=0)
+    annotation (Placement(transformation(extent={{54,-16},{66,-4}})));
+  Modelica.Blocks.Logical.Greater greater5
+    annotation (Placement(transformation(extent={{72,-6},{84,-18}})));
+  Modelica.Blocks.Logical.Switch switch_P_setpoint_TCV
+    annotation (Placement(transformation(extent={{116,-6},{128,-18}})));
+  Modelica.Blocks.Sources.Constant const2(k=1000)
+    annotation (Placement(transformation(extent={{56,8},{68,20}})));
+  Modelica.Blocks.Sources.Constant const3(k=205)
+    annotation (Placement(transformation(extent={{94,-6},{106,6}})));
+  StagebyStageTurbineSecondary.Control_and_Distribution.Delay delay3(Ti=200)
+    annotation (Placement(transformation(extent={{86,-60},{72,-48}})));
 equation
   connect(const1.y, valveLinear.opening) annotation (Line(points={{-219,-70},{
           -219,-74},{-70,-74}},      color={0,0,127}));
@@ -649,19 +670,6 @@ equation
       index=-1,
       extent={{-3,6},{-3,6}},
       horizontalAlignment=TextAlignment.Right));
-  connect(DHX.Tube_out, sensor_m_flow.port_a) annotation (Line(points={{-26,-68},
-          {-28,-68},{-28,-61},{20,-61}}, color={0,127,255}));
-  connect(sensor_m_flow.port_b, steam_Drum.feed_port) annotation (Line(points={
-          {32,-61},{40,-61},{40,15},{22,15}}, color={0,127,255}));
-  connect(sensorBus.DrumIn_M_dot, sensor_m_flow.m_flow) annotation (Line(
-      points={{-58,312},{-166,312},{-166,-164},{32,-164},{32,-58.48},{26,-58.48}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-3,6},{-3,6}},
-      horizontalAlignment=TextAlignment.Right));
 
   connect(steamTurbine.portHP, sensor_pT8.port)
     annotation (Line(points={{60,70},{4,70}}, color={0,127,255}));
@@ -671,10 +679,26 @@ equation
     annotation (Line(points={{80,76},{148,76}}, color={0,0,0}));
   connect(steamTurbine1.shaft_b, powerSensor.flange_a)
     annotation (Line(points={{168,76},{188,76}}, color={0,0,0}));
+  connect(DHX.Tube_out, steam_Drum.feed_port) annotation (Line(points={{-26,-68},
+          {-26,-62},{40,-62},{40,14},{22,14},{22,15}}, color={0,127,255}));
+  connect(greater5.y, switch_P_setpoint_TCV.u2)
+    annotation (Line(points={{84.6,-12},{114.8,-12}}, color={255,0,255}));
+  connect(clock.y, greater5.u1) annotation (Line(points={{66.6,-10},{66.6,-12},
+          {70.8,-12}}, color={0,0,127}));
+  connect(const2.y, greater5.u2) annotation (Line(points={{68.6,14},{68.6,0},{
+          70.8,0},{70.8,-7.2}}, color={0,0,127}));
+  connect(const3.y, switch_P_setpoint_TCV.u3) annotation (Line(points={{106.6,0},
+          {106.6,-7.2},{114.8,-7.2}}, color={0,0,127}));
+  connect(Tsat5.y, switch_P_setpoint_TCV.u1) annotation (Line(points={{90.6,-38},
+          {90.6,-40},{104,-40},{104,-16.8},{114.8,-16.8}}, color={0,0,127}));
+  connect(switch_P_setpoint_TCV.y, delay3.u) annotation (Line(points={{128.6,
+          -12},{128.6,-54},{87.4,-54}}, color={0,0,127}));
+  connect(delay3.y, pump.in_m_flow) annotation (Line(points={{71.02,-54},{58,
+          -54},{58,-26},{21.3,-26}}, color={0,0,127}));
   annotation (Diagram(coordinateSystem(extent={{-120,-120},{300,220}})), Icon(
         coordinateSystem(extent={{-120,-120},{300,220}})),
     experiment(
-      StopTime=200,
+      StopTime=20000,
       Tolerance=0.005,
       __Dymola_Algorithm="Esdirk34a"));
-end Reheat_cycle_drumOFH_cleanup;
+end Reheat_cycle_drumOFH_cleanup_salt;

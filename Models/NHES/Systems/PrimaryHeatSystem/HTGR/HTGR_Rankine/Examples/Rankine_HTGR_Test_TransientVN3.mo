@@ -4,7 +4,16 @@ model Rankine_HTGR_Test_TransientVN3
   Components.HTGR_PebbleBed_Primary_Loop_HeOut hTGR_PebbleBed_Primary_Loop(
       redeclare
       ControlSystems.CS_VN
-      CS) annotation (Placement(transformation(extent={{-110,-16},{-40,42}})));
+      CS(
+      const6(k=5e6),
+      add(k1=0.5),
+      ramp(height=0.88)),
+    data(
+      Q_total=270000000,
+      length_core=5,
+      nPebble=5000),
+    core(nPebble=150000))
+          annotation (Placement(transformation(extent={{-110,-16},{-40,42}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary(
     redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
     p=4000000,

@@ -24,7 +24,7 @@ model TES_2Tank_HeReactor3
         period=2200,
         offset=550,
         startTime=1500),
-      one1(k=540 + 273.15),
+      one1(k=500 + 273.15),
       PID2(yMin=0.01)),
     sensor_m_flow(p_start=3900000, T_start=T_start),
     CHX(T_start_shell_inlet=973.15, T_start_shell_outlet=973.15))
