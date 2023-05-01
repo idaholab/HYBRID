@@ -845,8 +845,8 @@ package HeatTransport
       parameter Modelica.Units.SI.MassFlowRate R_m_flow_a_start=0 "Return Port a Initial Mass Flow Rate" annotation (Dialog(tab="Initialization",group="Return"));
       parameter Modelica.Units.SI.MassFlowRate R_m_flow_b_start=-R_m_flow_a_start "Return Port a Initial Mass Flow Rate" annotation (Dialog(tab="Initialization",group="Return"));
 
-    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_S(redeclare package Medium =
-          S_Medium)
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_S(redeclare package Medium
+        = S_Medium)
       annotation (Placement(transformation(extent={{-110,30},{-90,50}}),
           iconTransformation(extent={{-110,30},{-90,50}})));
     TRANSFORM.Fluid.Interfaces.FluidPort_State port_b_S(redeclare package
@@ -854,8 +854,8 @@ package HeatTransport
           S_Medium)
       annotation (Placement(transformation(extent={{90,30},{110,50}}),
           iconTransformation(extent={{90,30},{110,50}})));
-    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_R(redeclare package Medium =
-          R_Medium)
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_R(redeclare package Medium
+        = R_Medium)
       annotation (Placement(transformation(extent={{90,-48},{110,-28}}),
           iconTransformation(extent={{90,-48},{110,-28}})));
     TRANSFORM.Fluid.Interfaces.FluidPort_State port_b_R(redeclare package
@@ -936,17 +936,17 @@ package HeatTransport
     TRANSFORM.Fluid.Sensors.Pressure sensor_p_R_in(redeclare package Medium =
           R_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{40,-30},{60,-10}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_R_out(redeclare package Medium =
-          R_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_R_out(redeclare package Medium
+        = R_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{-90,-30},{-70,-10}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_in(redeclare package Medium =
-          S_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_in(redeclare package Medium
+        = S_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{-90,30},{-70,10}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_out(redeclare package Medium =
-          S_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_out(redeclare package Medium
+        = S_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{70,30},{90,10}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_R_in(redeclare package Medium =
-          R_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_R_in(redeclare package Medium
+        = R_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{70,-30},{90,-10}})));
     TRANSFORM.HeatAndMassTransfer.Resistances.Heat.Cylinder R_w_res[
       Return_pipe_data.nV](
@@ -2758,7 +2758,7 @@ package HeatTransport
   package ControlSystems
     model CS_Dummy
 
-      extends PHTGR.BaseClasses.Partial_ControlSystem;
+      extends BaseClasses.Partial_ControlSystem;
 
     equation
 

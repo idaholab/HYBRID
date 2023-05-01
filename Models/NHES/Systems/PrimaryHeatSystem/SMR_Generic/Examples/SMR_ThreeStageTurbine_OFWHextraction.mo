@@ -1,10 +1,10 @@
 within NHES.Systems.PrimaryHeatSystem.SMR_Generic.Examples;
 model SMR_ThreeStageTurbine_OFWHextraction
   extends Modelica.Icons.Example;
-  parameter Real P_ext=10;
+  parameter Real P_ext=3;
   parameter Real P_demand=1;
-  parameter Modelica.Units.SI.Density d_ext=12.6609  "kg/m3";
-  parameter Modelica.Units.SI.MassFlowRate m_ext=20;
+  parameter Modelica.Units.SI.Density d_ext=1.7598669 "kg/m3";
+  parameter Modelica.Units.SI.MassFlowRate m_ext=0;
   Real breaker;
   parameter Real Boo=1;
 
@@ -20,9 +20,9 @@ model SMR_ThreeStageTurbine_OFWHextraction
     annotation (Placement(transformation(extent={{-42,34},{-2,64}})));
   NHES.Fluid.Sensors.stateDisplay stateDisplay1
     annotation (Placement(transformation(extent={{-42,-10},{-2,-40}})));
-  NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_L3_HPOFWH BOP(
+  NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_L3_HPOFWHsimplified BOP(
     redeclare replaceable
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_L3_HTGR_extraction
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_L3_SMR_extraction
       CS(
       data(
         Power_nom=data.Power_nom,
@@ -46,11 +46,35 @@ model SMR_ThreeStageTurbine_OFWHextraction
         eta_t=data.eta_t,
         eta_mech=data.eta_mech,
         eta_p=data.eta_p),
-      Steam_Extraction(y=data.m_ext),
-      booleanStep2(startTime=100000),
-      LPT1_BV_PID(k=5e-11,Ti=300),
       booleanStep(startTime=15000),
-      FeedPump_PID(k=-1e-4, Ti=360)),
+      FeedPump_PID(
+        k=-1e-5,
+        Ti=360,
+        yMax=90,
+        yMin=80),
+      LPT2_BV_PID(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-8,
+        Ti=50,
+        wd=0.5,
+        reset=TRANSFORM.Types.Reset.Disabled),
+      TCV_PID(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        Ti=360,
+        Td=0.5,
+        wd=1),
+      Steam_Extraction(
+        height=m_ext,
+        duration=0,
+        startTime=0),
+      LPT1_BV_PID(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-12,
+        Ti=30),
+      booleanStep2(startTime=0),
+      booleanStep1(startTime=1200000),
+      T_in_set2(y=0.03),
+      T_feed_set2(y=0.1)),
     redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.Data_L3 data(
       Power_nom=data.Power_nom,
       HPT_p_in=data.HPT_p_in,
@@ -73,13 +97,14 @@ model SMR_ThreeStageTurbine_OFWHextraction
       eta_t=data.eta_t,
       eta_mech=data.eta_mech,
       eta_p=data.eta_p),
-    OFWH_1(T_start=333.15),
-    OFWH_2(T_start=353.15),
+    OFWH_1(T_start=373.15),
+    OFWH_2(T_start=418.15, medium(T(start=418, fixed=true))),
     LPT1_bypass_valve(dp_nominal(displayUnit="Pa") = 1, m_flow_nominal=10*m_ext),
-    HPT_bypass_valve(m_flow_nominal=20),
     FWCP(use_input=false, m_flow_nominal=data.mdot_total),
-    moistureSeperator(p_start=150000, T_start=384.15))
+    moistureSeperator(p_start=150000, T_start=384.15),
+    pump1(p_nominal=data.HPT_p_in - 1e5))
     annotation (Placement(transformation(extent={{60,-20},{120,40}})));
+
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT bypassdump(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_p_in=true,
@@ -137,9 +162,11 @@ model SMR_ThreeStageTurbine_OFWHextraction
     T_start=578.15,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=2),                                Q_gen(displayUnit="MW") = 200000000)
+        (V=2),
+    use_HeatPort=true,
+    Q_gen(displayUnit="MW"))
     annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
+        extent={{-10,10},{10,-10}},
         rotation=90,
         origin={-80,6})));
   TRANSFORM.Fluid.FittingsAndResistances.PressureLoss resistance(dp0=269400)
@@ -147,13 +174,16 @@ model SMR_ThreeStageTurbine_OFWHextraction
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={-80,26})));
+  TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Temperature boundary1(T
+      =579.25)
+    annotation (Placement(transformation(extent={{-124,0},{-104,20}})));
 initial equation
 
 equation
   breaker=1/Boo;
  assert(P_ext>bypassdump.medium.p_bar, "Extraction Pressure is below usage pressure",level = AssertionLevel.error);
 
-  eta_th=(-BOP.port_a_elec.W-BOP.pump.W-BOP.pump1.W-BOP.FWCP.W)/200e6;
+  eta_th=(-BOP.port_a_elec.W-BOP.pump.W-BOP.pump1.W-BOP.FWCP.W)/volume.heatPort.Q_flow;
   connect(stateSensor1.statePort, stateDisplay2.statePort) annotation (Line(
         points={{-21.96,26.05},{-22,26.05},{-22,45.1}}, color={0,0,0}));
   connect(stateSensor2.statePort, stateDisplay1.statePort)
@@ -171,7 +201,8 @@ equation
     annotation (Line(points={{40,-60},{40,-62},{-4,-62}},
                                                  color={0,127,255}));
   connect(bypassdump1.ports[1], BOP.port_a_cond)
-    annotation (Line(points={{158,-2},{120,-2}}, color={0,127,255}));
+    annotation (Line(points={{158,-2},{140,-2},{140,2.8},{121.8,2.8}},
+                                                 color={0,127,255}));
   connect(sensor_m_flow.m_flow, bypassdump1.m_flow_in) annotation (Line(points={{43.6,
           -50},{184,-50},{184,6},{178,6}},        color={0,0,127}));
   connect(realExpression.y, bypassdump.p_in)
@@ -189,9 +220,12 @@ equation
     annotation (Line(points={{-80,12},{-80,19}}, color={0,127,255}));
   connect(resistance.port_b, stateSensor1.port_a) annotation (Line(points={{-80,33},
           {-80,44},{-48,44},{-48,26},{-30,26}},     color={0,127,255}));
+  connect(boundary1.port, volume.heatPort) annotation (Line(points={{-104,10},{
+          -88,10},{-88,6},{-86,6}},
+                                color={191,0,0}));
   annotation (experiment(
-      StopTime=30000000,
-      Interval=100,
+      StopTime=30000,
+      Interval=20,
       __Dymola_Algorithm="Esdirk45a"), Documentation(info="<html>
 <p>Test of Pebble_Bed_Three-Stage_Rankine. The simulation should experience transient where external electricity demand is oscilating and control valves are opening and closing corresponding to the required power demand. </p>
 <p>The ThreeStaged Turbine BOP model contains four control elements: </p>
