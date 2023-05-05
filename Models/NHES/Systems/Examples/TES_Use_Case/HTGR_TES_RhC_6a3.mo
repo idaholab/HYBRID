@@ -1,5 +1,5 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model HTGR_TES_RhC_6a2
+model HTGR_TES_RhC_6a3
   EnergyStorage.SHS_Two_Tank.Components.SHS2Tank_VN_SaltOuta
     sHS2Tank_VN_SaltOuta(
     redeclare package Storage_Medium =
@@ -45,8 +45,8 @@ model HTGR_TES_RhC_6a2
       ramp(startTime=1000),
       const4(k=0),
       ramp1(offset=45, startTime=1000),
-      const6(k=1.1e8),
-      data(Q_Nom=2e8)),
+      const6(k=8e7),
+      data(Q_Nom=6e7, Q_RX_Therm_Nom=30e6)),
     sensor_T1(p_start=3900000, T_start=T_start),
     sensor_m_flow(p_start=4000000, T_start=T_start),
     Primary_PRV(m_flow_start=2e-2),
@@ -59,10 +59,12 @@ model HTGR_TES_RhC_6a2
       T_Fuel_Center_Init=973.15),
     pump(use_input=true, m_flow_nominal=45),
     core(
-      nPebble=120000,
+      nPebble=80000,
       Pebble_Surface_Init=773.15,
       Pebble_Center_Init=973.15,
-      Q_nominal=80000000))
+      Q_nominal=80000000,
+      Q_fission_input=80000000),
+    data(nPebble=80000))
     annotation (Placement(transformation(extent={{-164,-32},{-94,26}})));
 
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT1(redeclare package
@@ -100,7 +102,8 @@ model HTGR_TES_RhC_6a2
     deaerator(level_start=7, p_start=800000),
     const3(k=210),
     ramp(height=-0.2,
-         offset=0.2))
+         offset=0.2),
+    steamTurbine(p_outlet_nominal=900000))
     annotation (Placement(transformation(extent={{222,6},{320,86}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT3(redeclare package
       Medium = Modelica.Media.IdealGases.SingleGases.He)
@@ -126,7 +129,9 @@ model HTGR_TES_RhC_6a2
     discharge_pump(T_start=773.15),
     charge_pump(T_start=T_start),
     data(
+      ht_level_max=15,
       hot_tank_init_temp=973.15,
+      cold_tank_level_max=15,
       cold_tank_init_temp=743.15,
       disvalve_m_flow_nom=300,
       chvalve_m_flow_nom=703),
@@ -148,7 +153,7 @@ model HTGR_TES_RhC_6a2
     hot_tank(T_start=773.15),
     one1(k=0.05),
     Charging_bypass(dp_nominal=200000, m_flow_nominal=30))
-    annotation (Placement(transformation(extent={{-16,64},{52,126}})));
+    annotation (Placement(transformation(extent={{-14,64},{54,126}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT7(redeclare package
       Medium = Modelica.Media.IdealGases.SingleGases.He)
     annotation (Placement(transformation(extent={{-106,48},{-86,68}})));
@@ -305,6 +310,30 @@ model HTGR_TES_RhC_6a2
     annotation (Placement(transformation(extent={{-58,304},{-52,310}})));
   Modelica.Blocks.Math.Product product1
     annotation (Placement(transformation(extent={{2,280},{10,272}})));
+  Modelica.Blocks.Sources.CombiTimeTable demand_BOP(
+    tableOnFile=false,
+    table=[0,30544557.89; 2700,30544557.89; 3600,19544557.89; 6300,19544557.89;
+        7200,16260259.26; 9900,16260259.26; 10800,62000000; 13500,62000000;
+        14400,32046919.05; 17100,32046919.05; 18000,16260259.26; 20700,
+        16260259.26; 21600,16260259.26; 24300,16260259.26; 25200,30339037.58;
+        27900,30339037.58; 28800,32046919.05; 31500,32046919.05; 32400,62000000;
+        35100,62000000; 36000,16260259.26; 38700,16260259.26; 39600,16260259.26;
+        42300,16260259.26; 43200,60462906.67; 45900,60462906.67; 46800,
+        30339037.57; 49500,30339037.57; 50400,16260259.26; 53100,16260259.26;
+        54000,16260259.26; 56700,16260259.26; 57600,32046919.05; 60300,
+        32046919.05; 61200,32046919.05; 63900,32046919.05; 64800,62000000;
+        67500,62000000; 68400,16260259.26; 71100,16260259.26; 72000,16260259.26;
+        74700,16260259.26; 75600,60462906.67; 78300,60462906.67; 79200,
+        32046919.05; 81900,32046919.05; 82800,16260259.26; 85500,16260259.26;
+        86400,46254912.86; 89100,46254912.86; 90000,46254912.86; 140000,
+        46254912.86; 140500,20000000.00; 150000,20000000.00],
+    startTime=0,
+    tableName="BOP",
+    timeScale=1,
+    fileName="C:/Users/NOVOV/projects/HYBRID/Models/NHES/Resources/Data/RAVEN/timeSeriesDataVN.txt",
+    shiftTime=0)
+    annotation (Placement(transformation(extent={{-118,234},{-98,254}})));
+
 equation
     hTGR_PebbleBed_Primary_Loop.input_steam_pressure = 40;
     Discharging_Valve_Position.y =sHS2Tank_VN_SaltOuta.Discharging_Valve.opening;
@@ -331,18 +360,18 @@ equation
         points={{-95.05,11.21},{-96,11.21},{-96,48}}, color={0,127,255}));
   connect(sHS2Tank_VN_SaltOut3_1.port_dch_b,
     reheat_cycle_drumOFH_connectors_salt3_DrumNHES.HT_RH_in) annotation (Line(
-        points={{52,75.78},{52,76},{200,76},{200,83.1765},{222.933,83.1765}},
+        points={{54,75.78},{54,76},{200,76},{200,83.1765},{222.933,83.1765}},
         color={0,127,255}));
   connect(sHS2Tank_VN_SaltOut3_1.port_dch_b, sensor_pT6.port) annotation (Line(
-        points={{52,75.78},{61,75.78},{61,76},{70,76}}, color={0,127,255}));
+        points={{54,75.78},{61,75.78},{61,76},{70,76}}, color={0,127,255}));
   connect(reheat_cycle_drumOFH_connectors_salt3_DrumNHES.HT_SH_in,
     sHS2Tank_VN_SaltOut3_1.port_dch_b) annotation (Line(points={{222,58.2353},{
-          200,58.2353},{200,76},{52,76},{52,75.78}}, color={0,127,255}));
+          200,58.2353},{200,76},{54,76},{54,75.78}}, color={0,127,255}));
   connect(sHS2Tank_VN_SaltOut3_1.port_ch_b, sensor_pT3.port) annotation (Line(
-        points={{-15.32,111.74},{-21.66,111.74},{-21.66,112},{-28,112}}, color=
+        points={{-13.32,111.74},{-21.66,111.74},{-21.66,112},{-28,112}}, color=
           {0,127,255}));
   connect(sensor_pT5.port, sHS2Tank_VN_SaltOut3_1.port_dch_a) annotation (Line(
-        points={{76,128},{76,112.98},{51.32,112.98}}, color={0,127,255}));
+        points={{76,128},{76,112.98},{53.32,112.98}}, color={0,127,255}));
   connect(sensor_pT8.port, reheat_cycle_drumOFH_connectors_salt3_DrumNHES.HT_RH_in)
     annotation (Line(points={{220,106},{220,94},{222.933,94},{222.933,83.1765}},
         color={0,127,255}));
@@ -356,7 +385,7 @@ equation
     annotation (Line(points={{170,130},{170,124},{176,124},{176,46.4706},{222,
           46.4706}}, color={0,127,255}));
   connect(sHS2Tank_VN_SaltOut3_1.port_dch_a, volume.port_b) annotation (Line(
-        points={{51.32,112.98},{114,112.98},{114,114},{124,114}}, color={0,127,
+        points={{53.32,112.98},{114,112.98},{114,114},{124,114}}, color={0,127,
           255}));
   connect(sensor_pT11.port, R_entry1.port_b) annotation (Line(points={{170,130},
           {170,124},{176,124},{176.2,49}}, color={0,127,255}));
@@ -381,10 +410,10 @@ equation
       Line(points={{-95.05,11.21},{-95.05,46},{-74,46},{-74,47},{-65.6,47}},
         color={0,127,255}));
   connect(resistance2.port_b, sHS2Tank_VN_SaltOut3_1.port_ch_a) annotation (
-      Line(points={{-54.4,47},{-24,47},{-24,66.48},{-16.68,66.48}}, color={0,
+      Line(points={{-54.4,47},{-24,47},{-24,66.48},{-14.68,66.48}}, color={0,
           127,255}));
   connect(sHS2Tank_VN_SaltOut3_1.port_ch_b, resistance1.port_b) annotation (
-      Line(points={{-15.32,111.74},{-22,111.74},{-22,98.6},{-42,98.6}}, color={
+      Line(points={{-13.32,111.74},{-22,111.74},{-22,98.6},{-42,98.6}}, color={
           0,127,255}));
   connect(resistance1.port_a, sHS2Tank_VN_SaltOuta.port_ch_a) annotation (Line(
         points={{-42,87.4},{-42,-18.22},{-25.32,-18.22}}, color={0,127,255}));
@@ -428,16 +457,12 @@ equation
     annotation (Line(points={{4.4,216},{4.4,218},{27,218}}, color={0,0,127}));
   connect(one2.y, product2.u2) annotation (Line(points={{-69.7,215},{-68,215},{
           -68,218.4},{-4.8,218.4}}, color={0,0,127}));
-  connect(trapezoid.y, max1.u2) annotation (Line(points={{-75.4,242},{20,242},{
-          20,224},{27,224}}, color={0,0,127}));
   connect(add3.y, product3.u2) annotation (Line(points={{-39.7,193},{-38,193},{
           -38,189.6},{-32.8,189.6}}, color={0,0,127}));
   connect(product3.u1, add3.y) annotation (Line(points={{-32.8,194.4},{-36.25,
           194.4},{-36.25,193},{-39.7,193}}, color={0,0,127}));
   connect(product3.y, product2.u1) annotation (Line(points={{-23.6,192},{-10,
           192},{-10,213.6},{-4.8,213.6}}, color={0,0,127}));
-  connect(min3.u2, trapezoid.y) annotation (Line(points={{21.2,255.6},{20,255.6},
-          {20,242},{-75.4,242}}, color={0,0,127}));
   connect(booleanExpression.y, switch1.u2) annotation (Line(points={{44.8,241},
           {44.8,244},{72.8,244}}, color={255,0,255}));
   connect(max1.y, switch1.u3) annotation (Line(points={{38.5,221},{72.8,221},{
@@ -452,8 +477,12 @@ equation
           260.4},{21.2,260.4}}, color={0,0,127}));
   connect(min3.y, switch1.u1) annotation (Line(points={{30.4,258},{72.8,258},{
           72.8,248.8}}, color={0,0,127}));
+  connect(demand_BOP.y[1], min3.u2) annotation (Line(points={{-97,244},{-92,244},
+          {-92,255.6},{21.2,255.6}}, color={0,0,127}));
+  connect(demand_BOP.y[1], max1.u2) annotation (Line(points={{-97,244},{-92,244},
+          {-92,230},{16,230},{16,224},{27,224}}, color={0,0,127}));
   annotation (                    experiment(
       StopTime=25000,
       __Dymola_NumberOfIntervals=1000,
       __Dymola_Algorithm="Esdirk34a"));
-end HTGR_TES_RhC_6a2;
+end HTGR_TES_RhC_6a3;
