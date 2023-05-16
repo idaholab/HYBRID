@@ -845,8 +845,8 @@ package HeatTransport
       parameter Modelica.Units.SI.MassFlowRate R_m_flow_a_start=0 "Return Port a Initial Mass Flow Rate" annotation (Dialog(tab="Initialization",group="Return"));
       parameter Modelica.Units.SI.MassFlowRate R_m_flow_b_start=-R_m_flow_a_start "Return Port a Initial Mass Flow Rate" annotation (Dialog(tab="Initialization",group="Return"));
 
-    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_S(redeclare package Medium
-        = S_Medium)
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_S(redeclare package Medium =
+          S_Medium)
       annotation (Placement(transformation(extent={{-110,30},{-90,50}}),
           iconTransformation(extent={{-110,30},{-90,50}})));
     TRANSFORM.Fluid.Interfaces.FluidPort_State port_b_S(redeclare package
@@ -854,8 +854,8 @@ package HeatTransport
           S_Medium)
       annotation (Placement(transformation(extent={{90,30},{110,50}}),
           iconTransformation(extent={{90,30},{110,50}})));
-    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_R(redeclare package Medium
-        = R_Medium)
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_R(redeclare package Medium =
+          R_Medium)
       annotation (Placement(transformation(extent={{90,-48},{110,-28}}),
           iconTransformation(extent={{90,-48},{110,-28}})));
     TRANSFORM.Fluid.Interfaces.FluidPort_State port_b_R(redeclare package
@@ -936,17 +936,17 @@ package HeatTransport
     TRANSFORM.Fluid.Sensors.Pressure sensor_p_R_in(redeclare package Medium =
           R_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{40,-30},{60,-10}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_R_out(redeclare package Medium
-        = R_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_R_out(redeclare package Medium =
+          R_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{-90,-30},{-70,-10}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_in(redeclare package Medium
-        = S_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_in(redeclare package Medium =
+          S_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{-90,30},{-70,10}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_out(redeclare package Medium
-        = S_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_S_out(redeclare package Medium =
+          S_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{70,30},{90,10}})));
-    TRANSFORM.Fluid.Sensors.Temperature sensor_T_R_in(redeclare package Medium
-        = R_Medium,                           precision=2)
+    TRANSFORM.Fluid.Sensors.Temperature sensor_T_R_in(redeclare package Medium =
+          R_Medium,                           precision=2)
       annotation (Placement(transformation(extent={{70,-30},{90,-10}})));
     TRANSFORM.HeatAndMassTransfer.Resistances.Heat.Cylinder R_w_res[
       Return_pipe_data.nV](
@@ -2753,6 +2753,60 @@ package HeatTransport
           Interval=10,
           __Dymola_Algorithm="Esdirk45a"));
     end HTtest6;
+
+    model HTtest7
+      extends Modelica.Icons.Example;
+      parameter Integer nHT=5;
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        p=500000,
+        T=373.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{102,-10},{82,10}})));
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary2(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        p=500000,
+        T=573.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{-100,-10},{-80,10}})));
+      HeatTransport_Oneway heatTransport_Oneway[nHT](
+        redeclare replaceable data.pipe_data_1 Supply_pipe_data(
+          L=500,
+          D=0.75,
+          pth=0.05,
+          nV=5),
+        redeclare package S_Medium = Modelica.Media.Water.StandardWater,
+        redeclare model S_FlowModel =
+            TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.TwoPhase_Developed_2Region_NumStable,
+        S_use_HeatTransfer=true,
+        S_p_a_start=2500000,
+        S_p_b_start=2500000,
+        S_T_a_start=573.15,
+        S_T_b_start=533.15,
+        S_m_flow_a_start=10,
+        use_Supply_pump=true,
+        Supply_pump(m_flow_nominal=20, eta=1000))
+        annotation (Placement(transformation(extent={{-26,-20},{14,20}})));
+      TRANSFORM.Fluid.TemporaryBlock_Fluid temporary
+        annotation (Placement(transformation(extent={{-68,-10},{-48,10}})));
+      TRANSFORM.Fluid.TemporaryBlock_Fluid temporary1
+        annotation (Placement(transformation(extent={{42,-10},{62,10}})));
+    equation
+      connect(boundary2.ports[1], temporary.port_a)
+        annotation (Line(points={{-80,0},{-65,0}}, color={0,127,255}));
+      connect(temporary.port_b, heatTransport_Oneway[1].port_a_S)
+        annotation (Line(points={{-51,0},{-26,0}}, color={0,127,255}));
+      connect(temporary1.port_a, heatTransport_Oneway[nHT].port_b_S)
+        annotation (Line(points={{45,0},{14,0}}, color={0,127,255}));
+      connect(temporary1.port_b, boundary1.ports[1])
+        annotation (Line(points={{59,0},{82,0}}, color={0,127,255}));
+      connect(heatTransport_Oneway[2:nHT].port_a_S, heatTransport_Oneway[1:nHT - 1].port_b_S)
+        annotation (Line(points={{-26,0},{14,0}}, color={0,127,255}));
+      annotation (experiment(
+          StopTime=10000,
+          Interval=100,
+          __Dymola_Algorithm="Esdirk45a"));
+    end HTtest7;
   end Examples;
 
   package ControlSystems

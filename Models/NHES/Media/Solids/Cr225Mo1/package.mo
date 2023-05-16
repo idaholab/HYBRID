@@ -11,7 +11,7 @@ end density;
 redeclare function extends thermalConductivity
   "Thermal conductivity as a function of temperature"
 
-  protected
+protected
   SI.Temperature[30] TempTable = Modelica.Units.Conversions.from_degF(
                                                           {70,100,150,200,250,300,350,400,450,500,550,600,650,700,750,800,850,900,950,1000,1050,1100,1150,1200,1250,1300,1350,1400,1450,1500});
   SI.ThermalConductivity[30] lambdaTable = SIunits.Conversions.from_btuhrftf({20.9,21.0,21.2,21.3,21.4,21.5,21.5,21.5,21.5,21.4,21.3,21.1,20.9,20.7,20.5,20.2,20.0,19.7,19.4,19.1,18.8,18.5,18.3,18.0,17.7,17.2,16.4,15.6,15.4,15.3});

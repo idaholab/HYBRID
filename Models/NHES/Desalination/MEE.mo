@@ -689,7 +689,11 @@ package MEE "Multi Effect Evaporators"
                 points={{-60,0},{-90,0}},
                 color={28,108,200},
                 thickness=1,
-                arrow={Arrow.None,Arrow.Filled})}), Diagram(graphics={Polygon(
+                arrow={Arrow.None,Arrow.Filled}),
+              Text(
+                extent={{-58,80},{58,60}},
+                textColor={0,0,0},
+                textString="%name")}),              Diagram(graphics={Polygon(
                   points={{4,-44},{-2,-42},{4,-44}}, lineColor={28,108,200})}));
       end Single_Effect;
 
@@ -908,7 +912,11 @@ package MEE "Multi Effect Evaporators"
                 points={{-60,0},{-90,0}},
                 color={28,108,200},
                 thickness=1,
-                arrow={Arrow.None,Arrow.Filled})}));
+                arrow={Arrow.None,Arrow.Filled}),
+              Text(
+                extent={{-58,80},{58,60}},
+                textColor={0,0,0},
+                textString="%name")}));
       end Single_Effect_FC;
 
       model Single_Effect_pool
@@ -1139,7 +1147,11 @@ package MEE "Multi Effect Evaporators"
                 points={{-60,0},{-90,0}},
                 color={28,108,200},
                 thickness=1,
-                arrow={Arrow.None,Arrow.Filled})}), Diagram(graphics={Polygon(
+                arrow={Arrow.None,Arrow.Filled}),
+              Text(
+                extent={{-58,80},{58,60}},
+                textColor={0,0,0},
+                textString="%name")}),              Diagram(graphics={Polygon(
                   points={{4,-44},{-2,-42},{4,-44}}, lineColor={28,108,200})}));
       end Single_Effect_pool;
     end Brine_Models;
@@ -2622,14 +2634,13 @@ package MEE "Multi Effect Evaporators"
                 -40}})));
       TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary2(
         redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-
         p=10000,
         X={0.92,0.08},
         nPorts=1)
         annotation (Placement(transformation(extent={{-148,-20},{-128,0}})));
+
       TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary3(
         redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-
         use_m_flow_in=false,
         use_X_in=false,
         m_flow=4,
@@ -2637,6 +2648,7 @@ package MEE "Multi Effect Evaporators"
         X={0.92,0.08},
         nPorts=1)
         annotation (Placement(transformation(extent={{-8,-20},{-28,0}})));
+
       Single_Effect.Brine_Models.Single_Effect_pool
                                                single_Effect_pool(
         V=0.5,
@@ -2920,7 +2932,257 @@ package MEE "Multi Effect Evaporators"
       annotation (
         defaultComponentName="BOP",
         Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}})),
+                100}}), graphics={
+            Ellipse(
+              extent={{-88,12},{-48,32}},
+              lineColor={0,0,0},
+              startAngle=0,
+              endAngle=360,
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid,
+              lineThickness=0.5),
+            Ellipse(
+              extent={{-88,-28},{-48,-8}},
+              lineColor={0,0,0},
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid,
+              lineThickness=0.5),
+            Rectangle(
+              extent={{-88,22},{-48,-18}},
+              lineColor={28,108,200},
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{-88,22},{-48,8}},
+              lineColor={164,189,255},
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid),
+            Ellipse(
+              extent={{-54,6},{-50,10}},
+              lineThickness=1,
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              lineColor={0,0,0},
+              closure=EllipseClosure.Chord),
+            Ellipse(
+              extent={{-88,4},{-82,10}},
+              lineThickness=1,
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              lineColor={0,0,0}),
+            Line(
+              points={{-88,22},{-88,-18}},
+              color={0,0,0},
+              thickness=0.5),
+            Line(
+              points={{-48,22},{-48,-18}},
+              color={0,0,0},
+              thickness=0.5),
+            Ellipse(
+              extent={{-74,4},{-66,10}},
+              lineThickness=1,
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              lineColor={0,0,0}),
+            Ellipse(
+              extent={{-62,4},{-54,10}},
+              lineThickness=1,
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              lineColor={0,0,0}),
+            Line(
+              points={{-54,6},{-50,6}},
+              color={28,108,200},
+              thickness=1),
+            Line(
+              points={{-88,8},{-84,10},{-78,6},{-70,10},{-66,8},{-62,8},{-56,10},
+                  {-54,6},{-48,8}},
+              color={0,0,0},
+              smooth=Smooth.Bezier,
+              thickness=1),
+            Ellipse(
+              extent={{-20,12},{20,32}},
+              lineColor={0,0,0},
+              startAngle=0,
+              endAngle=360,
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid,
+              lineThickness=0.5),
+            Ellipse(
+              extent={{-20,-28},{20,-8}},
+              lineColor={0,0,0},
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid,
+              lineThickness=0.5),
+            Rectangle(
+              extent={{-20,22},{20,-18}},
+              lineColor={28,108,200},
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{-20,22},{20,8}},
+              lineColor={164,189,255},
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid),
+            Ellipse(
+              extent={{14,6},{18,10}},
+              lineThickness=1,
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              lineColor={0,0,0},
+              closure=EllipseClosure.Chord),
+            Ellipse(
+              extent={{-20,4},{-14,10}},
+              lineThickness=1,
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              lineColor={0,0,0}),
+            Line(
+              points={{-20,22},{-20,-18}},
+              color={0,0,0},
+              thickness=0.5),
+            Line(
+              points={{20,22},{20,-18}},
+              color={0,0,0},
+              thickness=0.5),
+            Ellipse(
+              extent={{-6,4},{2,10}},
+              lineThickness=1,
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              lineColor={0,0,0}),
+            Ellipse(
+              extent={{6,4},{14,10}},
+              lineThickness=1,
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              lineColor={0,0,0}),
+            Line(
+              points={{14,6},{18,6}},
+              color={28,108,200},
+              thickness=1),
+            Line(
+              points={{-20,8},{-16,10},{-10,6},{-2,10},{2,8},{6,8},{12,10},{14,
+                  6},{20,8}},
+              color={0,0,0},
+              smooth=Smooth.Bezier,
+              thickness=1),
+            Ellipse(
+              extent={{48,12},{88,32}},
+              lineColor={0,0,0},
+              startAngle=0,
+              endAngle=360,
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid,
+              lineThickness=0.5),
+            Ellipse(
+              extent={{48,-28},{88,-8}},
+              lineColor={0,0,0},
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid,
+              lineThickness=0.5),
+            Rectangle(
+              extent={{48,22},{88,-18}},
+              lineColor={28,108,200},
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{48,22},{88,8}},
+              lineColor={164,189,255},
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid),
+            Ellipse(
+              extent={{82,6},{86,10}},
+              lineThickness=1,
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              lineColor={0,0,0},
+              closure=EllipseClosure.Chord),
+            Ellipse(
+              extent={{48,4},{54,10}},
+              lineThickness=1,
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              lineColor={0,0,0}),
+            Line(
+              points={{48,22},{48,-18}},
+              color={0,0,0},
+              thickness=0.5),
+            Line(
+              points={{88,22},{88,-18}},
+              color={0,0,0},
+              thickness=0.5),
+            Ellipse(
+              extent={{62,4},{70,10}},
+              lineThickness=1,
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              lineColor={0,0,0}),
+            Ellipse(
+              extent={{74,4},{82,10}},
+              lineThickness=1,
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              lineColor={0,0,0}),
+            Line(
+              points={{82,6},{86,6}},
+              color={28,108,200},
+              thickness=1),
+            Line(
+              points={{48,8},{52,10},{58,6},{66,10},{70,8},{74,8},{80,10},{82,6},
+                  {88,8}},
+              color={0,0,0},
+              smooth=Smooth.Bezier,
+              thickness=1),
+            Line(
+              points={{94,54},{-68,54},{-68,40}},
+              color={0,0,0},
+              thickness=1,
+              arrow={Arrow.None,Arrow.Open}),
+            Line(
+              points={{68,54},{68,40}},
+              color={0,0,0},
+              thickness=1,
+              arrow={Arrow.None,Arrow.Open}),
+            Line(
+              points={{0,54},{0,40}},
+              color={0,0,0},
+              thickness=1,
+              arrow={Arrow.None,Arrow.Open}),
+            Line(
+              points={{-48,16},{-34,16},{-34,-4},{-22,-4}},
+              color={0,0,0},
+              thickness=1,
+              arrow={Arrow.None,Arrow.Open}),
+            Line(
+              points={{20,14},{34,14},{34,-6},{46,-6}},
+              color={0,0,0},
+              thickness=1,
+              arrow={Arrow.None,Arrow.Open}),
+            Text(
+              extent={{-76,28},{-58,10}},
+              textColor={0,0,0},
+              textString="1"),
+            Text(
+              extent={{-10,28},{8,10}},
+              textColor={0,0,0},
+              textString="2"),
+            Text(
+              extent={{60,28},{78,10}},
+              textColor={0,0,0},
+              textString="nE")}),
         Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
                 100,140}})));
     end Partial_SubSystem;
@@ -3266,9 +3528,10 @@ package MEE "Multi Effect Evaporators"
     end Partial_ControlSystem3;
 
     package Choices
-      type EvaporatorType = enumeration(FC "Full Condensing",
-            UA "Constant UA",
-            HX "Heat Transfer Correlations") "Enumeration defining Evaporator Types"
+      type EvaporatorType = enumeration(
+          FC                               "Full Condensing",
+          UA   "Constant UA",
+          HX   "Heat Transfer Correlations") "Enumeration defining Evaporator Types"
                                                      annotation (Evaluate=true);
     end Choices;
   end BaseClasses;
@@ -3815,11 +4078,11 @@ package MEE "Multi Effect Evaporators"
   package Data
     model MEE_Data
       extends BaseClasses.Record_Data;
-      parameter Integer nE =6 "Number of Effects";
+      parameter Integer nE= 6 "Number of Effects";
       parameter Boolean use_preheater=false;
 
       //Temperatures
-      parameter Modelica.Units.SI.Temperature T_b_in =302.15 "Brine Inlet Temperature" annotation(Dialog(group="Temperatures"));
+      parameter Modelica.Units.SI.Temperature T_b_in= 302.15 "Brine Inlet Temperature" annotation(Dialog(group="Temperatures"));
       parameter Modelica.Units.SI.Temperature T_h=363.15 "First effect Temperature" annotation(Dialog(group="Temperatures"));
       parameter Modelica.Units.SI.Temperature T_l=323.15 "Last effect Temperature" annotation(Dialog(group="Temperatures"));
       parameter Modelica.Units.SI.Temperature Tsys[:]=linspace(T_h,T_l,nE)  "All effects Temperatures" annotation(Dialog(group="Temperatures"));
@@ -3831,7 +4094,7 @@ package MEE "Multi Effect Evaporators"
       parameter Modelica.Units.SI.Pressure psys[:]=linspace(p_h,p_l,nE)  "All effects Pressures" annotation(Dialog(group="Pressures"));
 
       //Flow Rates and Salinity Control
-      parameter Boolean use_flowrates =true "if true use set input flowrates else in salinity control"  annotation(Dialog(group="Flow Control"));
+      parameter Boolean use_flowrates= true "if true use set input flowrates else in salinity control"  annotation(Dialog(group="Flow Control"));
       parameter Modelica.Units.SI.MassFlowRate m_h=4 "First effect mass flows" annotation(Dialog(group="Flow Control",enable=use_flowrates));
       parameter Modelica.Units.SI.MassFlowRate m_l=4 "Last effect mass flows" annotation(Dialog(group="Flow Control",enable=use_flowrates));
       parameter Modelica.Units.SI.MassFlowRate msys[:]=linspace(m_h,m_l,nE)  "All effects mass flows" annotation(Dialog(group="Flow Control",enable=use_flowrates));

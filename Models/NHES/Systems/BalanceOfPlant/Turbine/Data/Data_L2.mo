@@ -23,7 +23,7 @@ model Data_L2
 
 
   parameter Modelica.Units.SI.MassFlowRate mdot_total=5.5 "Nominal Total Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
-  parameter Modelica.Units.SI.MassFlowRate mdot_fh =0.1
+  parameter Modelica.Units.SI.MassFlowRate mdot_fh= 0.1
                                                        "Nominal Controlled Feed Heating Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
   parameter Modelica.Units.SI.MassFlowRate mdot_hpt= 5.5 "Nominal Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
   parameter Modelica.Units.SI.MassFlowRate mdot_lpt= 5.5 "Nominal Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));

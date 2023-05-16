@@ -273,8 +273,8 @@ equation
     annotation (Line(points={{-34,-60},{-46,-60}}, color={0,127,255}));
   connect(HPT_bypass_valve.port_b, OFWH_2.port_a) annotation (Line(points={{-34,
           -14},{-34,-46},{-14,-46},{-14,-60},{-22,-60}}, color={0,127,255}));
-  connect(OFWH_1.port_a, moistureSeperator.port_Liquid) annotation (Line(points
-        ={{34,-60},{42,-60},{42,42},{34,42},{34,54}}, color={0,127,255}));
+  connect(OFWH_1.port_a, moistureSeperator.port_Liquid) annotation (Line(points=
+         {{34,-60},{42,-60},{42,42},{34,42},{34,54}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-2.09756,2},{83.9024,-2}},

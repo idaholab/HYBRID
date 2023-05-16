@@ -265,8 +265,8 @@ equation
   connect(moistureSeperator.port_Liquid, OFWH_1.port_b) annotation (Line(
         points={{34,54},{34,-46},{42,-46},{42,-60},{32,-60}}, color={0,127,
           255}));
-  connect(moistureSeperator.port_b[1], LPT2.portHP) annotation (Line(points
-        ={{44,58},{46,58},{46,60},{74,60}}, color={0,127,255}));
+  connect(moistureSeperator.port_b[1], LPT2.portHP) annotation (Line(points=
+         {{44,58},{46,58},{46,60},{74,60}}, color={0,127,255}));
   connect(HPT_bypass_valve.port_b, OFWH_2.port_b) annotation (Line(points={{-38,-26},
           {-38,-46},{-14,-46},{-14,-60},{-22,-60}},           color={0,127,
           255}));

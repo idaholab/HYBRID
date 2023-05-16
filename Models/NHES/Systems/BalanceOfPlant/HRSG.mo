@@ -680,8 +680,8 @@ package HRSG "Heat Recovery Steam Generators"
       connect(sensor_T1.port, heatRecoverySteamGenerator.Gas_Outlet_Port)
         annotation (Line(points={{24,10},{24,-8},{12,-8}}, color={0,127,255}));
       connect(SES.FlueGas_b, heatRecoverySteamGenerator.Gas_Inlet_Port)
-        annotation (Line(points={{-110,-14},{-90,-14},{-90,-8},{-68,-8}}, color
-            ={0,127,255}));
+        annotation (Line(points={{-110,-14},{-90,-14},{-90,-8},{-68,-8}}, color=
+             {0,127,255}));
       annotation (experiment(
           StopTime=60,
           __Dymola_NumberOfIntervals=600,
@@ -741,7 +741,6 @@ package HRSG "Heat Recovery Steam Generators"
           redeclare replaceable
           NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_L3 CS(
           redeclare NHES.Systems.BalanceOfPlant.Turbine.Data.Data_L3 data(
-            Power_nom=10e6,
             HPT_p_in=850000,
             p_dump=1200000,
             p_i1=400000,
@@ -761,7 +760,6 @@ package HRSG "Heat Recovery Steam Generators"
           ramp(duration=10, startTime=10),
           FeedPump_PID(yMax=20)), redeclare replaceable
           NHES.Systems.BalanceOfPlant.Turbine.Data.Data_L3 data(
-          Power_nom=10e6,
           HPT_p_in=850000,
           p_dump=1200000,
           p_i1=400000,
@@ -802,8 +800,8 @@ package HRSG "Heat Recovery Steam Generators"
       connect(sensor_T1.port, heatRecoverySteamGenerator.Gas_Outlet_Port)
         annotation (Line(points={{24,10},{24,-8},{12,-8}}, color={0,127,255}));
       connect(SES.FlueGas_b, heatRecoverySteamGenerator.Gas_Inlet_Port)
-        annotation (Line(points={{-110,-14},{-90,-14},{-90,-8},{-68,-8}}, color
-            ={0,127,255}));
+        annotation (Line(points={{-110,-14},{-90,-14},{-90,-8},{-68,-8}}, color=
+             {0,127,255}));
       connect(steamdump.ports[1], BOP.prt_b_steamdump)
         annotation (Line(points={{146,48},{166,48}}, color={0,127,255}));
       connect(boundary.port, BOP.port_a_elec)
@@ -1491,8 +1489,8 @@ package HRSG "Heat Recovery Steam Generators"
       T_start_shell_inlet=1023.15,
       T_start_shell_outlet=1023.15,
       dp_init_tube=10000,
-      m_start_tube=Nominal_Flow)
-                       if use_Econimizer         annotation (Placement(transformation(
+      m_start_tube=Nominal_Flow) if use_Econimizer
+                                                 annotation (Placement(transformation(
           extent={{10,-10},{-10,10}},
           rotation=90,
           origin={-56,-40})));
@@ -1548,8 +1546,8 @@ package HRSG "Heat Recovery Steam Generators"
       use_T_start_shell=true,
       T_start_shell_inlet=873.15,
       T_start_shell_outlet=873.15,
-      m_start_tube=Nominal_Flow)
-                              if use_Superheater  annotation (Placement(transformation(
+      m_start_tube=Nominal_Flow) if use_Superheater
+                                                  annotation (Placement(transformation(
           extent={{10,-10},{-10,10}},
           rotation=90,
           origin={82,-42})));
@@ -1714,8 +1712,8 @@ package HRSG "Heat Recovery Steam Generators"
       annotation (Line(points={{160,0},{84,0},{84,-32}}, color={0,127,255}));
     connect(Superheater.Shell_out, Evaporator.Shell_in) annotation (Line(points={{
             84,-52},{84,-62},{46,-62},{46,-24},{36,-24},{36,-32}}, color={0,140,72}));
-    connect(Gas_Resistance_2.port_b, Evaporator.Shell_in) annotation (Line(points
-          ={{119,-112},{46,-112},{46,-24},{36,-24},{36,-32}}, color={0,140,72}));
+    connect(Gas_Resistance_2.port_b, Evaporator.Shell_in) annotation (Line(points=
+           {{119,-112},{46,-112},{46,-24},{36,-24},{36,-32}}, color={0,140,72}));
     connect(Evaporator.Shell_out, Gas_Resistance.port_a) annotation (Line(points={
             {36,-52},{36,-108},{-69,-108}}, color={0,140,72}));
     connect(Econimizer.Shell_out, Gas_Resistance.port_a) annotation (Line(points={
