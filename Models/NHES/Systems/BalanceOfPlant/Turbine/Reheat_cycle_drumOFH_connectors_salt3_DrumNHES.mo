@@ -65,21 +65,21 @@ replaceable package Medium = Modelica.Media.Water.StandardWater annotation (__Dy
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-24,-66},{-6,-52}})));
   Modelica.Blocks.Sources.RealExpression Tsat(y=
-        sensor_pT1.Medium.saturationTemperature(sensor_pT1.p))
+        sensor_pT1.Medium.saturationTemperature(sensor_pT1.p) - 273.15)
     "Heat loss/gain not accounted for in connections (e.g., energy vented to atmosphere) [W]"
     annotation (Placement(transformation(extent={{-8,-90},{4,-78}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT2(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{18,32},{38,52}})));
   Modelica.Blocks.Sources.RealExpression Tsat1(y=
-        sensor_pT2.Medium.saturationTemperature(sensor_pT2.p))
+        sensor_pT2.Medium.saturationTemperature(sensor_pT2.p) - 273.15)
     "Heat loss/gain not accounted for in connections (e.g., energy vented to atmosphere) [W]"
     annotation (Placement(transformation(extent={{20,52},{32,64}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT3(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-26,-8},{-6,12}})));
   Modelica.Blocks.Sources.RealExpression Tsat2(y=
-        sensor_pT3.Medium.saturationTemperature(sensor_pT3.p))
+        sensor_pT3.Medium.saturationTemperature(sensor_pT3.p) - 273.15)
     "Heat loss/gain not accounted for in connections (e.g., energy vented to atmosphere) [W]"
     annotation (Placement(transformation(extent={{-26,10},{-14,22}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT7(redeclare package
@@ -224,14 +224,14 @@ replaceable package Medium = Modelica.Media.Water.StandardWater annotation (__Dy
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{190,20},{210,40}})));
   Modelica.Blocks.Sources.RealExpression Tsat3(y=
-        sensor_pT17.Medium.saturationTemperature(sensor_pT17.p))
+        sensor_pT17.Medium.saturationTemperature(sensor_pT17.p) - 273.15)
     "Heat loss/gain not accounted for in connections (e.g., energy vented to atmosphere) [W]"
     annotation (Placement(transformation(extent={{190,38},{202,50}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT18(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{136,-82},{156,-62}})));
   Modelica.Blocks.Sources.RealExpression Tsat4(y=
-        sensor_pT14.Medium.saturationTemperature(sensor_pT14.p))
+        sensor_pT14.Medium.saturationTemperature(sensor_pT14.p) - 273.15)
     "Heat loss/gain not accounted for in connections (e.g., energy vented to atmosphere) [W]"
     annotation (Placement(transformation(extent={{78,16},{90,28}})));
   TRANSFORM.Fluid.Volumes.Deaerator deaerator(
