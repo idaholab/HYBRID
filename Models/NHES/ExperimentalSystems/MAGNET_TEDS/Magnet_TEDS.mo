@@ -1316,9 +1316,8 @@ package Magnet_TEDS
           extent={{-10,-10},{10,10}},
           rotation=90,
           origin={100,-30})));
-    TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump(redeclare package
-        Medium =
-          Medium, m_flow_nominal=data.m_flow)
+    TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump(redeclare package Medium
+        = Medium, m_flow_nominal=data.m_flow)
       annotation (Placement(transformation(extent={{60,-100},{80,-80}})));
     TRANSFORM.Fluid.Volumes.SimpleVolume volume1(
       redeclare package Medium = Medium,
@@ -3027,9 +3026,8 @@ package Magnet_TEDS
           extent={{-10,-10},{10,10}},
           rotation=90,
           origin={100,-30})));
-    TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump(redeclare package
-        Medium =
-          Medium, m_flow_nominal=data.m_flow)
+    TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump(redeclare package Medium
+        = Medium, m_flow_nominal=data.m_flow)
       annotation (Placement(transformation(extent={{60,-100},{80,-80}})));
     TRANSFORM.Fluid.Volumes.SimpleVolume volume1(
       redeclare package Medium = Medium,

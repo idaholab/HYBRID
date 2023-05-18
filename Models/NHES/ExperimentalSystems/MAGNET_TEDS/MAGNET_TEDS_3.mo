@@ -242,8 +242,7 @@ protected
     annotation (Placement(transformation(extent={{-92,256},{-72,276}})));
 protected
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort TM_HX_exit_Temp(redeclare package
-              Medium =
-               TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+      Medium = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
       precision=3)
     annotation (Placement(transformation(extent={{-196,216},{-176,236}})));
 public
