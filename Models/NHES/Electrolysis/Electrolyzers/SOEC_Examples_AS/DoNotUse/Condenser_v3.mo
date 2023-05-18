@@ -18,19 +18,22 @@ model Condenser_v3
     nPorts=1)
     annotation (Placement(transformation(extent={{144,10},{124,30}})));
   Modelica.Fluid.Sources.MassFlowSource_T GlycolFeed(
-    redeclare package Medium = TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
+    redeclare package Medium =
+        TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
     use_m_flow_in=false,
     m_flow=0.035,
     T=283.15,
     nPorts=1) annotation (Placement(transformation(extent={{148,-28},{128,-8}})));
   Modelica.Fluid.Sources.Boundary_pT glycolSink(
-    redeclare package Medium = TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
+    redeclare package Medium =
+        TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
     p(displayUnit="Pa") = 101.3,
     T=286.45,
     nPorts=1) annotation (Placement(transformation(extent={{-168,-22},{-148,-2}})));
   TRANSFORM.HeatExchangers.Simple_HX             Condenser(
     redeclare package Medium_1 = Media.Electrolysis.CathodeGas,
-    redeclare package Medium_2 = TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
+    redeclare package Medium_2 =
+        TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
     V_1=0.1,
     V_2=0.1,
     UA=150,
@@ -51,9 +54,11 @@ model Condenser_v3
 //   SI.SpecificEnthalpy q=sink.medium.h;
 //   SI.SpecificEnthalpy q2=sink1.medium.h;
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellInTemp(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellInTemp(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-98,0},{-78,20}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellOutTemp(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellOutTemp(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{60,0},{80,20}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort GlycolInTemp(redeclare package Medium =
         TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water)

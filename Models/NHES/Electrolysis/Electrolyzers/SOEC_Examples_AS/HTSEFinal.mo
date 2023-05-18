@@ -33,7 +33,8 @@ model HTSEFinal
         rotation=180,
         origin={-118,27})));
   Modelica.Fluid.Sources.MassFlowSource_T AirSource(
-    redeclare package Medium = NHES.Electrolysis.Media.Electrolysis.AnodeGas_air,
+    redeclare package Medium =
+        NHES.Electrolysis.Media.Electrolysis.AnodeGas_air,
     use_m_flow_in=true,
     X=NHES.Electrolysis.Utilities.moleToMassFractions({0.79,0.21}, {Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM*1000,Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM
         *1000}),
@@ -42,7 +43,8 @@ model HTSEFinal
     nPorts=1) annotation (Placement(transformation(extent={{-56,-88},{-36,-68}})));
   Modelica.Blocks.Sources.Constant AnodeFlowControl2(k=5.555e-3)   annotation (Placement(transformation(extent={{-94,-80},{-74,-60}})));
   Modelica.Fluid.Sources.Boundary_pT AirExhaust(
-    redeclare package Medium = NHES.Electrolysis.Media.Electrolysis.AnodeGas_air,
+    redeclare package Medium =
+        NHES.Electrolysis.Media.Electrolysis.AnodeGas_air,
     p(displayUnit="kPa") = 101300,
     T=504.55,
     nPorts=1) annotation (Placement(transformation(extent={{-10,-10},{10,10}},

@@ -7,19 +7,22 @@ model Model9_2
   Modelica.Blocks.Sources.Constant
                                DCPowerControl(k=30000)
                   annotation (Placement(transformation(extent={{34,-12},{54,8}})));
-  Modelica.Fluid.Sensors.MassFlowRate cathodeFlowOut(redeclare package Medium = NHES.Electrolysis.Media.Electrolysis.CathodeGas)
+  Modelica.Fluid.Sensors.MassFlowRate cathodeFlowOut(redeclare package Medium =
+        NHES.Electrolysis.Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{218,20},{238,40}})));
   NHES.Electrolysis.Sources.PrescribedPowerFlow
                                            prescribedPowerFlow
     annotation (Placement(transformation(extent={{64,-12},{84,8}})));
-  TRANSFORM.Fluid.Volumes.SimpleVolume AirTH(redeclare package Medium = NHES.Electrolysis.Media.Electrolysis.AnodeGas_air, use_HeatPort=true)
+  TRANSFORM.Fluid.Volumes.SimpleVolume AirTH(redeclare package Medium =
+        NHES.Electrolysis.Media.Electrolysis.AnodeGas_air,                                                                 use_HeatPort=true)
     annotation (Placement(transformation(extent={{92,-64},{112,-44}})));
   TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.HeatFlow
                                                       boundary(use_port=true)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=90,
         origin={102,-84})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort AirTempSensor(redeclare package Medium = NHES.Electrolysis.Media.Electrolysis.AnodeGas_air)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort AirTempSensor(redeclare package Medium =
+        NHES.Electrolysis.Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=90,
@@ -31,7 +34,8 @@ model Model9_2
     yMax=1000,
     yMin=0) annotation (Placement(transformation(extent={{156,-62},{136,-82}})));
   Modelica.Blocks.Sources.RealExpression realExpression(y=790 + 273.15) annotation (Placement(transformation(extent={{188,-82},{168,-62}})));
-  TRANSFORM.Fluid.Volumes.SimpleVolume FuelTH(redeclare package Medium = Media.Electrolysis.CathodeGas,
+  TRANSFORM.Fluid.Volumes.SimpleVolume FuelTH(redeclare package Medium =
+        Media.Electrolysis.CathodeGas,
     p_start(displayUnit="kPa") = 103800,
     X_start={0.0122804,0.9877196},                                                                      use_HeatPort=true)
     annotation (Placement(transformation(extent={{96,66},{116,46}})));
@@ -48,14 +52,17 @@ model Model9_2
     yMin=0) annotation (Placement(transformation(extent={{146,88},{126,108}})));
   Modelica.Blocks.Sources.RealExpression realExpression1(y=790 + 273.15)
                                                                         annotation (Placement(transformation(extent={{178,88},{158,108}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort FuelTempSensor(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort FuelTempSensor(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
         origin={118,32})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort CathodeOutTemp(redeclare package Medium = Media.Electrolysis.CathodeGas)                    annotation (Placement(transformation(extent={{174,20},
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort CathodeOutTemp(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)                                                                                                   annotation (Placement(transformation(extent={{174,20},
             {194,40}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort AnodeOutTemp(redeclare package Medium = Media.Electrolysis.AnodeGas_air)                    annotation (Placement(transformation(extent={{196,-40},
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort AnodeOutTemp(redeclare package Medium =
+        Media.Electrolysis.AnodeGas_air)                                                                                                 annotation (Placement(transformation(extent={{196,-40},
             {216,-20}})));
   Modelica.Fluid.Sources.MassFlowSource_T cathodeFeed2(
     redeclare package Medium = Media.Electrolysis.CathodeGas,
@@ -66,7 +73,8 @@ model Model9_2
     nPorts=1,
     T=414.15)
     annotation (Placement(transformation(extent={{-82,28},{-62,48}})));
-  Modelica.Fluid.Sensors.MassFlowRate cathodeFlowIn2(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  Modelica.Fluid.Sensors.MassFlowRate cathodeFlowIn2(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-54,54},{-34,74}})));
   Modelica.Blocks.Sources.Constant CathodeFlowControl2(k=0.003741667)
                                                                      annotation (Placement(transformation(extent={{-116,36},{-96,56}})));
@@ -96,7 +104,8 @@ model Model9_2
     nPorts=1) annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=90,
         origin={-14,-184})));
-  Modelica.Fluid.Sensors.MassFlowRate AnodeFlowIn1(redeclare package Medium = Media.Electrolysis.AnodeGas_air)
+  Modelica.Fluid.Sensors.MassFlowRate AnodeFlowIn1(redeclare package Medium =
+        Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(extent={{200,-146},{180,-126}})));
   Modelica.Fluid.Sources.MassFlowSource_T anodeFeed2(
     redeclare package Medium = Media.Electrolysis.AnodeGas_air,
@@ -106,7 +115,8 @@ model Model9_2
     m_flow=0.908085*5,
     nPorts=1,
     T=293.15) annotation (Placement(transformation(extent={{-76,-96},{-56,-76}})));
-  Modelica.Fluid.Sensors.MassFlowRate AnodeFlowIn3(redeclare package Medium = Media.Electrolysis.AnodeGas_air)
+  Modelica.Fluid.Sensors.MassFlowRate AnodeFlowIn3(redeclare package Medium =
+        Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(extent={{-48,-96},{-28,-76}})));
   Modelica.Blocks.Sources.Constant AnodeFlowControl2(k=5.555e-3)   annotation (Placement(transformation(extent={{-114,-88},{-94,-68}})));
   TRANSFORM.HeatExchangers.Simple_HX AirHX(
@@ -126,19 +136,24 @@ model Model9_2
     T_a_start_2=293.15,
     T_b_start_2=1053.15,
     m_flow_start_2=5.555e-3) annotation (Placement(transformation(extent={{12,-80},{-8,-100}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort AnodeOutTemp1(redeclare package Medium = Media.Electrolysis.AnodeGas_air)                   annotation (Placement(transformation(extent={{50,-64},
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort AnodeOutTemp1(redeclare package Medium =
+        Media.Electrolysis.AnodeGas_air)                                                                                                 annotation (Placement(transformation(extent={{50,-64},
             {70,-44}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellOut_Temp(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellOut_Temp(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{64,46},{84,66}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort FuelHXOutTemp(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort FuelHXOutTemp(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-44,76},{-64,96}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort AirHXOutTemp(redeclare package Medium = Media.Electrolysis.AnodeGas_air)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort AirHXOutTemp(redeclare package Medium =
+        Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={-14,-136})));
   Separator.Temp_flashDrumVessel
-                           temp_flashDrumVessel(redeclare package Medium = Media.Electrolysis.CathodeGas)
+                           temp_flashDrumVessel(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-180,60},{-200,80}})));
   Modelica.Fluid.Sources.Boundary_pT Sink_H2(
     redeclare package Medium = Media.Electrolysis.CathodeGas,
