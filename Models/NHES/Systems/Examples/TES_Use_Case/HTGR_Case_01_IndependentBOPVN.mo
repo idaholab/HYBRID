@@ -307,8 +307,8 @@ equation
           92},{98,92},{98,118},{132,118},{132,112}}, color={0,0,127}));
   connect(stateSensor6.port_b,
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_a)
-    annotation (Line(points={{62,-68},{140,-68},{140,-50.6},{146,-50.6}}, color
-        ={0,127,255}));
+    annotation (Line(points={{62,-68},{140,-68},{140,-50.6},{146,-50.6}}, color=
+         {0,127,255}));
   connect(stateSensor7.port_a,
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_b)
     annotation (Line(points={{68,-55},{68,-67.4},{146,-67.4}}, color={0,127,255}));

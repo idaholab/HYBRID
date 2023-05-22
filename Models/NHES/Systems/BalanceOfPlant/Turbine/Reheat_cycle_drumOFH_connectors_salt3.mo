@@ -9,7 +9,7 @@ model Reheat_cycle_drumOFH_connectors_salt3
 
 replaceable package Medium = Modelica.Media.Water.StandardWater annotation (__Dymola_choicesAllMatching=true);
 
-  Steam_Drum                         steam_Drum(
+  Fluid.Vessels.Steam_Drum           steam_Drum(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p_start=20000000,
     V_drum=20)
@@ -57,8 +57,8 @@ replaceable package Medium = Modelica.Media.Water.StandardWater annotation (__Dy
   Modelica.Fluid.Interfaces.FluidPort_b HT_SH_out(redeclare package Medium =
         NHES.Media.SolarSalt.ConstPropLiquidSolarSalt_NoLimit)
                                                   annotation (Placement(
-        transformation(extent={{-130,42},{-110,62}}), iconTransformation(extent
-          ={{-130,42},{-110,62}})));
+        transformation(extent={{-130,42},{-110,62}}), iconTransformation(extent=
+           {{-130,42},{-110,62}})));
   Modelica.Blocks.Sources.Constant const1(k=0)
     annotation (Placement(transformation(extent={{-240,-80},{-220,-60}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT1(redeclare package
@@ -628,8 +628,8 @@ equation
           -86},{-32,-104},{152,-104},{152,-93},{170,-93}}, color={0,127,255}));
   connect(DHX.Tube_out, sensor_pT1.port)
     annotation (Line(points={{-32,-66},{-15,-66}}, color={0,127,255}));
-  connect(sensor_pT7.port, pump_SimpleMassFlow1.port_b) annotation (Line(points
-        ={{22,-88},{22,-104},{152,-104},{152,-93},{170,-93}}, color={0,127,255}));
+  connect(sensor_pT7.port, pump_SimpleMassFlow1.port_b) annotation (Line(points=
+         {{22,-88},{22,-104},{152,-104},{152,-93},{170,-93}}, color={0,127,255}));
   connect(DHX.Shell_out, LT_out) annotation (Line(points={{-38,-86},{-38,-116},{
           -100,-116},{-100,-108},{-118,-108}}, color={0,127,255}));
   connect(sensor_pT6.port, DHX.Shell_out) annotation (Line(points={{-82,-106},{-84,

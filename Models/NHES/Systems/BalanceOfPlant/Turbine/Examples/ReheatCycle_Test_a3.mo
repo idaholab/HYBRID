@@ -22,7 +22,10 @@ model ReheatCycle_Test_a3
       Q_init=1,
       m_start_shell=100,
       Tube(medium(T(start=750, fixed=true), p(start=800000, fixed=true)))),
-    steamTurbine1(use_T_nominal=false, d_nominal(displayUnit="kg/m3") = 2.05))
+    steamTurbine1(
+      m_flow_nominal=47.5,
+                  use_T_nominal=false, d_nominal(displayUnit="kg/m3") = 2.05),
+    steamTurbine(m_flow_nominal=59.7))
     annotation (Placement(transformation(extent={{12,-38},{110,42}})));
   Modelica.Fluid.Sources.Boundary_pT boundary6(
     redeclare package Medium =
@@ -52,7 +55,7 @@ model ReheatCycle_Test_a3
     height=-45,
     duration=1000,
     offset=236,
-    startTime=5500)
+    startTime=6500)
     annotation (Placement(transformation(extent={{-354,-26},{-340,-12}})));
   Modelica.Blocks.Math.Add         add1
     annotation (Placement(transformation(extent={{-296,0},{-276,20}})));
@@ -65,10 +68,10 @@ model ReheatCycle_Test_a3
   Modelica.Blocks.Math.Add         add2
     annotation (Placement(transformation(extent={{-252,6},{-232,26}})));
   Modelica.Blocks.Sources.Ramp ramp4(
-    height=-30,
+    height=30,
     duration=2001,
     offset=0,
-    startTime=15500)
+    startTime=500)
     annotation (Placement(transformation(extent={{-350,40},{-336,54}})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary2(
     redeclare package Medium =
