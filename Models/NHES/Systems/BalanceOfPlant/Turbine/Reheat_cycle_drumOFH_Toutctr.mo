@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
-model Reheat_cycle_drumOFH_connectors_salt3_DrumNHES
+model Reheat_cycle_drumOFH_Toutctr
 
   replaceable package LT_HTF =
       Modelica.Media.IdealGases.SingleGases.He annotation (__Dymola_choicesAllMatching=true);
@@ -394,7 +394,17 @@ replaceable package Medium = Modelica.Media.Water.StandardWater annotation (__Dy
     duration=500,
     offset=0.5,
     startTime=500)
-    annotation (Placement(transformation(extent={{-202,-42},{-190,-30}})));
+    annotation (Placement(transformation(extent={{-258,-48},{-246,-36}})));
+  TRANSFORM.Controls.LimPID PID2(
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    k=-1.1e-2,
+    Ti=500,
+    yMax=1.0,
+    yMin=0.0,
+    y_start=0.0)
+    annotation (Placement(transformation(extent={{-216,-6},{-208,2}})));
+  Modelica.Blocks.Sources.Constant one1(k=220 + 273.15)
+    annotation (Placement(transformation(extent={{-244,-4},{-238,2}})));
 equation
   connect(steam_Drum.downcomer_port, pump.port_a) annotation (Line(points={{15.4,4},
           {15.4,-6},{14,-6},{14,-16}},   color={0,127,255}));
@@ -661,8 +671,13 @@ equation
   connect(delay3.y, pump.in_m_flow) annotation (Line(points={{67.02,-64},{48,-64},
           {48,-36},{32,-36},{32,-26},{21.3,-26}},
                                      color={0,0,127}));
-  connect(ramp.y, valveLinear.opening) annotation (Line(points={{-189.4,-36},{
-          -88,-36},{-88,-72},{-76,-72}}, color={0,0,127}));
+  connect(one1.y,PID2. u_s) annotation (Line(points={{-237.7,-1},{-237.7,-2},{
+          -216.8,-2}},             color={0,0,127}));
+  connect(sensor_pT6.T, PID2.u_m) annotation (Line(points={{-76,-98.2},{-68,
+          -98.2},{-68,-100},{-64,-100},{-64,-124},{-212,-124},{-212,-6.8}},
+        color={0,0,127}));
+  connect(PID2.y, valveLinear.opening) annotation (Line(points={{-207.6,-2},{
+          -188,-2},{-188,-72},{-76,-72}}, color={0,0,127}));
   annotation (Diagram(coordinateSystem(extent={{-120,-120},{300,220}})), Icon(
         coordinateSystem(extent={{-120,-120},{300,220}}), graphics={
                               Bitmap(extent={{-116,-124},{222,212}}, fileName=
@@ -1013,4 +1028,4 @@ equation
       StopTime=200,
       Tolerance=0.005,
       __Dymola_Algorithm="Esdirk34a"));
-end Reheat_cycle_drumOFH_connectors_salt3_DrumNHES;
+end Reheat_cycle_drumOFH_Toutctr;
