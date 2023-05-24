@@ -100,7 +100,8 @@ replaceable package Medium = Modelica.Media.Water.StandardWater annotation (__Dy
   TRANSFORM.Fluid.Machines.SteamTurbine steamTurbine(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     redeclare model Eta_wetSteam =
-        TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant,
+        TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant (
+          eta_nominal=0.9),
     use_T_start=false,
     h_a_start=3460000,
     h_b_start=2762000,
@@ -168,7 +169,8 @@ replaceable package Medium = Modelica.Media.Water.StandardWater annotation (__Dy
   TRANSFORM.Fluid.Machines.SteamTurbine steamTurbine1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     redeclare model Eta_wetSteam =
-        TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant,
+        TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant (
+          eta_nominal=0.9),
     use_T_start=false,
     T_a_start=823.15,
     T_b_start=313.15,

@@ -78,7 +78,7 @@ model HTGR_TES_RhC_6a4new
       Medium = NHES.Media.SolarSalt.ConstPropLiquidSolarSalt_NoLimit)
     annotation (Placement(transformation(extent={{78,28},{98,48}})));
   BalanceOfPlant.Turbine.Reheat_cycle_drumOFH_Toutctr
-    reheat_cycle_drumOFH_Toutctr(
+    reheat_cycle_drumOFH_Toutctr_2PA(
     pump(m_flow_nominal=200),
     steam_Drum(p_start=21500000, alphag_start=0.8),
     CS(delay3(Ti=10), PartialAdmission(Ti=200)),
@@ -172,7 +172,7 @@ model HTGR_TES_RhC_6a4new
     "Heat loss/gain not accounted for in connections (e.g., energy vented to atmosphere) [W]"
     annotation (Placement(transformation(extent={{-142,36},{-130,48}})));
   Modelica.Blocks.Sources.RealExpression Cycle_Q_in(y=
-        reheat_cycle_drumOFH_Toutctr.Q_in.y)
+        reheat_cycle_drumOFH_Toutctr_2PA.Q_in.y)
     "Heat loss/gain not accounted for in connections (e.g., energy vented to atmosphere) [W]"
     annotation (Placement(transformation(extent={{250,88},{262,100}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT8(redeclare package
@@ -276,7 +276,8 @@ model HTGR_TES_RhC_6a4new
     offset=200,
     startTime=5000)
     annotation (Placement(transformation(extent={{234,308},{246,320}})));
-  Modelica.Blocks.Sources.RealExpression Power(y=reheat_cycle_drumOFH_Toutctr.powerSensor.power)
+  Modelica.Blocks.Sources.RealExpression Power(y=
+        reheat_cycle_drumOFH_Toutctr_2PA.powerSensor.power)
     annotation (Placement(transformation(extent={{26,142},{46,162}})));
   Modelica.Blocks.Math.Min min1
     annotation (Placement(transformation(extent={{-66,224},{-58,232}})));
@@ -345,30 +346,30 @@ model HTGR_TES_RhC_6a4new
 
   Modelica.Blocks.Sources.CombiTimeTable demand_BOP1(
     tableOnFile=false,
-    table=[0,35000000; 9000,35000000; 10000,19544557.89; 12700,19544557.89;
-        13600,19544557.89; 16300,19544557.89; 17200,16260259.26; 19900,
-        16260259.26; 20800,62000000; 23500,62000000; 24400,32046919.05; 27100,
-        32046919.05; 28000,16260259.26; 30700,16260259.26; 31600,16260259.26;
-        34300,16260259.26; 35200,30339037.58; 37900,30339037.58; 38800,
-        32046919.05; 41500,32046919.05; 42400,62000000; 45100,62000000; 46000,
-        16260259.26; 48700,16260259.26; 49600,16260259.26; 52300,16260259.26;
-        53200,60462906.67; 55900,60462906.67; 56800,30339037.57; 59500,
-        30339037.57; 60400,16260259.26; 63100,16260259.26; 64000,16260259.26;
-        66700,16260259.26; 67600,32046919.05; 70300,32046919.05; 71200,
-        32046919.05; 73900,32046919.05; 74800,62000000; 77500,62000000; 78400,
-        16260259.26; 81100,16260259.26; 82000,16260259.26; 84700,16260259.26;
-        85600,60462906.67; 88300,60462906.67; 89200,32046919.05; 91900,
-        32046919.05; 92800,16260259.26; 95500,16260259.26; 96400,46254912.86;
-        99100,46254912.86; 100000,46254912.86],
+    table=[0,48000000; 9000,48000000; 10000,19544557; 12700,19544557; 13600,
+        19544557.89; 16300,19544557.89; 17200,16260259.26; 19900,16260259.26;
+        20800,62000000; 23500,62000000; 24400,32046919.05; 27100,32046919.05;
+        28000,16260259.26; 30700,16260259.26; 31600,16260259.26; 34300,
+        16260259.26; 35200,30339037.58; 37900,30339037.58; 38800,32046919.05;
+        41500,32046919.05; 42400,62000000; 45100,62000000; 46000,16260259.26;
+        48700,16260259.26; 49600,16260259.26; 52300,16260259.26; 53200,
+        60462906.67; 55900,60462906.67; 56800,30339037.57; 59500,30339037.57;
+        60400,16260259.26; 63100,16260259.26; 64000,16260259.26; 66700,
+        16260259.26; 67600,32046919.05; 70300,32046919.05; 71200,32046919.05;
+        73900,32046919.05; 74800,62000000; 77500,62000000; 78400,16260259.26;
+        81100,16260259.26; 82000,16260259.26; 84700,16260259.26; 85600,
+        60462906.67; 88300,60462906.67; 89200,32046919.05; 91900,32046919.05;
+        92800,16260259.26; 95500,16260259.26; 96400,46254912.86; 99100,
+        46254912.86; 100000,46254912.86],
     smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments,
     startTime=0,
     tableName="BOP",
     timeScale=1,
     fileName=
         "C:/Users/NOVOV/projects/HYBRID/Models/NHES/Resources/Data/RAVEN/timeSeriesDataVN.txt",
-
     shiftTime=0)
     annotation (Placement(transformation(extent={{-142,196},{-122,216}})));
+
 equation
     hTGR_PebbleBed_Primary_Loop.input_steam_pressure = 40;
     Discharging_Valve_Position.y =sHS2Tank_VN_SaltOuta.Discharging_Valve.opening;
@@ -381,10 +382,10 @@ equation
         points={{88,28},{88,-18.22},{42,-18.22}}, color={0,127,255}));
   connect(sensor_pT1.port, sHS2Tank_VN_SaltOuta.port_dch_a) annotation (Line(
         points={{54,30},{50,30},{50,18.98},{41.32,18.98}}, color={0,127,255}));
-  connect(sHS2Tank_VN_SaltOuta.port_dch_b, reheat_cycle_drumOFH_Toutctr.LT_in)
+  connect(sHS2Tank_VN_SaltOuta.port_dch_b, reheat_cycle_drumOFH_Toutctr_2PA.LT_in)
     annotation (Line(points={{42,-18.22},{88,-18.22},{88,18},{218,18},{218,
           26.2353},{222.467,26.2353}}, color={0,127,255}));
-  connect(reheat_cycle_drumOFH_Toutctr.LT_out, sHS2Tank_VN_SaltOuta.port_dch_a)
+  connect(reheat_cycle_drumOFH_Toutctr_2PA.LT_out, sHS2Tank_VN_SaltOuta.port_dch_a)
     annotation (Line(points={{222.467,8.82353},{52,8.82353},{52,18.98},{41.32,
           18.98}}, color={0,127,255}));
   connect(hTGR_PebbleBed_Primary_Loop.port_a, sensor_pT4.port) annotation (Line(
@@ -392,12 +393,12 @@ equation
         color={0,127,255}));
   connect(hTGR_PebbleBed_Primary_Loop.port_b, sensor_pT7.port) annotation (Line(
         points={{-95.05,11.21},{-96,11.21},{-96,48}}, color={0,127,255}));
-  connect(sHS2Tank_VN_SaltOut3_1.port_dch_b, reheat_cycle_drumOFH_Toutctr.HT_RH_in)
+  connect(sHS2Tank_VN_SaltOut3_1.port_dch_b, reheat_cycle_drumOFH_Toutctr_2PA.HT_RH_in)
     annotation (Line(points={{54,75.78},{54,76},{200,76},{200,83.1765},{222.933,
           83.1765}}, color={0,127,255}));
   connect(sHS2Tank_VN_SaltOut3_1.port_dch_b, sensor_pT6.port) annotation (Line(
         points={{54,75.78},{61,75.78},{61,76},{70,76}}, color={0,127,255}));
-  connect(reheat_cycle_drumOFH_Toutctr.HT_SH_in, sHS2Tank_VN_SaltOut3_1.port_dch_b)
+  connect(reheat_cycle_drumOFH_Toutctr_2PA.HT_SH_in, sHS2Tank_VN_SaltOut3_1.port_dch_b)
     annotation (Line(points={{222,58.2353},{200,58.2353},{200,76},{54,76},{54,
           75.78}}, color={0,127,255}));
   connect(sHS2Tank_VN_SaltOut3_1.port_ch_b, sensor_pT3.port) annotation (Line(
@@ -405,17 +406,18 @@ equation
           {0,127,255}));
   connect(sensor_pT5.port, sHS2Tank_VN_SaltOut3_1.port_dch_a) annotation (Line(
         points={{76,128},{76,112.98},{53.32,112.98}}, color={0,127,255}));
-  connect(sensor_pT8.port, reheat_cycle_drumOFH_Toutctr.HT_RH_in) annotation (
-      Line(points={{220,106},{220,94},{222.933,94},{222.933,83.1765}}, color={0,
-          127,255}));
-  connect(sensor_pT9.port, reheat_cycle_drumOFH_Toutctr.HT_SH_in) annotation (
-      Line(points={{206,104},{208,104},{208,94},{210,94},{210,58.2353},{222,
-          58.2353}}, color={0,127,255}));
-  connect(sensor_pT10.port, reheat_cycle_drumOFH_Toutctr.HT_RH_out) annotation
-    (Line(points={{184,132},{184,67.1765},{222.467,67.1765}}, color={0,127,255}));
-  connect(sensor_pT11.port, reheat_cycle_drumOFH_Toutctr.HT_SH_out) annotation
-    (Line(points={{170,130},{170,124},{176,124},{176,46.4706},{222,46.4706}},
+  connect(sensor_pT8.port, reheat_cycle_drumOFH_Toutctr_2PA.HT_RH_in)
+    annotation (Line(points={{220,106},{220,94},{222.933,94},{222.933,83.1765}},
         color={0,127,255}));
+  connect(sensor_pT9.port, reheat_cycle_drumOFH_Toutctr_2PA.HT_SH_in)
+    annotation (Line(points={{206,104},{208,104},{208,94},{210,94},{210,58.2353},
+          {222,58.2353}}, color={0,127,255}));
+  connect(sensor_pT10.port, reheat_cycle_drumOFH_Toutctr_2PA.HT_RH_out)
+    annotation (Line(points={{184,132},{184,67.1765},{222.467,67.1765}}, color=
+          {0,127,255}));
+  connect(sensor_pT11.port, reheat_cycle_drumOFH_Toutctr_2PA.HT_SH_out)
+    annotation (Line(points={{170,130},{170,124},{176,124},{176,46.4706},{222,
+          46.4706}}, color={0,127,255}));
   connect(sHS2Tank_VN_SaltOut3_1.port_dch_a, volume.port_b) annotation (Line(
         points={{53.32,112.98},{114,112.98},{114,114},{124,114}}, color={0,127,
           255}));
@@ -426,9 +428,9 @@ equation
   connect(volume.port_a, R_entry2.port_a) annotation (Line(points={{136,114},{
           142,114},{142,106},{158,106},{158,69.1765},{161.8,69}}, color={0,127,
           255}));
-  connect(R_entry2.port_b, reheat_cycle_drumOFH_Toutctr.HT_RH_out) annotation (
-      Line(points={{170.2,69},{199.334,69},{199.334,67.1765},{222.467,67.1765}},
-        color={0,127,255}));
+  connect(R_entry2.port_b, reheat_cycle_drumOFH_Toutctr_2PA.HT_RH_out)
+    annotation (Line(points={{170.2,69},{199.334,69},{199.334,67.1765},{222.467,
+          67.1765}}, color={0,127,255}));
   connect(dLevel.y, PID2.u_m) annotation (Line(points={{-127.4,100},{-114,100},
           {-114,109.2}}, color={0,0,127}));
   connect(one1.y, PID2.u_s) annotation (Line(points={{-139.7,115},{-138,115},{
