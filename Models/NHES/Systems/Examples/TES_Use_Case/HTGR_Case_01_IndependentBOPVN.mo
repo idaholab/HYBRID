@@ -223,9 +223,9 @@ model HTGR_Case_01_IndependentBOPVN
   PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_TESUC
     hTGR_PebbleBed_Primary_Loop_TESUC(redeclare
       PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary CS(
-        data(T_Rx_Exit_Ref=579.15, P_Steam_Ref=3400000)))
+        data(T_Rx_Exit_Ref=1023.15, P_Steam_Ref=14000000)))
     annotation (Placement(transformation(extent={{-104,-22},{-56,24}})));
-  BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat_a
+  BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
     port_a_nominal(
       p=EM.port_b2_nominal.p,

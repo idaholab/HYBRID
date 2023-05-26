@@ -10,7 +10,7 @@ end density;
 
 redeclare function extends thermalConductivity
   "Thermal conductivity as a function of temperature"
-protected
+  protected
   SI.Temperature[12] TempTable = Modelica.Units.Conversions.from_degC(  {25,100,200,300,400,500,600,700,800,900,1000,1100});
   SI.ThermalConductivity[12] lambdaTable = {13.5,13.5,15.4,17.3,19.1,21.0,22.9,24.8,26.6,28.5,30.1,30.1};
 
@@ -23,7 +23,7 @@ end thermalConductivity;
 
 redeclare function extends specificHeatCapacity
   "Specific heat capacity as a function of temperature"
-protected
+  protected
   SI.Temperature[12] TempTable = Modelica.Units.Conversions.from_degC(  {25,100,200,300,400,500,600,700,800,900,1000,1100});
   SI.SpecificHeatCapacity[12] cpTable = {450,471,497,525,551,578,604,631,658,684,711,738};
 algorithm
