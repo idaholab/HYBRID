@@ -192,8 +192,8 @@ model HTGR_Case_01_IndependentBOPVN
     width=9800,
     falling=100,
     period=20000,
-    offset=47e6,
-    startTime=2000)
+    offset=57e6,
+    startTime=3e5 + 2000)
     annotation (Placement(transformation(extent={{66,112},{86,132}})));
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW
     annotation (Placement(transformation(extent={{142,-6},{156,6}})));
@@ -206,7 +206,7 @@ model HTGR_Case_01_IndependentBOPVN
     falling=100,
     period=20000,
     offset=0,
-    startTime=14000)
+    startTime=3e5 + 14000)
     annotation (Placement(transformation(extent={{66,76},{86,96}})));
 
   Modelica.Blocks.Sources.Constant const(k=47.5e6)

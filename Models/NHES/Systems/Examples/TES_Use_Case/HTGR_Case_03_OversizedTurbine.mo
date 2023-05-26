@@ -182,7 +182,7 @@ model HTGR_Case_03_OversizedTurbine
     falling=100,
     period=20000,
     offset=47e6,
-    startTime=2000)
+    startTime=2e5 + 2000)
     annotation (Placement(transformation(extent={{64,84},{84,104}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid2(
     amplitude=20.14e6,
@@ -191,7 +191,7 @@ model HTGR_Case_03_OversizedTurbine
     falling=100,
     period=20000,
     offset=0,
-    startTime=14000)
+    startTime=2e5 + 14000)
     annotation (Placement(transformation(extent={{94,96},{114,116}})));
   Modelica.Blocks.Math.Add         add
     annotation (Placement(transformation(extent={{118,58},{138,78}})));
