@@ -5,7 +5,7 @@ model CS_Rankine_Primary
 
   TRANSFORM.Controls.LimPID     CR(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-9,
+    k=5e-9,
     Ti=15,
     initType=Modelica.Blocks.Types.Init.NoInit)
     annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));

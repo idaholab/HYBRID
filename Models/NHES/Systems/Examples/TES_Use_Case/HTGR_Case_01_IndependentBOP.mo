@@ -222,7 +222,7 @@ model HTGR_Case_01_IndependentBOP
   PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_TESUC
     hTGR_PebbleBed_Primary_Loop_TESUC(redeclare
       PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary CS(
-        data(T_Rx_Exit_Ref=579.15, P_Steam_Ref=3400000)))
+        data(T_Rx_Exit_Ref=1023.15, P_Steam_Ref=14000000)))
     annotation (Placement(transformation(extent={{-104,-22},{-56,24}})));
 equation
   hTGR_PebbleBed_Primary_Loop_TESUC.input_steam_pressure =
