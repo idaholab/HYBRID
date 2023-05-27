@@ -43,7 +43,7 @@ model HTGR_PebbleBed_Primary_Loop_TESUC
     annotation (Placement(transformation(extent={{90,84},{102,98}})));
 
   Modelica.Blocks.Sources.RealExpression Thermal_Power(y=core.Q_total.y)
-    annotation (Placement(transformation(extent={{-92,88},{-80,102}})));
+    annotation (Placement(transformation(extent={{-150,72},{-138,86}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
                         annotation (Placement(
@@ -198,11 +198,6 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.Power, Thermal_Power.y) annotation (Line(
-      points={{-30,100},{-74,100},{-74,95},{-79.4,95}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(sensor_m_flow.port_b,core. port_a) annotation (Line(points={{-88,-2},
           {-86,-2},{-86,18},{-78,18},{-78,28}},    color={0,127,255}));
   connect(compressor_Controlled.outlet,sensor_m_flow. port_a)
@@ -242,6 +237,15 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(sensorBus.thermal_power, Thermal_Power.y) annotation (Line(
+      points={{-30,100},{-74,100},{-74,79},{-137.4,79}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{6,3},{6,3}},
+      horizontalAlignment=TextAlignment.Left));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           Bitmap(extent={{-80,-92},{78,84}}, fileName="modelica://NHES/Icons/PrimaryHeatSystemPackage/HTGRPB.jpg")}),
                                                                  Diagram(
