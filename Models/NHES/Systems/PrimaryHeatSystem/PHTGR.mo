@@ -92,10 +92,140 @@ package PHTGR
       connect(RX.port_a, inlet.ports[1]) annotation (Line(points={{38,-10},{74,
               -10},{74,10},{80,10}}, color={0,127,255}));
       annotation (experiment(
-          StopTime=10000000,
-          Interval=1000,
+          StopTime=100000,
+          Interval=10,
           __Dymola_Algorithm="Esdirk45a"));
     end Reactor_Test;
+
+    model TES_Test
+       extends Modelica.Icons.Example;
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_BestModel
+        two_Tank_SHS_System_BestModel(
+        redeclare PHTGR.Examples.CS_TES CS,
+        redeclare replaceable
+          NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
+          hot_tank_init_temp=838.15,
+          cold_tank_init_temp=548.15,
+          DHX_v_shell=1.0),
+        redeclare package Storage_Medium =
+            Media.SolarSaltSS60.ConstantPropertyLiquidSolarSalt,
+        redeclare package Charging_Medium =
+            Modelica.Media.IdealGases.SingleGases.He,
+        m_flow_min=0.1,
+        Steam_Output_Temp=773.15,
+        CHX(
+          p_start_shell=3000000,
+          use_T_start_shell=true,
+          T_start_shell_inlet=903.15,
+          T_start_shell_outlet=903.15),
+        sensor_T1(p_start=3000000, T_start=903.15),
+        sensor_m_flow(p_start=3000000, T_start=903.15),
+        Level_Hot_Tank1(y=5000e3))
+        annotation (Placement(transformation(extent={{-2,-40},{74,36}})));
+      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        m_flow=50,
+        T=343.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{142,48},{122,68}})));
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        p=6900000,
+        T=773.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{144,-54},{124,-34}})));
+      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary2(
+        redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+        use_m_flow_in=false,
+        m_flow=8.75,
+        T=903.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{-100,-34},{-80,-14}})));
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary3(
+        redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+        p=3000000,
+        T=573.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{-100,8},{-80,28}})));
+    equation
+      connect(boundary2.ports[1], two_Tank_SHS_System_BestModel.port_ch_a)
+        annotation (Line(points={{-80,-24},{-40.62,-24},{-40.62,-25.56},{-1.24,-25.56}},
+            color={0,127,255}));
+      connect(two_Tank_SHS_System_BestModel.port_ch_b, boundary3.ports[1])
+        annotation (Line(points={{-1.24,18.52},{-40.62,18.52},{-40.62,18},{-80,18}},
+            color={0,127,255}));
+      connect(two_Tank_SHS_System_BestModel.port_dch_b, boundary1.ports[1])
+        annotation (Line(points={{74,-25.56},{120,-25.56},{120,-44},{124,-44}},
+            color={0,127,255}));
+      connect(two_Tank_SHS_System_BestModel.port_dch_a, boundary.ports[1])
+        annotation (Line(points={{73.24,20.04},{94,20.04},{94,58},{122,58}},
+            color={0,127,255}));
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)),
+        experiment(
+          StopTime=1000,
+          Interval=1,
+          __Dymola_Algorithm="Esdirk45a"));
+    end TES_Test;
+
+    model RX_TES_Test
+       extends Modelica.Icons.Example;
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_BestModel
+        two_Tank_SHS_System_BestModel(
+        redeclare CS.TES_CS.CS_TES CS,
+        redeclare replaceable
+          NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
+          hot_tank_init_temp=838.15,
+          cold_tank_init_temp=548.15,
+          DHX_v_shell=1.0),
+        redeclare package Storage_Medium =
+            Media.SolarSaltSS60.ConstantPropertyLiquidSolarSalt,
+        redeclare package Charging_Medium =
+            Modelica.Media.IdealGases.SingleGases.He,
+        m_flow_min=0.1,
+        Steam_Output_Temp=773.15,
+        CHX(
+          p_start_shell=3000000,
+          use_T_start_shell=true,
+          T_start_shell_inlet=903.15,
+          T_start_shell_outlet=903.15),
+        sensor_T1(p_start=3000000, T_start=903.15),
+        sensor_m_flow(p_start=3000000, T_start=903.15),
+        Level_Hot_Tank1(y=5000e3))
+        annotation (Placement(transformation(extent={{-2,-40},{74,36}})));
+      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        m_flow=50,
+        T=343.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{102,12},{82,32}})));
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        p=6900000,
+        T=773.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{102,-36},{82,-16}})));
+      Reactor RX(redeclare replaceable CS.CS_Texit CS)
+        annotation (Placement(transformation(extent={{-100,-40},{-20,40}})));
+    equation
+      connect(two_Tank_SHS_System_BestModel.port_dch_b, boundary1.ports[1])
+        annotation (Line(points={{74,-25.56},{78,-25.56},{78,-26},{82,-26}},
+            color={0,127,255}));
+      connect(two_Tank_SHS_System_BestModel.port_dch_a, boundary.ports[1])
+        annotation (Line(points={{73.24,20.04},{73.24,22},{82,22}},
+            color={0,127,255}));
+      connect(RX.port_b, two_Tank_SHS_System_BestModel.port_ch_a) annotation (Line(
+            points={{-20,-28},{-20,-25.56},{-1.24,-25.56}},          color={0,127,255}));
+      connect(two_Tank_SHS_System_BestModel.port_ch_b, RX.port_a) annotation (Line(
+            points={{-1.24,18.52},{-12,18.52},{-12,-12},{-20,-12}},  color={0,127,255}));
+      annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)),
+        experiment(
+          StartTime=1000,
+          StopTime=100000,
+          Interval=10,
+          __Dymola_Algorithm="Esdirk45a"));
+    end RX_TES_Test;
   end Examples;
 
   package Components
@@ -403,12 +533,13 @@ package PHTGR
         r_fuel=geometry.r_fuel,
         H=geometry.H,
         nZ=geometry.nV,
+        RodPowers={1/11,1/11,3/22,3/11,3/11,3/22},
         T_Fouter_start=T_Fouter_start - 200,
         T_Finner_start=T_Finner_start - 200,
         T_Mod_start=T_Mod_start - 200,
         T_Cinlet_start=T_Cinlet_start - 200,
         T_Coutlet_start=T_Coutlet_start - 200)
-        annotation (Placement(transformation(extent={{-22,60},{18,100}})));
+        annotation (Placement(transformation(extent={{-20,60},{20,100}})));
       TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium =
             Medium)
         annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
@@ -806,9 +937,9 @@ package PHTGR
       connect(sensor_p_out.p, hot_out.p_in) annotation (Line(points={{86,30},{100,30},
               {100,88},{82,88}}, color={0,0,127}));
       connect(hot_in.ports[1], Hot.port_a)
-        annotation (Line(points={{-60,80},{-22,80}}, color={0,127,255}));
+        annotation (Line(points={{-60,80},{-20,80}}, color={0,127,255}));
       connect(Hot.port_b, hot_out.ports[1])
-        annotation (Line(points={{18,80},{60,80}}, color={0,127,255}));
+        annotation (Line(points={{20,80},{60,80}}, color={0,127,255}));
       connect(sensor_T_out.T, hot_out.T_in) annotation (Line(points={{66,30},{66,34},
               {98,34},{98,84},{82,84}}, color={0,0,127}));
       connect(Total_Power.y, ASMdivision.u1)
@@ -828,7 +959,7 @@ package PHTGR
       connect(ASMdivision.y, CornerPowerproduct.u2) annotation (Line(points={{-169,-6},
               {-158,-6},{-158,-52},{-152,-52}},  color={0,0,127}));
       connect(HotChannel.y, Hot.PowerIn)
-        annotation (Line(points={{-99,94},{-16,94}}, color={0,0,127}));
+        annotation (Line(points={{-99,94},{-14,94}}, color={0,0,127}));
       connect(flowMultiplierTin.port_b, flowMultiplierEin.port_a) annotation (Line(
             points={{-52,0},{-48,0},{-48,20},{-44,20}}, color={0,127,255}));
       connect(flowMultiplierTin.port_b, flowMultiplierCein.port_a) annotation (Line(
@@ -1291,6 +1422,84 @@ package PHTGR
               fillPattern=FillPattern.Solid,
               textString="%name")}));
     end CS_Texit_rhoInset;
+
+    package TES_CS
+      model CS_TES
+
+        extends
+          NHES.Systems.EnergyStorage.SHS_Two_Tank.BaseClasses.Partial_ControlSystem;
+
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_Default data
+          annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
+        TRANSFORM.Controls.LimPID PID(
+          controllerType=Modelica.Blocks.Types.SimpleController.PI,
+          k=0.01,
+          yMax=1,
+          yMin=0)
+          annotation (Placement(transformation(extent={{-46,-38},{-26,-18}})));
+        Modelica.Blocks.Sources.RealExpression realExpression(y=33)
+          annotation (Placement(transformation(extent={{-94,-40},{-74,-20}})));
+        TRANSFORM.Controls.LimPID PID1(
+          controllerType=Modelica.Blocks.Types.SimpleController.PI,
+          k=0.01,
+          yMax=1,
+          yMin=0)
+          annotation (Placement(transformation(extent={{-44,22},{-24,42}})));
+        Modelica.Blocks.Sources.RealExpression realExpression1(y=33)
+          annotation (Placement(transformation(extent={{-92,22},{-72,42}})));
+      equation
+
+        connect(realExpression.y, PID.u_s)
+          annotation (Line(points={{-73,-30},{-60,-30},{-60,-28},{-48,-28}},
+                                                         color={0,0,127}));
+        connect(actuatorBus.Charge_Valve_Position, PID.y) annotation (Line(
+            points={{30,-100},{30,-28},{-25,-28}},
+            color={111,216,99},
+            pattern=LinePattern.Dash,
+            thickness=0.5), Text(
+            string="%first",
+            index=-1,
+            extent={{6,3},{6,3}},
+            horizontalAlignment=TextAlignment.Left));
+        connect(realExpression1.y, PID1.u_s)
+          annotation (Line(points={{-71,32},{-46,32}}, color={0,0,127}));
+        connect(sensorBus.discharge_m_flow, PID1.u_m) annotation (Line(
+            points={{-30,-100},{-30,12},{-34,12},{-34,20}},
+            color={239,82,82},
+            pattern=LinePattern.Dash,
+            thickness=0.5), Text(
+            string="%first",
+            index=-1,
+            extent={{6,3},{6,3}},
+            horizontalAlignment=TextAlignment.Left));
+        connect(actuatorBus.Discharge_Valve_Position, PID1.y) annotation (Line(
+            points={{30,-100},{30,32},{-23,32}},
+            color={111,216,99},
+            pattern=LinePattern.Dash,
+            thickness=0.5), Text(
+            string="%first",
+            index=-1,
+            extent={{6,3},{6,3}},
+            horizontalAlignment=TextAlignment.Left));
+        connect(sensorBus.charge_m_flow, PID.u_m) annotation (Line(
+            points={{-30,-100},{-30,-48},{-36,-48},{-36,-40}},
+            color={239,82,82},
+            pattern=LinePattern.Dash,
+            thickness=0.5), Text(
+            string="%first",
+            index=-1,
+            extent={{6,3},{6,3}},
+            horizontalAlignment=TextAlignment.Left));
+      annotation(defaultComponentName="changeMe_CS", Icon(graphics={
+              Text(
+                extent={{-94,82},{94,74}},
+                lineColor={0,0,0},
+                lineThickness=1,
+                fillColor={255,255,237},
+                fillPattern=FillPattern.Solid,
+                textString="Change Me")}));
+      end CS_TES;
+    end TES_CS;
   end CS;
 
   package Data

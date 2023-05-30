@@ -18,7 +18,7 @@ extends NHES.Media.Interfaces.PartialAlloy(materialName="UO2",
       materialDescription="Uranium Dioxide");
 
 redeclare function extends density "Density as a function of temperature"
-protected
+  protected
   Density rho_273 = 10970 "Density of 100% UO2";
   Real rho_CMfac = 0.95 "Density correction factor for commercial fuel density";
 algorithm
@@ -40,7 +40,7 @@ end thermalConductivity;
 
 redeclare function extends specificHeatCapacity
   "Specific heat capacity as a function of temperature"
-protected
+  protected
   Real c1(unit="J/(kg.K)") = 302.27;
   Real c2(unit="J/(kg.K2)") = 8.463e-3;
   Real c3(unit="J/kg") = 8.741e7;
