@@ -6,3 +6,4 @@ tests/dymola_tests/**/*.mo
 tests/dymola_tests/*/*.mat
 **/*.bak-mo
 .hybridrc
+raven
