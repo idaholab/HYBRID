@@ -48,7 +48,6 @@ model OxEonV7_Complex
   Electrolysis.Types.AreaSpecificResistance_cm2 ASR = 1.3  "Area specific resistance";
   Electrolysis.Types.CurrentDensity_cm2 current_density "Current density";
   SI.Current calculated_current "Calculated current per cell";
-  SI.Current Total_current "Total current";
   SI.Power W_elec_total "Electrical Power";
 
   parameter SI.Pressure P_operating_cathode=103299.8      "Start value of inlet pressure at cathode [Pa]" annotation (Dialog(tab="Initialisation"));
@@ -85,7 +84,7 @@ model OxEonV7_Complex
 
   SI.MolarFlowRate molflow_H2O_in, molflow_H2_in, molflow_O2_in, molflow_N2_in, molflow_H2O_out, molflow_H2_out, molflow_O2_out, molflow_N2_out "Molar Flows";
   SI.MolarFlowRate molTransfer_H2, molTransfer_O2 "Molar conversions";
-  //SI.MassFlowRate Test123;
+  SI.MassFlowRate w_H2_out, w_H2O_out, w_N2_out, w_O2_out  "Mass flow rates at exit";
 
   Electrolysis.Types.SteamUtilization SteamUtilization;
   SI.Frequency f = 60;
@@ -96,6 +95,7 @@ model OxEonV7_Complex
 
   parameter SI.Volume V_cathode = 0;
   parameter SI.Volume V_anode = 0;
+
 
   HTSE.SimpleVolume_XChange CathodeVolume(redeclare package Medium = MediumCathode,
     redeclare model Geometry =
@@ -142,18 +142,17 @@ equation
 
   deltaGibbsE = Electrolysis.Utilities.GibbsEnergy_NASA_7Term(T_stack_C + 273.15); //Gibbs Energy Calculated from NASA 7 Term Equation
   Cell_Potential = -deltaGibbsE/(2*Fa);
-  Nernst_Potential = Rg*(T_stack_C + 273.15)/(2*Fa)*log(max(0.001,pH2O/(pH2*pO2^0.5)));
+  Nernst_Potential = Rg*(T_stack_C + 273.15)/(2*Fa)*log(max(0.001,pH2O/(pH2*(pO2/100000)^0.5))); //Ensuring bar to Pa conversion for pO2 for sqrt
   OCV = abs(Cell_Potential + Nernst_Potential);
 
   //current_density = abs((TNV - OCV)/ASR);
   W_elec_total =DC_PowerIn.W;
   calculated_current = current_density*Acell_active;
-  Total_current = calculated_current*TotNumCells;
   Total_Voltage = TNV*TotNumCells;
   W_elec_total = Total_Voltage*calculated_current;
 
   //Molar Conversion due to splitting of H2O
-  molTransfer_H2 = Total_current/(numElecTransferred_per_H2prod*Fa);
+  molTransfer_H2 = calculated_current*TotNumCells/(numElecTransferred_per_H2prod*Fa);
   molTransfer_O2 = molTransfer_H2/2; //For every 2 moles of hydrogen, 1 mole of oxygen is produced
 
   //Molar Flows at the inlet of Cathode and Anode
@@ -170,6 +169,13 @@ equation
   molflow_O2_out = molTransfer_O2 + molflow_O2_in;
   molflow_N2_out = molflow_N2_in;
   DC_PowerIn.f = f;
+
+  //Mass flow rates
+  w_H2_out = molflow_H2_out*mwH2;
+  w_H2O_out = molflow_H2O_out*mwH2O;
+  w_N2_out = molflow_N2_out*mwN2;
+  w_O2_out = molflow_O2_out*mwO2;
+
 
   Q_transfer = molTransfer_O2*mwO2*MediumAnode.specificEnthalpy_pTX(P_operating_anode,AnodeVolume.medium.T,{0,1}); //energy gain from pure oxygen stream coming into the anode
   Q_gen1 = molTransfer_H2*mwH2*MediumCathode.specificEnthalpy_pTX(P_operating_cathode,CathodeVolume.medium.T,{1,0}); //energy gain from production of hydrogen
