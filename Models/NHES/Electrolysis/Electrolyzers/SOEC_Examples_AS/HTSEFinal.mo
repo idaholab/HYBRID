@@ -5,7 +5,7 @@ model HTSEFinal
   NHES.Electrolysis.Electrolyzers.SOEC_Examples_AS.HTSE_V4_Final HTSE annotation (Placement(transformation(extent={{-34,-36},{38,36}})));
   Modelica.Blocks.Sources.Ramp DCPowerControl(
     height=10000,
-    duration=100,
+    duration=20,
     offset=30000,
     startTime=500)
                   annotation (Placement(transformation(extent={{-140,-10},{-120,10}})));
