@@ -15,7 +15,8 @@ model HXModeling_v3
     p(displayUnit="Pa") = 103299.8,
     T=423.65,
     nPorts=1) annotation (Placement(transformation(extent={{146,144},{126,164}})));
-  Modelica.Fluid.Sensors.MassFlowRate TubeFlowMeasure(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  Modelica.Fluid.Sensors.MassFlowRate TubeFlowMeasure(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-122,144},{-102,164}})));
   Modelica.Blocks.Sources.Constant TubeControl(k=6.379/3600) annotation (Placement(transformation(extent={{-182,152},{-162,172}})));
   Modelica.Fluid.Sources.MassFlowSource_T ShellFeed(
@@ -26,7 +27,8 @@ model HXModeling_v3
     m_flow=0.908085*5,
     nPorts=1,
     T=414.15) annotation (Placement(transformation(extent={{152,74},{132,94}})));
-  Modelica.Fluid.Sensors.MassFlowRate ShellFlowMeasure(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  Modelica.Fluid.Sensors.MassFlowRate ShellFlowMeasure(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{122,74},{102,94}})));
   Modelica.Blocks.Sources.Constant ShellFlowControl(k=13.47/3600) annotation (Placement(transformation(extent={{188,82},{168,102}})));
   Modelica.Fluid.Sources.Boundary_pT ShellSink(
@@ -52,21 +54,32 @@ model HXModeling_v3
     Cr_init=0.98,
     m_start_tube=6.379/3600,
     m_start_shell=13.47/3600)  annotation (Placement(transformation(extent={{26,100},{-20,146}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TubeIn_Temp(redeclare package Medium = NHES.Electrolysis.Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TubeIn_Temp(redeclare package Medium =
+        NHES.Electrolysis.Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-84,144},{-64,164}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TubeOut_Temp(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TubeOut_Temp(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{64,144},{84,164}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellIn_Temp(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellIn_Temp(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{92,74},{72,94}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellOut_Temp(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellOut_Temp(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-84,72},{-104,92}})));
-  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort ShellOutEnth(redeclare package Medium = NHES.Electrolysis.Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort ShellOutEnth(redeclare
+      package                                                                    Medium =
+        NHES.Electrolysis.Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-44,72},{-64,92}})));
-  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort ShellInEnth(redeclare package Medium = NHES.Electrolysis.Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort ShellInEnth(redeclare package
+                                                                                Medium =
+        NHES.Electrolysis.Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{60,74},{40,94}})));
-  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort TubeOutEnth(redeclare package Medium = NHES.Electrolysis.Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort TubeOutEnth(redeclare package
+                                                                                Medium =
+        NHES.Electrolysis.Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{94,144},{114,164}})));
-  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort TubeInEnth(redeclare package Medium = NHES.Electrolysis.Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort TubeInEnth(redeclare package Medium =
+        NHES.Electrolysis.Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-56,144},{-36,164}})));
 
   Modelica.Fluid.Sources.MassFlowSource_T TubeFeed1(
@@ -82,7 +95,8 @@ model HXModeling_v3
     p(displayUnit="kPa") = 103300,
     T=1053.15,
     nPorts=1) annotation (Placement(transformation(extent={{148,-38},{128,-18}})));
-  Modelica.Fluid.Sensors.MassFlowRate TubeFlowMeasure1(redeclare package Medium = Media.Electrolysis.AnodeGas_air)
+  Modelica.Fluid.Sensors.MassFlowRate TubeFlowMeasure1(redeclare package Medium =
+        Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(extent={{-120,-38},{-100,-18}})));
   Modelica.Blocks.Sources.Constant TubeControl1(k=20/3600)   annotation (Placement(transformation(extent={{-180,-30},{-160,-10}})));
   Modelica.Fluid.Sources.MassFlowSource_T ShellFeed1(
@@ -94,7 +108,8 @@ model HXModeling_v3
     nPorts=1,
     T=1063.15)
               annotation (Placement(transformation(extent={{154,-108},{134,-88}})));
-  Modelica.Fluid.Sensors.MassFlowRate ShellFlowMeasure1(redeclare package Medium = Media.Electrolysis.AnodeGas_air)
+  Modelica.Fluid.Sensors.MassFlowRate ShellFlowMeasure1(redeclare package Medium =
+        Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(extent={{124,-108},{104,-88}})));
   Modelica.Blocks.Sources.Constant ShellFlowControl1(k=27.09/3600)
                                                                   annotation (Placement(transformation(extent={{190,-100},{170,-80}})));
@@ -119,21 +134,33 @@ model HXModeling_v3
     Cr_init=0.654,
     m_start_tube=20/3600,
     m_start_shell=27.09/3600) annotation (Placement(transformation(extent={{28,-82},{-18,-36}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TubeIn_Temp1(redeclare package Medium = Media.Electrolysis.AnodeGas_air)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TubeIn_Temp1(redeclare package Medium =
+        Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(extent={{-82,-38},{-62,-18}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TubeOut_Temp1(redeclare package Medium = Media.Electrolysis.AnodeGas_air)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TubeOut_Temp1(redeclare package Medium =
+        Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(extent={{66,-38},{86,-18}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellIn_Temp1(redeclare package Medium = Media.Electrolysis.AnodeGas_air)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellIn_Temp1(redeclare package Medium =
+        Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(extent={{94,-108},{74,-88}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellOut_Temp1(redeclare package Medium = Media.Electrolysis.AnodeGas_air)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellOut_Temp1(redeclare package Medium =
+        Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(extent={{-82,-110},{-102,-90}})));
-  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort ShellOutEnth1(redeclare package Medium = Media.Electrolysis.AnodeGas_air)
+  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort ShellOutEnth1(redeclare
+      package                                                                     Medium =
+        Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(extent={{-42,-110},{-62,-90}})));
-  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort ShellInEnth1(redeclare package Medium = Media.Electrolysis.AnodeGas_air)
+  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort ShellInEnth1(redeclare
+      package                                                                    Medium =
+        Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(extent={{62,-108},{42,-88}})));
-  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort TubeOutEnth1(redeclare package Medium = Media.Electrolysis.AnodeGas_air)
+  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort TubeOutEnth1(redeclare
+      package                                                                    Medium =
+        Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(extent={{96,-38},{116,-18}})));
-  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort TubeInEnth1(redeclare package Medium = Media.Electrolysis.AnodeGas_air)
+  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort TubeInEnth1(redeclare package
+                                                                                Medium =
+        Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(extent={{-54,-38},{-34,-18}})));
 equation
   connect(TubeFeed.ports[1], TubeFlowMeasure.port_a) annotation (Line(points={{-126,154},{-122,154}},

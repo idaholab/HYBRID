@@ -18,19 +18,23 @@ model Condenser
     nPorts=1)
     annotation (Placement(transformation(extent={{76,14},{56,34}})));
   Modelica.Fluid.Sources.MassFlowSource_T GlycolFeed(
-    redeclare package Medium = TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
+    redeclare package Medium =
+        TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
     use_m_flow_in=false,
     m_flow=0.5,
     T=283.15,
     nPorts=1) annotation (Placement(transformation(extent={{80,-24},{60,-4}})));
   Modelica.Fluid.Sources.Boundary_pT glycolSink(
-    redeclare package Medium = TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
+    redeclare package Medium =
+        TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
     p(displayUnit="Pa") = 101.3,
     T=286.45,
     nPorts=1) annotation (Placement(transformation(extent={{-66,-28},{-46,-8}})));
   Fluid.HeatExchangers.Generic_HXs.Generic_STHX Condenser(
-  redeclare package Medium_shell = NHES.Electrolysis.Media.Electrolysis.CathodeGas,
-  redeclare package Medium_tube = TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
+  redeclare package Medium_shell =
+        NHES.Electrolysis.Media.Electrolysis.CathodeGas,
+  redeclare package Medium_tube =
+        TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
     redeclare package Tube_Material = NHES.Media.Solids.SS304,
     length_shell=1.2,
     nTubes=85,

@@ -2,11 +2,13 @@ within NHES.Electrolysis.Electrolyzers.SOEC_Examples_AS.DoNotUse;
 model ComponentSplitter
   extends Modelica.Icons.Example;
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort SinkTemp(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort SinkTemp(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{62,-10},{42,10}})));
   Separator.Temp_flashDrumVessel
                            temp_flashDrumVessel(
-                                          redeclare package Medium = Media.Electrolysis.CathodeGas)
+                                          redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}})));
   Modelica.Fluid.Sources.Boundary_pT Sink_H2(
     redeclare package Medium = Media.Electrolysis.CathodeGas,
@@ -32,7 +34,8 @@ model ComponentSplitter
     p_start(displayUnit="kPa") = 103800,
     T_start=423.65,
     X_start={0.0122804,0.9877196},
-    redeclare model Geometry = TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume,
+    redeclare model Geometry =
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume,
     use_HeatPort=true) annotation (Placement(transformation(extent={{-36,54},{-60,30}})));
   TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Temperature
                                                       boundary3(T=313.15)
@@ -44,20 +47,26 @@ model ComponentSplitter
     p_start(displayUnit="kPa") = 103800,
     T_start=423.65,
     X_start={0.0122804,0.9877196},
-    redeclare model Geometry = TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume,
+    redeclare model Geometry =
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume,
     use_HeatPort=true) annotation (Placement(transformation(extent={{-36,-24},{-60,-48}})));
   TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Temperature
                                                       boundary1(T=313.15)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
         rotation=90,
         origin={-48,-10})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort FuelHXOutTempH2(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort FuelHXOutTempH2(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-2,32},{-22,52}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort SinkTempH2(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort SinkTempH2(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-80,32},{-100,52}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort FuelHXOutTempH2O(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort FuelHXOutTempH2O(redeclare package
+                                                                                Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-6,-46},{-26,-26}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort SinkTempH2O(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort SinkTempH2O(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-92,-46},{-112,-26}})));
 equation
   connect(SinkTemp.port_b, temp_flashDrumVessel.feedInlet) annotation (Line(points={{42,0},{8,0}}, color={0,127,255}));
