@@ -10,3 +10,4 @@ HEX_nuclearHeatAnodeGasRecupVessel_ROM_NHES
 HEX_nuclearHeatCathodeGasRecup_ROM_NHES
 HEX_nuclearHeatCathodeGasRecupVessel_ROM_NHES
 BaseClasses
+Condensor

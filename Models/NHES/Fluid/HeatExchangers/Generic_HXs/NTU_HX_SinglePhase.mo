@@ -22,8 +22,7 @@ model NTU_HX_SinglePhase
   parameter Real K_tube(unit = "1/m4") "Pressure loss coefficient. Units make this value equal to a typical local loss coefficient divided by the flow area squared.";
   parameter Real K_shell(unit = "1/m4") "Same as K_tube but for the shell side.";
   replaceable package Tube_medium = Modelica.Media.Interfaces.PartialMedium annotation(Dialog(tab="General", group="Mediums"), choicesAllMatching=true);
-  replaceable package Shell_medium =    Modelica.Media.Interfaces.PartialMedium
-                                                                                    annotation(Dialog(tab = "General", group = "Mediums"),choicesAllMatching=true);
+  replaceable package Shell_medium =    Modelica.Media.Interfaces.PartialMedium     annotation(Dialog(tab = "General", group = "Mediums"),choicesAllMatching=true);
   parameter Modelica.Units.SI.Volume V_Tube=0.1 "Total tube-side volume"
     annotation (Dialog(tab="General", group="Sizing"));
   parameter Modelica.Units.SI.Volume V_Shell=0.1 "Total shell-side volume"
@@ -97,8 +96,7 @@ public
     T_start=0.5*T_start_tube_inlet + 0.5*T_start_tube_outlet,
     h_start=0.5*h_start_tube_inlet + 0.5*h_start_tube_outlet,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
         V=V_Tube,
         angle=0,
         dheight=dh_Tube),
@@ -125,8 +123,7 @@ public
     T_start=0.5*T_start_shell_inlet + 0.5*T_start_shell_outlet,
     h_start=0.5*h_start_shell_outlet + 0.5*h_start_shell_inlet,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
         V=V_Shell,
         angle=0,
         dheight=dh_Shell),

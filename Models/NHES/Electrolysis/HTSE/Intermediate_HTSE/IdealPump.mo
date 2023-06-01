@@ -3,8 +3,8 @@ model IdealPump "Ideal pump with a fixed pressure increase"
 
   import      Modelica.Units.SI;
   outer Modelica.Fluid.System system "System wide properties";
-  replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby
-    Modelica.Media.Interfaces.PartialPureSubstance "Medium model"
+  replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialPureSubstance
+                                                   "Medium model"
     annotation(choicesAllMatching = true);
   parameter Boolean allowFlowReversal=system.allowFlowReversal
    "= true to allow flow reversal, false restricts to design direction";

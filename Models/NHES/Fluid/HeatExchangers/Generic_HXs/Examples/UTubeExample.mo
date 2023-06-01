@@ -17,11 +17,11 @@ model UTubeExample
     redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS304,
     counterCurrent=false,
     redeclare model HeatTransfer_shell =
-        TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_SinglePhase_2Region
-        (nSurfaces=2),
+        TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_SinglePhase_2Region (
+         nSurfaces=2),
     redeclare model FlowModel_tube =
-        TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable
-        (nFM=geometry.nV),
+        TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable (
+         nFM=geometry.nV),
     redeclare model HeatTransfer_tube_one =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_SinglePhase_2Region,
     redeclare model HeatTransfer_tube_two =
@@ -47,7 +47,7 @@ model UTubeExample
     redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
     m_flow=0.2,
     T=1123.15,
-    nPorts=1) annotation (Placement(transformation(extent={{126,14},{106,34}})));
+    nPorts=1) annotation (Placement(transformation(extent={{128,14},{108,34}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary2(
     redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
     p=3000000,
@@ -62,7 +62,7 @@ equation
   connect(heatExchanger.port_a_tube, boundary.ports[1])
     annotation (Line(points={{-32,8},{-78,8}}, color={0,127,255}));
   connect(heatExchanger.port_a_shell, boundary1.ports[1]) annotation (Line(
-        points={{52,23.64},{80,23.64},{80,24},{106,24}}, color={0,127,255}));
+        points={{52,23.64},{80,23.64},{80,24},{108,24}}, color={0,127,255}));
   connect(heatExchanger.port_b_tube, boundary3.ports[1]) annotation (Line(
         points={{52,8},{108,8},{108,0},{114,0}}, color={0,127,255}));
   connect(heatExchanger.port_b_shell, boundary2.ports[1]) annotation (Line(

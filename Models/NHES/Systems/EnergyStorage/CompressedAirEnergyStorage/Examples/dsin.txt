@@ -1,0 +1,3891 @@
+#1
+char Aclass(3,24)
+Adymosim
+1.4
+Modelica experiment file
+
+
+#    Experiment parameters
+double experiment(7,1)
+       0                   # StartTime    Time at which integration starts
+                           #              (and linearization and trimming time)
+     100                   # StopTime     Time at which integration stops
+       0                   # Increment    Communication step size, if > 0
+     500                   # nInterval    Number of communication intervals, if > 0
+  9.9999999999999995E-07   # Tolerance    Relative precision of signals for
+                           #              simulation, linearization and trimming
+       0                   # MaxFixedStep Maximum step size of fixed step size
+                           #              integrators, if > 0.0
+      18                   # Algorithm    Integration algorithm as integer (1...28)
+                           #
+                           #             | model|       |        | dense | state |
+                           # Algorithm   | typ  | stiff | order  | output| event |
+                           # ------------+------+-------+--------+-------+-------+
+                           #  1 | deabm  |  ode |   no  |  1-12  |  yes  |   no  |
+                           #  2 | lsode1 |  ode |   no  |  1-12  |  yes  |   no  |
+                           #  3 | lsode2 |  ode |  yes  |  1-5   |  yes  |   no  |
+                           #  4 | lsodar |  ode |  both |1-12,1-5|  yes  |  yes  |
+                           #  5 | dopri5 |  ode |   no  |   5    |   no  |   no  |
+                           #  6 | dopri8 |  ode |   no  |   8    |   no  |   no  |
+                           #  7 | grk4t  |  ode |  yes  |   4    |   no  |   no  |
+                           #  8 | dassl  |  dae |  yes  |  1-5   |  yes  |  yes  |
+                           #  9 | odassl | hdae |  yes  |  1-5   |  yes  |  yes  |
+                           # 10 | mexx   | hdae |   no  |  2-24  |   no  |   no  |
+                           # 11 | euler  |  ode |   no  |   1    |   no  |  yes  |
+                           # 12 | rkfix2 |  ode |   no  |   2    |   no  |  yes  |
+                           # 13 | rkfix3 |  ode |   no  |   3    |   no  |  yes  |
+                           # 14 | rkfix4 |  ode |   no  |   4    |   no  |  yes  |
+                           #>=14| others |  ode |yes/no |  2-5   |   yes |  yes  |
+                           # ---+--------+------+-------+--------+-------+-------+
+                           # euler and rkfix have fixed stepsize.
+
+
+#    Method tuning parameters
+double method(27,1)
+       1                   # grid     type of communication time grid, defined by
+                           #          = 1: equidistant points ("Increment/nInterval")
+                           #          = 2: vector of grid points ("tgrid")
+                           #          = 3: variable step integrator (automatically)
+                           #          = 4: model (call of "increment" in Dymola, e.g.
+                           #                      incr=Time > 2 then 0 else 0.1
+                           #                      dummy=increment(incr))
+                           #          grid = 1,3 is stopped by "StopTime"
+                           #          grid = 2   is stopped by "tgrid(last)"
+                           #          grid = 4   runs forever (stopped by model)
+       1                   # nt       Use every NT time instant, if grid = 3
+       3                   # dense    1/2/3 restart/step/interpolate GRID points
+       1                   # evgrid   0/1 do not/save event points in comm. time grid
+       1                   # evu      0/1 U-discontinuity does not/trigger events
+       0                   # evuord       U-discontinuity order to consider (0,1,...)
+       0                   # error    0/1/2 One message/warning/error messages
+       0                   # jac      0/1 Compute jacobian numerically/by BLOCKJ
+       0                   # xd0c     0/1 Compute/set XD0
+       0                   # f3       0/1 Ignore/use F3 of HDAE (= index 1)
+       0                   # f4       0/1 Ignore/use F4 of HDAE (= index 2)
+       0                   # f5       0/1 Ignore/use F5 of HDAE (= invar.)
+       0                   # debug    flags for debug information (1<<0 uses pdebug) 
+     100                   # pdebug       priority of debug information (1...100)
+       0                   # fmax     Maximum number of evaluations of BLOCKF, if > 0
+       0                   # ordmax   Maximum allowed integration order, if > 0
+       0                   # hmax     Maximum absolute stepsize, if > 0
+       0                   # hmin     Minimum absolute stepsize, if > 0 (use with care!)
+       0                   # h0       Stepsize to be attempted on first step, if > 0
+  2.0000000000000000E-14   # teps     Bound to check, if 2 equal time instants
+  1.0000000000000000E-10   # eveps    Hysteresis epsilon at event points
+      20                   # eviter   Maximum number of event iterations
+  9.9999999999999995E-07   # delaym   Minimum time increment in delay buffers
+       1                   # fexcep   0/1 floating exception crashes/stops dymosim
+       1                   # tscale   clock-time = tscale*simulation-time, if grid = 5
+                           #          > 1: simulation too slow
+                           #          = 1: simulation-time = real-time
+                           #          < 1: simulation too fast
+       1                   # shared   (not used)
+    2473                   # memkey   (not used)
+
+
+#    Output parameters
+int settings(13,1)
+ 0                         # lprec    0/1 do not/store result data in double
+ 1                         # lx       0/1 do not/store x  (state variables)
+ 1                         # lxd      0/1 do not/store xd (derivative of states)
+ 1                         # lu       0/1 do not/store u  (input     signals)
+ 1                         # ly       0/1 do not/store y  (output    signals)
+ 0                         # lz       0/1 do not/store z  (indicator signals)
+ 1                         # lw       0/1 do not/store w  (auxiliary signals)
+ 1                         # la       0/1 do not/store a  (alias     signals)
+ 0                         # lperf    0/1 do not/store performance indicators
+ 0                         # levent   0/1 do not/store event point
+ 1                         # lres     0/1 do not/store results on result file
+ 0                         # lshare   0/1 do not/store info data for shared memory on dsshare.txt
+ 1                         # lform    0/1 ASCII/Matlab-binary storage format of results
+                           #              (for simulation/linearization; not for trimming)
+
+
+#    Names of initial variables
+char initialName(933,74)
+system.p_ambient
+system.T_ambient
+system.g
+system.allowFlowReversal
+system.energyDynamics
+system.massDynamics
+system.substanceDynamics
+system.traceDynamics
+system.momentumDynamics
+system.m_flow_start
+system.p_start
+system.T_start
+system.use_eps_Re
+system.m_flow_nominal
+system.eps_m_flow
+system.dp_small
+system.m_flow_small
+DischargeStopTrig
+der(DischargeStopTrig)
+testtrig
+der(testtrig)
+tablePhicT[1, 1]
+tablePhicT[1, 2]
+tablePhicT[1, 3]
+tablePhicT[1, 4]
+tablePhicT[2, 1]
+tablePhicT[2, 2]
+tablePhicT[2, 3]
+tablePhicT[2, 4]
+tablePhicT[3, 1]
+tablePhicT[3, 2]
+tablePhicT[3, 3]
+tablePhicT[3, 4]
+tablePhicT[4, 1]
+tablePhicT[4, 2]
+tablePhicT[4, 3]
+tablePhicT[4, 4]
+tablePhicT[5, 1]
+tablePhicT[5, 2]
+tablePhicT[5, 3]
+tablePhicT[5, 4]
+tableEtaT[1, 1]
+tableEtaT[1, 2]
+tableEtaT[1, 3]
+tableEtaT[1, 4]
+tableEtaT[2, 1]
+tableEtaT[2, 2]
+tableEtaT[2, 3]
+tableEtaT[2, 4]
+tableEtaT[3, 1]
+tableEtaT[3, 2]
+tableEtaT[3, 3]
+tableEtaT[3, 4]
+tableEtaT[4, 1]
+tableEtaT[4, 2]
+tableEtaT[4, 3]
+tableEtaT[4, 4]
+tableEtaT[5, 1]
+tableEtaT[5, 2]
+tableEtaT[5, 3]
+tableEtaT[5, 4]
+turbine2.explicitIsentropicEnthalpy
+turbine2.eta_mech
+turbine2.Tdes_in
+turbine2.allowFlowReversal
+turbine2.pstart_in
+turbine2.pstart_out
+turbine2.Tstart_in
+turbine2.Tstart_out
+turbine2.Xstart[1]
+turbine2.Xstart[2]
+turbine2.Xstart[3]
+turbine2.Xstart[4]
+turbine2.gas_in.d
+turbine2.gas_in.T
+turbine2.gas_in.X[1]
+turbine2.gas_in.X[2]
+turbine2.gas_in.X[3]
+turbine2.gas_in.X[4]
+turbine2.gas_in.u
+turbine2.gas_in.R_s
+turbine2.gas_in.MM
+turbine2.gas_in.preferredMediumStates
+turbine2.gas_in.standardOrderComponents
+turbine2.gas_in.T_degC
+turbine2.gas_in.p_bar
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.Hf
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.H0
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.Tlimit
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.alow[1]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.alow[2]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.alow[3]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.alow[4]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.alow[5]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.alow[6]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.alow[7]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.blow[1]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.blow[2]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.ahigh[1]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.ahigh[2]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.ahigh[3]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.ahigh[4]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.ahigh[5]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.ahigh[6]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.ahigh[7]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.bhigh[1]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.bhigh[2]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.R_s
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.Hf
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.H0
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.Tlimit
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.alow[1]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.alow[2]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.alow[3]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.alow[4]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.alow[5]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.alow[6]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.alow[7]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.blow[1]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.blow[2]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.ahigh[1]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.ahigh[2]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.ahigh[3]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.ahigh[4]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.ahigh[5]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.ahigh[6]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.ahigh[7]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.bhigh[1]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.bhigh[2]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.R_s
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.MM
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.Hf
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.H0
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.Tlimit
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.alow[1]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.alow[2]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.alow[3]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.alow[4]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.alow[5]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.alow[6]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.alow[7]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.blow[1]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.blow[2]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.ahigh[1]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.ahigh[2]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.ahigh[3]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.ahigh[4]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.ahigh[5]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.ahigh[6]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.ahigh[7]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.bhigh[1]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.bhigh[2]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.R_s
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.Hf
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.H0
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.Tlimit
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.alow[1]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.alow[2]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.alow[3]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.alow[4]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.alow[5]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.alow[6]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.alow[7]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.blow[1]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.blow[2]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.ahigh[1]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.ahigh[2]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.ahigh[3]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.ahigh[4]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.ahigh[5]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.ahigh[6]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.ahigh[7]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.bhigh[1]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.bhigh[2]
+_GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.R_s
+_GlobalScope.NHES.Media.Air.data[1].MM
+_GlobalScope.NHES.Media.Air.data[1].Hf
+_GlobalScope.NHES.Media.Air.data[1].H0
+_GlobalScope.NHES.Media.Air.data[1].Tlimit
+_GlobalScope.NHES.Media.Air.data[1].alow[1]
+_GlobalScope.NHES.Media.Air.data[1].alow[2]
+_GlobalScope.NHES.Media.Air.data[1].alow[3]
+_GlobalScope.NHES.Media.Air.data[1].alow[4]
+_GlobalScope.NHES.Media.Air.data[1].alow[5]
+_GlobalScope.NHES.Media.Air.data[1].alow[6]
+_GlobalScope.NHES.Media.Air.data[1].alow[7]
+_GlobalScope.NHES.Media.Air.data[1].blow[1]
+_GlobalScope.NHES.Media.Air.data[1].blow[2]
+_GlobalScope.NHES.Media.Air.data[1].ahigh[1]
+_GlobalScope.NHES.Media.Air.data[1].ahigh[2]
+_GlobalScope.NHES.Media.Air.data[1].ahigh[3]
+_GlobalScope.NHES.Media.Air.data[1].ahigh[4]
+_GlobalScope.NHES.Media.Air.data[1].ahigh[5]
+_GlobalScope.NHES.Media.Air.data[1].ahigh[6]
+_GlobalScope.NHES.Media.Air.data[1].ahigh[7]
+_GlobalScope.NHES.Media.Air.data[1].bhigh[1]
+_GlobalScope.NHES.Media.Air.data[1].bhigh[2]
+_GlobalScope.NHES.Media.Air.data[1].R_s
+_GlobalScope.NHES.Media.Air.data[2].MM
+_GlobalScope.NHES.Media.Air.data[2].Hf
+_GlobalScope.NHES.Media.Air.data[2].H0
+_GlobalScope.NHES.Media.Air.data[2].Tlimit
+_GlobalScope.NHES.Media.Air.data[2].alow[1]
+_GlobalScope.NHES.Media.Air.data[2].alow[2]
+_GlobalScope.NHES.Media.Air.data[2].alow[3]
+_GlobalScope.NHES.Media.Air.data[2].alow[4]
+_GlobalScope.NHES.Media.Air.data[2].alow[5]
+_GlobalScope.NHES.Media.Air.data[2].alow[6]
+_GlobalScope.NHES.Media.Air.data[2].alow[7]
+_GlobalScope.NHES.Media.Air.data[2].blow[1]
+_GlobalScope.NHES.Media.Air.data[2].blow[2]
+_GlobalScope.NHES.Media.Air.data[2].ahigh[1]
+_GlobalScope.NHES.Media.Air.data[2].ahigh[2]
+_GlobalScope.NHES.Media.Air.data[2].ahigh[3]
+_GlobalScope.NHES.Media.Air.data[2].ahigh[4]
+_GlobalScope.NHES.Media.Air.data[2].ahigh[5]
+_GlobalScope.NHES.Media.Air.data[2].ahigh[6]
+_GlobalScope.NHES.Media.Air.data[2].ahigh[7]
+_GlobalScope.NHES.Media.Air.data[2].bhigh[1]
+_GlobalScope.NHES.Media.Air.data[2].bhigh[2]
+_GlobalScope.NHES.Media.Air.data[2].R_s
+_GlobalScope.NHES.Media.Air.data[3].MM
+_GlobalScope.NHES.Media.Air.data[3].Hf
+_GlobalScope.NHES.Media.Air.data[3].H0
+_GlobalScope.NHES.Media.Air.data[3].Tlimit
+_GlobalScope.NHES.Media.Air.data[3].alow[1]
+_GlobalScope.NHES.Media.Air.data[3].alow[2]
+_GlobalScope.NHES.Media.Air.data[3].alow[3]
+_GlobalScope.NHES.Media.Air.data[3].alow[4]
+_GlobalScope.NHES.Media.Air.data[3].alow[5]
+_GlobalScope.NHES.Media.Air.data[3].alow[6]
+_GlobalScope.NHES.Media.Air.data[3].alow[7]
+_GlobalScope.NHES.Media.Air.data[3].blow[1]
+_GlobalScope.NHES.Media.Air.data[3].blow[2]
+_GlobalScope.NHES.Media.Air.data[3].ahigh[1]
+_GlobalScope.NHES.Media.Air.data[3].ahigh[2]
+_GlobalScope.NHES.Media.Air.data[3].ahigh[3]
+_GlobalScope.NHES.Media.Air.data[3].ahigh[4]
+_GlobalScope.NHES.Media.Air.data[3].ahigh[5]
+_GlobalScope.NHES.Media.Air.data[3].ahigh[6]
+_GlobalScope.NHES.Media.Air.data[3].ahigh[7]
+_GlobalScope.NHES.Media.Air.data[3].bhigh[1]
+_GlobalScope.NHES.Media.Air.data[3].bhigh[2]
+_GlobalScope.NHES.Media.Air.data[3].R_s
+_GlobalScope.NHES.Media.Air.data[4].MM
+_GlobalScope.NHES.Media.Air.data[4].Hf
+_GlobalScope.NHES.Media.Air.data[4].H0
+_GlobalScope.NHES.Media.Air.data[4].Tlimit
+_GlobalScope.NHES.Media.Air.data[4].alow[1]
+_GlobalScope.NHES.Media.Air.data[4].alow[2]
+_GlobalScope.NHES.Media.Air.data[4].alow[3]
+_GlobalScope.NHES.Media.Air.data[4].alow[4]
+_GlobalScope.NHES.Media.Air.data[4].alow[5]
+_GlobalScope.NHES.Media.Air.data[4].alow[6]
+_GlobalScope.NHES.Media.Air.data[4].alow[7]
+_GlobalScope.NHES.Media.Air.data[4].blow[1]
+_GlobalScope.NHES.Media.Air.data[4].blow[2]
+_GlobalScope.NHES.Media.Air.data[4].ahigh[1]
+_GlobalScope.NHES.Media.Air.data[4].ahigh[2]
+_GlobalScope.NHES.Media.Air.data[4].ahigh[3]
+_GlobalScope.NHES.Media.Air.data[4].ahigh[4]
+_GlobalScope.NHES.Media.Air.data[4].ahigh[5]
+_GlobalScope.NHES.Media.Air.data[4].ahigh[6]
+_GlobalScope.NHES.Media.Air.data[4].ahigh[7]
+_GlobalScope.NHES.Media.Air.data[4].bhigh[1]
+_GlobalScope.NHES.Media.Air.data[4].bhigh[2]
+_GlobalScope.NHES.Media.Air.data[4].R_s
+turbine2.gas_iso.p
+turbine2.gas_iso.h
+turbine2.gas_iso.d
+turbine2.gas_iso.T
+turbine2.gas_iso.X[1]
+turbine2.gas_iso.X[2]
+turbine2.gas_iso.X[3]
+turbine2.gas_iso.X[4]
+turbine2.gas_iso.u
+turbine2.gas_iso.R_s
+turbine2.gas_iso.MM
+turbine2.gas_iso.state.p
+turbine2.gas_iso.state.T
+turbine2.gas_iso.preferredMediumStates
+turbine2.gas_iso.standardOrderComponents
+turbine2.gas_iso.T_degC
+turbine2.gas_iso.p_bar
+turbine2.phi
+turbine2.der(phi)
+turbine2.tau
+turbine2.w
+turbine2.s_in
+turbine2.hout_iso
+turbine2.hout
+turbine2.pout
+turbine2.PR
+turbine2.eta
+turbine2.TurbPower
+turbine2.shaft_a.tau
+turbine2.shaft_b.tau
+turbine2.inlet.p
+turbine2.inlet.h_outflow
+turbine2.inlet.Xi_outflow[1]
+turbine2.inlet.Xi_outflow[2]
+turbine2.inlet.Xi_outflow[3]
+turbine2.inlet.Xi_outflow[4]
+turbine2.outlet.p
+turbine2.Ndesign
+turbine2.tablePhic[1, 1]
+turbine2.tablePhic[1, 2]
+turbine2.tablePhic[1, 3]
+turbine2.tablePhic[1, 4]
+turbine2.tablePhic[2, 1]
+turbine2.tablePhic[2, 2]
+turbine2.tablePhic[2, 3]
+turbine2.tablePhic[2, 4]
+turbine2.tablePhic[3, 1]
+turbine2.tablePhic[3, 2]
+turbine2.tablePhic[3, 3]
+turbine2.tablePhic[3, 4]
+turbine2.tablePhic[4, 1]
+turbine2.tablePhic[4, 2]
+turbine2.tablePhic[4, 3]
+turbine2.tablePhic[4, 4]
+turbine2.tablePhic[5, 1]
+turbine2.tablePhic[5, 2]
+turbine2.tablePhic[5, 3]
+turbine2.tablePhic[5, 4]
+turbine2.tableEta[1, 1]
+turbine2.tableEta[1, 2]
+turbine2.tableEta[1, 3]
+turbine2.tableEta[1, 4]
+turbine2.tableEta[2, 1]
+turbine2.tableEta[2, 2]
+turbine2.tableEta[2, 3]
+turbine2.tableEta[2, 4]
+turbine2.tableEta[3, 1]
+turbine2.tableEta[3, 2]
+turbine2.tableEta[3, 3]
+turbine2.tableEta[3, 4]
+turbine2.tableEta[4, 1]
+turbine2.tableEta[4, 2]
+turbine2.tableEta[4, 3]
+turbine2.tableEta[4, 4]
+turbine2.tableEta[5, 1]
+turbine2.tableEta[5, 2]
+turbine2.tableEta[5, 3]
+turbine2.tableEta[5, 4]
+turbine2.Table
+turbine2.N_T
+turbine2.N_T_design
+turbine2.phic
+turbine2.Phic.tableOnFile
+turbine2.Phic.table[1, 1]
+turbine2.Phic.table[1, 2]
+turbine2.Phic.table[1, 3]
+turbine2.Phic.table[1, 4]
+turbine2.Phic.table[2, 1]
+turbine2.Phic.table[2, 2]
+turbine2.Phic.table[2, 3]
+turbine2.Phic.table[2, 4]
+turbine2.Phic.table[3, 1]
+turbine2.Phic.table[3, 2]
+turbine2.Phic.table[3, 3]
+turbine2.Phic.table[3, 4]
+turbine2.Phic.table[4, 1]
+turbine2.Phic.table[4, 2]
+turbine2.Phic.table[4, 3]
+turbine2.Phic.table[4, 4]
+turbine2.Phic.table[5, 1]
+turbine2.Phic.table[5, 2]
+turbine2.Phic.table[5, 3]
+turbine2.Phic.table[5, 4]
+turbine2.Phic.verboseRead
+turbine2.Phic.smoothness
+turbine2.Phic.extrapolation
+turbine2.Phic.verboseExtrapolation
+turbine2.Phic.u_min[1]
+turbine2.Phic.u_min[2]
+turbine2.Phic.u_max[1]
+turbine2.Phic.u_max[2]
+turbine2.Phic.tableID.id
+turbine2.Eta.tableOnFile
+turbine2.Eta.table[1, 1]
+turbine2.Eta.table[1, 2]
+turbine2.Eta.table[1, 3]
+turbine2.Eta.table[1, 4]
+turbine2.Eta.table[2, 1]
+turbine2.Eta.table[2, 2]
+turbine2.Eta.table[2, 3]
+turbine2.Eta.table[2, 4]
+turbine2.Eta.table[3, 1]
+turbine2.Eta.table[3, 2]
+turbine2.Eta.table[3, 3]
+turbine2.Eta.table[3, 4]
+turbine2.Eta.table[4, 1]
+turbine2.Eta.table[4, 2]
+turbine2.Eta.table[4, 3]
+turbine2.Eta.table[4, 4]
+turbine2.Eta.table[5, 1]
+turbine2.Eta.table[5, 2]
+turbine2.Eta.table[5, 3]
+turbine2.Eta.table[5, 4]
+turbine2.Eta.verboseRead
+turbine2.Eta.smoothness
+turbine2.Eta.extrapolation
+turbine2.Eta.verboseExtrapolation
+turbine2.Eta.u_min[1]
+turbine2.Eta.u_min[2]
+turbine2.Eta.u_max[1]
+turbine2.Eta.u_max[2]
+turbine2.Eta.tableID.id
+Cavern.port.h_outflow
+Cavern.port.der(h_outflow)
+Cavern.V
+Cavern.energyDynamics
+Cavern.massDynamics
+Cavern.substanceDynamics
+Cavern.traceDynamics
+Cavern.p_start
+Cavern.use_T_start
+Cavern.T_start
+Cavern.h_start
+Cavern.X_start[1]
+Cavern.X_start[2]
+Cavern.X_start[3]
+Cavern.X_start[4]
+Cavern.medium.p
+Cavern.medium.der(p)
+Cavern.medium.d
+Cavern.medium.der(d)
+Cavern.medium.T
+Cavern.medium.der(T)
+Cavern.medium.X[1]
+Cavern.medium.der(X[1])
+Cavern.medium.X[2]
+Cavern.medium.der(X[2])
+Cavern.medium.X[3]
+Cavern.medium.der(X[3])
+Cavern.medium.X[4]
+Cavern.medium.der(X[4])
+Cavern.medium.u
+Cavern.medium.der(u)
+Cavern.medium.R_s
+Cavern.medium.der(R_s)
+Cavern.medium.MM
+Cavern.medium.preferredMediumStates
+Cavern.medium.standardOrderComponents
+Cavern.medium.T_degC
+Cavern.medium.p_bar
+Cavern.m
+Cavern.der(m)
+Cavern.U
+Cavern.der(U)
+Cavern.mXi[1]
+Cavern.mXi[2]
+Cavern.mXi[3]
+Cavern.mXi[4]
+Cavern.der(mXi[1])
+Cavern.der(mXi[2])
+Cavern.der(mXi[3])
+Cavern.der(mXi[4])
+Cavern.initialize_p
+Cavern.geometry.V
+Cavern.geometry.angle
+Cavern.geometry.dheight
+Cavern.geometry.height_a
+Cavern.geometry.height_b
+Cavern.g_n
+Cavern.use_HeatPort
+Cavern.Q_gen
+Cavern.use_TraceMassPort
+Cavern.showName
+Cavern.Q_flow_internal
+TurbValve.allowFlowReversal
+TurbValve.showDesignFlowDirection
+TurbValve.showName
+TurbValve.port_a.p
+TurbValve.port_a.h_outflow
+TurbValve.port_a.Xi_outflow[1]
+TurbValve.port_a.Xi_outflow[2]
+TurbValve.port_a.Xi_outflow[3]
+TurbValve.port_a.Xi_outflow[4]
+TurbValve.dp_start
+TurbValve.m_flow_start
+TurbValve.m_flow_small
+TurbValve.show_T
+TurbValve.show_V_flow
+TurbValve.dp
+TurbValve.V_flow
+TurbValve.port_a_T
+TurbValve.port_b_T
+TurbValve.state_a.T
+TurbValve.state_b.T
+TurbValve.dp_nominal
+TurbValve.m_flow_nominal
+TurbValve.k
+Sink.showName
+Sink.nPorts
+Sink.medium.p
+Sink.medium.Xi[1]
+Sink.medium.Xi[2]
+Sink.medium.Xi[3]
+Sink.medium.Xi[4]
+Sink.medium.d
+Sink.medium.T
+Sink.medium.X[1]
+Sink.medium.X[2]
+Sink.medium.X[3]
+Sink.medium.X[4]
+Sink.medium.u
+Sink.medium.R_s
+Sink.medium.MM
+Sink.medium.state.p
+Sink.medium.state.T
+Sink.medium.state.X[1]
+Sink.medium.state.X[2]
+Sink.medium.state.X[3]
+Sink.medium.state.X[4]
+Sink.medium.preferredMediumStates
+Sink.medium.standardOrderComponents
+Sink.medium.T_degC
+Sink.medium.p_bar
+Sink.ports[1].p
+Sink.ports[1].Xi_outflow[1]
+Sink.ports[1].Xi_outflow[2]
+Sink.ports[1].Xi_outflow[3]
+Sink.ports[1].Xi_outflow[4]
+Sink.flowDirection
+Sink.use_p_in
+Sink.use_T_in
+Sink.use_X_in
+Sink.use_C_in
+Sink.p
+Sink.T
+Sink.X[1]
+Sink.X[2]
+Sink.X[3]
+Sink.X[4]
+Sink.p_in_internal
+Sink.T_in_internal
+Sink.X_in_internal[1]
+Sink.X_in_internal[2]
+Sink.X_in_internal[3]
+Sink.X_in_internal[4]
+GridDemand.table[1, 1]
+GridDemand.table[1, 2]
+GridDemand.table[2, 1]
+GridDemand.table[2, 2]
+GridDemand.table[3, 1]
+GridDemand.table[3, 2]
+GridDemand.table[4, 1]
+GridDemand.table[4, 2]
+GridDemand.timeScale
+GridDemand.y
+GridDemand.offset
+GridDemand.startTime
+GridDemand.shiftTime
+GridDemand.a
+GridDemand.b
+GridDemand.last
+GridDemand.nextEvent
+GridDemand.nextEventScaled
+GridDemand.timeScaled
+PID.y
+PID.controlError
+PID.controllerType
+PID.with_FF
+PID.derMeas
+PID.k
+PID.Ti
+PID.Td
+PID.yb
+PID.k_s
+PID.k_m
+PID.k_ff
+PID.yMax
+PID.yMin
+PID.wp
+PID.wd
+PID.Ni
+PID.Nd
+PID.initType
+PID.xi_start
+PID.xd_start
+PID.y_start
+PID.strict
+PID.reset
+PID.y_reset
+PID.addP.u1
+PID.addP.u2
+PID.addP.y
+PID.addP.k1
+PID.addP.k2
+PID.P.k
+PID.P.y
+PID.gainPID.k
+PID.gainPID.u
+PID.gainPID.y
+PID.addPID.k1
+PID.addPID.k2
+PID.addPID.k3
+PID.limiter.uMax
+PID.limiter.uMin
+PID.limiter.strict
+PID.limiter.homotopyType
+PID.limiter.u
+PID.Fzero.k
+PID.addFF.k1
+PID.addFF.k2
+PID.addFF.k3
+PID.gain_u_s.k
+PID.gain_u_m.k
+PID.null_bias.k
+PID.unitTime
+PID.with_I
+PID.with_D
+PID.y_reset_internal
+convection.showName
+convection.R
+convection.surfaceArea
+convection.alpha
+fixedTemperature.T
+fixedTemperature.port.Q_flow
+min1.y
+delay1.Ti
+delay1.y
+delay1.der(y)
+CavernCheckValve.allowFlowReversal
+CavernCheckValve.showDesignFlowDirection
+CavernCheckValve.showName
+CavernCheckValve.R
+CavernCheckValve.checkValve
+CavernCheckValve.m_flow_start
+CavernCheckValve.dp
+CavernCheckValve.s
+conduction1.summary.T_effective
+conduction1.summary.T_max
+conduction1.summary.lambda_effective
+conduction1.figure
+conduction1.nVs[1]
+conduction1.energyDynamics
+conduction1.Ts_start[1]
+conduction1.Ts_start[2]
+conduction1.Ts_start[3]
+conduction1.ds_reference[1]
+conduction1.ds_reference[2]
+conduction1.ds_reference[3]
+conduction1.ms[1]
+conduction1.ms[2]
+conduction1.ms[3]
+conduction1.delta_ms[1]
+conduction1.delta_ms[2]
+conduction1.delta_ms[3]
+conduction1.Us[1]
+conduction1.Us[2]
+conduction1.Us[3]
+conduction1.der(Us[1])
+conduction1.der(Us[2])
+conduction1.der(Us[3])
+conduction1.T_a1_start
+conduction1.T_b1_start
+conduction1.nParallel
+conduction1.exposeState_a1
+conduction1.exposeState_b1
+conduction1.nFM_1
+conduction1.geometry.figure
+conduction1.geometry.ns[1]
+conduction1.geometry.n_total
+conduction1.geometry.closedDim_1
+conduction1.geometry.Vs[1]
+conduction1.geometry.Vs[2]
+conduction1.geometry.Vs[3]
+conduction1.geometry.crossAreas_1[1]
+conduction1.geometry.crossAreas_1[2]
+conduction1.geometry.crossAreas_1[3]
+conduction1.geometry.crossAreas_1[4]
+conduction1.geometry.dlengths_1[1]
+conduction1.geometry.dlengths_1[2]
+conduction1.geometry.dlengths_1[3]
+conduction1.geometry.V_total
+conduction1.geometry.surfaceAreas_2a[1]
+conduction1.geometry.surfaceAreas_2a[2]
+conduction1.geometry.surfaceAreas_2a[3]
+conduction1.geometry.surfaceAreas_2b[1]
+conduction1.geometry.surfaceAreas_2b[2]
+conduction1.geometry.surfaceAreas_2b[3]
+conduction1.geometry.surfaceAreas_3a[1]
+conduction1.geometry.surfaceAreas_3a[2]
+conduction1.geometry.surfaceAreas_3a[3]
+conduction1.geometry.surfaceAreas_3b[1]
+conduction1.geometry.surfaceAreas_3b[2]
+conduction1.geometry.surfaceAreas_3b[3]
+conduction1.geometry.surfaceAreas_2[1]
+conduction1.geometry.surfaceAreas_2[2]
+conduction1.geometry.surfaceAreas_2[3]
+conduction1.geometry.surfaceAreas_3[1]
+conduction1.geometry.surfaceAreas_3[2]
+conduction1.geometry.surfaceAreas_3[3]
+conduction1.geometry.surfaceAreas_23[1]
+conduction1.geometry.surfaceAreas_23[2]
+conduction1.geometry.surfaceAreas_23[3]
+conduction1.geometry.surfaceArea_total
+conduction1.geometry.cs_1[1]
+conduction1.geometry.cs_1[2]
+conduction1.geometry.cs_1[3]
+conduction1.geometry.nX
+conduction1.geometry.length_x
+conduction1.geometry.length_y
+conduction1.geometry.length_z
+conduction1.geometry.dxs[1]
+conduction1.geometry.dxs[2]
+conduction1.geometry.dxs[3]
+conduction1.geometry.dys[1]
+conduction1.geometry.dys[2]
+conduction1.geometry.dys[3]
+conduction1.geometry.dzs[1]
+conduction1.geometry.dzs[2]
+conduction1.geometry.dzs[3]
+conduction1.geometry.xs[1]
+conduction1.geometry.xs[2]
+conduction1.geometry.xs[3]
+conduction1.geometry.ys[1]
+conduction1.geometry.ys[2]
+conduction1.geometry.ys[3]
+conduction1.geometry.zs[1]
+conduction1.geometry.zs[2]
+conduction1.geometry.zs[3]
+conduction1.conductionModel.nVs[1]
+conduction1.conductionModel.nFM_1
+conduction1.conductionModel.lambdas_1[1]
+conduction1.conductionModel.lambdas_1[2]
+conduction1.conductionModel.lambdas_1[3]
+conduction1.conductionModel.lambdas_1[4]
+conduction1.internalHeatModel.nVs[1]
+conduction1.internalHeatModel.Q_flows[1]
+conduction1.internalHeatModel.Q_flows[2]
+conduction1.internalHeatModel.Q_flows[3]
+conduction1.internalHeatModel.Q_gen
+conduction1.internalHeatModel.Q_gens[1]
+conduction1.internalHeatModel.Q_gens[2]
+conduction1.internalHeatModel.Q_gens[3]
+conduction1.H_flows_1[1]
+conduction1.H_flows_1[2]
+conduction1.H_flows_1[3]
+conduction1.H_flows_1[4]
+conduction1.Q_flows_1[1]
+conduction1.Q_flows_1[2]
+conduction1.Q_flows_1[3]
+conduction1.Q_flows_1[4]
+conduction1.velocity_1
+conduction1.showName
+conduction1.lengths_1FM[1]
+conduction1.lengths_1FM[2]
+conduction1.lengths_1FM[3]
+teeJunctionIdeal.port_1.h_outflow
+teeJunctionIdeal.port_3.m_flow
+teeJunctionIdeal.port_3.h_outflow
+teeJunctionIdeal.port_3.Xi_outflow[1]
+teeJunctionIdeal.port_3.Xi_outflow[2]
+teeJunctionIdeal.port_3.Xi_outflow[3]
+teeJunctionIdeal.port_3.Xi_outflow[4]
+teeJunctionIdeal.portFlowDirection_1
+teeJunctionIdeal.portFlowDirection_2
+teeJunctionIdeal.portFlowDirection_3
+checkValve1.allowFlowReversal
+checkValve1.showDesignFlowDirection
+checkValve1.showName
+checkValve1.port_b.h_outflow
+checkValve1.port_b.der(h_outflow)
+checkValve1.R
+checkValve1.checkValve
+checkValve1.m_flow_start
+checkValve1.dp
+checkValve1.s
+boundary.showName
+boundary.nPorts
+boundary.medium.Xi[1]
+boundary.medium.Xi[2]
+boundary.medium.Xi[3]
+boundary.medium.Xi[4]
+boundary.medium.d
+boundary.medium.T
+boundary.medium.X[1]
+boundary.medium.X[2]
+boundary.medium.X[3]
+boundary.medium.X[4]
+boundary.medium.u
+boundary.medium.R_s
+boundary.medium.MM
+boundary.medium.state.T
+boundary.medium.state.X[1]
+boundary.medium.state.X[2]
+boundary.medium.state.X[3]
+boundary.medium.state.X[4]
+boundary.medium.preferredMediumStates
+boundary.medium.standardOrderComponents
+boundary.medium.T_degC
+boundary.medium.p_bar
+boundary.ports[1].m_flow
+boundary.ports[1].p
+boundary.ports[1].h_outflow
+boundary.ports[1].Xi_outflow[1]
+boundary.ports[1].Xi_outflow[2]
+boundary.ports[1].Xi_outflow[3]
+boundary.ports[1].Xi_outflow[4]
+boundary.flowDirection
+boundary.use_m_flow_in
+boundary.use_T_in
+boundary.use_X_in
+boundary.use_C_in
+boundary.m_flow
+boundary.T
+boundary.X[1]
+boundary.X[2]
+boundary.X[3]
+boundary.X[4]
+boundary.T_in_internal
+boundary.X_in_internal[1]
+boundary.X_in_internal[2]
+boundary.X_in_internal[3]
+boundary.X_in_internal[4]
+volume.V
+volume.energyDynamics
+volume.massDynamics
+volume.substanceDynamics
+volume.traceDynamics
+volume.p_start
+volume.use_T_start
+volume.T_start
+volume.h_start
+volume.X_start[1]
+volume.X_start[2]
+volume.X_start[3]
+volume.X_start[4]
+volume.medium.p
+volume.medium.der(p)
+volume.medium.d
+volume.medium.der(d)
+volume.medium.T
+volume.medium.der(T)
+volume.medium.X[1]
+volume.medium.der(X[1])
+volume.medium.X[2]
+volume.medium.der(X[2])
+volume.medium.X[3]
+volume.medium.der(X[3])
+volume.medium.X[4]
+volume.medium.der(X[4])
+volume.medium.u
+volume.medium.der(u)
+volume.medium.R_s
+volume.medium.der(R_s)
+volume.medium.MM
+volume.medium.preferredMediumStates
+volume.medium.standardOrderComponents
+volume.medium.T_degC
+volume.medium.p_bar
+volume.m
+volume.der(m)
+volume.U
+volume.der(U)
+volume.mXi[1]
+volume.mXi[2]
+volume.mXi[3]
+volume.mXi[4]
+volume.der(mXi[1])
+volume.der(mXi[2])
+volume.der(mXi[3])
+volume.der(mXi[4])
+volume.initialize_p
+volume.geometry.V
+volume.geometry.angle
+volume.geometry.dheight
+volume.geometry.height_a
+volume.geometry.height_b
+volume.g_n
+volume.use_HeatPort
+volume.Q_gen
+volume.use_TraceMassPort
+volume.showName
+volume.Q_flow_internal
+const.k
+const1.k
+switch1.u2
+switch1.y
+const2.k
+delay2.Ti
+delay2.y
+delay2.der(y)
+PID.I.u
+PID.I.y
+PID.I.der(y)
+PID.I.k
+PID.I.initType
+PID.I.y_start
+PID.I.reset
+PID.I.y_reset
+PID.I.y_reset_internal
+PID.I.trigger_internal
+PID.addI.k1
+PID.addI.k2
+PID.addI.k3
+PID.addI.u3
+PID.addSat.y
+PID.addSat.k1
+PID.addSat.k2
+PID.gainTrack.k
+PID.Dzero.k
+conduction1.materials[1].preferredMediumStates
+conduction1.materials[1].T
+conduction1.materials[1].der(T)
+conduction1.materials[1].h
+conduction1.materials[1].der(h)
+conduction1.materials[1].d
+conduction1.materials[1].MM
+conduction1.materials[2].preferredMediumStates
+conduction1.materials[2].T
+conduction1.materials[2].der(T)
+conduction1.materials[2].h
+conduction1.materials[2].der(h)
+conduction1.materials[2].d
+conduction1.materials[2].MM
+conduction1.materials[3].preferredMediumStates
+conduction1.materials[3].T
+conduction1.materials[3].der(T)
+conduction1.materials[3].h
+conduction1.materials[3].der(h)
+conduction1.materials[3].d
+conduction1.materials[3].MM
+conduction1.port_external[1].Q_flow
+conduction1.port_external[2].Q_flow
+conduction1.port_external[3].Q_flow
+
+double initialValue(933,6)
+ -1  1.0132500000000000E+05       0                 1.0000000000000000E+100
+  1   280   # system.p_ambient
+ -1  2.9314999999999998E+02       0                 1.0000000000000000E+100
+  1   280   # system.T_ambient
+ -1  9.8066499999999994E+00       0                       0                
+  1   280   # system.g
+  0       1                       0                       0                
+  6   257   # system.allowFlowReversal
+  0       1                       1                       4                
+  6   258   # system.energyDynamics
+  0       1                       1                       4                
+  6   258   # system.massDynamics
+  0       1                       1                       4                
+  6   258   # system.substanceDynamics
+  0       1                       1                       4                
+  6   258   # system.traceDynamics
+  0       4                       1                       4                
+  6   258   # system.momentumDynamics
+ -1       0                       0                       0                
+  1   280   # system.m_flow_start
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # system.p_start
+  0  2.8814999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # system.T_start
+  0       0                       0                       0                
+  6   257   # system.use_eps_Re
+  0       0                       0                       0                
+  6   256   # system.m_flow_nominal
+ -1  1.0000000000000000E-04       0                 1.0000000000000000E+100
+  1   280   # system.eps_m_flow
+ -1       1                       0                 1.0000000000000000E+100
+  1   280   # system.dp_small
+ -1  1.0000000000000000E-02       0                 1.0000000000000000E+100
+  1   280   # system.m_flow_small
+ -1       0                       0                       0                
+  2   272   # DischargeStopTrig
+  0       0                       0                       0                
+  3   256   # der(DischargeStopTrig)
+ -1       0                       0                       0                
+  2   272   # testtrig
+  0       0                       0                       0                
+  3   256   # der(testtrig)
+ -1       1                       0                       0                
+  1   280   # tablePhicT[1, 1]
+ -1      90                       0                       0                
+  1   280   # tablePhicT[1, 2]
+ -1     100                       0                       0                
+  1   280   # tablePhicT[1, 3]
+ -1     110                       0                       0                
+  1   280   # tablePhicT[1, 4]
+ -1  2.3599999999999999E+00       0                       0                
+  1   280   # tablePhicT[2, 1]
+ -1  4.6800000000000001E-03       0                       0                
+  1   280   # tablePhicT[2, 2]
+ -1  4.6800000000000001E-03       0                       0                
+  1   280   # tablePhicT[2, 3]
+ -1  4.6800000000000001E-03       0                       0                
+  1   280   # tablePhicT[2, 4]
+ -1  2.8799999999999999E+00       0                       0                
+  1   280   # tablePhicT[3, 1]
+ -1  4.6800000000000001E-03       0                       0                
+  1   280   # tablePhicT[3, 2]
+ -1  4.6800000000000001E-03       0                       0                
+  1   280   # tablePhicT[3, 3]
+ -1  4.6800000000000001E-03       0                       0                
+  1   280   # tablePhicT[3, 4]
+ -1  3.5600000000000001E+00       0                       0                
+  1   280   # tablePhicT[4, 1]
+ -1  4.6800000000000001E-03       0                       0                
+  1   280   # tablePhicT[4, 2]
+ -1  4.6800000000000001E-03       0                       0                
+  1   280   # tablePhicT[4, 3]
+ -1  4.6800000000000001E-03       0                       0                
+  1   280   # tablePhicT[4, 4]
+ -1  4.4600000000000000E+00       0                       0                
+  1   280   # tablePhicT[5, 1]
+ -1  4.6800000000000001E-03       0                       0                
+  1   280   # tablePhicT[5, 2]
+ -1  4.6800000000000001E-03       0                       0                
+  1   280   # tablePhicT[5, 3]
+ -1  4.6800000000000001E-03       0                       0                
+  1   280   # tablePhicT[5, 4]
+ -1       1                       0                       0                
+  1   280   # tableEtaT[1, 1]
+ -1      90                       0                       0                
+  1   280   # tableEtaT[1, 2]
+ -1     100                       0                       0                
+  1   280   # tableEtaT[1, 3]
+ -1     110                       0                       0                
+  1   280   # tableEtaT[1, 4]
+ -1  2.3599999999999999E+00       0                       0                
+  1   280   # tableEtaT[2, 1]
+ -1  8.9000000000000001E-01       0                       0                
+  1   280   # tableEtaT[2, 2]
+ -1  8.9500000000000002E-01       0                       0                
+  1   280   # tableEtaT[2, 3]
+ -1  8.9300000000000002E-01       0                       0                
+  1   280   # tableEtaT[2, 4]
+ -1  2.8799999999999999E+00       0                       0                
+  1   280   # tableEtaT[3, 1]
+ -1  9.0000000000000002E-01       0                       0                
+  1   280   # tableEtaT[3, 2]
+ -1  9.0600000000000003E-01       0                       0                
+  1   280   # tableEtaT[3, 3]
+ -1  9.0500000000000003E-01       0                       0                
+  1   280   # tableEtaT[3, 4]
+ -1  3.5600000000000001E+00       0                       0                
+  1   280   # tableEtaT[4, 1]
+ -1  9.0500000000000003E-01       0                       0                
+  1   280   # tableEtaT[4, 2]
+ -1  9.0600000000000003E-01       0                       0                
+  1   280   # tableEtaT[4, 3]
+ -1  9.0500000000000003E-01       0                       0                
+  1   280   # tableEtaT[4, 4]
+ -1  4.4600000000000000E+00       0                       0                
+  1   280   # tableEtaT[5, 1]
+ -1  9.0200000000000002E-01       0                       0                
+  1   280   # tableEtaT[5, 2]
+ -1  9.0300000000000002E-01       0                       0                
+  1   280   # tableEtaT[5, 3]
+ -1  9.0000000000000002E-01       0                       0                
+  1   280   # tableEtaT[5, 4]
+  0       1                       0                       0                
+  6   257   # turbine2.explicitIsentropicEnthalpy
+ -1  9.7999999999999998E-01       0                       0                
+  1   280   # turbine2.eta_mech
+ -1  3.7314999999999998E+02     200                    6000                
+  1   280   # turbine2.Tdes_in
+  0       1                       0                       0                
+  6   257   # turbine2.allowFlowReversal
+ -1  7.1000000000000000E+05       0                  1.0000000000000000E+08
+  1   280   # turbine2.pstart_in
+ -1  2.0000000000000000E+05       0                  1.0000000000000000E+08
+  1   280   # turbine2.pstart_out
+ -1  3.7314999999999998E+02     200                    6000                
+  1   280   # turbine2.Tstart_in
+ -1  3.2314999999999998E+02     200                    6000                
+  1   280   # turbine2.Tstart_out
+ -1  2.3000000000000001E-01       0                       1                
+  1   280   # turbine2.Xstart[1]
+ -1  1.4999999999999999E-02       0                       1                
+  1   280   # turbine2.Xstart[2]
+ -1  5.0000000000000001E-03       0                       1                
+  1   280   # turbine2.Xstart[3]
+ -1  7.5000000000000000E-01       0                       1                
+  1   280   # turbine2.Xstart[4]
+  0      10                       0                  100000                
+  6   256   # turbine2.gas_in.d
+  0     500                     200                    6000                
+  6   256   # turbine2.gas_in.T
+  0       0                       0                       1                
+  6   256   # turbine2.gas_in.X[1]
+  0       0                       0                       1                
+  6   256   # turbine2.gas_in.X[2]
+  0       0                       0                       1                
+  6   256   # turbine2.gas_in.X[3]
+  0       0                       0                       1                
+  6   256   # turbine2.gas_in.X[4]
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # turbine2.gas_in.u
+  0    1000                       0                  1.0000000000000000E+07
+  6   256   # turbine2.gas_in.R_s
+  0  3.2000000000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6   256   # turbine2.gas_in.MM
+  0       0                       0                       0                
+  6   257   # turbine2.gas_in.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # turbine2.gas_in.standardOrderComponents
+  0       0                       0                       0                
+  6   256   # turbine2.gas_in.T_degC
+  0       0                       0                       0                
+  6   256   # turbine2.gas_in.p_bar
+  0  3.1998800000000001E-02       0                 1.0000000000000000E+100
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.Hf
+  0  2.7126342237833922E+05       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.H0
+  0    1000                       0                 1.0000000000000000E+100
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.Tlimit
+  0 -3.4255634200000000E+04       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.alow[1]
+  0  4.8470009700000003E+02       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.alow[2]
+  0  1.1190109610000001E+00       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.alow[3]
+  0  4.2938892400000003E-03       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.alow[4]
+  0 -6.8363005199999996E-07       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.alow[5]
+  0 -2.0233726999999998E-09       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.alow[6]
+  0  1.0390400180000000E-12       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.alow[7]
+  0 -3.3914548700000000E+03       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.blow[1]
+  0  1.8496994699999998E+01       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.blow[2]
+  0 -1.0379390220000000E+06       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.ahigh[1]
+  0  2.3448302819999999E+03       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.ahigh[2]
+  0  1.8197320360000000E+00       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.ahigh[3]
+  0  1.2678475820000000E-03       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.ahigh[4]
+  0 -2.1880679880000000E-07       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.ahigh[5]
+  0  2.0537195720000000E-11       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.ahigh[6]
+  0 -8.1934670500000009E-16       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.ahigh[7]
+  0 -1.6890109290000000E+04       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.bhigh[1]
+  0  1.7387165060000001E+01       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.bhigh[2]
+  0  2.5983699388727081E+02       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.O2.R_s
+  0  1.8015280000000002E-02       0                 1.0000000000000000E+100
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.MM
+  0 -1.3423382817252910E+07       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.Hf
+  0  5.4976064762801351E+05       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.H0
+  0    1000                       0                 1.0000000000000000E+100
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.Tlimit
+  0 -3.9479608300000000E+04       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.alow[1]
+  0  5.7557310199999995E+02       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.alow[2]
+  0  9.3178265299999996E-01       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.alow[3]
+  0  7.2227128600000001E-03       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.alow[4]
+  0 -7.3425573700000000E-06       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.alow[5]
+  0  4.9550434900000003E-09       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.alow[6]
+  0 -1.3369332460000000E-12       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.alow[7]
+  0 -3.3039743100000000E+04       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.blow[1]
+  0  1.7242057750000001E+01       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.blow[2]
+  0  1.0349720960000000E+06       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.ahigh[1]
+  0 -2.4126985620000000E+03       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.ahigh[2]
+  0  4.6461107799999999E+00       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.ahigh[3]
+  0  2.2919983070000000E-03       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.ahigh[4]
+  0 -6.8368304799999993E-07       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.ahigh[5]
+  0  9.4264689300000008E-11       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.ahigh[6]
+  0 -4.8223805300000000E-15       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.ahigh[7]
+  0 -1.3842865089999999E+04       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.bhigh[1]
+  0 -7.9781485099999996E+00       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.bhigh[2]
+  0  4.6152332908508782E+02       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.H2O.R_s
+  0  3.9947999999999997E-02       0                 1.0000000000000000E+100
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.MM
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.Hf
+  0  1.5513737859216981E+05       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.H0
+  0    1000                       0                 1.0000000000000000E+100
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.Tlimit
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.alow[1]
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.alow[2]
+  0  2.5000000000000000E+00       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.alow[3]
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.alow[4]
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.alow[5]
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.alow[6]
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.alow[7]
+  0 -7.4537500000000000E+02       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.blow[1]
+  0  4.3796749100000003E+00       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.blow[2]
+  0  2.0105384749999999E+01       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.ahigh[1]
+  0 -5.9926610699999987E-02       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.ahigh[2]
+  0  2.5000694010000002E+00       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.ahigh[3]
+  0 -3.9921411600000003E-08       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.ahigh[4]
+  0  1.2052721400000000E-11       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.ahigh[5]
+  0 -1.8190155760000001E-15       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.ahigh[6]
+  0  1.0785766360000000E-19       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.ahigh[7]
+  0 -7.4499396100000001E+02       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.bhigh[1]
+  0  4.3791801100000001E+00       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.bhigh[2]
+  0  2.0813237208370879E+02       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.Ar.R_s
+  0  2.8013400000000001E-02       0                 1.0000000000000000E+100
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.Hf
+  0  3.0949845431115112E+05       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.H0
+  0    1000                       0                 1.0000000000000000E+100
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.Tlimit
+  0  2.2103714970000001E+04       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.alow[1]
+  0 -3.8184618200000000E+02       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.alow[2]
+  0  6.0827383599999996E+00       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.alow[3]
+  0 -8.5309144099999998E-03       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.alow[4]
+  0  1.3846461890000000E-05       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.alow[5]
+  0 -9.6257936199999997E-09       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.alow[6]
+  0  2.5197058090000001E-12       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.alow[7]
+  0  7.1084608600000001E+02       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.blow[1]
+  0 -1.0760037440000000E+01       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.blow[2]
+  0  5.8771240599999996E+05       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.ahigh[1]
+  0 -2.2392490730000000E+03       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.ahigh[2]
+  0  6.0669492199999997E+00       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.ahigh[3]
+  0 -6.1396854999999997E-04       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.ahigh[4]
+  0  1.4918066790000001E-07       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.ahigh[5]
+  0 -1.9231054850000001E-11       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.ahigh[6]
+  0  1.0619543859999999E-15       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.ahigh[7]
+  0  1.2832104149999999E+04       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.bhigh[1]
+  0 -1.5866400270000000E+01       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.bhigh[2]
+  0  2.9680338695053081E+02       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.IdealGases.Common.SingleGasesData.N2.R_s
+  0  3.1998800000000001E-02       0                 1.0000000000000000E+100
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].MM
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].Hf
+  0  2.7126342237833922E+05       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].H0
+  0    1000                       0                 1.0000000000000000E+100
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].Tlimit
+  0 -3.4255634200000000E+04       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].alow[1]
+  0  4.8470009700000003E+02       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].alow[2]
+  0  1.1190109610000001E+00       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].alow[3]
+  0  4.2938892400000003E-03       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].alow[4]
+  0 -6.8363005199999996E-07       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].alow[5]
+  0 -2.0233726999999998E-09       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].alow[6]
+  0  1.0390400180000000E-12       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].alow[7]
+  0 -3.3914548700000000E+03       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].blow[1]
+  0  1.8496994699999998E+01       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].blow[2]
+  0 -1.0379390220000000E+06       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].ahigh[1]
+  0  2.3448302819999999E+03       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].ahigh[2]
+  0  1.8197320360000000E+00       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].ahigh[3]
+  0  1.2678475820000000E-03       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].ahigh[4]
+  0 -2.1880679880000000E-07       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].ahigh[5]
+  0  2.0537195720000000E-11       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].ahigh[6]
+  0 -8.1934670500000009E-16       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].ahigh[7]
+  0 -1.6890109290000000E+04       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].bhigh[1]
+  0  1.7387165060000001E+01       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].bhigh[2]
+  0  2.5983699388727081E+02       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[1].R_s
+  0  1.8015280000000002E-02       0                 1.0000000000000000E+100
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].MM
+  0 -1.3423382817252910E+07       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].Hf
+  0  5.4976064762801351E+05       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].H0
+  0    1000                       0                 1.0000000000000000E+100
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].Tlimit
+  0 -3.9479608300000000E+04       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].alow[1]
+  0  5.7557310199999995E+02       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].alow[2]
+  0  9.3178265299999996E-01       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].alow[3]
+  0  7.2227128600000001E-03       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].alow[4]
+  0 -7.3425573700000000E-06       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].alow[5]
+  0  4.9550434900000003E-09       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].alow[6]
+  0 -1.3369332460000000E-12       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].alow[7]
+  0 -3.3039743100000000E+04       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].blow[1]
+  0  1.7242057750000001E+01       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].blow[2]
+  0  1.0349720960000000E+06       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].ahigh[1]
+  0 -2.4126985620000000E+03       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].ahigh[2]
+  0  4.6461107799999999E+00       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].ahigh[3]
+  0  2.2919983070000000E-03       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].ahigh[4]
+  0 -6.8368304799999993E-07       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].ahigh[5]
+  0  9.4264689300000008E-11       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].ahigh[6]
+  0 -4.8223805300000000E-15       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].ahigh[7]
+  0 -1.3842865089999999E+04       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].bhigh[1]
+  0 -7.9781485099999996E+00       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].bhigh[2]
+  0  4.6152332908508782E+02       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[2].R_s
+  0  3.9947999999999997E-02       0                 1.0000000000000000E+100
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].MM
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].Hf
+  0  1.5513737859216981E+05       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].H0
+  0    1000                       0                 1.0000000000000000E+100
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].Tlimit
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].alow[1]
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].alow[2]
+  0  2.5000000000000000E+00       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].alow[3]
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].alow[4]
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].alow[5]
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].alow[6]
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].alow[7]
+  0 -7.4537500000000000E+02       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].blow[1]
+  0  4.3796749100000003E+00       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].blow[2]
+  0  2.0105384749999999E+01       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].ahigh[1]
+  0 -5.9926610699999987E-02       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].ahigh[2]
+  0  2.5000694010000002E+00       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].ahigh[3]
+  0 -3.9921411600000003E-08       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].ahigh[4]
+  0  1.2052721400000000E-11       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].ahigh[5]
+  0 -1.8190155760000001E-15       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].ahigh[6]
+  0  1.0785766360000000E-19       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].ahigh[7]
+  0 -7.4499396100000001E+02       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].bhigh[1]
+  0  4.3791801100000001E+00       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].bhigh[2]
+  0  2.0813237208370879E+02       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[3].R_s
+  0  2.8013400000000001E-02       0                 1.0000000000000000E+100
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].MM
+  0       0                       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].Hf
+  0  3.0949845431115112E+05       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].H0
+  0    1000                       0                 1.0000000000000000E+100
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].Tlimit
+  0  2.2103714970000001E+04       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].alow[1]
+  0 -3.8184618200000000E+02       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].alow[2]
+  0  6.0827383599999996E+00       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].alow[3]
+  0 -8.5309144099999998E-03       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].alow[4]
+  0  1.3846461890000000E-05       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].alow[5]
+  0 -9.6257936199999997E-09       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].alow[6]
+  0  2.5197058090000001E-12       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].alow[7]
+  0  7.1084608600000001E+02       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].blow[1]
+  0 -1.0760037440000000E+01       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].blow[2]
+  0  5.8771240599999996E+05       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].ahigh[1]
+  0 -2.2392490730000000E+03       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].ahigh[2]
+  0  6.0669492199999997E+00       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].ahigh[3]
+  0 -6.1396854999999997E-04       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].ahigh[4]
+  0  1.4918066790000001E-07       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].ahigh[5]
+  0 -1.9231054850000001E-11       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].ahigh[6]
+  0  1.0619543859999999E-15       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].ahigh[7]
+  0  1.2832104149999999E+04       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].bhigh[1]
+  0 -1.5866400270000000E+01       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].bhigh[2]
+  0  2.9680338695053081E+02       0                       0                
+  6  1280   # _GlobalScope.NHES.Media.Air.data[4].R_s
+  0  100000                       0                 1.0000000000000000E+100
+  6   256   # turbine2.gas_iso.p
+  0       0                       0                       0                
+  6   256   # turbine2.gas_iso.h
+  0      10                       0                  100000                
+  6   256   # turbine2.gas_iso.d
+  0     300                     200                    6000                
+  6   256   # turbine2.gas_iso.T
+  0  2.3000000000000001E-01       0                       1                
+  6   256   # turbine2.gas_iso.X[1]
+  0  1.4999999999999999E-02       0                       1                
+  6   256   # turbine2.gas_iso.X[2]
+  0  5.0000000000000001E-03       0                       1                
+  6   256   # turbine2.gas_iso.X[3]
+  0  7.5000000000000000E-01       0                       1                
+  6   256   # turbine2.gas_iso.X[4]
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # turbine2.gas_iso.u
+  0    1000                       0                  1.0000000000000000E+07
+  6   256   # turbine2.gas_iso.R_s
+  0  3.2000000000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6   256   # turbine2.gas_iso.MM
+  0  100000                       0                  1.0000000000000000E+08
+  6   256   # turbine2.gas_iso.state.p
+  0     300                     200                    6000                
+  6   256   # turbine2.gas_iso.state.T
+  0       0                       0                       0                
+  6   257   # turbine2.gas_iso.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # turbine2.gas_iso.standardOrderComponents
+  0  2.6850000000000023E+01       0                       0                
+  6   256   # turbine2.gas_iso.T_degC
+  0       1                       0                       0                
+  6   256   # turbine2.gas_iso.p_bar
+ -1       0                       0                       0                
+  2   280   # turbine2.phi
+  0       0                       0                       0                
+  3   256   # turbine2.der(phi)
+  0       0                       0                       0                
+  6   256   # turbine2.tau
+  0       0                 -100000                  100000                
+  6   256   # turbine2.w
+  0       0                 -1.0000000000000000E+07  1.0000000000000000E+07
+  6   256   # turbine2.s_in
+  0       0                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   256   # turbine2.hout_iso
+  0       0                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   256   # turbine2.hout
+  0  100000                       0                  1.0000000000000000E+08
+  6   256   # turbine2.pout
+  0       0                       0                       0                
+  6   256   # turbine2.PR
+  0       0                       0                       0                
+  6   256   # turbine2.eta
+  0       0                       0                       0                
+  6   256   # turbine2.TurbPower
+  0       0                       0                       0                
+  6   388   # turbine2.shaft_a.tau
+  0       0                       0                       0                
+  6   388   # turbine2.shaft_b.tau
+  0       0                       0                  1.0000000000000000E+08
+  6   260   # turbine2.inlet.p
+  0       0                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # turbine2.inlet.h_outflow
+  0  2.3000000000000001E-01       0                       1                
+  6   260   # turbine2.inlet.Xi_outflow[1]
+  0  1.4999999999999999E-02       0                       1                
+  6   260   # turbine2.inlet.Xi_outflow[2]
+  0  5.0000000000000001E-03       0                       1                
+  6   260   # turbine2.inlet.Xi_outflow[3]
+  0  7.5000000000000000E-01       0                       1                
+  6   260   # turbine2.inlet.Xi_outflow[4]
+  0  100000                       0                  1.0000000000000000E+08
+  6   260   # turbine2.outlet.p
+ -1  1.5708000000000001E+02       0                       0                
+  1   280   # turbine2.Ndesign
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[1, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[1, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[1, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[1, 4]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[2, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[2, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[2, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[2, 4]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[3, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[3, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[3, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[3, 4]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[4, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[4, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[4, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[4, 4]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[5, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[5, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[5, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.tablePhic[5, 4]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[1, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[1, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[1, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[1, 4]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[2, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[2, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[2, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[2, 4]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[3, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[3, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[3, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[3, 4]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[4, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[4, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[4, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[4, 4]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[5, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[5, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[5, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.tableEta[5, 4]
+  0       1                       1                       2                
+  6   258   # turbine2.Table
+  0       0                       0                       0                
+  6   288   # turbine2.N_T
+  0       0                       0                       0                
+  6   256   # turbine2.N_T_design
+  0       0                       0                       0                
+  6   256   # turbine2.phic
+  0       0                       0                       0                
+  6   257   # turbine2.Phic.tableOnFile
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[1, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[1, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[1, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[1, 4]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[2, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[2, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[2, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[2, 4]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[3, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[3, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[3, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[3, 4]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[4, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[4, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[4, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[4, 4]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[5, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[5, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[5, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.table[5, 4]
+ -1       1                       0                       0                
+  1   281   # turbine2.Phic.verboseRead
+  0       2                       1                       6                
+  6   258   # turbine2.Phic.smoothness
+  0       2                       1                       4                
+  6   258   # turbine2.Phic.extrapolation
+  0       0                       0                       0                
+  6   257   # turbine2.Phic.verboseExtrapolation
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.u_min[1]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.u_min[2]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.u_max[1]
+  0       0                       0                       0                
+  6   256   # turbine2.Phic.u_max[2]
+  0       0                       0                       0                
+  6  1282   # turbine2.Phic.tableID.id
+  0       0                       0                       0                
+  6   257   # turbine2.Eta.tableOnFile
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[1, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[1, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[1, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[1, 4]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[2, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[2, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[2, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[2, 4]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[3, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[3, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[3, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[3, 4]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[4, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[4, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[4, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[4, 4]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[5, 1]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[5, 2]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[5, 3]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.table[5, 4]
+ -1       1                       0                       0                
+  1   281   # turbine2.Eta.verboseRead
+  0       2                       1                       6                
+  6   258   # turbine2.Eta.smoothness
+  0       2                       1                       4                
+  6   258   # turbine2.Eta.extrapolation
+  0       0                       0                       0                
+  6   257   # turbine2.Eta.verboseExtrapolation
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.u_min[1]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.u_min[2]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.u_max[1]
+  0       0                       0                       0                
+  6   256   # turbine2.Eta.u_max[2]
+  0       0                       0                       0                
+  6  1282   # turbine2.Eta.tableID.id
+  0       0                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # Cavern.port.h_outflow
+  0       0                       0                       0                
+  6   260   # Cavern.port.der(h_outflow)
+  0  1.0000000000000000E+06       0                 1.0000000000000000E+100
+  6   256   # Cavern.V
+  0       1                       1                       4                
+  6   258   # Cavern.energyDynamics
+  0       1                       1                       4                
+  6   258   # Cavern.massDynamics
+  0       1                       1                       4                
+  6   258   # Cavern.substanceDynamics
+  0       1                       1                       4                
+  6   258   # Cavern.traceDynamics
+ -1  2.5370000000000000E+06       0                 1.0000000000000000E+100
+  1   280   # Cavern.p_start
+  0       1                       0                       0                
+  6   257   # Cavern.use_T_start
+  0  3.6835000000000002E+02       0                 1.0000000000000000E+100
+  6   256   # Cavern.T_start
+  0       0                       0                       0                
+  6   256   # Cavern.h_start
+ -1  2.3000000000000001E-01       0                       1                
+  1   280   # Cavern.X_start[1]
+ -1  1.4999999999999999E-02       0                       1                
+  1   280   # Cavern.X_start[2]
+ -1  5.0000000000000001E-03       0                       1                
+  1   280   # Cavern.X_start[3]
+ -1  7.5000000000000000E-01       0                       1                
+  1   280   # Cavern.X_start[4]
+ -1       0                       0                  1.0000000000000000E+08
+  2   272   # Cavern.medium.p
+  0       0                       0                       0                
+  3   256   # Cavern.medium.der(p)
+  0       0                       0                  100000                
+  6   256   # Cavern.medium.d
+  0       0                       0                       0                
+  6   256   # Cavern.medium.der(d)
+ -1  3.6835000000000002E+02     200                    6000                
+  2   280   # Cavern.medium.T
+  0       0                       0                       0                
+  3   256   # Cavern.medium.der(T)
+ -1       0                       0                       1                
+  2   272   # Cavern.medium.X[1]
+  0       0                       0                       0                
+  3   256   # Cavern.medium.der(X[1])
+ -1       0                       0                       1                
+  2   272   # Cavern.medium.X[2]
+  0       0                       0                       0                
+  3   256   # Cavern.medium.der(X[2])
+ -1       0                       0                       1                
+  2   272   # Cavern.medium.X[3]
+  0       0                       0                       0                
+  3   256   # Cavern.medium.der(X[3])
+ -1       0                       0                       1                
+  2   272   # Cavern.medium.X[4]
+  0       0                       0                       0                
+  3   256   # Cavern.medium.der(X[4])
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # Cavern.medium.u
+  0       0                       0                       0                
+  6   256   # Cavern.medium.der(u)
+  0    1000                       0                  1.0000000000000000E+07
+  6   256   # Cavern.medium.R_s
+  0       0                       0                       0                
+  6   256   # Cavern.medium.der(R_s)
+  0  3.2000000000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6   256   # Cavern.medium.MM
+  0       1                       0                       0                
+  6   257   # Cavern.medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # Cavern.medium.standardOrderComponents
+  0       0                       0                       0                
+  6   256   # Cavern.medium.T_degC
+  0       0                       0                       0                
+  6   256   # Cavern.medium.p_bar
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # Cavern.m
+  0       0                 -100000                  100000                
+  6   256   # Cavern.der(m)
+  0       0                       0                       0                
+  6   256   # Cavern.U
+  0       0                       0                       0                
+  6   256   # Cavern.der(U)
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # Cavern.mXi[1]
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # Cavern.mXi[2]
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # Cavern.mXi[3]
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # Cavern.mXi[4]
+  0       0                       0                       0                
+  6   256   # Cavern.der(mXi[1])
+  0       0                       0                       0                
+  6   256   # Cavern.der(mXi[2])
+  0       0                       0                       0                
+  6   256   # Cavern.der(mXi[3])
+  0       0                       0                       0                
+  6   256   # Cavern.der(mXi[4])
+ -1       1                       0                       0                
+  1  1305   # Cavern.initialize_p
+  0  1.0000000000000000E+06       0                       0                
+  6   256   # Cavern.geometry.V
+  0       0                 -1.5807963267948966E+00  1.5807963267948966E+00
+  6   256   # Cavern.geometry.angle
+  0       0                       0                       0                
+  6   256   # Cavern.geometry.dheight
+  0       0                       0                       0                
+  6   256   # Cavern.geometry.height_a
+  0       0                       0                       0                
+  6   256   # Cavern.geometry.height_b
+  0  9.8066499999999994E+00       0                       0                
+  6   256   # Cavern.g_n
+  0       1                       0                       0                
+  6   257   # Cavern.use_HeatPort
+  0       0                       0                       0                
+  6   256   # Cavern.Q_gen
+  0       0                       0                       0                
+  6   257   # Cavern.use_TraceMassPort
+ -1       1                       0                       0                
+  1   281   # Cavern.showName
+  0       0                       0                       0                
+  6  1280   # Cavern.Q_flow_internal
+  0       1                       0                       0                
+  6   257   # TurbValve.allowFlowReversal
+ -1       1                       0                       0                
+  1   281   # TurbValve.showDesignFlowDirection
+ -1       1                       0                       0                
+  1   281   # TurbValve.showName
+  0  1.0000000000000000E+06       0                  1.0000000000000000E+08
+  6   260   # TurbValve.port_a.p
+  0       0                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # TurbValve.port_a.h_outflow
+  0  2.3000000000000001E-01       0                       1                
+  6   260   # TurbValve.port_a.Xi_outflow[1]
+  0  1.4999999999999999E-02       0                       1                
+  6   260   # TurbValve.port_a.Xi_outflow[2]
+  0  5.0000000000000001E-03       0                       1                
+  6   260   # TurbValve.port_a.Xi_outflow[3]
+  0  7.5000000000000000E-01       0                       1                
+  6   260   # TurbValve.port_a.Xi_outflow[4]
+ -1  1.0000000000000001E-05 -9.9999999999999995E+59  1.0000000000000000E+08
+  1   280   # TurbValve.dp_start
+ -1       0                 -100000                  100000                
+  1   280   # TurbValve.m_flow_start
+ -1  1.0000000000000000E-02 -100000                  100000                
+  1   280   # TurbValve.m_flow_small
+  0       1                       0                       0                
+  6   257   # TurbValve.show_T
+  0       1                       0                       0                
+  6   257   # TurbValve.show_V_flow
+  0       0                       0                       0                
+  6   256   # TurbValve.dp
+  0       0                       0                       0                
+  6   256   # TurbValve.V_flow
+  0     500                     200                    6000                
+  6   256   # TurbValve.port_a_T
+  0     500                     200                    6000                
+  6   256   # TurbValve.port_b_T
+  0     500                     200                    6000                
+  6  1280   # TurbValve.state_a.T
+  0     500                     200                    6000                
+  6  1280   # TurbValve.state_b.T
+ -1    1000                       0                 1.0000000000000000E+100
+  1   280   # TurbValve.dp_nominal
+ -1       1                 -100000                  100000                
+  1   280   # TurbValve.m_flow_nominal
+  0       0                       0                       0                
+  6   256   # TurbValve.k
+ -1       1                       0                       0                
+  1   281   # Sink.showName
+  0       1                       0                       0                
+  6   258   # Sink.nPorts
+  0  100000                       0                 1.0000000000000000E+100
+  6   256   # Sink.medium.p
+  0  2.3000000000000001E-01       0                       1                
+  6   256   # Sink.medium.Xi[1]
+  0  1.4999999999999999E-02       0                       1                
+  6   256   # Sink.medium.Xi[2]
+  0  5.0000000000000001E-03       0                       1                
+  6   256   # Sink.medium.Xi[3]
+  0  7.5000000000000000E-01       0                       1                
+  6   256   # Sink.medium.Xi[4]
+  0  1.0658745160132588E+00       0                  100000                
+  6   256   # Sink.medium.d
+  0  3.2314999999999998E+02     200                    6000                
+  6   256   # Sink.medium.T
+  0  2.3000000000000001E-01       0                       1                
+  6   256   # Sink.medium.X[1]
+  0  1.4999999999999999E-02       0                       1                
+  6   256   # Sink.medium.X[2]
+  0  5.0000000000000001E-03       0                       1                
+  6   256   # Sink.medium.X[3]
+  0  7.5000000000000000E-01       0                       1                
+  6   256   # Sink.medium.X[4]
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # Sink.medium.u
+  0  2.9032856060366527E+02       0                  1.0000000000000000E+07
+  6   256   # Sink.medium.R_s
+  0  2.8638147010794070E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6   256   # Sink.medium.MM
+  0  100000                       0                  1.0000000000000000E+08
+  6   256   # Sink.medium.state.p
+  0  3.2314999999999998E+02     200                    6000                
+  6   256   # Sink.medium.state.T
+  0  2.3000000000000001E-01       0                       1                
+  6   256   # Sink.medium.state.X[1]
+  0  1.4999999999999999E-02       0                       1                
+  6   256   # Sink.medium.state.X[2]
+  0  5.0000000000000001E-03       0                       1                
+  6   256   # Sink.medium.state.X[3]
+  0  7.5000000000000000E-01       0                       1                
+  6   256   # Sink.medium.state.X[4]
+  0       0                       0                       0                
+  6   257   # Sink.medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # Sink.medium.standardOrderComponents
+  0      50                       0                       0                
+  6   256   # Sink.medium.T_degC
+  0       1                       0                       0                
+  6   256   # Sink.medium.p_bar
+  0  100000                       0                  1.0000000000000000E+08
+  6   260   # Sink.ports[1].p
+  0  2.3000000000000001E-01       0                       1                
+  6   260   # Sink.ports[1].Xi_outflow[1]
+  0  1.4999999999999999E-02       0                       1                
+  6   260   # Sink.ports[1].Xi_outflow[2]
+  0  5.0000000000000001E-03       0                       1                
+  6   260   # Sink.ports[1].Xi_outflow[3]
+  0  7.5000000000000000E-01       0                       1                
+  6   260   # Sink.ports[1].Xi_outflow[4]
+  0       3                       1                       3                
+  6  1282   # Sink.flowDirection
+  0       0                       0                       0                
+  6   769   # Sink.use_p_in
+  0       0                       0                       0                
+  6   769   # Sink.use_T_in
+  0       0                       0                       0                
+  6   769   # Sink.use_X_in
+  0       0                       0                       0                
+  6   769   # Sink.use_C_in
+  0  100000                       0                  1.0000000000000000E+08
+  6   256   # Sink.p
+  0  3.2314999999999998E+02     200                    6000                
+  6   256   # Sink.T
+  0  2.3000000000000001E-01       0                       1                
+  6   256   # Sink.X[1]
+  0  1.4999999999999999E-02       0                       1                
+  6   256   # Sink.X[2]
+  0  5.0000000000000001E-03       0                       1                
+  6   256   # Sink.X[3]
+  0  7.5000000000000000E-01       0                       1                
+  6   256   # Sink.X[4]
+  0  100000                       0                       0                
+  6  1280   # Sink.p_in_internal
+  0  3.2314999999999998E+02       0                       0                
+  6  1280   # Sink.T_in_internal
+  0  2.3000000000000001E-01       0                       0                
+  6  1280   # Sink.X_in_internal[1]
+  0  1.4999999999999999E-02       0                       0                
+  6  1280   # Sink.X_in_internal[2]
+  0  5.0000000000000001E-03       0                       0                
+  6  1280   # Sink.X_in_internal[3]
+  0  7.5000000000000000E-01       0                       0                
+  6  1280   # Sink.X_in_internal[4]
+ -1       0                       0                       0                
+  1   280   # GridDemand.table[1, 1]
+ -1  5.0000000000000000E+07       0                       0                
+  1   280   # GridDemand.table[1, 2]
+ -1       1                       0                       0                
+  1   280   # GridDemand.table[2, 1]
+ -1  5.0000000000000000E+07       0                       0                
+  1   280   # GridDemand.table[2, 2]
+ -1       2                       0                       0                
+  1   280   # GridDemand.table[3, 1]
+ -1  5.0000000000000000E+07       0                       0                
+  1   280   # GridDemand.table[3, 2]
+ -1       3                       0                       0                
+  1   280   # GridDemand.table[4, 1]
+ -1  5.0000000000000000E+07       0                       0                
+  1   280   # GridDemand.table[4, 2]
+  0    3600                  1.0000000000000001E-15 1.0000000000000000E+100
+  6   256   # GridDemand.timeScale
+  0       0                       0                       0                
+  6   256   # GridDemand.y
+ -1       0                       0                       0                
+  1   280   # GridDemand.offset
+ -1       0                       0                       0                
+  1   280   # GridDemand.startTime
+  0       0                       0                       0                
+  6   256   # GridDemand.shiftTime
+  0       0                       0                       0                
+  6  1344   # GridDemand.a
+  0       0                       0                       0                
+  6  1344   # GridDemand.b
+  0       1                       0                       0                
+  6  1346   # GridDemand.last
+  0       0                       0                       0                
+  6  1352   # GridDemand.nextEvent
+  0       0                       0                       0                
+  6  1344   # GridDemand.nextEventScaled
+  0       0                       0                       0                
+  6  1280   # GridDemand.timeScaled
+  0       0                       0                       0                
+  6   256   # PID.y
+  0       0                       0                       0                
+  6   256   # PID.controlError
+  0       2                       1                       4                
+  6   258   # PID.controllerType
+  0       0                       0                       0                
+  6   257   # PID.with_FF
+  0       1                       0                       0                
+  6   257   # PID.derMeas
+ -1  1.0000000000000001E-09       0                       0                
+  1   280   # PID.k
+ -1  5.0000000000000000E-01  9.9999999999999997E-61 1.0000000000000000E+100
+  1   280   # PID.Ti
+ -1  1.0000000000000001E-01       0                 1.0000000000000000E+100
+  1   280   # PID.Td
+ -1       0                       0                       0                
+  1   280   # PID.yb
+ -1       1                       0                       0                
+  1   280   # PID.k_s
+ -1       1                       0                       0                
+  1   280   # PID.k_m
+ -1       1                       0                       0                
+  1   280   # PID.k_ff
+ -1       1                       0                       0                
+  1   280   # PID.yMax
+ -1  1.0000000000000001E-05       0                       0                
+  1   280   # PID.yMin
+ -1       1                       0                 1.0000000000000000E+100
+  1   280   # PID.wp
+ -1       0                       0                 1.0000000000000000E+100
+  1   280   # PID.wd
+ -1  9.0000000000000002E-01  1.0000000000000000E-13 1.0000000000000000E+100
+  1   280   # PID.Ni
+ -1      10                  1.0000000000000000E-13 1.0000000000000000E+100
+  1   280   # PID.Nd
+  0       1                       1                       4                
+  6   258   # PID.initType
+  0       0                       0                       0                
+  6   256   # PID.xi_start
+ -1       0                       0                       0                
+  1   280   # PID.xd_start
+ -1       0                       0                       0                
+  1   280   # PID.y_start
+  0       0                       0                       0                
+  6   257   # PID.strict
+  0       1                       1                       3                
+  6   258   # PID.reset
+  0       0                       0                       0                
+  6   256   # PID.y_reset
+  0       0                       0                       0                
+  6   256   # PID.addP.u1
+  0       0                       0                       0                
+  6   256   # PID.addP.u2
+  0       0                       0                       0                
+  6   256   # PID.addP.y
+  0       0                       0                       0                
+  6   256   # PID.addP.k1
+ -1      -1                       0                       0                
+  1   280   # PID.addP.k2
+ -1       1                       0                       0                
+  1   280   # PID.P.k
+  0       0                       0                       0                
+  6   256   # PID.P.y
+  0       1                       0                       0                
+  6   256   # PID.gainPID.k
+  0       0                       0                       0                
+  6   256   # PID.gainPID.u
+  0       0                       0                       0                
+  6   256   # PID.gainPID.y
+ -1       1                       0                       0                
+  1   280   # PID.addPID.k1
+ -1       1                       0                       0                
+  1   280   # PID.addPID.k2
+ -1       1                       0                       0                
+  1   280   # PID.addPID.k3
+  0       1                       0                       0                
+  6   256   # PID.limiter.uMax
+  0       0                       0                       0                
+  6   256   # PID.limiter.uMin
+  0       0                       0                       0                
+  6   257   # PID.limiter.strict
+  0       2                       1                       4                
+  6   258   # PID.limiter.homotopyType
+  0       0                       0                       0                
+  6   256   # PID.limiter.u
+ -1       0                       0                       0                
+  1   280   # PID.Fzero.k
+ -1       1                       0                       0                
+  1   280   # PID.addFF.k1
+ -1       1                       0                       0                
+  1   280   # PID.addFF.k2
+ -1       1                       0                       0                
+  1   280   # PID.addFF.k3
+  0       1                       0                       0                
+  6   256   # PID.gain_u_s.k
+  0       1                       0                       0                
+  6   256   # PID.gain_u_m.k
+  0       1                       0                       0                
+  6   256   # PID.null_bias.k
+  0       1                       0                       0                
+  6   768   # PID.unitTime
+  0       1                       0                       0                
+  6   769   # PID.with_I
+  0       0                       0                       0                
+  6   769   # PID.with_D
+  0       0                       0                       0                
+  6  1280   # PID.y_reset_internal
+ -1       1                       0                       0                
+  1   281   # convection.showName
+  0  1.5999999999999999E-06       0                       0                
+  6   256   # convection.R
+  0   25000                       0                       0                
+  6   256   # convection.surfaceArea
+  0      25                       0                       0                
+  6   256   # convection.alpha
+ -1  2.9814999999999998E+02       0                  1.0000000000000000E+06
+  1   280   # fixedTemperature.T
+  0       0                       0                       0                
+  6   388   # fixedTemperature.port.Q_flow
+  0       0                       0                       1                
+  6   256   # min1.y
+ -1       5                       0                       0                
+  1   280   # delay1.Ti
+ -1       0                       0                       1                
+  2   272   # delay1.y
+  0       0                       0                       0                
+  3   256   # delay1.der(y)
+  0       1                       0                       0                
+  6   257   # CavernCheckValve.allowFlowReversal
+ -1       1                       0                       0                
+  1   281   # CavernCheckValve.showDesignFlowDirection
+ -1       1                       0                       0                
+  1   281   # CavernCheckValve.showName
+  0  1.0000000000000000E-03       0                       0                
+  6   256   # CavernCheckValve.R
+  0       1                       0                       0                
+  6   257   # CavernCheckValve.checkValve
+ -1       0                       0                       0                
+  1   280   # CavernCheckValve.m_flow_start
+  0       0                       0                       0                
+  6  1280   # CavernCheckValve.dp
+  0       0                 -100000                  100000                
+  6  1280   # CavernCheckValve.s
+  0  2.8814999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # conduction1.summary.T_effective
+  0  2.8814999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # conduction1.summary.T_max
+  0       0                       0                       0                
+  6   256   # conduction1.summary.lambda_effective
+  0       1                       0                       0                
+  6   258   # conduction1.figure
+  0       3                       1                 1.0000000000000000E+100
+  6   258   # conduction1.nVs[1]
+  0       1                       1                       4                
+  6   258   # conduction1.energyDynamics
+  0  2.8814999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # conduction1.Ts_start[1]
+  0  2.8814999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # conduction1.Ts_start[2]
+  0  2.8814999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # conduction1.Ts_start[3]
+  0    2700                       0                 1.0000000000000000E+100
+  6   256   # conduction1.ds_reference[1]
+  0    2700                       0                 1.0000000000000000E+100
+  6   256   # conduction1.ds_reference[2]
+  0    2700                       0                 1.0000000000000000E+100
+  6   256   # conduction1.ds_reference[3]
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # conduction1.ms[1]
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # conduction1.ms[2]
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # conduction1.ms[3]
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # conduction1.delta_ms[1]
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # conduction1.delta_ms[2]
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # conduction1.delta_ms[3]
+  0       0                       0                       0                
+  6   256   # conduction1.Us[1]
+  0       0                       0                       0                
+  6   256   # conduction1.Us[2]
+  0       0                       0                       0                
+  6   256   # conduction1.Us[3]
+  0       0                       0                       0                
+  6   256   # conduction1.der(Us[1])
+  0       0                       0                       0                
+  6   256   # conduction1.der(Us[2])
+  0       0                       0                       0                
+  6   256   # conduction1.der(Us[3])
+ -1  2.9814999999999998E+02       0                 1.0000000000000000E+100
+  1   280   # conduction1.T_a1_start
+  0  2.8814999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # conduction1.T_b1_start
+ -1       1                       0                       0                
+  1   280   # conduction1.nParallel
+  0       1                       0                       0                
+  6   257   # conduction1.exposeState_a1
+  0       0                       0                       0                
+  6   257   # conduction1.exposeState_b1
+  0       3                       0                       0                
+  6   258   # conduction1.nFM_1
+  0       1                       0                       0                
+  6   258   # conduction1.geometry.figure
+  0       3                       1                 1.0000000000000000E+100
+  6   258   # conduction1.geometry.ns[1]
+  0       3                       0                       0                
+  6   258   # conduction1.geometry.n_total
+  0       0                       0                       0                
+  6   257   # conduction1.geometry.closedDim_1
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # conduction1.geometry.Vs[1]
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # conduction1.geometry.Vs[2]
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # conduction1.geometry.Vs[3]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.crossAreas_1[1]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.crossAreas_1[2]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.crossAreas_1[3]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.crossAreas_1[4]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.dlengths_1[1]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.dlengths_1[2]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.dlengths_1[3]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.V_total
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_2a[1]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_2a[2]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_2a[3]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_2b[1]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_2b[2]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_2b[3]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_3a[1]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_3a[2]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_3a[3]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_3b[1]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_3b[2]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_3b[3]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_2[1]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_2[2]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_2[3]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_3[1]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_3[2]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_3[3]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_23[1]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_23[2]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceAreas_23[3]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.surfaceArea_total
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.cs_1[1]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.cs_1[2]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.cs_1[3]
+  0       3                       1                 1.0000000000000000E+100
+  6   258   # conduction1.geometry.nX
+  0       1                       0                       0                
+  6   256   # conduction1.geometry.length_x
+  0     250                       0                       0                
+  6   256   # conduction1.geometry.length_y
+  0     100                       0                       0                
+  6   256   # conduction1.geometry.length_z
+  0  3.3333333333333331E-01       0                 1.0000000000000000E+100
+  6   256   # conduction1.geometry.dxs[1]
+  0  3.3333333333333331E-01       0                 1.0000000000000000E+100
+  6   256   # conduction1.geometry.dxs[2]
+  0  3.3333333333333331E-01       0                 1.0000000000000000E+100
+  6   256   # conduction1.geometry.dxs[3]
+  0     250                       0                 1.0000000000000000E+100
+  6   256   # conduction1.geometry.dys[1]
+  0     250                       0                 1.0000000000000000E+100
+  6   256   # conduction1.geometry.dys[2]
+  0     250                       0                 1.0000000000000000E+100
+  6   256   # conduction1.geometry.dys[3]
+  0     100                       0                 1.0000000000000000E+100
+  6   256   # conduction1.geometry.dzs[1]
+  0     100                       0                 1.0000000000000000E+100
+  6   256   # conduction1.geometry.dzs[2]
+  0     100                       0                 1.0000000000000000E+100
+  6   256   # conduction1.geometry.dzs[3]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.xs[1]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.xs[2]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.xs[3]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.ys[1]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.ys[2]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.ys[3]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.zs[1]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.zs[2]
+  0       0                       0                       0                
+  6   256   # conduction1.geometry.zs[3]
+  0       3                       1                 1.0000000000000000E+100
+  6   258   # conduction1.conductionModel.nVs[1]
+  0       3                       1                 1.0000000000000000E+100
+  6   258   # conduction1.conductionModel.nFM_1
+  0       3                       0                       0                
+  6   256   # conduction1.conductionModel.lambdas_1[1]
+  0       3                       0                       0                
+  6   256   # conduction1.conductionModel.lambdas_1[2]
+  0       3                       0                       0                
+  6   256   # conduction1.conductionModel.lambdas_1[3]
+  0       3                       0                       0                
+  6   256   # conduction1.conductionModel.lambdas_1[4]
+  0       3                       1                 1.0000000000000000E+100
+  6   258   # conduction1.internalHeatModel.nVs[1]
+  0       0                       0                       0                
+  6   256   # conduction1.internalHeatModel.Q_flows[1]
+  0       0                       0                       0                
+  6   256   # conduction1.internalHeatModel.Q_flows[2]
+  0       0                       0                       0                
+  6   256   # conduction1.internalHeatModel.Q_flows[3]
+  0       0                       0                       0                
+  6   256   # conduction1.internalHeatModel.Q_gen
+  0       0                       0                       0                
+  6   256   # conduction1.internalHeatModel.Q_gens[1]
+  0       0                       0                       0                
+  6   256   # conduction1.internalHeatModel.Q_gens[2]
+  0       0                       0                       0                
+  6   256   # conduction1.internalHeatModel.Q_gens[3]
+  0       0                       0                       0                
+  6   256   # conduction1.H_flows_1[1]
+  0       0                       0                       0                
+  6   256   # conduction1.H_flows_1[2]
+  0       0                       0                       0                
+  6   256   # conduction1.H_flows_1[3]
+  0       0                       0                       0                
+  6   256   # conduction1.H_flows_1[4]
+  0       0                       0                       0                
+  6   256   # conduction1.Q_flows_1[1]
+  0       0                       0                       0                
+  6   256   # conduction1.Q_flows_1[2]
+  0       0                       0                       0                
+  6   256   # conduction1.Q_flows_1[3]
+  0       0                       0                       0                
+  6   256   # conduction1.Q_flows_1[4]
+  0       0                       0                       0                
+  6   256   # conduction1.velocity_1
+ -1       1                       0                       0                
+  1   281   # conduction1.showName
+  0       0                       0                       0                
+  6  1280   # conduction1.lengths_1FM[1]
+  0       0                       0                       0                
+  6  1280   # conduction1.lengths_1FM[2]
+  0       0                       0                       0                
+  6  1280   # conduction1.lengths_1FM[3]
+  0       0                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # teeJunctionIdeal.port_1.h_outflow
+  0       0                 -100000                  100000                
+  6   388   # teeJunctionIdeal.port_3.m_flow
+  0       0                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # teeJunctionIdeal.port_3.h_outflow
+  0       0                       0                       1                
+  6   260   # teeJunctionIdeal.port_3.Xi_outflow[1]
+  0       0                       0                       1                
+  6   260   # teeJunctionIdeal.port_3.Xi_outflow[2]
+  0       0                       0                       1                
+  6   260   # teeJunctionIdeal.port_3.Xi_outflow[3]
+  0       0                       0                       1                
+  6   260   # teeJunctionIdeal.port_3.Xi_outflow[4]
+  0       3                       1                       3                
+  6  1282   # teeJunctionIdeal.portFlowDirection_1
+  0       3                       1                       3                
+  6  1282   # teeJunctionIdeal.portFlowDirection_2
+  0       3                       1                       3                
+  6  1282   # teeJunctionIdeal.portFlowDirection_3
+  0       1                       0                       0                
+  6   257   # checkValve1.allowFlowReversal
+ -1       1                       0                       0                
+  1   281   # checkValve1.showDesignFlowDirection
+ -1       1                       0                       0                
+  1   281   # checkValve1.showName
+  0       0                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # checkValve1.port_b.h_outflow
+  0       0                       0                       0                
+  6   260   # checkValve1.port_b.der(h_outflow)
+  0  1.0000000000000000E-03       0                       0                
+  6   256   # checkValve1.R
+  0       1                       0                       0                
+  6   257   # checkValve1.checkValve
+ -1       0                       0                       0                
+  1   280   # checkValve1.m_flow_start
+  0       0                       0                       0                
+  6  1280   # checkValve1.dp
+  0       0                       0                       0                
+  6  1280   # checkValve1.s
+ -1       1                       0                       0                
+  1   281   # boundary.showName
+  0       1                       0                       0                
+  6   258   # boundary.nPorts
+  0  2.3000000000000001E-01       0                       1                
+  6   256   # boundary.medium.Xi[1]
+  0  1.4999999999999999E-02       0                       1                
+  6   256   # boundary.medium.Xi[2]
+  0  5.0000000000000001E-03       0                       1                
+  6   256   # boundary.medium.Xi[3]
+  0  7.5000000000000000E-01       0                       1                
+  6   256   # boundary.medium.Xi[4]
+  0      10                       0                  100000                
+  6   256   # boundary.medium.d
+  0  2.9314999999999998E+02     200                    6000                
+  6   256   # boundary.medium.T
+  0  2.3000000000000001E-01       0                       1                
+  6   256   # boundary.medium.X[1]
+  0  1.4999999999999999E-02       0                       1                
+  6   256   # boundary.medium.X[2]
+  0  5.0000000000000001E-03       0                       1                
+  6   256   # boundary.medium.X[3]
+  0  7.5000000000000000E-01       0                       1                
+  6   256   # boundary.medium.X[4]
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # boundary.medium.u
+  0  2.9032856060366527E+02       0                  1.0000000000000000E+07
+  6   256   # boundary.medium.R_s
+  0  3.2000000000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6   256   # boundary.medium.MM
+  0  2.9314999999999998E+02     200                    6000                
+  6   256   # boundary.medium.state.T
+  0  2.3000000000000001E-01       0                       1                
+  6   256   # boundary.medium.state.X[1]
+  0  1.4999999999999999E-02       0                       1                
+  6   256   # boundary.medium.state.X[2]
+  0  5.0000000000000001E-03       0                       1                
+  6   256   # boundary.medium.state.X[3]
+  0  7.5000000000000000E-01       0                       1                
+  6   256   # boundary.medium.state.X[4]
+  0       0                       0                       0                
+  6   257   # boundary.medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # boundary.medium.standardOrderComponents
+  0      20                       0                       0                
+  6   256   # boundary.medium.T_degC
+  0       0                       0                       0                
+  6   256   # boundary.medium.p_bar
+  0       0                 -100000                  100000                
+  6   388   # boundary.ports[1].m_flow
+  0       0                       0                  1.0000000000000000E+08
+  6   260   # boundary.ports[1].p
+  0       0                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # boundary.ports[1].h_outflow
+  0  2.3000000000000001E-01       0                       1                
+  6   260   # boundary.ports[1].Xi_outflow[1]
+  0  1.4999999999999999E-02       0                       1                
+  6   260   # boundary.ports[1].Xi_outflow[2]
+  0  5.0000000000000001E-03       0                       1                
+  6   260   # boundary.ports[1].Xi_outflow[3]
+  0  7.5000000000000000E-01       0                       1                
+  6   260   # boundary.ports[1].Xi_outflow[4]
+  0       3                       1                       3                
+  6  1282   # boundary.flowDirection
+  0       1                       0                       0                
+  6   769   # boundary.use_m_flow_in
+  0       0                       0                       0                
+  6   769   # boundary.use_T_in
+  0       0                       0                       0                
+  6   769   # boundary.use_X_in
+  0       0                       0                       0                
+  6   769   # boundary.use_C_in
+  0  1.0000000000000001E-09 -100000                  100000                
+  6   256   # boundary.m_flow
+  0  2.9314999999999998E+02     200                    6000                
+  6   256   # boundary.T
+  0  2.3000000000000001E-01       0                       1                
+  6   256   # boundary.X[1]
+  0  1.4999999999999999E-02       0                       1                
+  6   256   # boundary.X[2]
+  0  5.0000000000000001E-03       0                       1                
+  6   256   # boundary.X[3]
+  0  7.5000000000000000E-01       0                       1                
+  6   256   # boundary.X[4]
+  0  2.9314999999999998E+02       0                       0                
+  6  1280   # boundary.T_in_internal
+  0  2.3000000000000001E-01       0                       0                
+  6  1280   # boundary.X_in_internal[1]
+  0  1.4999999999999999E-02       0                       0                
+  6  1280   # boundary.X_in_internal[2]
+  0  5.0000000000000001E-03       0                       0                
+  6  1280   # boundary.X_in_internal[3]
+  0  7.5000000000000000E-01       0                       0                
+  6  1280   # boundary.X_in_internal[4]
+  0    1000                       0                 1.0000000000000000E+100
+  6   256   # volume.V
+  0       1                       1                       4                
+  6   258   # volume.energyDynamics
+  0       1                       1                       4                
+  6   258   # volume.massDynamics
+  0       1                       1                       4                
+  6   258   # volume.substanceDynamics
+  0       1                       1                       4                
+  6   258   # volume.traceDynamics
+ -1  100000                       0                 1.0000000000000000E+100
+  1   280   # volume.p_start
+  0       1                       0                       0                
+  6   257   # volume.use_T_start
+  0  2.9314999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # volume.T_start
+  0       0                       0                       0                
+  6   256   # volume.h_start
+ -1  2.3000000000000001E-01       0                       1                
+  1   280   # volume.X_start[1]
+ -1  1.4999999999999999E-02       0                       1                
+  1   280   # volume.X_start[2]
+ -1  5.0000000000000001E-03       0                       1                
+  1   280   # volume.X_start[3]
+ -1  7.5000000000000000E-01       0                       1                
+  1   280   # volume.X_start[4]
+ -1       0                       0                  1.0000000000000000E+08
+  2   272   # volume.medium.p
+  0       0                       0                       0                
+  3   256   # volume.medium.der(p)
+  0       0                       0                  100000                
+  6   256   # volume.medium.d
+  0       0                       0                       0                
+  6   256   # volume.medium.der(d)
+ -1  2.9314999999999998E+02     200                    6000                
+  2   280   # volume.medium.T
+  0       0                       0                       0                
+  3   256   # volume.medium.der(T)
+ -1       0                       0                       1                
+  2   272   # volume.medium.X[1]
+  0       0                       0                       0                
+  3   256   # volume.medium.der(X[1])
+ -1       0                       0                       1                
+  2   272   # volume.medium.X[2]
+  0       0                       0                       0                
+  3   256   # volume.medium.der(X[2])
+ -1       0                       0                       1                
+  2   272   # volume.medium.X[3]
+  0       0                       0                       0                
+  3   256   # volume.medium.der(X[3])
+ -1       0                       0                       1                
+  2   272   # volume.medium.X[4]
+  0       0                       0                       0                
+  3   256   # volume.medium.der(X[4])
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # volume.medium.u
+  0       0                       0                       0                
+  6   256   # volume.medium.der(u)
+  0    1000                       0                  1.0000000000000000E+07
+  6   256   # volume.medium.R_s
+  0       0                       0                       0                
+  6   256   # volume.medium.der(R_s)
+  0  3.2000000000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6   256   # volume.medium.MM
+  0       1                       0                       0                
+  6   257   # volume.medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # volume.medium.standardOrderComponents
+  0       0                       0                       0                
+  6   256   # volume.medium.T_degC
+  0       0                       0                       0                
+  6   256   # volume.medium.p_bar
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # volume.m
+  0       0                       0                       0                
+  6   256   # volume.der(m)
+  0       0                       0                       0                
+  6   256   # volume.U
+  0       0                       0                       0                
+  6   256   # volume.der(U)
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # volume.mXi[1]
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # volume.mXi[2]
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # volume.mXi[3]
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # volume.mXi[4]
+  0       0                       0                       0                
+  6   256   # volume.der(mXi[1])
+  0       0                       0                       0                
+  6   256   # volume.der(mXi[2])
+  0       0                       0                       0                
+  6   256   # volume.der(mXi[3])
+  0       0                       0                       0                
+  6   256   # volume.der(mXi[4])
+ -1       1                       0                       0                
+  1  1305   # volume.initialize_p
+  0    1000                       0                       0                
+  6   256   # volume.geometry.V
+  0       0                 -1.5807963267948966E+00  1.5807963267948966E+00
+  6   256   # volume.geometry.angle
+  0       0                       0                       0                
+  6   256   # volume.geometry.dheight
+  0       0                       0                       0                
+  6   256   # volume.geometry.height_a
+  0       0                       0                       0                
+  6   256   # volume.geometry.height_b
+  0  9.8066499999999994E+00       0                       0                
+  6   256   # volume.g_n
+  0       0                       0                       0                
+  6   257   # volume.use_HeatPort
+  0       0                       0                       0                
+  6   256   # volume.Q_gen
+  0       0                       0                       0                
+  6   257   # volume.use_TraceMassPort
+ -1       1                       0                       0                
+  1   281   # volume.showName
+  0       0                       0                       0                
+  6  1280   # volume.Q_flow_internal
+ -1      40                       0                       0                
+  1   280   # const.k
+ -1  1.0000000000000001E-09       0                       0                
+  1   280   # const1.k
+  0       0                       0                       0                
+  6   321   # switch1.u2
+  0       0                       0                       0                
+  6   320   # switch1.y
+ -1  5.0000000000000000E-01       0                       0                
+  1   280   # const2.k
+ -1       5                       0                       0                
+  1   280   # delay2.Ti
+ -1       0                 -100000                  100000                
+  2   272   # delay2.y
+  0       0                       0                       0                
+  3   256   # delay2.der(y)
+  0       0                       0                       0                
+  6   256   # PID.I.u
+ -1       0                       0                       0                
+  2   280   # PID.I.y
+  0       0                       0                       0                
+  3   256   # PID.I.der(y)
+  0       0                       0                       0                
+  6   256   # PID.I.k
+  0       1                       1                       4                
+  6   258   # PID.I.initType
+  0       0                       0                       0                
+  6   256   # PID.I.y_start
+  0       1                       1                       3                
+  6   258   # PID.I.reset
+  0       0                       0                       0                
+  6   256   # PID.I.y_reset
+  0       0                       0                       0                
+  6  1280   # PID.I.y_reset_internal
+  0       0                       0                       0                
+  6  1281   # PID.I.trigger_internal
+ -1       1                       0                       0                
+  1   280   # PID.addI.k1
+ -1      -1                       0                       0                
+  1   280   # PID.addI.k2
+ -1       1                       0                       0                
+  1   280   # PID.addI.k3
+  0       0                       0                       0                
+  6   256   # PID.addI.u3
+  0       0                       0                       0                
+  6   256   # PID.addSat.y
+ -1       1                       0                       0                
+  1   280   # PID.addSat.k1
+ -1      -1                       0                       0                
+  1   280   # PID.addSat.k2
+  0       1                       0                       0                
+  6   256   # PID.gainTrack.k
+ -1       0                       0                       0                
+  1   280   # PID.Dzero.k
+  0       0                       0                       0                
+  6   257   # conduction1.materials[1].preferredMediumStates
+ -1       0                       0                  1.0000000000000000E+06
+  2   272   # conduction1.materials[1].T
+  0       0                       0                       0                
+  3   256   # conduction1.materials[1].der(T)
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # conduction1.materials[1].h
+  0       0                       0                       0                
+  6   256   # conduction1.materials[1].der(h)
+  0    2700                       0                  100000                
+  6   256   # conduction1.materials[1].d
+  0  1.0000000000000001E-01       0                 1.0000000000000000E+100
+  6   256   # conduction1.materials[1].MM
+  0       0                       0                       0                
+  6   257   # conduction1.materials[2].preferredMediumStates
+ -1       0                       0                  1.0000000000000000E+06
+  2   272   # conduction1.materials[2].T
+  0       0                       0                       0                
+  3   256   # conduction1.materials[2].der(T)
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # conduction1.materials[2].h
+  0       0                       0                       0                
+  6   256   # conduction1.materials[2].der(h)
+  0    2700                       0                  100000                
+  6   256   # conduction1.materials[2].d
+  0  1.0000000000000001E-01       0                 1.0000000000000000E+100
+  6   256   # conduction1.materials[2].MM
+  0       0                       0                       0                
+  6   257   # conduction1.materials[3].preferredMediumStates
+ -1       0                       0                  1.0000000000000000E+06
+  2   272   # conduction1.materials[3].T
+  0       0                       0                       0                
+  3   256   # conduction1.materials[3].der(T)
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # conduction1.materials[3].h
+  0       0                       0                       0                
+  6   256   # conduction1.materials[3].der(h)
+  0    2700                       0                  100000                
+  6   256   # conduction1.materials[3].d
+  0  1.0000000000000001E-01       0                 1.0000000000000000E+100
+  6   256   # conduction1.materials[3].MM
+  0       0                       0                       0                
+  6   388   # conduction1.port_external[1].Q_flow
+  0       0                       0                       0                
+  6   388   # conduction1.port_external[2].Q_flow
+  0       0                       0                       0                
+  6   388   # conduction1.port_external[3].Q_flow
+
+
+# Matrix with 6 columns defining the initial value calculation
+# (columns 5 and 6 are not utilized for the calculation but are
+#  reported by dymosim via dymosim -i for user convenience):
+#
+# column 1: Type of initial value
+#           = -2: special case: for continuing simulation (column 2 = value)
+#           = -1: fixed value (column 2 = fixed value)
+#           =  0: free value, i.e., no restriction (column 2 = initial value)
+#           >  0: desired value (column 1 = weight for optimization
+#                                column 2 = desired value)
+#                 use weight=1, since automatic scaling usually
+#                 leads to equally weighted terms
+# column 2: fixed, free or desired value according to column 1.
+# column 3: Minimum value (ignored, if Minimum >= Maximum).
+# column 4: Maximum value (ignored, if Minimum >= Maximum).
+#           Minimum and maximum restrict the search range in initial
+#           value calculation. They might also be used for scaling.
+# column 5: Category of variable.
+#           = 1: parameter.
+#           = 2: state.
+#           = 3: state derivative.
+#           = 4: output.
+#           = 5: input.
+#           = 6: auxiliary variable.
+# column 6: Data type of variable and flags according to dsBaseType
+#  <value>&3= 0: real.
+#  <value>&3= 1: boolean.
+#  <value>&3= 2: integer.
+#
+# Initial values are calculated according to the following procedure:
+#
+# - If parameters, states and inputs are FIXED, and other variables
+#   are FREE, no special action takes place (default setting).
+#
+# - If there are only FIXED and FREE variables and the number of
+#   FREE parameters, states and inputs is IDENTICAL to the number of
+#   FIXED state derivatives, outputs and auxiliary variables, a non-linear
+#   equation is solved to determine a consistent set of initial conditions.
+#
+# - In all other cases the following optimization problem is solved:
+#      min( sum( weight(i)*( (value(i) - DESIRED(i))/scale(i) )^2 ) )
+#   under the constraint that the differential equation is fulfilled
+#   at the initial time. In most cases weight(i)=1 is sufficient, due
+#   to the automatic scaling (if DESIRED(i) is not close to zero,
+#   scale(i) = DESIRED(i). Otherwise, the scaling is based on the
+#   nominal value (and maybe minimum and maximum values given in 
+#   column 3 and 4). If these values are zero, scale(i)=1 is used).
+#
+char initialDescription(933,136)
+Default ambient pressure [Pa|bar]
+Default ambient temperature [K|degC]
+Constant gravity acceleration [m/s2]
+= false to restrict to design flow direction (port_a -> port_b) [:#(type=Boolean)]
+Default formulation of energy balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Default formulation of mass balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Default formulation of substance balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Default formulation of trace substance balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Default formulation of momentum balances, if options available [:#(type=Modelica.Fluid.Types.Dynamics)]
+Default start value for mass flow rates [kg/s]
+Default start value for pressures [Pa|bar]
+Default start value for temperatures [K|degC]
+= true to determine turbulent region automatically using Reynolds number [:#(type=Boolean)]
+Default nominal mass flow rate [kg/s]
+Regularization of zero flow for |m_flow| < eps_m_flow*m_flow_nominal
+Default small pressure drop for regularization of laminar and zero flow [Pa|bar]
+Default small mass flow rate for regularization of laminar and zero flow [kg/s]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+isentropicEnthalpy function used [:#(type=Boolean)]
+mechanical efficiency [1]
+inlet design temperature [K|degC]
+= true to allow flow reversal, false restricts to design direction [:#(type=Boolean)]
+inlet start pressure [Pa|bar]
+outlet start pressure [Pa|bar]
+inlet start temperature [K|degC]
+outlet start temperature [K|degC]
+start gas composition [kg/kg]
+start gas composition [kg/kg]
+start gas composition [kg/kg]
+start gas composition [kg/kg]
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+If true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+Molar mass [kg/mol]
+Enthalpy of formation at 298.15K [J/kg]
+H0(298.15K) - H0(0K) [J/kg]
+Temperature limit between low and high data sets [K|degC]
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature constants b
+Low temperature constants b
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature constants b
+High temperature constants b
+Gas constant [J/(kg.K)]
+Molar mass [kg/mol]
+Enthalpy of formation at 298.15K [J/kg]
+H0(298.15K) - H0(0K) [J/kg]
+Temperature limit between low and high data sets [K|degC]
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature constants b
+Low temperature constants b
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature constants b
+High temperature constants b
+Gas constant [J/(kg.K)]
+Molar mass [kg/mol]
+Enthalpy of formation at 298.15K [J/kg]
+H0(298.15K) - H0(0K) [J/kg]
+Temperature limit between low and high data sets [K|degC]
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature constants b
+Low temperature constants b
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature constants b
+High temperature constants b
+Gas constant [J/(kg.K)]
+Molar mass [kg/mol]
+Enthalpy of formation at 298.15K [J/kg]
+H0(298.15K) - H0(0K) [J/kg]
+Temperature limit between low and high data sets [K|degC]
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature constants b
+Low temperature constants b
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature constants b
+High temperature constants b
+Gas constant [J/(kg.K)]
+Molar mass [kg/mol]
+Enthalpy of formation at 298.15K [J/kg]
+H0(298.15K) - H0(0K) [J/kg]
+Temperature limit between low and high data sets [K|degC]
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature constants b
+Low temperature constants b
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature constants b
+High temperature constants b
+Gas constant [J/(kg.K)]
+Molar mass [kg/mol]
+Enthalpy of formation at 298.15K [J/kg]
+H0(298.15K) - H0(0K) [J/kg]
+Temperature limit between low and high data sets [K|degC]
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature constants b
+Low temperature constants b
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature constants b
+High temperature constants b
+Gas constant [J/(kg.K)]
+Molar mass [kg/mol]
+Enthalpy of formation at 298.15K [J/kg]
+H0(298.15K) - H0(0K) [J/kg]
+Temperature limit between low and high data sets [K|degC]
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature constants b
+Low temperature constants b
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature constants b
+High temperature constants b
+Gas constant [J/(kg.K)]
+Molar mass [kg/mol]
+Enthalpy of formation at 298.15K [J/kg]
+H0(298.15K) - H0(0K) [J/kg]
+Temperature limit between low and high data sets [K|degC]
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature coefficients a
+Low temperature constants b
+Low temperature constants b
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature coefficients a
+High temperature constants b
+High temperature constants b
+Gas constant [J/(kg.K)]
+Absolute pressure of medium [Pa|bar]
+Specific enthalpy of medium [J/kg]
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+Absolute pressure of medium [Pa|bar]
+Temperature of medium [K|degC]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+If true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+shaft rotation angle [rad|deg]
+der(shaft rotation angle) [rad/s]
+net torque acting on the turbine [N.m]
+Gas flow rate [kg/s]
+Inlet specific entropy [J/(kg.K)]
+Outlet isentropic enthalpy [J/kg]
+Outlet enthalpy [J/kg]
+Outlet pressure [Pa|bar]
+pressure ratio [1]
+isoentropic efficiency [1]
+Turbine Power [W]
+Cut torque in the flange [N.m]
+Cut torque in the flange [N.m]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Thermodynamic pressure in the connection point [Pa|bar]
+Design speed [rad/s]
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for phic(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Table for eta(N_T,PR)
+Selection of the way of definition of table matrix [:#(type=NHES.Systems.EnergyStorage.CompressedAirEnergyStorage.Data.TableTypes)]
+Referred speed
+Referred design speed
+Flow number
+= true, if table is defined on file or in function usertab [:#(type=Boolean)]
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+= true, if info message that file is loading is to be printed [:#(type=Boolean)]
+Smoothness of table interpolation [:#(type=Modelica.Blocks.Types.Smoothness)]
+Extrapolation of data outside the definition range [:#(type=Modelica.Blocks.Types.Extrapolation)]
+= true, if warning messages are to be printed if table input is outside the definition range [:#(type=Boolean)]
+Minimum abscissa value defined in table
+Minimum abscissa value defined in table
+Maximum abscissa value defined in table
+Maximum abscissa value defined in table
+[:#(type=Integer)]
+= true, if table is defined on file or in function usertab [:#(type=Boolean)]
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+Table matrix (grid u1 = first column, grid u2 = first row; e.g., table=[0, 0; 0, 1])
+= true, if info message that file is loading is to be printed [:#(type=Boolean)]
+Smoothness of table interpolation [:#(type=Modelica.Blocks.Types.Smoothness)]
+Extrapolation of data outside the definition range [:#(type=Modelica.Blocks.Types.Extrapolation)]
+= true, if warning messages are to be printed if table input is outside the definition range [:#(type=Boolean)]
+Minimum abscissa value defined in table
+Minimum abscissa value defined in table
+Maximum abscissa value defined in table
+Maximum abscissa value defined in table
+[:#(type=Integer)]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+der(Specific thermodynamic enthalpy close to the connection point if m_flow < 0) [m2/s3]
+Volume [m3]
+Formulation of energy balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of mass balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of substance balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of trace substance balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Pressure [Pa|bar]
+Use T_start if true, otherwise h_start [:#(type=Boolean)]
+Temperature [K|degC]
+Specific enthalpy [J/kg]
+Mass fraction [1]
+Mass fraction [1]
+Mass fraction [1]
+Mass fraction [1]
+Absolute pressure of medium [Pa|bar]
+der(Absolute pressure of medium) [Pa/s]
+Density of medium [kg/m3|g/cm3]
+der(Density of medium) [Pa.m-2.s]
+Temperature of medium [K|degC]
+der(Temperature of medium) [K/s]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+der(Mass fractions (= (component mass)/total mass  m_i/m)) [s-1]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+der(Mass fractions (= (component mass)/total mass  m_i/m)) [s-1]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+der(Mass fractions (= (component mass)/total mass  m_i/m)) [s-1]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+der(Mass fractions (= (component mass)/total mass  m_i/m)) [s-1]
+Specific internal energy of medium [J/kg]
+der(Specific internal energy of medium) [m2/s3]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+der(Gas constant (of mixture if applicable)) [W/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+If true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+Mass [kg]
+der(Mass) [kg/s]
+Internal energy [J]
+der(Internal energy) [W]
+Species mass [kg]
+Species mass [kg]
+Species mass [kg]
+Species mass [kg]
+der(Species mass) [kg/s]
+der(Species mass) [kg/s]
+der(Species mass) [kg/s]
+der(Species mass) [kg/s]
+= true to set up initial equations for pressure [:#(type=Boolean)]
+Volume [m3]
+Vertical angle from the horizontal (-pi/2 <= x <= pi/2) [rad|deg]
+Height(port_b) - Height(port_a) [m]
+Elevation at port_a: Reference value only. No impact on calculations. [m]
+Elevation at port_b: Reference value only. No impact on calculations. [m]
+Gravitational acceleration [m/s2]
+=true to toggle heat port [:#(type=Boolean)]
+Internal heat generation [W]
+=true to toggle trace mass port [:#(type=Boolean)]
+[:#(type=Boolean)]
+[W]
+= true to allow flow reversal, false restricts to design direction (port_a -> port_b) [:#(type=Boolean)]
+= false to hide the flow direction arrow [:#(type=Boolean)]
+= false to hide component name [:#(type=Boolean)]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Guess value of dp = port_a.p - port_b.p [Pa|bar]
+Guess value of m_flow = port_a.m_flow [kg/s]
+Small mass flow rate for regularization of zero flow [kg/s]
+= true, if temperatures at port_a and port_b are computed [:#(type=Boolean)]
+= true, if volume flow rate at inflowing port is computed [:#(type=Boolean)]
+Pressure difference between port_a and port_b (= port_a.p - port_b.p) [Pa|bar]
+Volume flow rate at inflowing port (positive when flow from port_a to port_b) [m3/s]
+Temperature close to port_a, if show_T = true [K|degC]
+Temperature close to port_b, if show_T = true [K|degC]
+Temperature of medium [K|degC]
+Temperature of medium [K|degC]
+Nominal pressure drop at full opening [Pa|bar]
+Nominal mass flowrate at full opening [kg/s]
+Hydraulic conductance at full opening [kg/(s.Pa)]
+[:#(type=Boolean)]
+Number of ports [:#(type=Integer)]
+Absolute pressure of medium [Pa|bar]
+Structurally independent mass fractions [1]
+Structurally independent mass fractions [1]
+Structurally independent mass fractions [1]
+Structurally independent mass fractions [1]
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+Absolute pressure of medium [Pa|bar]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+If true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+Thermodynamic pressure in the connection point [Pa|bar]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Allowed flow direction [:#(type=Modelica.Fluid.Types.PortFlowDirection)]
+Get the pressure from the input connector [:#(type=Boolean)]
+Get the temperature from the input connector [:#(type=Boolean)]
+Get the composition from the input connector [:#(type=Boolean)]
+Get the trace substances from the input connector [:#(type=Boolean)]
+Fixed value of pressure [Pa|bar]
+Fixed value of temperature [K|degC]
+Fixed value of composition [kg/kg]
+Fixed value of composition [kg/kg]
+Fixed value of composition [kg/kg]
+Fixed value of composition [kg/kg]
+Needed to connect to conditional connector [Pa]
+Needed to connect to conditional connector [K]
+Needed to connect to conditional connector [1]
+Needed to connect to conditional connector [1]
+Needed to connect to conditional connector [1]
+Needed to connect to conditional connector [1]
+Table matrix (time = first column; e.g., table=[0, 0; 1, 1; 2, 4])
+Table matrix (time = first column; e.g., table=[0, 0; 1, 1; 2, 4])
+Table matrix (time = first column; e.g., table=[0, 0; 1, 1; 2, 4])
+Table matrix (time = first column; e.g., table=[0, 0; 1, 1; 2, 4])
+Table matrix (time = first column; e.g., table=[0, 0; 1, 1; 2, 4])
+Table matrix (time = first column; e.g., table=[0, 0; 1, 1; 2, 4])
+Table matrix (time = first column; e.g., table=[0, 0; 1, 1; 2, 4])
+Table matrix (time = first column; e.g., table=[0, 0; 1, 1; 2, 4])
+Time scale of first table column [s|h]
+Connector of Real output signal [W]
+Offset of output signal y
+Output y = offset for time < startTime [s]
+Shift time of first table column [s]
+Interpolation coefficient a of actual interval (y=a*x+b)
+Interpolation coefficient b of actual interval (y=a*x+b) [W]
+Last used lower grid index [:#(type=Integer)]
+Next event instant [s]
+Next scaled event instant [1]
+Scaled time [1]
+Connector of actuator output signal
+Control error (set point - measurement) [W]
+Type of controller [:#(type=Modelica.Blocks.Types.SimpleController)]
+enable feed-forward input signal [:#(type=Boolean)]
+=true avoid derivative kick [:#(type=Boolean)]
+Controller gain: +/- for direct/reverse acting [1]
+Time constant of Integrator block [s]
+Time constant of Derivative block [s]
+Output bias. May improve simulation
+Setpoint input scaling: k_s*u_s. May improve simulation [1]
+Measurement input scaling: k_m*u_m. May improve simulation [1]
+Measurement input scaling: k_ff*u_ff. May improve simulation
+Upper limit of output
+Lower limit of output
+Set-point weight for Proportional block (0..1)
+Set-point weight for Derivative block (0..1)
+Ni*Ti is time constant of anti-windup compensation
+The higher Nd, the more ideal the derivative block
+Type of initialization (1: no init, 2: steady state, 3: initial state, 4: initial output) [:#(type=Modelica.Blocks.Types.Init)]
+Initial or guess value value for integrator output (= integrator state)
+Initial or guess value for state of derivative block
+Initial value of output
+= true, if strict limits with noEvent(..) [:#(type=Boolean)]
+Type of controller output reset [:#(type=TRANSFORM.Types.Reset)]
+Value to which the controller output is reset if the boolean trigger has a rising edge, used if reset == TRANSFORM.Types.Reset.Parameter
+Connector of Real input signal 1 [W]
+Connector of Real input signal 2 [W]
+Connector of Real output signal
+Gain of input signal 1
+Gain of input signal 2
+Gain value multiplied with input signal [1]
+Output signal connector
+Gain value multiplied with input signal [1]
+Input signal connector
+Output signal connector
+Gain of input signal 1
+Gain of input signal 2
+Gain of input signal 3
+Upper limits of input signals
+Lower limits of input signals
+= true, if strict limits with noEvent(..) [:#(type=Boolean)]
+Simplified model for homotopy-based initialization [:#(type=Modelica.Blocks.Types.LimiterHomotopy)]
+Connector of Real input signal
+Constant output value
+Gain of input signal 1
+Gain of input signal 2
+Gain of input signal 3
+Gain value multiplied with input signal [1]
+Gain value multiplied with input signal [1]
+Constant output value
+[s]
+[:#(type=Boolean)]
+[:#(type=Boolean)]
+Internal connector for controller output reset
+[:#(type=Boolean)]
+Thermal resistance [K/W]
+Heat transfer surface area [m2]
+Convection heat transfer coefficient [W/(m2.K)]
+Fixed temperature at port [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Connector of Real output signal [1]
+Delay time [s]
+[1]
+[s-1]
+= true to allow flow reversal, false restricts to design direction (port_a -> port_b) [:#(type=Boolean)]
+= false to hide the flow direction arrow [:#(type=Boolean)]
+= false to hide component name [:#(type=Boolean)]
+Hydraulic resistance [Pa/(kg/s)]
+Reverse flow stopped [:#(type=Boolean)]
+Mass flow rate [kg/s]
+[Pa|bar]
+[kg/s]
+Unit cell mass averaged temperature [K|degC]
+Maximum temperature [K|degC]
+Unit cell mass averaged thermal conductivity [W/(m.K)]
+Index for Icon figure [:#(type=Integer)]
+Number of discrete volumes [:#(type=Integer)]
+Formulation of energy balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Temperature [K|degC]
+Temperature [K|degC]
+Temperature [K|degC]
+Reference density of mass reference for constant volumes [kg/m3|g/cm3]
+Reference density of mass reference for constant volumes [kg/m3|g/cm3]
+Reference density of mass reference for constant volumes [kg/m3|g/cm3]
+Mass [kg]
+Mass [kg]
+Mass [kg]
+Change in mass of constant volumes [kg]
+Change in mass of constant volumes [kg]
+Change in mass of constant volumes [kg]
+Internal energy [J]
+Internal energy [J]
+Internal energy [J]
+der(Internal energy) [W]
+der(Internal energy) [W]
+der(Internal energy) [W]
+Temperature at port a1 [K|degC]
+Temperature at port b1 [K|degC]
+Number of parallel components
+=true, T is calculated at port_a1 else Q_flow [:#(type=Boolean)]
+=true, T is calculated at port_b1 else Q_flow [:#(type=Boolean)]
+number of flow models [:#(type=Integer)]
+Index for Icon figure [:#(type=Integer)]
+Number of nodes in each dimension {1} [:#(type=Integer)]
+Total number of nodes [:#(type=Integer)]
+=true if the conduction path is closed on itself for specified dimension [:#(type=Boolean)]
+Unit volumes [m3]
+Unit volumes [m3]
+Unit volumes [m3]
+Cross sectional area of unit volume faces perpendicular to dimension-1 [m2]
+Cross sectional area of unit volume faces perpendicular to dimension-1 [m2]
+Cross sectional area of unit volume faces perpendicular to dimension-1 [m2]
+Cross sectional area of unit volume faces perpendicular to dimension-1 [m2]
+Unit cell length in dimension-1 [m]
+Unit cell length in dimension-1 [m]
+Unit cell length in dimension-1 [m]
+Total volume of component [m3]
+Surface area in non-discretized dimension 2a [m2]
+Surface area in non-discretized dimension 2a [m2]
+Surface area in non-discretized dimension 2a [m2]
+Surface area in non-discretized dimension 2a [m2]
+Surface area in non-discretized dimension 2a [m2]
+Surface area in non-discretized dimension 2a [m2]
+Surface area in non-discretized dimension 3a [m2]
+Surface area in non-discretized dimension 3a [m2]
+Surface area in non-discretized dimension 3a [m2]
+Surface area in non-discretized dimension 3b [m2]
+Surface area in non-discretized dimension 3b [m2]
+Surface area in non-discretized dimension 3b [m2]
+Dimension 2 discretized surface area [m2]
+Dimension 2 discretized surface area [m2]
+Dimension 2 discretized surface area [m2]
+Dimension 3 discretized surface area [m2]
+Dimension 3 discretized surface area [m2]
+Dimension 3 discretized surface area [m2]
+Dimension 2 and 3 total discretized surface area [m2]
+Dimension 2 and 3 total discretized surface area [m2]
+Dimension 2 and 3 total discretized surface area [m2]
+Total surface area [m2]
+Unit cell centers dimension-1 cartesian coordinate [m]
+Unit cell centers dimension-1 cartesian coordinate [m]
+Unit cell centers dimension-1 cartesian coordinate [m]
+Number of nodes in x-direction [:#(type=Integer)]
+Specify overall length or dxs in x-dimension [m]
+Specify length or dys in y-dimension [m]
+Specify length or dzs in z-dimension [m]
+Unit volume lengths of x-dimension [m]
+Unit volume lengths of x-dimension [m]
+Unit volume lengths of x-dimension [m]
+Unit volume lengths of y-dimension [m]
+Unit volume lengths of y-dimension [m]
+Unit volume lengths of y-dimension [m]
+Unit volume lengths of z-dimension [m]
+Unit volume lengths of z-dimension [m]
+Unit volume lengths of z-dimension [m]
+Position in x-dimension [m]
+Position in x-dimension [m]
+Position in x-dimension [m]
+Position in y-dimension [m]
+Position in y-dimension [m]
+Position in y-dimension [m]
+Position in z-dimension [m]
+Position in z-dimension [m]
+Position in z-dimension [m]
+Number of discrete volumes [:#(type=Integer)]
+Number of discrete flow models [:#(type=Integer)]
+Thermal conductivity [W/(m.K)]
+Thermal conductivity [W/(m.K)]
+Thermal conductivity [W/(m.K)]
+Thermal conductivity [W/(m.K)]
+Number of discrete volumes [:#(type=Integer)]
+Internal heat generated [W]
+Internal heat generated [W]
+Internal heat generated [W]
+Per volume heat generation [W]
+if non-uniform then set Q_gens [W]
+if non-uniform then set Q_gens [W]
+if non-uniform then set Q_gens [W]
+Enthalpy flow rates across segment boundaries [W]
+Enthalpy flow rates across segment boundaries [W]
+Enthalpy flow rates across segment boundaries [W]
+Enthalpy flow rates across segment boundaries [W]
+Heat flow rates across segment boundaries [W]
+Heat flow rates across segment boundaries [W]
+Heat flow rates across segment boundaries [W]
+Heat flow rates across segment boundaries [W]
+Velocity of material through control volumes [m/s]
+[:#(type=Boolean)]
+[m]
+[m]
+[m]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Mass flow rate from the connection point into the component [kg/s]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Flow direction for port_1 [:#(type=Modelica.Fluid.Types.PortFlowDirection)]
+Flow direction for port_2 [:#(type=Modelica.Fluid.Types.PortFlowDirection)]
+Flow direction for port_3 [:#(type=Modelica.Fluid.Types.PortFlowDirection)]
+= true to allow flow reversal, false restricts to design direction (port_a -> port_b) [:#(type=Boolean)]
+= false to hide the flow direction arrow [:#(type=Boolean)]
+= false to hide component name [:#(type=Boolean)]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+der(Specific thermodynamic enthalpy close to the connection point if m_flow < 0) [m2/s3]
+Hydraulic resistance [Pa/(kg/s)]
+Reverse flow stopped [:#(type=Boolean)]
+Mass flow rate [kg/s]
+[Pa|bar]
+[kg/s]
+[:#(type=Boolean)]
+Number of ports [:#(type=Integer)]
+Structurally independent mass fractions [1]
+Structurally independent mass fractions [1]
+Structurally independent mass fractions [1]
+Structurally independent mass fractions [1]
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+If true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Independent mixture mass fractions m_i/m close to the connection point if m_flow < 0 [kg/kg]
+Allowed flow direction [:#(type=Modelica.Fluid.Types.PortFlowDirection)]
+Get the mass flow rate from the input connector [:#(type=Boolean)]
+Get the temperature from the input connector [:#(type=Boolean)]
+Get the composition from the input connector [:#(type=Boolean)]
+Get the trace substances from the input connector [:#(type=Boolean)]
+Fixed mass flow rate going out of the fluid port [kg/s]
+Fixed value of temperature [K|degC]
+Fixed value of composition [kg/kg]
+Fixed value of composition [kg/kg]
+Fixed value of composition [kg/kg]
+Fixed value of composition [kg/kg]
+Needed to connect to conditional connector [K]
+Needed to connect to conditional connector [1]
+Needed to connect to conditional connector [1]
+Needed to connect to conditional connector [1]
+Needed to connect to conditional connector [1]
+Volume [m3]
+Formulation of energy balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of mass balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of substance balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of trace substance balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Pressure [Pa|bar]
+Use T_start if true, otherwise h_start [:#(type=Boolean)]
+Temperature [K|degC]
+Specific enthalpy [J/kg]
+Mass fraction [1]
+Mass fraction [1]
+Mass fraction [1]
+Mass fraction [1]
+Absolute pressure of medium [Pa|bar]
+der(Absolute pressure of medium) [Pa/s]
+Density of medium [kg/m3|g/cm3]
+der(Density of medium) [Pa.m-2.s]
+Temperature of medium [K|degC]
+der(Temperature of medium) [K/s]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+der(Mass fractions (= (component mass)/total mass  m_i/m)) [s-1]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+der(Mass fractions (= (component mass)/total mass  m_i/m)) [s-1]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+der(Mass fractions (= (component mass)/total mass  m_i/m)) [s-1]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+der(Mass fractions (= (component mass)/total mass  m_i/m)) [s-1]
+Specific internal energy of medium [J/kg]
+der(Specific internal energy of medium) [m2/s3]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+der(Gas constant (of mixture if applicable)) [W/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+If true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+Mass [kg]
+der(Mass) [kg/s]
+Internal energy [J]
+der(Internal energy) [W]
+Species mass [kg]
+Species mass [kg]
+Species mass [kg]
+Species mass [kg]
+der(Species mass) [kg/s]
+der(Species mass) [kg/s]
+der(Species mass) [kg/s]
+der(Species mass) [kg/s]
+= true to set up initial equations for pressure [:#(type=Boolean)]
+Volume [m3]
+Vertical angle from the horizontal (-pi/2 <= x <= pi/2) [rad|deg]
+Height(port_b) - Height(port_a) [m]
+Elevation at port_a: Reference value only. No impact on calculations. [m]
+Elevation at port_b: Reference value only. No impact on calculations. [m]
+Gravitational acceleration [m/s2]
+=true to toggle heat port [:#(type=Boolean)]
+Internal heat generation [W]
+=true to toggle trace mass port [:#(type=Boolean)]
+[:#(type=Boolean)]
+[W]
+Constant output value [kg/s]
+Constant output value [kg/s]
+Connector of Boolean input signal [:#(type=Boolean)]
+Connector of Real output signal [kg/s]
+Constant output value
+Delay time [s]
+[kg/s]
+[kg/s2]
+Connector of Real input signal
+Connector of Real output signal
+der(Connector of Real output signal)
+Integrator gain [1]
+Type of initialization (1: no init, 2: steady state, 3,4: initial output) [:#(type=Modelica.Blocks.Types.Init)]
+Initial or guess value of output (= state)
+Type of integrator reset [:#(type=TRANSFORM.Types.Reset)]
+Value to which integrator is reset, used if reset = TRANSFORM.Types.Reset.Parameter
+Internal connector for integrator reset
+Needed to use conditional connector trigger [:#(type=Boolean)]
+Gain of input signal 1
+Gain of input signal 2
+Gain of input signal 3
+Connector of Real input signal 3
+Connector of Real output signal
+Gain of input signal 1
+Gain of input signal 2
+Gain value multiplied with input signal [1]
+Constant output value
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+Temperature [K|degC]
+der(Temperature) [K/s]
+Specific enthalpy of medium [J/kg]
+der(Specific enthalpy of medium) [m2/s3]
+Density of medium [kg/m3|g/cm3]
+Molar mass (of mixture or single fluid) [kg/mol]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+Temperature [K|degC]
+der(Temperature) [K/s]
+Specific enthalpy of medium [J/kg]
+der(Specific enthalpy of medium) [m2/s3]
+Density of medium [kg/m3|g/cm3]
+Molar mass (of mixture or single fluid) [kg/mol]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+Temperature [K|degC]
+der(Temperature) [K/s]
+Specific enthalpy of medium [J/kg]
+der(Specific enthalpy of medium) [m2/s3]
+Density of medium [kg/m3|g/cm3]
+Molar mass (of mixture or single fluid) [kg/mol]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Heat flow rate (positive if flowing from outside into the component) [W]
+

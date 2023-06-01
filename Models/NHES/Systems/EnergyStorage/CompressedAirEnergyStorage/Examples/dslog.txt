@@ -1,0 +1,70 @@
+Error: The following error was detected at time: 0
+
+Model error - Modelica.Math.log (T) = Modelica.Math.log (-55783.5)
+
+The stack of functions is:
+Modelica.Media.IdealGases.Common.Functions.h_T
+NHES.Media.Air.isentropicEnthalpyApproximation_Unique19
+NHES.Media.Air.isentropicEnthalpyApproximation_Unique19(
+100000, 
+Modelica.Media.IdealGases.Common.MixtureGasNasa.ThermodynamicState(
+p = turbine2.inlet.p, 
+T = turbine2.gas_in.T, 
+X = {turbine2.gas_in.X[1], turbine2.gas_in.X[2], turbine2.gas_in.X[3], turbine2.gas_in.X[4]}
+))
+NHES.Media.Air.isentropicEnthalpy_Unique8(
+turbine2.outlet.p, 
+Modelica.Media.IdealGases.Common.MixtureGasNasa.Thermodyn...
+
+Non-linear solver will attempt to handle this problem.
+
+Error: The following error was detected at time: 0
+
+Model error - Modelica.Math.log (T) = Modelica.Math.log (-27505.8)
+
+The stack of functions is:
+Modelica.Media.IdealGases.Common.Functions.h_T
+NHES.Media.Air.isentropicEnthalpyApproximation_Unique19
+NHES.Media.Air.isentropicEnthalpyApproximation_Unique19(
+100000, 
+Modelica.Media.IdealGases.Common.MixtureGasNasa.ThermodynamicState(
+p = turbine2.inlet.p, 
+T = turbine2.gas_in.T, 
+X = {turbine2.gas_in.X[1], turbine2.gas_in.X[2], turbine2.gas_in.X[3], turbine2.gas_in.X[4]}
+))
+NHES.Media.Air.isentropicEnthalpy_Unique8(
+turbine2.outlet.p, 
+Modelica.Media.IdealGases.Common.MixtureGasNasa.Thermodyn...
+
+Non-linear solver will attempt to handle this problem.
+
+
+Warning: Failed to solve nonlinear system using Newton solver.
+  During initialization at time: 0
+  Tag: initialization.nonlinear[1]
+  For debugging information enable
+  Simulation/Setup/Debug/Nonlinear solver diagnostics/Detailed logging of failed nonlinear solutions.
+Trying to solve non-linear system using global homotopy-method.
+Model: NHES.Systems.EnergyStorage.CompressedAirEnergyStorage.Examples.DischargingFinal_V4
+Integration started at 0 using integration method:
+RK-method: esdirk45a
+Local extrapolation
+FSAL
+Continuous extension
+
+
+Integration terminated successfully at T = 100
+   CPU-time for integration                  : 0.117 seconds
+   CPU-time for initialization               : 0.005 seconds
+   Number of result points                   : 501
+   Number of grid points                     : 501
+   Number of accepted steps                  : 68
+   Number of rejected steps                  : 5
+   Number of f-evaluations (dynamics)        : 873
+   Number of crossing function evaluations   : 205
+   Number of Jacobian-evaluations            : 12
+   Number of model time events               : 0
+   Number of state events                    : 0
+   Number of step events                     : 0
+
+SUCCESSFUL simulation of NHES.Systems.EnergyStorage.CompressedAirEnergyStorage.Examples.DischargingFinal_V4

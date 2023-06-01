@@ -1,0 +1,5 @@
+model dsmodelIterationSelect
+  extends NHES.Systems.EnergyStorage.CompressedAirEnergyStorage.Examples.DischargingFinal_V4;
+  annotation(__Dymola_SimulationIterationVariables={"turbine2.N_T", 
+  "CavernCheckValve.dp", "turbine2.gas_in.T", "checkValve1.dp"});
+end dsmodelIterationSelect;

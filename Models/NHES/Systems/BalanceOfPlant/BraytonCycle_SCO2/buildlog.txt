@@ -1,0 +1,51 @@
+ 
+Compiling and linking the model (Visual C++). 
+ 
+64-bit mode activated. 
+dsmodel.c
+C:\Program Files\Dymola 2021x\source\dsutil.h(283): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:/Program Files/Dymola 2021x\source\matrixop.h(265): warning C4267: 'function': conversion from 'size_t' to 'SizeType', possible loss of data
+C:/Program Files/Dymola 2021x\source\matrixop.h(1181): warning C4267: 'function': conversion from 'size_t' to 'SizeType', possible loss of data
+dsmodel.c(560): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(603): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(691): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(734): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(1200): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(1288): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(1685): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(1773): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(2066): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(2109): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(2204): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(2247): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(2290): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(2333): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(2376): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(2419): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(2462): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(2505): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(2548): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(2591): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(2634): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(2677): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(2720): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(2763): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(2806): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(3125): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(3213): warning C4133: 'function': incompatible types - from 'DymStruc0 *' to 'ExternalThermodynamicState *'
+dsmodel.c(3383): warning C4133: 'function': incompatible types - from 'DymStruc1 *' to 'ExternalSaturationProperties *'
+dsmodel.c(3423): warning C4133: 'function': incompatible types - from 'DymStruc1 *' to 'ExternalSaturationProperties *'
+dsmodel.c(3463): warning C4133: 'function': incompatible types - from 'DymStruc1 *' to 'ExternalSaturationProperties *'
+dsmodel.c(3503): warning C4133: 'function': incompatible types - from 'DymStruc1 *' to 'ExternalSaturationProperties *'
+dsmodel.c(3543): warning C4133: 'function': incompatible types - from 'DymStruc1 *' to 'ExternalSaturationProperties *'
+C:/Program Files/Dymola 2021x\source\ModelicaInternal.c(637): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:/Program Files/Dymola 2021x\source\ModelicaInternal.c(608): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+dsmodel.c(12551): warning C4267: 'function': conversion from 'size_t' to 'int', possible loss of data
+dsmodel.c(12644): warning C4267: 'function': conversion from 'size_t' to 'int', possible loss of data
+   Creating library dymosim.lib and object dymosim.exp
+LINK : warning LNK4217: symbol '__iob_func' defined in 'dsmodel.obj' is imported by 'gsundials.lib(cvode.obj)' in function 'CVodeCreate'
+LINK : warning LNK4286: symbol '__iob_func' defined in 'dsmodel.obj' is imported by 'DymUtil.lib(amat.obj)'
+LINK : warning LNK4217: symbol '__iob_func' defined in 'dsmodel.obj' is imported by 'DymUtil.lib(dsres.obj)' in function 'ds_res_sig'
+ 
+Successful generation of Dymosim. 
+ 

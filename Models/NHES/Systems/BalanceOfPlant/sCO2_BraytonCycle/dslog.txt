@@ -1,0 +1,33 @@
+Model: NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_sCO2_Brayton.Examples.sCO2_Brayton_HTGR_FullTest_v2_GT_MHR
+Integration started at 0 using integration method:
+RK-method: esdirk45a
+Local extrapolation
+FSAL
+Continuous extension
+
+Error: The following error was detected at time: 699.2386440578001
+
+Model error - power: (Tstar) ^ (-0.14874) = (-51.5716) ^ (-0.14874)
+
+The stack of functions is:
+Modelica.Media.IdealGases.Common.Functions.dynamicViscosityLowPressure
+Modelica.Media.IdealGases.SingleGases.He.dynamicViscosity_Unique94
+Modelica.Media.IdealGases.SingleGases.He.dynamicViscosity_Unique94(
+PrimaryLoop.core.coolantSubchannel.flowModel.mediaProps[3].state)
+
+
+Integration terminated successfully at T = 1e+06
+   CPU-time for integration                  : 81.281 seconds
+   CPU-time for initialization               : 0.115 seconds
+   Number of result points                   : 253
+   Number of grid points                     : 101
+   Number of accepted steps                  : 344
+   Number of rejected steps                  : 98
+   Number of f-evaluations (dynamics)        : 5599
+   Number of crossing function evaluations   : 3667
+   Number of Jacobian-evaluations            : 172
+   Number of model time events               : 0
+   Number of state events                    : 76
+   Number of step events                     : 0
+
+SUCCESSFUL simulation of NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_sCO2_Brayton.Examples.sCO2_Brayton_HTGR_FullTest_v2_GT_MHR

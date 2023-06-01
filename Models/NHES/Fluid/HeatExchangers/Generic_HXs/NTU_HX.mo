@@ -83,8 +83,7 @@ public
     use_T_start=false,
     h_start=0.5*h_start_tube_inlet + 0.5*h_start_tube_outlet,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
         V=V_Tube/2,
         angle=0,
         dheight=dh_Tube/2),
@@ -110,8 +109,7 @@ public
     use_T_start=false,
     h_start=0.5*h_start_shell_outlet + 0.5*h_start_shell_inlet,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume (
         V=V_Shell/2,
         angle=0,
         dheight=dh_Shell/2),

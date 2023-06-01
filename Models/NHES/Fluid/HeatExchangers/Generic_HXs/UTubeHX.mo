@@ -22,8 +22,7 @@ model UTubeHX
   parameter Real nParallel=1 "# of identical parallel HXs";
   replaceable model Geometry =
       Utilities.Geometries.UTubeHX
-    constrainedby
-    TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.HeatExchanger.GenericHX
+    constrainedby TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.HeatExchanger.GenericHX
     "Geometry" annotation (choicesAllMatching=true);
   replaceable package Medium_shell =
       Modelica.Media.Interfaces.PartialMedium
@@ -38,31 +37,26 @@ model UTubeHX
     "Swap shell side temperature and flux vector order";
   replaceable model FlowModel_shell =
       TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable
-    constrainedby
-    TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.PartialDistributedStaggeredFlow
+    constrainedby TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.PartialDistributedStaggeredFlow
     "Shell side flow models (i.e., momentum, pressure loss, wall friction)"
     annotation (choicesAllMatching=true, Dialog(group="Pressure Loss"));
   replaceable model HeatTransfer_shell =
       TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Ideal
-    constrainedby
-    TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.PartialHeatTransfer_setT
+    constrainedby TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.PartialHeatTransfer_setT
     "Shell side coefficient of heat transfer" annotation (choicesAllMatching=true,
       Dialog(group="Heat Transfer"));
   replaceable model FlowModel_tube =
       TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable
-    constrainedby
-    TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.PartialDistributedStaggeredFlow
+    constrainedby TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.PartialDistributedStaggeredFlow
     "Tube side flow models (i.e., momentum, pressure loss, wall friction)"
     annotation (choicesAllMatching=true, Dialog(group="Pressure Loss"));
   replaceable model HeatTransfer_tube_one =
       TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Ideal
-    constrainedby
-    TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.PartialHeatTransfer_setT
+    constrainedby TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.PartialHeatTransfer_setT
     "Tube side coefficient of heat transfer" annotation (choicesAllMatching=true,
       Dialog(group="Heat Transfer"));
         replaceable model HeatTransfer_tube_two =
-      TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Ideal
-    constrainedby
+      TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Ideal constrainedby
     TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.PartialHeatTransfer_setT
     "Tube side coefficient of heat transfer" annotation (choicesAllMatching=
         true, Dialog(group="Heat Transfer"));
@@ -413,8 +407,7 @@ model UTubeHX
     C_a_start=C_a_start_shell,
     C_b_start=C_b_start_shell,
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.GenericPipe
-        (
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.GenericPipe (
         nV=geometry.nV,
         crossAreas=geometry.crossAreas_shell,
         perimeters=geometry.perimeters_shell,
@@ -434,8 +427,7 @@ model UTubeHX
         origin={0,46})));
   TRANSFORM.Fluid.Pipes.GenericPipe_withWall             tube_one(
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.Pipe_Wall.StraightPipe
-        (
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.Pipe_Wall.StraightPipe (
         dimension=geometry.dimension_tube,
         crossArea=geometry.crossArea_tube,
         perimeter=geometry.perimeter_tube,
@@ -516,8 +508,7 @@ model UTubeHX
         origin={32,-16})));
   TRANSFORM.Fluid.Pipes.GenericPipe_withWall tube_two(
     redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.Pipe_Wall.StraightPipe
-        (
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.Pipe_Wall.StraightPipe (
         dimension=geometry.dimension_tube,
         crossArea=geometry.crossArea_tube,
         perimeter=geometry.perimeter_tube,

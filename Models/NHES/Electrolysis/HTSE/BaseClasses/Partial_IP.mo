@@ -5,8 +5,7 @@ partial model Partial_IP
 
   extends Electrolysis.Icons.PartialBackground;
 
-  replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby
-    Modelica.Media.Interfaces.PartialMedium
+  replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium
     annotation (__Dymola_choicesAllMatching=true, Dialog(group="Working fluid for the hot utility"));
 
   parameter Boolean allowFlowReversal = true

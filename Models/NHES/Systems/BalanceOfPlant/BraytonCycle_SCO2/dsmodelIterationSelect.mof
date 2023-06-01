@@ -1,0 +1,9 @@
+model dsmodelIterationSelect
+  extends NHES.Systems.BalanceOfPlant.sCO2_BraytonCycle.Examples.Test_sCO2;
+  annotation(__Dymola_SimulationIterationVariables={"brayton_Cycle_sCO2_1.HX2.Tube.medium.p",
+   "brayton_Cycle_sCO2_1.HX2.Tube.medium.h", "brayton_Cycle_sCO2_1.Cooler.medium.p",
+   "brayton_Cycle_sCO2_1.Split.medium.p", "brayton_Cycle_sCO2_1.HX2.Tube_out.m_flow",
+   "brayton_Cycle_sCO2_1.Cooler.medium.h", "brayton_Cycle_sCO2_1.Comp1.pin", 
+  "brayton_Cycle_sCO2_1.HX2.Shell_out.m_flow", "brayton_Cycle_sCO2_1.BoundaryOut.m_flow",
+   "brayton_Cycle_sCO2_1.HX1.Tube_out.m_flow"});
+end dsmodelIterationSelect;

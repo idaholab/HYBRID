@@ -1,0 +1,25 @@
+model dsmodelIterationSelect
+  extends NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_sCO2_Brayton.Examples.sCO2_Brayton_HTGR_FullTest_v2_GT_MHR;
+  annotation(__Dymola_SimulationIterationVariables={"BOP.HX2.Tube.medium.h", 
+  "BOP.HX2.Tube.medium.p", "BOP.Cooler.medium.p", "BOP.Split.medium.p", 
+  "BOP.Cooler.medium.h", "BOP.HX2.Tube_out.m_flow", "BOP.Comp1.pin", 
+  "BOP.HX2.Shell_out.m_flow", "PrimaryLoop.core.coolantSubchannel.flowModel.dps_fg[1]",
+   "PrimaryLoop.Primary_PRV.dp", "PrimaryLoop.Cooler.medium.p", "PrimaryLoop.core.coolantSubchannel.Ts_wall[1, 1]",
+   "PrimaryLoop.core.coolantSubchannel.Ts_wall[2, 1]", "PrimaryLoop.core.coolantSubchannel.Ts_wall[3, 1]",
+   "PrimaryLoop.core.coolantSubchannel.flowModel.dps_fg[5]", "PrimaryLoop.core_dp.port_a.p",
+   "PrimaryLoop.core.coolantSubchannel.Ts_wall[4, 1]", "PrimaryLoop.port_a.m_flow",
+   "BOP.Turbine.w", "BOP.valveLinear1.dp", "BOP.HX1.Tube_out.m_flow", 
+  "PrimaryLoop.core.fuelModel[1].Fuel_kernel.materials[1].state.T", 
+  "PrimaryLoop.core.fuelModel[1].Fuel_kernel.port_b1.T", "PrimaryLoop.core.fuelModel[1].Fuel_kernel_center.materials[1].state.T",
+   "PrimaryLoop.core.fuelModel[1].Fuel_kernel_center.port_b1.T", 
+  "PrimaryLoop.core.fuelModel[2].Fuel_kernel.materials[1].state.T", 
+  "PrimaryLoop.core.fuelModel[2].Fuel_kernel.port_b1.T", "PrimaryLoop.core.fuelModel[2].Fuel_kernel_center.materials[1].state.T",
+   "PrimaryLoop.core.fuelModel[2].Fuel_kernel_center.port_b1.T", 
+  "PrimaryLoop.core.fuelModel[3].Fuel_kernel.materials[1].state.T", 
+  "PrimaryLoop.core.fuelModel[3].Fuel_kernel.port_b1.T", "PrimaryLoop.core.fuelModel[3].Fuel_kernel_center.materials[1].state.T",
+   "PrimaryLoop.core.fuelModel[3].Fuel_kernel_center.port_b1.T", 
+  "PrimaryLoop.core.fuelModel[4].Fuel_kernel.materials[1].state.T", 
+  "PrimaryLoop.core.fuelModel[4].Fuel_kernel.port_b1.T", "PrimaryLoop.core.fuelModel[4].Fuel_kernel_center.materials[1].state.T",
+   "PrimaryLoop.core.fuelModel[4].Fuel_kernel_center.port_b1.T", 
+  "PrimaryLoop.Blower.Ti", "PrimaryLoop.Blower.gas_iso.T"});
+end dsmodelIterationSelect;

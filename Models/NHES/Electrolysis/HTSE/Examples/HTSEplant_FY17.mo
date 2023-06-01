@@ -4,8 +4,7 @@ model HTSEplant_FY17
   import NHES;
   extends Modelica.Icons.Example;
 
-  replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby
-    Modelica.Media.Interfaces.PartialMedium
+  replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium
     annotation (__Dymola_choicesAllMatching=true, Dialog(group="Working fluid for the hot utility"));
 
   parameter Integer numCells_perVessel=68320 "Total number of cells per vessel";

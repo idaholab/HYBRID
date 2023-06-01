@@ -1,0 +1,23 @@
+Model: NHES.Systems.BalanceOfPlant.sCO2_BraytonCycle.Examples.Test_sCO2
+Integration started at 0 using integration method:
+RK-method: esdirk45a
+Local extrapolation
+FSAL
+Continuous extension
+
+
+Integration terminated successfully at T = 100
+   CPU-time for integration                  : 10.446 seconds
+   CPU-time for initialization               : 0.104 seconds
+   Number of result points                   : 123
+   Number of grid points                     : 101
+   Number of accepted steps                  : 57
+   Number of rejected steps                  : 4
+   Number of f-evaluations (dynamics)        : 972
+   Number of crossing function evaluations   : 912
+   Number of Jacobian-evaluations            : 29
+   Number of model time events               : 0
+   Number of state events                    : 11
+   Number of step events                     : 0
+
+SUCCESSFUL simulation of NHES.Systems.BalanceOfPlant.sCO2_BraytonCycle.Examples.Test_sCO2

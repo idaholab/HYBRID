@@ -55,8 +55,7 @@ model Generic_HX
 
   replaceable model FlowModel_shell =
       NHES.Fluid.Pipes.BaseClasses.FlowModels.DetailedPipeFlow
-    constrainedby
-    NHES.Fluid.Pipes.BaseClasses.FlowModels.PartialStaggeredFlowModel
+    constrainedby NHES.Fluid.Pipes.BaseClasses.FlowModels.PartialStaggeredFlowModel
     "Shell flow model"
     annotation (choicesAllMatching=true,Dialog(tab="Shell Parameters",group="Pressure Drop"));
 
@@ -68,8 +67,7 @@ model Generic_HX
 
   replaceable model HeatTransfer_shell =
       NHES.Fluid.Pipes.BaseClasses.HeatTransfer.IdealFlowHeatTransfer
-    constrainedby
-    NHES.Fluid.Pipes.BaseClasses.HeatTransfer.PartialFlowHeatTransfer
+    constrainedby NHES.Fluid.Pipes.BaseClasses.HeatTransfer.PartialFlowHeatTransfer
     "Shell heat transfer coefficient model"
     annotation (choicesAllMatching=true,Dialog(tab="Shell Parameters",group="Heat Transfer"));
   parameter SI.Area[nV_shell] surfaceAreas_shell = fill(pi*(diameter_tube+2*th_tube)*length_tube*nTubes/nV_shell,nV_shell)
@@ -99,8 +97,7 @@ model Generic_HX
 
   replaceable model FlowModel_tube =
       NHES.Fluid.Pipes.BaseClasses.FlowModels.DetailedPipeFlow
-    constrainedby
-    NHES.Fluid.Pipes.BaseClasses.FlowModels.PartialStaggeredFlowModel
+    constrainedby NHES.Fluid.Pipes.BaseClasses.FlowModels.PartialStaggeredFlowModel
     "Tube flow model"
     annotation (choicesAllMatching=true,Dialog(tab="Tube Parameters",group="Pressure Drop"));
 
@@ -112,8 +109,7 @@ model Generic_HX
 
   replaceable model HeatTransfer_tube =
       NHES.Fluid.Pipes.BaseClasses.HeatTransfer.IdealFlowHeatTransfer
-    constrainedby
-    NHES.Fluid.Pipes.BaseClasses.HeatTransfer.PartialFlowHeatTransfer
+    constrainedby NHES.Fluid.Pipes.BaseClasses.HeatTransfer.PartialFlowHeatTransfer
     "Tube heat transfer coefficient model"
     annotation (choicesAllMatching=true,Dialog(tab="Tube Parameters",group="Heat Transfer"));
   parameter SI.Area[nV_tube] surfaceAreas_tube = fill(pi*perimeter_tube*length_tube/nV_tube,nV_tube)
