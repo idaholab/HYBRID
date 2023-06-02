@@ -120,6 +120,6 @@ equation
           22},{88,22},{88,40},{129,40},{129,60.6}}, color={0,0,127}));
   connect(Pump_Speed.y, boundary3.m_flow_in) annotation (Line(points={{136.7,69},
           {140,69},{140,-14},{108,-14}}, color={0,0,127}));
-  annotation (                    experiment(StopTime=10000, __Dymola_Algorithm
-        ="Esdirk34a"));
+  annotation (                    experiment(StopTime=10000, __Dymola_Algorithm=
+         "Esdirk34a"));
 end TES_2Tank_HeReactor2;

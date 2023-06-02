@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_DivertPowerControl_HTGR_3VN
+model CS_DivertPowerControl_HTGR_3VNa
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
   extends NHES.Icons.DummyIcon;
@@ -8,6 +8,10 @@ model CS_DivertPowerControl_HTGR_3VN
   annotation(Dialog(tab="General"));
   input Real Overall_Power
   annotation(Dialog(tab="General"));
+
+    input Real m_required;
+
+
 
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -55,11 +59,11 @@ model CS_DivertPowerControl_HTGR_3VN
     T_SHS_Return=491.15,
     m_flow_reactor=67.3)
     annotation (Placement(transformation(extent={{-98,12},{-78,32}})));
-  Modelica.Blocks.Sources.Constant const3(k=560 + 273.15)
-    annotation (Placement(transformation(extent={{-96,62},{-76,82}})));
+  Modelica.Blocks.Sources.Constant const3(k=data.m_flow_reactor)
+    annotation (Placement(transformation(extent={{-186,68},{-166,88}})));
   TRANSFORM.Controls.LimPID FWCP_mflow(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-0.01,
+    k=0.1,
     Ti=20,
     Td=0.1,
     yMax=3000,
@@ -88,8 +92,8 @@ model CS_DivertPowerControl_HTGR_3VN
     annotation (Placement(transformation(extent={{112,-106},{92,-86}})));
   TRANSFORM.Controls.LimPID Charge_OnOff_Throttle(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-3e-7,
-    Ti=25,
+    k=-5e-7,
+    Ti=20,
     Td=0.01,
     k_s=1,
     k_m=1,
@@ -99,7 +103,7 @@ model CS_DivertPowerControl_HTGR_3VN
     wd=0.1,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
-    annotation (Placement(transformation(extent={{152,-76},{132,-96}})));
+    annotation (Placement(transformation(extent={{152,-78},{132,-98}})));
   Modelica.Blocks.Sources.Constant const10(k=0.015)
     annotation (Placement(transformation(extent={{152,-122},{144,-114}})));
   Modelica.Blocks.Sources.Constant const1(k=data.p_steam)
@@ -115,6 +119,8 @@ model CS_DivertPowerControl_HTGR_3VN
   Modelica.Blocks.Sources.RealExpression
                                    realExpression1(y=Overall_Power)
     annotation (Placement(transformation(extent={{80,24},{94,36}})));
+  Modelica.Blocks.Sources.RealExpression m_req(y=m_required)
+    annotation (Placement(transformation(extent={{-108,66},{-94,78}})));
 equation
   connect(const5.y,Turb_Divert_Valve. u_s)
     annotation (Line(points={{-83,-126},{-64,-126}}, color={0,0,127}));
@@ -162,8 +168,6 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(const3.y,FWCP_mflow. u_s)
-    annotation (Line(points={{-75,72},{-68,72}}, color={0,0,127}));
   connect(FWCP_mflow.y, add.u2)
     annotation (Line(points={{-45,72},{-26,72}},
                                                color={0,0,127}));
@@ -201,7 +205,7 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(add5.u1, Charge_OnOff_Throttle.y)
-    annotation (Line(points={{114,-90},{114,-86},{131,-86}},
+    annotation (Line(points={{114,-90},{114,-88},{131,-88}},
                                                  color={0,0,127}));
   connect(add5.u2, const10.y) annotation (Line(points={{114,-102},{118,-102},{
           118,-118},{143.6,-118}},
@@ -222,18 +226,23 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(TCV_Power.u_s, const1.y)
     annotation (Line(points={{-60,-38},{-71,-38}}, color={0,0,127}));
+  connect(sensorBus.Condensor_Output_mflow, FWCP_mflow.u_m) annotation (Line(
+      points={{-30,-100},{-120,-100},{-120,46},{-56,46},{-56,60}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   connect(min1.u1, const6.y)
     annotation (Line(points={{90,-64},{75.2,-64}}, color={0,0,127}));
   connect(realExpression.y, min2.u1) annotation (Line(points={{110.7,-26},{160,
           -26},{160,-64},{172,-64}}, color={0,0,127}));
   connect(min2.y, Charge_OnOff_Throttle.u_s) annotation (Line(points={{195,-70},
-          {238,-70},{238,-86},{154,-86}}, color={0,0,127}));
+          {238,-70},{238,-88},{154,-88}}, color={0,0,127}));
   connect(min2.u2, const12.y) annotation (Line(points={{172,-76},{168,-76},{168,
           -46},{141.2,-46}}, color={0,0,127}));
   connect(min1.u2, const6.y) annotation (Line(points={{90,-76},{80,-76},{80,-64},
           {75.2,-64}}, color={0,0,127}));
   connect(sensorBus.Power, Charge_OnOff_Throttle.u_m) annotation (Line(
-      points={{-30,-100},{-28,-100},{-28,-70},{142,-70},{142,-74}},
+      points={{-30,-100},{-28,-100},{-28,-70},{142,-70},{142,-76}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -241,18 +250,10 @@ equation
       index=-1,
       extent={{-3,6},{-3,6}},
       horizontalAlignment=TextAlignment.Right));
-  connect(sensorBus.Steam_Temperature, FWCP_mflow.u_m) annotation (Line(
-      points={{-30,-100},{-30,-58},{-24,-58},{-24,-36},{-30,-36},{-30,50},{-52,
-          50},{-52,52},{-56,52},{-56,60}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{6,3},{6,3}},
-      horizontalAlignment=TextAlignment.Left));
+  connect(m_req.y, FWCP_mflow.u_s)
+    annotation (Line(points={{-93.3,72},{-68,72}}, color={0,0,127}));
   annotation (Diagram(graphics={Text(
           extent={{-70,-142},{-20,-160}},
           textColor={28,108,200},
           textString="Feedwater")}));
-end CS_DivertPowerControl_HTGR_3VN;
+end CS_DivertPowerControl_HTGR_3VNa;

@@ -357,9 +357,9 @@ model HTGR_TES_RhC_6a3
     timeScale=1,
     fileName=
         "C:/Users/NOVOV/projects/HYBRID/Models/NHES/Resources/Data/RAVEN/timeSeriesDataVN.txt",
-
     shiftTime=0)
     annotation (Placement(transformation(extent={{-142,196},{-122,216}})));
+
 equation
     hTGR_PebbleBed_Primary_Loop.input_steam_pressure = 40;
     Discharging_Valve_Position.y =sHS2Tank_VN_SaltOuta.Discharging_Valve.opening;

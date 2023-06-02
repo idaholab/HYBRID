@@ -141,6 +141,6 @@ equation
         color={0,127,255}));
   connect(BOP1.portElec_b, sinkElec.port) annotation (Line(points={{184,4},{186,
           4},{186,6},{232,6}}, color={255,0,0}));
-  annotation (                    experiment(StopTime=10000, __Dymola_Algorithm
-        ="Esdirk34a"));
+  annotation (                    experiment(StopTime=10000, __Dymola_Algorithm=
+         "Esdirk34a"));
 end TES_2Tank_HeReactor3;

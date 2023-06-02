@@ -97,6 +97,6 @@ equation
   connect(sensor_pT1.port, sHS2Tank_VNWorkingnew.port_dch_a) annotation (Line(
         points={{78,-10},{78,-12},{54,-12},{54,20.98},{43.32,20.98}}, color={0,
           127,255}));
-  annotation (                    experiment(StopTime=10000, __Dymola_Algorithm
-        ="Esdirk34a"));
+  annotation (                    experiment(StopTime=10000, __Dymola_Algorithm=
+         "Esdirk34a"));
 end TES_2Tank_HeReactor;

@@ -1,5 +1,5 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model HTGR_Case_01_IndependentBOPVN
+model HTGR_Case_01_IndependentBOP_DM_VN2
   "TES use case demonstration of a NuScale-style LWR operating within an energy arbitrage IES, storing and dispensing energy on demand from a two tank molten salt energy storage system nominally using HITEC salt to store heat."
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
@@ -63,23 +63,16 @@ model HTGR_Case_01_IndependentBOPVN
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl_HTGR_3
-      CS(
+      BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl_HTGR_3VN1 CS(
       electric_demand=sum1.y,
       Overall_Power=sensorW.W,
       data(
         p_steam=14000000,
         T_Feedwater=481.15,
         p_steam_vent=16500000,
-        m_flow_reactor=50)),
-    port_a_start(
-      p=12000000,
-      h=3500000,
-      m_flow=50),
-    port_b_start(
-      p=13000000,
-      h=400000,
-      m_flow=50),
+        m_flow_reactor=50),
+      Charge_OnOff_Throttle(k=-5e-6, Ti=20),
+      TCV_Power(k=-5e-7)),
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.Data.IntermediateTurbineInitialisation
       init(
@@ -91,10 +84,7 @@ model HTGR_Case_01_IndependentBOPVN
       HPT_p_b_start=10000,
       HPT_T_a_start=523.15,
       HPT_T_b_start=333.15),
-    pump_SimpleMassFlow1(
-      p_a_start=10000000,
-      T_start=423.15,
-      m_flow_start=50))
+    pump_SimpleMassFlow1(m_flow_start=50))
     annotation (Placement(transformation(extent={{50,-20},{90,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
     annotation (Placement(transformation(extent={{98,-22},{138,22}})));
@@ -142,7 +132,8 @@ model HTGR_Case_01_IndependentBOPVN
     redeclare package Storage_Medium = NHES.Media.Hitec.Hitec,
     m_flow_min=0.1,
     tank_height=11.7,
-    Steam_Output_Temp=stateSensor6.temperature.T)
+    Steam_Output_Temp=stateSensor6.temperature.T,
+    CHX(NTU=25))
     annotation (Placement(transformation(extent={{-16,-76},{24,-36}})));
 
   Fluid.Sensors.stateDisplay stateDisplay1
@@ -192,9 +183,20 @@ model HTGR_Case_01_IndependentBOPVN
     width=9800,
     falling=100,
     period=20000,
-    offset=57e6,
-    startTime=3e5 + 2000)
+    offset=47e6,
+    startTime=2000)
     annotation (Placement(transformation(extent={{66,112},{86,132}})));
+  BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
+    intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
+    port_a_nominal(
+      p=EM.port_b2_nominal.p,
+      h=EM.port_b2_nominal.h,
+      m_flow=-EM.port_b2_nominal.m_flow),
+    port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
+    redeclare
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
+      CS(electric_demand=sum1.y))
+    annotation (Placement(transformation(extent={{104,-86},{142,-44}})));
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW
     annotation (Placement(transformation(extent={{142,-6},{156,6}})));
   Modelica.Blocks.Math.Add         add
@@ -206,7 +208,7 @@ model HTGR_Case_01_IndependentBOPVN
     falling=100,
     period=20000,
     offset=0,
-    startTime=3e5 + 14000)
+    startTime=14000)
     annotation (Placement(transformation(extent={{66,76},{86,96}})));
 
   Modelica.Blocks.Sources.Constant const(k=47.5e6)
@@ -221,22 +223,14 @@ model HTGR_Case_01_IndependentBOPVN
   Modelica.Blocks.Math.Sum sum1
     annotation (Placement(transformation(extent={{134,102},{154,122}})));
   PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_TESUC
-    hTGR_PebbleBed_Primary_Loop_TESUC(redeclare
-      PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary CS(
-        data(T_Rx_Exit_Ref=1023.15, P_Steam_Ref=14000000)))
+    hTGR_PebbleBed_Primary_Loop_TESUCa(
+                                      redeclare
+      PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_PrimaryVN
+                                                                            CS(
+        data(T_Rx_Exit_Ref=1023.15, P_Steam_Ref=14000000)), STHX(nParallel=4))
     annotation (Placement(transformation(extent={{-104,-22},{-56,24}})));
-  BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
-    intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
-    port_a_nominal(
-      p=EM.port_b2_nominal.p,
-      h=EM.port_b2_nominal.h,
-      m_flow=-EM.port_b2_nominal.m_flow),
-    port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
-    redeclare BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat CS(
-        electric_demand=sum1.y))
-    annotation (Placement(transformation(extent={{146,-80},{184,-38}})));
 equation
-  hTGR_PebbleBed_Primary_Loop_TESUC.input_steam_pressure =
+  hTGR_PebbleBed_Primary_Loop_TESUCa.input_steam_pressure =
     intermediate_Rankine_Cycle_TESUC.sensor_p.p;
 
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)
@@ -287,6 +281,17 @@ equation
           127,255}));
   connect(stateSensor5.port_b, intermediate_Rankine_Cycle_TESUC.port_a1)
     annotation (Line(points={{30,-30},{57.2,-30},{57.2,-19.2}}, color={0,127,255}));
+  connect(stateSensor6.port_b,
+    intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_a)
+    annotation (Line(points={{62,-68},{100,-68},{100,-60},{102,-60},{102,-56},{
+          104,-56},{104,-56.6}},
+                             color={0,127,255}));
+  connect(stateSensor7.port_a,
+    intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_b)
+    annotation (Line(points={{68,-55},{68,-73.4},{104,-73.4}}, color={0,127,255}));
+  connect(intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.portElec_b,
+    SY.port_a[2]) annotation (Line(points={{142,-65},{142,-28},{94,-28},{94,0},
+          {98,0},{98,1.1}},     color={255,0,0}));
   connect(SY.port_Grid, sensorW.port_a)
     annotation (Line(points={{138,0},{142,0}}, color={255,0,0}));
   connect(sensorW.port_b, EG.portElec_a)
@@ -297,24 +302,14 @@ equation
   connect(trapezoid1.y, add.u2) annotation (Line(points={{87,86},{100,86},{100,
           100},{106,100}},
                          color={0,0,127}));
-  connect(hTGR_PebbleBed_Primary_Loop_TESUC.port_b, stateSensor1.port_a)
+  connect(hTGR_PebbleBed_Primary_Loop_TESUCa.port_b, stateSensor1.port_a)
     annotation (Line(points={{-56.72,12.27},{-47.36,12.27},{-47.36,11},{-38,11}},
         color={0,127,255}));
-  connect(hTGR_PebbleBed_Primary_Loop_TESUC.port_a, stateSensor3.port_b)
+  connect(hTGR_PebbleBed_Primary_Loop_TESUCa.port_a, stateSensor3.port_b)
     annotation (Line(points={{-56.72,-6.59},{-48.36,-6.59},{-48.36,-6},{-40,-6}},
         color={0,127,255}));
   connect(add.y, sum1.u[1]) annotation (Line(points={{129,106},{128,106},{128,
           92},{98,92},{98,118},{132,118},{132,112}}, color={0,0,127}));
-  connect(stateSensor6.port_b,
-    intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_a)
-    annotation (Line(points={{62,-68},{140,-68},{140,-50.6},{146,-50.6}}, color=
-         {0,127,255}));
-  connect(stateSensor7.port_a,
-    intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_b)
-    annotation (Line(points={{68,-55},{68,-67.4},{146,-67.4}}, color={0,127,255}));
-  connect(intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.portElec_b,
-    SY.port_a[2]) annotation (Line(points={{184,-59},{190,-59},{190,-28},{94,
-          -28},{94,1.1},{98,1.1}},   color={255,0,0}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{200,100}}), graphics={
         Ellipse(lineColor = {75,138,73},
@@ -331,10 +326,12 @@ equation
     experiment(
       StopTime=200000,
       Interval=10,
-      __Dymola_Algorithm="Esdirk45a"),
+      Tolerance=0.001,
+      __Dymola_Algorithm="Esdirk34a"),
     Documentation(info="<html>
 <p>NuScale style reactor system. System has a nominal thermal output of 160MWt rather than the updated 200MWt.</p>
 <p>System is based upon report: Frick, Konor L. Status Report on the NuScale Module Developed in the Modelica Framework. United States: N. p., 2019. Web. doi:10.2172/1569288.</p>
 </html>"),
-    __Dymola_experimentSetupOutput(events=false));
-end HTGR_Case_01_IndependentBOPVN;
+    __Dymola_experimentSetupOutput(events=false),
+    conversion(noneFromVersion=""));
+end HTGR_Case_01_IndependentBOP_DM_VN2;
