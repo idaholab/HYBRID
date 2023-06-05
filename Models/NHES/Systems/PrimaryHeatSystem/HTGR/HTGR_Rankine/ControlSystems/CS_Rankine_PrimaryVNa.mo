@@ -1,5 +1,5 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems;
-model CS_Rankine_PrimaryVN
+model CS_Rankine_PrimaryVNa
 
   extends HTGR_Rankine.BaseClasses.Partial_ControlSystem;
 
@@ -27,22 +27,16 @@ model CS_Rankine_PrimaryVN
     annotation (Placement(transformation(extent={{-36,14},{-16,-6}})));
   Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
     annotation (Placement(transformation(extent={{-80,-6},{-60,14}})));
-  VarLimVarK_PID PID(
+  TRANSFORM.Controls.LimPID Blower_Speed1(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-0.000001,
-    Ti=10,
-    k_s=-1,
-    k_m=-1,
-    Ni=0.0001,
-    xi_start=40,
-    use_k_in=false,
-    use_lowlim_in=false,
-    use_uplim_in=false,
-    Td=1,
-    yMax=80,
-    yMin=0) annotation (Placement(transformation(extent={{38,50},{58,70}})));
-  Modelica.Blocks.Sources.Constant const6(k=12.5e7)
-    annotation (Placement(transformation(extent={{10,58},{20,68}})));
+    k=1e-7,
+    Ti=30,
+    yMax=75,
+    yMin=45,
+    initType=Modelica.Blocks.Types.Init.NoInit)
+    annotation (Placement(transformation(extent={{48,82},{68,62}})));
+  Modelica.Blocks.Sources.Constant const3(k=125e6)
+    annotation (Placement(transformation(extent={{4,62},{24,82}})));
 equation
 
   connect(const1.y,CR. u_s) annotation (Line(points={{-59,-40},{-38,-40}},
@@ -64,26 +58,25 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(const6.y, PID.u_s) annotation (Line(points={{20.5,63},{26,63},{26,60},
-          {36,60}}, color={0,0,127}));
-  connect(actuatorBus.PR_Compressor, PID.y) annotation (Line(
-      points={{30,-100},{88,-100},{88,54},{59,54},{59,60}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-3,-6},{-3,-6}},
-      horizontalAlignment=TextAlignment.Right));
-  connect(sensorBus.thermal_power, PID.u_m) annotation (Line(
-      points={{-30,-100},{12,-100},{12,10},{48,10},{48,48}},
+  connect(const3.y, Blower_Speed1.u_s)
+    annotation (Line(points={{25,72},{46,72}}, color={0,0,127}));
+  connect(sensorBus.thermal_power, Blower_Speed1.u_m) annotation (Line(
+      points={{-30,-100},{-120,-100},{-120,98},{58,98},{58,84}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
       string="%first",
       index=-1,
-      extent={{-3,-6},{-3,-6}},
+      extent={{-6,3},{-6,3}},
       horizontalAlignment=TextAlignment.Right));
-annotation(defaultComponentName="changeMe_CS", Icon(graphics),
-    experiment(Tolerance=0.001, __Dymola_Algorithm="Esdirk45a"));
-end CS_Rankine_PrimaryVN;
+  connect(actuatorBus.PR_Compressor, Blower_Speed1.y) annotation (Line(
+      points={{30,-100},{30,4},{96,4},{96,72},{69,72}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{6,3},{6,3}},
+      horizontalAlignment=TextAlignment.Left));
+annotation(defaultComponentName="changeMe_CS", Icon(graphics));
+end CS_Rankine_PrimaryVNa;

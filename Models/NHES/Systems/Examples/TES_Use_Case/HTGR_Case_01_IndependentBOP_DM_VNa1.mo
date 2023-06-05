@@ -1,5 +1,5 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model HTGR_Case_01_IndependentBOP_DM_VNa
+model HTGR_Case_01_IndependentBOP_DM_VNa1
   "TES use case demonstration of a NuScale-style LWR operating within an energy arbitrage IES, storing and dispensing energy on demand from a two tank molten salt energy storage system nominally using HITEC salt to store heat."
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
@@ -194,7 +194,13 @@ model HTGR_Case_01_IndependentBOP_DM_VNa
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
-      CS(electric_demand=sum1.y))
+      CS(electric_demand=sum1.y),
+    firstfeedpump1(m_flow_start=5),
+    init(
+      HPT_p_a_start=1500000,
+      HPT_T_b_start=313.15,
+      LPT_T_a_start=443.15,
+      LPT_T_b_start=323.15))
     annotation (Placement(transformation(extent={{104,-86},{142,-44}})));
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW
     annotation (Placement(transformation(extent={{142,-6},{156,6}})));
@@ -224,8 +230,10 @@ model HTGR_Case_01_IndependentBOP_DM_VNa
   PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_TESUC
     hTGR_PebbleBed_Primary_Loop_TESUCa(
                                       redeclare
-      PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary CS(
-        data(T_Rx_Exit_Ref=1023.15, P_Steam_Ref=14000000)), STHX(nParallel=4))
+      PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_PrimaryVNa
+                                                                            CS(
+        data(T_Rx_Exit_Ref=1023.15, P_Steam_Ref=14000000), CR(k=1e-7)),
+                                                            STHX(nParallel=4))
     annotation (Placement(transformation(extent={{-104,-22},{-56,24}})));
 equation
   hTGR_PebbleBed_Primary_Loop_TESUCa.input_steam_pressure =
@@ -322,8 +330,9 @@ equation
                                 Diagram(coordinateSystem(preserveAspectRatio=
             false, extent={{-100,-100},{200,100}})),
     experiment(
-      StopTime=200000,
+      StopTime=2000000,
       Interval=10,
+      Tolerance=0.001,
       __Dymola_Algorithm="Esdirk45a"),
     Documentation(info="<html>
 <p>NuScale style reactor system. System has a nominal thermal output of 160MWt rather than the updated 200MWt.</p>
@@ -331,4 +340,4 @@ equation
 </html>"),
     __Dymola_experimentSetupOutput(events=false),
     conversion(noneFromVersion=""));
-end HTGR_Case_01_IndependentBOP_DM_VNa;
+end HTGR_Case_01_IndependentBOP_DM_VNa1;
