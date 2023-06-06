@@ -1,5 +1,5 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model HTGR_Case_01_IndependentBOP_DM_VNa3b
+model HTGR_Case_01_IndependentBOP_DM_VNa3c
   "TES use case demonstration of a NuScale-style LWR operating within an energy arbitrage IES, storing and dispensing energy on demand from a two tank molten salt energy storage system nominally using HITEC salt to store heat."
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
@@ -73,20 +73,20 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3b
         T_Feedwater=481.15,
         p_steam_vent=16500000,
         m_flow_reactor=50),
-      Charge_OnOff_Throttle(k=-2e-8, Ti=50),
+      Charge_OnOff_Throttle(k=-3e-7, Ti=20),
       FWCP_mflow(
         k=-0.004,
         Ti=400,
         yMin=1080),
       ramp1(
         height=-1200,
-        duration=1.1*20000,
+        duration=1.1*10000,
         offset=1200,
-        startTime=150000),
+        startTime=5000),
       ramp3(height=0, offset=0),
-      ramp2(duration=0.9*20000),
+      ramp2(duration=0.9*10000, startTime=5000),
       add6(k1=+1),
-      TCV_Power(Ti=12)),
+      TCV_Power(k=-3e-5, Ti=30)),
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.Data.IntermediateTurbineInitialisation
       init(
@@ -358,4 +358,4 @@ equation
 </html>"),
     __Dymola_experimentSetupOutput(events=false),
     conversion(noneFromVersion=""));
-end HTGR_Case_01_IndependentBOP_DM_VNa3b;
+end HTGR_Case_01_IndependentBOP_DM_VNa3c;
