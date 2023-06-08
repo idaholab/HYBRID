@@ -205,7 +205,8 @@ model TEDSloop_allmodes_test
       dr=0.00317,
       Insulation_thickness=3*0.051,
       Wall_Thickness=0.019,
-      Height_Tank=4.435))
+      Height_Tank=4.435),
+    T_Init=493.15)
     annotation (Placement(transformation(extent={{102,-50},{134,-6}})));
   TRANSFORM.Controls.LimPID MassFlow_Control(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,

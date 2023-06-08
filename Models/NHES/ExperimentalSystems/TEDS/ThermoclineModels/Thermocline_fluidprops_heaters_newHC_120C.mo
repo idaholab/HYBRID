@@ -52,6 +52,7 @@ SI.Density fluid_density[nodes] = Medium.density(mediums.state);
 SI.Length Sr "Heat Transfer Surface Area of rocks per unit length of tank [m]";
 parameter Real fs=3.0 "Surface Shape Factor, between 2 and 3 
 depending rocks packing scheme";
+parameter SI.Temperature T_Init = 120+273.15 "Initial temperature of thermocline medium and wall";
 
 SI.Temperature T_inlet_cold;
 SI.Temperature T_inlet_hot;
@@ -77,13 +78,13 @@ Medium.ThermodynamicState port_b_state "Properties of fluid port b";
 initial equation
 
 for i in 1:integer(nodes*1.33/2) loop
-  Tf[i]=120+273.15;
-  Tr[i]=120+273.15;
+  Tf[i]=T_Init;
+  Tr[i]=T_Init;
 end for;
 for i in integer(nodes*1.33/2)+1:nodes loop
 
-  Tf[i]=120+273.15;
-  Tr[i]=120+273.15;
+  Tf[i]=T_Init;
+  Tr[i]=T_Init;
 
 end for;
 

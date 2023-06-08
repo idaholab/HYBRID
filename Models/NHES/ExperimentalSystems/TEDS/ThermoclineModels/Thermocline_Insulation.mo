@@ -12,7 +12,8 @@ model Thermocline_Insulation "Thermocline Insulation subpackage"
     filler_density(displayUnit="kg/m3") = 3950,
     Cr=1091,
     kr=16.181,
-    dr=geometry.dr)
+    dr=geometry.dr,
+    T_Init=T_Init)
     annotation (Placement(transformation(extent={{-28,-24},{28,30}})));
   TRANSFORM.HeatAndMassTransfer.Volumes.SimpleWall_Cylinder simpleWall[
     thermocline_fluidprops_heaters_newHC_120C.nodes](
@@ -22,7 +23,7 @@ model Thermocline_Insulation "Thermocline Insulation subpackage"
     r_inner=fill(geometry.Radius_Tank, geometry.nodes),
     r_outer=fill(geometry.Radius_Tank + geometry.Wall_Thickness, geometry.nodes),
     redeclare package Material = WallMaterial,
-    T_start=303.15)
+    T_start=T_Init)
     annotation (Placement(transformation(extent={{-60,-8},{-40,12}})));
 
   Modelica.Blocks.Sources.RealExpression boundaryT[geometry.nodes](y=fill(
@@ -69,6 +70,7 @@ model Thermocline_Insulation "Thermocline Insulation subpackage"
   Data.Geometry geometry annotation (Dialog(group="Geometry"),Placement(transformation(
           extent={{-98,78},{-78,98}})));
 
+          parameter SI.Temperature T_Init = 120+273.15 "Initial temperature of thermocline medium and wall";
 equation
   connect(simpleWall.port_b, thermocline_fluidprops_heaters_newHC_120C.heatPorts[
     :, 1]) annotation (Line(points={{-40,2},{-34,2},{-34,3},{-28.56,3}},
