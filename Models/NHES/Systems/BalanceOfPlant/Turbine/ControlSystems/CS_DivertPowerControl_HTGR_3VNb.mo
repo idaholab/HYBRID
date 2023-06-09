@@ -108,7 +108,7 @@ model CS_DivertPowerControl_HTGR_3VNb
     annotation (Placement(transformation(extent={{-92,-48},{-72,-28}})));
   Modelica.Blocks.Math.Min min2
     annotation (Placement(transformation(extent={{174,-80},{194,-60}})));
-  Modelica.Blocks.Sources.Constant const12(k=data.Q_Nom + 1.4465e6 - 1)
+  Modelica.Blocks.Sources.Constant const12(k=data.Q_Nom + 1.526e6 - 1)
     annotation (Placement(transformation(extent={{116,-58},{140,-34}})));
   Modelica.Blocks.Sources.RealExpression
                                    realExpression1(y=Overall_Power)

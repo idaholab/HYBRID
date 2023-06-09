@@ -11781,8 +11781,8 @@ package SHS_Two_Tank
         input Modelica.Units.SI.Temperature Steam_Output_Temp annotation(Dialog(tab = "General"));
         output Boolean Charging_Trigger = hysteresis.y;
 
-      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium
-          = Storage_Medium, redeclare model Geometry =
+      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium =
+            Storage_Medium, redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=data.ctvolume_volume))
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},

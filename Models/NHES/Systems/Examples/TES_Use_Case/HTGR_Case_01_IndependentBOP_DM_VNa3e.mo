@@ -1,5 +1,5 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model HTGR_Case_01_IndependentBOP_DM_VNa3d
+model HTGR_Case_01_IndependentBOP_DM_VNa3e
   "TES use case demonstration of a NuScale-style LWR operating within an energy arbitrage IES, storing and dispensing energy on demand from a two tank molten salt energy storage system nominally using HITEC salt to store heat."
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
@@ -27,7 +27,7 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3d
     redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.TESTurbine
       data(
       p_in_nominal=14000000,
-      p_condensor=8000,
+      p_condensor=7000,
       V_condensor=10000,
       V_FeedwaterMixVolume=25,
       V_Header=10,
@@ -42,8 +42,8 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3d
       InternalBypassValve_K(unit="1/(m.kg)") = 40,
       InternalBypassValve_tau(unit="1/s"),
       HPT_p_exit_nominal=2500000,
-      HPT_T_in_nominal=673.15,
-      HPT_nominal_mflow=50,
+      HPT_T_in_nominal=823.15,
+      HPT_nominal_mflow=39,
       HPT_efficiency=1,
       LPT_p_in_nominal=2500000,
       LPT_p_exit_nominal=7000,
@@ -86,7 +86,8 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3d
       ramp3(height=0, offset=0),
       ramp2(duration=0.9*5000, startTime=2500),
       add6(k1=+1),
-      TCV_Power(k=-3e-5, Ti=30)),
+      TCV_Power(k=-3e-5, Ti=30),
+      const6(k=1.526e6)),
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.Data.IntermediateTurbineInitialisation
       init(
@@ -98,12 +99,13 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3d
       HPT_p_b_start=10000,
       HPT_T_a_start=523.15,
       HPT_T_b_start=333.15),
-    pump_SimpleMassFlow1(m_flow_start=50))
+    pump_SimpleMassFlow1(m_flow_start=50),
+    const(k=0))
     annotation (Placement(transformation(extent={{50,-20},{90,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
     annotation (Placement(transformation(extent={{98,-22},{138,22}})));
   ElectricalGrid.InfiniteGrid.Infinite EG
-    annotation (Placement(transformation(extent={{160,-20},{200,20}})));
+    annotation (Placement(transformation(extent={{150,-16},{190,24}})));
   BaseClasses.Data_Capacity dataCapacity(IP_capacity(displayUnit="MW")=
       53303300, BOP_capacity(displayUnit="MW") = 1165000000)
     annotation (Placement(transformation(extent={{-100,82},{-80,102}})));
@@ -118,19 +120,27 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3d
   EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_BestModel
     two_Tank_SHS_System_NTU(
     redeclare
-      NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_BestExample CS,
+      NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_BestExample CS(
+      data(hot_tank_ref_temp=673.15, cold_tank_ref_temp=533.15),
+      one8(k=+273.15 + 260),
+      one1(k=273.15 + 400),
+      PID1(yMin=-20),
+      PID5(yMin=0),
+      PID2(yMin=0),
+      Charging_Valve_Position_MinMax(min=0.000001),
+      one7(k=0)),
     redeclare replaceable NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS
       data(
       ht_level_max=11.7,
       ht_area=5*3390,
       ht_surface_pressure=120000,
-      hot_tank_init_temp=513.15,
+      hot_tank_init_temp=673.15,
       cold_tank_level_max=11.7,
       cold_tank_area=5*3390,
       ct_surface_pressure=120000,
-      cold_tank_init_temp=453.15,
+      cold_tank_init_temp=533.15,
       m_flow_ch_min=0.1,
-      DHX_NTU=20,
+      DHX_NTU=2*20,
       DHX_K_tube(unit="1/m4"),
       DHX_K_shell(unit="1/m4"),
       DHX_p_start_tube=120000,
@@ -146,7 +156,8 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3d
     redeclare package Storage_Medium = NHES.Media.Hitec.Hitec,
     m_flow_min=0.1,
     tank_height=11.7,
-    Steam_Output_Temp=stateSensor6.temperature.T)
+    Steam_Output_Temp=stateSensor6.temperature.T,
+    hysteresis(uLow=-1, uHigh=15))
     annotation (Placement(transformation(extent={{-16,-76},{24,-36}})));
 
   Fluid.Sensors.stateDisplay stateDisplay1
@@ -198,7 +209,7 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3d
     period=20000,
     offset=45e6,
     startTime=2000)
-    annotation (Placement(transformation(extent={{-188,256},{-168,276}})));
+    annotation (Placement(transformation(extent={{-232,256},{-212,276}})));
   BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
     port_a_nominal(
@@ -208,19 +219,35 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3d
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
-      CS(electric_demand=switch1.y),
+      CS(electric_demand=switch1.y,
+      data(p_steam=10500000, T_Steam_Ref=668.15),
+      FWCP_Speed(yMax=3500),
+      const15(k=0.005),
+      minMaxFilter1(max=1 - 0.005),
+      const11(k=0.0005),
+      minMaxFilter(max=1 - 0.0005),
+      Discharge_OnOFF(k=2e-9, Ti=7)),
     firstfeedpump1(m_flow_start=5),
     init(
       HPT_p_a_start=1500000,
       HPT_T_b_start=313.15,
       LPT_T_a_start=443.15,
       LPT_T_b_start=323.15),
-    data(LPT_nominal_mflow=40))
+    data(
+      T_Steam_Ref=663.15,
+      p_steam=10500000,
+      p_in_nominal=10000000,
+      valve_TCV_mflow=100,
+      valve_SHS_dp_nominal=1500000,
+      valve_TCV_LPT_dp_nominal=70000,
+      LPT_p_in_nominal=10000000,
+      LPT_T_in_nominal=663.15,
+      LPT_nominal_mflow=29))
     annotation (Placement(transformation(extent={{104,-86},{142,-44}})));
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW
     annotation (Placement(transformation(extent={{142,-6},{156,6}})));
   Modelica.Blocks.Math.Add         add
-    annotation (Placement(transformation(extent={{-146,240},{-126,260}})));
+    annotation (Placement(transformation(extent={{-190,240},{-170,260}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid1(
     amplitude=10e6 + 20.14e6,
     rising=100,
@@ -229,7 +256,7 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3d
     period=20000,
     offset=0,
     startTime=14000)
-    annotation (Placement(transformation(extent={{-188,220},{-168,240}})));
+    annotation (Placement(transformation(extent={{-232,218},{-212,238}})));
 
   Modelica.Blocks.Sources.Constant const(k=47.5e6)
     annotation (Placement(transformation(extent={{18,68},{38,88}})));
@@ -412,12 +439,13 @@ equation
   connect(SY.port_Grid, sensorW.port_a)
     annotation (Line(points={{138,0},{142,0}}, color={255,0,0}));
   connect(sensorW.port_b, EG.portElec_a)
-    annotation (Line(points={{156,0},{160,0}}, color={255,0,0}));
-  connect(trapezoid.y, add.u1) annotation (Line(points={{-167,266},{-167,262},{
-          -154,262},{-154,256},{-148,256}},
+    annotation (Line(points={{156,0},{156,-20},{194,-20},{194,32},{150,32},{150,
+          4}},                                 color={255,0,0}));
+  connect(trapezoid.y, add.u1) annotation (Line(points={{-211,266},{-211,262},{
+          -198,262},{-198,256},{-192,256}},
                          color={0,0,127}));
-  connect(trapezoid1.y, add.u2) annotation (Line(points={{-167,230},{-154,230},
-          {-154,244},{-148,244}},
+  connect(trapezoid1.y, add.u2) annotation (Line(points={{-211,228},{-198,228},
+          {-198,244},{-192,244}},
                          color={0,0,127}));
   connect(hTGR_PebbleBed_Primary_Loop_TESUCa.port_b, stateSensor1.port_a)
     annotation (Line(points={{-56.72,12.27},{-47.36,12.27},{-47.36,11},{-38,11}},
@@ -425,8 +453,8 @@ equation
   connect(hTGR_PebbleBed_Primary_Loop_TESUCa.port_a, stateSensor3.port_b)
     annotation (Line(points={{-56.72,-6.59},{-48.36,-6.59},{-48.36,-6},{-40,-6}},
         color={0,127,255}));
-  connect(add.y,sum1. u[1]) annotation (Line(points={{-125,250},{-125,252},{
-          -104,252},{-104,266}},                     color={0,0,127}));
+  connect(add.y,sum1. u[1]) annotation (Line(points={{-169,250},{-169,118},{
+          -104,118},{-104,266}},                     color={0,0,127}));
   connect(one3.y,add1. u1) annotation (Line(points={{16.3,283},{20,283},{20,
           278.8},{25.4,278.8}},                                   color={0,0,
           127}));
@@ -501,4 +529,4 @@ equation
 </html>"),
     __Dymola_experimentSetupOutput(events=false),
     conversion(noneFromVersion=""));
-end HTGR_Case_01_IndependentBOP_DM_VNa3d;
+end HTGR_Case_01_IndependentBOP_DM_VNa3e;
