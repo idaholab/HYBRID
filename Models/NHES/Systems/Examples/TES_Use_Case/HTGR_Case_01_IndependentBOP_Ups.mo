@@ -1,5 +1,5 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model HTGR_Case_01_IndependentBOP_DM_VNa3f
+model HTGR_Case_01_IndependentBOP_Ups
   "TES use case demonstration of a NuScale-style LWR operating within an energy arbitrage IES, storing and dispensing energy on demand from a two tank molten salt energy storage system nominally using HITEC salt to store heat."
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
@@ -202,7 +202,7 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3f
     startTime=2000)
     annotation (Placement(transformation(extent={{-26,72},{-6,92}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
-    amplitude=-20.58e6,
+    amplitude=-25.58e6,
     rising=100,
     width=9800,
     falling=100,
@@ -376,7 +376,7 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3f
   Modelica.Blocks.Math.Add         add4
     annotation (Placement(transformation(extent={{-150,254},{-130,274}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid2(
-    amplitude=5e6,
+    amplitude=0,
     rising=1000,
     width=1800 + 5000,
     falling=1000,
@@ -544,4 +544,4 @@ equation
 </html>"),
     __Dymola_experimentSetupOutput(events=false),
     conversion(noneFromVersion=""));
-end HTGR_Case_01_IndependentBOP_DM_VNa3f;
+end HTGR_Case_01_IndependentBOP_Ups;

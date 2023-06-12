@@ -1,5 +1,5 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model HTGR_Case_01_IndependentBOP_DM_VNa3f
+model HTGR_Case_01_IndependentBOP_Ups2TT
   "TES use case demonstration of a NuScale-style LWR operating within an energy arbitrage IES, storing and dispensing energy on demand from a two tank molten salt energy storage system nominally using HITEC salt to store heat."
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
@@ -48,7 +48,7 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3f
       LPT_p_in_nominal=2500000,
       LPT_p_exit_nominal=7000,
       LPT_T_in_nominal=573.15,
-      LPT_nominal_mflow=50,
+      LPT_nominal_mflow=41,
       LPT_efficiency=1,
       firstfeedpump_p_nominal=6000000,
       secondfeedpump_p_nominal=5500000,
@@ -70,6 +70,7 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3f
       m_required=m_req.y,
       data(
         p_steam=14000000,
+        Q_Nom=49e6,
         T_Feedwater=481.15,
         p_steam_vent=16500000,
         m_flow_reactor=50),
@@ -202,13 +203,13 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3f
     startTime=2000)
     annotation (Placement(transformation(extent={{-26,72},{-6,92}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
-    amplitude=-20.58e6,
+    amplitude=-30.58e6,
     rising=100,
     width=9800,
     falling=100,
     period=20000,
     offset=45e6,
-    startTime=3e5 + 2000)
+    startTime=4e5 + 2000)
     annotation (Placement(transformation(extent={{-232,256},{-212,276}})));
   BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
@@ -220,7 +221,10 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3f
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
       CS(electric_demand=switch1.y,
-      data(p_steam=10500000, T_Steam_Ref=668.15),
+      data(
+        p_steam=10500000,
+        T_Steam_Ref=668.15,
+        Q_Nom=49e6),
       FWCP_Speed(yMax=3500),
       const15(k=0.005),
       minMaxFilter1(max=1 - 0.005),
@@ -236,13 +240,13 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3f
     data(
       T_Steam_Ref=663.15,
       p_steam=10500000,
-      p_in_nominal=10000000,
+      p_in_nominal=10500000,
       valve_TCV_mflow=100,
       valve_SHS_dp_nominal=1500000,
       valve_TCV_LPT_dp_nominal=70000,
       LPT_p_in_nominal=10000000,
-      LPT_T_in_nominal=663.15,
-      LPT_nominal_mflow=29))
+      LPT_T_in_nominal=668.15,
+      LPT_nominal_mflow=50))
     annotation (Placement(transformation(extent={{104,-86},{142,-44}})));
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW
     annotation (Placement(transformation(extent={{142,-6},{156,6}})));
@@ -255,7 +259,7 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3f
     falling=100,
     period=20000,
     offset=0,
-    startTime=3e5 + 14000)
+    startTime=4e5 + 14000)
     annotation (Placement(transformation(extent={{-232,218},{-212,238}})));
 
   Modelica.Blocks.Sources.Constant const(k=47.5e6)
@@ -322,27 +326,28 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3f
   Modelica.Blocks.Sources.BooleanExpression booleanExpression(y=
         two_Tank_SHS_System_NTU.hot_tank.level < two_Tank_SHS_System_NTU.cold_tank.level)
     annotation (Placement(transformation(extent={{82,238},{98,252}})));
-  Modelica.Blocks.Sources.Constant MaxPower(k=85000000)
+  Modelica.Blocks.Sources.Constant MaxPower(k=101000000)
     annotation (Placement(transformation(extent={{4,290},{10,296}})));
   Modelica.Blocks.Math.Product product1
     annotation (Placement(transformation(extent={{56,284},{64,276}})));
   Modelica.Blocks.Sources.CombiTimeTable demand_BOP2(
     tableOnFile=false,
-    table=[0,30000000; 9000,30000000; 10000,19544557.89; 12700,19544557.89;
-        13600,19544557.89; 16300,19544557.89; 17200,16260259.26; 19900,
-        16260259.26; 20800,62000000; 23500,62000000; 24400,32046919.05; 27100,
-        32046919.05; 28000,16260259.26; 30700,16260259.26; 31600,16260259.26;
-        34300,16260259.26; 35200,30339037.58; 37900,30339037.58; 38800,
-        32046919.05; 41500,32046919.05; 42400,62000000; 45100,62000000; 46000,
-        16260259.26; 48700,16260259.26; 49600,16260259.26; 52300,16260259.26;
-        53200,60462906.67; 55900,60462906.67; 56800,30339037.57; 59500,
-        30339037.57; 60400,16260259.26; 63100,16260259.26; 64000,16260259.26;
-        66700,16260259.26; 67600,32046919.05; 70300,32046919.05; 71200,
-        32046919.05; 73900,32046919.05; 74800,62000000; 77500,62000000; 78400,
-        16260259.26; 81100,16260259.26; 82000,16260259.26; 84700,16260259.26;
-        85600,60462906.67; 88300,60462906.67; 89200,32046919.05; 91900,
-        32046919.05; 92800,16260259.26; 95500,16260259.26; 96400,46254912.86;
-        99100,46254912.86; 100000,46254912.86],
+    table=[0,48870967.74; 500000,48870967.74; 510000,31838715.27; 513000,
+        31838715.27; 514000,31838715.27; 516000,31838715.27; 517000,26488486.86;
+        520000,26488486.86; 521000,101000000; 524000,101000000; 524000,
+        52205464.9; 527000,52205464.9; 528000,26488486.86; 531000,26488486.86;
+        532000,26488486.86; 534000,26488486.86; 535000,49423270.9; 538000,
+        49423270.9; 539000,52205464.9; 542000,52205464.9; 542000,101000000;
+        545000,101000000; 546000,26488486.86; 549000,26488486.86; 550000,
+        26488486.86; 552000,26488486.86; 553000,98496025.38; 556000,98496025.38;
+        557000,49423270.88; 560000,49423270.88; 560000,26488486.86; 563000,
+        26488486.86; 564000,26488486.86; 567000,26488486.86; 568000,52205464.9;
+        570000,52205464.9; 571000,52205464.9; 574000,52205464.9; 575000,
+        101000000; 578000,101000000; 578000,26488486.86; 581000,26488486.86;
+        582000,26488486.86; 585000,26488486.86; 586000,98496025.38; 588000,
+        98496025.38; 589000,52205464.9; 592000,52205464.9; 593000,26488486.86;
+        596000,26488486.86; 596000,75350745.14; 599000,75350745.14; 600000,
+        75350745.14],
     startTime=0,
     tableName="BOP",
     timeScale=1,
@@ -376,13 +381,13 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3f
   Modelica.Blocks.Math.Add         add4
     annotation (Placement(transformation(extent={{-150,254},{-130,274}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid2(
-    amplitude=5e6,
+    amplitude=25e6,
     rising=1000,
-    width=1800 + 5000,
+    width=0 + 5000,
     falling=1000,
     period=20000,
     offset=0,
-    startTime=3e5 + 8e4)
+    startTime=3e5 + 8e4 - 5000)
     annotation (Placement(transformation(extent={{-202,310},{-182,330}})));
 equation
   hTGR_PebbleBed_Primary_Loop_TESUCa.input_steam_pressure =
@@ -510,16 +515,16 @@ equation
           126.8,252.8}},color={0,0,127}));
   connect(one6.y, min2.u2) annotation (Line(points={{-49.7,189},{-49.7,190},{
           -38,190},{-38,189.6},{-38.8,189.6}}, color={0,0,127}));
-  connect(sum1.y, min3.u2) annotation (Line(points={{-81,266},{-36,266},{-36,
-          259.6},{75.2,259.6}}, color={0,0,127}));
-  connect(sum1.y, max1.u2) annotation (Line(points={{-81,266},{-36,266},{-36,
-          244},{8,244},{8,228},{81,228}}, color={0,0,127}));
   connect(add.y, add4.u2) annotation (Line(points={{-169,250},{-169,248},{-152,
           248},{-152,258}}, color={0,0,127}));
   connect(add4.y, sum1.u[1]) annotation (Line(points={{-129,264},{-104,264},{
           -104,266}}, color={0,0,127}));
   connect(trapezoid2.y, add4.u1) annotation (Line(points={{-181,320},{-181,286},
           {-152,286},{-152,270}}, color={0,0,127}));
+  connect(demand_BOP2.y[1], max1.u2) annotation (Line(points={{-49,248},{-49,
+          234},{81,234},{81,228}}, color={0,0,127}));
+  connect(demand_BOP2.y[1], min3.u2) annotation (Line(points={{-49,248},{-49,
+          250},{75.2,250},{75.2,259.6}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{200,100}}), graphics={
         Ellipse(lineColor = {75,138,73},
@@ -544,4 +549,4 @@ equation
 </html>"),
     __Dymola_experimentSetupOutput(events=false),
     conversion(noneFromVersion=""));
-end HTGR_Case_01_IndependentBOP_DM_VNa3f;
+end HTGR_Case_01_IndependentBOP_Ups2TT;

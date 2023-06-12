@@ -1,5 +1,5 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model HTGR_Case_01_IndependentBOP_DM_VNa3f
+model HTGR_Case_01_IndependentBOP_Ups2
   "TES use case demonstration of a NuScale-style LWR operating within an energy arbitrage IES, storing and dispensing energy on demand from a two tank molten salt energy storage system nominally using HITEC salt to store heat."
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
@@ -48,7 +48,7 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3f
       LPT_p_in_nominal=2500000,
       LPT_p_exit_nominal=7000,
       LPT_T_in_nominal=573.15,
-      LPT_nominal_mflow=50,
+      LPT_nominal_mflow=41,
       LPT_efficiency=1,
       firstfeedpump_p_nominal=6000000,
       secondfeedpump_p_nominal=5500000,
@@ -70,6 +70,7 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3f
       m_required=m_req.y,
       data(
         p_steam=14000000,
+        Q_Nom=49e6,
         T_Feedwater=481.15,
         p_steam_vent=16500000,
         m_flow_reactor=50),
@@ -202,13 +203,13 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3f
     startTime=2000)
     annotation (Placement(transformation(extent={{-26,72},{-6,92}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
-    amplitude=-20.58e6,
+    amplitude=-30.58e6,
     rising=100,
     width=9800,
     falling=100,
     period=20000,
     offset=45e6,
-    startTime=3e5 + 2000)
+    startTime=4e5 + 2000)
     annotation (Placement(transformation(extent={{-232,256},{-212,276}})));
   BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
@@ -220,7 +221,10 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3f
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
       CS(electric_demand=switch1.y,
-      data(p_steam=10500000, T_Steam_Ref=668.15),
+      data(
+        p_steam=10500000,
+        T_Steam_Ref=668.15,
+        Q_Nom=49e6),
       FWCP_Speed(yMax=3500),
       const15(k=0.005),
       minMaxFilter1(max=1 - 0.005),
@@ -236,13 +240,13 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3f
     data(
       T_Steam_Ref=663.15,
       p_steam=10500000,
-      p_in_nominal=10000000,
+      p_in_nominal=10500000,
       valve_TCV_mflow=100,
       valve_SHS_dp_nominal=1500000,
       valve_TCV_LPT_dp_nominal=70000,
       LPT_p_in_nominal=10000000,
-      LPT_T_in_nominal=663.15,
-      LPT_nominal_mflow=29))
+      LPT_T_in_nominal=668.15,
+      LPT_nominal_mflow=50))
     annotation (Placement(transformation(extent={{104,-86},{142,-44}})));
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW
     annotation (Placement(transformation(extent={{142,-6},{156,6}})));
@@ -255,7 +259,7 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3f
     falling=100,
     period=20000,
     offset=0,
-    startTime=3e5 + 14000)
+    startTime=4e5 + 14000)
     annotation (Placement(transformation(extent={{-232,218},{-212,238}})));
 
   Modelica.Blocks.Sources.Constant const(k=47.5e6)
@@ -376,13 +380,13 @@ model HTGR_Case_01_IndependentBOP_DM_VNa3f
   Modelica.Blocks.Math.Add         add4
     annotation (Placement(transformation(extent={{-150,254},{-130,274}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid2(
-    amplitude=5e6,
+    amplitude=25e6,
     rising=1000,
-    width=1800 + 5000,
+    width=0 + 5000,
     falling=1000,
     period=20000,
     offset=0,
-    startTime=3e5 + 8e4)
+    startTime=3e5 + 8e4 - 5000)
     annotation (Placement(transformation(extent={{-202,310},{-182,330}})));
 equation
   hTGR_PebbleBed_Primary_Loop_TESUCa.input_steam_pressure =
@@ -544,4 +548,4 @@ equation
 </html>"),
     __Dymola_experimentSetupOutput(events=false),
     conversion(noneFromVersion=""));
-end HTGR_Case_01_IndependentBOP_DM_VNa3f;
+end HTGR_Case_01_IndependentBOP_Ups2;
