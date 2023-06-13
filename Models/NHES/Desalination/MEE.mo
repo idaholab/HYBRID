@@ -724,7 +724,7 @@ package MEE "Multi Effect Evaporators"
               extent={{-10,-10},{10,10}},
               rotation=90,
               origin={0,46})));
-        TRANSFORM.Controls.LimPID         PID(
+        Controls.LimOffsetPID             PID(
           controllerType=Modelica.Blocks.Types.SimpleController.PI,
           k=KV,
           Ti=Ti,
@@ -732,7 +732,9 @@ package MEE "Multi Effect Evaporators"
           yMax=1,
           yMin=0,
           wp=1,
-          wd=1) annotation (Placement(transformation(extent={{-32,54},{-52,74}})));
+          wd=1,
+          offset=0)
+                annotation (Placement(transformation(extent={{-32,54},{-52,74}})));
         Modelica.Blocks.Sources.RealExpression Level_Set(y=0.5) annotation (Placement(transformation(extent={{-4,54},{-24,74}})));
         Components.Evaporator_Brine_SHP Evaporator(
           redeclare package MediumB = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
@@ -1782,16 +1784,18 @@ package MEE "Multi Effect Evaporators"
 
       rug=rho_g*u_g;
       rub=rho_b*u_b;
-      rum=(1-alphag)*rub+alphag*rug;
+
+      rum=(1-min(alphag,1))*rub+min(alphag,1)*rug;
 
       M=Mg+Mm;
       Mg=Vg*rho_g;
-      Mm=Vm*((1-alphag)*rho_b+alphag*rho_g);
+      Mm=Vm*((1-min(alphag,1))*rho_b+min(alphag,1)*rho_g);
       E=Vm*rum+Vg*rug;
-      Sa= Vm*(1-alphag)*rho_b*Cs_out;
+      Sa= Vm*(1-min(alphag,1))*rho_b*Cs_out;
       V=Vg+Vm;
-      m_T=alphag*rho_g*velg*A;
+      m_T=min(alphag,1)*rho_g*velg*A;
       velg=(1.41*3.28084/(1-alphag))*(sigma*9.81*(rho_b-rho_g)/(rho_b^2))^0.25;
+      //assert(alphag>=0 and alphag<=1,"alphag must be btween 0 and 1");
 
      // m_b_out=h_f;
       level=Vm/A;
@@ -2456,7 +2460,7 @@ package MEE "Multi Effect Evaporators"
       Multiple_Effect.MEE_FC mEE_FCwPH(
         redeclare replaceable Data.MEE_Data data(
           nE=8,
-          use_preheater=true,
+          use_preheater=false,
           T_b_in=298.15,
           T_h=353.15,
           p_h=70000,
@@ -2466,8 +2470,9 @@ package MEE "Multi Effect Evaporators"
         PCV(
           ValvePos_start=0.7,
           init_time=10,
-          PID_k=-0.5e-6))
-        annotation (Placement(transformation(extent={{-54,-46},{46,54}})));
+          PID_k=-0.5e-6),
+        SCV(dp_nominal=100000))
+        annotation (Placement(transformation(extent={{-56,-46},{44,54}})));
       TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Liquid_Return(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
         p=200000,
@@ -2488,11 +2493,11 @@ package MEE "Multi Effect Evaporators"
         annotation (Placement(transformation(extent={{100,-26},{80,-6}})));
     equation
       connect(Tube_Inlet.ports[1], mEE_FCwPH.port_a_steam)
-        annotation (Line(points={{-80,24},{-54,24}}, color={0,127,255}));
+        annotation (Line(points={{-80,24},{-56,24}}, color={0,127,255}));
       connect(mEE_FCwPH.port_b_liquid_return, Liquid_Return.ports[1])
-        annotation (Line(points={{-54,-16},{-80,-16}}, color={0,127,255}));
+        annotation (Line(points={{-56,-16},{-80,-16}}, color={0,127,255}));
       connect(mEE_FCwPH.port_b_liquid_cond, Steam_Exit.ports[1])
-        annotation (Line(points={{46,-16},{80,-16}}, color={0,127,255}));
+        annotation (Line(points={{44,-16},{80,-16}}, color={0,127,255}));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
                 100,100}}),                               graphics={
@@ -2509,7 +2514,7 @@ package MEE "Multi Effect Evaporators"
                 {100,100}})),
         experiment(
           StopTime=2000,
-          Interval=100,
+          Interval=50,
           __Dymola_Algorithm="Esdirk45a"));
     end MEE_FC_test;
 
@@ -2767,6 +2772,72 @@ package MEE "Multi Effect Evaporators"
           Interval=5,
           __Dymola_Algorithm="Esdirk45a"));
     end MEE_pool;
+
+    model MEE_FC_test2 "Test of a multi effect with full condensing"
+
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Liquid_Return(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        p=200000,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{-100,-26},{-80,-6}})));
+      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T Tube_Inlet(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        use_m_flow_in=false,
+        m_flow=4,
+        T=398.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{-100,14},{-80,34}})));
+      Multiple_Effect.MEE_FC mEE_FCwPH(
+        redeclare replaceable Data.MEE_Data data(
+          nE=8,
+          use_preheater=true,
+          T_b_in=298.15,
+          T_h=353.15,
+          p_h=70000,
+          use_flowrates=false,
+          X_nom=0.09),
+        Brine_Source(X={0.99,0.01}),
+        PCV(
+          ValvePos_start=0.9,
+          init_time=1,
+          PID_k=-1e-4,
+          m_flow_nominal=8),
+        SCV(PID_k=-5, m_flow_nominal=16),
+        Effect(m_brine_out=1, KV=-0.1))
+        annotation (Placement(transformation(extent={{-34,-30},{46,50}})));
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT Purified_Water(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        p=5000,
+        T=328.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{78,-16},{58,4}})));
+    equation
+      connect(mEE_FCwPH.port_b_liquid_cond, Purified_Water.ports[1])
+        annotation (Line(points={{46,-6},{58,-6}}, color={0,127,255}));
+      connect(Tube_Inlet.ports[1], mEE_FCwPH.port_a_steam) annotation (Line(
+            points={{-80,24},{-42,24},{-42,26},{-34,26}}, color={0,127,255}));
+      connect(Liquid_Return.ports[1], mEE_FCwPH.port_b_liquid_return)
+        annotation (Line(points={{-80,-16},{-44,-16},{-44,-6},{-34,-6}}, color=
+              {0,127,255}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}}),                               graphics={
+            Ellipse(lineColor = {75,138,73},
+                    fillColor={255,255,255},
+                    fillPattern = FillPattern.Solid,
+                    extent={{-100,-100},{100,100}}),
+            Polygon(lineColor = {0,0,255},
+                    fillColor = {75,138,73},
+                    pattern = LinePattern.None,
+                    fillPattern = FillPattern.Solid,
+                    points={{-36,60},{64,0},{-36,-60},{-36,60}})}),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}})),
+        experiment(
+          StopTime=200,
+          Interval=10,
+          __Dymola_Algorithm="Esdirk45a"));
+    end MEE_FC_test2;
     annotation (Icon(graphics={
           Rectangle(
             lineColor={200,200,200},
@@ -3543,8 +3614,10 @@ package MEE "Multi Effect Evaporators"
         redeclare replaceable ControlSystems.ED_Dummy ED,
         redeclare replaceable Data.MEE_Data data);
 
-      Single_Effect.Brine_Models.Single_Effect_FC Effect[data.nE](Tsys=
-            data.Tsys, p_start=data.psys)
+      Single_Effect.Brine_Models.Single_Effect_FC Effect[data.nE](
+        V={1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8},                      Tsys=
+            data.Tsys,
+        KV=-0.035,     p_start=data.psys)
                        annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
 
       NHES.Fluid.Valves.PressureCV PCV[data.nE](
@@ -3611,7 +3684,8 @@ package MEE "Multi Effect Evaporators"
         Use_input=false,
         Level_target=data.Xsys,
         PID_k=-1,
-        m_flow_nominal=4) if not data.use_flowrates
+        m_flow_nominal=4,
+        dp_nominal=10000) if not data.use_flowrates
         annotation (Placement(transformation(extent={{66,56},{46,76}})));
       Modelica.Blocks.Sources.RealExpression X[data.nE](y=Effect.Evaporator.Cs_out) if not data.use_flowrates
         annotation (Placement(transformation(extent={{100,78},{80,98}})));

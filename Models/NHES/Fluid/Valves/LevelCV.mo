@@ -23,35 +23,22 @@ model LevelCV "Level Control Valve"
     dp_nominal=dp_nominal,
     m_flow_nominal=m_flow_nominal)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-  TRANSFORM.Controls.LimPID PID(
+  Controls.LimOffsetPID     PID(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=PID_k,
     Ti=PID_Ti,
     yMax=1,
     yMin=0,
     wp=PID_wp,
-    Ni=PID_Ni)
+    Ni=PID_Ni,
+    offset=ValvePos_start,
+    delayTime=init_time,
+    init_output=ValvePos_start)
     annotation (Placement(transformation(extent={{-40,40},{-20,60}})));
-  Modelica.Blocks.Logical.Switch initValvePosSwitch annotation (Placement(
-        transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=270,
-        origin={0,30})));
-  Modelica.Blocks.Sources.RealExpression initValvePos(y=ValvePos_start)
-    annotation (Placement(transformation(extent={{40,32},{20,52}})));
 
-  Modelica.Blocks.Logical.Switch initSwitch annotation (Placement(
-        transformation(
-        extent={{10,-10},{-10,10}},
-        rotation=270,
-        origin={-30,16})));
   Modelica.Blocks.Sources.RealExpression level_nom(y=Level_target)
     annotation (Placement(transformation(extent={{-120,100},{-100,120}})));
 
-
-  Modelica.Blocks.Sources.BooleanStep booleanStep(startTime=init_time,
-      startValue=true)
-    annotation (Placement(transformation(extent={{-80,-42},{-60,-22}})));
 
   Modelica.Blocks.Logical.Switch inputSwitch annotation (Placement(
         transformation(
@@ -88,26 +75,12 @@ model LevelCV "Level Control Valve"
         rotation=180,
         origin={-80,80})));
 equation
-  connect(initValvePosSwitch.y, valveLinear.opening) annotation (Line(points={{-1.9984e-15,
-          19},{-1.9984e-15,13.5},{0,13.5},{0,8}}, color={0,0,127}));
-  connect(PID.y, initValvePosSwitch.u3) annotation (Line(points={{-19,50},{-14,50},
-          {-14,42},{-8,42}}, color={0,0,127}));
-  connect(initValvePos.y, initValvePosSwitch.u1)
-    annotation (Line(points={{19,42},{8,42}}, color={0,0,127}));
-  connect(initSwitch.y, PID.u_m)
-    annotation (Line(points={{-30,27},{-30,38}}, color={0,0,127}));
-  connect(booleanStep.y, initSwitch.u2) annotation (Line(points={{-59,-32},{-48,
-          -32},{-48,-8},{-30,-8},{-30,4}}, color={255,0,255}));
-  connect(booleanStep.y, initValvePosSwitch.u2) annotation (Line(points={{-59,-32},
-          {-48,-32},{-48,72},{2.22045e-15,72},{2.22045e-15,42}}, color={255,0,255}));
   connect(booleanConstant.y, inputSwitch.u2)
     annotation (Line(points={{-99,70},{-82,70}}, color={255,0,255}));
   connect(level_nom.y, inputSwitch.u3) annotation (Line(points={{-99,110},{-90,110},
           {-90,78},{-82,78}}, color={0,0,127}));
   connect(inputSwitch.y, PID.u_s) annotation (Line(points={{-59,70},{-50,70},{-50,
           50},{-42,50}}, color={0,0,127}));
-  connect(inputSwitch.y, initSwitch.u1) annotation (Line(points={{-59,70},{-50,70},
-          {-50,-10},{-22,-10},{-22,4}}, color={0,0,127}));
   connect(port_a, valveLinear.port_a)
     annotation (Line(points={{-100,0},{-10,0}}, color={0,127,255}));
   connect(target_value, inputSwitch.u1) annotation (Line(points={{0,80},{-50,80},
@@ -116,8 +89,10 @@ equation
     annotation (Line(points={{-99,38},{-82,38},{-82,62}}, color={0,0,127}));
   connect(valveLinear.port_b, port_b)
     annotation (Line(points={{10,0},{100,0}}, color={0,127,255}));
-  connect(level_input, initSwitch.u3) annotation (Line(points={{0,-80},{0,
-          -14},{-32,-14},{-32,-4},{-38,-4},{-38,4}}, color={0,0,127}));
+  connect(PID.y, valveLinear.opening)
+    annotation (Line(points={{-19,50},{0,50},{0,8}}, color={0,0,127}));
+  connect(level_input, PID.u_m) annotation (Line(points={{0,-80},{0,-14},{-22,
+          -14},{-22,32},{-30,32},{-30,38}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Polygon(
           points={{20,-45},{60,-60},{20,-75},{20,-45}},

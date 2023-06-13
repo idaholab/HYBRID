@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_L2_CE
+model CS_L2_CEtest
 
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
@@ -39,15 +39,8 @@ model CS_L2_CE
     annotation (Placement(transformation(extent={{-20,60},{0,80}})));
   Modelica.Blocks.Sources.RealExpression T_DH_set(y=60 + 273.15)
     annotation (Placement(transformation(extent={{-100,-70},{-80,-50}})));
-  TRANSFORM.Controls.LimPID LPT2_BV_PID1(
-    controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-5,
-    Ti=15,
-    yMax=2,
-    yMin=0)
-    annotation (Placement(transformation(extent={{-60,-70},{-40,-50}})));
   Modelica.Blocks.Sources.RealExpression Zero(y=0)
-    annotation (Placement(transformation(extent={{-60,-94},{-40,-74}})));
+    annotation (Placement(transformation(extent={{-60,-62},{-40,-42}})));
   Modelica.Blocks.Sources.RealExpression One(y=1)
     annotation (Placement(transformation(extent={{-60,-48},{-40,-28}})));
   Modelica.Blocks.Sources.RealExpression P_in_set(y=data.HPT_p_in)
@@ -138,17 +131,6 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(T_in_set.y, switch3.u3) annotation (Line(points={{-79,60},{-28,60},{
           -28,62},{-22,62}},  color={0,0,127}));
-  connect(T_DH_set.y, LPT2_BV_PID1.u_s)
-    annotation (Line(points={{-79,-60},{-62,-60}}, color={0,0,127}));
-  connect(sensorBus.DH_re_T, LPT2_BV_PID1.u_m) annotation (Line(
-      points={{-30,-100},{-30,-72},{-50,-72}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{6,3},{6,3}},
-      horizontalAlignment=TextAlignment.Left));
   connect(sensorBus.W_total, TCV_PID.u_m) annotation (Line(
       points={{-29.9,-99.9},{-29.9,-66},{-30,-66},{-30,-34},{0,-34},{0,-32}},
       color={239,82,82},
@@ -199,8 +181,7 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(actuatorBus.TBV, Zero.y) annotation (Line(
-      points={{30,-100},{30,-36},{-34,-36},{-34,-24},{-68,-24},{-68,-84},{-39,
-          -84}},
+      points={{30,-100},{30,-36},{-34,-36},{-34,-52},{-39,-52}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -209,8 +190,7 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(actuatorBus.LPT1_BV, Zero.y) annotation (Line(
-      points={{30,-100},{30,-36},{-34,-36},{-34,-24},{-68,-24},{-68,-84},{-39,
-          -84}},
+      points={{30,-100},{30,-36},{-34,-36},{-34,-52},{-39,-52}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -223,4 +203,4 @@ annotation(defaultComponentName="changeMe_CS", Icon(graphics),
       StopTime=1000,
       Interval=5,
       __Dymola_Algorithm="Esdirk45a"));
-end CS_L2_CE;
+end CS_L2_CEtest;

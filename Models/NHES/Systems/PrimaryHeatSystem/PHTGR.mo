@@ -84,16 +84,16 @@ package PHTGR
         nPorts=1)
         annotation (Placement(transformation(extent={{100,-40},{80,-20}})));
       Reactor RX(redeclare replaceable
-          NHES.Systems.PrimaryHeatSystem.PHTGR.CS.CS_Texit CS)
-        annotation (Placement(transformation(extent={{-42,-38},{38,42}})));
+          NHES.Systems.PrimaryHeatSystem.PHTGR.CS.CS_Texit_rhoInset CS)
+        annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
     equation
-      connect(RX.port_b, exit.ports[1]) annotation (Line(points={{38,-26},{42,
-              -26},{42,-30},{80,-30}}, color={0,127,255}));
-      connect(RX.port_a, inlet.ports[1]) annotation (Line(points={{38,-10},{74,
-              -10},{74,10},{80,10}}, color={0,127,255}));
+      connect(RX.port_b, exit.ports[1]) annotation (Line(points={{40,-28},{42,
+              -28},{42,-30},{80,-30}}, color={0,127,255}));
+      connect(RX.port_a, inlet.ports[1]) annotation (Line(points={{40,-12},{74,
+              -12},{74,10},{80,10}}, color={0,127,255}));
       annotation (experiment(
-          StopTime=100000,
-          Interval=10,
+          StopTime=1000000,
+          Interval=50,
           __Dymola_Algorithm="Esdirk45a"));
     end Reactor_Test;
 
@@ -300,7 +300,7 @@ package PHTGR
             nSurfaces=1),
         use_HeatTransfer=true,
         redeclare model HeatTransfer =
-            TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Ideal)
+            TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_SinglePhase_2Region)
         annotation (Placement(transformation(extent={{-20,20},{20,-20}})));
       TRANSFORM.HeatAndMassTransfer.DiscritizedModels.Conduction_2D FuelRod[6,nZ](
         redeclare package Material = NHES.Media.Solids.SiliconCarbide,
@@ -468,7 +468,12 @@ package PHTGR
               extent={{-100,-80},{100,-100}},
               textColor={28,108,200},
               textString="%name")}),                                 Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
+            coordinateSystem(preserveAspectRatio=false)),
+        experiment(
+          StartTime=3090000,
+          StopTime=3130000,
+          Interval=1,
+          __Dymola_Algorithm="Esdirk45a"));
     end Subchannel;
 
     model Core
@@ -909,11 +914,8 @@ package PHTGR
         "Coolant Inner Temperature Start";
       parameter SI.Temperature T_Coutlet_start=600 + 273.15
         "Coolant Oulet Temperature Start";
-      Modelica.Blocks.Sources.Ramp ramp(
-        height=Fr - 0.1,
-        duration=5000,
-        offset=0.1,
-        startTime=50000)
+      Modelica.Blocks.Sources.RealExpression
+                                   realExpression(y=Fr)
         annotation (Placement(transformation(extent={{-180,90},{-160,110}})));
     equation
       connect(flowMultiplier1.port_b, port_b)
@@ -991,16 +993,16 @@ package PHTGR
               {146,-82},{146,-106},{9,-106}},color={0,0,127}));
       connect(Total_Power.y, fuelModel.Power_in) annotation (Line(points={{-205,0},
               {-198,0},{-198,-112},{-11,-112}},color={0,0,127}));
-      connect(ramp.y, HotChannel.u1) annotation (Line(points={{-159,100},{-122,
-              100}},                  color={0,0,127}));
+      connect(realExpression.y, HotChannel.u1)
+        annotation (Line(points={{-159,100},{-122,100}}, color={0,0,127}));
       connect(EdgePowerproduct.y, Edge.PowerIn)
         annotation (Line(points={{-129,34},{-14,34}}, color={0,0,127}));
       connect(Center.PowerIn, Centerpowerproduct.y)
         annotation (Line(points={{-14,-6},{-129,-6}}, color={0,0,127}));
       connect(CornerPowerproduct.y, Corner.PowerIn)
         annotation (Line(points={{-129,-46},{-14,-46}}, color={0,0,127}));
-      connect(EdgePowerproduct.y, HotChannel.u2) annotation (Line(points={{-129,
-              34},{-130,34},{-130,88},{-122,88}}, color={0,0,127}));
+      connect(CornerPowerproduct.y, HotChannel.u2) annotation (Line(points={{
+              -129,-46},{-126,-46},{-126,88},{-122,88}}, color={0,0,127}));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
                                                                  Ellipse(
               extent={{-92,30},{-108,-30}},

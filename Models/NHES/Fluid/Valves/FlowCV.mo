@@ -27,33 +27,20 @@ model FlowCV "Flow control valve"
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
         Medium)
     annotation (Placement(transformation(extent={{20,10},{40,-10}})));
-  TRANSFORM.Controls.LimPID PID(
+  Controls.LimOffsetPID     PID(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=PID_k,
     Ti=PID_Ti,
     yMax=1,
     yMin=0,
     wp=PID_wp,
-    Ni=PID_Ni)
+    Ni=PID_Ni,
+    offset=ValvePos_start,
+    delayTime=init_time,
+    init_output=ValvePos_start)
     annotation (Placement(transformation(extent={{-40,40},{-20,60}})));
-  Modelica.Blocks.Logical.Switch initValvePosSwitch annotation (Placement(
-        transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=270,
-        origin={0,30})));
-  Modelica.Blocks.Sources.RealExpression initValvePos(y=ValvePos_start)
-    annotation (Placement(transformation(extent={{40,32},{20,52}})));
-  Modelica.Blocks.Logical.Switch initSwitch annotation (Placement(
-        transformation(
-        extent={{10,-10},{-10,10}},
-        rotation=270,
-        origin={-30,16})));
   Modelica.Blocks.Sources.RealExpression flowRate_nom(y=FlowRate_target)
     annotation (Placement(transformation(extent={{-120,100},{-100,120}})));
-
-  Modelica.Blocks.Sources.BooleanStep booleanStep(startTime=init_time,
-      startValue=true)
-    annotation (Placement(transformation(extent={{-80,-42},{-60,-22}})));
 
   Modelica.Blocks.Logical.Switch inputSwitch annotation (Placement(
         transformation(
@@ -82,28 +69,12 @@ model FlowCV "Flow control valve"
   Modelica.Blocks.Sources.RealExpression zero(y=0) if not Use_input
     annotation (Placement(transformation(extent={{-120,28},{-100,48}})));
 equation
-  connect(initValvePosSwitch.y, valveLinear.opening) annotation (Line(points={{-1.9984e-15,
-          19},{-1.9984e-15,13.5},{0,13.5},{0,8}}, color={0,0,127}));
-  connect(PID.y, initValvePosSwitch.u3) annotation (Line(points={{-19,50},{-14,50},
-          {-14,42},{-8,42}}, color={0,0,127}));
-  connect(initValvePos.y, initValvePosSwitch.u1)
-    annotation (Line(points={{19,42},{8,42}}, color={0,0,127}));
-  connect(sensor_m_flow.m_flow, initSwitch.u3) annotation (Line(points={{30,-3.6},
-          {30,-14},{-38,-14},{-38,4}}, color={0,0,127}));
-  connect(initSwitch.y, PID.u_m)
-    annotation (Line(points={{-30,27},{-30,38}}, color={0,0,127}));
-  connect(booleanStep.y, initSwitch.u2) annotation (Line(points={{-59,-32},{-48,
-          -32},{-48,-8},{-30,-8},{-30,4}}, color={255,0,255}));
-  connect(booleanStep.y, initValvePosSwitch.u2) annotation (Line(points={{-59,-32},
-          {-48,-32},{-48,72},{2.22045e-15,72},{2.22045e-15,42}}, color={255,0,255}));
   connect(booleanConstant.y, inputSwitch.u2)
     annotation (Line(points={{-99,70},{-82,70}}, color={255,0,255}));
   connect(flowRate_nom.y, inputSwitch.u3) annotation (Line(points={{-99,110},{-90,
           110},{-90,78},{-82,78}}, color={0,0,127}));
   connect(inputSwitch.y, PID.u_s) annotation (Line(points={{-59,70},{-50,70},{-50,
           50},{-42,50}}, color={0,0,127}));
-  connect(inputSwitch.y, initSwitch.u1) annotation (Line(points={{-59,70},{-50,70},
-          {-50,-10},{-22,-10},{-22,4}}, color={0,0,127}));
   connect(port_a, valveLinear.port_a)
     annotation (Line(points={{-100,0},{-10,0}}, color={0,127,255}));
   connect(valveLinear.port_b, sensor_m_flow.port_a)
@@ -114,6 +85,10 @@ equation
           {-50,68},{-56,68},{-56,52},{-82,52},{-82,62}}, color={0,0,127}));
   connect(zero.y, inputSwitch.u1)
     annotation (Line(points={{-99,38},{-82,38},{-82,62}}, color={0,0,127}));
+  connect(sensor_m_flow.m_flow, PID.u_m) annotation (Line(points={{30,-3.6},{30,
+          -14},{-22,-14},{-22,32},{-30,32},{-30,38}}, color={0,0,127}));
+  connect(PID.y, valveLinear.opening)
+    annotation (Line(points={{-19,50},{0,50},{0,8}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Polygon(
           points={{20,-45},{60,-60},{20,-75},{20,-45}},
