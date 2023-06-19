@@ -199,6 +199,14 @@ model HTGR_PebbleBed_Primary_Loop_TESUC_Direct
         extent={{10,-10},{-10,10}},
         rotation=0,
         origin={50,-20})));
+  TRANSFORM.Fluid.Sensors.Pressure     sensor_p1(redeclare package Medium =
+        Coolant_Medium, redeclare function iconUnit =
+        TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_bar)
+                                                       annotation (Placement(
+        transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=0,
+        origin={-8,44})));
 initial equation
 
 equation
@@ -273,6 +281,17 @@ equation
       thickness=0.5));
   connect(STHX.port_b_tube, port_b) annotation (Line(points={{29,30},{30,30},{
           30,49},{97,49}}, color={0,127,255}));
+  connect(sensor_T.port_b, sensor_p1.port)
+    annotation (Line(points={{-39,58},{-39,34},{-8,34}}, color={0,127,255}));
+  connect(sensorBus.primarypressure, sensor_p1.p) annotation (Line(
+      points={{-30,100},{-30,44},{-14,44}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           Bitmap(extent={{-80,-92},{78,84}}, fileName="modelica://NHES/Icons/PrimaryHeatSystemPackage/HTGRPB.jpg")}),
                                                                  Diagram(
