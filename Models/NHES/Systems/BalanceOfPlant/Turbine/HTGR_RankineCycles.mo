@@ -2260,7 +2260,8 @@ package HTGR_RankineCycles
       energyDynamics=TRANSFORM.Types.Dynamics.DynamicFreeInitial,
       eta_mech=data.HPT_efficiency,
       redeclare model Eta_wetSteam =
-          TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant,
+          TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant
+          (eta_nominal=0.9),
       p_a_start=init.HPT_p_a_start,
       p_b_start=init.HPT_p_b_start,
       T_a_start=init.HPT_T_a_start,
@@ -2283,7 +2284,7 @@ package HTGR_RankineCycles
       eta_mech=data.LPT_efficiency,
       redeclare model Eta_wetSteam =
           TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant
-          ( eta_nominal=0.9),
+          (eta_nominal=0.9),
       p_a_start=init.LPT_p_a_start,
       p_b_start=init.LPT_p_b_start,
       T_a_start=init.LPT_T_a_start,
@@ -2381,7 +2382,7 @@ package HTGR_RankineCycles
       annotation (Line(points={{-125,40},{-122,40},{-122,42},{-118,42}},
                                                      color={0,127,255}));
     connect(header.port_b[1], TCV.port_a)
-      annotation (Line(points={{-106,41.75},{-60,41.75},{-60,40},{-12,40}},
+      annotation (Line(points={{-106,41.5},{-60,41.5},{-60,40},{-12,40}},
                                                     color={0,127,255}));
     connect(PRV.port_a, TCV.port_a) annotation (Line(points={{-120,74},{-104,74},
             {-104,40},{-12,40}}, color={0,127,255}));
@@ -2408,13 +2409,13 @@ package HTGR_RankineCycles
     connect(sensor_T2.port_a, FeedwaterMixVolume.port_a[1]) annotation (Line(
           points={{-62,-42},{-42,-42},{-42,-40},{-36,-40}}, color={0,127,255}));
     connect(FeedwaterMixVolume.port_b[1], R_InternalBypass.port_b)
-      annotation (Line(points={{-24,-40.3333},{-24,-9}},
+      annotation (Line(points={{-24,-40.6667},{-24,-9}},
                                                       color={0,127,255}));
     connect(FeedwaterMixVolume.port_b[2], sensor_T4.port_a) annotation (Line(
           points={{-24,-40},{-20,-40},{-20,-128},{-10,-128}},
           color={0,127,255}));
     connect(InternalBypass.port_a, header.port_b[2]) annotation (Line(points={{-82,22},
-            {-94,22},{-94,24},{-106,24},{-106,42.25}},        color={0,127,255}));
+            {-94,22},{-94,24},{-106,24},{-106,42.5}},         color={0,127,255}));
     connect(InternalBypass.port_b, R_InternalBypass.port_a) annotation (Line(
           points={{-66,22},{-44,22},{-44,20},{-24,20},{-24,5}}, color={0,127,255}));
     connect(actuatorBus.Divert_Valve_Position, InternalBypass.opening)
@@ -2443,7 +2444,7 @@ package HTGR_RankineCycles
     connect(LPT.portHP, tee.port_1) annotation (Line(points={{52,-30},{66,-30},{
             66,-28},{90,-28},{90,-6}}, color={0,127,255}));
     connect(SHS_charge_control.port_b, FeedwaterMixVolume.port_b[3]) annotation (
-        Line(points={{-54,-102},{-20,-102},{-20,-39.6667},{-24,-39.6667}}, color=
+        Line(points={{-54,-102},{-20,-102},{-20,-39.3333},{-24,-39.3333}}, color=
             {0,127,255}));
     connect(actuatorBus.SHS_throttle, SHS_charge_control.opening) annotation (
         Line(

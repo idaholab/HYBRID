@@ -62,7 +62,7 @@ model CS_DivertPowerControl_HTGR_3VNb
   TRANSFORM.Controls.LimPID FWCP_mflow(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=-0.0001,
-    Ti=2,
+    Ti=20,
     Td=0.1,
     yMax=1400,
     yMin=1100,
@@ -108,7 +108,7 @@ model CS_DivertPowerControl_HTGR_3VNb
     annotation (Placement(transformation(extent={{-92,-48},{-72,-28}})));
   Modelica.Blocks.Math.Min min2
     annotation (Placement(transformation(extent={{174,-80},{194,-60}})));
-  Modelica.Blocks.Sources.Constant const12(k=data.Q_Nom + 0.001e6)
+  Modelica.Blocks.Sources.Constant const12(k=data.Q_Nom + 1.526e6 - 1)
     annotation (Placement(transformation(extent={{116,-58},{140,-34}})));
   Modelica.Blocks.Sources.RealExpression
                                    realExpression1(y=Overall_Power)
@@ -137,6 +137,10 @@ model CS_DivertPowerControl_HTGR_3VNb
     offset=0,
     startTime=50000)
     annotation (Placement(transformation(extent={{-244,152},{-224,172}})));
+  Modelica.Blocks.Math.Add         add6(k1=-1)
+    annotation (Placement(transformation(extent={{78,-60},{98,-40}})));
+  Modelica.Blocks.Sources.Constant const6(k=1.4465e6)
+    annotation (Placement(transformation(extent={{52,-30},{60,-22}})));
 equation
   connect(const5.y,Turb_Divert_Valve. u_s)
     annotation (Line(points={{-83,-126},{-64,-126}}, color={0,0,127}));
@@ -239,15 +243,6 @@ equation
           {238,-70},{238,-88},{154,-88}}, color={0,0,127}));
   connect(min2.u2, const12.y) annotation (Line(points={{172,-76},{168,-76},{168,
           -46},{141.2,-46}}, color={0,0,127}));
-  connect(sensorBus.Power, Charge_OnOff_Throttle.u_m) annotation (Line(
-      points={{-30,-100},{-28,-100},{-28,-70},{142,-70},{142,-76}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-3,6},{-3,6}},
-      horizontalAlignment=TextAlignment.Right));
   connect(ramp2.y, product1.u1) annotation (Line(points={{-203,34},{-118,34},{
           -118,102},{118,102},{118,112},{128,112}}, color={0,0,127}));
   connect(add.y, product1.u2) annotation (Line(points={{-3,78},{118,78},{118,
@@ -280,6 +275,19 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
+  connect(sensorBus.Power, add6.u2) annotation (Line(
+      points={{-30,-100},{-28,-100},{-28,-70},{70,-70},{70,-56},{76,-56}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(const6.y, add6.u1) annotation (Line(points={{60.4,-26},{70,-26},{70,
+          -44},{76,-44}}, color={0,0,127}));
+  connect(add6.y, Charge_OnOff_Throttle.u_m) annotation (Line(points={{99,-50},
+          {112,-50},{112,-76},{142,-76}}, color={0,0,127}));
   annotation (Diagram(graphics={Text(
           extent={{-70,-142},{-20,-160}},
           textColor={28,108,200},
