@@ -5,8 +5,10 @@ package HTGR_RankineCycles
       redeclare replaceable
         ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp CS,
       redeclare replaceable ControlSystems.ED_Dummy ED,
-      redeclare replaceable Data.Turbine_2 data(InternalBypassValve_p_spring=
-            6500000));
+      redeclare replaceable Data.Turbine_2 data(
+        valve_TCV_dp_nominal=100000,
+        InternalBypassValve_p_spring=6500000,
+        firstfeedpump_p_nominal=500000));
 
     TRANSFORM.Fluid.Machines.SteamTurbine HPT(
       nUnits=1,
@@ -167,12 +169,6 @@ package HTGR_RankineCycles
     TRANSFORM.Electrical.Sensors.PowerSensor sensorW
       annotation (Placement(transformation(extent={{110,-58},{130,-38}})));
 
-    TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance R_feedwater(R=data.R_feedwater,
-        redeclare package Medium = Modelica.Media.Water.StandardWater)
-      annotation (Placement(transformation(extent={{10,-10},{-10,10}},
-          rotation=180,
-          origin={114,-112})));
-
     TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance R_entry(R=data.R_entry,
         redeclare package Medium = Modelica.Media.Water.StandardWater)
       annotation (Placement(transformation(
@@ -223,37 +219,26 @@ package HTGR_RankineCycles
           rotation=180,
           origin={20,-132})));
 
-    replaceable Data.Turbine_2_init init(FeedwaterMixVolume_h_start=2e6)
+    replaceable Data.Turbine_2_init init(FeedwaterMixVolume_h_start=2e6,
+      MainFeedHeater_dp_init_shell=10000,
+      MainFeedHeater_m_start_tube=76)
       annotation (Placement(transformation(extent={{68,120},{88,140}})));
 
-    TRANSFORM.Fluid.Machines.Pump                pump_SimpleMassFlow2(
+    TRANSFORM.Fluid.Machines.Pump pump_FWCP(
       p_a_start=5500000,
       use_T_start=true,
       h_start=1e6,
+      m_flow_start=50,
       N_nominal=1200,
       dp_nominal=10500000,
-      m_flow_nominal=25,
+      m_flow_nominal=76,
       redeclare package Medium = Modelica.Media.Water.StandardWater,
       d_nominal=1000,
       controlType="RPM",
-      use_port=true)                                       annotation (
-        Placement(transformation(
+      use_port=true) annotation (Placement(transformation(
           extent={{-11,-11},{11,11}},
           rotation=180,
           origin={-85,-41})));
-    TRANSFORM.Fluid.Volumes.MixingVolume FeedwaterMixVolume1(
-      redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
-      p_start=init.FeedwaterMixVolume_p_start,
-      use_T_start=false,
-      h_start=init.FeedwaterMixVolume_h_start,
-      redeclare model Geometry =
-          TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-          (V=data.V_FeedwaterMixVolume),
-      nPorts_a=1,
-      nPorts_b=1) annotation (Placement(transformation(
-          extent={{-10,-10},{10,10}},
-          rotation=0,
-          origin={86,-112})));
   initial equation
 
   equation
@@ -378,29 +363,24 @@ package HTGR_RankineCycles
       annotation (Line(points={{40,-132},{30,-132}}, color={0,127,255}));
     connect(Condenser.port_b, firstfeedpump.port_a) annotation (Line(points={{146,
             -112},{146,-144},{118,-144}},         color={0,127,255}));
-    connect(actuatorBus.Feed_Pump_Speed,pump_SimpleMassFlow2. inputSignal)
-      annotation (Line(
-        points={{30,100},{-56,100},{-56,-26},{-100,-26},{-100,-56},{-85,-56},{
-            -85,-48.7}},
+    connect(actuatorBus.Feed_Pump_Speed, pump_FWCP.inputSignal) annotation (
+        Line(
+        points={{30,100},{-56,100},{-56,-26},{-100,-26},{-100,-56},{-85,-56},{-85,
+            -48.7}},
         color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
-    connect(MainFeedwaterHeater.Shell_out, FeedwaterMixVolume1.port_a[1])
-      annotation (Line(points={{60,-126},{72,-126},{72,-112},{80,-112}}, color=
-            {0,127,255}));
-    connect(FeedwaterMixVolume1.port_b[1], R_feedwater.port_a)
-      annotation (Line(points={{92,-112},{107,-112}}, color={0,127,255}));
-    connect(R_feedwater.port_b, Condenser.port_a) annotation (Line(points={{121,
-            -112},{130,-112},{130,-84},{152,-84},{152,-88},{153,-88},{153,-92}},
-          color={0,127,255}));
     connect(LPT.portLP, Condenser.port_a) annotation (Line(points={{48,-16},{52,
             -16},{52,-74},{153,-74},{153,-92}}, color={0,127,255}));
     connect(port_b, sensor_T2.port_b)
       annotation (Line(points={{-160,-40},{-144,-40}}, color={0,127,255}));
-    connect(sensor_T2.port_a, pump_SimpleMassFlow2.port_b) annotation (Line(
-          points={{-124,-40},{-110,-40},{-110,-41},{-96,-41}}, color={0,127,255}));
-    connect(pump_SimpleMassFlow2.port_a, sensor_T6.port_b) annotation (Line(
-          points={{-74,-41},{-6,-41},{-6,-132},{10,-132}}, color={0,127,255}));
+    connect(sensor_T2.port_a, pump_FWCP.port_b) annotation (Line(points={{-124,
+            -40},{-110,-40},{-110,-41},{-96,-41}}, color={0,127,255}));
+    connect(pump_FWCP.port_a, sensor_T6.port_b) annotation (Line(points={{-74,-41},
+            {-6,-41},{-6,-132},{10,-132}}, color={0,127,255}));
+    connect(MainFeedwaterHeater.Shell_out, Condenser.port_a) annotation (Line(
+          points={{60,-126},{132,-126},{132,-88},{153,-88},{153,-92}}, color={0,
+            127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           Rectangle(
             extent={{-24,2},{24,-2}},
@@ -2222,6 +2202,8 @@ package HTGR_RankineCycles
       annotation (Placement(transformation(extent={{-122,32},{-102,52}})));
 
     TRANSFORM.Fluid.Machines.Pump                pump_SimpleMassFlow1(
+      p_a_start=14000000,
+      m_flow_start=70,
       N_nominal=1500,
       dp_nominal=CS.data.p_steam,
       m_flow_nominal=data.controlledfeedpump_mflow_nominal,
@@ -2231,7 +2213,7 @@ package HTGR_RankineCycles
         Placement(transformation(
           extent={{-11,-11},{11,11}},
           rotation=180,
-          origin={-109,-41})));
+          origin={-111,-45})));
 
     TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary(
       redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -2418,7 +2400,7 @@ package HTGR_RankineCycles
     connect(firstfeedpump.port_b, sensor_T4.port_b) annotation (Line(points={{30,-128},
             {10,-128}},                              color={0,127,255}));
     connect(pump_SimpleMassFlow1.port_a, sensor_T2.port_b) annotation (Line(
-          points={{-98,-41},{-98,-42},{-82,-42}},                      color={0,
+          points={{-100,-45},{-100,-42},{-82,-42}},                    color={0,
             127,255}));
     connect(Condenser.port_b, firstfeedpump.port_a) annotation (Line(points={{146,
             -112},{146,-128},{50,-128}},          color={0,127,255}));
@@ -2472,14 +2454,14 @@ package HTGR_RankineCycles
         thickness=0.5));
     connect(actuatorBus.Feed_Pump_Speed, pump_SimpleMassFlow1.inputSignal)
       annotation (Line(
-        points={{30,100},{-92,100},{-92,-56},{-109,-56},{-109,-48.7}},
+        points={{30,100},{-92,100},{-92,-56},{-111,-56},{-111,-52.7}},
         color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(port_b, sensor_m_flow.port_b) annotation (Line(points={{-160,-40},{
             -154,-40},{-154,-42},{-146,-42}}, color={0,127,255}));
     connect(pump_SimpleMassFlow1.port_b, sensor_m_flow.port_a) annotation (Line(
-          points={{-120,-41},{-124,-41},{-124,-42},{-126,-42}}, color={0,127,255}));
+          points={{-122,-45},{-124,-45},{-124,-42},{-126,-42}}, color={0,127,255}));
     connect(sensorBus.Condensor_Output_mflow, sensor_m_flow.m_flow) annotation (
         Line(
         points={{-30,100},{-108,100},{-108,98},{-180,98},{-180,-68},{-136,-68},{

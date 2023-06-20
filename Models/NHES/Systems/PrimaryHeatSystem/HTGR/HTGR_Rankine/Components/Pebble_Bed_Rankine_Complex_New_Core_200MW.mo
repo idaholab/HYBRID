@@ -527,10 +527,11 @@ equation
           {-43,44},{-43,32}}, color={0,127,255}));
   connect(volume1.port_b[1], pump.port_a)
     annotation (Line(points={{16,-60},{8,-60}}, color={0,127,255}));
-  connect(volume1.port_a[1], pump1.port_b) annotation (Line(points={{28,-59.5},{
-          28,-60},{40,-60}}, color={0,127,255}));
-  connect(volume1.port_a[2], LPT_Bypass.port_b) annotation (Line(points={{28,-60.5},
-          {32,-60.5},{32,-70},{100,-70},{100,-8}}, color={0,127,255}));
+  connect(volume1.port_a[1], pump1.port_b) annotation (Line(points={{28,-59.75},
+          {28,-60},{40,-60}},color={0,127,255}));
+  connect(volume1.port_a[2], LPT_Bypass.port_b) annotation (Line(points={{28,
+          -60.25},{32,-60.25},{32,-70},{100,-70},{100,-8}},
+                                                   color={0,127,255}));
   connect(Pump_Pressure.y, pump1.in_p) annotation (Line(points={{32.6,-99},{50,-99},
           {50,-67.3}}, color={0,0,127}));
   connect(hysteresis.y, switch1.u2) annotation (Line(points={{209,-70},{201,-70},
