@@ -736,7 +736,7 @@ package SHS_Two_Tank
         redeclare replaceable ED_Dummy ED,
         redeclare replaceable Data.Data_SHS data(DHX_v_shell=1.0));
         replaceable package Storage_Medium =
-          TRANSFORM.Media.Fluids.Therminol_66.TableBasedTherminol66 constrainedby
+          Modelica.Media.Water.StandardWater  constrainedby
         Modelica.Media.Interfaces.PartialMedium                                                                           annotation(Dialog(tab="General", group="Mediums"), choicesAllMatching=true);
           replaceable package Charging_Medium =
           Modelica.Media.Water.StandardWater                                       constrainedby
