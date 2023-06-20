@@ -41,14 +41,14 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
       InternalBypassValve_p_spring=20000000,
       InternalBypassValve_K(unit="1/(m.kg)") = 40,
       InternalBypassValve_tau(unit="1/s"),
-      HPT_p_exit_nominal=2500000,
-      HPT_T_in_nominal=823.15,
-      HPT_nominal_mflow=76,
+      HPT_p_exit_nominal=5000000,
+      HPT_T_in_nominal=838.15,
+      HPT_nominal_mflow=60,
       HPT_efficiency=1,
-      LPT_p_in_nominal=2500000,
+      LPT_p_in_nominal=5000000,
       LPT_p_exit_nominal=7000,
-      LPT_T_in_nominal=573.15,
-      LPT_nominal_mflow=76,
+      LPT_T_in_nominal=673.15,
+      LPT_nominal_mflow=60,
       LPT_efficiency=1,
       firstfeedpump_p_nominal=10000000,
       secondfeedpump_p_nominal=5500000,
@@ -87,7 +87,7 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
       HPT_T_a_start=523.15,
       HPT_T_b_start=333.15),
     const(k=0))
-    annotation (Placement(transformation(extent={{50,-20},{90,20}})));
+    annotation (Placement(transformation(extent={{52,-18},{92,22}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
     annotation (Placement(transformation(extent={{98,-22},{138,22}})));
   ElectricalGrid.InfiniteGrid.Infinite EG
@@ -193,7 +193,7 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
     width=9800,
     falling=100,
     period=20000,
-    offset=77e6 - 1e5,
+    offset=87e6 - 1e5,
     startTime=4e5 + 2000)
     annotation (Placement(transformation(extent={{-232,256},{-212,276}})));
   BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat_AR1
@@ -210,7 +210,7 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
       data(
         p_steam=10500000,
         T_Steam_Ref=668.15,
-        Q_Nom=77e6),
+        Q_Nom=87e6),
       FWCP_Speed(yMax=3500),
       const15(k=0.005),
       minMaxFilter1(max=1 - 0.005),
@@ -351,7 +351,7 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
     fileName=
         "C:/Users/NOVOV/projects/HYBRID/Models/NHES/Resources/Data/RAVEN/timeSeriesDataVN.txt",
     shiftTime=0)
-    annotation (Placement(transformation(extent={{-70,238},{-50,258}})));
+    annotation (Placement(transformation(extent={{-96,228},{-76,248}})));
 
   Modelica.Blocks.Sources.RealExpression Qin_main(y=
         intermediate_Rankine_Cycle_TESUC.TCV.m_flow*(stateSensor2.specificEnthalpy.h_out
@@ -386,15 +386,18 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
     offset=0,
     startTime=3e5 + 8e4 - 5000)
     annotation (Placement(transformation(extent={{-204,310},{-184,330}})));
+  Modelica.Blocks.Math.Product product4
+    annotation (Placement(transformation(extent={{34,258},{42,250}})));
+  Modelica.Blocks.Sources.Constant MinPower1(k=70/48)
+    annotation (Placement(transformation(extent={{-38,250},{-32,256}})));
 equation
   hTGR_PebbleBed_Primary_Loop_TESUC_AR1_1.input_steam_pressure =
     intermediate_Rankine_Cycle_TESUC.sensor_p.p;
 
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)
-    annotation (Line(points={{28,-6},{36,-6},{36,-8},{50,-8}},
-                                               color={0,127,255}));
+    annotation (Line(points={{28,-6},{52,-6}}, color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC.portElec_b, SY.port_a[1])
-    annotation (Line(points={{90,0},{98,0},{98,-0.55}},              color={255,
+    annotation (Line(points={{92,2},{98,2},{98,-0.55}},              color={255,
           0,0}));
   connect(stateSensor1.port_b, EM.port_a1) annotation (Line(points={{-24,11},{-22,
           11},{-22,12},{-16,12},{-16,10},{-12,10}}, color={0,127,255}));
@@ -404,7 +407,7 @@ equation
   connect(EM.port_b2, stateSensor2.port_a) annotation (Line(points={{28,10},{32,
           10},{32,9}},                        color={0,127,255}));
   connect(stateSensor2.port_b, intermediate_Rankine_Cycle_TESUC.port_a)
-    annotation (Line(points={{46,9},{48,9},{48,8},{50,8}},          color={0,127,
+    annotation (Line(points={{46,9},{48,9},{48,10},{52,10}},        color={0,127,
           255}));
   connect(stateSensor2.statePort, stateDisplay2.statePort) annotation (Line(
         points={{39.035,9.045},{39.035,37.1},{47,37.1}}, color={0,0,0}));
@@ -437,7 +440,7 @@ equation
       Line(points={{23.6,-44.4},{42,-44.4},{42,-55},{48,-55}},          color={0,
           127,255}));
   connect(stateSensor5.port_b, intermediate_Rankine_Cycle_TESUC.port_a1)
-    annotation (Line(points={{30,-30},{57.2,-30},{57.2,-19.2}}, color={0,127,255}));
+    annotation (Line(points={{30,-30},{59.2,-30},{59.2,-17.2}}, color={0,127,255}));
   connect(stateSensor6.port_b,
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_a)
     annotation (Line(points={{62,-68},{100,-68},{100,-60},{102,-60},{102,-56},{
@@ -517,10 +520,14 @@ equation
           -104,266}}, color={0,0,127}));
   connect(trapezoid2.y, add4.u1) annotation (Line(points={{-183,320},{-183,286},
           {-152,286},{-152,270}}, color={0,0,127}));
-  connect(demand_BOP2.y[1], max1.u2) annotation (Line(points={{-49,248},{-49,
-          234},{81,234},{81,228}}, color={0,0,127}));
-  connect(demand_BOP2.y[1], min3.u2) annotation (Line(points={{-49,248},{-49,
-          250},{75.2,250},{75.2,259.6}}, color={0,0,127}));
+  connect(MinPower1.y, product4.u2) annotation (Line(points={{-31.7,253},{30,
+          253},{30,256.4},{33.2,256.4}}, color={0,0,127}));
+  connect(min3.u2, product4.y) annotation (Line(points={{75.2,259.6},{48,259.6},
+          {48,254},{42.4,254}}, color={0,0,127}));
+  connect(max1.u2, product4.y) annotation (Line(points={{81,228},{48,228},{48,
+          254},{42.4,254}}, color={0,0,127}));
+  connect(demand_BOP2.y[1], product4.u1) annotation (Line(points={{-75,238},{28,
+          238},{28,251.6},{33.2,251.6}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{200,100}}), graphics={
         Ellipse(lineColor = {75,138,73},

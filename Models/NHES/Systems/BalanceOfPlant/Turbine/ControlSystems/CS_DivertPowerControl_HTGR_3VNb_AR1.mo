@@ -12,12 +12,13 @@ model CS_DivertPowerControl_HTGR_3VNb_AR1
     input Real m_required;
 
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
-    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    controllerType=Modelica.Blocks.Types.SimpleController.PID,
     k=2e-3,
-    Ti=5,
-    Td=0.1,
+    Ti=10,
+    Td=100,
     yMax=1,
     yMin=0,
+    wd=1,
     initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-62,-118},{-42,-138}})));
@@ -89,16 +90,16 @@ model CS_DivertPowerControl_HTGR_3VNb_AR1
   Modelica.Blocks.Math.Add         add5
     annotation (Placement(transformation(extent={{112,-106},{92,-86}})));
   TRANSFORM.Controls.LimPID Charge_OnOff_Throttle(
-    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    controllerType=Modelica.Blocks.Types.SimpleController.PID,
     k=-1e-6,
-    Ti=240,
-    Td=0.01,
+    Ti=120,
+    Td=0.1,
     k_s=1,
     k_m=1,
     yMax=1 - 0.015,
     yMin=0,
     wp=1,
-    wd=0.1,
+    wd=1,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
     annotation (Placement(transformation(extent={{152,-78},{132,-98}})));
@@ -108,7 +109,7 @@ model CS_DivertPowerControl_HTGR_3VNb_AR1
     annotation (Placement(transformation(extent={{-92,-48},{-72,-28}})));
   Modelica.Blocks.Math.Min min2
     annotation (Placement(transformation(extent={{196,-98},{176,-78}})));
-  Modelica.Blocks.Sources.Constant const12(k=80e6 - 1.526e6 - 1e5)
+  Modelica.Blocks.Sources.Constant const12(k=87e6 - 1.526e6 - 1e5)
     annotation (Placement(transformation(extent={{256,-114},{232,-90}})));
   Modelica.Blocks.Sources.RealExpression
                                    realExpression1(y=Overall_Power)
