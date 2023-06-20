@@ -385,12 +385,12 @@ model TEDSloop_allmodes_testVN
     allowFlowReversal=true,
     dp_nominal=3000,
     m_flow_nominal=0.840) annotation (Placement(transformation(
-        extent={{-6,-6},{6,6}},
+        extent={{6,-6},{-6,6}},
         rotation=0,
-        origin={90,-144})));
+        origin={92,-144})));
   TRANSFORM.Controls.LimPID MassFlow_Control1(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-0.001,
+    k=-0.0004,
     Ti=5,
     yMax=0.99,
     yMin=0.01,
@@ -404,7 +404,7 @@ model TEDSloop_allmodes_testVN
      Placement(transformation(
         extent={{4,-4},{-4,4}},
         rotation=0,
-        origin={-10,-174})));
+        origin={-8,-180})));
   Fluid.Pipes.NonLinear_Break nonLinear_Break(redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C)
     annotation (Placement(transformation(extent={{6,-8},{-6,8}},
@@ -640,21 +640,19 @@ equation
                                  color={0,0,127}));
   connect(const2.y, Chiller_Mass_Flow.m_flow_in) annotation (Line(points={{0.4,-208},
           {0.4,-206},{30,-206}}, color={0,0,127}));
-  connect(Chiller_Mass_flow_T66.port_b, BV1.port_b) annotation (Line(points={{106,
-          -142},{106,-144},{96,-144}},            color={0,127,255}));
   connect(BV2.port_b, HX_exit_temperature_T66.port_b) annotation (Line(points={{56,-166},
           {56,-145},{52,-145}},          color={0,127,255}));
   connect(Heater_BOP_Demand1.y, BV1.opening) annotation (Line(points={{123.1,
-          -99},{123.1,-100},{128,-100},{128,-126},{90,-126},{90,-139.2}},
+          -99},{123.1,-100},{128,-100},{128,-126},{92,-126},{92,-139.2}},
                                                color={0,0,127}));
   connect(HX_exit_temperature_T66.T, MassFlow_Control1.u_m) annotation (Line(
         points={{40,-149.68},{40,-174},{6,-174},{6,-194},{-12,-194},{-12,-202},
           {-28,-202},{-28,-195.2}},color={0,0,127}));
-  connect(MassFlow_Control1.y, BV2.opening) annotation (Line(points={{-34.6,-188},
-          {-48,-188},{-48,-192},{-56,-192},{-56,-226},{18,-226},{18,-180},{51.2,
-          -180},{51.2,-172}}, color={0,0,127}));
-  connect(const1.y, MassFlow_Control1.u_s) annotation (Line(points={{-14.4,-174},
-          {-14.4,-180},{-20.8,-180},{-20.8,-188}}, color={0,0,127}));
+  connect(MassFlow_Control1.y, BV2.opening) annotation (Line(points={{-34.6,
+          -188},{-56,-188},{-56,-222},{18,-222},{18,-176},{51.2,-176},{51.2,
+          -172}},             color={0,0,127}));
+  connect(const1.y, MassFlow_Control1.u_s) annotation (Line(points={{-12.4,-180},
+          {-20.8,-180},{-20.8,-188}},              color={0,0,127}));
   connect(Glycol_HX.port_b_shell, nonLinear_Break.port_a) annotation (Line(
         points={{69,-204.1},{56,-204.1},{56,-196}}, color={0,127,255}));
   connect(nonLinear_Break.port_b, BV2.port_a)
@@ -663,11 +661,13 @@ equation
       Line(points={{28,-145},{28,-146},{22,-146}}, color={0,127,255}));
   connect(nonLinear_Break2.port_b, pump.port_a) annotation (Line(points={{10,
           -146},{4.44089e-16,-146}}, color={0,127,255}));
-  connect(BV1.port_a, HX_exit_temperature_T66.port_b) annotation (Line(points={
-          {84,-144},{68,-144},{68,-145},{52,-145}}, color={0,127,255}));
   connect(Chiller_Mass_flow_T66.port_a, Glycol_HX.port_a_shell) annotation (
       Line(points={{132,-142},{132,-158},{112,-158},{112,-204.1},{100,-204.1}},
         color={0,127,255}));
+  connect(BV1.port_a, Chiller_Mass_flow_T66.port_b) annotation (Line(points={{
+          98,-144},{98,-142},{106,-142}}, color={0,127,255}));
+  connect(BV1.port_b, HX_exit_temperature_T66.port_b)
+    annotation (Line(points={{86,-144},{52,-145}}, color={0,127,255}));
   annotation (
     Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,-220},{240,
             140}}), graphics={
@@ -687,5 +687,6 @@ equation
       Interval=10,
       __Dymola_Algorithm="Esdirk45a"),
     __Dymola_Commands(file="../../TEDS/Basic_TEDS_setup.mos" "Basic_TEDS_setup",
-        file="../../TEDS/M3_TEDS.mos" "M3_TEDS"));
+        file="../../TEDS/M3_TEDS.mos" "M3_TEDS"),
+    conversion(noneFromVersion=""));
 end TEDSloop_allmodes_testVN;

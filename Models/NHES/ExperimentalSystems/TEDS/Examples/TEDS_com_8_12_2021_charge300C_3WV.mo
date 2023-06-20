@@ -42,14 +42,14 @@ model TEDS_com_8_12_2021_charge300C_3WV
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort TC003(redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(extent={{-22,34},{2,58}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={84,42})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
@@ -140,8 +140,8 @@ model TEDS_com_8_12_2021_charge300C_3WV
     annotation (Placement(transformation(extent={{-44,92},{-22,116}})));
   BaseClasses.SignalSubBus_SensorOutput sensorSubBus
     annotation (Placement(transformation(extent={{-10,94},{12,118}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=-90,
@@ -278,8 +278,8 @@ model TEDS_com_8_12_2021_charge300C_3WV
         extent={{-12,-13},{12,13}},
         rotation=90,
         origin={80,-63})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate BOP_Mass_flow(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate BOP_Mass_flow(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
@@ -318,8 +318,8 @@ model TEDS_com_8_12_2021_charge300C_3WV
   Modelica.Blocks.Sources.RealExpression Heater_BOP_Demand(y=pump.port_a.p +
         2.0e4)
     annotation (Placement(transformation(extent={{-54,-180},{-32,-158}})));
-  Modelica.Fluid.Sensors.VolumeFlowRate volumeFlowRate(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+  Modelica.Fluid.Sensors.VolumeFlowRate volumeFlowRate(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
       allowFlowReversal=true) annotation (Placement(transformation(
         extent={{-7,-7},{7,7}},
         rotation=-90,
@@ -474,7 +474,7 @@ model TEDS_com_8_12_2021_charge300C_3WV
     allowFlowReversal=true,
     dp_nominal=3000,
     m_flow_nominal=0.840) annotation (Placement(transformation(
-        extent={{-6,-6},{6,6}},
+        extent={{6,-6},{-6,6}},
         rotation=0,
         origin={94,-144})));
   TRANSFORM.Fluid.Valves.ValveLinear BV2(
@@ -765,16 +765,17 @@ equation
           {-8,-184},{-8,-198},{51.2,-198},{51.2,-162}}, color={0,0,127}));
   connect(nonLinear_Break1.port_b, HX_exit_temperature_T66.port_b) annotation (
       Line(points={{62,-152},{56,-152},{56,-145},{48,-145}}, color={0,127,255}));
-  connect(nonLinear_Break1.port_a, BV1.port_a) annotation (Line(points={{82,
-          -152},{84,-152},{84,-144},{88,-144}}, color={0,127,255}));
-  connect(BV1.port_b, T_inlet_HX.port_a) annotation (Line(points={{100,-144},{
-          102,-144},{102,-142},{136,-142}}, color={0,127,255}));
   connect(Glycol_HX.port_b_shell, nonLinear_Break.port_a) annotation (Line(
         points={{61,-188.1},{56,-188.1},{56,-186}}, color={0,127,255}));
   connect(nonLinear_Break.port_b, BV2.port_a)
     annotation (Line(points={{56,-174},{56,-168}}, color={0,127,255}));
   connect(Heater_BOP_Demand1.y, BV1.opening) annotation (Line(points={{123.1,
           -107},{123.1,-130},{94,-130},{94,-139.2}}, color={0,0,127}));
+  connect(T_inlet_HX.port_a, BV1.port_a) annotation (Line(points={{136,-142},{
+          134,-142},{134,-160},{106,-160},{106,-144},{100,-144}}, color={0,127,
+          255}));
+  connect(BV1.port_b, nonLinear_Break1.port_a) annotation (Line(points={{88,
+          -144},{88,-152},{82,-152}}, color={0,127,255}));
   annotation (
     Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,-220},{240,
             140}}), graphics={
