@@ -33,7 +33,7 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
       V_Header=10,
       valve_TCV_mflow=75,
       valve_TCV_dp_nominal=500000,
-      valve_SHS_mflow=30,
+      valve_SHS_mflow=45,
       valve_SHS_dp_nominal=1000000,
       valve_TCV_LPT_mflow=30,
       valve_TCV_LPT_dp_nominal=10000,
@@ -50,7 +50,7 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
       LPT_T_in_nominal=573.15,
       LPT_nominal_mflow=76,
       LPT_efficiency=1,
-      firstfeedpump_p_nominal=7000000,
+      firstfeedpump_p_nominal=10000000,
       secondfeedpump_p_nominal=5500000,
       controlledfeedpump_mflow_nominal=45,
       MainFeedHeater_K_tube(unit="1/m4"),
@@ -193,7 +193,7 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
     width=9800,
     falling=100,
     period=20000,
-    offset=80e6 - 1e5,
+    offset=77e6 - 1e5,
     startTime=4e5 + 2000)
     annotation (Placement(transformation(extent={{-232,256},{-212,276}})));
   BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat_AR1
@@ -210,7 +210,7 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
       data(
         p_steam=10500000,
         T_Steam_Ref=668.15,
-        Q_Nom=80e6),
+        Q_Nom=77e6),
       FWCP_Speed(yMax=3500),
       const15(k=0.005),
       minMaxFilter1(max=1 - 0.005),
