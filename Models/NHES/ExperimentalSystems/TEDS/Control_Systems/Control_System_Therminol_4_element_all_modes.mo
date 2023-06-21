@@ -2,10 +2,16 @@ within NHES.ExperimentalSystems.TEDS.Control_Systems;
 model Control_System_Therminol_4_element_all_modes
   "Runs all Modes of the TEDS system with Milestone controllers (Manual inputs for load, hence why there are two controllers)"
 
+ // replaceable package Medium =
+ //     TRANSFORM.Media.Fluids.DOWTHERM.LinearDOWTHERM_A_95C constrainedby
+ //   TRANSFORM.Media.Interfaces.Fluids.PartialMedium "Fluid Medium" annotation (
+ //     choicesAllMatching=true);
+
   replaceable package Medium =
-      TRANSFORM.Media.Fluids.DOWTHERM.LinearDOWTHERM_A_95C constrainedby
+      TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C constrainedby
     TRANSFORM.Media.Interfaces.Fluids.PartialMedium "Fluid Medium" annotation (
       choicesAllMatching=true);
+
   BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus
     annotation (Placement(transformation(extent={{-58,-122},{-10,-76}})));
   BaseClasses.SignalSubBus_SensorOutput sensorSubBus
