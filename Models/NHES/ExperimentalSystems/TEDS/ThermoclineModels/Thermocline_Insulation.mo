@@ -56,7 +56,7 @@ model Thermocline_Insulation "Thermocline Insulation subpackage"
         Medium)
     annotation (Placement(transformation(extent={{-10,-110},{10,-90}})));
   replaceable package Medium =
-      TRANSFORM.Media.Fluids.DOWTHERM.LinearDOWTHERM_A_95C constrainedby
+      TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C constrainedby
     TRANSFORM.Media.Interfaces.Fluids.PartialMedium "Fluid Medium" annotation (
       choicesAllMatching=true);
   replaceable package InsulationMaterial =
