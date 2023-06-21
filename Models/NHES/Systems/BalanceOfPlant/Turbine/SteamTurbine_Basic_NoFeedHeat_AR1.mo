@@ -58,13 +58,13 @@ model SteamTurbine_Basic_NoFeedHeat_AR1 "Two stage BOP model"
     eta_mech=data.LPT_efficiency,
     redeclare model Eta_wetSteam =
         TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant (
-          eta_nominal=0.9),
+          eta_nominal=1),
     p_a_start=init.LPT_p_a_start,
     p_b_start=init.LPT_p_b_start,
     T_a_start=init.LPT_T_a_start,
     T_b_start=init.LPT_T_b_start,
     m_flow_nominal=data.LPT_nominal_mflow,
-    p_inlet_nominal=data.LPT_p_in_nominal,
+    p_inlet_nominal=10500000,
     p_outlet_nominal=data.LPT_p_exit_nominal,
     T_nominal=data.LPT_T_in_nominal) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},

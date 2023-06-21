@@ -3834,13 +3834,13 @@ package HTGR_RankineCycles
 
     TRANSFORM.Fluid.Machines.Pump                pump_SimpleMassFlow1(
       p_a_start=1000000,
-      p_b_start=14000000,
+      p_b_start=16000000,
       diameter=1,
-      m_flow_start=50,
+      m_flow_start=76,
       exposeState_a=false,
       exposeState_b=true,
       N_nominal=1500,
-      dp_nominal=CS.data.p_steam,
+      dp_nominal=16500000,
       m_flow_nominal=data.controlledfeedpump_mflow_nominal,
       redeclare package Medium =
           Modelica.Media.Water.StandardWater,
@@ -3896,13 +3896,13 @@ package HTGR_RankineCycles
       eta_mech=data.HPT_efficiency,
       redeclare model Eta_wetSteam =
           TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant
-          (eta_nominal=0.9),
+          (eta_nominal=1),
       p_a_start=init.HPT_p_a_start,
       p_b_start=init.HPT_p_b_start,
       T_a_start=init.HPT_T_a_start,
       T_b_start=init.HPT_T_b_start,
       m_flow_nominal=data.HPT_nominal_mflow,
-      p_inlet_nominal=data.p_in_nominal,
+      p_inlet_nominal=16500000,
       p_outlet_nominal=data.HPT_p_exit_nominal,
       T_nominal=data.HPT_T_in_nominal)
       annotation (Placement(transformation(extent={{32,24},{52,44}})));
@@ -3919,7 +3919,7 @@ package HTGR_RankineCycles
       eta_mech=data.LPT_efficiency,
       redeclare model Eta_wetSteam =
           TRANSFORM.Fluid.Machines.BaseClasses.WetSteamEfficiency.eta_Constant
-          (eta_nominal=0.9),
+          (eta_nominal=1),
       p_a_start=init.LPT_p_a_start,
       p_b_start=init.LPT_p_b_start,
       T_a_start=init.LPT_T_a_start,
@@ -3947,8 +3947,8 @@ package HTGR_RankineCycles
           extent={{8,8},{-8,-8}},
           rotation=180,
           origin={126,-146})));
-    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
-          Modelica.Media.Water.StandardWater)            annotation (Placement(
+    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
+        = Modelica.Media.Water.StandardWater)            annotation (Placement(
           transformation(
           extent={{-10,-10},{10,10}},
           rotation=180,

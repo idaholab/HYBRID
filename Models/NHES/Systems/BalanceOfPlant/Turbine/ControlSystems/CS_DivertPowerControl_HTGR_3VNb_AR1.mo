@@ -13,9 +13,9 @@ model CS_DivertPowerControl_HTGR_3VNb_AR1
 
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PID,
-    k=2e-3,
+    k=1e-3,
     Ti=10,
-    Td=100,
+    Td=10,
     yMax=1,
     yMin=0,
     wd=1,
@@ -31,7 +31,7 @@ model CS_DivertPowerControl_HTGR_3VNb_AR1
     k_s=1,
     k_m=1,
     yMax=0,
-    yMin=-1 + 0.01,
+    yMin=-1 + 0.005,
     initType=Modelica.Blocks.Types.Init.NoInit,
     xi_start=1500)
     annotation (Placement(transformation(extent={{-58,-28},{-38,-48}})));
@@ -61,16 +61,16 @@ model CS_DivertPowerControl_HTGR_3VNb_AR1
   Modelica.Blocks.Sources.Constant const3(k=565 + 273.15)
     annotation (Placement(transformation(extent={{-186,68},{-166,88}})));
   TRANSFORM.Controls.LimPID FWCP_mflow(
-    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    controllerType=Modelica.Blocks.Types.SimpleController.PID,
     k=-0.01,
     Ti=20,
     Td=0.1,
-    yMax=2000,
+    yMax=3000,
     yMin=1100,
     wd=1,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
-    annotation (Placement(transformation(extent={{-68,62},{-48,82}})));
+    annotation (Placement(transformation(extent={{-70,64},{-50,84}})));
   Modelica.Blocks.Sources.Constant const4(k=0)
     annotation (Placement(transformation(extent={{-40,80},{-32,88}})));
   Modelica.Blocks.Math.Add         add
@@ -102,14 +102,14 @@ model CS_DivertPowerControl_HTGR_3VNb_AR1
     wd=1,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
-    annotation (Placement(transformation(extent={{152,-78},{132,-98}})));
-  Modelica.Blocks.Sources.Constant const10(k=0.01)
+    annotation (Placement(transformation(extent={{152,-76},{132,-96}})));
+  Modelica.Blocks.Sources.Constant const10(k=0.015)
     annotation (Placement(transformation(extent={{152,-122},{144,-114}})));
   Modelica.Blocks.Sources.Constant const1(k=data.p_steam)
     annotation (Placement(transformation(extent={{-92,-48},{-72,-28}})));
   Modelica.Blocks.Math.Min min2
     annotation (Placement(transformation(extent={{196,-98},{176,-78}})));
-  Modelica.Blocks.Sources.Constant const12(k=87e6 - 1.526e6 - 1e5)
+  Modelica.Blocks.Sources.Constant const12(k=89e6 - 1.526e6 - 1e5)
     annotation (Placement(transformation(extent={{256,-114},{232,-90}})));
   Modelica.Blocks.Sources.RealExpression
                                    realExpression1(y=Overall_Power)
@@ -163,7 +163,7 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(FWCP_mflow.y, add.u2)
-    annotation (Line(points={{-47,72},{-26,72}},
+    annotation (Line(points={{-49,74},{-36,74},{-36,72},{-26,72}},
                                                color={0,0,127}));
   connect(const4.y, add.u1)
     annotation (Line(points={{-31.6,84},{-26,84}},
@@ -190,7 +190,7 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(add5.u1, Charge_OnOff_Throttle.y)
-    annotation (Line(points={{114,-90},{114,-88},{131,-88}},
+    annotation (Line(points={{114,-90},{114,-86},{131,-86}},
                                                  color={0,0,127}));
   connect(add5.u2, const10.y) annotation (Line(points={{114,-102},{118,-102},{
           118,-118},{143.6,-118}},
@@ -215,14 +215,14 @@ equation
           237.8,-74},{208,-74},{208,-82},{198,-82}},
                                      color={0,0,127}));
   connect(min2.y, Charge_OnOff_Throttle.u_s) annotation (Line(points={{175,-88},
-          {154,-88}},                     color={0,0,127}));
+          {164,-88},{164,-86},{154,-86}}, color={0,0,127}));
   connect(min2.u2, const12.y) annotation (Line(points={{198,-94},{226,-94},{226,
           -102},{230.8,-102}},
                              color={0,0,127}));
   connect(const3.y, FWCP_mflow.u_s) annotation (Line(points={{-165,78},{-76,78},
-          {-76,72},{-70,72}}, color={0,0,127}));
+          {-76,74},{-72,74}}, color={0,0,127}));
   connect(sensorBus.Steam_Temperature, FWCP_mflow.u_m) annotation (Line(
-      points={{-30,-100},{-120,-100},{-120,48},{-58,48},{-58,60}},
+      points={{-30,-100},{-120,-100},{-120,48},{-60,48},{-60,62}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -240,7 +240,7 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(sensorBus.Power, Charge_OnOff_Throttle.u_m) annotation (Line(
-      points={{-30,-100},{-30,-74},{126,-74},{126,-68},{142,-68},{142,-76}},
+      points={{-30,-100},{-30,-74},{126,-74},{126,-68},{142,-68},{142,-74}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(

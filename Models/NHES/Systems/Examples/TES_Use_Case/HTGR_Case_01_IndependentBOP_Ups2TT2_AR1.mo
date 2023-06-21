@@ -31,7 +31,7 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
       V_condensor=10000,
       V_FeedwaterMixVolume=25,
       V_Header=10,
-      valve_TCV_mflow=75,
+      valve_TCV_mflow=100,
       valve_TCV_dp_nominal=500000,
       valve_SHS_mflow=45,
       valve_SHS_dp_nominal=1000000,
@@ -48,9 +48,9 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
       LPT_p_in_nominal=5000000,
       LPT_p_exit_nominal=7000,
       LPT_T_in_nominal=673.15,
-      LPT_nominal_mflow=60,
+      LPT_nominal_mflow=120,
       LPT_efficiency=1,
-      firstfeedpump_p_nominal=10000000,
+      firstfeedpump_p_nominal=11000000,
       secondfeedpump_p_nominal=5500000,
       controlledfeedpump_mflow_nominal=45,
       MainFeedHeater_K_tube(unit="1/m4"),
@@ -69,11 +69,11 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
       Overall_Power=sensorW.W,
       m_required=m_req.y,
       data(
-        p_steam=14000000,
+        p_steam=16500000,
         T_Steam_Ref=838.15,
         Q_Nom=48e6,
         T_Feedwater=466.15,
-        p_steam_vent=16500000,
+        p_steam_vent=18500000,
         m_flow_reactor=50)),
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.Data.IntermediateTurbineInitialisation
@@ -210,7 +210,7 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
       data(
         p_steam=10500000,
         T_Steam_Ref=668.15,
-        Q_Nom=87e6),
+        Q_Nom=88e6),
       FWCP_Speed(yMax=3500),
       const15(k=0.005),
       minMaxFilter1(max=1 - 0.005),
@@ -261,8 +261,8 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
   PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_TESUC_AR1
     hTGR_PebbleBed_Primary_Loop_TESUC_AR1_1(redeclare
       PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_PrimaryVNa_AR1
-      CS(data(T_Rx_Exit_Ref=1023.15, P_Steam_Ref=14000000), const3(k=200e6)),
-                                                            STHX(nParallel=4))
+      CS(data(T_Rx_Exit_Ref=1023.15, P_Steam_Ref=16500000), const3(k=200e6)),
+      STHX(nParallel=4))
     annotation (Placement(transformation(extent={{-106,-22},{-58,24}})));
   Modelica.Blocks.Sources.RealExpression m_req(y=
         hTGR_PebbleBed_Primary_Loop_TESUC_AR1_1.core.Q_total.y/(1295088 -

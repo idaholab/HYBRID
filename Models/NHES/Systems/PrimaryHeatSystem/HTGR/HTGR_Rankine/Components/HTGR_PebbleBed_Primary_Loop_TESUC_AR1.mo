@@ -101,8 +101,8 @@ model HTGR_PebbleBed_Primary_Loop_TESUC_AR1
         rotation=270,
         origin={-78,34})));
 
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Coolant_Medium) annotation (Placement(transformation(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Coolant_Medium) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={-78,-2})));
@@ -131,16 +131,16 @@ model HTGR_PebbleBed_Primary_Loop_TESUC_AR1
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
     redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
     p=6000000,
-    T=723.15,
+    T=533.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-94,-68},{-74,-48}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
-      = Coolant_Medium) annotation (Placement(transformation(
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
+        Coolant_Medium) annotation (Placement(transformation(
         extent={{-5,-7},{5,7}},
         rotation=270,
         origin={-39,63})));
   TRANSFORM.HeatExchangers.GenericDistributed_HX STHX(
-    nParallel=3,
+    nParallel=4,
     redeclare model FlowModel_shell =
         TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable,
     redeclare model FlowModel_tube =
