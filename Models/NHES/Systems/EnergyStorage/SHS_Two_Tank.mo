@@ -488,14 +488,15 @@ package SHS_Two_Tank
     model Two_Tank_SHS_HT_Power_Test "TES use case demonstration of a NuScale-style LWR operating within an energy 
   arbitrage IES, storing and dispensing energy on demand from a two tank molten 
   salt energy storage system nominally using HITEC salt to store heat."
-      NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat_mFlow_Control Dch_BOP(
+      NHES.Systems.BalanceOfPlant.RankineCycle.Models.SteamTurbine_Basic_NoFeedHeat_mFlow_Control
+        Dch_BOP(
         port_a_nominal(
           p=3388000,
           h=2.99767e+6,
           m_flow=66.4),
         port_b_nominal(p=3447380, h=629361),
         redeclare
-          NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_NoFeedHeat_mFlow_Control
+          NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_NoFeedHeat_mFlow_Control
           CS(electric_demand_large=MW_W_Gain_TES.y),
         init(condensor_V_liquid_start=50))
         annotation (Placement(transformation(extent={{-34,12},{32,68}})));
@@ -895,7 +896,7 @@ package SHS_Two_Tank
         nPorts=1) annotation (Placement(transformation(extent={{-126,-44},{-106,-24}})));
       Modelica.Blocks.Sources.RealExpression Level_Hot_Tank1(y=CHX.Shell.medium.h)
         annotation (Placement(transformation(extent={{-128,-98},{-108,-78}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
         delay1(Ti=0.5)
         annotation (Placement(transformation(extent={{-102,-90},{-94,-86}})));
       Modelica.Blocks.Logical.Hysteresis hysteresis(uLow=0.7, uHigh=11)
@@ -1599,7 +1600,7 @@ package SHS_Two_Tank
         nPorts=1) annotation (Placement(transformation(extent={{-82,-44},{-62,-24}})));
       Modelica.Blocks.Sources.RealExpression Level_Hot_Tank1(y=CHX.Shell.medium.T)
         annotation (Placement(transformation(extent={{-88,-100},{-68,-80}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
         delay1(Ti=0.5)
         annotation (Placement(transformation(extent={{-58,-92},{-50,-88}})));
       Modelica.Blocks.Sources.RealExpression Charging_Temperature(y=
@@ -1944,7 +1945,7 @@ package SHS_Two_Tank
       Modelica.Blocks.Sources.RealExpression Level_Hot_Tank1(y=CHX.shell.mediums[
             CHXnV].T)
         annotation (Placement(transformation(extent={{-88,-100},{-68,-80}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
         delay1(Ti=0.5)
         annotation (Placement(transformation(extent={{-58,-92},{-50,-88}})));
       Modelica.Blocks.Logical.Hysteresis hysteresis(uLow=3, uHigh=12)
@@ -2574,7 +2575,7 @@ package SHS_Two_Tank
       Modelica.Blocks.Sources.RealExpression Level_Hot_Tank1(y=0.5*CHX.shell.mediums[
             1].h + 0.5*CHX.shell.mediums[CHXnV].h)
         annotation (Placement(transformation(extent={{-88,-100},{-68,-80}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
         delay1(Ti=0.5)
         annotation (Placement(transformation(extent={{-62,-92},{-54,-88}})));
       Modelica.Blocks.Logical.Hysteresis hysteresis(uLow=3, uHigh=12)
@@ -3173,7 +3174,7 @@ package SHS_Two_Tank
         nPorts=1) annotation (Placement(transformation(extent={{-124,-52},{-104,-32}})));
       Modelica.Blocks.Sources.RealExpression Level_Hot_Tank1(y=CHX.Shell.medium.h)
         annotation (Placement(transformation(extent={{-88,-100},{-68,-80}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
         delay1(Ti=0.5)
         annotation (Placement(transformation(extent={{-62,-92},{-54,-88}})));
       Modelica.Blocks.Logical.Hysteresis hysteresis(uLow=3, uHigh=12)
@@ -3758,7 +3759,7 @@ package SHS_Two_Tank
         nPorts=1) annotation (Placement(transformation(extent={{-126,24},{-106,44}})));
       Modelica.Blocks.Sources.RealExpression Level_Hot_Tank1(y=CHX.Shell.medium.h)
         annotation (Placement(transformation(extent={{-128,-98},{-108,-78}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
         delay1(Ti=0.5)
         annotation (Placement(transformation(extent={{-102,-90},{-94,-86}})));
       Modelica.Blocks.Logical.Hysteresis hysteresis(uLow=3, uHigh=12)
@@ -4343,7 +4344,7 @@ package SHS_Two_Tank
         nPorts=1) annotation (Placement(transformation(extent={{-124,-52},{-104,-32}})));
       Modelica.Blocks.Sources.RealExpression Level_Hot_Tank1(y=CHX.Shell.medium.h)
         annotation (Placement(transformation(extent={{-88,-100},{-68,-80}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
         delay1(Ti=0.5)
         annotation (Placement(transformation(extent={{-62,-92},{-54,-88}})));
       Modelica.Blocks.Logical.GreaterThreshold
@@ -4926,7 +4927,7 @@ package SHS_Two_Tank
         nPorts=2) annotation (Placement(transformation(extent={{-126,24},{-106,44}})));
       Modelica.Blocks.Sources.RealExpression Level_Hot_Tank1(y=CHX.Shell.medium.h)
         annotation (Placement(transformation(extent={{-128,-98},{-108,-78}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
         delay1(Ti=0.5)
         annotation (Placement(transformation(extent={{-102,-90},{-94,-86}})));
       Modelica.Blocks.Logical.Hysteresis hysteresis(uLow=3, uHigh=97)
@@ -5620,9 +5621,9 @@ package SHS_Two_Tank
         m_flow=m_flow_min,
         nPorts=1) annotation (Placement(transformation(extent={{-126,-182},{-106,
                 -162}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
-        delay1(Ti=0.5)
-        annotation (Placement(transformation(extent={{-144,-170},{-136,-166}})));
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
+        delay1(Ti=0.5) annotation (Placement(transformation(extent={{-144,-170},
+                {-136,-166}})));
       Modelica.Blocks.Sources.RealExpression Level_Hot_Tank1(y=CHX.Shell.medium.h)
         annotation (Placement(transformation(extent={{-170,-178},{-150,-158}})));
       Modelica.Fluid.Sources.MassFlowSource_T boundary4(
@@ -7377,8 +7378,8 @@ package SHS_Two_Tank
             extent={{-10,10},{10,-10}},
             rotation=270,
             origin={72,20})));
-      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium
-          = Storage_Medium, redeclare model Geometry =
+      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium =
+            Storage_Medium, redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=data.ctvolume_volume))
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},
@@ -7532,14 +7533,14 @@ package SHS_Two_Tank
           Medium =
             Storage_Medium)
         annotation (Placement(transformation(extent={{48,34},{68,54}})));
-      TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m1(redeclare package Medium
-          = Modelica.Media.Water.StandardWater) annotation (Placement(
+      TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m1(redeclare package Medium =
+            Modelica.Media.Water.StandardWater) annotation (Placement(
             transformation(
             extent={{-10,10},{10,-10}},
             rotation=90,
             origin={-88,42})));
-      TRANSFORM.Fluid.Sensors.SpecificEnthalpy h_Inlet(redeclare package Medium
-          = Modelica.Media.Water.StandardWater) annotation (Placement(
+      TRANSFORM.Fluid.Sensors.SpecificEnthalpy h_Inlet(redeclare package Medium =
+            Modelica.Media.Water.StandardWater) annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
@@ -8762,7 +8763,7 @@ package SHS_Two_Tank
         Ti=10,
         yMin=-0.25)
                   annotation (Placement(transformation(extent={{-22,-20},{-2,0}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
         Charging_Valve_Position_MinMax(min=1e-4)
         annotation (Placement(transformation(extent={{2,6},{22,26}})));
       Modelica.Blocks.Math.Product product2
@@ -8809,8 +8810,9 @@ package SHS_Two_Tank
         offset=0.0,
         startTime=0)
         annotation (Placement(transformation(extent={{-74,42},{-62,54}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-        Discharging_Valve_Position(min=1e-4) annotation (Placement(transformation(
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        Discharging_Valve_Position(min=1e-4) annotation (Placement(
+            transformation(
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={12,64})));
@@ -8948,7 +8950,7 @@ package SHS_Two_Tank
         Ti=10,
         yMin=-0.25)
                   annotation (Placement(transformation(extent={{-22,-20},{-2,0}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
         Charging_Valve_Position_MinMax(min=1e-4)
         annotation (Placement(transformation(extent={{2,6},{22,26}})));
       Modelica.Blocks.Math.Product product2
@@ -8986,8 +8988,9 @@ package SHS_Two_Tank
         offset=0.0,
         startTime=0)
         annotation (Placement(transformation(extent={{-58,48},{-46,60}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-        Discharging_Valve_Position(min=1e-4) annotation (Placement(transformation(
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        Discharging_Valve_Position(min=1e-4) annotation (Placement(
+            transformation(
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={12,64})));
@@ -9147,7 +9150,7 @@ package SHS_Two_Tank
 
       Data.Data_Default data
         annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
         Charging_Valve_Position_MinMax(min=1e-4)
         annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
       Modelica.Blocks.Math.Product product2
@@ -9185,8 +9188,9 @@ package SHS_Two_Tank
         offset=0.0,
         startTime=0)
         annotation (Placement(transformation(extent={{-58,48},{-46,60}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-        Discharging_Valve_Position(min=1e-4) annotation (Placement(transformation(
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        Discharging_Valve_Position(min=1e-4) annotation (Placement(
+            transformation(
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={12,64})));
@@ -9324,7 +9328,7 @@ package SHS_Two_Tank
 
       Data.Data_Default data
         annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
         Charging_Valve_Position_MinMax(min=1e-4)
         annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
       Modelica.Blocks.Math.Product product2
@@ -9362,8 +9366,9 @@ package SHS_Two_Tank
         offset=0.0,
         startTime=0)
         annotation (Placement(transformation(extent={{-58,48},{-46,60}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-        Discharging_Valve_Position(min=1e-4) annotation (Placement(transformation(
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        Discharging_Valve_Position(min=1e-4) annotation (Placement(
+            transformation(
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={12,64})));
@@ -9501,7 +9506,7 @@ package SHS_Two_Tank
 
       Data.Data_Default data
         annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
         Charging_Valve_Position_MinMax(min=1e-4)
         annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
       Modelica.Blocks.Math.Product product2
@@ -9539,8 +9544,9 @@ package SHS_Two_Tank
         offset=0.0,
         startTime=0)
         annotation (Placement(transformation(extent={{-58,48},{-46,60}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-        Discharging_Valve_Position(min=0.3)  annotation (Placement(transformation(
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        Discharging_Valve_Position(min=0.3) annotation (Placement(
+            transformation(
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={12,64})));
@@ -9679,7 +9685,7 @@ package SHS_Two_Tank
       input Modelica.Units.SI.MassFlowRate Ref_Charge_Flow "TES should supply expected charging mass flow rate given demand" annotation(Dialog(tab = "General"));
       replaceable Data.Data_CS data
         annotation (Placement(transformation(extent={{-92,18},{-72,38}})), Dialog(tab = "General", choicesAllMatching=true));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
         Charging_Valve_Position_MinMax(min=2e-4)
         annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
       Modelica.Blocks.Math.Product product2
@@ -9716,7 +9722,7 @@ package SHS_Two_Tank
 
       Data.Data_Default data
         annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
         Charging_Valve_Position_MinMax(min=1e-2, max=1)
         annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
       Modelica.Blocks.Math.Product product2
@@ -9747,8 +9753,9 @@ package SHS_Two_Tank
         initType=Modelica.Blocks.Types.Init.InitialOutput,
         y_start=1)
         annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-        Discharging_Valve_Position(min=1e-2) annotation (Placement(transformation(
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        Discharging_Valve_Position(min=1e-2) annotation (Placement(
+            transformation(
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={12,64})));
@@ -9908,7 +9915,7 @@ package SHS_Two_Tank
 
       Data.Data_Default data
         annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
         Charging_Valve_Position_MinMax(min=1e-2, max=1)
         annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
       Modelica.Blocks.Math.Product product2
@@ -9939,8 +9946,9 @@ package SHS_Two_Tank
         initType=Modelica.Blocks.Types.Init.InitialOutput,
         y_start=1)
         annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-        Discharging_Valve_Position(min=1e-2) annotation (Placement(transformation(
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        Discharging_Valve_Position(min=1e-2) annotation (Placement(
+            transformation(
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={12,64})));
@@ -10100,7 +10108,7 @@ package SHS_Two_Tank
 
       Data.Data_Default data
         annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
         Charging_Valve_Position_MinMax(min=1e-2, max=1)
         annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
       Modelica.Blocks.Math.Product product2
@@ -10131,8 +10139,9 @@ package SHS_Two_Tank
         initType=Modelica.Blocks.Types.Init.InitialOutput,
         y_start=1)
         annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-        Discharging_Valve_Position(min=1e-2) annotation (Placement(transformation(
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        Discharging_Valve_Position(min=1e-2) annotation (Placement(
+            transformation(
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={12,64})));
@@ -10325,7 +10334,7 @@ package SHS_Two_Tank
 
       Data.Data_Default data
         annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
         Charging_Valve_Position_MinMax(min=1e-2, max=1)
         annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
       Modelica.Blocks.Math.Product product2
@@ -10356,8 +10365,9 @@ package SHS_Two_Tank
         initType=Modelica.Blocks.Types.Init.InitialOutput,
         y_start=1)
         annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-        Discharging_Valve_Position(min=1e-2) annotation (Placement(transformation(
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        Discharging_Valve_Position(min=1e-2) annotation (Placement(
+            transformation(
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={12,64})));
@@ -10550,7 +10560,7 @@ package SHS_Two_Tank
 
       Data.Data_Default data
         annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
         Charging_Valve_Position_MinMax(min=1e-2, max=1)
         annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
       Modelica.Blocks.Math.Product product2
@@ -10581,8 +10591,9 @@ package SHS_Two_Tank
         initType=Modelica.Blocks.Types.Init.InitialOutput,
         y_start=1)
         annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-        Discharging_Valve_Position(min=1e-2) annotation (Placement(transformation(
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        Discharging_Valve_Position(min=1e-2) annotation (Placement(
+            transformation(
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={12,64})));
@@ -10775,7 +10786,7 @@ package SHS_Two_Tank
 
       Data.Data_Default data
         annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
         Charging_Valve_Position_MinMax(min=1e-2, max=1)
         annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
       Modelica.Blocks.Math.Product product2
@@ -10806,8 +10817,9 @@ package SHS_Two_Tank
         initType=Modelica.Blocks.Types.Init.InitialOutput,
         y_start=1)
         annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
-      BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-        Discharging_Valve_Position(min=1e-2) annotation (Placement(transformation(
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        Discharging_Valve_Position(min=1e-2) annotation (Placement(
+            transformation(
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={12,64})));
@@ -11032,7 +11044,7 @@ package SHS_Two_Tank
 
         Data.Data_Default data
           annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
-        BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
           Charging_Valve_Position_MinMax(min=1e-4)
           annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
         Modelica.Blocks.Math.Product product2
@@ -11070,8 +11082,9 @@ package SHS_Two_Tank
           offset=0.0,
           startTime=0)
           annotation (Placement(transformation(extent={{-58,48},{-46,60}})));
-        BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-          Discharging_Valve_Position(min=1e-4) annotation (Placement(transformation(
+        BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+          Discharging_Valve_Position(min=1e-4) annotation (Placement(
+              transformation(
               extent={{10,-10},{-10,10}},
               rotation=180,
               origin={12,64})));
@@ -11209,7 +11222,7 @@ package SHS_Two_Tank
 
         Data.Data_Default data
           annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
-        BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
           Charging_Valve_Position_MinMax(min=1e-2, max=1)
           annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
         Modelica.Blocks.Math.Product product2
@@ -11240,8 +11253,9 @@ package SHS_Two_Tank
           initType=Modelica.Blocks.Types.Init.InitialOutput,
           y_start=1)
           annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
-        BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-          Discharging_Valve_Position(min=1e-3) annotation (Placement(transformation(
+        BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+          Discharging_Valve_Position(min=1e-3) annotation (Placement(
+              transformation(
               extent={{10,-10},{-10,10}},
               rotation=180,
               origin={12,64})));
@@ -11384,7 +11398,7 @@ package SHS_Two_Tank
 
         Data.Data_Default data
           annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
-        BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
           Charging_Valve_Position_MinMax(min=1e-2, max=1)
           annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
         Modelica.Blocks.Math.Product product2
@@ -11415,8 +11429,9 @@ package SHS_Two_Tank
           initType=Modelica.Blocks.Types.Init.InitialOutput,
           y_start=1)
           annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
-        BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-          Discharging_Valve_Position(min=1e-2) annotation (Placement(transformation(
+        BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+          Discharging_Valve_Position(min=1e-2) annotation (Placement(
+              transformation(
               extent={{10,-10},{-10,10}},
               rotation=180,
               origin={12,64})));
@@ -11576,7 +11591,7 @@ package SHS_Two_Tank
 
         Data.Data_Default data
           annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
-        BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
           Charging_Valve_Position_MinMax(min=1e-2, max=1)
           annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
         Modelica.Blocks.Math.Product product2
@@ -11607,8 +11622,9 @@ package SHS_Two_Tank
           initType=Modelica.Blocks.Types.Init.InitialOutput,
           y_start=1)
           annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
-        BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-          Discharging_Valve_Position(min=1e-2) annotation (Placement(transformation(
+        BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+          Discharging_Valve_Position(min=1e-2) annotation (Placement(
+              transformation(
               extent={{10,-10},{-10,10}},
               rotation=180,
               origin={12,64})));
@@ -11796,7 +11812,7 @@ package SHS_Two_Tank
 
         Data.Data_Default data
           annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
-        BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
           Charging_Valve_Position_MinMax(min=1e-2, max=1)
           annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
         Modelica.Blocks.Math.Product product2
@@ -11827,8 +11843,9 @@ package SHS_Two_Tank
           initType=Modelica.Blocks.Types.Init.InitialOutput,
           y_start=1)
           annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
-        BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-          Discharging_Valve_Position(min=1e-2) annotation (Placement(transformation(
+        BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+          Discharging_Valve_Position(min=1e-2) annotation (Placement(
+              transformation(
               extent={{10,-10},{-10,10}},
               rotation=180,
               origin={12,64})));
@@ -12026,7 +12043,7 @@ package SHS_Two_Tank
 
       NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_Default data
         annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
-      NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+      NHES.Systems.BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
         Charging_Valve_Position_MinMax(min=1e-2, max=1)
         annotation (Placement(transformation(extent={{60,-70},{80,-50}})));
       Modelica.Blocks.Math.Product product2
@@ -12057,8 +12074,9 @@ package SHS_Two_Tank
         initType=Modelica.Blocks.Types.Init.InitialOutput,
         y_start=0.2)
         annotation (Placement(transformation(extent={{22,-26},{30,-18}})));
-      NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-        Discharging_Valve_Position(min=9e-3) annotation (Placement(transformation(
+      NHES.Systems.BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        Discharging_Valve_Position(min=9e-3) annotation (Placement(
+            transformation(
             extent={{10,-10},{-10,10}},
             rotation=180,
             origin={70,-20})));
@@ -12119,7 +12137,7 @@ package SHS_Two_Tank
         annotation (Placement(transformation(extent={{42,70},{50,78}})));
       Modelica.Blocks.Math.Add InletValveOpening
         annotation (Placement(transformation(extent={{60,70},{80,90}})));
-      NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+      NHES.Systems.BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
         minMaxFilter(max=1 - minimumOpening.k)
         annotation (Placement(transformation(extent={{30,82},{38,90}})));
       TRANSFORM.Controls.LimPID InletValvePID(
@@ -12153,10 +12171,10 @@ package SHS_Two_Tank
         annotation (Placement(transformation(extent={{-2,54},{4,60}})));
       Modelica.Blocks.Sources.Constant one12(k=0.5)
         annotation (Placement(transformation(extent={{-34,46},{-26,54}})));
-      NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-        Charging_Valve_Position_MinMax1(min=2.935e-3,  max=1)
+      NHES.Systems.BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        Charging_Valve_Position_MinMax1(min=2.935e-3, max=1)
         annotation (Placement(transformation(extent={{60,40},{80,60}})));
-      NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+      NHES.Systems.BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
         HotTank_Power(min=0, max=100e6) annotation (Placement(transformation(
             extent={{10,-10},{-10,10}},
             rotation=180,

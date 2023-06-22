@@ -24,15 +24,16 @@ model FARM_Control_BOP_TES_SES_Test
     nPorts_b3=2)
     annotation (Placement(transformation(extent={{-60,40},{-20,80}})));
 
-  NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl
+  NHES.Systems.BalanceOfPlant.RankineCycle.Models.SteamTurbine_OpenFeedHeat_DivertPowerControl
     BOP(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
       h=EM.port_b2_nominal.h,
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
-    redeclare NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl_ANL_v2 CS(
-        electric_demand_large=MW_W_Gain_BOP.y, data(Q_Nom=49e6)))
+    redeclare
+      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_DivertPowerControl_ANL_v2
+      CS(electric_demand_large=MW_W_Gain_BOP.y, data(Q_Nom=49e6)))
     annotation (Placement(transformation(extent={{10,40},{50,80}})));
   NHES.Systems.SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=3)
     annotation (Placement(transformation(extent={{60,38},{100,82}})));
@@ -158,14 +159,15 @@ model FARM_Control_BOP_TES_SES_Test
         extent={{-12,-12},{12,12}},
         rotation=0,
         origin={-146,-34}), iconTransformation(extent={{-120,-12},{-96,12}})));
-  NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat_mFlow_Control Dch_BOP(
+  NHES.Systems.BalanceOfPlant.RankineCycle.Models.SteamTurbine_Basic_NoFeedHeat_mFlow_Control
+    Dch_BOP(
     port_a_nominal(
       p=3388000,
       h=2.99767e+6,
       m_flow=66.4),
     port_b_nominal(p=3447380, h=629361),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_NoFeedHeat_mFlow_Control
+      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_NoFeedHeat_mFlow_Control
       CS(electric_demand_large=MW_W_Gain_TES.y),
     init(condensor_V_liquid_start=50))
     annotation (Placement(transformation(extent={{46,-28},{112,28}})));

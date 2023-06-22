@@ -21,7 +21,7 @@ model TightlyCoupled_SteamFlowCtrl_microgrid
       port_b1_nominal(p=PHS.port_a_nominal.p, h=PHS.port_a_nominal.h),
       nPorts_b3=2,
       port_b3_nominal_m_flow={-IP.port_a_nominal.m_flow,-ES.port_a_nominal.m_flow}),
-    redeclare BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries BOP(
+    redeclare BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries BOP(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
         h=EM.port_b2_nominal.h,
@@ -29,7 +29,7 @@ model TightlyCoupled_SteamFlowCtrl_microgrid
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       nPorts_a3=2,
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_PressureAndPowerControl
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_PressureAndPowerControl
         CS(p_nominal=BOP.port_a_nominal.p, W_totalSetpoint=SC.W_totalSetpoint_BOP),
       port_a3_nominal_m_flow={-IP.port_b_nominal.m_flow,-ES.port_b_nominal.m_flow},
       port_a3_nominal_p={IP.port_b_nominal.p,ES.port_b_nominal.p},
@@ -39,8 +39,8 @@ model TightlyCoupled_SteamFlowCtrl_microgrid
           W_totalSetpoint=SC.W_totalSetpoint_ES)),
     redeclare SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=4),
     redeclare ElectricalGrid.InfiniteGrid.Infinite EG,
-    redeclare SecondaryEnergySupply.NaturalGasFiredTurbine.GTPP_PowerCtrl SES(capacity=
-          dataCapacity.SES_capacity,        redeclare
+    redeclare SecondaryEnergySupply.NaturalGasFiredTurbine.GTPP_PowerCtrl SES(
+        capacity=dataCapacity.SES_capacity, redeclare
         NHES.Systems.SecondaryEnergySupply.NaturalGasFiredTurbine.CS_GTPP CS(
         capacityScaler=SES.capacityScaler,
         delayStart=delayStart.k,

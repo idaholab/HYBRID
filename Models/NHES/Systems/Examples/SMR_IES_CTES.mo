@@ -22,13 +22,13 @@ model SMR_IES_CTES
       T(displayUnit="degC") = 579.25,
       h=2997670))
     annotation (Placement(transformation(extent={{-130,-54},{-24,42}})));
-  BalanceOfPlant.StagebyStageTurbineSecondary.NuScale_Modal_Secondary_Arbitrage_Ports
-    SecSide(redeclare BalanceOfPlant.StagebyStageTurbineSecondary.CS_Modal CS,
-      Q_nom=52e6)
+  BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.NuScale_Modal_Secondary_Arbitrage_Ports
+    SecSide(redeclare
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.CS_Modal
+      CS, Q_nom=52e6)
     annotation (Placement(transformation(extent={{12,-46},{84,24}})));
-  BalanceOfPlant.StagebyStageTurbineSecondary.Components.Economic_Sim_IPCO_July
-                            ES
-    annotation (Placement(transformation(extent={{-4,44},{42,90}})));
+  BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Components.Economic_Sim_IPCO_July
+    ES annotation (Placement(transformation(extent={{-4,44},{42,90}})));
 equation
   dual_Pipe_CTES_Controlled.External_Demand = SecSide.Demand_Internal;
   dual_Pipe_CTES_Controlled.External_Power = SecSide.generator.power;

@@ -9,22 +9,20 @@ model CS_DFV
     annotation (Placement(transformation(extent={{-8,-24},{4,-10}})));
   Components.Modal_Operational_Logic_Concrete modal_Operational_Logic_Concrete
     annotation (Placement(transformation(extent={{-38,42},{-18,22}})));
-  BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.PI_Control_Reset_Input
-                                                                    PI_DCV(
+  BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.PI_Control_Reset_Input
+    PI_DCV(
     k=10,
     Ti=25,
     k_s=5e-9,
-    k_m=5e-9)
-    annotation (Placement(transformation(extent={{110,46},{130,66}})));
-  BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Timer
-                                                   timer1(Start_Time=30)
-    annotation (Placement(transformation(
+    k_m=5e-9) annotation (Placement(transformation(extent={{110,46},{130,66}})));
+  BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Timer
+    timer1(Start_Time=30) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={150,32})));
-  BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-                                                          minMaxFilter1
-    annotation (Placement(transformation(extent={{10,-10},{-10,10}},
+  BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+    minMaxFilter1 annotation (Placement(transformation(
+        extent={{10,-10},{-10,10}},
         rotation=90,
         origin={158,-56})));
   Modelica.Blocks.Logical.Switch switch1 annotation (Placement(transformation(

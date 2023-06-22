@@ -14,10 +14,10 @@ model HTGR_L2_Turbine
      0.5));
  Real Efficiency = (BOP.generator1.Q_mech/hTGR_PebbleBed_Primary_Loop_TESUC.core.Q_total.y)*100;
 
-  BalanceOfPlant.Turbine.HTGR_RankineCycles.SteamTurbine_L2_ClosedFeedHeat_HTGR
+  BalanceOfPlant.RankineCycle.Models.HTGR_RankineCycles.SteamTurbine_L2_ClosedFeedHeat_HTGR
     BOP(
-    redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.Turbine_2
-      data(
+    redeclare replaceable
+      NHES.Systems.BalanceOfPlant.RankineCycle.Data.Turbine_2 data(
       p_in_nominal=14000000,
       V_condensor=20000,
       R_bypass=1000,
@@ -55,7 +55,7 @@ model HTGR_L2_Turbine
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp_HTGR
+      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp_HTGR
       CS(electric_demand_int=SC.demand_BOP.y[1], data(
         p_steam=14000000,
         Q_Nom=40e6,
@@ -114,9 +114,9 @@ model HTGR_L2_Turbine
   Fluid.Sensors.stateSensor stateSensor3(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-44,-14},{-58,2}})));
-  PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_STHX
+  PrimaryHeatSystem.HTGR.RankineCycle.Models.PebbleBed_PrimaryLoop_STHX
     hTGR_PebbleBed_Primary_Loop_TESUC(redeclare
-      PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary_SS_ClosedFeedheat
+      PrimaryHeatSystem.HTGR.RankineCycle.ControlSystems.CS_Rankine_Primary_SS_ClosedFeedheat
       CS(data(P_Steam_Ref=14000000)))
     annotation (Placement(transformation(extent={{-106,-20},{-62,22}})));
   Fluid.Sensors.stateDisplay stateDisplay3

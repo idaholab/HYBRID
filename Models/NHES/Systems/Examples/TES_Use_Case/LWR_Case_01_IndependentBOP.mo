@@ -34,7 +34,7 @@ model LWR_Case_01_IndependentBOP
     port_b3_nominal_m_flow={-0.67},
     nPorts_b3=1)
     annotation (Placement(transformation(extent={{-10,-18},{30,22}})));
-  BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl
+  BalanceOfPlant.RankineCycle.Models.SteamTurbine_OpenFeedHeat_DivertPowerControl
     intermediate_Rankine_Cycle_TESUC(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
@@ -42,7 +42,7 @@ model LWR_Case_01_IndependentBOP
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl
+      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_DivertPowerControl
       CS(electric_demand=sum1.y, Overall_Power=sensorW.W))
     annotation (Placement(transformation(extent={{50,-20},{90,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
@@ -144,7 +144,7 @@ model LWR_Case_01_IndependentBOP
     offset=47e6,
     startTime=2000)
     annotation (Placement(transformation(extent={{66,112},{86,132}})));
-  BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
+  BalanceOfPlant.RankineCycle.Models.SteamTurbine_Basic_NoFeedHeat
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
@@ -152,7 +152,7 @@ model LWR_Case_01_IndependentBOP
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
+      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_SmallCycle_NoFeedHeat
       CS(electric_demand=sum1.y))
     annotation (Placement(transformation(extent={{106,-86},{144,-44}})));
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW

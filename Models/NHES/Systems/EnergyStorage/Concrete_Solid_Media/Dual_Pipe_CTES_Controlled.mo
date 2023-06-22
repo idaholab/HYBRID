@@ -24,7 +24,7 @@ model Dual_Pipe_CTES_Controlled
   TRANSFORM.Fluid.FittingsAndResistances.PressureLoss resistance12(dp0=-
         P_Rise_DFV)
     annotation (Placement(transformation(extent={{34,-54},{54,-34}})));
-  BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.ValveLinearTotal
+  BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.ValveLinearTotal
     DFV(
     redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater,
     dp_nominal=250000,

@@ -22,10 +22,10 @@ model HTGR_Case_01_IndependentBOP
     port_b3_nominal_m_flow={-0.67},
     nPorts_b3=1)
     annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-  BalanceOfPlant.Turbine.HTGR_RankineCycles.SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR
+  BalanceOfPlant.RankineCycle.Models.HTGR_RankineCycles.SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR
     intermediate_Rankine_Cycle_TESUC(
-    redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.TESTurbine
-      data(
+    redeclare replaceable
+      NHES.Systems.BalanceOfPlant.RankineCycle.Data.TESTurbine data(
       p_in_nominal=14000000,
       p_condensor=8000,
       V_condensor=10000,
@@ -63,7 +63,7 @@ model HTGR_Case_01_IndependentBOP
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl_HTGR_3
+      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_DivertPowerControl_HTGR_3
       CS(
       electric_demand=sum1.y,
       Overall_Power=sensorW.W,
@@ -73,7 +73,7 @@ model HTGR_Case_01_IndependentBOP
         p_steam_vent=16500000,
         m_flow_reactor=50)),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.Data.IntermediateTurbineInitialisation
+      NHES.Systems.BalanceOfPlant.RankineCycle.Data.IntermediateTurbineInitialisation
       init(
       FeedwaterMixVolume_p_start=3000000,
       FeedwaterMixVolume_h_start=2e6,
@@ -183,7 +183,7 @@ model HTGR_Case_01_IndependentBOP
     offset=47e6,
     startTime=2000)
     annotation (Placement(transformation(extent={{66,112},{86,132}})));
-  BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
+  BalanceOfPlant.RankineCycle.Models.SteamTurbine_Basic_NoFeedHeat
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
@@ -191,7 +191,7 @@ model HTGR_Case_01_IndependentBOP
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
+      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_SmallCycle_NoFeedHeat
       CS(electric_demand=sum1.y))
     annotation (Placement(transformation(extent={{104,-86},{142,-44}})));
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW
@@ -219,9 +219,9 @@ model HTGR_Case_01_IndependentBOP
     annotation (Placement(transformation(extent={{-98,112},{-78,132}})));
   Modelica.Blocks.Math.Sum sum1
     annotation (Placement(transformation(extent={{134,102},{154,122}})));
-  PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_TESUC
+  PrimaryHeatSystem.HTGR.RankineCycle.Models.PebbleBed_PrimaryLoop_TESUC
     hTGR_PebbleBed_Primary_Loop_TESUC(redeclare
-      PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary CS(
+      PrimaryHeatSystem.HTGR.RankineCycle.ControlSystems.CS_Rankine_Primary CS(
         data(T_Rx_Exit_Ref=579.15, P_Steam_Ref=3400000)))
     annotation (Placement(transformation(extent={{-104,-22},{-56,24}})));
 equation

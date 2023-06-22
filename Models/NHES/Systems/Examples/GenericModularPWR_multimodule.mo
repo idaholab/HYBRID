@@ -42,7 +42,7 @@ model GenericModularPWR_multimodule
     "{-IP.port_a_nominal.m_flow}"                                                                              annotation (Placement(transformation(extent={{-98,82},
             {-42,138}})));
 
-  BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries BOP(
+  BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries BOP(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
       h=EM.port_b2_nominal.h,
@@ -52,8 +52,8 @@ model GenericModularPWR_multimodule
     port_a3_nominal_h={IP.port_b_nominal.h},
     port_a3_nominal_m_flow={-IP.port_b_nominal.m_flow},
     nPorts_a3=1,
-    redeclare BalanceOfPlant.Turbine.ControlSystems.CS_PressureAndPowerControl
-      CS(
+    redeclare
+      BalanceOfPlant.RankineCycle.ControlSystems.CS_PressureAndPowerControl CS(
       p_nominal=BOP.port_a_nominal.p,
       W_totalSetpoint=SC.W_totalSetpoint_BOP,
       delayStartTCV=200))

@@ -28,14 +28,14 @@ model IES_SMR_Rx_GasTurbine
       m_flow=-nuScale_Tave_enthalpy.port_b_nominal.m_flow), port_b1_nominal(p=
           nuScale_Tave_enthalpy.port_a_nominal.p, h=nuScale_Tave_enthalpy.port_a_nominal.h))
     annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
-  BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries BOP(
+  BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries BOP(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
       h=EM.port_b2_nominal.h,
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      BalanceOfPlant.Turbine.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
+      BalanceOfPlant.RankineCycle.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
       CS(
       delayStartTCV=0,
       W_totalSetpoint=SC.W_totalSetpoint_BOP,

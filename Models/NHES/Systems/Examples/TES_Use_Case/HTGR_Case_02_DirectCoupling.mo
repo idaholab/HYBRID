@@ -119,14 +119,14 @@ model HTGR_Case_02_DirectCoupling
     timeScale=timeScale,
     fileName=fileName)
     annotation (Placement(transformation(extent={{-80,62},{-60,82}})));
-  PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_TESUC_Direct
+  PrimaryHeatSystem.HTGR.RankineCycle.Models.PebbleBed_PrimaryLoop_TESUC_Direct
     hTGR_PebbleBed_Primary_Loop_TESUC_Direct(redeclare
-      NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary_Direct
+      NHES.Systems.PrimaryHeatSystem.HTGR.RankineCycle.ControlSystems.CS_Rankine_Primary_Direct
       CS(data(P_Steam_Ref=14000000)))
     annotation (Placement(transformation(extent={{-94,-20},{-50,22}})));
-  BalanceOfPlant.Turbine.HTGR_RankineCycles.SteamTurbine_Basic_DirectCoupling_HTGR
+  BalanceOfPlant.RankineCycle.Models.HTGR_RankineCycles.SteamTurbine_Basic_DirectCoupling_HTGR
     intermediate_Rankine_Cycle_TESUC(
-    redeclare replaceable BalanceOfPlant.Turbine.Data.TESTurbine data(
+    redeclare replaceable BalanceOfPlant.RankineCycle.Data.TESTurbine data(
       p_condensor=8000,
       V_FeedwaterMixVolume=25,
       V_Header=10,
@@ -161,8 +161,8 @@ model HTGR_Case_02_DirectCoupling
       m_flow=67),
     port_b_nominal(p=3400000, h=1e6),
     redeclare
-      BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat_HTGR CS(
-        electric_demand_TES=sum1.y, data(p_steam=5000000)))
+      BalanceOfPlant.RankineCycle.ControlSystems.CS_SmallCycle_NoFeedHeat_HTGR
+      CS(electric_demand_TES=sum1.y, data(p_steam=5000000)))
     annotation (Placement(transformation(extent={{66,-20},{106,20}})));
   Modelica.Blocks.Sources.Constant const(k=100e6)
     annotation (Placement(transformation(extent={{-12,114},{8,134}})));

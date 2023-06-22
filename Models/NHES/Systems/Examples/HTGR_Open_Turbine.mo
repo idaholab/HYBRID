@@ -45,16 +45,16 @@ model HTGR_Open_Turbine
   Fluid.Sensors.stateSensor stateSensor3(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-44,-14},{-58,2}})));
-  PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_STHX
+  PrimaryHeatSystem.HTGR.RankineCycle.Models.PebbleBed_PrimaryLoop_STHX
     hTGR_PebbleBed_Primary_Loop_TESUC(redeclare
-      PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary_SS_ClosedFeedheat
+      PrimaryHeatSystem.HTGR.RankineCycle.ControlSystems.CS_Rankine_Primary_SS_ClosedFeedheat
       CS(data(P_Steam_Ref=14000000)))
     annotation (Placement(transformation(extent={{-106,-20},{-62,22}})));
   Fluid.Sensors.stateDisplay stateDisplay3
     annotation (Placement(transformation(extent={{-120,-54},{-76,-22}})));
-  BalanceOfPlant.Turbine.HTGR_RankineCycles.HTGR_Rankine_Cycle_Transient BOP(
-      redeclare
-      BalanceOfPlant.Turbine.ControlSystems.CS_Rankine_Xe100_Based_Secondary_TransientControl
+  BalanceOfPlant.RankineCycle.Models.HTGR_RankineCycles.HTGR_Rankine_Cycle_Transient
+    BOP(redeclare
+      BalanceOfPlant.RankineCycle.ControlSystems.CS_Rankine_Xe100_Based_Secondary_TransientControl
       CS) annotation (Placement(transformation(extent={{46,-22},{86,22}})));
 equation
     hTGR_PebbleBed_Primary_Loop_TESUC.input_steam_pressure =

@@ -24,9 +24,10 @@ model GenericModularPWR_park
         h=PHS[1].port_a_nominal.h))
     "{-IP.port_a_nominal.m_flow}"                                                                              annotation (Placement(transformation(extent={{-98,82},
             {-42,138}})));
-  BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries BOP(
-    redeclare BalanceOfPlant.Turbine.ControlSystems.CS_PressureAndPowerControl
-      CS(p_nominal=BOP.port_a_nominal.p, W_totalSetpoint=SC.W_totalSetpoint_BOP),
+  BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries BOP(
+    redeclare
+      BalanceOfPlant.RankineCycle.ControlSystems.CS_PressureAndPowerControl CS(
+        p_nominal=BOP.port_a_nominal.p, W_totalSetpoint=SC.W_totalSetpoint_BOP),
     port_a_nominal(
       p=EM.port_b2_nominal.p,
       h=EM.port_b2_nominal.h,

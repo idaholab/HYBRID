@@ -32,14 +32,14 @@ model SMR_highfidelity_L2_Turbine
       port_b1_nominal(p=nuScale_Tave_enthalpy_Pressurizer_CR.port_a_nominal.p,
         h=nuScale_Tave_enthalpy_Pressurizer_CR.port_a_nominal.h))
     annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
-  BalanceOfPlant.Turbine.SteamTurbine_L2_ClosedFeedHeat BOP(
+  BalanceOfPlant.RankineCycle.Models.SteamTurbine_L2_ClosedFeedHeat BOP(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
       h=EM.port_b2_nominal.h,
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp
+      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp
       CS(electric_demand_int=SC.demand_BOP.y[1]))
     annotation (Placement(transformation(extent={{42,-20},{82,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)

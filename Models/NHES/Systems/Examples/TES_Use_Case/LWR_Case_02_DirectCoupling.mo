@@ -19,10 +19,10 @@ model LWR_Case_02_DirectCoupling
       p=3447380))
     annotation (Placement(transformation(extent={{-102,-26},{-52,30}})));
 
-  BalanceOfPlant.Turbine.SteamTurbine_Basic_DirectCoupling
+  BalanceOfPlant.RankineCycle.Models.SteamTurbine_Basic_DirectCoupling
     intermediate_Rankine_Cycle_TESUC(
-    redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.TESTurbine
-      data(
+    redeclare replaceable
+      NHES.Systems.BalanceOfPlant.RankineCycle.Data.TESTurbine data(
       p_condensor=8000,
       V_FeedwaterMixVolume=25,
       V_Header=10,
@@ -57,7 +57,7 @@ model LWR_Case_02_DirectCoupling
       m_flow=67),
     port_b_nominal(p=3400000, h=1e6),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat_Argonne
+      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_SmallCycle_NoFeedHeat_Argonne
       CS(electric_demand_TES=trapezoid.y))
     annotation (Placement(transformation(extent={{62,-20},{102,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)

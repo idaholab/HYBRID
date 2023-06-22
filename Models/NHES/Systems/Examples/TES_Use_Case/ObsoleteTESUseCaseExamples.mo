@@ -34,7 +34,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl
+    BalanceOfPlant.RankineCycle.Models.SteamTurbine_OpenFeedHeat_DivertPowerControl
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -42,7 +42,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_DivertPowerControl
         CS(electric_demand=sum1.y, Overall_Power=sensorW.W))
       annotation (Placement(transformation(extent={{60,-20},{100,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
@@ -149,7 +149,7 @@ package ObsoleteTESUseCaseExamples
       offset=47e6,
       startTime=2000)
       annotation (Placement(transformation(extent={{68,80},{88,100}})));
-    BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
+    BalanceOfPlant.RankineCycle.Models.SteamTurbine_Basic_NoFeedHeat
       intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -157,7 +157,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_SmallCycle_NoFeedHeat
         CS(electric_demand=sum1.y))
       annotation (Placement(transformation(extent={{108,-84},{146,-42}})));
     TRANSFORM.Electrical.Sensors.PowerSensor sensorW
@@ -318,7 +318,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop
+    BalanceOfPlant.RankineCycle.Models.SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -326,7 +326,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_PowerBoostLoop_DivertPowerControl
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_PowerBoostLoop_DivertPowerControl
         CS(electric_demand=sum1.y))
       annotation (Placement(transformation(extent={{62,-20},{102,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
@@ -585,7 +585,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl
+    BalanceOfPlant.RankineCycle.Models.SteamTurbine_OpenFeedHeat_DivertPowerControl
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -593,7 +593,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_DivertPowerControl
         CS(electric_demand=sum1.y, Overall_Power=sensorW.W))
       annotation (Placement(transformation(extent={{50,-20},{90,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
@@ -699,7 +699,7 @@ package ObsoleteTESUseCaseExamples
       offset=47e6,
       startTime=2000)
       annotation (Placement(transformation(extent={{66,112},{86,132}})));
-    BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
+    BalanceOfPlant.RankineCycle.Models.SteamTurbine_Basic_NoFeedHeat
       intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -707,7 +707,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_SmallCycle_NoFeedHeat
         CS(electric_demand=sum1.y))
       annotation (Placement(transformation(extent={{108,-84},{146,-42}})));
     TRANSFORM.Electrical.Sensors.PowerSensor sensorW
@@ -872,7 +872,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl
+    BalanceOfPlant.RankineCycle.Models.SteamTurbine_OpenFeedHeat_DivertPowerControl
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -880,7 +880,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_DivertPowerControl
         CS(electric_demand=sum1.y, Overall_Power=sensorW.W))
       annotation (Placement(transformation(extent={{50,-20},{90,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
@@ -980,7 +980,7 @@ package ObsoleteTESUseCaseExamples
       offset=47e6,
       startTime=2000)
       annotation (Placement(transformation(extent={{66,112},{86,132}})));
-    BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
+    BalanceOfPlant.RankineCycle.Models.SteamTurbine_Basic_NoFeedHeat
       intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -988,7 +988,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_SmallCycle_NoFeedHeat
         CS(electric_demand=sum1.y))
       annotation (Placement(transformation(extent={{108,-84},{146,-42}})));
     TRANSFORM.Electrical.Sensors.PowerSensor sensorW
@@ -1152,7 +1152,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop
+    BalanceOfPlant.RankineCycle.Models.SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -1160,7 +1160,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_PowerBoostLoop_DivertPowerControl
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_PowerBoostLoop_DivertPowerControl
         CS(electric_demand=sum1.y))
       annotation (Placement(transformation(extent={{62,-20},{102,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
@@ -1413,7 +1413,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_3
+    BalanceOfPlant.RankineCycle.Models.Obsolete.Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_3
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -1421,7 +1421,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC_ImpControl_3
+        BalanceOfPlant.RankineCycle.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC_ImpControl_3
         CS(electric_demand=sine.y))
       annotation (Placement(transformation(extent={{62,-20},{102,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
@@ -1637,7 +1637,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.Intermediate_Rankine_Cycle_TESUC_1_Independent
+    BalanceOfPlant.RankineCycle.Models.Obsolete.Intermediate_Rankine_Cycle_TESUC_1_Independent
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -1645,7 +1645,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC_1_intermediate
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC_1_intermediate
         CS(electric_demand=trapezoid.y))
       annotation (Placement(transformation(extent={{62,-20},{102,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
@@ -1745,7 +1745,7 @@ package ObsoleteTESUseCaseExamples
       offset=26e6,
       startTime=2000)
       annotation (Placement(transformation(extent={{20,72},{40,92}})));
-    BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
+    BalanceOfPlant.RankineCycle.Models.SteamTurbine_Basic_NoFeedHeat
       intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -1753,7 +1753,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC_1_Intermediate_SmallCycle
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC_1_Intermediate_SmallCycle
         CS(electric_demand=trapezoid.y))
       annotation (Placement(transformation(extent={{108,-84},{146,-42}})));
   equation
@@ -1878,7 +1878,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2
+    BalanceOfPlant.RankineCycle.Models.Obsolete.Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC_2
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -1886,7 +1886,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC_ImpControl_2
+        BalanceOfPlant.RankineCycle.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC_ImpControl_2
         CS(electric_demand=sine.y))
       annotation (Placement(transformation(extent={{62,-20},{102,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
@@ -2102,7 +2102,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC
+    BalanceOfPlant.RankineCycle.Models.Obsolete.Intermediate_Rankine_Cycle_TESUC_3_Peaking_IC
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -2110,7 +2110,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC_ImpControl
+        BalanceOfPlant.RankineCycle.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC_ImpControl
         CS(electric_demand=sine.y))
       annotation (Placement(transformation(extent={{62,-20},{102,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
@@ -2316,7 +2316,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.Intermediate_Rankine_Cycle_TESUC_3_Peaking
+    BalanceOfPlant.RankineCycle.Models.Obsolete.Intermediate_Rankine_Cycle_TESUC_3_Peaking
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -2324,7 +2324,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC
+        BalanceOfPlant.RankineCycle.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC
         CS) annotation (Placement(transformation(extent={{62,-20},{102,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
       annotation (Placement(transformation(extent={{112,-22},{152,22}})));
@@ -2557,7 +2557,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.Intermediate_Rankine_Cycle_TESUC_3_Peaking
+    BalanceOfPlant.RankineCycle.Models.Obsolete.Intermediate_Rankine_Cycle_TESUC_3_Peaking
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -2565,7 +2565,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC
+        BalanceOfPlant.RankineCycle.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC
         CS) annotation (Placement(transformation(extent={{62,-20},{102,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
       annotation (Placement(transformation(extent={{112,-22},{152,22}})));
@@ -2783,7 +2783,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.Intermediate_Rankine_Cycle_TESUC_2
+    BalanceOfPlant.RankineCycle.Models.Obsolete.Intermediate_Rankine_Cycle_TESUC_2
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -2791,7 +2791,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC
+        BalanceOfPlant.RankineCycle.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC
         CS) annotation (Placement(transformation(extent={{62,-20},{102,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
       annotation (Placement(transformation(extent={{112,-22},{152,22}})));
@@ -2837,7 +2837,7 @@ package ObsoleteTESUseCaseExamples
           extent={{6,6},{-6,-6}},
           rotation=180,
           origin={50,-30})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.Intermediate_Rankine_Cycle_TESUC_SmallCycle_Pressure
+    BalanceOfPlant.RankineCycle.Models.Obsolete.Intermediate_Rankine_Cycle_TESUC_SmallCycle_Pressure
       intermediate_Rankine_Cycle_TESUC_SmallCycle(
       port_a_nominal(
         p=1200000,
@@ -2848,7 +2848,7 @@ package ObsoleteTESUseCaseExamples
         h=1e6,
         m_flow=-20),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_6_Pressure
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_6_Pressure
         CS,
       port_a_start(
         p=1100000,
@@ -3022,7 +3022,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.Intermediate_Rankine_Cycle_TESUC_2
+    BalanceOfPlant.RankineCycle.Models.Obsolete.Intermediate_Rankine_Cycle_TESUC_2
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -3030,7 +3030,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC
+        BalanceOfPlant.RankineCycle.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC
         CS) annotation (Placement(transformation(extent={{62,-20},{102,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
       annotation (Placement(transformation(extent={{112,-22},{152,22}})));
@@ -3074,7 +3074,7 @@ package ObsoleteTESUseCaseExamples
           origin={50,-30})));
     Modelica.Blocks.Sources.Constant const(k=0.015)
       annotation (Placement(transformation(extent={{38,-22},{48,-12}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.SteamTurbine_L1_boundaries_no_heat
+    BalanceOfPlant.RankineCycle.Models.Obsolete.SteamTurbine_L1_boundaries_no_heat
       BOP1(
       port_a_nominal(
         p=1200000,
@@ -3085,7 +3085,7 @@ package ObsoleteTESUseCaseExamples
         h=1e6,
         m_flow=-20),
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
+        BalanceOfPlant.RankineCycle.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
         CS(
         delayStartTCV=100,
         p_nominal=1200000,
@@ -3250,7 +3250,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.Intermediate_Rankine_Cycle_TESUC_2
+    BalanceOfPlant.RankineCycle.Models.Obsolete.Intermediate_Rankine_Cycle_TESUC_2
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -3258,7 +3258,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC
+        BalanceOfPlant.RankineCycle.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC
         CS) annotation (Placement(transformation(extent={{62,-20},{102,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
       annotation (Placement(transformation(extent={{112,-22},{152,22}})));
@@ -3301,7 +3301,7 @@ package ObsoleteTESUseCaseExamples
           origin={50,-30})));
     Modelica.Blocks.Sources.Constant const(k=0.015)
       annotation (Placement(transformation(extent={{38,-22},{48,-12}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.SteamTurbine_L1_boundaries_no_heat
+    BalanceOfPlant.RankineCycle.Models.Obsolete.SteamTurbine_L1_boundaries_no_heat
       BOP1(
       port_a_nominal(
         p=1200000,
@@ -3312,7 +3312,7 @@ package ObsoleteTESUseCaseExamples
         h=1e6,
         m_flow=-20),
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
+        BalanceOfPlant.RankineCycle.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
         CS(
         delayStartTCV=100,
         p_nominal=1200000,
@@ -3477,7 +3477,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.Intermediate_Rankine_Cycle_TESUC_2
+    BalanceOfPlant.RankineCycle.Models.Obsolete.Intermediate_Rankine_Cycle_TESUC_2
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -3485,7 +3485,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC
+        BalanceOfPlant.RankineCycle.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC
         CS) annotation (Placement(transformation(extent={{62,-20},{102,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
       annotation (Placement(transformation(extent={{112,-22},{152,22}})));
@@ -3531,7 +3531,7 @@ package ObsoleteTESUseCaseExamples
           extent={{6,6},{-6,-6}},
           rotation=180,
           origin={50,-30})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.Intermediate_Rankine_Cycle_TESUC_SmallCycle
+    BalanceOfPlant.RankineCycle.Models.Obsolete.Intermediate_Rankine_Cycle_TESUC_SmallCycle
       intermediate_Rankine_Cycle_TESUC_SmallCycle(
       port_a_nominal(
         p=1200000,
@@ -3542,7 +3542,7 @@ package ObsoleteTESUseCaseExamples
         h=1e6,
         m_flow=-20),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_6
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_6
         CS,
       port_a_start(
         p=1100000,
@@ -3716,7 +3716,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.Intermediate_Rankine_Cycle_TESUC_2
+    BalanceOfPlant.RankineCycle.Models.Obsolete.Intermediate_Rankine_Cycle_TESUC_2
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -3724,7 +3724,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC
+        BalanceOfPlant.RankineCycle.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_TESUC
         CS) annotation (Placement(transformation(extent={{62,-20},{102,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
       annotation (Placement(transformation(extent={{112,-22},{152,22}})));
@@ -3765,7 +3765,7 @@ package ObsoleteTESUseCaseExamples
           extent={{6,6},{-6,-6}},
           rotation=180,
           origin={50,-30})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.SteamTurbine_L1_boundaries_no_heat
+    BalanceOfPlant.RankineCycle.Models.Obsolete.SteamTurbine_L1_boundaries_no_heat
       BOP(
       port_a_nominal(
         p=1200000,
@@ -3776,7 +3776,7 @@ package ObsoleteTESUseCaseExamples
         h=1e6,
         m_flow=-20),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
         CS(p_nominal=1200000, W_totalSetpoint=50))
       annotation (Placement(transformation(extent={{112,-80},{152,-40}})));
     Fluid.Sensors.stateDisplay stateDisplay1
@@ -3943,7 +3943,7 @@ package ObsoleteTESUseCaseExamples
         port_b1_nominal(p=nuScale_Tave_enthalpy_Pressurizer_CR.port_a_nominal.p,
           h=nuScale_Tave_enthalpy_Pressurizer_CR.port_a_nominal.h))
       annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.Intermediate_Rankine_Cycle_TESUC
+    BalanceOfPlant.RankineCycle.Models.Obsolete.Intermediate_Rankine_Cycle_TESUC
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -3951,7 +3951,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_5
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_5
         CS) annotation (Placement(transformation(extent={{42,-20},{82,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
       annotation (Placement(transformation(extent={{100,-22},{140,22}})));
@@ -4031,7 +4031,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.Intermediate_Rankine_Cycle_TESUC
+    BalanceOfPlant.RankineCycle.Models.Obsolete.Intermediate_Rankine_Cycle_TESUC
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -4039,7 +4039,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp
+        BalanceOfPlant.RankineCycle.ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp
         CS) annotation (Placement(transformation(extent={{62,-20},{102,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
       annotation (Placement(transformation(extent={{112,-22},{152,22}})));
@@ -4082,7 +4082,7 @@ package ObsoleteTESUseCaseExamples
           origin={50,-30})));
     Modelica.Blocks.Sources.Constant const(k=0.015)
       annotation (Placement(transformation(extent={{38,-22},{48,-12}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.SteamTurbine_L1_boundaries_no_heat
+    BalanceOfPlant.RankineCycle.Models.Obsolete.SteamTurbine_L1_boundaries_no_heat
       BOP1(
       port_a_nominal(
         p=1200000,
@@ -4093,7 +4093,7 @@ package ObsoleteTESUseCaseExamples
         h=1e6,
         m_flow=-20),
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
+        BalanceOfPlant.RankineCycle.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
         CS(
         delayStartTCV=100,
         p_nominal=1200000,
@@ -4258,7 +4258,7 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-33},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.Intermediate_Rankine_Cycle_TESUC
+    BalanceOfPlant.RankineCycle.Models.Obsolete.Intermediate_Rankine_Cycle_TESUC
       intermediate_Rankine_Cycle_TESUC(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -4266,7 +4266,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp
+        BalanceOfPlant.RankineCycle.ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp
         CS) annotation (Placement(transformation(extent={{62,-20},{102,20}})));
     SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
       annotation (Placement(transformation(extent={{112,-22},{152,22}})));
@@ -4301,10 +4301,10 @@ package ObsoleteTESUseCaseExamples
           origin={40,-32})));
     Modelica.Blocks.Sources.Constant const(k=0.05)
       annotation (Placement(transformation(extent={{2,36},{22,56}})));
-    BalanceOfPlant.Turbine.ObsoleteRankines.Intermediate_Rankine_Cycle_TESUC_SmallCycle
+    BalanceOfPlant.RankineCycle.Models.Obsolete.Intermediate_Rankine_Cycle_TESUC_SmallCycle
       intermediate_Rankine_Cycle_TESUC1(
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_6
+        BalanceOfPlant.RankineCycle.ControlSystems.ObsoleteCS.CS_IntermediateControl_PID_6
         CS,
       port_a_nominal(
         p=1150000,
@@ -4409,13 +4409,13 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-33},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
-    BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries BOP(
+    BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries BOP(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
         h=EM.port_b2_nominal.h,
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
-      redeclare BalanceOfPlant.Turbine.ControlSystems.CS_OTSG_Pressure CS(
+      redeclare BalanceOfPlant.RankineCycle.ControlSystems.CS_OTSG_Pressure CS(
         W_totalSetpoint=SC.W_totalSetpoint_BOP,
         p_nominal=BOP.port_a_nominal.p,
         Reactor_Power(displayUnit="MW") = 160000000,
@@ -4457,14 +4457,14 @@ package ObsoleteTESUseCaseExamples
           origin={40,-32})));
     Modelica.Blocks.Sources.Constant const(k=0.5)
       annotation (Placement(transformation(extent={{2,36},{22,56}})));
-    BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries BOP1(
+    BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries BOP1(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
         h=EM.port_b2_nominal.h,
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
+        BalanceOfPlant.RankineCycle.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
         CS(
         delayStartTCV=100,
         p_nominal=1200000,
@@ -4557,14 +4557,14 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-33},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-20},{28,20}})));
-    BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries BOP(
+    BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries BOP(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
         h=EM.port_b2_nominal.h,
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
         CS(
         delayStartTCV=100,
         p_nominal=3447400,
@@ -4592,14 +4592,14 @@ package ObsoleteTESUseCaseExamples
         DHX_K_shell(unit="1/m4"),
         DHX_p_start_shell=500000), Produced_steam_flow=10)
       annotation (Placement(transformation(extent={{-20,-76},{20,-36}})));
-    BalanceOfPlant.Turbine.SteamTurbine_L1_boundaries BOP1(
+    BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries BOP1(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
         h=EM.port_b2_nominal.h,
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        BalanceOfPlant.Turbine.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
+        BalanceOfPlant.RankineCycle.ControlSystems.CS_OTSG_TCV_Pressure_TBV_Power_Control
         CS(
         delayStartTCV=100,
         p_nominal=1200000,
@@ -4676,10 +4676,10 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-10,-18},{30,22}})));
-    BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl
+    BalanceOfPlant.RankineCycle.Models.SteamTurbine_OpenFeedHeat_DivertPowerControl
       intermediate_Rankine_Cycle_TESUC(
-      redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.TESTurbine
-        data(
+      redeclare replaceable
+        NHES.Systems.BalanceOfPlant.RankineCycle.Data.TESTurbine data(
         p_in_nominal=15000000,
         p_condensor=8000,
         V_FeedwaterMixVolume=25,
@@ -4715,7 +4715,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_DivertPowerControl
         CS(
         electric_demand=sum1.y,
         Overall_Power=sensorW.W,
@@ -4821,7 +4821,7 @@ package ObsoleteTESUseCaseExamples
       offset=47e6,
       startTime=2000)
       annotation (Placement(transformation(extent={{66,112},{86,132}})));
-    BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
+    BalanceOfPlant.RankineCycle.Models.SteamTurbine_Basic_NoFeedHeat
       intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -4829,7 +4829,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_SmallCycle_NoFeedHeat
         CS(electric_demand=sum1.y))
       annotation (Placement(transformation(extent={{106,-86},{144,-44}})));
     TRANSFORM.Electrical.Sensors.PowerSensor sensorW
@@ -4857,9 +4857,9 @@ package ObsoleteTESUseCaseExamples
       annotation (Placement(transformation(extent={{-98,112},{-78,132}})));
     Modelica.Blocks.Math.Sum sum1
       annotation (Placement(transformation(extent={{134,102},{154,122}})));
-    PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop
+    PrimaryHeatSystem.HTGR.RankineCycle.Models.PebbleBed_PrimaryLoop
       hTGR_PebbleBed_Primary_Loop(redeclare
-        PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary
+        PrimaryHeatSystem.HTGR.RankineCycle.ControlSystems.CS_Rankine_Primary
         CS(data(T_Rx_Exit_Ref=579.15, P_Steam_Ref=3400000)))
       annotation (Placement(transformation(extent={{-100,-22},{-52,24}})));
   equation
@@ -4987,10 +4987,10 @@ package ObsoleteTESUseCaseExamples
       port_b3_nominal_m_flow={-0.67},
       nPorts_b3=1)
       annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-    BalanceOfPlant.Turbine.HTGR_RankineCycles.SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR
+    BalanceOfPlant.RankineCycle.Models.HTGR_RankineCycles.SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR
       intermediate_Rankine_Cycle_TESUC(
-      redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.TESTurbine
-        data(
+      redeclare replaceable
+        NHES.Systems.BalanceOfPlant.RankineCycle.Data.TESTurbine data(
         p_in_nominal=15000000,
         p_condensor=8000,
         V_condensor=10000,
@@ -5028,7 +5028,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl_HTGR
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_DivertPowerControl_HTGR
         CS(
         electric_demand=sum1.y,
         Overall_Power=sensorW.W,
@@ -5145,7 +5145,7 @@ package ObsoleteTESUseCaseExamples
       offset=47e6,
       startTime=2000)
       annotation (Placement(transformation(extent={{66,112},{86,132}})));
-    BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
+    BalanceOfPlant.RankineCycle.Models.SteamTurbine_Basic_NoFeedHeat
       intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
@@ -5153,7 +5153,7 @@ package ObsoleteTESUseCaseExamples
         m_flow=-EM.port_b2_nominal.m_flow),
       port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
       redeclare
-        NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
+        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_SmallCycle_NoFeedHeat
         CS(electric_demand=sum1.y))
       annotation (Placement(transformation(extent={{104,-86},{142,-44}})));
     TRANSFORM.Electrical.Sensors.PowerSensor sensorW
@@ -5181,9 +5181,9 @@ package ObsoleteTESUseCaseExamples
       annotation (Placement(transformation(extent={{-98,112},{-78,132}})));
     Modelica.Blocks.Math.Sum sum1
       annotation (Placement(transformation(extent={{134,102},{154,122}})));
-    PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop
+    PrimaryHeatSystem.HTGR.RankineCycle.Models.PebbleBed_PrimaryLoop
       hTGR_PebbleBed_Primary_Loop(redeclare
-        PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_Primary
+        PrimaryHeatSystem.HTGR.RankineCycle.ControlSystems.CS_Rankine_Primary
         CS(data(T_Rx_Exit_Ref=579.15, P_Steam_Ref=3400000)))
       annotation (Placement(transformation(extent={{-104,-22},{-56,24}})));
   equation
