@@ -224,7 +224,7 @@ package BraytonCycle
         annotation (Placement(transformation(extent={{-4,-100},{8,-88}})));
       TRANSFORM.Blocks.RealExpression Core_M_Flow
         annotation (Placement(transformation(extent={{-4,-90},{8,-76}})));
-      Data.HTGR_Pebble_BraytonCycle_CS data
+      Data.CS_HTGR_Pebble_BraytonCycle data
         annotation (Placement(transformation(extent={{-96,74},{-76,94}})));
     equation
 
@@ -269,7 +269,7 @@ package BraytonCycle
         annotation (Placement(transformation(extent={{-40,-64},{-20,-44}})));
       Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
         annotation (Placement(transformation(extent={{-72,-64},{-52,-44}})));
-      Data.HTGR_Pebble_BraytonCycle_CS data(T_Rx_Exit_Ref=1123.15)
+      Data.CS_HTGR_Pebble_BraytonCycle data(T_Rx_Exit_Ref=1123.15)
         annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
       TRANSFORM.Blocks.RealExpression Core_M_Flow
         annotation (Placement(transformation(extent={{-4,-90},{8,-76}})));
@@ -339,7 +339,23 @@ package BraytonCycle
 
   package Data
 
-    model HTGR_Pebble_BraytonCycle
+    model CS_HTGR_Pebble_BraytonCycle
+
+      extends BaseClasses.Record_Data;
+      parameter Modelica.Units.SI.Temperature T_Rx_Exit_Ref = 850;
+
+      annotation (
+        defaultComponentName="data",
+        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
+              lineColor={0,0,0},
+              extent={{-100,-90},{100,-70}},
+              textString="changeMe")}),
+        Diagram(coordinateSystem(preserveAspectRatio=false)),
+        Documentation(info="<html>
+</html>"));
+    end CS_HTGR_Pebble_BraytonCycle;
+
+    model Model_HTGR_Pebble_BraytonCycle
 
       extends BaseClasses.Record_Data;
 
@@ -427,7 +443,6 @@ package BraytonCycle
       parameter SI.ThermalConductivity k_SiC = 175                                                                          annotation(dialog(tab = "General", group = "Pebble"));
       parameter SI.ThermalConductivity k_OPyC = 8.0                                                                         annotation(dialog(tab = "General", group = "Pebble"));
 
-
       //-----------------------------------------------------------------//
       // Initialization //
       //-----------------------------------------------------------------//
@@ -473,15 +488,11 @@ package BraytonCycle
       parameter SI.Pressure P_Intercooler = 59.2e5                                                                          annotation(dialog(tab = "Initialization", group = "Cooler"));
       parameter SI.Pressure P_Precooler = 30e5                                                                              annotation(dialog(tab = "Initialization", group = "Cooler"));
 
-
       //-----------------------------------------------------------------//
       // ControlSystem //
       //-----------------------------------------------------------------//
 
       parameter Modelica.Units.SI.Temperature T_Rx_Exit_Ref = 850;
-
-
-
 
     equation
      // assert(abs(lengths[1] - lengths[2]) <= Modelica.Constants.eps, "Hot/cold leg lengths must be equal");
@@ -496,23 +507,7 @@ package BraytonCycle
         Diagram(coordinateSystem(preserveAspectRatio=false)),
         Documentation(info="<html>
 </html>"));
-    end HTGR_Pebble_BraytonCycle;
-
-    model HTGR_Pebble_BraytonCycle_CS
-
-      extends BaseClasses.Record_Data;
-      parameter Modelica.Units.SI.Temperature T_Rx_Exit_Ref = 850;
-
-      annotation (
-        defaultComponentName="data",
-        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
-              lineColor={0,0,0},
-              extent={{-100,-90},{100,-70}},
-              textString="changeMe")}),
-        Diagram(coordinateSystem(preserveAspectRatio=false)),
-        Documentation(info="<html>
-</html>"));
-    end HTGR_Pebble_BraytonCycle_CS;
+    end Model_HTGR_Pebble_BraytonCycle;
 
   end Data;
 
@@ -757,7 +752,7 @@ package BraytonCycle
         redeclare replaceable
           NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Simple
           ED,
-        redeclare Data.HTGR_Pebble_BraytonCycle data(
+        redeclare Data.Model_HTGR_Pebble_BraytonCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,
@@ -1196,7 +1191,7 @@ package BraytonCycle
         redeclare replaceable
           NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Simple
           ED,
-        redeclare Data.HTGR_Pebble_BraytonCycle data(
+        redeclare Data.Model_HTGR_Pebble_BraytonCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,
@@ -1711,7 +1706,7 @@ package BraytonCycle
         redeclare replaceable
           NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Simple
           ED,
-        redeclare Data.HTGR_Pebble_BraytonCycle data(
+        redeclare Data.Model_HTGR_Pebble_BraytonCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,
@@ -2089,7 +2084,7 @@ package BraytonCycle
         redeclare replaceable
           NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Simple
           ED,
-        redeclare Data.HTGR_Pebble_BraytonCycle data(
+        redeclare Data.Model_HTGR_Pebble_BraytonCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,

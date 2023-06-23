@@ -173,7 +173,8 @@ package RankineCycle
         annotation (Placement(transformation(extent={{-40,-56},{-20,-36}})));
       Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
         annotation (Placement(transformation(extent={{-80,-56},{-60,-36}})));
-      RankineCycle.Data.Data_CS data(T_Rx_Exit_Ref=1023.15, m_flow_nom=300)
+      Data.CS_HTGR_Pebble_RankineCycle data(T_Rx_Exit_Ref=1023.15, m_flow_nom=
+            300)
         annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
       TRANSFORM.Controls.LimPID     CR1(
         controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -225,7 +226,7 @@ package RankineCycle
         annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
       Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
         annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
-      replaceable RankineCycle.Data.Data_CS data(
+      replaceable Data.CS_HTGR_Pebble_RankineCycle data(
         T_Rx_Exit_Ref=1023.15,
         m_flow_nom=250,
         Q_Nom=45e6,
@@ -283,7 +284,7 @@ package RankineCycle
         annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
       Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
         annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
-      replaceable RankineCycle.Data.Data_CS data(
+      replaceable Data.CS_HTGR_Pebble_RankineCycle data(
         T_Rx_Exit_Ref=1023.15,
         m_flow_nom=250,
         Q_Nom=45e6,
@@ -373,7 +374,7 @@ package RankineCycle
         annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
       Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
         annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
-      replaceable RankineCycle.Data.Data_CS data(
+      replaceable Data.CS_HTGR_Pebble_RankineCycle data(
         T_Rx_Exit_Ref=1023.15,
         m_flow_nom=250,
         Q_Nom=45e6,
@@ -500,7 +501,7 @@ package RankineCycle
         annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
       Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
         annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
-      replaceable RankineCycle.Data.Data_CS data(
+      replaceable Data.CS_HTGR_Pebble_RankineCycle data(
         T_Rx_Exit_Ref=1023.15,
         m_flow_nom=250,
         Q_Nom=45e6,
@@ -627,7 +628,7 @@ package RankineCycle
         annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
       Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
         annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
-      replaceable RankineCycle.Data.Data_CS data(
+      replaceable Data.CS_HTGR_Pebble_RankineCycle data(
         T_Rx_Exit_Ref=1023.15,
         m_flow_nom=250,
         Q_Nom=45e6,
@@ -749,7 +750,7 @@ package RankineCycle
         annotation (Placement(transformation(extent={{-24,-76},{-14,-66}})));
       Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
         annotation (Placement(transformation(extent={{-42,-74},{-36,-68}})));
-      RankineCycle.Data.Data_CS data(
+      Data.CS_HTGR_Pebble_RankineCycle data(
         T_Rx_Exit_Ref=1023.15,
         m_flow_nom=250,
         Q_Nom=43.75e6)
@@ -954,7 +955,7 @@ package RankineCycle
         annotation (Placement(transformation(extent={{-24,-76},{-14,-66}})));
       Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
         annotation (Placement(transformation(extent={{-42,-74},{-36,-68}})));
-      RankineCycle.Data.Data_CS data(
+      Data.CS_HTGR_Pebble_RankineCycle data(
         T_Rx_Exit_Ref=1023.15,
         m_flow_nom=50,
         Q_Nom=43750000)
@@ -1205,7 +1206,7 @@ package RankineCycle
         annotation (Placement(transformation(extent={{-24,-76},{-14,-66}})));
       Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
         annotation (Placement(transformation(extent={{-42,-74},{-36,-68}})));
-      RankineCycle.Data.Data_CS data(
+      Data.CS_HTGR_Pebble_RankineCycle data(
         T_Rx_Exit_Ref=1023.15,
         m_flow_nom=50,
         T_Steam_Ref=838.15,
@@ -1459,7 +1460,7 @@ package RankineCycle
         annotation (Placement(transformation(extent={{-24,-76},{-14,-66}})));
       Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
         annotation (Placement(transformation(extent={{-42,-74},{-36,-68}})));
-      RankineCycle.Data.Data_CS data(
+      Data.CS_HTGR_Pebble_RankineCycle data(
         T_Rx_Exit_Ref=1023.15,
         m_flow_nom=250,
         Q_Nom=43.75e6)
@@ -1702,7 +1703,7 @@ package RankineCycle
 
   package Data
 
-    model Data_CS
+    model CS_HTGR_Pebble_RankineCycle
 
       extends BaseClasses.Record_Data;
       parameter Modelica.Units.SI.Temperature T_Rx_Exit_Ref = 850+273.15;
@@ -1722,9 +1723,9 @@ package RankineCycle
         Diagram(coordinateSystem(preserveAspectRatio=false)),
         Documentation(info="<html>
 </html>"));
-    end Data_CS;
+    end CS_HTGR_Pebble_RankineCycle;
 
-    model Data_HTGR_Pebble
+    model Model_HTGR_Pebble_RankineCycle
 
       extends BaseClasses.Record_Data;
 
@@ -1783,7 +1784,6 @@ package RankineCycle
       parameter Real HP_Comp_P_Ratio = 1.77                                                                                annotation(dialog(tab = "General", group = "Compressors"));
       parameter SI.MassFlowRate HP_Comp_MassFlowRate = 300                                                                 annotation(dialog(tab = "General", group = "Compressors"));
 
-
       parameter Real HX_Aux_NTU = 1                                                                                        annotation(dialog(tab = "General", group = "HX_Aux"));
       parameter SI.Volume HX_Aux_Tube_Vol = 3                                                                              annotation(dialog(tab = "General", group = "HX_Aux"));
       parameter SI.Volume HX_Aux_Shell_Vol = 3                                                                             annotation(dialog(tab = "General", group = "HX_Aux"));
@@ -1814,7 +1814,6 @@ package RankineCycle
       parameter SI.ThermalConductivity k_IPyC = 8.0                                                                        annotation(dialog(tab = "General", group = "Pebble"));
       parameter SI.ThermalConductivity k_SiC = 175                                                                         annotation(dialog(tab = "General", group = "Pebble"));
       parameter SI.ThermalConductivity k_OPyC = 8.0                                                                        annotation(dialog(tab = "General", group = "Pebble"));
-
 
       //-----------------------------------------------------------------//
       // Initialization //
@@ -1861,7 +1860,6 @@ package RankineCycle
       parameter SI.Pressure P_Intercooler = 59.2e5                        annotation(dialog(tab = "Initialization", group = "Cooler"));
       parameter SI.Pressure P_Precooler = 30e5                            annotation(dialog(tab = "Initialization", group = "Cooler"));
 
-
     equation
      // assert(abs(lengths[1] - lengths[2]) <= Modelica.Constants.eps, "Hot/cold leg lengths must be equal");
      // assert(abs(length_reactorVessel - lengths[1] - length_pressurizer) <= Modelica.Constants.eps, "Hot leg and pressurizer must be equal to reactor vessel length");
@@ -1875,109 +1873,8 @@ package RankineCycle
         Diagram(coordinateSystem(preserveAspectRatio=false)),
         Documentation(info="<html>
 </html>"));
-    end Data_HTGR_Pebble;
+    end Model_HTGR_Pebble_RankineCycle;
 
-    record DataInitial_HTGR_Pebble
-
-      extends TRANSFORM.Icons.Record;
-
-    parameter SI.Pressure P_Turbine_Ref = 19.9e5 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_In_Turbine = 850+273.15 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_Out_Turbine = 478+273.15 annotation(dialog(tab = "Physical Components"));
-
-    parameter SI.Pressure P_LP_Comp_Ref = 19.3e5 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_LP_Comp_In = 33+273.15 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_LP_Comp_Out = 123+273.15 annotation(dialog(tab = "Physical Components"));
-
-    parameter SI.Pressure P_HP_Comp_Ref = 19.9e5 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_HP_Comp_In = 850+273.15 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_HP_Comp_Out = 478+273.15 annotation(dialog(tab = "Physical Components"));
-
-    parameter SI.Power HX_Aux_Q_Init = -1e6 annotation(dialog(tab = "HX_Aux"));
-    parameter SI.SpecificEnthalpy HX_Aux_h_tube_in = 100e3 annotation(dialog(tab = "HX_Aux"));
-    parameter SI.SpecificEnthalpy HX_Aux_h_tube_out = 900e3 annotation(dialog(tab = "HX_Aux"));
-    parameter SI.Pressure HX_Aux_p_tube = 1e5 annotation(dialog(tab = "HX_Aux"));
-
-      parameter SI.Pressure P_Core_Inlet = 60e5 annotation(dialog(tab = "Core"));
-      parameter SI.Pressure P_Core_Outlet = 59.4e5 annotation(dialog(tab = "Core"));
-    parameter SI.Temperature T_Core_Inlet = 623.15 annotation(dialog(tab = "Core"));
-    parameter SI.Temperature T_Core_Outlet = 1023.15 annotation(dialog(tab = "Core"));
-    parameter SI.Temperature T_Pebble_Init = T_Core_Outlet annotation(dialog(tab = "Core"));
-    parameter SI.Temperature T_Fuel_Center_Init = 1473.15 annotation(dialog(tab = "Core"));
-
-    parameter SI.Pressure Recuperator_P_Tube = 19.4e5 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.SpecificEnthalpy Recuperator_h_Tube_Inlet = 2307e3 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.SpecificEnthalpy Recuperator_h_Tube_Outlet = 3600e3 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.Pressure Recuperator_dp_Tube = 0.3e5 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.MassFlowRate Recuperator_m_Tube = 296.1 annotation(dialog(tab = "Recuperator HX"));
-
-    parameter SI.Pressure Recuperator_P_Shell = 60.4e5 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.SpecificEnthalpy Recuperator_h_Shell_Inlet = 3600e3 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.SpecificEnthalpy Recuperator_h_Shell_Outlet = 2700e3 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.Pressure Recuperator_dp_Shell = 0.4e5 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.MassFlowRate Recuperator_m_Shell = 296.1 annotation(dialog(tab = "Recuperator HX"));
-
-    parameter SI.Pressure P_Intercooler = 59.2e5;
-    parameter SI.Pressure P_Precooler = 30e5;
-
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
-                                                                    Text(
-              lineColor={0,0,0},
-              extent={{-100,-90},{100,-70}},
-              textString="Pebble Bed")}),                            Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end DataInitial_HTGR_Pebble;
-
-    record DataInitial
-
-      extends TRANSFORM.Icons.Record;
-
-    parameter SI.Pressure P_Turbine_Ref = 19.9e5 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_In_Turbine = 850+273.15 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_Out_Turbine = 478+273.15 annotation(dialog(tab = "Physical Components"));
-
-    parameter SI.Pressure P_LP_Comp_Ref = 19.3e5 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_LP_Comp_In = 33+273.15 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_LP_Comp_Out = 123+273.15 annotation(dialog(tab = "Physical Components"));
-
-    parameter SI.Pressure P_HP_Comp_Ref = 19.9e5 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_HP_Comp_In = 850+273.15 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_HP_Comp_Out = 478+273.15 annotation(dialog(tab = "Physical Components"));
-
-    parameter SI.Power HX_Aux_Q_Init = -1e6 annotation(dialog(tab = "HX_Aux"));
-    parameter SI.SpecificEnthalpy HX_Aux_h_tube_in = 100e3 annotation(dialog(tab = "HX_Aux"));
-    parameter SI.SpecificEnthalpy HX_Aux_h_tube_out = 900e3 annotation(dialog(tab = "HX_Aux"));
-    parameter SI.Pressure HX_Aux_p_tube = 1e5 annotation(dialog(tab = "HX_Aux"));
-
-      parameter SI.Pressure P_Core_Inlet = 60e5 annotation(dialog(tab = "Core"));
-      parameter SI.Pressure P_Core_Outlet = 59.4e5 annotation(dialog(tab = "Core"));
-    parameter SI.Temperature T_Core_Inlet = 623.15 annotation(dialog(tab = "Core"));
-    parameter SI.Temperature T_Core_Outlet = 1023.15 annotation(dialog(tab = "Core"));
-    parameter SI.Temperature T_Pebble_Init = T_Core_Outlet annotation(dialog(tab = "Core"));
-    parameter SI.Temperature T_Fuel_Center_Init = 1473.15 annotation(dialog(tab = "Core"));
-
-    parameter SI.Pressure Recuperator_P_Tube = 19.4e5 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.SpecificEnthalpy Recuperator_h_Tube_Inlet = 2307e3 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.SpecificEnthalpy Recuperator_h_Tube_Outlet = 3600e3 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.Pressure Recuperator_dp_Tube = 0.3e5 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.MassFlowRate Recuperator_m_Tube = 296.1 annotation(dialog(tab = "Recuperator HX"));
-
-    parameter SI.Pressure Recuperator_P_Shell = 60.4e5 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.SpecificEnthalpy Recuperator_h_Shell_Inlet = 3600e3 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.SpecificEnthalpy Recuperator_h_Shell_Outlet = 2700e3 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.Pressure Recuperator_dp_Shell = 0.4e5 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.MassFlowRate Recuperator_m_Shell = 296.1 annotation(dialog(tab = "Recuperator HX"));
-
-    parameter SI.Pressure P_Intercooler = 59.2e5;
-    parameter SI.Pressure P_Precooler = 30e5;
-
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
-                                                                    Text(
-              lineColor={0,0,0},
-              extent={{-100,-90},{100,-70}},
-              textString="Pebble Bed")}),                            Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end DataInitial;
   end Data;
 
   package Examples
@@ -2336,7 +2233,7 @@ package RankineCycle
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Rankine CS,
         redeclare replaceable ControlSystems.ED_Dummy ED,
-        redeclare Data.Data_HTGR_Pebble data(
+        redeclare Data.Model_HTGR_Pebble_RankineCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,
@@ -2588,7 +2485,7 @@ package RankineCycle
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Rankine_DNE_PowerManuever CS,
         redeclare replaceable ControlSystems.ED_Dummy ED,
-        redeclare Data.Data_HTGR_Pebble data(
+        redeclare Data.Model_HTGR_Pebble_RankineCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,
@@ -3159,7 +3056,7 @@ package RankineCycle
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Rankine_DNE_04 CS,
         redeclare replaceable ControlSystems.ED_Dummy ED,
-        redeclare Data.Data_HTGR_Pebble data(
+        redeclare Data.Model_HTGR_Pebble_RankineCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,
@@ -3749,7 +3646,7 @@ package RankineCycle
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Rankine_DNE_04 CS,
         redeclare replaceable ControlSystems.ED_Dummy ED,
-        redeclare Data.Data_HTGR_Pebble data(
+        redeclare Data.Model_HTGR_Pebble_RankineCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,
@@ -4329,7 +4226,7 @@ package RankineCycle
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Rankine_DNE_AR CS,
         redeclare replaceable ControlSystems.ED_Dummy ED,
-        redeclare Data.Data_HTGR_Pebble data(
+        redeclare Data.Model_HTGR_Pebble_RankineCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,
@@ -4911,7 +4808,7 @@ package RankineCycle
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Rankine_Primary CS,
         redeclare replaceable ControlSystems.ED_Dummy ED,
-        redeclare replaceable Data.Data_HTGR_Pebble data(
+        redeclare replaceable Data.Model_HTGR_Pebble_RankineCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,
@@ -5168,7 +5065,7 @@ package RankineCycle
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Rankine_Primary CS,
         redeclare replaceable ControlSystems.ED_Dummy ED,
-        redeclare replaceable Data.Data_HTGR_Pebble data(
+        redeclare replaceable Data.Model_HTGR_Pebble_RankineCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,
@@ -5427,7 +5324,7 @@ package RankineCycle
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Rankine_Primary CS,
         redeclare replaceable ControlSystems.ED_Dummy ED,
-        redeclare replaceable Data.Data_HTGR_Pebble data(
+        redeclare replaceable Data.Model_HTGR_Pebble_RankineCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,
@@ -5717,7 +5614,7 @@ package RankineCycle
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Rankine_Primary CS,
         redeclare replaceable ControlSystems.ED_Dummy ED,
-        redeclare replaceable Data.Data_HTGR_Pebble data(
+        redeclare replaceable Data.Model_HTGR_Pebble_RankineCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,
@@ -5987,7 +5884,7 @@ package RankineCycle
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Rankine_Primary CS,
         redeclare replaceable ControlSystems.ED_Dummy ED,
-        redeclare replaceable Data.Data_HTGR_Pebble data(
+        redeclare replaceable Data.Model_HTGR_Pebble_RankineCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,
