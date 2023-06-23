@@ -151,7 +151,7 @@ package BraytonCycle
   end BaseClasses;
 
   package ControlSystems "Control systems"
-    model CS_Dummy
+    model CS_Simple
 
       extends BaseClasses.Partial_ControlSystem;
 
@@ -189,9 +189,9 @@ package BraytonCycle
           thickness=0.5));
 
     annotation(defaultComponentName="changeMe_CS", Icon(graphics));
-    end CS_Dummy;
+    end CS_Simple;
 
-    model ED_Dummy
+    model ED_Simple
 
       extends BaseClasses.Partial_EventDriver;
 
@@ -205,7 +205,7 @@ package BraytonCycle
               fillColor={255,255,237},
               fillPattern=FillPattern.Solid,
               textString="Change Me")}));
-    end ED_Dummy;
+    end ED_Simple;
 
     model CS_Basic
 
@@ -219,13 +219,13 @@ package BraytonCycle
         annotation (Placement(transformation(extent={{-40,-64},{-20,-44}})));
       Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
         annotation (Placement(transformation(extent={{-72,-64},{-52,-44}})));
-      Data.Data_CS data(T_Rx_Exit_Ref=1123.15)
-        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
       Modelica.Blocks.Sources.RealExpression PR_Compressor(y=0)
         "total thermal power"
         annotation (Placement(transformation(extent={{-4,-100},{8,-88}})));
       TRANSFORM.Blocks.RealExpression Core_M_Flow
         annotation (Placement(transformation(extent={{-4,-90},{8,-76}})));
+      Data.HTGR_Pebble_BraytonCycle_CS data
+        annotation (Placement(transformation(extent={{-96,74},{-76,94}})));
     equation
 
       connect(const1.y,CR. u_s) annotation (Line(points={{-51,-54},{-42,-54}},
@@ -269,7 +269,7 @@ package BraytonCycle
         annotation (Placement(transformation(extent={{-40,-64},{-20,-44}})));
       Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
         annotation (Placement(transformation(extent={{-72,-64},{-52,-44}})));
-      Data.Data_CS data(T_Rx_Exit_Ref=1123.15)
+      Data.HTGR_Pebble_BraytonCycle_CS data(T_Rx_Exit_Ref=1123.15)
         annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
       TRANSFORM.Blocks.RealExpression Core_M_Flow
         annotation (Placement(transformation(extent={{-4,-90},{8,-76}})));
@@ -339,119 +339,155 @@ package BraytonCycle
 
   package Data
 
-    model Data_Dummy
-
-      extends BaseClasses.Record_Data;
-
-      annotation (
-        defaultComponentName="data",
-        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
-              lineColor={0,0,0},
-              extent={{-100,-90},{100,-70}},
-              textString="changeMe")}),
-        Diagram(coordinateSystem(preserveAspectRatio=false)),
-        Documentation(info="<html>
-</html>"));
-    end Data_Dummy;
-
-    model Data_HTGR_Pebble
+    model HTGR_Pebble_BraytonCycle
 
       extends BaseClasses.Record_Data;
 
       import TRANSFORM.Units.Conversions.Functions.Distance_m.from_in;
 
       replaceable package Coolant_Medium =
-          Modelica.Media.Interfaces.PartialMedium                                  annotation(choicesAllMatching = true,dialog(group="Media"));
+          Modelica.Media.Interfaces.PartialMedium                                           annotation(choicesAllMatching = true,dialog(group="Media"));
       replaceable package Fuel_Medium =
           TRANSFORM.Media.Interfaces.Solids.PartialAlloy                                    annotation(choicesAllMatching = true,dialog(group = "Media"));
       replaceable package Pebble_Medium =
-          TRANSFORM.Media.Interfaces.Solids.PartialAlloy                                      annotation(dialog(group = "Media"),choicesAllMatching=true);
+          TRANSFORM.Media.Interfaces.Solids.PartialAlloy                                    annotation(dialog(group = "Media"),choicesAllMatching=true);
           replaceable package Aux_Heat_App_Medium =
           Modelica.Media.Interfaces.PartialMedium                                           annotation(choicesAllMatching = true, dialog(group = "Media"));
           replaceable package Waste_Heat_App_Medium =
-          Modelica.Media.Interfaces.PartialMedium                                             annotation(choicesAllMatching = true, dialog(group = "Media"));
+          Modelica.Media.Interfaces.PartialMedium                                           annotation(choicesAllMatching = true, dialog(group = "Media"));
 
-      //per module
-      parameter SI.Power Q_total=160e6 "Total thermal output" annotation(dialog(group = "System Reference"));
-      parameter SI.Power Q_total_el=45e6 "Total electrical output" annotation(dialog(group = "System Reference"));
-      parameter Real eta=Q_total_el/Q_total "Net efficiency" annotation(dialog(group = "System Reference"));
+      //-----------------------------------------------------------------//
+      // General //
+      //-----------------------------------------------------------------//
+      parameter SI.Power Q_total=160e6 "Total thermal output"                              annotation(dialog(tab = "General", group = "System Reference"));
+      parameter SI.Power Q_total_el=45e6 "Total electrical output"                         annotation(dialog(tab = "General", group = "System Reference"));
+      parameter Real eta=Q_total_el/Q_total "Net efficiency"                               annotation(dialog(tab = "General", group = "System Reference"));
 
-      parameter SI.Pressure P_Release = 19.3e5 "Boundary release valve pressure downstream of precooler" annotation(dialog(group = "System Boundary Conditions"));
-      parameter Real K_P_Release( unit="1/(m.kg)") annotation(dialog(tab = "Physical Components",group = "Valves"));
-      parameter SI.Temperature T_Intercooler = 35+273.15 annotation(dialog(group = "System Boundary Conditions"));
-      parameter SI.Temperature T_Precooler = 33+273.15 annotation(dialog(group = "System Boundary Conditions"));
+      parameter SI.Pressure P_Release = 19.3e5 "Boundary release valve pressure downstream of precooler"                    annotation(dialog(tab = "General", group = "System Boundary Conditions"));
+      parameter SI.Temperature T_Intercooler = 35+273.15                                                                    annotation(dialog(tab = "General", group = "System Boundary Conditions"));
+      parameter SI.Temperature T_Precooler = 33+273.15                                                                      annotation(dialog(tab = "General", group = "System Boundary Conditions"));
+      parameter SI.MassFlowRate m_flow=700 "Primary Side Flow"                                                              annotation(dialog(tab = "General", group = "System Boundary Conditions"));
 
-      parameter SI.MassFlowRate m_flow=700 "Primary Side Flow";
+      parameter SI.Length length_core=2.408 "meters (based on 1.33 H/D ratio)"                                              annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length d_core=1.5                                                                                        annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length r_outer_fuelRod=0.5*from_in(0.374) "Outside diameter of fuel rod (d3s1)"                          annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length th_clad_fuelRod=from_in(0.024) "Cladding thickness of fuel rod (d3s1)"                            annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length th_gap_fuelRod=0.5*from_in(0.0065) "Gap thickness between pellet and cladding (d3s1)"             annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length r_pellet_fuelRod=0.5*from_in(0.3195) "Pellet radius (d3s1)"                                       annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length pitch_fuelRod=from_in(0.496) "Fuel rod pitch (d3s1)"                                              annotation(dialog(tab = "General", group = "Geometry"));
+      parameter TRANSFORM.Units.NonDim sizeAssembly=17 "square size of assembly (e.g., 17 = 17x17)"                         annotation(dialog(tab = "General", group = "Geometry"));
+      parameter TRANSFORM.Units.NonDim nRodFuel_assembly=264 "# of fuel rods per assembly (d3s1)"                           annotation(dialog(tab = "General", group = "Geometry"));
+      parameter TRANSFORM.Units.NonDim nRodNonFuel_assembly=sizeAssembly^2 - 264 "# of non-fuel rods per assembly (d3s1)"   annotation(dialog(tab = "General", group = "Geometry"));
+      parameter TRANSFORM.Units.NonDim nAssembly=floor(Modelica.Constants.pi*d_core^2/4/(pitch_fuelRod*sizeAssembly)^2)     annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Volume V_Core_Outlet = 0.5                                                                               annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Area A_LPDelay = 1                                                                                       annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length L_LPDelay = 5                                                                                     annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Area A_HPDelay = 1                                                                                       annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length L_HPDelay = 1                                                                                     annotation(dialog(tab = "General", group = "Geometry"));
 
-      parameter SI.Length length_core=2.408 "meters (based on 1.33 H/D ratio)";
-      parameter SI.Length d_core=1.5;
+      parameter Real K_P_Release( unit="1/(m.kg)")                                                                          annotation(dialog(tab = "General", group = "Valves"));
 
-      parameter SI.Length r_outer_fuelRod=0.5*from_in(0.374) "Outside diameter of fuel rod (d3s1)";
-      parameter SI.Length th_clad_fuelRod=from_in(0.024) "Cladding thickness of fuel rod (d3s1)";
-      parameter SI.Length th_gap_fuelRod=0.5*from_in(0.0065) "Gap thickness between pellet and cladding (d3s1)";
-      parameter SI.Length r_pellet_fuelRod=0.5*from_in(0.3195) "Pellet radius (d3s1)";
-      parameter SI.Length pitch_fuelRod=from_in(0.496) "Fuel rod pitch (d3s1)";
-      parameter TRANSFORM.Units.NonDim sizeAssembly=17 "square size of assembly (e.g., 17 = 17x17)";
-      parameter TRANSFORM.Units.NonDim nRodFuel_assembly=264 "# of fuel rods per assembly (d3s1)";
-      parameter TRANSFORM.Units.NonDim nRodNonFuel_assembly=sizeAssembly^2 - 264 "# of non-fuel rods per assembly (d3s1)";
-      parameter TRANSFORM.Units.NonDim nAssembly=floor(Modelica.Constants.pi*d_core^2/4/(pitch_fuelRod*sizeAssembly)^2);
+      parameter Real Turbine_Efficiency = 0.93                                                                              annotation(dialog(tab = "General", group = "Turbine"));
+      parameter Real Turbine_Pressure_Ratio = 2.975                                                                         annotation(dialog(tab = "General", group = "Turbine"));
+      parameter SI.MassFlowRate Turbine_Nominal_MassFlowRate = 296                                                          annotation(dialog(tab = "General", group = "Turbine"));
 
-      //Turbine Data
-      parameter Real Turbine_Efficiency = 0.93 annotation(dialog(tab = "Physical Components", group = "Turbine"));
-      parameter Real Turbine_Pressure_Ratio = 2.975 annotation(dialog(tab = "Physical Components",group = "Turbine"));
-      parameter SI.MassFlowRate Turbine_Nominal_MassFlowRate = 296 annotation(dialog(tab = "Physical Components", group = "Turbine"));
+      parameter Real LP_Comp_Efficiency = 0.91                                                                              annotation(dialog(tab = "General", group = "Compressors"));
+      parameter Real LP_Comp_P_Ratio = 1.77                                                                                 annotation(dialog(tab = "General", group = "Compressors"));
+      parameter SI.MassFlowRate LP_Comp_MassFlowRate = 300                                                                  annotation(dialog(tab = "General", group = "Compressors"));
+      parameter Real HP_Comp_Efficiency = 0.91                                                                              annotation(dialog(tab = "General", group = "Compressors"));
+      parameter Real HP_Comp_P_Ratio = 1.77                                                                                 annotation(dialog(tab = "General", group = "Compressors"));
+      parameter SI.MassFlowRate HP_Comp_MassFlowRate = 300                                                                  annotation(dialog(tab = "General", group = "Compressors"));
 
-      //Compressors Data
-      parameter Real LP_Comp_Efficiency = 0.91 annotation(dialog(tab = "Physical Components", group = "Compressors"));
-      parameter Real LP_Comp_P_Ratio = 1.77 annotation(dialog(tab = "Physical Components", group = "Compressors"));
-      parameter SI.MassFlowRate LP_Comp_MassFlowRate = 300 annotation(dialog(tab = "Physical Components", group = "Compressors"));
+      parameter Real HX_Aux_NTU = 1                                                                                         annotation(dialog(tab = "General", group = "HX_Aux"));
+      parameter SI.Volume HX_Aux_Tube_Vol = 3                                                                               annotation(dialog(tab = "General", group = "HX_Aux"));
+      parameter SI.Volume HX_Aux_Shell_Vol = 3                                                                              annotation(dialog(tab = "General", group = "HX_Aux"));
+      parameter Real HX_Aux_K_tube(unit = "1/m4") = 1                                                                       annotation(dialog(tab = "General", group = "HX_Aux"));
+      parameter Real HX_Aux_K_shell(unit = "1/m4") = 1                                                                      annotation(dialog(tab = "General", group = "HX_Aux"));
 
-      parameter Real HP_Comp_Efficiency = 0.91 annotation(dialog(tab = "Physical Components", group = "Compressors"));
-      parameter Real HP_Comp_P_Ratio = 1.77 annotation(dialog(tab = "Physical Components", group = "Compressors"));
-      parameter SI.MassFlowRate HP_Comp_MassFlowRate = 300 annotation(dialog(tab = "Physical Components", group = "Compressors"));
+      parameter Real HX_Reheat_NTU = 10                                                                                     annotation(dialog(tab = "General", group = "HX_Reheat"));
+      parameter SI.Volume HX_Reheat_Tube_Vol = 0.2                                                                          annotation(dialog(tab = "General", group = "HX_Reheat"));
+      parameter SI.Volume HX_Reheat_Shell_Vol = 0.2                                                                         annotation(dialog(tab = "General", group = "HX_Reheat"));
+      parameter Real HX_Reheat_K_tube(unit = "1/m4") = 1                                                                    annotation(dialog(tab = "General", group = "HX_Reheat"));
+      parameter Real HX_Reheat_K_shell(unit = "1/m4") = 1                                                                   annotation(dialog(tab = "General", group = "HX_Reheat"));
 
-      parameter SI.Volume V_Core_Outlet = 0.5;
+      parameter SI.Volume V_Intercooler = 0.0                                                                               annotation(dialog(tab = "General", group = "Coolers"));
+      parameter SI.Volume V_Precooler = 0.0                                                                                 annotation(dialog(tab = "General", group = "Coolers"));
 
-      parameter Real HX_Aux_NTU = 1 annotation(dialog(tab = "HXs", group = "Aux HX"));
-      parameter SI.Volume HX_Aux_Tube_Vol = 3 annotation(dialog(tab = "HXs", group = "Aux HX"));
-      parameter SI.Volume HX_Aux_Shell_Vol = 3 annotation(dialog(tab = "HXs", group = "Aux HX"));
-      parameter Real HX_Aux_K_tube(unit = "1/m4") = 1 annotation(dialog(tab = "HXs", group = "Aux HX"));
-      parameter Real HX_Aux_K_shell(unit = "1/m4") = 1 annotation(dialog(tab = "HXs", group = "Aux HX"));
+      parameter Real nKernel_per_Pebble = 15000                                                                             annotation(dialog(tab = "General", group = "Pebble"));
+      parameter Real nPebble = 55000                                                                                        annotation(dialog(tab = "General", group = "Pebble"));
+      parameter Integer nR_Fuel = 1                                                                                         annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_Pebble = 0.03                                                                                   annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_Fuel = 200e-6                                                                                   annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_Buffer = r_Fuel + 100e-6                                                                        annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_IPyC = r_Buffer+40e-6                                                                           annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_SiC = r_IPyC+35e-6                                                                              annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_OPyC = r_SiC+40e-6                                                                              annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.ThermalConductivity k_Buffer= 2.25                                                                       annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.ThermalConductivity k_IPyC = 8.0                                                                         annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.ThermalConductivity k_SiC = 175                                                                          annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.ThermalConductivity k_OPyC = 8.0                                                                         annotation(dialog(tab = "General", group = "Pebble"));
 
-      parameter Real HX_Reheat_NTU = 10 annotation(dialog(tab = "HXs", group = "Reheat HX"));
-      parameter SI.Volume HX_Reheat_Tube_Vol = 0.2 annotation(dialog(tab = "HXs", group = "Reheat HX"));
-      parameter SI.Volume HX_Reheat_Shell_Vol = 0.2 annotation(dialog(tab = "HXs", group = "Reheat HX"));
-      parameter Real HX_Reheat_K_tube(unit = "1/m4") = 1 annotation(dialog(tab = "HXs", group = "Reheat HX"));
-      parameter Real HX_Reheat_K_shell(unit = "1/m4") = 1 annotation(dialog(tab = "HXs", group = "Reheat HX"));
-      parameter SI.Volume V_Intercooler = 0.0 annotation(dialog(tab = "HXs",group = "Coolers"));
-      parameter SI.Volume V_Precooler = 0.0 annotation(dialog(tab = "HXs", group = "Coolers"));
 
-      parameter Real nKernel_per_Pebble = 15000 annotation(dialog(tab = "Pebble Data"));
-      parameter Real nPebble = 55000 annotation(dialog(tab = "Pebble Data"));
-      parameter Integer nR_Fuel = 1 annotation(dialog(tab = "Pebble Data"));
-      parameter SI.Length r_Pebble = 0.03 annotation(dialog(tab = "Pebble Data"));
-      parameter SI.Length r_Fuel = 200e-6 annotation(dialog(tab = "Pebble Data"));
-      parameter SI.Length r_Buffer = r_Fuel + 100e-6 annotation(dialog(tab = "Pebble Data"));
-      parameter SI.Length r_IPyC = r_Buffer+40e-6 annotation(dialog(tab = "Pebble Data"));
-      parameter SI.Length r_SiC = r_IPyC+35e-6 annotation(dialog(tab = "Pebble Data"));
-      parameter SI.Length r_OPyC = r_SiC+40e-6 annotation(dialog(tab = "Pebble Data"));
-      parameter SI.ThermalConductivity k_Buffer= 2.25 annotation(dialog(tab = "Pebble Data"));
-      parameter SI.ThermalConductivity k_IPyC = 8.0 annotation(dialog(tab = "Pebble Data"));
-      parameter SI.ThermalConductivity k_SiC = 175 annotation(dialog(tab = "Pebble Data"));
-      parameter SI.ThermalConductivity k_OPyC = 8.0 annotation(dialog(tab = "Pebble Data"));
-      parameter SI.Temperature Pebble_Surface_Init = 750+273.15 annotation(dialog(tab = "Initialization", group = "Start Value: Fuel"));
-      parameter SI.Temperature Pebble_Center_Init = 1100+273.15 annotation(dialog(tab = "Initialization", group = "Start Value: Fuel"));
+      //-----------------------------------------------------------------//
+      // Initialization //
+      //-----------------------------------------------------------------//
+      parameter SI.Temperature Pebble_Surface_Init = 750+273.15                                                             annotation(dialog(tab = "Initialization", group = "Start Value: Fuel"));
+      parameter SI.Temperature Pebble_Center_Init = 1100+273.15                                                             annotation(dialog(tab = "Initialization", group = "Start Value: Fuel"));
 
-      parameter SI.Area A_LPDelay = 1;
-      parameter SI.Length L_LPDelay = 5;
-      parameter SI.Area A_HPDelay = 1;
-      parameter SI.Length L_HPDelay = 1;
+      parameter SI.Pressure P_Turbine_Ref = 19.9e5                                                                          annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_In_Turbine = 850+273.15                                                               annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_Out_Turbine = 478+273.15                                                              annotation(dialog(tab = "Initialization", group = "Turbine"));
+
+      parameter SI.Pressure P_LP_Comp_Ref = 19.3e5                                                                          annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_LP_Comp_In = 33+273.15                                                                annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_LP_Comp_Out = 123+273.15                                                              annotation(dialog(tab = "Initialization", group = "Turbine"));
+
+      parameter SI.Pressure P_HP_Comp_Ref = 19.9e5                                                                          annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_HP_Comp_In = 850+273.15                                                               annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_HP_Comp_Out = 478+273.15                                                              annotation(dialog(tab = "Initialization", group = "Turbine"));
+
+      parameter SI.Power HX_Aux_Q_Init = -1e6                                                                               annotation(dialog(tab = "Initialization", group = "HX_Aux"));
+      parameter SI.SpecificEnthalpy HX_Aux_h_tube_in = 100e3                                                                annotation(dialog(tab = "Initialization", group = "HX_Aux"));
+      parameter SI.SpecificEnthalpy HX_Aux_h_tube_out = 900e3                                                               annotation(dialog(tab = "Initialization", group = "HX_Aux"));
+      parameter SI.Pressure HX_Aux_p_tube = 1e5                                                                             annotation(dialog(tab = "Initialization", group = "HX_Aux"));
+
+      parameter SI.Pressure P_Core_Inlet = 60e5                                                                             annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+      parameter SI.Pressure P_Core_Outlet = 59.4e5                                                                          annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+      parameter SI.Temperature T_Core_Inlet = 623.15                                                                        annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+      parameter SI.Temperature T_Core_Outlet = 1023.15                                                                      annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+      parameter SI.Temperature T_Pebble_Init = T_Core_Outlet                                                                annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+      parameter SI.Temperature T_Fuel_Center_Init = 1473.15                                                                 annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+
+      parameter SI.Pressure Recuperator_P_Tube = 19.4e5                                                                     annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
+      parameter SI.SpecificEnthalpy Recuperator_h_Tube_Inlet = 2307e3                                                       annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
+      parameter SI.SpecificEnthalpy Recuperator_h_Tube_Outlet = 3600e3                                                      annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
+      parameter SI.Pressure Recuperator_dp_Tube = 0.3e5                                                                     annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
+      parameter SI.MassFlowRate Recuperator_m_Tube = 296.1                                                                  annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
+
+      parameter SI.Pressure Recuperator_P_Shell = 60.4e5                                                                    annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
+      parameter SI.SpecificEnthalpy Recuperator_h_Shell_Inlet = 3600e3                                                      annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
+      parameter SI.SpecificEnthalpy Recuperator_h_Shell_Outlet = 2700e3                                                     annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
+      parameter SI.Pressure Recuperator_dp_Shell = 0.4e5                                                                    annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
+      parameter SI.MassFlowRate Recuperator_m_Shell = 296.1                                                                 annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
+
+      parameter SI.Pressure P_Intercooler = 59.2e5                                                                          annotation(dialog(tab = "Initialization", group = "Cooler"));
+      parameter SI.Pressure P_Precooler = 30e5                                                                              annotation(dialog(tab = "Initialization", group = "Cooler"));
+
+
+      //-----------------------------------------------------------------//
+      // ControlSystem //
+      //-----------------------------------------------------------------//
+
+      parameter Modelica.Units.SI.Temperature T_Rx_Exit_Ref = 850;
+
+
+
 
     equation
      // assert(abs(lengths[1] - lengths[2]) <= Modelica.Constants.eps, "Hot/cold leg lengths must be equal");
      // assert(abs(length_reactorVessel - lengths[1] - length_pressurizer) <= Modelica.Constants.eps, "Hot leg and pressurizer must be equal to reactor vessel length");
 
-      annotation (
+                                                                                                                            annotation(dialog(tab = "Control"),
         defaultComponentName="data",
         Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
               lineColor={0,0,0},
@@ -460,60 +496,9 @@ package BraytonCycle
         Diagram(coordinateSystem(preserveAspectRatio=false)),
         Documentation(info="<html>
 </html>"));
-    end Data_HTGR_Pebble;
+    end HTGR_Pebble_BraytonCycle;
 
-    record DataInitial_HTGR_Pebble
-
-      extends TRANSFORM.Icons.Record;
-
-    parameter SI.Pressure P_Turbine_Ref = 19.9e5 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_In_Turbine = 850+273.15 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_Out_Turbine = 478+273.15 annotation(dialog(tab = "Physical Components"));
-
-    parameter SI.Pressure P_LP_Comp_Ref = 19.3e5 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_LP_Comp_In = 33+273.15 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_LP_Comp_Out = 123+273.15 annotation(dialog(tab = "Physical Components"));
-
-    parameter SI.Pressure P_HP_Comp_Ref = 19.9e5 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_HP_Comp_In = 850+273.15 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_HP_Comp_Out = 478+273.15 annotation(dialog(tab = "Physical Components"));
-
-    parameter SI.Power HX_Aux_Q_Init = -1e6 annotation(dialog(tab = "HX_Aux"));
-    parameter SI.SpecificEnthalpy HX_Aux_h_tube_in = 100e3 annotation(dialog(tab = "HX_Aux"));
-    parameter SI.SpecificEnthalpy HX_Aux_h_tube_out = 900e3 annotation(dialog(tab = "HX_Aux"));
-    parameter SI.Pressure HX_Aux_p_tube = 1e5 annotation(dialog(tab = "HX_Aux"));
-
-      parameter SI.Pressure P_Core_Inlet = 60e5 annotation(dialog(tab = "Core"));
-      parameter SI.Pressure P_Core_Outlet = 59.4e5 annotation(dialog(tab = "Core"));
-    parameter SI.Temperature T_Core_Inlet = 623.15 annotation(dialog(tab = "Core"));
-    parameter SI.Temperature T_Core_Outlet = 1023.15 annotation(dialog(tab = "Core"));
-    parameter SI.Temperature T_Pebble_Init = T_Core_Outlet annotation(dialog(tab = "Core"));
-    parameter SI.Temperature T_Fuel_Center_Init = 1473.15 annotation(dialog(tab = "Core"));
-
-    parameter SI.Pressure Recuperator_P_Tube = 19.4e5 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.SpecificEnthalpy Recuperator_h_Tube_Inlet = 2307e3 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.SpecificEnthalpy Recuperator_h_Tube_Outlet = 3600e3 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.Pressure Recuperator_dp_Tube = 0.3e5 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.MassFlowRate Recuperator_m_Tube = 296.1 annotation(dialog(tab = "Recuperator HX"));
-
-    parameter SI.Pressure Recuperator_P_Shell = 60.4e5 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.SpecificEnthalpy Recuperator_h_Shell_Inlet = 3600e3 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.SpecificEnthalpy Recuperator_h_Shell_Outlet = 2700e3 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.Pressure Recuperator_dp_Shell = 0.4e5 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.MassFlowRate Recuperator_m_Shell = 296.1 annotation(dialog(tab = "Recuperator HX"));
-
-    parameter SI.Pressure P_Intercooler = 59.2e5;
-    parameter SI.Pressure P_Precooler = 30e5;
-
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
-                                                                    Text(
-              lineColor={0,0,0},
-              extent={{-100,-90},{100,-70}},
-              textString="Pebble Bed")}),                            Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end DataInitial_HTGR_Pebble;
-
-    model Data_CS
+    model HTGR_Pebble_BraytonCycle_CS
 
       extends BaseClasses.Record_Data;
       parameter Modelica.Units.SI.Temperature T_Rx_Exit_Ref = 850;
@@ -527,58 +512,8 @@ package BraytonCycle
         Diagram(coordinateSystem(preserveAspectRatio=false)),
         Documentation(info="<html>
 </html>"));
-    end Data_CS;
+    end HTGR_Pebble_BraytonCycle_CS;
 
-    record DataInitial
-
-      extends TRANSFORM.Icons.Record;
-
-    parameter SI.Pressure P_Turbine_Ref = 19.9e5 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_In_Turbine = 850+273.15 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_Out_Turbine = 478+273.15 annotation(dialog(tab = "Physical Components"));
-
-    parameter SI.Pressure P_LP_Comp_Ref = 19.3e5 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_LP_Comp_In = 33+273.15 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_LP_Comp_Out = 123+273.15 annotation(dialog(tab = "Physical Components"));
-
-    parameter SI.Pressure P_HP_Comp_Ref = 19.9e5 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_HP_Comp_In = 850+273.15 annotation(dialog(tab = "Physical Components"));
-    parameter SI.Temperature TStart_HP_Comp_Out = 478+273.15 annotation(dialog(tab = "Physical Components"));
-
-    parameter SI.Power HX_Aux_Q_Init = -1e6 annotation(dialog(tab = "HX_Aux"));
-    parameter SI.SpecificEnthalpy HX_Aux_h_tube_in = 100e3 annotation(dialog(tab = "HX_Aux"));
-    parameter SI.SpecificEnthalpy HX_Aux_h_tube_out = 900e3 annotation(dialog(tab = "HX_Aux"));
-    parameter SI.Pressure HX_Aux_p_tube = 1e5 annotation(dialog(tab = "HX_Aux"));
-
-      parameter SI.Pressure P_Core_Inlet = 60e5 annotation(dialog(tab = "Core"));
-      parameter SI.Pressure P_Core_Outlet = 59.4e5 annotation(dialog(tab = "Core"));
-    parameter SI.Temperature T_Core_Inlet = 623.15 annotation(dialog(tab = "Core"));
-    parameter SI.Temperature T_Core_Outlet = 1023.15 annotation(dialog(tab = "Core"));
-    parameter SI.Temperature T_Pebble_Init = T_Core_Outlet annotation(dialog(tab = "Core"));
-    parameter SI.Temperature T_Fuel_Center_Init = 1473.15 annotation(dialog(tab = "Core"));
-
-    parameter SI.Pressure Recuperator_P_Tube = 19.4e5 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.SpecificEnthalpy Recuperator_h_Tube_Inlet = 2307e3 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.SpecificEnthalpy Recuperator_h_Tube_Outlet = 3600e3 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.Pressure Recuperator_dp_Tube = 0.3e5 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.MassFlowRate Recuperator_m_Tube = 296.1 annotation(dialog(tab = "Recuperator HX"));
-
-    parameter SI.Pressure Recuperator_P_Shell = 60.4e5 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.SpecificEnthalpy Recuperator_h_Shell_Inlet = 3600e3 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.SpecificEnthalpy Recuperator_h_Shell_Outlet = 2700e3 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.Pressure Recuperator_dp_Shell = 0.4e5 annotation(dialog(tab = "Recuperator HX"));
-    parameter SI.MassFlowRate Recuperator_m_Shell = 296.1 annotation(dialog(tab = "Recuperator HX"));
-
-    parameter SI.Pressure P_Intercooler = 59.2e5;
-    parameter SI.Pressure P_Precooler = 30e5;
-
-      annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
-                                                                    Text(
-              lineColor={0,0,0},
-              extent={{-100,-90},{100,-70}},
-              textString="Pebble Bed")}),                            Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end DataInitial;
   end Data;
 
   package Examples
@@ -592,7 +527,7 @@ package BraytonCycle
           NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.CS_Basic
           CS,
         redeclare
-          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Dummy
+          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Simple
           ED,
         redeclare package Coolant_Medium =
             Modelica.Media.IdealGases.SingleGases.He)
@@ -630,7 +565,7 @@ package BraytonCycle
         Pebble_Bed_HTGR(redeclare
           NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.CS_Basic
           CS, redeclare
-          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Dummy
+          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Simple
           ED) annotation (Placement(transformation(extent={{-48,-44},{22,24}})));
       TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T Intercooler_Source(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -697,7 +632,7 @@ package BraytonCycle
       Models.PebbleBed_Brayton_CC Pebble_Bed_HTGR(redeclare
           NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.CS_Basic
           CS, redeclare
-          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Dummy
+          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Simple
           ED) annotation (Placement(transformation(extent={{-48,-20},{20,44}})));
       TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T Intercooler_Source(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -817,12 +752,12 @@ package BraytonCycle
     model PebbleBed_Brayton
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable
-          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.CS_Dummy
+          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.CS_Simple
           CS,
         redeclare replaceable
-          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Dummy
+          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Simple
           ED,
-        redeclare Data.Data_HTGR_Pebble data(
+        redeclare Data.HTGR_Pebble_BraytonCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,
@@ -863,8 +798,8 @@ package BraytonCycle
       TRANSFORM.Fluid.Volumes.SimpleVolume Core_Outlet(
         redeclare package Medium =
             Coolant_Medium,
-        p_start=dataInitial.P_Core_Outlet,
-        T_start=dataInitial.T_Core_Outlet,
+        p_start=data.P_Core_Outlet,
+        T_start=data.T_Core_Outlet,
         redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=0)) annotation (Placement(transformation(
@@ -874,9 +809,9 @@ package BraytonCycle
       GasTurbine.Turbine.Turbine      turbine(
         redeclare package Medium =
            Coolant_Medium,
-        pstart_out=dataInitial.P_Turbine_Ref,
-        Tstart_in=dataInitial.TStart_In_Turbine,
-        Tstart_out=dataInitial.TStart_Out_Turbine,
+        pstart_out=data.P_Turbine_Ref,
+        Tstart_in=data.TStart_In_Turbine,
+        Tstart_out=data.TStart_Out_Turbine,
         eta0=data.Turbine_Efficiency,
         PR0=data.Turbine_Pressure_Ratio,
         w0=data.Turbine_Nominal_MassFlowRate)
@@ -891,24 +826,24 @@ package BraytonCycle
             Coolant_Medium,
         V_Tube=data.HX_Reheat_Tube_Vol,
         V_Shell=data.HX_Reheat_Shell_Vol,
-        p_start_tube=dataInitial.Recuperator_P_Tube,
+        p_start_tube=data.Recuperator_P_Tube,
         use_T_start_tube=true,
         T_start_tube_inlet=673.15,
         T_start_tube_outlet=673.15,
-        h_start_tube_inlet=dataInitial.Recuperator_h_Tube_Inlet,
-        h_start_tube_outlet=dataInitial.Recuperator_h_Tube_Outlet,
-        p_start_shell=dataInitial.Recuperator_P_Tube,
+        h_start_tube_inlet=data.Recuperator_h_Tube_Inlet,
+        h_start_tube_outlet=data.Recuperator_h_Tube_Outlet,
+        p_start_shell=data.Recuperator_P_Tube,
         use_T_start_shell=true,
         T_start_shell_inlet=673.15,
         T_start_shell_outlet=673.15,
-        h_start_shell_inlet=dataInitial.Recuperator_h_Shell_Inlet,
-        h_start_shell_outlet=dataInitial.HX_Aux_h_tube_out,
-        dp_init_tube=dataInitial.Recuperator_dp_Tube,
-        dp_init_shell=dataInitial.Recuperator_dp_Shell,
+        h_start_shell_inlet=data.Recuperator_h_Shell_Inlet,
+        h_start_shell_outlet=data.HX_Aux_h_tube_out,
+        dp_init_tube=data.Recuperator_dp_Tube,
+        dp_init_shell=data.Recuperator_dp_Shell,
         Q_init=-100000000,
         Cr_init=0.8,
-        m_start_tube=dataInitial.Recuperator_m_Tube,
-        m_start_shell=dataInitial.Recuperator_m_Shell)
+        m_start_tube=data.Recuperator_m_Tube,
+        m_start_shell=data.Recuperator_m_Shell)
         annotation (Placement(transformation(extent={{10,-36},{-10,-16}})));
 
       TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package
@@ -920,7 +855,7 @@ package BraytonCycle
       TRANSFORM.Fluid.Volumes.SimpleVolume Precooler(
         redeclare package Medium =
             Coolant_Medium,
-        p_start=dataInitial.P_HP_Comp_Ref,
+        p_start=data.P_HP_Comp_Ref,
         T_start=data.T_Precooler,
         redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
@@ -937,9 +872,9 @@ package BraytonCycle
       GasTurbine.Compressor.Compressor      compressor(
         redeclare package Medium =
             Coolant_Medium,
-        pstart_in=dataInitial.P_LP_Comp_Ref,
-        Tstart_in=dataInitial.TStart_LP_Comp_In,
-        Tstart_out=dataInitial.TStart_LP_Comp_Out,
+        pstart_in=data.P_LP_Comp_Ref,
+        Tstart_in=data.TStart_LP_Comp_In,
+        Tstart_out=data.TStart_LP_Comp_Out,
         eta0=data.LP_Comp_Efficiency,
         PR0=data.LP_Comp_P_Ratio,
         w0=data.LP_Comp_MassFlowRate)
@@ -956,7 +891,7 @@ package BraytonCycle
       TRANSFORM.Fluid.Volumes.SimpleVolume Intercooler(
         redeclare package Medium =
             Coolant_Medium,
-        p_start=dataInitial.P_LP_Comp_Ref,
+        p_start=data.P_LP_Comp_Ref,
         T_start=data.T_Intercooler,
         redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
@@ -975,9 +910,9 @@ package BraytonCycle
         redeclare package Medium =
             Coolant_Medium,
         allowFlowReversal=false,
-        pstart_in=dataInitial.P_HP_Comp_Ref,
-        Tstart_in=dataInitial.TStart_HP_Comp_In,
-        Tstart_out=dataInitial.TStart_HP_Comp_Out,
+        pstart_in=data.P_HP_Comp_Ref,
+        Tstart_in=data.TStart_HP_Comp_In,
+        Tstart_out=data.TStart_HP_Comp_Out,
         eta0=data.HP_Comp_Efficiency,
         PR0=data.HP_Comp_P_Ratio,
         w0=data.HP_Comp_MassFlowRate)
@@ -1039,9 +974,6 @@ package BraytonCycle
     HX_Reheat_Shell_Vol=0.1,
     HX_Reheat_Buffer_Vol=0.1)
     annotation (Placement(transformation(extent={{-100,50},{-80,70}})));*/
-
-      Data.DataInitial_HTGR_Pebble dataInitial
-        annotation (Placement(transformation(extent={{80,124},{100,144}})));
 
       Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase Steam_Offtake(
         tube_av_b=false,
@@ -1117,12 +1049,12 @@ package BraytonCycle
         Q_fission_input=600000000,
         alpha_fuel=-5e-5,
         alpha_coolant=0.0,
-        p_b_start(displayUnit="bar") = dataInitial.P_Core_Outlet,
+        p_b_start(displayUnit="bar") = data.P_Core_Outlet,
         Q_nominal=600000000,
         SigmaF_start=26,
-        p_a_start(displayUnit="bar") = dataInitial.P_Core_Inlet,
-        T_a_start(displayUnit="K") = dataInitial.T_Core_Inlet,
-        T_b_start(displayUnit="K") = dataInitial.T_Core_Outlet,
+        p_a_start(displayUnit="bar") = data.P_Core_Inlet,
+        T_a_start(displayUnit="K") = data.T_Core_Inlet,
+        T_b_start(displayUnit="K") = data.T_Core_Outlet,
         m_flow_a_start=data.m_flow,
         exposeState_a=false,
         exposeState_b=false,
@@ -1259,12 +1191,12 @@ package BraytonCycle
     model PebbleBed_Brayton_CC
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable
-          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.CS_Dummy
+          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.CS_Simple
           CS,
         redeclare replaceable
-          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Dummy
+          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Simple
           ED,
-        redeclare Data.Data_HTGR_Pebble data(
+        redeclare Data.HTGR_Pebble_BraytonCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,
@@ -1303,8 +1235,8 @@ package BraytonCycle
       TRANSFORM.Fluid.Volumes.SimpleVolume Core_Outlet(
         redeclare package Medium =
             Coolant_Medium,
-        p_start=dataInitial.P_Core_Outlet,
-        T_start=dataInitial.T_Core_Outlet,
+        p_start=data.P_Core_Outlet,
+        T_start=data.T_Core_Outlet,
         redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=0)) annotation (Placement(transformation(
@@ -1314,9 +1246,9 @@ package BraytonCycle
       GasTurbine.Turbine.Turbine      turbine(
         redeclare package Medium =
            Coolant_Medium,
-        pstart_out=dataInitial.P_Turbine_Ref,
-        Tstart_in=dataInitial.TStart_In_Turbine,
-        Tstart_out=dataInitial.TStart_Out_Turbine,
+        pstart_out=data.P_Turbine_Ref,
+        Tstart_in=data.TStart_In_Turbine,
+        Tstart_out=data.TStart_Out_Turbine,
         eta0=data.Turbine_Efficiency,
         PR0=data.Turbine_Pressure_Ratio,
         w0=data.Turbine_Nominal_MassFlowRate)
@@ -1331,24 +1263,24 @@ package BraytonCycle
             Coolant_Medium,
         V_Tube=data.HX_Reheat_Tube_Vol,
         V_Shell=data.HX_Reheat_Shell_Vol,
-        p_start_tube=dataInitial.Recuperator_P_Tube,
+        p_start_tube=data.Recuperator_P_Tube,
         use_T_start_tube=true,
         T_start_tube_inlet=873.15,
         T_start_tube_outlet=873.15,
-        h_start_tube_inlet=dataInitial.Recuperator_h_Tube_Inlet,
-        h_start_tube_outlet=dataInitial.Recuperator_h_Tube_Outlet,
-        p_start_shell=dataInitial.Recuperator_P_Tube,
+        h_start_tube_inlet=data.Recuperator_h_Tube_Inlet,
+        h_start_tube_outlet=data.Recuperator_h_Tube_Outlet,
+        p_start_shell=data.Recuperator_P_Tube,
         use_T_start_shell=true,
         T_start_shell_inlet=873.15,
         T_start_shell_outlet=873.15,
-        h_start_shell_inlet=dataInitial.Recuperator_h_Shell_Inlet,
-        h_start_shell_outlet=dataInitial.HX_Aux_h_tube_out,
-        dp_init_tube=dataInitial.Recuperator_dp_Tube,
-        dp_init_shell=dataInitial.Recuperator_dp_Shell,
+        h_start_shell_inlet=data.Recuperator_h_Shell_Inlet,
+        h_start_shell_outlet=data.HX_Aux_h_tube_out,
+        dp_init_tube=data.Recuperator_dp_Tube,
+        dp_init_shell=data.Recuperator_dp_Shell,
         Q_init=-100000000,
         Cr_init=0.8,
-        m_start_tube=dataInitial.Recuperator_m_Tube,
-        m_start_shell=dataInitial.Recuperator_m_Shell)
+        m_start_tube=data.Recuperator_m_Tube,
+        m_start_shell=data.Recuperator_m_Shell)
         annotation (Placement(transformation(extent={{10,-36},{-10,-16}})));
 
       TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package
@@ -1360,7 +1292,7 @@ package BraytonCycle
       TRANSFORM.Fluid.Volumes.SimpleVolume Precooler(
         redeclare package Medium =
             Coolant_Medium,
-        p_start=dataInitial.P_HP_Comp_Ref,
+        p_start=data.P_HP_Comp_Ref,
         T_start=data.T_Precooler,
         redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
@@ -1377,9 +1309,9 @@ package BraytonCycle
       GasTurbine.Compressor.Compressor      compressor(
         redeclare package Medium =
             Coolant_Medium,
-        pstart_in=dataInitial.P_LP_Comp_Ref,
-        Tstart_in=dataInitial.TStart_LP_Comp_In,
-        Tstart_out=dataInitial.TStart_LP_Comp_Out,
+        pstart_in=data.P_LP_Comp_Ref,
+        Tstart_in=data.TStart_LP_Comp_In,
+        Tstart_out=data.TStart_LP_Comp_Out,
         eta0=data.LP_Comp_Efficiency,
         PR0=data.LP_Comp_P_Ratio,
         w0=data.LP_Comp_MassFlowRate)
@@ -1396,7 +1328,7 @@ package BraytonCycle
       TRANSFORM.Fluid.Volumes.SimpleVolume Intercooler(
         redeclare package Medium =
             Coolant_Medium,
-        p_start=dataInitial.P_LP_Comp_Ref,
+        p_start=data.P_LP_Comp_Ref,
         T_start=data.T_Intercooler,
         redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
@@ -1415,9 +1347,9 @@ package BraytonCycle
         redeclare package Medium =
             Coolant_Medium,
         allowFlowReversal=false,
-        pstart_in=dataInitial.P_HP_Comp_Ref,
-        Tstart_in=dataInitial.TStart_HP_Comp_In,
-        Tstart_out=dataInitial.TStart_HP_Comp_Out,
+        pstart_in=data.P_HP_Comp_Ref,
+        Tstart_in=data.TStart_HP_Comp_In,
+        Tstart_out=data.TStart_HP_Comp_Out,
         eta0=data.HP_Comp_Efficiency,
         PR0=data.HP_Comp_P_Ratio,
         w0=data.HP_Comp_MassFlowRate)
@@ -1455,8 +1387,6 @@ package BraytonCycle
             rotation=180,
             origin={-16,-46})));
 
-      Data.DataInitial_HTGR_Pebble dataInitial
-        annotation (PlaceMikkment(transformation(extent={{80,124},{100,144}})));
 
       Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase Steam_Offtake(
         shell_av_b=false,
@@ -1598,12 +1528,12 @@ package BraytonCycle
         Q_fission_input=600000000,
         alpha_fuel=-5e-5,
         alpha_coolant=0.0,
-        p_b_start(displayUnit="bar") = dataInitial.P_Core_Outlet,
+        p_b_start(displayUnit="bar") = data.P_Core_Outlet,
         Q_nominal=600000000,
         SigmaF_start=26,
-        p_a_start(displayUnit="bar") = dataInitial.P_Core_Inlet,
-        T_a_start(displayUnit="K") = dataInitial.T_Core_Inlet,
-        T_b_start(displayUnit="K") = dataInitial.T_Core_Outlet,
+        p_a_start(displayUnit="bar") = data.P_Core_Inlet,
+        T_a_start(displayUnit="K") = data.T_Core_Inlet,
+        T_b_start(displayUnit="K") = data.T_Core_Outlet,
         m_flow_a_start=data.m_flow,
         exposeState_a=false,
         exposeState_b=false,
@@ -1776,12 +1706,12 @@ package BraytonCycle
     model PebbleBed_Brayton_FullRX
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable
-          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.CS_Dummy
+          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.CS_Simple
           CS,
         redeclare replaceable
-          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Dummy
+          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Simple
           ED,
-        redeclare Data.Data_HTGR_Pebble data(
+        redeclare Data.HTGR_Pebble_BraytonCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,
@@ -1821,8 +1751,8 @@ package BraytonCycle
       TRANSFORM.Fluid.Volumes.SimpleVolume Core_Outlet(
         redeclare package Medium =
             Coolant_Medium,
-        p_start=dataInitial.P_Core_Outlet,
-        T_start=dataInitial.T_Core_Outlet,
+        p_start=data.P_Core_Outlet,
+        T_start=data.T_Core_Outlet,
         redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=0)) annotation (Placement(transformation(
@@ -1833,9 +1763,9 @@ package BraytonCycle
       GasTurbine.Turbine.Turbine turbine(
         redeclare package Medium =
             Coolant_Medium,
-        pstart_out=dataInitial.P_Turbine_Ref,
-        Tstart_in=dataInitial.TStart_In_Turbine,
-        Tstart_out=dataInitial.TStart_Out_Turbine,
+        pstart_out=data.P_Turbine_Ref,
+        Tstart_in=data.TStart_In_Turbine,
+        Tstart_out=data.TStart_Out_Turbine,
         eta0=data.Turbine_Efficiency,
         PR0=data.Turbine_Pressure_Ratio,
         w0=data.Turbine_Nominal_MassFlowRate)
@@ -1851,24 +1781,24 @@ package BraytonCycle
             Coolant_Medium,
         V_Tube=data.HX_Reheat_Tube_Vol,
         V_Shell=data.HX_Reheat_Shell_Vol,
-        p_start_tube=dataInitial.Recuperator_P_Tube,
+        p_start_tube=data.Recuperator_P_Tube,
         use_T_start_tube=true,
         T_start_tube_inlet=773.15,
         T_start_tube_outlet=573.15,
-        h_start_tube_inlet=dataInitial.Recuperator_h_Tube_Inlet,
-        h_start_tube_outlet=dataInitial.Recuperator_h_Tube_Outlet,
-        p_start_shell=dataInitial.Recuperator_P_Tube,
+        h_start_tube_inlet=data.Recuperator_h_Tube_Inlet,
+        h_start_tube_outlet=data.Recuperator_h_Tube_Outlet,
+        p_start_shell=data.Recuperator_P_Tube,
         use_T_start_shell=true,
         T_start_shell_inlet=573.15,
         T_start_shell_outlet=773.15,
-        h_start_shell_inlet=dataInitial.Recuperator_h_Shell_Inlet,
-        h_start_shell_outlet=dataInitial.HX_Aux_h_tube_out,
-        dp_init_tube=dataInitial.Recuperator_dp_Tube,
-        dp_init_shell=dataInitial.Recuperator_dp_Shell,
+        h_start_shell_inlet=data.Recuperator_h_Shell_Inlet,
+        h_start_shell_outlet=data.HX_Aux_h_tube_out,
+        dp_init_tube=data.Recuperator_dp_Tube,
+        dp_init_shell=data.Recuperator_dp_Shell,
         Q_init=-100000000,
         Cr_init=0.8,
-        m_start_tube=dataInitial.Recuperator_m_Tube,
-        m_start_shell=dataInitial.Recuperator_m_Shell)
+        m_start_tube=data.Recuperator_m_Tube,
+        m_start_shell=data.Recuperator_m_Shell)
         annotation (Placement(transformation(extent={{18,-18},{-2,2}})));
 
       TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package
@@ -1880,7 +1810,7 @@ package BraytonCycle
       TRANSFORM.Fluid.Volumes.SimpleVolume Precooler(
         redeclare package Medium =
             Coolant_Medium,
-        p_start=dataInitial.P_HP_Comp_Ref,
+        p_start=data.P_HP_Comp_Ref,
         T_start=data.T_Precooler,
         redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
@@ -1898,9 +1828,9 @@ package BraytonCycle
       GasTurbine.Compressor.Compressor compressor(
         redeclare package Medium =
             Coolant_Medium,
-        pstart_in=dataInitial.P_LP_Comp_Ref,
-        Tstart_in=dataInitial.TStart_LP_Comp_In,
-        Tstart_out=dataInitial.TStart_LP_Comp_Out,
+        pstart_in=data.P_LP_Comp_Ref,
+        Tstart_in=data.TStart_LP_Comp_In,
+        Tstart_out=data.TStart_LP_Comp_Out,
         eta0=data.LP_Comp_Efficiency,
         PR0=data.LP_Comp_P_Ratio,
         w0=data.LP_Comp_MassFlowRate)
@@ -1918,7 +1848,7 @@ package BraytonCycle
       TRANSFORM.Fluid.Volumes.SimpleVolume Intercooler(
         redeclare package Medium =
             Coolant_Medium,
-        p_start=dataInitial.P_LP_Comp_Ref,
+        p_start=data.P_LP_Comp_Ref,
         T_start=data.T_Intercooler,
         redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
@@ -1937,9 +1867,9 @@ package BraytonCycle
         redeclare package Medium =
             Coolant_Medium,
         allowFlowReversal=false,
-        pstart_in=dataInitial.P_HP_Comp_Ref,
-        Tstart_in=dataInitial.TStart_HP_Comp_In,
-        Tstart_out=dataInitial.TStart_HP_Comp_Out,
+        pstart_in=data.P_HP_Comp_Ref,
+        Tstart_in=data.TStart_HP_Comp_In,
+        Tstart_out=data.TStart_HP_Comp_Out,
         eta0=data.HP_Comp_Efficiency,
         PR0=data.HP_Comp_P_Ratio,
         w0=data.HP_Comp_MassFlowRate) annotation (Placement(transformation(
@@ -2003,9 +1933,6 @@ package BraytonCycle
     HX_Reheat_Buffer_Vol=0.1)
     annotation (Placement(transformation(extent={{-100,50},{-80,70}})));*/
 
-      Data.DataInitial_HTGR_Pebble dataInitial
-        annotation (Placement(transformation(extent={{80,124},{100,144}})));
-
       TRANSFORM.Fluid.Sensors.TemperatureTwoPort Intercooler_Pre_Temp(redeclare
           package Medium = Coolant_Medium) annotation (Placement(transformation(
             extent={{-10,10},{10,-10}},
@@ -2039,12 +1966,12 @@ package BraytonCycle
         Q_fission_input=600000000,
         alpha_fuel=-5e-5,
         alpha_coolant=0.0,
-        p_b_start(displayUnit="bar") = dataInitial.P_Core_Outlet,
+        p_b_start(displayUnit="bar") = data.P_Core_Outlet,
         Q_nominal=600000000,
         SigmaF_start=26,
-        p_a_start(displayUnit="bar") = dataInitial.P_Core_Inlet,
-        T_a_start(displayUnit="K") = dataInitial.T_Core_Inlet,
-        T_b_start(displayUnit="K") = dataInitial.T_Core_Outlet,
+        p_a_start(displayUnit="bar") = data.P_Core_Inlet,
+        T_a_start(displayUnit="K") = data.T_Core_Inlet,
+        T_b_start(displayUnit="K") = data.T_Core_Outlet,
         m_flow_a_start=data.m_flow,
         exposeState_a=false,
         exposeState_b=false,
@@ -2160,9 +2087,9 @@ package BraytonCycle
           NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.CS_Basic_Transient_Example
           CS,
         redeclare replaceable
-          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Dummy
+          NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Simple
           ED,
-        redeclare Data.Data_HTGR_Pebble data(
+        redeclare Data.HTGR_Pebble_BraytonCycle data(
           Q_total=600000000,
           Q_total_el=300000000,
           K_P_Release=10000,
@@ -2202,8 +2129,8 @@ package BraytonCycle
       TRANSFORM.Fluid.Volumes.SimpleVolume Core_Outlet(
         redeclare package Medium =
             Coolant_Medium,
-        p_start=dataInitial.P_Core_Outlet,
-        T_start=dataInitial.T_Core_Outlet,
+        p_start=data.P_Core_Outlet,
+        T_start=data.T_Core_Outlet,
         redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=0)) annotation (Placement(transformation(
@@ -2214,9 +2141,9 @@ package BraytonCycle
       GasTurbine.Turbine.Turbine turbine(
         redeclare package Medium =
             Coolant_Medium,
-        pstart_out=dataInitial.P_Turbine_Ref,
-        Tstart_in=dataInitial.TStart_In_Turbine,
-        Tstart_out=dataInitial.TStart_Out_Turbine,
+        pstart_out=data.P_Turbine_Ref,
+        Tstart_in=data.TStart_In_Turbine,
+        Tstart_out=data.TStart_Out_Turbine,
         eta0=data.Turbine_Efficiency,
         PR0=data.Turbine_Pressure_Ratio,
         w0=data.Turbine_Nominal_MassFlowRate)
@@ -2232,24 +2159,24 @@ package BraytonCycle
             Coolant_Medium,
         V_Tube=data.HX_Reheat_Tube_Vol,
         V_Shell=data.HX_Reheat_Shell_Vol,
-        p_start_tube=dataInitial.Recuperator_P_Tube,
+        p_start_tube=data.Recuperator_P_Tube,
         use_T_start_tube=true,
         T_start_tube_inlet=773.15,
         T_start_tube_outlet=573.15,
-        h_start_tube_inlet=dataInitial.Recuperator_h_Tube_Inlet,
-        h_start_tube_outlet=dataInitial.Recuperator_h_Tube_Outlet,
-        p_start_shell=dataInitial.Recuperator_P_Tube,
+        h_start_tube_inlet=data.Recuperator_h_Tube_Inlet,
+        h_start_tube_outlet=data.Recuperator_h_Tube_Outlet,
+        p_start_shell=data.Recuperator_P_Tube,
         use_T_start_shell=true,
         T_start_shell_inlet=573.15,
         T_start_shell_outlet=773.15,
-        h_start_shell_inlet=dataInitial.Recuperator_h_Shell_Inlet,
-        h_start_shell_outlet=dataInitial.HX_Aux_h_tube_out,
-        dp_init_tube=dataInitial.Recuperator_dp_Tube,
-        dp_init_shell=dataInitial.Recuperator_dp_Shell,
+        h_start_shell_inlet=data.Recuperator_h_Shell_Inlet,
+        h_start_shell_outlet=data.HX_Aux_h_tube_out,
+        dp_init_tube=data.Recuperator_dp_Tube,
+        dp_init_shell=data.Recuperator_dp_Shell,
         Q_init=-100000000,
         Cr_init=0.8,
-        m_start_tube=dataInitial.Recuperator_m_Tube,
-        m_start_shell=dataInitial.Recuperator_m_Shell)
+        m_start_tube=data.Recuperator_m_Tube,
+        m_start_shell=data.Recuperator_m_Shell)
         annotation (Placement(transformation(extent={{18,-18},{-2,2}})));
 
       TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package
@@ -2261,7 +2188,7 @@ package BraytonCycle
       TRANSFORM.Fluid.Volumes.SimpleVolume Precooler(
         redeclare package Medium =
             Coolant_Medium,
-        p_start=dataInitial.P_HP_Comp_Ref,
+        p_start=data.P_HP_Comp_Ref,
         T_start=data.T_Precooler,
         redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
@@ -2279,9 +2206,9 @@ package BraytonCycle
       GasTurbine.Compressor.Compressor compressor(
         redeclare package Medium =
             Coolant_Medium,
-        pstart_in=dataInitial.P_LP_Comp_Ref,
-        Tstart_in=dataInitial.TStart_LP_Comp_In,
-        Tstart_out=dataInitial.TStart_LP_Comp_Out,
+        pstart_in=data.P_LP_Comp_Ref,
+        Tstart_in=data.TStart_LP_Comp_In,
+        Tstart_out=data.TStart_LP_Comp_Out,
         eta0=data.LP_Comp_Efficiency,
         PR0=data.LP_Comp_P_Ratio,
         w0=data.LP_Comp_MassFlowRate)
@@ -2299,7 +2226,7 @@ package BraytonCycle
       TRANSFORM.Fluid.Volumes.SimpleVolume Intercooler(
         redeclare package Medium =
             Coolant_Medium,
-        p_start=dataInitial.P_LP_Comp_Ref,
+        p_start=data.P_LP_Comp_Ref,
         T_start=data.T_Intercooler,
         redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
@@ -2317,9 +2244,9 @@ package BraytonCycle
       SupportComponents.Compressor_Controlled compressor_Controlled(
         redeclare package Medium = Coolant_Medium,
         allowFlowReversal=false,
-        pstart_in=dataInitial.P_HP_Comp_Ref,
-        Tstart_in=dataInitial.TStart_HP_Comp_In,
-        Tstart_out=dataInitial.TStart_HP_Comp_Out,
+        pstart_in=data.P_HP_Comp_Ref,
+        Tstart_in=data.TStart_HP_Comp_In,
+        Tstart_out=data.TStart_HP_Comp_Out,
         use_w0_port=true,
         eta0=data.HP_Comp_Efficiency,
         PR0=data.HP_Comp_P_Ratio,
@@ -2384,9 +2311,6 @@ package BraytonCycle
     HX_Reheat_Buffer_Vol=0.1)
     annotation (Placement(transformation(extent={{-100,50},{-80,70}})));*/
 
-      Data.DataInitial_HTGR_Pebble dataInitial
-        annotation (Placement(transformation(extent={{80,124},{100,144}})));
-
       TRANSFORM.Fluid.Sensors.TemperatureTwoPort Intercooler_Pre_Temp(redeclare
           package Medium = Coolant_Medium) annotation (Placement(transformation(
             extent={{-10,10},{10,-10}},
@@ -2412,12 +2336,12 @@ package BraytonCycle
         Q_fission_input=600000000,
         alpha_fuel=-5e-5,
         alpha_coolant=0.0,
-        p_b_start(displayUnit="bar") = dataInitial.P_Core_Outlet,
+        p_b_start(displayUnit="bar") = data.P_Core_Outlet,
         Q_nominal=600000000,
         SigmaF_start=26,
-        p_a_start(displayUnit="bar") = dataInitial.P_Core_Inlet,
-        T_a_start(displayUnit="K") = dataInitial.T_Core_Inlet,
-        T_b_start(displayUnit="K") = dataInitial.T_Core_Outlet,
+        p_a_start(displayUnit="bar") = data.P_Core_Inlet,
+        T_a_start(displayUnit="K") = data.T_Core_Inlet,
+        T_b_start(displayUnit="K") = data.T_Core_Outlet,
         m_flow_a_start=data.m_flow,
         exposeState_a=false,
         exposeState_b=false,
