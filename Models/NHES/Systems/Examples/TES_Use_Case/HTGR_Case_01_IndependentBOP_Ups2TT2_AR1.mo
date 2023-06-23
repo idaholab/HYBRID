@@ -188,12 +188,12 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
     startTime=2000)
     annotation (Placement(transformation(extent={{-26,72},{-6,92}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
-    amplitude=-50.58e6,
+    amplitude=-37.52e6,
     rising=100,
     width=9800,
     falling=100,
     period=20000,
-    offset=87e6 - 1e5,
+    offset=86.24e6,
     startTime=4e5 + 2000)
     annotation (Placement(transformation(extent={{-232,256},{-212,276}})));
   BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat_AR1
@@ -210,7 +210,7 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
       data(
         p_steam=10500000,
         T_Steam_Ref=668.15,
-        Q_Nom=88e6),
+        Q_Nom=86.24e6),
       FWCP_Speed(yMax=3500),
       const15(k=0.005),
       minMaxFilter1(max=1 - 0.005),
@@ -238,7 +238,7 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2_AR1
   Modelica.Blocks.Math.Add         add
     annotation (Placement(transformation(extent={{-190,240},{-170,260}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid1(
-    amplitude=10e6 + 20.14e6,
+    amplitude=31.84e6,
     rising=100,
     width=7800 + 5000,
     falling=100,

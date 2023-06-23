@@ -26,7 +26,7 @@ model CS_DivertPowerControl_HTGR_3VNb_AR1
     annotation (Placement(transformation(extent={{-104,-136},{-84,-116}})));
   TRANSFORM.Controls.LimPID TCV_Power(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-5e-8,
+    k=-5e-7,
     Ti=1000,
     k_s=1,
     k_m=1,
@@ -36,7 +36,7 @@ model CS_DivertPowerControl_HTGR_3VNb_AR1
     xi_start=1500)
     annotation (Placement(transformation(extent={{-58,-28},{-38,-48}})));
   Modelica.Blocks.Sources.RealExpression
-                                   realExpression(y=electric_demand - 1.526e6)
+                                   realExpression(y=electric_demand - 1.69964e6)
     annotation (Placement(transformation(extent={{284,-74},{240,-60}})));
   Modelica.Blocks.Sources.Constant const7(k=1)
     annotation (Placement(transformation(extent={{-34,-54},{-26,-46}})));
@@ -91,26 +91,26 @@ model CS_DivertPowerControl_HTGR_3VNb_AR1
   Modelica.Blocks.Math.Add         add5
     annotation (Placement(transformation(extent={{112,-106},{92,-86}})));
   TRANSFORM.Controls.LimPID Charge_OnOff_Throttle(
-    controllerType=Modelica.Blocks.Types.SimpleController.P,
-    k=-5e-6,
-    Ti=10,
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    k=-1e-6,
+    Ti=1000,
     Td=10,
     k_s=1,
     k_m=1,
-    yMax=1 - 0.015,
+    yMax=1 - 0.010,
     yMin=0,
     wp=1,
     wd=0.001,
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
     annotation (Placement(transformation(extent={{152,-76},{132,-96}})));
-  Modelica.Blocks.Sources.Constant const10(k=0.015)
+  Modelica.Blocks.Sources.Constant const10(k=0.010)
     annotation (Placement(transformation(extent={{152,-122},{144,-114}})));
   Modelica.Blocks.Sources.Constant const1(k=data.p_steam)
     annotation (Placement(transformation(extent={{-92,-48},{-72,-28}})));
   Modelica.Blocks.Math.Min min2
     annotation (Placement(transformation(extent={{196,-98},{176,-78}})));
-  Modelica.Blocks.Sources.Constant const12(k=89e6 - 1.526e6 - 1e5)
+  Modelica.Blocks.Sources.Constant const12(k=86.24e6)
     annotation (Placement(transformation(extent={{256,-114},{232,-90}})));
   Modelica.Blocks.Sources.RealExpression
                                    realExpression1(y=Overall_Power)
