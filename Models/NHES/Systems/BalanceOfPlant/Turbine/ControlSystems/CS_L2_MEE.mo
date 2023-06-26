@@ -11,11 +11,14 @@ model CS_L2_MEE
     annotation (Placement(transformation(extent={{-100,40},{-80,60}})));
   Modelica.Blocks.Sources.RealExpression Power_set(y=3e6)
     annotation (Placement(transformation(extent={{-100,0},{-80,20}})));
-  TRANSFORM.Controls.LimPID FeedPump_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-5e-1,
+  Controls.LimOffsetPID     FeedPump_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    k=-5e-2,
     Ti=30,
     yMax=2*data.mdot_hpt,
-    yMin=data.mdot_hpt*0.1)
+    yMin=data.mdot_hpt*0.1,
+    offset=data.mdot_hpt,
+    delayTime=6000,
+    init_output=data.mdot_hpt)
     annotation (Placement(transformation(extent={{-10,80},{10,100}})));
   TRANSFORM.Controls.LimPID TCV_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=3e-5,
@@ -29,24 +32,18 @@ model CS_L2_MEE
     Ti=15,
     yMax=1,
     yMin=0) annotation (Placement(transformation(extent={{-10,40},{10,60}})));
-  Modelica.Blocks.Sources.RealExpression T_in_set1(y=data.mdot_hpt)
-    annotation (Placement(transformation(extent={{4,64},{24,84}})));
-  Modelica.Blocks.Logical.Switch switch2
-    annotation (Placement(transformation(extent={{38,72},{58,92}})));
-  Modelica.Blocks.Sources.BooleanStep booleanStep(startTime=4000)
-    annotation (Placement(transformation(extent={{-10,114},{10,134}})));
-  Modelica.Blocks.Logical.Switch switch3
-    annotation (Placement(transformation(extent={{-54,60},{-34,80}})));
   Modelica.Blocks.Sources.RealExpression MEE_Dis_mflow(y=0)
     annotation (Placement(transformation(extent={{-100,-160},{-80,-140}})));
   Modelica.Blocks.Sources.RealExpression Plpt_in_set(y=data.LPT1_p_in)
     annotation (Placement(transformation(extent={{-100,-36},{-80,-16}})));
-  TRANSFORM.Controls.LimPID ECV_PID(
+  Controls.LimOffsetPID     ECV_PID(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=-3e-9,
     Ti=360,
     yMax=1,
-    yMin=0) annotation (Placement(transformation(extent={{-10,-36},{10,-16}})));
+    yMin=0,
+    offset=0.5)
+            annotation (Placement(transformation(extent={{-10,-36},{10,-16}})));
   TRANSFORM.Controls.LimPID pArc_PID(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=-3e-9,
@@ -62,12 +59,13 @@ model CS_L2_MEE
     annotation (Placement(transformation(extent={{72,-20},{52,0}})));
   Modelica.Blocks.Sources.RealExpression Dis_mflow_set(y=37)
     annotation (Placement(transformation(extent={{-100,-140},{-80,-120}})));
-  TRANSFORM.Controls.LimPID MEE_CVs(
+  Controls.LimOffsetPID     MEE_CVs(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1e-3,
+    k=3e-3,
     Ti=15,
     yMax=1,
-    yMin=0)
+    yMin=0,
+    offset=0.1)
     annotation (Placement(transformation(extent={{-60,-140},{-40,-120}})));
   Modelica.Blocks.Math.Add add1
     annotation (Placement(transformation(extent={{56,8},{76,28}})));
@@ -95,37 +93,6 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(T_in_set.y, FeedPump_PID.u_s)
     annotation (Line(points={{-79,90},{-12,90}}, color={0,0,127}));
-  connect(FeedPump_PID.y, switch2.u1)
-    annotation (Line(points={{11,90},{36,90}}, color={0,0,127}));
-  connect(switch2.u3, T_in_set1.y)
-    annotation (Line(points={{36,74},{25,74}}, color={0,0,127}));
-  connect(booleanStep.y, switch2.u2) annotation (Line(points={{11,124},{36,
-          124},{36,82}}, color={255,0,255}));
-  connect(actuatorBus.Feed_Pump_Speed, switch2.y) annotation (Line(
-      points={{30,-100},{30,44},{74,44},{74,82},{59,82}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{6,3},{6,3}},
-      horizontalAlignment=TextAlignment.Left));
-  connect(booleanStep.y, switch3.u2) annotation (Line(points={{11,124},{16,
-          124},{16,106},{-28,106},{-28,82},{-62,82},{-62,70},{-56,70}},
-        color={255,0,255}));
-  connect(switch3.y, FeedPump_PID.u_m) annotation (Line(points={{-33,70},{
-          -18,70},{-18,78},{0,78}}, color={0,0,127}));
-  connect(sensorBus.Steam_Temperature, switch3.u1) annotation (Line(
-      points={{-30,-100},{-30,44},{-72,44},{-72,80},{-56,80},{-56,78}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-3,6},{-3,6}},
-      horizontalAlignment=TextAlignment.Right));
-  connect(T_in_set.y, switch3.u3) annotation (Line(points={{-79,90},{-64,90},
-          {-64,62},{-56,62}}, color={0,0,127}));
   connect(Plpt_in_set.y, ECV_PID.u_s)
     annotation (Line(points={{-79,-26},{-12,-26}}, color={0,0,127}));
   connect(actuatorBus.ECV, ECV_PID.y) annotation (Line(
@@ -209,6 +176,24 @@ equation
       horizontalAlignment=TextAlignment.Left));
   connect(actuatorBus.powerset, Power_set.y) annotation (Line(
       points={{30,-100},{30,24},{-28,24},{-28,10},{-79,10}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{6,3},{6,3}},
+      horizontalAlignment=TextAlignment.Left));
+  connect(sensorBus.Steam_Temperature, FeedPump_PID.u_m) annotation (Line(
+      points={{-30,-100},{-30,68},{0,68},{0,78}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
+  connect(actuatorBus.Feed_Pump_Speed, FeedPump_PID.y) annotation (Line(
+      points={{30,-100},{30,90},{11,90}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(

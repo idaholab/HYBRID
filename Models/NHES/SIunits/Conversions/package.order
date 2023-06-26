@@ -12,3 +12,5 @@ from_degF
 from_degF_diff
 from_gpm
 from_hp
+to_MW
+to_kW

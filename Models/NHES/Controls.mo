@@ -281,8 +281,6 @@ package Controls
             90},{48,90},{48,104},{41,104}}, color={0,0,127}));
     connect(delay_boolean.y, output_switch.u2) annotation (Line(points={{1,110},{10,
             110},{10,134},{88,134},{88,102},{98,102}}, color={255,0,255}));
-    connect(addSat.u1, y) annotation (Line(points={{86,-38},{86,-30},{110,-30},{110,
-            0}}, color={0,0,127}));
     connect(offset_set.y, add_offset.u2)
       annotation (Line(points={{87,64},{98,64}}, color={0,0,127}));
     connect(init.y, output_switch.u3)
@@ -293,6 +291,8 @@ package Controls
             124,70},{124,86},{94,86},{94,110},{98,110}}, color={0,0,127}));
     connect(output_switch.y, y) annotation (Line(points={{121,102},{126,102},{126,
             0},{110,0}}, color={0,0,127}));
+    connect(addSat.u1, limiter.y) annotation (Line(points={{86,-38},{86,-14},{
+            93,-14},{93,0}}, color={0,0,127}));
     annotation (defaultComponentName="PID",
       Icon(coordinateSystem(
           preserveAspectRatio=true,

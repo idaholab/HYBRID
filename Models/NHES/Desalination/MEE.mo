@@ -1745,7 +1745,7 @@ package MEE "Multi Effect Evaporators"
       Modelica.Units.SI.MassFraction [2] Xin;
       Modelica.Units.SI.MassFraction [2] Xo;
       Modelica.Units.SI.MassFraction Cs_in;
-      Modelica.Units.SI.MassFraction Cs_out(start=Cs_in, fixed=true);
+      Modelica.Units.SI.MassFraction Cs_out(start=Cs_in,fixed=true);
       Modelica.Units.SI.Temperature T(start=T_st,fixed=true);
       Modelica.Units.SI.SpecificEnergy chemp;
       Modelica.Units.SI.SpecificGibbsFreeEnergy gW;
@@ -1753,6 +1753,10 @@ package MEE "Multi Effect Evaporators"
       Modelica.Blocks.Interfaces.RealOutput RelLevel( start=RelLevel_start, fixed=true, quantity="Relative Level")
         annotation (Placement(transformation(extent={{100,60},{120,80}}),
             iconTransformation(extent={{100,60},{120,80}})));
+    initial equation
+      //0=m_steam+m_b_in+m_b_out;
+      //10=m_steam*h_steam + m_b_in*h_b_in + m_b_out*h_b_out + Qhx;
+      //0=m_b_in*Cs_in+m_b_out*Cs_out;
     equation
       der(Mg)=m_T+m_steam;
       der(Mm)=m_b_in+m_b_out-m_T;
@@ -2328,6 +2332,152 @@ package MEE "Multi Effect Evaporators"
               textColor={28,108,200},
               textString="%name")}), Diagram(coordinateSystem(preserveAspectRatio=false)));
     end SEE_Tube_Side_PoolBoiling;
+
+    model Evaporator_Brine_SHP_ss
+      "Evaporator for desalinaition, this model has a single heat port and use SeaWater Media Package;"
+
+      import Modelica.Fluid.Types.Dynamics;
+
+    replaceable package MediumW = Modelica.Media.Water.StandardWater;
+    replaceable package MediumB = NHES.Media.SeaWater;
+
+      MediumW.ThermodynamicState vapourState "Thermodynamic state of the vapour";
+      MediumB.ThermodynamicState bstate "Thermodynamic state of the brine";
+
+      outer Modelica.Fluid.System system "System properties";
+    // Initialization
+      parameter Modelica.Units.SI.Pressure p=0.5e5
+                                                  "system pressure";
+
+
+     /* Assumptions */
+      parameter Boolean allowFlowReversal=system.allowFlowReversal
+        "= true to allow flow reversal, false restrics to design direction"
+      annotation(Dialog(tab="Assumptions"));
+
+     Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a Heat_Port
+        annotation (Placement(transformation(extent={{-10,-110},{10,-90}})));
+      parameter Modelica.Units.SI.Temperature T_st=300 "init temp";
+      parameter Modelica.Units.SI.SpecificEnthalpy h_b_in=300e3;
+      Modelica.Units.SI.SpecificEnthalpy h_b_out;
+      Modelica.Units.SI.SpecificEnthalpy h_steam;
+      Modelica.Units.SI.MassFlowRate m_b_in;
+      Modelica.Units.SI.MassFlowRate m_b_out;
+      Modelica.Units.SI.MassFlowRate m_steam;
+      Modelica.Units.SI.Power Qhx;
+      Modelica.Units.SI.MassFraction [2] Xin;
+      Modelica.Units.SI.MassFraction [2] Xo;
+      parameter Modelica.Units.SI.MassFraction Cs_in=0.08;
+      parameter Modelica.Units.SI.MassFraction Cs_out=0.1;
+      Modelica.Units.SI.Temperature T(start=T_st);
+      Modelica.Units.SI.SpecificEnergy chemp;
+      Modelica.Units.SI.SpecificGibbsFreeEnergy gW;
+
+    equation
+
+      0=m_b_in+m_b_out+m_steam;
+      Cs_out=Cs_in*abs(m_b_in/m_b_out);
+      //-m_steam=Qhx/(h_steam-h_b_out);
+      0=Qhx+h_steam*m_steam+h_b_in*m_b_in+h_b_out*m_b_out;
+    //Definitions  & Stae Eqs
+      bstate=MediumB.setState_pTX(p,T,Xo);
+      h_b_out=MediumB.specificEnthalpy(bstate);
+      chemp=MediumB.mu_pTX(p,T,Xo);
+      Xin[1]=1-Cs_in;
+      Xin[2]=Cs_in;
+      Xo[2]=Cs_out;
+      Xo[1]=1-Cs_out;
+
+      h_steam=MediumW.specificEnthalpy(vapourState);
+      gW=MediumW.specificGibbsEnergy(vapourState);
+      vapourState = MediumW.setState_pT(p, T);
+
+
+      gW=chemp;
+
+
+
+
+      Heat_Port.T=T_st;
+      Qhx =Heat_Port.Q_flow;
+      annotation (Icon(graphics={
+            Ellipse(
+              extent={{-60,60},{60,100}},
+              lineColor={0,0,0},
+              startAngle=0,
+              endAngle=360,
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid,
+              lineThickness=0.5),
+            Ellipse(
+              extent={{-60,-100},{60,-60}},
+              lineColor={0,0,0},
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid,
+              lineThickness=0.5),
+            Rectangle(
+              extent={{-60,80},{60,-80}},
+              lineColor={28,108,200},
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{-60,80},{60,28}},
+              lineColor={164,189,255},
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid),
+            Ellipse(
+              extent={{-42,26},{-8,40}},
+              lineThickness=1,
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None),
+            Ellipse(
+              extent={{-4,26},{38,40}},
+              lineThickness=1,
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              startAngle=0,
+              endAngle=360),
+            Ellipse(
+              extent={{38,26},{60,30}},
+              lineThickness=1,
+              fillColor={164,189,255},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              lineColor={0,0,0},
+              closure=EllipseClosure.Chord),
+            Ellipse(
+              extent={{-60,26},{-42,30}},
+              lineThickness=1,
+              fillColor={28,108,200},
+              fillPattern=FillPattern.Solid,
+              pattern=LinePattern.None,
+              lineColor={0,0,0}),
+            Line(
+              points={{-60,28},{-50,30},{-30,26},{-6,28},{-4,28},{20,26},{28,28},{56,26},{60,28}},
+              color={0,0,0},
+              smooth=Smooth.Bezier,
+              thickness=1),
+            Line(
+              points={{-60,80},{-60,-80}},
+              color={0,0,0},
+              thickness=0.5),
+            Line(
+              points={{60,80},{60,-80}},
+              color={0,0,0},
+              thickness=0.5),
+            Line(
+              points={{90,0},{60,0}},
+              color={28,108,200},
+              thickness=1,
+              arrow={Arrow.None,Arrow.Filled}),
+            Line(
+              points={{-60,0},{-90,0}},
+              color={28,108,200},
+              thickness=1,
+              arrow={Arrow.None,Arrow.Filled})}));
+    end Evaporator_Brine_SHP_ss;
   end Components;
 
   package Examples
@@ -2406,7 +2556,7 @@ package MEE "Multi Effect Evaporators"
       Single_Effect.Brine_Models.Single_Effect single_Effect(
         V=0.5,
         A=1,
-        Ax=2.68e4,
+        Ax=2e4,
         pT=100000)
         annotation (Placement(transformation(extent={{72,-30},{130,28}})));
     equation
@@ -2583,44 +2733,6 @@ package MEE "Multi Effect Evaporators"
 
     model Single_Effect_pool "Test of a single effect with constant UA"
 
-      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Steam_Exit1(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        p=70000,
-        nPorts=1) annotation (Placement(transformation(extent={{182,48},{162,68}})));
-      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Tube_Inlet1(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        use_m_flow_in=false,
-        m_flow=1,
-        h=2725.9e3,
-        nPorts=1) annotation (Placement(transformation(extent={{42,-50},{62,-30}})));
-      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Brine_Oulet2(
-        redeclare package Medium = Modelica.Media.Water.StandardWater,
-        p=100000,
-        nPorts=1) annotation (Placement(transformation(extent={{182,-50},{162,
-                -30}})));
-      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary(
-        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-        p=10000,
-        X={0.92,0.08},
-        nPorts=1)
-        annotation (Placement(transformation(extent={{40,-10},{60,10}})));
-
-      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary1(
-        redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-        use_m_flow_in=false,
-        use_X_in=false,
-        m_flow=4,
-        T=353.15,
-        X={0.92,0.08},
-        nPorts=1)
-        annotation (Placement(transformation(extent={{180,-10},{160,10}})));
-
-      Single_Effect.Brine_Models.Single_Effect single_Effect(
-        V=0.5,
-        A=1,
-        Ax=2.68e4,
-        pT=100000)
-        annotation (Placement(transformation(extent={{72,-30},{130,28}})));
       TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Steam_Exit2(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
         p=70000,
@@ -2656,39 +2768,26 @@ package MEE "Multi Effect Evaporators"
 
       Single_Effect.Brine_Models.Single_Effect_pool
                                                single_Effect_pool(
-        V=0.5,
+        V=50,
         A=1,
-        Ax=2.68e4,
+        Ax=2e4,
         pT=100000)
-        annotation (Placement(transformation(extent={{-116,-40},{-58,18}})));
+        annotation (Placement(transformation(extent={{-114,-40},{-56,18}})));
     equation
-      connect(single_Effect.Brine_Inlet_Port, boundary1.ports[1]) annotation (
-          Line(points={{130,-1},{146,-1},{146,0},{160,0}}, color={0,127,255}));
-      connect(single_Effect.Steam_Outlet_Port, Steam_Exit1.ports[1])
-        annotation (Line(points={{101,28},{102,28},{102,58},{162,58}}, color={0,
-              127,255}));
-      connect(single_Effect.Brine_Outlet_Port, boundary.ports[1]) annotation (
-          Line(points={{72,-1},{66,-1},{66,4},{60,4},{60,0}}, color={0,127,255}));
-      connect(single_Effect.Tube_Inlet, Tube_Inlet1.ports[1]) annotation (Line(
-            points={{72.58,-12.6},{64,-12.6},{64,-26},{66,-26},{66,-40},{62,-40}},
-            color={0,127,255}));
-      connect(single_Effect.Tube_Outlet, Brine_Oulet2.ports[1]) annotation (
-          Line(points={{130.58,-12.6},{148.29,-12.6},{148.29,-40},{162,-40}},
-            color={0,127,255}));
       connect(single_Effect_pool.Brine_Inlet_Port, boundary3.ports[1])
-        annotation (Line(points={{-58,-11},{-43,-11},{-43,-10},{-28,-10}},
+        annotation (Line(points={{-56,-11},{-43,-11},{-43,-10},{-28,-10}},
             color={0,127,255}));
       connect(single_Effect_pool.Steam_Outlet_Port, Steam_Exit2.ports[1])
-        annotation (Line(points={{-87,18},{-88,18},{-88,48},{-26,48}}, color={0,
+        annotation (Line(points={{-85,18},{-88,18},{-88,48},{-26,48}}, color={0,
               127,255}));
       connect(single_Effect_pool.Brine_Outlet_Port, boundary2.ports[1])
-        annotation (Line(points={{-116,-11},{-122,-11},{-122,-10},{-128,-10}},
+        annotation (Line(points={{-114,-11},{-122,-11},{-122,-10},{-128,-10}},
             color={0,127,255}));
       connect(single_Effect_pool.Tube_Inlet, Tube_Inlet2.ports[1]) annotation (
-          Line(points={{-115.42,-22.6},{-124,-22.6},{-124,-36},{-122,-36},{-122,
+          Line(points={{-113.42,-22.6},{-124,-22.6},{-124,-36},{-122,-36},{-122,
               -50},{-126,-50}}, color={0,127,255}));
       connect(single_Effect_pool.Tube_Outlet, Brine_Oulet1.ports[1])
-        annotation (Line(points={{-57.42,-22.6},{-32,-22.6},{-32,-50},{-26,-50}},
+        annotation (Line(points={{-55.42,-22.6},{-32,-22.6},{-32,-50},{-26,-50}},
             color={0,127,255}));
       annotation (
         Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
@@ -2712,12 +2811,19 @@ package MEE "Multi Effect Evaporators"
 
     model MEE_pool "Test of a multi effect with heat transfer correlations"
 
-      Multiple_Effect.MEE_PB mEE_PB( redeclare replaceable Data.MEE_Data data(
+      Multiple_Effect.MEE_PB mEE_PB(
+        redeclare replaceable Data.MEE_Data data(
           nE=3,
           p_h=90000,
           use_flowrates=false,
+          Vnom=15,
           Axnom=1e4,
-          pTsys={200000,100000,500000}))
+          pTsys={200000,100000,500000}),
+        Effect(Evaporator(Mm_start=25)),
+        SCV(
+          ValvePos_start=0.5,
+          init_time=50,
+          PID_k=-3))
         annotation (Placement(transformation(extent={{-54,-46},{46,54}})));
       TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Liquid_Return(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -2838,6 +2944,264 @@ package MEE "Multi Effect Evaporators"
           Interval=10,
           __Dymola_Algorithm="Esdirk45a"));
     end MEE_FC_test2;
+
+    model MEE_FC_test3 "Test of a multi effect with full condensing"
+
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Liquid_Return(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        p=200000,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{-100,-26},{-80,-6}})));
+      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T Tube_Inlet(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        use_m_flow_in=true,
+        m_flow=1,
+        T=398.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{-100,14},{-80,34}})));
+      Multiple_Effect.MEE_FC mEE_FCwPH(
+        redeclare replaceable Data.MEE_Data data(
+          nE=8,
+          use_preheater=true,
+          T_b_in=298.15,
+          T_h=353.15,
+          p_h=70000,
+          use_flowrates=false,
+          X_nom=0.09),
+        Brine_Source(X={0.99,0.01}),
+        PCV(
+          ValvePos_start=0.9,
+          init_time=1,
+          PID_k=-1e-4,
+          m_flow_nominal=8),
+        SCV(PID_k=-5, m_flow_nominal=16),
+        Effect(m_brine_out=1, KV=-0.1))
+        annotation (Placement(transformation(extent={{-34,-30},{46,50}})));
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT Purified_Water(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        p=5000,
+        T=328.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{78,-16},{58,4}})));
+      Modelica.Blocks.Sources.Step step(offset=1, startTime=3000)
+        annotation (Placement(transformation(extent={{-160,20},{-140,40}})));
+    equation
+      connect(mEE_FCwPH.port_b_liquid_cond, Purified_Water.ports[1])
+        annotation (Line(points={{46,-6},{58,-6}}, color={0,127,255}));
+      connect(Tube_Inlet.ports[1], mEE_FCwPH.port_a_steam) annotation (Line(
+            points={{-80,24},{-42,24},{-42,26},{-34,26}}, color={0,127,255}));
+      connect(Liquid_Return.ports[1], mEE_FCwPH.port_b_liquid_return)
+        annotation (Line(points={{-80,-16},{-44,-16},{-44,-6},{-34,-6}}, color=
+              {0,127,255}));
+      connect(step.y, Tube_Inlet.m_flow_in) annotation (Line(points={{-139,30},
+              {-139,32},{-100,32}}, color={0,0,127}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}}),                               graphics={
+            Ellipse(lineColor = {75,138,73},
+                    fillColor={255,255,255},
+                    fillPattern = FillPattern.Solid,
+                    extent={{-100,-100},{100,100}}),
+            Polygon(lineColor = {0,0,255},
+                    fillColor = {75,138,73},
+                    pattern = LinePattern.None,
+                    fillPattern = FillPattern.Solid,
+                    points={{-36,60},{64,0},{-36,-60},{-36,60}})}),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}})),
+        experiment(
+          StopTime=5000,
+          Interval=10,
+          __Dymola_Algorithm="Esdirk45a"));
+    end MEE_FC_test3;
+
+    model SHP_ss_test "Test of a single effect with constant UA"
+
+      Components.Evaporator_Brine_SHP_ss evaporator_Brine_SHP_ss
+        annotation (Placement(transformation(extent={{-44,-32},{44,56}})));
+      TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.HeatFlow boundary(
+          Q_flow=1000000)
+        annotation (Placement(transformation(extent={{-94,-70},{-74,-50}})));
+    equation
+      connect(boundary.port, evaporator_Brine_SHP_ss.Heat_Port)
+        annotation (Line(points={{-74,-60},{0,-60},{0,-32}}, color={191,0,0}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}}),                               graphics={
+            Ellipse(lineColor = {75,138,73},
+                    fillColor={255,255,255},
+                    fillPattern = FillPattern.Solid,
+                    extent={{-100,-100},{100,100}}),
+            Polygon(lineColor = {0,0,255},
+                    fillColor = {75,138,73},
+                    pattern = LinePattern.None,
+                    fillPattern = FillPattern.Solid,
+                    points={{-36,60},{64,0},{-36,-60},{-36,60}})}),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}})),
+        experiment(
+          StopTime=500,
+          Interval=0.5,
+          __Dymola_Algorithm="Esdirk45a"));
+    end SHP_ss_test;
+
+    model MEE_ss_test "Test of a single effect with constant UA"
+
+      Multiple_Effect.MEE_FC_ss mEE_FC_ss_delay(
+                                          redeclare replaceable Data.MEE_Data
+          data(nE=12, T_b_in=333.15), Cs_in=0.01)
+        annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
+      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        m_flow=5,
+        T=396.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{-120,22},{-100,42}})));
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary1(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        p=200000,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{-120,-38},{-100,-18}})));
+    equation
+      connect(boundary1.ports[1], mEE_FC_ss_delay.port_b) annotation (Line(
+            points={{-100,-28},{-50,-28},{-50,-24},{-40,-24}}, color={0,127,255}));
+      connect(mEE_FC_ss_delay.port_a, boundary.ports[1]) annotation (Line(
+            points={{-40,24},{-94,24},{-94,32},{-100,32}}, color={0,127,255}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}}),                               graphics={
+            Ellipse(lineColor = {75,138,73},
+                    fillColor={255,255,255},
+                    fillPattern = FillPattern.Solid,
+                    extent={{-100,-100},{100,100}}),
+            Polygon(lineColor = {0,0,255},
+                    fillColor = {75,138,73},
+                    pattern = LinePattern.None,
+                    fillPattern = FillPattern.Solid,
+                    points={{-36,60},{64,0},{-36,-60},{-36,60}})}),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}})),
+        experiment(
+          StopTime=500,
+          Interval=0.5,
+          __Dymola_Algorithm="Esdirk45a"));
+    end MEE_ss_test;
+
+    model boilingTest "Test of a single effect with constant UA"
+
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph cond_out(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        p=200000,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{100,-10},{80,10}})));
+      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Tube_Inlet(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        use_m_flow_in=true,
+        use_h_in=true,
+        m_flow=1,
+        h=2706.9e3,
+        nPorts=1) annotation (Placement(transformation(extent={{-100,-10},{-80,
+                10}})));
+
+      Components.SEE_Tube_Side_PoolBoiling sEE_Tube_Side_PoolBoiling(Ax=0.5e4)
+        annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
+      TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Temperature
+        boundary(T=343.15)
+        annotation (Placement(transformation(extent={{-60,60},{-40,80}})));
+      Modelica.Blocks.Sources.RealExpression
+                                       realExpression(y=inleth)
+        annotation (Placement(transformation(extent={{-194,4},{-174,24}})));
+      parameter Modelica.Blocks.Interfaces.RealOutput inleth=2706e3
+        "Value of Real output";
+      Modelica.Blocks.Sources.Ramp ramp(
+        height=0.4,
+        duration=10,
+        offset=1,
+        startTime=350)
+        annotation (Placement(transformation(extent={{-194,-32},{-174,-12}})));
+    equation
+      connect(Tube_Inlet.ports[1], sEE_Tube_Side_PoolBoiling.Steam_Inlet_Port)
+        annotation (Line(points={{-80,0},{-40,0}}, color={0,127,255}));
+      connect(boundary.port, sEE_Tube_Side_PoolBoiling.Heat_Port)
+        annotation (Line(points={{-40,70},{0,70},{0,20}}, color={191,0,0}));
+      connect(sEE_Tube_Side_PoolBoiling.Liquid_Outlet_Port, cond_out.ports[1])
+        annotation (Line(points={{40,0},{80,0}}, color={0,127,255}));
+      connect(realExpression.y, Tube_Inlet.h_in) annotation (Line(points={{-173,
+              14},{-110,14},{-110,4},{-102,4}}, color={0,0,127}));
+      connect(ramp.y, Tube_Inlet.m_flow_in) annotation (Line(points={{-173,-22},
+              {-112,-22},{-112,16},{-100,16},{-100,8}}, color={0,0,127}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}}),                               graphics={
+            Ellipse(lineColor = {75,138,73},
+                    fillColor={255,255,255},
+                    fillPattern = FillPattern.Solid,
+                    extent={{-100,-100},{100,100}}),
+            Polygon(lineColor = {0,0,255},
+                    fillColor = {75,138,73},
+                    pattern = LinePattern.None,
+                    fillPattern = FillPattern.Solid,
+                    points={{-36,60},{64,0},{-36,-60},{-36,60}})}),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}})),
+        experiment(
+          StopTime=500,
+          Interval=0.5,
+          __Dymola_Algorithm="Esdirk45a"));
+    end boilingTest;
+
+    model MEE_ss_test_delay "Test of a single effect with constant UA"
+
+      Multiple_Effect.MEE_FC_ss_delay
+                                mEE_FC_ss_delay(
+                                          redeclare replaceable Data.MEE_Data
+          data(nE=12, T_b_in=333.15), Cs_in=0.01,
+        firstOrder(y_start=4))
+        annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
+      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        use_m_flow_in=true,
+        m_flow=5,
+        T=396.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{-120,22},{-100,42}})));
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary1(
+        redeclare package Medium = Modelica.Media.Water.StandardWater,
+        p=200000,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{-120,-38},{-100,-18}})));
+      Modelica.Blocks.Sources.Ramp ramp(
+        height=2,
+        duration=10,
+        offset=5,
+        startTime=350)
+        annotation (Placement(transformation(extent={{-190,26},{-170,46}})));
+    equation
+      connect(boundary1.ports[1], mEE_FC_ss_delay.port_b) annotation (Line(
+            points={{-100,-28},{-50,-28},{-50,-24},{-40,-24}}, color={0,127,255}));
+      connect(mEE_FC_ss_delay.port_a, boundary.ports[1]) annotation (Line(
+            points={{-40,24},{-94,24},{-94,32},{-100,32}}, color={0,127,255}));
+      connect(ramp.y, boundary.m_flow_in) annotation (Line(points={{-169,36},{
+              -130,36},{-130,40},{-120,40}}, color={0,0,127}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}}),                               graphics={
+            Ellipse(lineColor = {75,138,73},
+                    fillColor={255,255,255},
+                    fillPattern = FillPattern.Solid,
+                    extent={{-100,-100},{100,100}}),
+            Polygon(lineColor = {0,0,255},
+                    fillColor = {75,138,73},
+                    pattern = LinePattern.None,
+                    fillPattern = FillPattern.Solid,
+                    points={{-36,60},{64,0},{-36,-60},{-36,60}})}),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}})),
+        experiment(
+          StopTime=500,
+          Interval=0.5,
+          __Dymola_Algorithm="Esdirk45a"));
+    end MEE_ss_test_delay;
     annotation (Icon(graphics={
           Rectangle(
             lineColor={200,200,200},
@@ -4147,6 +4511,222 @@ package MEE "Multi Effect Evaporators"
           Interval=5,
           __Dymola_Algorithm="Esdirk45a"));
     end MEE_PB;
+
+    model MEE_FC_ss "Multi-Effect Evaporator"
+      extends BaseClasses.Partial_SubSystem(redeclare replaceable ControlSystems.CS_Dummy CS,
+        redeclare replaceable ControlSystems.ED_Dummy ED,
+        redeclare replaceable Data.MEE_Data data);
+
+      Medium.SaturationProperties [data.nE] sat;
+      Components.Evaporator_Brine_SHP_ss evaporator_Brine_SHP_ss[data.nE](
+        p=data.psys,
+        T_st=data.Tsys,
+        h_b_in=NHES.Media.SeaWater.specificEnthalpy_pTX(
+            1e5,
+            data.T_b_in,
+            Xin),
+        Cs_in=Cs_in,
+        Cs_out=data.Xsys)
+        annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
+      TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.HeatFlow boundary[data.nE](
+         use_port=true, Q_flow=1000000)
+        annotation (Placement(transformation(extent={{-40,-80},{-20,-60}})));
+      parameter SI.MassFraction Cs_in=0.08;
+      parameter SI.AbsolutePressure p_innom=2e5;
+
+      SI.SpecificEnthalpy [data.nE] h_innom;
+      SI.SpecificEnthalpy [data.nE] h_outnom;
+      parameter SI.MassFraction [2] Xin={(1-Cs_in),Cs_in};
+      SI.SpecificEnthalpy [data.nE] h_in;
+      SI.SpecificEnthalpy [data.nE] h_out;
+      SI.Molality [data.nE-1] m;
+      SI.TemperatureDifference [data.nE-1] dTbpe;
+      SI.Power [data.nE] Q;
+      SI.MassFlowRate Cond_out;
+      Real GOR;
+
+      Modelica.Blocks.Sources.RealExpression heat_in[data.nE](y=Q)
+        annotation (Placement(transformation(extent={{-80,-80},{-60,-60}})));
+      TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium =
+            Medium)
+        annotation (Placement(transformation(extent={{-110,50},{-90,70}})));
+      TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium =
+            Medium)
+        annotation (Placement(transformation(extent={{-110,-70},{-90,-50}})));
+      replaceable package Medium = Modelica.Media.Water.StandardWater
+        annotation (choicesAllMatching=true);
+    equation
+
+      //First stage
+      port_a.m_flow=-port_b.m_flow;
+      port_a.p=port_b.p;
+      sat[1].psat=p_innom;
+      sat[1].Tsat= Medium.saturationTemperature(p_innom);
+      h_in[1]=inStream(port_a.h_outflow);
+      h_innom[1]=Medium.dewEnthalpy(sat[1]);
+
+      //Other stages
+      m=data.Xsys[1:data.nE-1]./(0.05844);
+      dTbpe=1.024.*m;
+      sat[2:data.nE].psat = data.psys[2:data.nE];
+      sat[2:data.nE].Tsat = Medium.saturationTemperature(data.psys[1:data.nE-1]);
+      h_innom[2:data.nE]=Medium.specificEnthalpy_pT(data.psys[1:data.nE-1],(sat[1:data.nE-1].Tsat+dTbpe));
+      h_in[2:data.nE]=evaporator_Brine_SHP_ss[1:data.nE-1].h_steam;
+
+      //hout and Qs
+      h_outnom=Medium.bubbleEnthalpy(sat);
+      for i in 1:data.nE loop
+        if h_in[i]>h_innom[i] then
+        h_out[i]=h_in[i]-(h_innom[i]-h_outnom[i])-sqrt(abs(h_in[i]-h_innom[i]));
+        else
+        h_out[i]= h_outnom[i];
+        end if;
+      end for;
+      Q[1]=port_a.m_flow*(h_in[1]-h_out[1]);
+      Q[2:data.nE]=-evaporator_Brine_SHP_ss[1:data.nE-1].m_steam.*(h_in[2:data.nE]-h_out[2:data.nE]);
+      port_a.h_outflow=inStream(port_b.h_outflow);
+      port_b.h_outflow=h_out[1];
+
+      Cond_out=abs(sum(evaporator_Brine_SHP_ss.m_steam));
+      GOR=abs(Cond_out/port_a.m_flow);
+
+
+
+
+    connect(boundary.port, evaporator_Brine_SHP_ss.Heat_Port)
+        annotation (Line(points={{-20,-70},{0,-70},{0,-40}}, color={191,0,0}));
+
+
+      connect(heat_in.y, boundary.Q_flow_ext)
+        annotation (Line(points={{-59,-70},{-34,-70}}, color={0,0,127}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}}), graphics={Text(
+              extent={{-94,94},{94,32}},
+              textColor={28,108,200},
+              textString="%data.nE Effect MEE
+")}),   Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}})),
+        experiment(
+          StopTime=500,
+          Interval=5,
+          __Dymola_Algorithm="Esdirk45a"));
+    end MEE_FC_ss;
+
+    model MEE_FC_ss_delay "Multi-Effect Evaporator"
+      extends BaseClasses.Partial_SubSystem(redeclare replaceable ControlSystems.CS_Dummy CS,
+        redeclare replaceable ControlSystems.ED_Dummy ED,
+        redeclare replaceable Data.MEE_Data data);
+
+      Medium.SaturationProperties [data.nE] sat;
+      Components.Evaporator_Brine_SHP_ss evaporator_Brine_SHP_ss[data.nE](
+        p=data.psys,
+        T_st=data.Tsys,
+        h_b_in=NHES.Media.SeaWater.specificEnthalpy_pTX(
+            1e5,
+            data.T_b_in,
+            Xin),
+        Cs_in=Cs_in,
+        Cs_out=data.Xsys)
+        annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
+      TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.HeatFlow boundary[data.nE](
+         use_port=true, Q_flow=1000000)
+        annotation (Placement(transformation(extent={{-40,-80},{-20,-60}})));
+      parameter SI.MassFraction Cs_in=0.08;
+      parameter SI.AbsolutePressure p_innom=2e5;
+
+      SI.SpecificEnthalpy [data.nE] h_innom;
+      SI.SpecificEnthalpy [data.nE] h_outnom;
+      parameter SI.MassFraction [2] Xin={(1-Cs_in),Cs_in};
+      SI.SpecificEnthalpy [data.nE] h_in;
+      SI.SpecificEnthalpy [data.nE] h_out;
+      SI.Molality [data.nE-1] m;
+      SI.TemperatureDifference [data.nE-1] dTbpe;
+      SI.Power [data.nE] Q;
+      SI.MassFlowRate Cond_out;
+      Real GOR;
+
+      Modelica.Blocks.Sources.RealExpression heat_in[data.nE](y=Q)
+        annotation (Placement(transformation(extent={{-80,-80},{-60,-60}})));
+      TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium =
+            Medium)
+        annotation (Placement(transformation(extent={{-110,50},{-90,70}})));
+      TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium =
+            Medium)
+        annotation (Placement(transformation(extent={{-110,-70},{-90,-50}})));
+      replaceable package Medium = Modelica.Media.Water.StandardWater
+        annotation (choicesAllMatching=true);
+      Modelica.Blocks.Sources.RealExpression steamflow[data.nE - 1](y=-
+            evaporator_Brine_SHP_ss[1:data.nE - 1].m_steam)
+        annotation (Placement(transformation(extent={{-100,20},{-80,40}})));
+      Modelica.Blocks.Continuous.FirstOrder firstOrder[data.nE - 1](T=tau)
+        annotation (Placement(transformation(extent={{-60,20},{-40,40}})));
+      parameter SI.Time tau=5 "Time Constant";
+      Modelica.Blocks.Sources.RealExpression steament[data.nE - 1](y=
+            evaporator_Brine_SHP_ss[1:data.nE - 1].h_steam)
+        annotation (Placement(transformation(extent={{-100,-40},{-80,-20}})));
+      Modelica.Blocks.Continuous.FirstOrder firstOrder1[data.nE - 1](T=tau)
+        annotation (Placement(transformation(extent={{-60,-40},{-40,-20}})));
+    equation
+
+      //First stage
+      port_a.m_flow=-port_b.m_flow;
+      port_a.p=port_b.p;
+      sat[1].psat=p_innom;
+      sat[1].Tsat= Medium.saturationTemperature(p_innom);
+      h_in[1]=inStream(port_a.h_outflow);
+      h_innom[1]=Medium.dewEnthalpy(sat[1]);
+
+      //Other stages
+      m=data.Xsys[1:data.nE-1]./(0.05844);
+      dTbpe=1.024.*m;
+      sat[2:data.nE].psat = data.psys[2:data.nE];
+      sat[2:data.nE].Tsat = Medium.saturationTemperature(data.psys[1:data.nE-1]);
+      h_innom[2:data.nE]=Medium.specificEnthalpy_pT(data.psys[1:data.nE-1],(sat[1:data.nE-1].Tsat+dTbpe));
+      //h_in[2:data.nE]=evaporator_Brine_SHP_ss[1:data.nE-1].h_steam;
+      h_in[2:data.nE]=firstOrder1.y;
+
+
+      //hout and Qs
+      h_outnom=Medium.bubbleEnthalpy(sat);
+      for i in 1:data.nE loop
+        if h_in[i]>h_innom[i] then
+        h_out[i]=h_in[i]-(h_innom[i]-h_outnom[i])-sqrt(abs(h_in[i]-h_innom[i]));
+        else
+        h_out[i]= h_outnom[i];
+        end if;
+      end for;
+      Q[1]=port_a.m_flow*(h_in[1]-h_out[1]);
+      //Q[2:data.nE]=-evaporator_Brine_SHP_ss[1:data.nE-1].m_steam.*(h_in[2:data.nE]-h_out[2:data.nE]);
+      Q[2:data.nE]=firstOrder.y.*(h_in[2:data.nE]-h_out[2:data.nE]);
+      port_a.h_outflow=inStream(port_b.h_outflow);
+      port_b.h_outflow=h_out[1];
+
+      Cond_out=abs(sum(evaporator_Brine_SHP_ss.m_steam));
+      GOR=abs(Cond_out/port_a.m_flow);
+
+    connect(boundary.port, evaporator_Brine_SHP_ss.Heat_Port)
+        annotation (Line(points={{-20,-70},{0,-70},{0,-40}}, color={191,0,0}));
+
+      connect(heat_in.y, boundary.Q_flow_ext)
+        annotation (Line(points={{-59,-70},{-34,-70}}, color={0,0,127}));
+      connect(steamflow.y, firstOrder.u)
+        annotation (Line(points={{-79,30},{-62,30}}, color={0,0,127}));
+      connect(steament.y, firstOrder1.u)
+        annotation (Line(points={{-79,-30},{-62,-30}}, color={0,0,127}));
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}}), graphics={Text(
+              extent={{-94,94},{94,32}},
+              textColor={28,108,200},
+              textString="%data.nE Effect MEE
+")}),   Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                {100,100}})),
+        experiment(
+          StopTime=500,
+          Interval=5,
+          __Dymola_Algorithm="Esdirk45a"));
+    end MEE_FC_ss_delay;
   end Multiple_Effect;
 
   package Data
