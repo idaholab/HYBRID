@@ -13,7 +13,7 @@ model CS_DivertPowerControl_HTGR_3VNb_AR1
 
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=3e-3,
+    k=6e-3,
     Ti=500,
     Td=10,
     yMax=1,
@@ -26,14 +26,14 @@ model CS_DivertPowerControl_HTGR_3VNb_AR1
     annotation (Placement(transformation(extent={{-104,-136},{-84,-116}})));
   TRANSFORM.Controls.LimPID TCV_Power(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-5e-7,
-    Ti=1000,
+    k=-3e-7,
+    Ti=50000,
     k_s=1,
     k_m=1,
     yMax=0,
     yMin=-1 + 0.005,
     initType=Modelica.Blocks.Types.Init.NoInit,
-    xi_start=1500)
+    xi_start=0)
     annotation (Placement(transformation(extent={{-58,-28},{-38,-48}})));
   Modelica.Blocks.Sources.RealExpression
                                    realExpression(y=electric_demand - 1.69964e6)
@@ -62,10 +62,10 @@ model CS_DivertPowerControl_HTGR_3VNb_AR1
     annotation (Placement(transformation(extent={{-186,68},{-166,88}})));
   TRANSFORM.Controls.LimPID FWCP_mflow(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-30,
+    k=-300,
     Ti=5000,
     Td=10,
-    yMax=400,
+    yMax=1000,
     yMin=-500,
     wp=1,
     wd=0.00001,
@@ -92,8 +92,8 @@ model CS_DivertPowerControl_HTGR_3VNb_AR1
     annotation (Placement(transformation(extent={{112,-106},{92,-86}})));
   TRANSFORM.Controls.LimPID Charge_OnOff_Throttle(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-1e-6,
-    Ti=1000,
+    k=-7e-7,
+    Ti=2000,
     Td=10,
     k_s=1,
     k_m=1,
@@ -104,7 +104,7 @@ model CS_DivertPowerControl_HTGR_3VNb_AR1
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=1500)
     annotation (Placement(transformation(extent={{152,-76},{132,-96}})));
-  Modelica.Blocks.Sources.Constant const10(k=0.010)
+  Modelica.Blocks.Sources.Constant const10(k=0.0025)
     annotation (Placement(transformation(extent={{152,-122},{144,-114}})));
   Modelica.Blocks.Sources.Constant const1(k=data.p_steam)
     annotation (Placement(transformation(extent={{-92,-48},{-72,-28}})));

@@ -43,13 +43,13 @@ model HTGR_Case_01_IndependentBOP_Uprated200MW
       InternalBypassValve_tau(unit="1/s"),
       HPT_p_exit_nominal=5000000,
       HPT_T_in_nominal=838.15,
-      HPT_nominal_mflow=60,
-      HPT_efficiency=1,
+      HPT_nominal_mflow=62,
+      HPT_efficiency=0.97,
       LPT_p_in_nominal=5000000,
       LPT_p_exit_nominal=7000,
       LPT_T_in_nominal=673.15,
       LPT_nominal_mflow=120,
-      LPT_efficiency=1,
+      LPT_efficiency=0.97,
       firstfeedpump_p_nominal=11000000,
       secondfeedpump_p_nominal=5500000,
       controlledfeedpump_mflow_nominal=45,
@@ -261,7 +261,7 @@ model HTGR_Case_01_IndependentBOP_Uprated200MW
   PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_TESUC_AR1
     hTGR_PebbleBed_Primary_Loop_TESUC_AR1_1(redeclare
       PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_PrimaryVNa_AR1
-      CS(data(T_Rx_Exit_Ref=1023.15, P_Steam_Ref=16500000), const3(k=200e6)),
+      CS(data(T_Rx_Exit_Ref=1023.15, P_Steam_Ref=16500000), const3(k=203e6)),
       STHX(nParallel=4))
     annotation (Placement(transformation(extent={{-106,-22},{-58,24}})));
   Modelica.Blocks.Sources.RealExpression m_req(y=
