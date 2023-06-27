@@ -1962,33 +1962,32 @@ package BraytonCycle
       extends BaseClasses.Partial_ControlSystem;
 
       Modelica.Blocks.Sources.RealExpression CR_Reactivity
-        annotation (Placement(transformation(extent={{-14,-58},{6,-38}})));
+        annotation (Placement(transformation(extent={{60,-66},{80,-54}})));
       TRANSFORM.Blocks.RealExpression T_RX
-        annotation (Placement(transformation(extent={{-84,-86},{-72,-72}})));
+        annotation (Placement(transformation(extent={{-80,-66},{-60,-54}})));
       Modelica.Blocks.Sources.RealExpression PR_Compressor
-        annotation (Placement(transformation(extent={{22,-24},{42,-4}})));
+        annotation (Placement(transformation(extent={{60,-46},{80,-34}})));
       TRANSFORM.Blocks.RealExpression Core_mass_flow_rate
-        annotation (Placement(transformation(extent={{-84,-62},{-72,-48}})));
+        annotation (Placement(transformation(extent={{-80,-46},{-60,-34}})));
     equation
 
       connect(actuatorBus.CR_Reactivity, CR_Reactivity.y) annotation (Line(
-          points={{30,-100},{30,-48},{7,-48}},
+          points={{30,-100},{100,-100},{100,-60},{81,-60}},
           color={111,216,99},
           pattern=LinePattern.Dash,
           thickness=0.5));
       connect(sensorBus.Core_Outlet_T, T_RX.u) annotation (Line(
-          points={{-30,-100},{-30,-78},{-34,-78},{-34,-68},{-92,-68},{-92,-79},
-              {-85.2,-79}},
+          points={{-30,-100},{-100,-100},{-100,-60},{-82,-60}},
           color={239,82,82},
           pattern=LinePattern.Dash,
           thickness=0.5));
       connect(sensorBus.Core_Mass_Flow, Core_mass_flow_rate.u) annotation (Line(
-          points={{-30,-100},{-30,-44},{-90,-44},{-90,-55},{-85.2,-55}},
+          points={{-30,-100},{-100,-100},{-100,-40},{-82,-40}},
           color={239,82,82},
           pattern=LinePattern.Dash,
           thickness=0.5));
       connect(actuatorBus.PR_Compressor, PR_Compressor.y) annotation (Line(
-          points={{30,-100},{30,-40},{28,-40},{28,-24},{64,-24},{64,-14},{43,-14}},
+          points={{30,-100},{100,-100},{100,-40},{81,-40}},
           color={111,216,99},
           pattern=LinePattern.Dash,
           thickness=0.5));

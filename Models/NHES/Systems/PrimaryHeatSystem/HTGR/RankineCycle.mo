@@ -4347,15 +4347,15 @@ package RankineCycle
         k=1e-9,
         Ti=15,
         initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
+        annotation (Placement(transformation(extent={{66,8},{86,28}})));
       Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
-        annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
+        annotation (Placement(transformation(extent={{34,14},{54,34}})));
       replaceable Data.CS_HTGR_Pebble_RankineCycle data(
         T_Rx_Exit_Ref=1023.15,
         m_flow_nom=250,
         Q_Nom=45e6,
         P_Steam_Ref=15000000)
-        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
+        annotation (Placement(transformation(extent={{-94,74},{-74,94}})));
       TRANSFORM.Controls.LimPID Blower_Speed(
         controllerType=Modelica.Blocks.Types.SimpleController.PI,
         k=1e-7,
@@ -4363,33 +4363,101 @@ package RankineCycle
         yMax=75,
         yMin=45,
         initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-36,14},{-16,-6}})));
+        annotation (Placement(transformation(extent={{68,70},{88,50}})));
       Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
-        annotation (Placement(transformation(extent={{-80,-6},{-60,14}})));
+        annotation (Placement(transformation(extent={{34,52},{54,72}})));
+      TRANSFORM.Blocks.RealExpression coreOutlet_temp
+        annotation (Placement(transformation(extent={{-100,54},{-76,66}})));
+      TRANSFORM.Blocks.RealExpression steam_pressure
+        annotation (Placement(transformation(extent={{-100,44},{-76,56}})));
+      TRANSFORM.Blocks.RealExpression bypass_massflow
+        annotation (Placement(transformation(extent={{-100,34},{-76,46}})));
+      TRANSFORM.Blocks.RealExpression condensatePump_pressure
+        annotation (Placement(transformation(extent={{-100,24},{-76,36}})));
+      TRANSFORM.Blocks.RealExpression core_massflow
+        annotation (Placement(transformation(extent={{-100,14},{-76,26}})));
+      TRANSFORM.Blocks.RealExpression feedwater_temperature
+        annotation (Placement(transformation(extent={{-100,4},{-76,16}})));
+      TRANSFORM.Blocks.RealExpression hptOutlet_pressure
+        annotation (Placement(transformation(extent={{-100,-6},{-76,6}})));
+      TRANSFORM.Blocks.RealExpression reactor_power
+        annotation (Placement(transformation(extent={{-100,-16},{-76,-4}})));
+      TRANSFORM.Blocks.RealExpression steam_temperature
+        annotation (Placement(transformation(extent={{-100,-26},{-76,-14}})));
     equation
 
-      connect(const1.y,CR. u_s) annotation (Line(points={{-59,-40},{-38,-40}},
-                                color={0,0,127}));
+      connect(const1.y,CR. u_s) annotation (Line(points={{55,24},{60,24},{60,18},
+              {64,18}},         color={0,0,127}));
       connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
-          points={{-30,-100},{-30,-96},{-96,-96},{-96,-72},{-26,-72},{-26,-52}},
+          points={{-30,-100},{-30,-36},{76,-36},{76,6}},
           color={239,82,82},
           pattern=LinePattern.Dash,
           thickness=0.5));
       connect(const2.y, Blower_Speed.u_s)
-        annotation (Line(points={{-59,4},{-38,4}}, color={0,0,127}));
+        annotation (Line(points={{55,62},{60,62},{60,60},{66,60}},
+                                                   color={0,0,127}));
       connect(sensorBus.Steam_Pressure, Blower_Speed.u_m) annotation (Line(
-          points={{-30,-100},{-30,-96},{-96,-96},{-96,22},{-26,22},{-26,16}},
+          points={{-30,-100},{-30,-74},{94,-74},{94,78},{78,78},{78,72}},
           color={239,82,82},
           pattern=LinePattern.Dash,
           thickness=0.5));
       connect(actuatorBus.CR_Reactivity, CR.y) annotation (Line(
-          points={{30,-100},{28,-100},{28,-40},{-15,-40}},
+          points={{30,-100},{30,-38},{92,-38},{92,18},{87,18}},
           color={111,216,99},
           pattern=LinePattern.Dash,
           thickness=0.5));
       connect(actuatorBus.PR_Compressor, Blower_Speed.y) annotation (Line(
-          points={{30,-100},{30,4},{-15,4}},
+          points={{30,-100},{30,-76},{96,-76},{96,60},{89,60}},
           color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus, coreOutlet_temp.u) annotation (Line(
+          points={{-30,-100},{-120,-100},{-120,60},{-102.4,60}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.Steam_Pressure, steam_pressure.u) annotation (Line(
+          points={{-30,-100},{-120,-100},{-120,50},{-102.4,50}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.Bypass_flow, bypass_massflow.u) annotation (Line(
+          points={{-30,-100},{-120,-100},{-120,40},{-102.4,40}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.Condensate_Pump_Pressure, condensatePump_pressure.u)
+        annotation (Line(
+          points={{-30,-100},{-120,-100},{-120,30},{-102.4,30}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.Core_Mass_Flow, core_massflow.u) annotation (Line(
+          points={{-30,-100},{-120,-100},{-120,20},{-102.4,20}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.Feedwater_Temp, feedwater_temperature.u) annotation (
+          Line(
+          points={{-30,-100},{-120,-100},{-120,10},{-102.4,10}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.HPT_Outlet_Pressure, hptOutlet_pressure.u) annotation (
+          Line(
+          points={{-30,-100},{-120,-100},{-120,0},{-102.4,0}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.Power, reactor_power.u) annotation (Line(
+          points={{-30,-100},{-120,-100},{-120,-10},{-102.4,-10}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.Steam_Temperature, steam_temperature.u) annotation (
+          Line(
+          points={{-30,-100},{-120,-100},{-120,-20},{-102.4,-20}},
+          color={239,82,82},
           pattern=LinePattern.Dash,
           thickness=0.5));
     annotation(defaultComponentName="changeMe_CS", Icon(graphics));
