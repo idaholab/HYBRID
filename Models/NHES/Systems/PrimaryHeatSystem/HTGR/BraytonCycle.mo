@@ -1,516 +1,6 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR;
 package BraytonCycle
 
-  package BaseClasses
-    extends TRANSFORM.Icons.BasesPackage;
-
-    partial model Partial_SubSystem
-
-      extends NHES.Systems.BaseClasses.Partial_SubSystem;
-
-      extends Record_SubSystem;
-
-      replaceable Partial_ControlSystem CS annotation (choicesAllMatching=true,
-          Placement(transformation(extent={{-18,122},{-2,138}})));
-      replaceable Partial_EventDriver ED annotation (choicesAllMatching=true,
-          Placement(transformation(extent={{2,122},{18,138}})));
-      replaceable Record_Data data
-        annotation (Placement(transformation(extent={{42,122},{58,138}})));
-
-      SignalSubBus_ActuatorInput actuatorBus
-        annotation (Placement(transformation(extent={{10,80},{50,120}}),
-            iconTransformation(extent={{10,80},{50,120}})));
-      SignalSubBus_SensorOutput sensorBus
-        annotation (Placement(transformation(extent={{-50,80},{-10,120}}),
-            iconTransformation(extent={{-50,80},{-10,120}})));
-
-    equation
-      connect(sensorBus, ED.sensorBus) annotation (Line(
-          points={{-30,100},{-16,100},{7.6,100},{7.6,122}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(sensorBus, CS.sensorBus) annotation (Line(
-          points={{-30,100},{-12.4,100},{-12.4,122}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus, CS.actuatorBus) annotation (Line(
-          points={{30,100},{12,100},{-7.6,100},{-7.6,122}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus, ED.actuatorBus) annotation (Line(
-          points={{30,100},{20,100},{12.4,100},{12.4,122}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-
-      annotation (
-        defaultComponentName="changeMe",
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}})),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
-                100,140}})));
-    end Partial_SubSystem;
-
-    partial model Partial_SubSystem_A
-
-      extends Partial_SubSystem;
-
-      extends Record_SubSystem_A;
-
-      annotation (
-        defaultComponentName="changeMe",
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                140}})));
-    end Partial_SubSystem_A;
-
-    partial model Record_Data
-
-      extends Modelica.Icons.Record;
-
-      annotation (defaultComponentName="data",
-      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end Record_Data;
-
-    partial record Record_SubSystem
-
-      annotation (defaultComponentName="subsystem",
-      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end Record_SubSystem;
-
-    partial record Record_SubSystem_A
-
-      extends Record_SubSystem;
-
-      annotation (defaultComponentName="subsystem",
-      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end Record_SubSystem_A;
-
-    partial model Partial_ControlSystem
-
-      extends NHES.Systems.BaseClasses.Partial_ControlSystem;
-
-      SignalSubBus_ActuatorInput actuatorBus
-        annotation (Placement(transformation(extent={{10,-120},{50,-80}}),
-            iconTransformation(extent={{10,-120},{50,-80}})));
-      SignalSubBus_SensorOutput sensorBus
-        annotation (Placement(transformation(extent={{-50,-120},{-10,-80}}),
-            iconTransformation(extent={{-50,-120},{-10,-80}})));
-
-      annotation (
-        defaultComponentName="CS",
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}})),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
-                100,100}})));
-
-    end Partial_ControlSystem;
-
-    partial model Partial_EventDriver
-
-      extends NHES.Systems.BaseClasses.Partial_EventDriver;
-
-      SignalSubBus_ActuatorInput actuatorBus
-        annotation (Placement(transformation(extent={{10,-120},{50,-80}}),
-            iconTransformation(extent={{10,-120},{50,-80}})));
-      SignalSubBus_SensorOutput sensorBus
-        annotation (Placement(transformation(extent={{-50,-120},{-10,-80}}),
-            iconTransformation(extent={{-50,-120},{-10,-80}})));
-
-      annotation (
-        defaultComponentName="ED",
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}})));
-
-    end Partial_EventDriver;
-
-    expandable connector SignalSubBus_ActuatorInput
-
-      extends NHES.Systems.Interfaces.SignalSubBus_ActuatorInput;
-
-      annotation (defaultComponentName="actuatorBus",
-      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end SignalSubBus_ActuatorInput;
-
-    expandable connector SignalSubBus_SensorOutput
-
-      extends NHES.Systems.Interfaces.SignalSubBus_SensorOutput;
-
-      annotation (defaultComponentName="sensorBus",
-      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end SignalSubBus_SensorOutput;
-  end BaseClasses;
-
-  package ControlSystems "Control systems"
-    model CS_Simple
-
-      extends BaseClasses.Partial_ControlSystem;
-
-      Modelica.Blocks.Sources.RealExpression CR_Reactivity
-        annotation (Placement(transformation(extent={{-14,-58},{6,-38}})));
-      TRANSFORM.Blocks.RealExpression T_RX
-        annotation (Placement(transformation(extent={{-44,-24},{-32,-10}})));
-      Modelica.Blocks.Sources.RealExpression PR_Compressor
-        annotation (Placement(transformation(extent={{22,-24},{42,-4}})));
-      TRANSFORM.Blocks.RealExpression Core_mass_flow_rate
-        annotation (Placement(transformation(extent={{-8,10},{4,24}})));
-    equation
-
-      connect(actuatorBus.CR_Reactivity, CR_Reactivity.y) annotation (Line(
-          points={{30,-100},{30,-48},{7,-48}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(sensorBus.Core_Outlet_T, T_RX.u) annotation (Line(
-          points={{-30,-100},{-32,-100},{-32,-58},{-56,-58},{-56,-32},{-58,-32},{
-              -58,-17},{-45.2,-17}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(sensorBus.Core_Mass_Flow, Core_mass_flow_rate.u) annotation (Line(
-          points={{-30,-100},{-32,-100},{-32,-50},{-68,-50},{-68,14},{-9.2,14},{
-              -9.2,17}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.PR_Compressor, PR_Compressor.y) annotation (Line(
-          points={{30,-100},{30,-40},{28,-40},{28,-24},{64,-24},{64,-14},{43,-14}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-
-    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
-    end CS_Simple;
-
-    model ED_Simple
-
-      extends BaseClasses.Partial_EventDriver;
-
-    equation
-
-    annotation(defaultComponentName="changeMe_CS", Icon(graphics={
-            Text(
-              extent={{-94,82},{94,74}},
-              lineColor={0,0,0},
-              lineThickness=1,
-              fillColor={255,255,237},
-              fillPattern=FillPattern.Solid,
-              textString="Change Me")}));
-    end ED_Simple;
-
-    model CS_Basic
-
-      extends BaseClasses.Partial_ControlSystem;
-
-      TRANSFORM.Controls.LimPID     CR(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=2e-8,
-        Ti=15,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-40,-64},{-20,-44}})));
-      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
-        annotation (Placement(transformation(extent={{-72,-64},{-52,-44}})));
-      Modelica.Blocks.Sources.RealExpression PR_Compressor(y=0)
-        "total thermal power"
-        annotation (Placement(transformation(extent={{-4,-100},{8,-88}})));
-      TRANSFORM.Blocks.RealExpression Core_M_Flow
-        annotation (Placement(transformation(extent={{-4,-90},{8,-76}})));
-      Data.CS_HTGR_Pebble_BraytonCycle data
-        annotation (Placement(transformation(extent={{-96,74},{-76,94}})));
-    equation
-
-      connect(const1.y,CR. u_s) annotation (Line(points={{-51,-54},{-42,-54}},
-                                color={0,0,127}));
-      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
-          points={{-30,-100},{-30,-66}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.CR_Reactivity, CR.y) annotation (Line(
-          points={{30,-100},{30,-54},{-19,-54}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.PR_Compressor, PR_Compressor.y) annotation (Line(
-          points={{30,-100},{20,-100},{20,-94},{8.6,-94}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(sensorBus.Core_Mass_Flow, Core_M_Flow.u) annotation (Line(
-          points={{-30,-100},{-30,-83},{-5.2,-83}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-    annotation(defaultComponentName="changeMe_CS", Icon(graphics),
-        Documentation(info="<html>
-<p>The default Brayton system control only moves control rods to control core outlet temperature. In more complicated systems, it is expected that additional controls may be needed. </p>
-</html>"));
-    end CS_Basic;
-
-    model CS_Basic_Transient_Example
-      "Example running 10% ramps for two out of four hours."
-
-      extends BaseClasses.Partial_ControlSystem;
-
-      TRANSFORM.Controls.LimPID     CR(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=2e-8,
-        Ti=15,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-40,-64},{-20,-44}})));
-      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
-        annotation (Placement(transformation(extent={{-72,-64},{-52,-44}})));
-      Data.CS_HTGR_Pebble_BraytonCycle data(T_Rx_Exit_Ref=1123.15)
-        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
-      TRANSFORM.Blocks.RealExpression Core_M_Flow
-        annotation (Placement(transformation(extent={{-4,-90},{8,-76}})));
-      TRANSFORM.Controls.LimPID Mass_Flow_Cont(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-8,
-        Ti=15,
-        yMax=200,
-        yMin=-280,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
-      Modelica.Blocks.Sources.Trapezoid trapezoid(
-        amplitude=-54e6,
-        rising=300,
-        width=6900,
-        falling=300,
-        period=14400,
-        offset=540e6,
-        startTime=3600)
-        annotation (Placement(transformation(extent={{-76,-10},{-56,10}})));
-      Modelica.Blocks.Sources.Constant const2(k=300)
-        annotation (Placement(transformation(extent={{-40,22},{-20,42}})));
-      Modelica.Blocks.Math.Add add
-        annotation (Placement(transformation(extent={{2,10},{22,30}})));
-    equation
-
-      connect(const1.y,CR. u_s) annotation (Line(points={{-51,-54},{-42,-54}},
-                                color={0,0,127}));
-      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
-          points={{-30,-100},{-30,-66}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.CR_Reactivity, CR.y) annotation (Line(
-          points={{30,-100},{30,-54},{-19,-54}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(sensorBus.Core_Mass_Flow, Core_M_Flow.u) annotation (Line(
-          points={{-30,-100},{-30,-83},{-5.2,-83}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(trapezoid.y,Mass_Flow_Cont. u_s) annotation (Line(points={{-55,0},{
-              -42,0}},                       color={0,0,127}));
-      connect(Mass_Flow_Cont.y,add. u2) annotation (Line(points={{-19,0},{-6,0},{-6,
-              14},{0,14}},          color={0,0,127}));
-      connect(const2.y,add. u1) annotation (Line(points={{-19,32},{-6,32},{-6,26},{
-              0,26}},     color={0,0,127}));
-      connect(sensorBus.Turbine_Power, Mass_Flow_Cont.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,-18},{-30,-18},{-30,-12}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.PR_Compressor, add.y) annotation (Line(
-          points={{30,-100},{30,20},{23,20}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-    annotation(defaultComponentName="changeMe_CS", Icon(graphics),
-        Documentation(info="<html>
-<p>The default Brayton system control only moves control rods to control core outlet temperature. In more complicated systems, it is expected that additional controls may be needed. </p>
-</html>"));
-    end CS_Basic_Transient_Example;
-
-  end ControlSystems;
-
-  package Data
-
-    model CS_HTGR_Pebble_BraytonCycle
-
-      extends BaseClasses.Record_Data;
-      parameter Modelica.Units.SI.Temperature T_Rx_Exit_Ref = 850;
-
-      annotation (
-        defaultComponentName="data",
-        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
-              lineColor={0,0,0},
-              extent={{-100,-90},{100,-70}},
-              textString="changeMe")}),
-        Diagram(coordinateSystem(preserveAspectRatio=false)),
-        Documentation(info="<html>
-</html>"));
-    end CS_HTGR_Pebble_BraytonCycle;
-
-    model Model_HTGR_Pebble_BraytonCycle
-
-      extends BaseClasses.Record_Data;
-
-      import TRANSFORM.Units.Conversions.Functions.Distance_m.from_in;
-
-      replaceable package Coolant_Medium =
-          Modelica.Media.Interfaces.PartialMedium                                           annotation(choicesAllMatching = true,dialog(group="Media"));
-      replaceable package Fuel_Medium =
-          TRANSFORM.Media.Interfaces.Solids.PartialAlloy                                    annotation(choicesAllMatching = true,dialog(group = "Media"));
-      replaceable package Pebble_Medium =
-          TRANSFORM.Media.Interfaces.Solids.PartialAlloy                                    annotation(dialog(group = "Media"),choicesAllMatching=true);
-          replaceable package Aux_Heat_App_Medium =
-          Modelica.Media.Interfaces.PartialMedium                                           annotation(choicesAllMatching = true, dialog(group = "Media"));
-          replaceable package Waste_Heat_App_Medium =
-          Modelica.Media.Interfaces.PartialMedium                                           annotation(choicesAllMatching = true, dialog(group = "Media"));
-
-      //-----------------------------------------------------------------//
-      // General //
-      //-----------------------------------------------------------------//
-      parameter SI.Power Q_total=160e6 "Total thermal output"                              annotation(dialog(tab = "General", group = "System Reference"));
-      parameter SI.Power Q_total_el=45e6 "Total electrical output"                         annotation(dialog(tab = "General", group = "System Reference"));
-      parameter Real eta=Q_total_el/Q_total "Net efficiency"                               annotation(dialog(tab = "General", group = "System Reference"));
-
-      parameter SI.Pressure P_Release = 19.3e5 "Boundary release valve pressure downstream of precooler"                    annotation(dialog(tab = "General", group = "System Boundary Conditions"));
-      parameter SI.Temperature T_Intercooler = 35+273.15                                                                    annotation(dialog(tab = "General", group = "System Boundary Conditions"));
-      parameter SI.Temperature T_Precooler = 33+273.15                                                                      annotation(dialog(tab = "General", group = "System Boundary Conditions"));
-      parameter SI.MassFlowRate m_flow=700 "Primary Side Flow"                                                              annotation(dialog(tab = "General", group = "System Boundary Conditions"));
-
-      parameter SI.Length length_core=2.408 "meters (based on 1.33 H/D ratio)"                                              annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Length d_core=1.5                                                                                        annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Length r_outer_fuelRod=0.5*from_in(0.374) "Outside diameter of fuel rod (d3s1)"                          annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Length th_clad_fuelRod=from_in(0.024) "Cladding thickness of fuel rod (d3s1)"                            annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Length th_gap_fuelRod=0.5*from_in(0.0065) "Gap thickness between pellet and cladding (d3s1)"             annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Length r_pellet_fuelRod=0.5*from_in(0.3195) "Pellet radius (d3s1)"                                       annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Length pitch_fuelRod=from_in(0.496) "Fuel rod pitch (d3s1)"                                              annotation(dialog(tab = "General", group = "Geometry"));
-      parameter TRANSFORM.Units.NonDim sizeAssembly=17 "square size of assembly (e.g., 17 = 17x17)"                         annotation(dialog(tab = "General", group = "Geometry"));
-      parameter TRANSFORM.Units.NonDim nRodFuel_assembly=264 "# of fuel rods per assembly (d3s1)"                           annotation(dialog(tab = "General", group = "Geometry"));
-      parameter TRANSFORM.Units.NonDim nRodNonFuel_assembly=sizeAssembly^2 - 264 "# of non-fuel rods per assembly (d3s1)"   annotation(dialog(tab = "General", group = "Geometry"));
-      parameter TRANSFORM.Units.NonDim nAssembly=floor(Modelica.Constants.pi*d_core^2/4/(pitch_fuelRod*sizeAssembly)^2)     annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Volume V_Core_Outlet = 0.5                                                                               annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Area A_LPDelay = 1                                                                                       annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Length L_LPDelay = 5                                                                                     annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Area A_HPDelay = 1                                                                                       annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Length L_HPDelay = 1                                                                                     annotation(dialog(tab = "General", group = "Geometry"));
-
-      parameter Real K_P_Release( unit="1/(m.kg)")                                                                          annotation(dialog(tab = "General", group = "Valves"));
-
-      parameter Real Turbine_Efficiency = 0.93                                                                              annotation(dialog(tab = "General", group = "Turbine"));
-      parameter Real Turbine_Pressure_Ratio = 2.975                                                                         annotation(dialog(tab = "General", group = "Turbine"));
-      parameter SI.MassFlowRate Turbine_Nominal_MassFlowRate = 296                                                          annotation(dialog(tab = "General", group = "Turbine"));
-
-      parameter Real LP_Comp_Efficiency = 0.91                                                                              annotation(dialog(tab = "General", group = "Compressors"));
-      parameter Real LP_Comp_P_Ratio = 1.77                                                                                 annotation(dialog(tab = "General", group = "Compressors"));
-      parameter SI.MassFlowRate LP_Comp_MassFlowRate = 300                                                                  annotation(dialog(tab = "General", group = "Compressors"));
-      parameter Real HP_Comp_Efficiency = 0.91                                                                              annotation(dialog(tab = "General", group = "Compressors"));
-      parameter Real HP_Comp_P_Ratio = 1.77                                                                                 annotation(dialog(tab = "General", group = "Compressors"));
-      parameter SI.MassFlowRate HP_Comp_MassFlowRate = 300                                                                  annotation(dialog(tab = "General", group = "Compressors"));
-
-      parameter Real HX_Aux_NTU = 1                                                                                         annotation(dialog(tab = "General", group = "HX_Aux"));
-      parameter SI.Volume HX_Aux_Tube_Vol = 3                                                                               annotation(dialog(tab = "General", group = "HX_Aux"));
-      parameter SI.Volume HX_Aux_Shell_Vol = 3                                                                              annotation(dialog(tab = "General", group = "HX_Aux"));
-      parameter Real HX_Aux_K_tube(unit = "1/m4") = 1                                                                       annotation(dialog(tab = "General", group = "HX_Aux"));
-      parameter Real HX_Aux_K_shell(unit = "1/m4") = 1                                                                      annotation(dialog(tab = "General", group = "HX_Aux"));
-
-      parameter Real HX_Reheat_NTU = 10                                                                                     annotation(dialog(tab = "General", group = "HX_Reheat"));
-      parameter SI.Volume HX_Reheat_Tube_Vol = 0.2                                                                          annotation(dialog(tab = "General", group = "HX_Reheat"));
-      parameter SI.Volume HX_Reheat_Shell_Vol = 0.2                                                                         annotation(dialog(tab = "General", group = "HX_Reheat"));
-      parameter Real HX_Reheat_K_tube(unit = "1/m4") = 1                                                                    annotation(dialog(tab = "General", group = "HX_Reheat"));
-      parameter Real HX_Reheat_K_shell(unit = "1/m4") = 1                                                                   annotation(dialog(tab = "General", group = "HX_Reheat"));
-
-      parameter SI.Volume V_Intercooler = 0.0                                                                               annotation(dialog(tab = "General", group = "Coolers"));
-      parameter SI.Volume V_Precooler = 0.0                                                                                 annotation(dialog(tab = "General", group = "Coolers"));
-
-      parameter Real nKernel_per_Pebble = 15000                                                                             annotation(dialog(tab = "General", group = "Pebble"));
-      parameter Real nPebble = 55000                                                                                        annotation(dialog(tab = "General", group = "Pebble"));
-      parameter Integer nR_Fuel = 1                                                                                         annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.Length r_Pebble = 0.03                                                                                   annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.Length r_Fuel = 200e-6                                                                                   annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.Length r_Buffer = r_Fuel + 100e-6                                                                        annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.Length r_IPyC = r_Buffer+40e-6                                                                           annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.Length r_SiC = r_IPyC+35e-6                                                                              annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.Length r_OPyC = r_SiC+40e-6                                                                              annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.ThermalConductivity k_Buffer= 2.25                                                                       annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.ThermalConductivity k_IPyC = 8.0                                                                         annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.ThermalConductivity k_SiC = 175                                                                          annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.ThermalConductivity k_OPyC = 8.0                                                                         annotation(dialog(tab = "General", group = "Pebble"));
-
-      //-----------------------------------------------------------------//
-      // Initialization //
-      //-----------------------------------------------------------------//
-      parameter SI.Temperature Pebble_Surface_Init = 750+273.15                                                             annotation(dialog(tab = "Initialization", group = "Start Value: Fuel"));
-      parameter SI.Temperature Pebble_Center_Init = 1100+273.15                                                             annotation(dialog(tab = "Initialization", group = "Start Value: Fuel"));
-
-      parameter SI.Pressure P_Turbine_Ref = 19.9e5                                                                          annotation(dialog(tab = "Initialization", group = "Turbine"));
-      parameter SI.Temperature TStart_In_Turbine = 850+273.15                                                               annotation(dialog(tab = "Initialization", group = "Turbine"));
-      parameter SI.Temperature TStart_Out_Turbine = 478+273.15                                                              annotation(dialog(tab = "Initialization", group = "Turbine"));
-
-      parameter SI.Pressure P_LP_Comp_Ref = 19.3e5                                                                          annotation(dialog(tab = "Initialization", group = "Turbine"));
-      parameter SI.Temperature TStart_LP_Comp_In = 33+273.15                                                                annotation(dialog(tab = "Initialization", group = "Turbine"));
-      parameter SI.Temperature TStart_LP_Comp_Out = 123+273.15                                                              annotation(dialog(tab = "Initialization", group = "Turbine"));
-
-      parameter SI.Pressure P_HP_Comp_Ref = 19.9e5                                                                          annotation(dialog(tab = "Initialization", group = "Turbine"));
-      parameter SI.Temperature TStart_HP_Comp_In = 850+273.15                                                               annotation(dialog(tab = "Initialization", group = "Turbine"));
-      parameter SI.Temperature TStart_HP_Comp_Out = 478+273.15                                                              annotation(dialog(tab = "Initialization", group = "Turbine"));
-
-      parameter SI.Power HX_Aux_Q_Init = -1e6                                                                               annotation(dialog(tab = "Initialization", group = "HX_Aux"));
-      parameter SI.SpecificEnthalpy HX_Aux_h_tube_in = 100e3                                                                annotation(dialog(tab = "Initialization", group = "HX_Aux"));
-      parameter SI.SpecificEnthalpy HX_Aux_h_tube_out = 900e3                                                               annotation(dialog(tab = "Initialization", group = "HX_Aux"));
-      parameter SI.Pressure HX_Aux_p_tube = 1e5                                                                             annotation(dialog(tab = "Initialization", group = "HX_Aux"));
-
-      parameter SI.Pressure P_Core_Inlet = 60e5                                                                             annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
-      parameter SI.Pressure P_Core_Outlet = 59.4e5                                                                          annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
-      parameter SI.Temperature T_Core_Inlet = 623.15                                                                        annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
-      parameter SI.Temperature T_Core_Outlet = 1023.15                                                                      annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
-      parameter SI.Temperature T_Pebble_Init = T_Core_Outlet                                                                annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
-      parameter SI.Temperature T_Fuel_Center_Init = 1473.15                                                                 annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
-
-      parameter SI.Pressure Recuperator_P_Tube = 19.4e5                                                                     annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
-      parameter SI.SpecificEnthalpy Recuperator_h_Tube_Inlet = 2307e3                                                       annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
-      parameter SI.SpecificEnthalpy Recuperator_h_Tube_Outlet = 3600e3                                                      annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
-      parameter SI.Pressure Recuperator_dp_Tube = 0.3e5                                                                     annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
-      parameter SI.MassFlowRate Recuperator_m_Tube = 296.1                                                                  annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
-
-      parameter SI.Pressure Recuperator_P_Shell = 60.4e5                                                                    annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
-      parameter SI.SpecificEnthalpy Recuperator_h_Shell_Inlet = 3600e3                                                      annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
-      parameter SI.SpecificEnthalpy Recuperator_h_Shell_Outlet = 2700e3                                                     annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
-      parameter SI.Pressure Recuperator_dp_Shell = 0.4e5                                                                    annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
-      parameter SI.MassFlowRate Recuperator_m_Shell = 296.1                                                                 annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
-
-      parameter SI.Pressure P_Intercooler = 59.2e5                                                                          annotation(dialog(tab = "Initialization", group = "Cooler"));
-      parameter SI.Pressure P_Precooler = 30e5                                                                              annotation(dialog(tab = "Initialization", group = "Cooler"));
-
-      //-----------------------------------------------------------------//
-      // ControlSystem //
-      //-----------------------------------------------------------------//
-
-      parameter Modelica.Units.SI.Temperature T_Rx_Exit_Ref = 850;
-
-    equation
-     // assert(abs(lengths[1] - lengths[2]) <= Modelica.Constants.eps, "Hot/cold leg lengths must be equal");
-     // assert(abs(length_reactorVessel - lengths[1] - length_pressurizer) <= Modelica.Constants.eps, "Hot leg and pressurizer must be equal to reactor vessel length");
-
-                                                                                                                            annotation(dialog(tab = "Control"),
-        defaultComponentName="data",
-        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
-              lineColor={0,0,0},
-              extent={{-100,-90},{100,-70}},
-              textString="Pebble Bed")}),
-        Diagram(coordinateSystem(preserveAspectRatio=false)),
-        Documentation(info="<html>
-</html>"));
-    end Model_HTGR_Pebble_BraytonCycle;
-
-  end Data;
-
   package Examples
     extends Modelica.Icons.ExamplesPackage;
 
@@ -2466,6 +1956,366 @@ package BraytonCycle
     end PebbleBed_Brayton_FullRX_Transient;
   end Models;
 
+  package ControlSystems "Control systems"
+    model CS_Simple
+
+      extends BaseClasses.Partial_ControlSystem;
+
+      Modelica.Blocks.Sources.RealExpression CR_Reactivity
+        annotation (Placement(transformation(extent={{-14,-58},{6,-38}})));
+      TRANSFORM.Blocks.RealExpression T_RX
+        annotation (Placement(transformation(extent={{-84,-86},{-72,-72}})));
+      Modelica.Blocks.Sources.RealExpression PR_Compressor
+        annotation (Placement(transformation(extent={{22,-24},{42,-4}})));
+      TRANSFORM.Blocks.RealExpression Core_mass_flow_rate
+        annotation (Placement(transformation(extent={{-84,-62},{-72,-48}})));
+    equation
+
+      connect(actuatorBus.CR_Reactivity, CR_Reactivity.y) annotation (Line(
+          points={{30,-100},{30,-48},{7,-48}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.Core_Outlet_T, T_RX.u) annotation (Line(
+          points={{-30,-100},{-30,-78},{-34,-78},{-34,-68},{-92,-68},{-92,-79},
+              {-85.2,-79}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.Core_Mass_Flow, Core_mass_flow_rate.u) annotation (Line(
+          points={{-30,-100},{-30,-44},{-90,-44},{-90,-55},{-85.2,-55}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.PR_Compressor, PR_Compressor.y) annotation (Line(
+          points={{30,-100},{30,-40},{28,-40},{28,-24},{64,-24},{64,-14},{43,-14}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
+    end CS_Simple;
+
+    model ED_Simple
+
+      extends BaseClasses.Partial_EventDriver;
+
+    equation
+
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics={
+            Text(
+              extent={{-94,82},{94,74}},
+              lineColor={0,0,0},
+              lineThickness=1,
+              fillColor={255,255,237},
+              fillPattern=FillPattern.Solid,
+              textString="Change Me")}));
+    end ED_Simple;
+
+    model CS_Basic
+
+      extends BaseClasses.Partial_ControlSystem;
+
+      TRANSFORM.Controls.LimPID     CR(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=2e-8,
+        Ti=15,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-40,-64},{-20,-44}})));
+      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
+        annotation (Placement(transformation(extent={{-72,-64},{-52,-44}})));
+      Modelica.Blocks.Sources.RealExpression PR_Compressor(y=0)
+        "total thermal power"
+        annotation (Placement(transformation(extent={{-4,-100},{8,-88}})));
+      TRANSFORM.Blocks.RealExpression Core_M_Flow
+        annotation (Placement(transformation(extent={{-4,-90},{8,-76}})));
+      Data.CS_HTGR_Pebble_BraytonCycle data
+        annotation (Placement(transformation(extent={{-96,74},{-76,94}})));
+    equation
+
+      connect(const1.y,CR. u_s) annotation (Line(points={{-51,-54},{-42,-54}},
+                                color={0,0,127}));
+      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
+          points={{-30,-100},{-30,-66}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.CR_Reactivity, CR.y) annotation (Line(
+          points={{30,-100},{30,-54},{-19,-54}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.PR_Compressor, PR_Compressor.y) annotation (Line(
+          points={{30,-100},{20,-100},{20,-94},{8.6,-94}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.Core_Mass_Flow, Core_M_Flow.u) annotation (Line(
+          points={{-30,-100},{-30,-83},{-5.2,-83}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics),
+        Documentation(info="<html>
+<p>The default Brayton system control only moves control rods to control core outlet temperature. In more complicated systems, it is expected that additional controls may be needed. </p>
+</html>"));
+    end CS_Basic;
+
+    model CS_Basic_Transient_Example
+      "Example running 10% ramps for two out of four hours."
+
+      extends BaseClasses.Partial_ControlSystem;
+
+      TRANSFORM.Controls.LimPID     CR(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=2e-8,
+        Ti=15,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-40,-64},{-20,-44}})));
+      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
+        annotation (Placement(transformation(extent={{-72,-64},{-52,-44}})));
+      Data.CS_HTGR_Pebble_BraytonCycle data(T_Rx_Exit_Ref=1123.15)
+        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
+      TRANSFORM.Blocks.RealExpression Core_M_Flow
+        annotation (Placement(transformation(extent={{-4,-90},{8,-76}})));
+      TRANSFORM.Controls.LimPID Mass_Flow_Cont(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-8,
+        Ti=15,
+        yMax=200,
+        yMin=-280,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
+      Modelica.Blocks.Sources.Trapezoid trapezoid(
+        amplitude=-54e6,
+        rising=300,
+        width=6900,
+        falling=300,
+        period=14400,
+        offset=540e6,
+        startTime=3600)
+        annotation (Placement(transformation(extent={{-76,-10},{-56,10}})));
+      Modelica.Blocks.Sources.Constant const2(k=300)
+        annotation (Placement(transformation(extent={{-40,22},{-20,42}})));
+      Modelica.Blocks.Math.Add add
+        annotation (Placement(transformation(extent={{2,10},{22,30}})));
+    equation
+
+      connect(const1.y,CR. u_s) annotation (Line(points={{-51,-54},{-42,-54}},
+                                color={0,0,127}));
+      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
+          points={{-30,-100},{-30,-66}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.CR_Reactivity, CR.y) annotation (Line(
+          points={{30,-100},{30,-54},{-19,-54}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.Core_Mass_Flow, Core_M_Flow.u) annotation (Line(
+          points={{-30,-100},{-30,-83},{-5.2,-83}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(trapezoid.y,Mass_Flow_Cont. u_s) annotation (Line(points={{-55,0},{
+              -42,0}},                       color={0,0,127}));
+      connect(Mass_Flow_Cont.y,add. u2) annotation (Line(points={{-19,0},{-6,0},{-6,
+              14},{0,14}},          color={0,0,127}));
+      connect(const2.y,add. u1) annotation (Line(points={{-19,32},{-6,32},{-6,26},{
+              0,26}},     color={0,0,127}));
+      connect(sensorBus.Turbine_Power, Mass_Flow_Cont.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,-18},{-30,-18},{-30,-12}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.PR_Compressor, add.y) annotation (Line(
+          points={{30,-100},{30,20},{23,20}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics),
+        Documentation(info="<html>
+<p>The default Brayton system control only moves control rods to control core outlet temperature. In more complicated systems, it is expected that additional controls may be needed. </p>
+</html>"));
+    end CS_Basic_Transient_Example;
+
+  end ControlSystems;
+
+  package Data
+
+    model CS_HTGR_Pebble_BraytonCycle
+
+      extends BaseClasses.Record_Data;
+      parameter Modelica.Units.SI.Temperature T_Rx_Exit_Ref = 850;
+
+      annotation (
+        defaultComponentName="data",
+        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
+              lineColor={0,0,0},
+              extent={{-100,-90},{100,-70}},
+              textString="changeMe")}),
+        Diagram(coordinateSystem(preserveAspectRatio=false)),
+        Documentation(info="<html>
+</html>"));
+    end CS_HTGR_Pebble_BraytonCycle;
+
+    model Model_HTGR_Pebble_BraytonCycle
+
+      extends BaseClasses.Record_Data;
+
+      import TRANSFORM.Units.Conversions.Functions.Distance_m.from_in;
+
+      replaceable package Coolant_Medium =
+          Modelica.Media.Interfaces.PartialMedium                                           annotation(choicesAllMatching = true,dialog(group="Media"));
+      replaceable package Fuel_Medium =
+          TRANSFORM.Media.Interfaces.Solids.PartialAlloy                                    annotation(choicesAllMatching = true,dialog(group = "Media"));
+      replaceable package Pebble_Medium =
+          TRANSFORM.Media.Interfaces.Solids.PartialAlloy                                    annotation(dialog(group = "Media"),choicesAllMatching=true);
+          replaceable package Aux_Heat_App_Medium =
+          Modelica.Media.Interfaces.PartialMedium                                           annotation(choicesAllMatching = true, dialog(group = "Media"));
+          replaceable package Waste_Heat_App_Medium =
+          Modelica.Media.Interfaces.PartialMedium                                           annotation(choicesAllMatching = true, dialog(group = "Media"));
+
+      //-----------------------------------------------------------------//
+      // General //
+      //-----------------------------------------------------------------//
+      parameter SI.Power Q_total=160e6 "Total thermal output"                              annotation(dialog(tab = "General", group = "System Reference"));
+      parameter SI.Power Q_total_el=45e6 "Total electrical output"                         annotation(dialog(tab = "General", group = "System Reference"));
+      parameter Real eta=Q_total_el/Q_total "Net efficiency"                               annotation(dialog(tab = "General", group = "System Reference"));
+
+      parameter SI.Pressure P_Release = 19.3e5 "Boundary release valve pressure downstream of precooler"                    annotation(dialog(tab = "General", group = "System Boundary Conditions"));
+      parameter SI.Temperature T_Intercooler = 35+273.15                                                                    annotation(dialog(tab = "General", group = "System Boundary Conditions"));
+      parameter SI.Temperature T_Precooler = 33+273.15                                                                      annotation(dialog(tab = "General", group = "System Boundary Conditions"));
+      parameter SI.MassFlowRate m_flow=700 "Primary Side Flow"                                                              annotation(dialog(tab = "General", group = "System Boundary Conditions"));
+
+      parameter SI.Length length_core=2.408 "meters (based on 1.33 H/D ratio)"                                              annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length d_core=1.5                                                                                        annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length r_outer_fuelRod=0.5*from_in(0.374) "Outside diameter of fuel rod (d3s1)"                          annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length th_clad_fuelRod=from_in(0.024) "Cladding thickness of fuel rod (d3s1)"                            annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length th_gap_fuelRod=0.5*from_in(0.0065) "Gap thickness between pellet and cladding (d3s1)"             annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length r_pellet_fuelRod=0.5*from_in(0.3195) "Pellet radius (d3s1)"                                       annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length pitch_fuelRod=from_in(0.496) "Fuel rod pitch (d3s1)"                                              annotation(dialog(tab = "General", group = "Geometry"));
+      parameter TRANSFORM.Units.NonDim sizeAssembly=17 "square size of assembly (e.g., 17 = 17x17)"                         annotation(dialog(tab = "General", group = "Geometry"));
+      parameter TRANSFORM.Units.NonDim nRodFuel_assembly=264 "# of fuel rods per assembly (d3s1)"                           annotation(dialog(tab = "General", group = "Geometry"));
+      parameter TRANSFORM.Units.NonDim nRodNonFuel_assembly=sizeAssembly^2 - 264 "# of non-fuel rods per assembly (d3s1)"   annotation(dialog(tab = "General", group = "Geometry"));
+      parameter TRANSFORM.Units.NonDim nAssembly=floor(Modelica.Constants.pi*d_core^2/4/(pitch_fuelRod*sizeAssembly)^2)     annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Volume V_Core_Outlet = 0.5                                                                               annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Area A_LPDelay = 1                                                                                       annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length L_LPDelay = 5                                                                                     annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Area A_HPDelay = 1                                                                                       annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length L_HPDelay = 1                                                                                     annotation(dialog(tab = "General", group = "Geometry"));
+
+      parameter Real K_P_Release( unit="1/(m.kg)")                                                                          annotation(dialog(tab = "General", group = "Valves"));
+
+      parameter Real Turbine_Efficiency = 0.93                                                                              annotation(dialog(tab = "General", group = "Turbine"));
+      parameter Real Turbine_Pressure_Ratio = 2.975                                                                         annotation(dialog(tab = "General", group = "Turbine"));
+      parameter SI.MassFlowRate Turbine_Nominal_MassFlowRate = 296                                                          annotation(dialog(tab = "General", group = "Turbine"));
+
+      parameter Real LP_Comp_Efficiency = 0.91                                                                              annotation(dialog(tab = "General", group = "Compressors"));
+      parameter Real LP_Comp_P_Ratio = 1.77                                                                                 annotation(dialog(tab = "General", group = "Compressors"));
+      parameter SI.MassFlowRate LP_Comp_MassFlowRate = 300                                                                  annotation(dialog(tab = "General", group = "Compressors"));
+      parameter Real HP_Comp_Efficiency = 0.91                                                                              annotation(dialog(tab = "General", group = "Compressors"));
+      parameter Real HP_Comp_P_Ratio = 1.77                                                                                 annotation(dialog(tab = "General", group = "Compressors"));
+      parameter SI.MassFlowRate HP_Comp_MassFlowRate = 300                                                                  annotation(dialog(tab = "General", group = "Compressors"));
+
+      parameter Real HX_Aux_NTU = 1                                                                                         annotation(dialog(tab = "General", group = "HX_Aux"));
+      parameter SI.Volume HX_Aux_Tube_Vol = 3                                                                               annotation(dialog(tab = "General", group = "HX_Aux"));
+      parameter SI.Volume HX_Aux_Shell_Vol = 3                                                                              annotation(dialog(tab = "General", group = "HX_Aux"));
+      parameter Real HX_Aux_K_tube(unit = "1/m4") = 1                                                                       annotation(dialog(tab = "General", group = "HX_Aux"));
+      parameter Real HX_Aux_K_shell(unit = "1/m4") = 1                                                                      annotation(dialog(tab = "General", group = "HX_Aux"));
+
+      parameter Real HX_Reheat_NTU = 10                                                                                     annotation(dialog(tab = "General", group = "HX_Reheat"));
+      parameter SI.Volume HX_Reheat_Tube_Vol = 0.2                                                                          annotation(dialog(tab = "General", group = "HX_Reheat"));
+      parameter SI.Volume HX_Reheat_Shell_Vol = 0.2                                                                         annotation(dialog(tab = "General", group = "HX_Reheat"));
+      parameter Real HX_Reheat_K_tube(unit = "1/m4") = 1                                                                    annotation(dialog(tab = "General", group = "HX_Reheat"));
+      parameter Real HX_Reheat_K_shell(unit = "1/m4") = 1                                                                   annotation(dialog(tab = "General", group = "HX_Reheat"));
+
+      parameter SI.Volume V_Intercooler = 0.0                                                                               annotation(dialog(tab = "General", group = "Coolers"));
+      parameter SI.Volume V_Precooler = 0.0                                                                                 annotation(dialog(tab = "General", group = "Coolers"));
+
+      parameter Real nKernel_per_Pebble = 15000                                                                             annotation(dialog(tab = "General", group = "Pebble"));
+      parameter Real nPebble = 55000                                                                                        annotation(dialog(tab = "General", group = "Pebble"));
+      parameter Integer nR_Fuel = 1                                                                                         annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_Pebble = 0.03                                                                                   annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_Fuel = 200e-6                                                                                   annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_Buffer = r_Fuel + 100e-6                                                                        annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_IPyC = r_Buffer+40e-6                                                                           annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_SiC = r_IPyC+35e-6                                                                              annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_OPyC = r_SiC+40e-6                                                                              annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.ThermalConductivity k_Buffer= 2.25                                                                       annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.ThermalConductivity k_IPyC = 8.0                                                                         annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.ThermalConductivity k_SiC = 175                                                                          annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.ThermalConductivity k_OPyC = 8.0                                                                         annotation(dialog(tab = "General", group = "Pebble"));
+
+      //-----------------------------------------------------------------//
+      // Initialization //
+      //-----------------------------------------------------------------//
+      parameter SI.Temperature Pebble_Surface_Init = 750+273.15                                                             annotation(dialog(tab = "Initialization", group = "Start Value: Fuel"));
+      parameter SI.Temperature Pebble_Center_Init = 1100+273.15                                                             annotation(dialog(tab = "Initialization", group = "Start Value: Fuel"));
+
+      parameter SI.Pressure P_Turbine_Ref = 19.9e5                                                                          annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_In_Turbine = 850+273.15                                                               annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_Out_Turbine = 478+273.15                                                              annotation(dialog(tab = "Initialization", group = "Turbine"));
+
+      parameter SI.Pressure P_LP_Comp_Ref = 19.3e5                                                                          annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_LP_Comp_In = 33+273.15                                                                annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_LP_Comp_Out = 123+273.15                                                              annotation(dialog(tab = "Initialization", group = "Turbine"));
+
+      parameter SI.Pressure P_HP_Comp_Ref = 19.9e5                                                                          annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_HP_Comp_In = 850+273.15                                                               annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_HP_Comp_Out = 478+273.15                                                              annotation(dialog(tab = "Initialization", group = "Turbine"));
+
+      parameter SI.Power HX_Aux_Q_Init = -1e6                                                                               annotation(dialog(tab = "Initialization", group = "HX_Aux"));
+      parameter SI.SpecificEnthalpy HX_Aux_h_tube_in = 100e3                                                                annotation(dialog(tab = "Initialization", group = "HX_Aux"));
+      parameter SI.SpecificEnthalpy HX_Aux_h_tube_out = 900e3                                                               annotation(dialog(tab = "Initialization", group = "HX_Aux"));
+      parameter SI.Pressure HX_Aux_p_tube = 1e5                                                                             annotation(dialog(tab = "Initialization", group = "HX_Aux"));
+
+      parameter SI.Pressure P_Core_Inlet = 60e5                                                                             annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+      parameter SI.Pressure P_Core_Outlet = 59.4e5                                                                          annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+      parameter SI.Temperature T_Core_Inlet = 623.15                                                                        annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+      parameter SI.Temperature T_Core_Outlet = 1023.15                                                                      annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+      parameter SI.Temperature T_Pebble_Init = T_Core_Outlet                                                                annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+      parameter SI.Temperature T_Fuel_Center_Init = 1473.15                                                                 annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+
+      parameter SI.Pressure Recuperator_P_Tube = 19.4e5                                                                     annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
+      parameter SI.SpecificEnthalpy Recuperator_h_Tube_Inlet = 2307e3                                                       annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
+      parameter SI.SpecificEnthalpy Recuperator_h_Tube_Outlet = 3600e3                                                      annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
+      parameter SI.Pressure Recuperator_dp_Tube = 0.3e5                                                                     annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
+      parameter SI.MassFlowRate Recuperator_m_Tube = 296.1                                                                  annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
+
+      parameter SI.Pressure Recuperator_P_Shell = 60.4e5                                                                    annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
+      parameter SI.SpecificEnthalpy Recuperator_h_Shell_Inlet = 3600e3                                                      annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
+      parameter SI.SpecificEnthalpy Recuperator_h_Shell_Outlet = 2700e3                                                     annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
+      parameter SI.Pressure Recuperator_dp_Shell = 0.4e5                                                                    annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
+      parameter SI.MassFlowRate Recuperator_m_Shell = 296.1                                                                 annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
+
+      parameter SI.Pressure P_Intercooler = 59.2e5                                                                          annotation(dialog(tab = "Initialization", group = "Cooler"));
+      parameter SI.Pressure P_Precooler = 30e5                                                                              annotation(dialog(tab = "Initialization", group = "Cooler"));
+
+      //-----------------------------------------------------------------//
+      // ControlSystem //
+      //-----------------------------------------------------------------//
+
+      parameter Modelica.Units.SI.Temperature T_Rx_Exit_Ref = 850;
+
+    equation
+     // assert(abs(lengths[1] - lengths[2]) <= Modelica.Constants.eps, "Hot/cold leg lengths must be equal");
+     // assert(abs(length_reactorVessel - lengths[1] - length_pressurizer) <= Modelica.Constants.eps, "Hot leg and pressurizer must be equal to reactor vessel length");
+
+                                                                                                                            annotation(dialog(tab = "Control"),
+        defaultComponentName="data",
+        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
+              lineColor={0,0,0},
+              extent={{-100,-90},{100,-70}},
+              textString="Pebble Bed")}),
+        Diagram(coordinateSystem(preserveAspectRatio=false)),
+        Documentation(info="<html>
+</html>"));
+    end Model_HTGR_Pebble_BraytonCycle;
+
+  end Data;
+
   package SupportComponents
     model Compressor_Controlled "Gas compressor"
       extends GasTurbine.Compressor.BaseClasses.CompressorBase(pstart_out=pstart_in*
@@ -2502,6 +2352,155 @@ package BraytonCycle
 </html>"));
     end Compressor_Controlled;
   end SupportComponents;
+
+  package BaseClasses
+    extends TRANSFORM.Icons.BasesPackage;
+
+    partial model Partial_SubSystem
+
+      extends NHES.Systems.BaseClasses.Partial_SubSystem;
+
+      extends Record_SubSystem;
+
+      replaceable Partial_ControlSystem CS annotation (choicesAllMatching=true,
+          Placement(transformation(extent={{-18,122},{-2,138}})));
+      replaceable Partial_EventDriver ED annotation (choicesAllMatching=true,
+          Placement(transformation(extent={{2,122},{18,138}})));
+      replaceable Record_Data data
+        annotation (Placement(transformation(extent={{42,122},{58,138}})));
+
+      SignalSubBus_ActuatorInput actuatorBus
+        annotation (Placement(transformation(extent={{10,80},{50,120}}),
+            iconTransformation(extent={{10,80},{50,120}})));
+      SignalSubBus_SensorOutput sensorBus
+        annotation (Placement(transformation(extent={{-50,80},{-10,120}}),
+            iconTransformation(extent={{-50,80},{-10,120}})));
+
+    equation
+      connect(sensorBus, ED.sensorBus) annotation (Line(
+          points={{-30,100},{-16,100},{7.6,100},{7.6,122}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus, CS.sensorBus) annotation (Line(
+          points={{-30,100},{-12.4,100},{-12.4,122}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus, CS.actuatorBus) annotation (Line(
+          points={{30,100},{12,100},{-7.6,100},{-7.6,122}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus, ED.actuatorBus) annotation (Line(
+          points={{30,100},{20,100},{12.4,100},{12.4,122}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+
+      annotation (
+        defaultComponentName="changeMe",
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}})),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,140}})));
+    end Partial_SubSystem;
+
+    partial model Partial_SubSystem_A
+
+      extends Partial_SubSystem;
+
+      extends Record_SubSystem_A;
+
+      annotation (
+        defaultComponentName="changeMe",
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                140}})));
+    end Partial_SubSystem_A;
+
+    partial model Record_Data
+
+      extends Modelica.Icons.Record;
+
+      annotation (defaultComponentName="data",
+      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end Record_Data;
+
+    partial record Record_SubSystem
+
+      annotation (defaultComponentName="subsystem",
+      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end Record_SubSystem;
+
+    partial record Record_SubSystem_A
+
+      extends Record_SubSystem;
+
+      annotation (defaultComponentName="subsystem",
+      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end Record_SubSystem_A;
+
+    partial model Partial_ControlSystem
+
+      extends NHES.Systems.BaseClasses.Partial_ControlSystem;
+
+      SignalSubBus_ActuatorInput actuatorBus
+        annotation (Placement(transformation(extent={{10,-120},{50,-80}}),
+            iconTransformation(extent={{10,-120},{50,-80}})));
+      SignalSubBus_SensorOutput sensorBus
+        annotation (Placement(transformation(extent={{-50,-120},{-10,-80}}),
+            iconTransformation(extent={{-50,-120},{-10,-80}})));
+
+      annotation (
+        defaultComponentName="CS",
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}})),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}})));
+
+    end Partial_ControlSystem;
+
+    partial model Partial_EventDriver
+
+      extends NHES.Systems.BaseClasses.Partial_EventDriver;
+
+      SignalSubBus_ActuatorInput actuatorBus
+        annotation (Placement(transformation(extent={{10,-120},{50,-80}}),
+            iconTransformation(extent={{10,-120},{50,-80}})));
+      SignalSubBus_SensorOutput sensorBus
+        annotation (Placement(transformation(extent={{-50,-120},{-10,-80}}),
+            iconTransformation(extent={{-50,-120},{-10,-80}})));
+
+      annotation (
+        defaultComponentName="ED",
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}})));
+
+    end Partial_EventDriver;
+
+    expandable connector SignalSubBus_ActuatorInput
+
+      extends NHES.Systems.Interfaces.SignalSubBus_ActuatorInput;
+
+      annotation (defaultComponentName="actuatorBus",
+      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end SignalSubBus_ActuatorInput;
+
+    expandable connector SignalSubBus_SensorOutput
+
+      extends NHES.Systems.Interfaces.SignalSubBus_SensorOutput;
+
+      annotation (defaultComponentName="sensorBus",
+      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end SignalSubBus_SensorOutput;
+  end BaseClasses;
 annotation (Documentation(info="<html>
 <p>The Brayton cycle HTGR is constructed a little bit differently than the typical Hybrid power generation system. The entire HTGR power production system is built as a single drag-and-drop module as opposed to a split between the primary and secondary sides. This is due to the fact that a Brayton system is a direct power generation system: the core coolant is the same fluid that is producing the electricity. While it is possible to split the model (see the BalanceOfPlant.Brayton_Cycle module as the secondary side of this particular model without the core), the primary side becomes a single component, which is simplistic. </p>
 <p>The Brayton cycle system is based on the HTGR-GT from &quot;Gas turbine power conversion systems for modular HTGRs&quot;, IAEA-TECDOC-1238, on pp 42-43. Standard TRISO fuel (UO2-loaded) is used rather than the document&apos;s Pu-based system. The table on page 43 indicates that the Helium core exit temperature is 850C. </p>

@@ -1,1882 +1,6 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR;
 package RankineCycle
 
-  package BaseClasses
-    extends TRANSFORM.Icons.BasesPackage;
-
-    partial model Partial_SubSystem
-
-      extends NHES.Systems.BaseClasses.Partial_SubSystem;
-
-      extends Record_SubSystem;
-
-      replaceable Partial_ControlSystem CS annotation (choicesAllMatching=true,
-          Placement(transformation(extent={{-18,122},{-2,138}})));
-      replaceable Partial_EventDriver ED annotation (choicesAllMatching=true,
-          Placement(transformation(extent={{2,122},{18,138}})));
-      replaceable Record_Data data
-        annotation (Placement(transformation(extent={{42,122},{58,138}})));
-
-      SignalSubBus_ActuatorInput actuatorBus
-        annotation (Placement(transformation(extent={{10,80},{50,120}}),
-            iconTransformation(extent={{10,80},{50,120}})));
-      SignalSubBus_SensorOutput sensorBus
-        annotation (Placement(transformation(extent={{-50,80},{-10,120}}),
-            iconTransformation(extent={{-50,80},{-10,120}})));
-
-    equation
-      connect(sensorBus, ED.sensorBus) annotation (Line(
-          points={{-30,100},{-16,100},{7.6,100},{7.6,122}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(sensorBus, CS.sensorBus) annotation (Line(
-          points={{-30,100},{-12.4,100},{-12.4,122}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus, CS.actuatorBus) annotation (Line(
-          points={{30,100},{12,100},{-7.6,100},{-7.6,122}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus, ED.actuatorBus) annotation (Line(
-          points={{30,100},{20,100},{12.4,100},{12.4,122}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-
-      annotation (
-        defaultComponentName="changeMe",
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}})),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
-                100,140}})));
-    end Partial_SubSystem;
-
-    partial model Partial_SubSystem_A
-
-      extends Partial_SubSystem;
-
-      extends Record_SubSystem_A;
-
-      annotation (
-        defaultComponentName="changeMe",
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                140}})));
-    end Partial_SubSystem_A;
-
-    partial model Record_Data
-
-      extends Modelica.Icons.Record;
-
-      annotation (defaultComponentName="data",
-      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end Record_Data;
-
-    partial record Record_SubSystem
-
-      annotation (defaultComponentName="subsystem",
-      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end Record_SubSystem;
-
-    partial record Record_SubSystem_A
-
-      extends Record_SubSystem;
-
-      annotation (defaultComponentName="subsystem",
-      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end Record_SubSystem_A;
-
-    partial model Partial_ControlSystem
-
-      extends NHES.Systems.BaseClasses.Partial_ControlSystem;
-
-      SignalSubBus_ActuatorInput actuatorBus
-        annotation (Placement(transformation(extent={{10,-120},{50,-80}}),
-            iconTransformation(extent={{10,-120},{50,-80}})));
-      SignalSubBus_SensorOutput sensorBus
-        annotation (Placement(transformation(extent={{-50,-120},{-10,-80}}),
-            iconTransformation(extent={{-50,-120},{-10,-80}})));
-
-      annotation (
-        defaultComponentName="CS",
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}})),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
-                100,100}})));
-
-    end Partial_ControlSystem;
-
-    partial model Partial_EventDriver
-
-      extends NHES.Systems.BaseClasses.Partial_EventDriver;
-
-      SignalSubBus_ActuatorInput actuatorBus
-        annotation (Placement(transformation(extent={{10,-120},{50,-80}}),
-            iconTransformation(extent={{10,-120},{50,-80}})));
-      SignalSubBus_SensorOutput sensorBus
-        annotation (Placement(transformation(extent={{-50,-120},{-10,-80}}),
-            iconTransformation(extent={{-50,-120},{-10,-80}})));
-
-      annotation (
-        defaultComponentName="ED",
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}})));
-
-    end Partial_EventDriver;
-
-    expandable connector SignalSubBus_ActuatorInput
-
-      extends NHES.Systems.Interfaces.SignalSubBus_ActuatorInput;
-
-      annotation (defaultComponentName="actuatorBus",
-      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end SignalSubBus_ActuatorInput;
-
-    expandable connector SignalSubBus_SensorOutput
-
-      extends NHES.Systems.Interfaces.SignalSubBus_SensorOutput;
-
-      annotation (defaultComponentName="sensorBus",
-      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end SignalSubBus_SensorOutput;
-
-  end BaseClasses;
-
-  package ControlSystems
-    model ED_Dummy
-
-      extends BaseClasses.Partial_EventDriver;
-
-    equation
-
-    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
-    end ED_Dummy;
-
-    model CS_Rankine
-
-      extends RankineCycle.BaseClasses.Partial_ControlSystem;
-
-      TRANSFORM.Controls.LimPID     CR(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=5e-7,
-        Ti=15,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-40,-56},{-20,-36}})));
-      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
-        annotation (Placement(transformation(extent={{-80,-56},{-60,-36}})));
-      Data.CS_HTGR_Pebble_RankineCycle data(T_Rx_Exit_Ref=1023.15, m_flow_nom=
-            300)
-        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
-      TRANSFORM.Controls.LimPID     CR1(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-2,
-        Ti=15,
-        yMin=50,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-38,14},{-18,-6}})));
-      Modelica.Blocks.Sources.Constant const2(k=data.m_flow_nom)
-        annotation (Placement(transformation(extent={{-78,-6},{-58,14}})));
-    equation
-
-      connect(const1.y,CR. u_s) annotation (Line(points={{-59,-46},{-42,-46}},
-                                color={0,0,127}));
-      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
-          points={{-30,-100},{-30,-58}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.CR_Reactivity, CR.y) annotation (Line(
-          points={{30,-100},{30,-46},{-19,-46}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const2.y, CR1.u_s)
-        annotation (Line(points={{-57,4},{-40,4}}, color={0,0,127}));
-      connect(sensorBus.Core_Mass_Flow, CR1.u_m) annotation (Line(
-          points={{-30,-100},{-30,-74},{-106,-74},{-106,28},{-28,28},{-28,16}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.PR_Compressor, CR1.y) annotation (Line(
-          points={{30,-100},{30,4},{-17,4}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
-    end CS_Rankine;
-
-    model CS_Rankine_Primary
-
-      extends RankineCycle.BaseClasses.Partial_ControlSystem;
-
-      TRANSFORM.Controls.LimPID     CR(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-9,
-        Ti=15,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
-      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
-        annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
-      replaceable Data.CS_HTGR_Pebble_RankineCycle data(
-        T_Rx_Exit_Ref=1023.15,
-        m_flow_nom=250,
-        Q_Nom=45e6,
-        P_Steam_Ref=15000000)
-        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
-      TRANSFORM.Controls.LimPID Blower_Speed(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-7,
-        Ti=30,
-        yMax=75,
-        yMin=45,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-36,14},{-16,-6}})));
-      Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
-        annotation (Placement(transformation(extent={{-80,-6},{-60,14}})));
-    equation
-
-      connect(const1.y,CR. u_s) annotation (Line(points={{-59,-40},{-38,-40}},
-                                color={0,0,127}));
-      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
-          points={{-30,-100},{-30,-96},{-96,-96},{-96,-72},{-26,-72},{-26,-52}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const2.y, Blower_Speed.u_s)
-        annotation (Line(points={{-59,4},{-38,4}}, color={0,0,127}));
-      connect(sensorBus.Steam_Pressure, Blower_Speed.u_m) annotation (Line(
-          points={{-30,-100},{-30,-96},{-96,-96},{-96,22},{-26,22},{-26,16}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.CR_Reactivity, CR.y) annotation (Line(
-          points={{30,-100},{28,-100},{28,-40},{-15,-40}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.PR_Compressor, Blower_Speed.y) annotation (Line(
-          points={{30,-100},{30,4},{-15,4}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
-    end CS_Rankine_Primary;
-
-    model CS_Rankine_Primary_Direct
-
-      extends RankineCycle.BaseClasses.Partial_ControlSystem;
-
-      TRANSFORM.Controls.LimPID     CR(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=4.5e-9,
-        Ti=15,
-        yb=-8e-3,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
-      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
-        annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
-      replaceable Data.CS_HTGR_Pebble_RankineCycle data(
-        T_Rx_Exit_Ref=1023.15,
-        m_flow_nom=250,
-        Q_Nom=45e6,
-        P_Steam_Ref=15000000)
-        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
-      TRANSFORM.Controls.LimPID Blower_Speed(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-7,
-        Ti=30,
-        yMax=75,
-        yMin=45,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-36,14},{-16,-6}})));
-      Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
-        annotation (Placement(transformation(extent={{-80,-6},{-60,14}})));
-      TRANSFORM.Controls.LimPID PID_FeedPump(
-        controllerType=Modelica.Blocks.Types.SimpleController.PID,
-        Ti=5,
-        Td=0.001,
-        yMax=100,
-        yMin=5,
-        wp=0.5,
-        wd=0.5,
-        y_start=67,
-        k=-8e-6,
-        initType=Modelica.Blocks.Types.Init.NoInit,
-        xi_start=1.0,
-        k_s=1,
-        k_m=1)
-        annotation (Placement(transformation(extent={{-20,68},{0,48}})));
-      Modelica.Blocks.Sources.Constant const3(k=140e5)
-        annotation (Placement(transformation(extent={{-58,48},{-38,68}})));
-    equation
-
-      connect(const1.y,CR. u_s) annotation (Line(points={{-59,-40},{-38,-40}},
-                                color={0,0,127}));
-      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
-          points={{-30,-100},{-30,-96},{-96,-96},{-96,-72},{-26,-72},{-26,-52}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const2.y, Blower_Speed.u_s)
-        annotation (Line(points={{-59,4},{-38,4}}, color={0,0,127}));
-      connect(sensorBus.Steam_Pressure, Blower_Speed.u_m) annotation (Line(
-          points={{-30,-100},{-30,-96},{-96,-96},{-96,22},{-26,22},{-26,16}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.CR_Reactivity, CR.y) annotation (Line(
-          points={{30,-100},{28,-100},{28,-40},{-15,-40}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.PR_Compressor, Blower_Speed.y) annotation (Line(
-          points={{30,-100},{30,4},{-15,4}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.mfeedpump,PID_FeedPump. y) annotation (Line(
-          points={{30,-100},{30,58},{1,58}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const3.y, PID_FeedPump.u_s)
-        annotation (Line(points={{-37,58},{-22,58}}, color={0,0,127}));
-      connect(sensorBus.feedpressure, PID_FeedPump.u_m) annotation (Line(
-          points={{-30,-100},{-64,-100},{-64,-96},{-96,-96},{-96,34},{-30,34},{-30,
-              78},{-10,78},{-10,70}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
-    end CS_Rankine_Primary_Direct;
-
-    model CS_Rankine_Primary_SS
-
-      extends RankineCycle.BaseClasses.Partial_ControlSystem;
-
-      TRANSFORM.Controls.LimPID     CR(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=2e-5,
-        Ti=90,
-        Td=100,
-        wp=0.9,
-        wd=0.1,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
-      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
-        annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
-      replaceable Data.CS_HTGR_Pebble_RankineCycle data(
-        T_Rx_Exit_Ref=1023.15,
-        m_flow_nom=250,
-        Q_Nom=45e6,
-        P_Steam_Ref=14000000)
-        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
-      Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
-        annotation (Placement(transformation(extent={{-80,-6},{-60,14}})));
-      Modelica.Blocks.Sources.Constant valvedelay1(k=7e5)
-        annotation (Placement(transformation(extent={{-44,74},{-24,94}})));
-      Modelica.Blocks.Sources.ContinuousClock clock1(offset=0, startTime=0)
-        annotation (Placement(transformation(extent={{-48,38},{-28,58}})));
-      Modelica.Blocks.Logical.Greater greater1
-        annotation (Placement(transformation(extent={{-4,74},{16,54}})));
-      Modelica.Blocks.Logical.Switch MinPumpSpeed
-        annotation (Placement(transformation(extent={{60,54},{80,74}})));
-      Modelica.Blocks.Sources.Constant const3(k=45)
-        annotation (Placement(transformation(extent={{26,96},{46,116}})));
-      Modelica.Blocks.Sources.Constant const4(k=45)
-        annotation (Placement(transformation(extent={{28,28},{48,48}})));
-      Modelica.Blocks.Math.Add         add
-        annotation (Placement(transformation(extent={{14,-8},{34,12}})));
-      Modelica.Blocks.Sources.Trapezoid trapezoid1(
-        amplitude=-40,
-        rising=780,
-        width=1020,
-        falling=780,
-        period=3600,
-        nperiod=1,
-        offset=0,
-        startTime=1e6 + 900)
-        annotation (Placement(transformation(extent={{-174,-12},{-154,8}})));
-      SupportComponent.VarLimVarK_PID PID(
-        use_k_in=true,
-        use_lowlim_in=true,
-        use_uplim_in=true,
-        controllerType=Modelica.Blocks.Types.SimpleController.PID,
-        with_FF=true,
-        k=1e-6,
-        Ti=55,
-        Td=1,
-        yMax=50,
-        yMin=0)
-        annotation (Placement(transformation(extent={{-32,-10},{-12,10}})));
-      Modelica.Blocks.Sources.Constant const5(k=50)
-        annotation (Placement(transformation(extent={{-96,14},{-86,24}})));
-      Modelica.Blocks.Sources.Constant const6(k=0)
-        annotation (Placement(transformation(extent={{-96,-30},{-86,-20}})));
-      Modelica.Blocks.Sources.Constant const11(k=2e-6)
-        annotation (Placement(transformation(extent={{-128,26},{-120,34}})));
-      Modelica.Blocks.Sources.Constant const7(k=0)
-        annotation (Placement(transformation(extent={{-132,-20},{-122,-10}})));
-    equation
-
-      connect(const1.y,CR. u_s) annotation (Line(points={{-59,-40},{-38,-40}},
-                                color={0,0,127}));
-      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
-          points={{-30,-100},{-30,-96},{-96,-96},{-96,-72},{-26,-72},{-26,-52}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.CR_Reactivity, CR.y) annotation (Line(
-          points={{30,-100},{28,-100},{28,-40},{-15,-40}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(valvedelay1.y, greater1.u2) annotation (Line(points={{-23,84},{-14,84},
-              {-14,72},{-6,72}}, color={0,0,127}));
-      connect(clock1.y, greater1.u1) annotation (Line(points={{-27,48},{-16,48},{-16,
-              64},{-6,64}}, color={0,0,127}));
-      connect(greater1.y, MinPumpSpeed.u2)
-        annotation (Line(points={{17,64},{58,64}}, color={255,0,255}));
-      connect(const3.y, MinPumpSpeed.u1) annotation (Line(points={{47,106},{50,106},
-              {50,72},{58,72}}, color={0,0,127}));
-      connect(const4.y, MinPumpSpeed.u3) annotation (Line(points={{49,38},{52,38},{52,
-              56},{58,56}}, color={0,0,127}));
-      connect(actuatorBus.PR_Compressor, add.y) annotation (Line(
-          points={{30,-100},{30,-18},{42,-18},{42,2},{35,2}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(MinPumpSpeed.y, add.u1) annotation (Line(points={{81,64},{86,64},{86,
-              66},{88,66},{88,20},{6,20},{6,8},{12,8}}, color={0,0,127}));
-      connect(sensorBus.Steam_Pressure, PID.u_m) annotation (Line(
-          points={{-30,-100},{-30,-74},{-10,-74},{-10,-20},{-22,-20},{-22,-12}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-3,-6},{-3,-6}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(PID.y, add.u2)
-        annotation (Line(points={{-11,0},{4,0},{4,-4},{12,-4}}, color={0,0,127}));
-      connect(const5.y, PID.upperlim) annotation (Line(points={{-85.5,19},{-42,19},
-              {-42,11},{-28,11}},     color={0,0,127}));
-      connect(const2.y, PID.u_s) annotation (Line(points={{-59,4},{-40,4},{-40,0},{
-              -34,0}}, color={0,0,127}));
-      connect(const6.y, PID.lowerlim) annotation (Line(points={{-85.5,-25},{-40,-25},
-              {-40,11},{-22,11}},     color={0,0,127}));
-      connect(const11.y, PID.prop_k) annotation (Line(points={{-119.6,30},{-38,30},
-              {-38,11.4},{-14.6,11.4}},
-                                      color={0,0,127}));
-      connect(const7.y, PID.u_ff) annotation (Line(points={{-121.5,-15},{-102,-15},
-              {-102,32},{-34,32},{-34,8}}, color={0,0,127}));
-    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
-    end CS_Rankine_Primary_SS;
-
-    model CS_Rankine_Primary_SS_ClosedFeedheat
-
-      extends RankineCycle.BaseClasses.Partial_ControlSystem;
-
-      TRANSFORM.Controls.LimPID     CR(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=2e-5,
-        Ti=90,
-        Td=100,
-        wp=0.9,
-        wd=0.1,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
-      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
-        annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
-      replaceable Data.CS_HTGR_Pebble_RankineCycle data(
-        T_Rx_Exit_Ref=1023.15,
-        m_flow_nom=250,
-        Q_Nom=45e6,
-        P_Steam_Ref=14000000)
-        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
-      Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
-        annotation (Placement(transformation(extent={{-80,-6},{-60,14}})));
-      Modelica.Blocks.Sources.Constant valvedelay1(k=7e5)
-        annotation (Placement(transformation(extent={{-44,74},{-24,94}})));
-      Modelica.Blocks.Sources.ContinuousClock clock1(offset=0, startTime=0)
-        annotation (Placement(transformation(extent={{-48,38},{-28,58}})));
-      Modelica.Blocks.Logical.Greater greater1
-        annotation (Placement(transformation(extent={{-4,74},{16,54}})));
-      Modelica.Blocks.Logical.Switch MinPumpSpeed
-        annotation (Placement(transformation(extent={{60,54},{80,74}})));
-      Modelica.Blocks.Sources.Constant const3(k=20)
-        annotation (Placement(transformation(extent={{26,96},{46,116}})));
-      Modelica.Blocks.Sources.Constant const4(k=35)
-        annotation (Placement(transformation(extent={{28,28},{48,48}})));
-      Modelica.Blocks.Math.Add         add
-        annotation (Placement(transformation(extent={{14,-8},{34,12}})));
-      Modelica.Blocks.Sources.Trapezoid trapezoid1(
-        amplitude=-40,
-        rising=780,
-        width=1020,
-        falling=780,
-        period=3600,
-        nperiod=1,
-        offset=0,
-        startTime=1e6 + 900)
-        annotation (Placement(transformation(extent={{-138,-26},{-118,-6}})));
-      SupportComponent.VarLimVarK_PID PID(
-        use_k_in=true,
-        use_lowlim_in=true,
-        use_uplim_in=true,
-        controllerType=Modelica.Blocks.Types.SimpleController.PID,
-        with_FF=true,
-        k=1e-6,
-        Ti=55,
-        Td=1,
-        yMax=50,
-        yMin=0)
-        annotation (Placement(transformation(extent={{-32,-10},{-12,10}})));
-      Modelica.Blocks.Sources.Constant const5(k=50)
-        annotation (Placement(transformation(extent={{-96,14},{-86,24}})));
-      Modelica.Blocks.Sources.Constant const6(k=0)
-        annotation (Placement(transformation(extent={{-96,-30},{-86,-20}})));
-      Modelica.Blocks.Sources.Constant const11(k=2e-5)
-        annotation (Placement(transformation(extent={{-128,26},{-120,34}})));
-    equation
-
-      connect(const1.y,CR. u_s) annotation (Line(points={{-59,-40},{-38,-40}},
-                                color={0,0,127}));
-      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
-          points={{-30,-100},{-30,-96},{-96,-96},{-96,-72},{-26,-72},{-26,-52}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.CR_Reactivity, CR.y) annotation (Line(
-          points={{30,-100},{28,-100},{28,-40},{-15,-40}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(valvedelay1.y, greater1.u2) annotation (Line(points={{-23,84},{-14,84},
-              {-14,72},{-6,72}}, color={0,0,127}));
-      connect(clock1.y, greater1.u1) annotation (Line(points={{-27,48},{-16,48},{-16,
-              64},{-6,64}}, color={0,0,127}));
-      connect(greater1.y, MinPumpSpeed.u2)
-        annotation (Line(points={{17,64},{58,64}}, color={255,0,255}));
-      connect(const3.y, MinPumpSpeed.u1) annotation (Line(points={{47,106},{50,106},
-              {50,72},{58,72}}, color={0,0,127}));
-      connect(const4.y, MinPumpSpeed.u3) annotation (Line(points={{49,38},{52,38},{52,
-              56},{58,56}}, color={0,0,127}));
-      connect(actuatorBus.PR_Compressor, add.y) annotation (Line(
-          points={{30,-100},{30,-18},{42,-18},{42,2},{35,2}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(MinPumpSpeed.y, add.u1) annotation (Line(points={{81,64},{86,64},{86,
-              66},{88,66},{88,20},{6,20},{6,8},{12,8}}, color={0,0,127}));
-      connect(sensorBus.Steam_Pressure, PID.u_m) annotation (Line(
-          points={{-30,-100},{-30,-74},{-10,-74},{-10,-20},{-22,-20},{-22,-12}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-3,-6},{-3,-6}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(PID.y, add.u2)
-        annotation (Line(points={{-11,0},{4,0},{4,-4},{12,-4}}, color={0,0,127}));
-      connect(const5.y, PID.upperlim) annotation (Line(points={{-85.5,19},{-56,19},
-              {-56,20},{-28,20},{-28,11}},
-                                      color={0,0,127}));
-      connect(trapezoid1.y, PID.u_ff) annotation (Line(points={{-117,-16},{-46,-16},
-              {-46,8},{-34,8}}, color={0,0,127}));
-      connect(const2.y, PID.u_s) annotation (Line(points={{-59,4},{-40,4},{-40,0},{
-              -34,0}}, color={0,0,127}));
-      connect(const6.y, PID.lowerlim) annotation (Line(points={{-85.5,-25},{-40,-25},
-              {-40,18},{-22,18},{-22,11}},
-                                      color={0,0,127}));
-      connect(const11.y, PID.prop_k) annotation (Line(points={{-119.6,30},{-14,30},
-              {-14,11.4},{-14.6,11.4}},
-                                      color={0,0,127}));
-    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
-    end CS_Rankine_Primary_SS_ClosedFeedheat;
-
-    model CS_Rankine_Primary_TransientControl
-
-      extends RankineCycle.BaseClasses.Partial_ControlSystem;
-
-      TRANSFORM.Controls.LimPID     CR(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=2e-5,
-        Ti=90,
-        Td=100,
-        wp=0.9,
-        wd=0.1,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
-      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
-        annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
-      replaceable Data.CS_HTGR_Pebble_RankineCycle data(
-        T_Rx_Exit_Ref=1023.15,
-        m_flow_nom=250,
-        Q_Nom=45e6,
-        P_Steam_Ref=14000000)
-        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
-      Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
-        annotation (Placement(transformation(extent={{-80,-6},{-60,14}})));
-      Modelica.Blocks.Sources.Constant valvedelay1(k=7e5)
-        annotation (Placement(transformation(extent={{-44,74},{-24,94}})));
-      Modelica.Blocks.Sources.ContinuousClock clock1(offset=0, startTime=0)
-        annotation (Placement(transformation(extent={{-48,38},{-28,58}})));
-      Modelica.Blocks.Logical.Greater greater1
-        annotation (Placement(transformation(extent={{-4,74},{16,54}})));
-      Modelica.Blocks.Logical.Switch MinPumpSpeed
-        annotation (Placement(transformation(extent={{60,54},{80,74}})));
-      Modelica.Blocks.Sources.Constant const3(k=20)
-        annotation (Placement(transformation(extent={{26,96},{46,116}})));
-      Modelica.Blocks.Sources.Constant const4(k=45)
-        annotation (Placement(transformation(extent={{28,28},{48,48}})));
-      Modelica.Blocks.Math.Add         add
-        annotation (Placement(transformation(extent={{14,-8},{34,12}})));
-      Modelica.Blocks.Sources.Trapezoid trapezoid1(
-        amplitude=-40,
-        rising=780,
-        width=1020,
-        falling=780,
-        period=3600,
-        nperiod=1,
-        offset=0,
-        startTime=1e6 + 900)
-        annotation (Placement(transformation(extent={{-138,-26},{-118,-6}})));
-      SupportComponent.VarLimVarK_PID PID(
-        use_k_in=true,
-        use_lowlim_in=true,
-        use_uplim_in=true,
-        controllerType=Modelica.Blocks.Types.SimpleController.PID,
-        with_FF=true,
-        k=1e-6,
-        Ti=55,
-        Td=1,
-        yMax=50,
-        yMin=0)
-        annotation (Placement(transformation(extent={{-32,-10},{-12,10}})));
-      Modelica.Blocks.Sources.Constant const5(k=50)
-        annotation (Placement(transformation(extent={{-96,14},{-86,24}})));
-      Modelica.Blocks.Sources.Constant const6(k=0)
-        annotation (Placement(transformation(extent={{-96,-30},{-86,-20}})));
-      Modelica.Blocks.Sources.Constant const11(k=2e-6)
-        annotation (Placement(transformation(extent={{-128,26},{-120,34}})));
-    equation
-
-      connect(const1.y,CR. u_s) annotation (Line(points={{-59,-40},{-38,-40}},
-                                color={0,0,127}));
-      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
-          points={{-30,-100},{-30,-96},{-96,-96},{-96,-72},{-26,-72},{-26,-52}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.CR_Reactivity, CR.y) annotation (Line(
-          points={{30,-100},{28,-100},{28,-40},{-15,-40}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(valvedelay1.y, greater1.u2) annotation (Line(points={{-23,84},{-14,84},
-              {-14,72},{-6,72}}, color={0,0,127}));
-      connect(clock1.y, greater1.u1) annotation (Line(points={{-27,48},{-16,48},{-16,
-              64},{-6,64}}, color={0,0,127}));
-      connect(greater1.y, MinPumpSpeed.u2)
-        annotation (Line(points={{17,64},{58,64}}, color={255,0,255}));
-      connect(const3.y, MinPumpSpeed.u1) annotation (Line(points={{47,106},{50,106},
-              {50,72},{58,72}}, color={0,0,127}));
-      connect(const4.y, MinPumpSpeed.u3) annotation (Line(points={{49,38},{52,38},{52,
-              56},{58,56}}, color={0,0,127}));
-      connect(actuatorBus.PR_Compressor, add.y) annotation (Line(
-          points={{30,-100},{30,-18},{42,-18},{42,2},{35,2}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{6,3},{6,3}},
-          horizontalAlignment=TextAlignment.Left));
-      connect(MinPumpSpeed.y, add.u1) annotation (Line(points={{81,64},{86,64},{86,
-              66},{88,66},{88,20},{6,20},{6,8},{12,8}}, color={0,0,127}));
-      connect(sensorBus.Steam_Pressure, PID.u_m) annotation (Line(
-          points={{-30,-100},{-30,-74},{-10,-74},{-10,-20},{-22,-20},{-22,-12}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5), Text(
-          string="%first",
-          index=-1,
-          extent={{-3,-6},{-3,-6}},
-          horizontalAlignment=TextAlignment.Right));
-      connect(PID.y, add.u2)
-        annotation (Line(points={{-11,0},{4,0},{4,-4},{12,-4}}, color={0,0,127}));
-      connect(const5.y, PID.upperlim) annotation (Line(points={{-85.5,19},{-42,19},
-              {-42,11},{-28,11}},     color={0,0,127}));
-      connect(trapezoid1.y, PID.u_ff) annotation (Line(points={{-117,-16},{-46,-16},
-              {-46,8},{-34,8}}, color={0,0,127}));
-      connect(const2.y, PID.u_s) annotation (Line(points={{-59,4},{-40,4},{-40,0},{
-              -34,0}}, color={0,0,127}));
-      connect(const6.y, PID.lowerlim) annotation (Line(points={{-85.5,-25},{-40,-25},
-              {-40,11},{-22,11}},     color={0,0,127}));
-      connect(const11.y, PID.prop_k) annotation (Line(points={{-119.6,30},{-38,30},
-              {-38,11.4},{-14.6,11.4}},
-                                      color={0,0,127}));
-    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
-    end CS_Rankine_Primary_TransientControl;
-
-    model CS_Rankine_DNE
-
-      extends RankineCycle.BaseClasses.Partial_ControlSystem;
-
-      TRANSFORM.Controls.LimPID     CR(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-6,
-        Ti=15,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-24,-76},{-14,-66}})));
-      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
-        annotation (Placement(transformation(extent={{-42,-74},{-36,-68}})));
-      Data.CS_HTGR_Pebble_RankineCycle data(
-        T_Rx_Exit_Ref=1023.15,
-        m_flow_nom=250,
-        Q_Nom=43.75e6)
-        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
-      TRANSFORM.Controls.LimPID Blower_Speed(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-5,
-        Ti=30,
-        yMax=250,
-        yMin=25,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-2,-22},{6,-30}})));
-      Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
-        annotation (Placement(transformation(extent={{-20,-32},{-12,-24}})));
-      TRANSFORM.Controls.LimPID FWCP_Speed(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=-1e-2,
-        Ti=30,
-        yMax=750,
-        yMin=-1000,
-        initType=Modelica.Blocks.Types.Init.InitialState,
-        xi_start=1500)
-        annotation (Placement(transformation(extent={{-32,-6},{-24,2}})));
-      Modelica.Blocks.Sources.Constant const3(k=data.T_Steam_Ref)
-        annotation (Placement(transformation(extent={{-58,-6},{-50,2}})));
-      Modelica.Blocks.Sources.Constant const4(k=1500)
-        annotation (Placement(transformation(extent={{-18,2},{-12,8}})));
-      Modelica.Blocks.Math.Add         add
-        annotation (Placement(transformation(extent={{-4,-4},{6,6}})));
-      TRANSFORM.Controls.LimPID Turb_Divert_Valve(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=5e-6,
-        Ti=15,
-        yMax=1 - 1e-6,
-        yMin=0,
-        initType=Modelica.Blocks.Types.Init.InitialState,
-        xi_start=1500)
-        annotation (Placement(transformation(extent={{-42,82},{-34,74}})));
-      Modelica.Blocks.Sources.Constant const5(k=data.T_Feedwater)
-        annotation (Placement(transformation(extent={{-62,72},{-50,84}})));
-      TRANSFORM.Controls.LimPID TCV_Position(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-9,
-        Ti=5,
-        yMax=0,
-        yMin=-1,
-        initType=Modelica.Blocks.Types.Init.InitialState,
-        xi_start=1500)
-        annotation (Placement(transformation(extent={{-34,44},{-26,52}})));
-      Modelica.Blocks.Sources.Constant const6(k=data.Q_Nom)
-        annotation (Placement(transformation(extent={{-50,44},{-42,52}})));
-      Modelica.Blocks.Sources.Constant const7(k=1)
-        annotation (Placement(transformation(extent={{-20,52},{-14,58}})));
-      Modelica.Blocks.Math.Add         add1
-        annotation (Placement(transformation(extent={{-2,56},{6,48}})));
-      Modelica.Blocks.Sources.Constant const8(k=1e-6)
-        annotation (Placement(transformation(extent={{-22,64},{-14,72}})));
-      Modelica.Blocks.Math.Add         add2
-        annotation (Placement(transformation(extent={{-2,68},{6,76}})));
-      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Timer
-        timer(Start_Time=1e-2)
-        annotation (Placement(transformation(extent={{-22,74},{-14,82}})));
-      TRANSFORM.Controls.LimPID PI_TBV(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=-5e-7,
-        Ti=15,
-        yMax=1.0,
-        yMin=0.0,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-2,22},{6,30}})));
-      Modelica.Blocks.Sources.Constant const9(k=150e5)
-        annotation (Placement(transformation(extent={{-20,20},{-8,32}})));
-      TRANSFORM.Controls.LimPID     CR1(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-9,
-        Ti=15,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-22,-52},{-14,-60}})));
-      Modelica.Blocks.Sources.Constant const10(k=125e6)
-        annotation (Placement(transformation(extent={{-42,-60},{-34,-52}})));
-      Modelica.Blocks.Math.Add         add3
-        annotation (Placement(transformation(extent={{-2,-68},{6,-60}})));
-      Modelica.Blocks.Sources.Constant const11(k=-0.01)
-        annotation (Placement(transformation(extent={{-14,-48},{-6,-40}})));
-    equation
-
-      connect(const1.y,CR. u_s) annotation (Line(points={{-35.7,-71},{-25,-71}},
-                                color={0,0,127}));
-      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
-          points={{-30,-100},{-30,-82},{-14,-82},{-14,-77},{-19,-77}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const2.y, Blower_Speed.u_s)
-        annotation (Line(points={{-11.6,-28},{-8,-28},{-8,-26},{-2.8,-26}},
-                                                   color={0,0,127}));
-      connect(const3.y, FWCP_Speed.u_s) annotation (Line(points={{-49.6,-2},{-32.8,
-              -2}},               color={0,0,127}));
-      connect(sensorBus.Steam_Temperature, FWCP_Speed.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,-12},{-28,-12},{-28,-6.8}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const4.y, add.u1) annotation (Line(points={{-11.7,5},{-11.7,4},{-5,4}},
-                                       color={0,0,127}));
-      connect(FWCP_Speed.y, add.u2) annotation (Line(points={{-23.6,-2},{-5,-2}},
-                        color={0,0,127}));
-      connect(actuatorBus.Feed_Pump_Speed, add.y) annotation (Line(
-          points={{30,-100},{30,1},{6.5,1}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const5.y, Turb_Divert_Valve.u_s)
-        annotation (Line(points={{-49.4,78},{-42.8,78}}, color={0,0,127}));
-      connect(sensorBus.Feedwater_Temp, Turb_Divert_Valve.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,92},{-38,92},{-38,82.8}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const6.y, TCV_Position.u_s)
-        annotation (Line(points={{-41.6,48},{-34.8,48}}, color={0,0,127}));
-      connect(sensorBus.Power, TCV_Position.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,38},{-30,38},{-30,43.2}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const7.y, add1.u2) annotation (Line(points={{-13.7,55},{-12,55},{-12,
-              54.4},{-2.8,54.4}},         color={0,0,127}));
-      connect(TCV_Position.y, add1.u1) annotation (Line(points={{-25.6,48},{-14,48},
-              {-14,49.6},{-2.8,49.6}},                color={0,0,127}));
-      connect(actuatorBus.TCV_Position, add1.y) annotation (Line(
-          points={{30,-100},{30,52},{6.4,52}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.Divert_Valve_Position, add2.y) annotation (Line(
-          points={{30,-100},{30,72},{6.4,72}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(add2.u2, const8.y) annotation (Line(points={{-2.8,69.6},{-10,69.6},{
-              -10,68},{-13.6,68}},                                           color=
-              {0,0,127}));
-      connect(add2.u1, timer.y) annotation (Line(points={{-2.8,74.4},{-6,74.4},{-6,
-              78},{-13.44,78}},                                     color={0,0,127}));
-      connect(Turb_Divert_Valve.y, timer.u) annotation (Line(points={{-33.6,78},{
-              -22.8,78}},                                                color={0,0,
-              127}));
-      connect(const9.y, PI_TBV.u_s)
-        annotation (Line(points={{-7.4,26},{-2.8,26}}, color={0,0,127}));
-      connect(sensorBus.Steam_Pressure, PI_TBV.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,-12},{-72,-12},{-72,14},{2,14},{2,
-              21.2}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.TBV, PI_TBV.y) annotation (Line(
-          points={{30,-100},{30,26},{6.4,26}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(sensorBus.Steam_Pressure, Blower_Speed.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,-12},{2,-12},{2,-21.2}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.PR_Compressor, Blower_Speed.y) annotation (Line(
-          points={{30,-100},{30,-26},{6.4,-26}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(sensorBus.thermal_power, CR1.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,-46},{-18,-46},{-18,-51.2}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const10.y, CR1.u_s)
-        annotation (Line(points={{-33.6,-56},{-22.8,-56}},
-                                                       color={0,0,127}));
-      connect(actuatorBus.CR_Reactivity, add3.y) annotation (Line(
-          points={{30,-100},{30,-64},{6.4,-64}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(add3.u2, CR.y) annotation (Line(points={{-2.8,-66.4},{-12,-66.4},{-12,
-              -71},{-13.5,-71}},
-                         color={0,0,127}));
-      connect(add3.u1, const11.y) annotation (Line(points={{-2.8,-61.6},{-2.8,-48},
-              {0,-48},{0,-44},{-5.6,-44}}, color={0,0,127}));
-    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
-    end CS_Rankine_DNE;
-
-    model CS_Rankine_DNE_04
-
-      extends RankineCycle.BaseClasses.Partial_ControlSystem;
-
-      TRANSFORM.Controls.LimPID     CR(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-7,
-        Ti=15,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-24,-76},{-14,-66}})));
-      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
-        annotation (Placement(transformation(extent={{-42,-74},{-36,-68}})));
-      Data.CS_HTGR_Pebble_RankineCycle data(
-        T_Rx_Exit_Ref=1023.15,
-        m_flow_nom=50,
-        Q_Nom=43750000)
-        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
-      TRANSFORM.Controls.LimPID Blower_Speed(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=0.05,
-        Ti=30,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-6,-22},{2,-30}})));
-      Modelica.Blocks.Sources.Constant const2(k=48)
-        annotation (Placement(transformation(extent={{-20,-22},{-12,-30}})));
-      TRANSFORM.Controls.LimPID FWCP_Speed(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=-1e-3,
-        Ti=30,
-        yMax=750,
-        yMin=-1000,
-        initType=Modelica.Blocks.Types.Init.InitialState,
-        xi_start=1500)
-        annotation (Placement(transformation(extent={{-32,-6},{-24,2}})));
-      Modelica.Blocks.Sources.Constant const3(k=data.T_Steam_Ref)
-        annotation (Placement(transformation(extent={{-58,-6},{-50,2}})));
-      Modelica.Blocks.Sources.Constant const4(k=1500)
-        annotation (Placement(transformation(extent={{-18,2},{-12,8}})));
-      Modelica.Blocks.Math.Add         add
-        annotation (Placement(transformation(extent={{-4,-4},{6,6}})));
-      TRANSFORM.Controls.LimPID Turb_Divert_Valve(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=5e-4,
-        Ti=1,
-        yMax=1 - 1e-6,
-        yMin=0,
-        initType=Modelica.Blocks.Types.Init.InitialState,
-        xi_start=1500)
-        annotation (Placement(transformation(extent={{-42,82},{-34,74}})));
-      Modelica.Blocks.Sources.Constant const5(k=data.T_Feedwater)
-        annotation (Placement(transformation(extent={{-62,72},{-50,84}})));
-      TRANSFORM.Controls.LimPID TCV_Position(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-3,
-        Ti=5,
-        yMax=0,
-        yMin=-1,
-        initType=Modelica.Blocks.Types.Init.InitialState,
-        xi_start=1500)
-        annotation (Placement(transformation(extent={{-34,44},{-26,52}})));
-      Modelica.Blocks.Sources.Constant const6(k=43.75e6)
-        annotation (Placement(transformation(extent={{-50,44},{-42,52}})));
-      Modelica.Blocks.Sources.Constant const7(k=1)
-        annotation (Placement(transformation(extent={{-20,52},{-14,58}})));
-      Modelica.Blocks.Math.Add         add1
-        annotation (Placement(transformation(extent={{-2,56},{6,48}})));
-      Modelica.Blocks.Sources.Constant const8(k=1e-6)
-        annotation (Placement(transformation(extent={{-22,64},{-14,72}})));
-      Modelica.Blocks.Math.Add         add2
-        annotation (Placement(transformation(extent={{-2,68},{6,76}})));
-      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Timer
-        timer(Start_Time=1e-2)
-        annotation (Placement(transformation(extent={{-22,74},{-14,82}})));
-      TRANSFORM.Controls.LimPID PI_TBV(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=-5e-7,
-        Ti=15,
-        yMax=1.0,
-        yMin=0.0,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-2,22},{6,30}})));
-      Modelica.Blocks.Sources.Constant const9(k=150e5)
-        annotation (Placement(transformation(extent={{-20,20},{-8,32}})));
-      TRANSFORM.Controls.LimPID     CR1(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-10,
-        Ti=15,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-22,-52},{-14,-60}})));
-      Modelica.Blocks.Sources.Constant const10(k=125e6)
-        annotation (Placement(transformation(extent={{-42,-60},{-34,-52}})));
-      Modelica.Blocks.Math.Add         add3
-        annotation (Placement(transformation(extent={{-2,-68},{6,-60}})));
-      Modelica.Blocks.Sources.Constant const11(k=-0.01)
-        annotation (Placement(transformation(extent={{-14,-52},{-6,-44}})));
-      Modelica.Blocks.Math.Add3        add3_1
-        annotation (Placement(transformation(extent={{12,-36},{20,-28}})));
-      Modelica.Blocks.Sources.Constant const12(k=50)
-        annotation (Placement(transformation(extent={{-38,-36},{-30,-28}})));
-      Modelica.Blocks.Logical.GreaterThreshold greaterThreshold
-        annotation (Placement(transformation(extent={{-34,96},{-14,116}})));
-      Modelica.Blocks.Logical.Switch switch1
-        annotation (Placement(transformation(extent={{10,116},{30,96}})));
-      Modelica.Blocks.Sources.Constant const13(k=0.0)
-        annotation (Placement(transformation(extent={{-34,124},{-26,132}})));
-      TRANSFORM.Controls.LimPID Blower_Speed1(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-9,
-        Ti=10,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-4,-42},{4,-34}})));
-      Modelica.Blocks.Sources.Constant const14(k=140e5)
-        annotation (Placement(transformation(extent={{-24,-42},{-16,-34}})));
-      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-        minMaxFilter(min=10, max=80)
-        annotation (Placement(transformation(extent={{66,-60},{86,-40}})));
-    equation
-
-      connect(const1.y,CR. u_s) annotation (Line(points={{-35.7,-71},{-25,-71}},
-                                color={0,0,127}));
-      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
-          points={{-30,-100},{-30,-82},{-14,-82},{-14,-77},{-19,-77}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const2.y, Blower_Speed.u_s)
-        annotation (Line(points={{-11.6,-26},{-6.8,-26}},
-                                                   color={0,0,127}));
-      connect(const3.y, FWCP_Speed.u_s) annotation (Line(points={{-49.6,-2},{-32.8,
-              -2}},               color={0,0,127}));
-      connect(sensorBus.Steam_Temperature, FWCP_Speed.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,-12},{-28,-12},{-28,-6.8}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const4.y, add.u1) annotation (Line(points={{-11.7,5},{-11.7,4},{-5,4}},
-                                       color={0,0,127}));
-      connect(FWCP_Speed.y, add.u2) annotation (Line(points={{-23.6,-2},{-5,-2}},
-                        color={0,0,127}));
-      connect(actuatorBus.Feed_Pump_Speed, add.y) annotation (Line(
-          points={{30,-100},{30,1},{6.5,1}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const5.y, Turb_Divert_Valve.u_s)
-        annotation (Line(points={{-49.4,78},{-42.8,78}}, color={0,0,127}));
-      connect(sensorBus.Feedwater_Temp, Turb_Divert_Valve.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,92},{-38,92},{-38,82.8}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const6.y, TCV_Position.u_s)
-        annotation (Line(points={{-41.6,48},{-34.8,48}}, color={0,0,127}));
-      connect(const7.y, add1.u2) annotation (Line(points={{-13.7,55},{-12,55},{-12,
-              54.4},{-2.8,54.4}},         color={0,0,127}));
-      connect(TCV_Position.y, add1.u1) annotation (Line(points={{-25.6,48},{-14,48},
-              {-14,49.6},{-2.8,49.6}},                color={0,0,127}));
-      connect(actuatorBus.TCV_Position, add1.y) annotation (Line(
-          points={{30,-100},{30,52},{6.4,52}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(add2.u2, const8.y) annotation (Line(points={{-2.8,69.6},{-10,69.6},{
-              -10,68},{-13.6,68}},                                           color=
-              {0,0,127}));
-      connect(Turb_Divert_Valve.y, timer.u) annotation (Line(points={{-33.6,78},{
-              -22.8,78}},                                                color={0,0,
-              127}));
-      connect(const9.y, PI_TBV.u_s)
-        annotation (Line(points={{-7.4,26},{-2.8,26}}, color={0,0,127}));
-      connect(sensorBus.Steam_Pressure, PI_TBV.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,-12},{-72,-12},{-72,14},{2,14},{2,
-              21.2}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.TBV, PI_TBV.y) annotation (Line(
-          points={{30,-100},{30,26},{6.4,26}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(sensorBus.thermal_power, CR1.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,-46},{-18,-46},{-18,-51.2}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const10.y, CR1.u_s)
-        annotation (Line(points={{-33.6,-56},{-22.8,-56}},
-                                                       color={0,0,127}));
-      connect(actuatorBus.CR_Reactivity, add3.y) annotation (Line(
-          points={{30,-100},{30,-64},{6.4,-64}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(add3.u2, CR.y) annotation (Line(points={{-2.8,-66.4},{-12,-66.4},{-12,
-              -71},{-13.5,-71}},
-                         color={0,0,127}));
-      connect(add3_1.u2, const12.y)
-        annotation (Line(points={{11.2,-32},{-29.6,-32}}, color={0,0,127}));
-      connect(add3_1.u1, Blower_Speed.y) annotation (Line(points={{11.2,-28.8},{10,
-              -28.8},{10,-30},{2.4,-30},{2.4,-26}}, color={0,0,127}));
-      connect(sensorBus.Core_Mass_Flow, Blower_Speed.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,-18},{-2,-18},{-2,-21.2}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(add3.u1, const11.y) annotation (Line(points={{-2.8,-61.6},{-4,-61.6},
-              {-4,-48},{-5.6,-48}}, color={0,0,127}));
-      connect(sensorBus.Power, TCV_Position.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,38},{-30,38},{-30,43.2}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(sensorBus.Bypass_flow, greaterThreshold.u) annotation (Line(
-          points={{-30,-100},{-30,-64},{-102,-64},{-102,106},{-36,106}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(greaterThreshold.y, switch1.u2)
-        annotation (Line(points={{-13,106},{8,106}}, color={255,0,255}));
-      connect(const13.y, switch1.u3) annotation (Line(points={{-25.6,128},{-6,128},
-              {-6,114},{8,114}}, color={0,0,127}));
-      connect(timer.y, switch1.u1) annotation (Line(points={{-13.44,78},{-10,78},{
-              -10,80},{-8,80},{-8,98},{8,98}}, color={0,0,127}));
-      connect(switch1.y, add2.u1) annotation (Line(points={{31,106},{40,106},{40,86},
-              {38,86},{38,82},{-6,82},{-6,74.4},{-2.8,74.4}}, color={0,0,127}));
-      connect(actuatorBus.Divert_Valve_Position, add2.y) annotation (Line(
-          points={{30,-100},{32,-100},{32,72},{6.4,72}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const14.y, Blower_Speed1.u_s)
-        annotation (Line(points={{-15.6,-38},{-4.8,-38}}, color={0,0,127}));
-      connect(sensorBus.Steam_Pressure, Blower_Speed1.u_m) annotation (Line(
-          points={{-30,-100},{-30,-62},{-8,-62},{-8,-58},{-2,-58},{-2,-52},{0,-52},
-              {0,-42.8}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(Blower_Speed1.y, add3_1.u3) annotation (Line(points={{4.4,-38},{4.4,
-              -35.2},{11.2,-35.2}}, color={0,0,127}));
-      connect(add3_1.y, minMaxFilter.u) annotation (Line(points={{20.4,-32},{58,-32},
-              {58,-50},{64,-50}}, color={0,0,127}));
-      connect(actuatorBus.PR_Compressor, minMaxFilter.y) annotation (Line(
-          points={{30,-100},{96,-100},{96,-46},{87.4,-46},{87.4,-50}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
-    end CS_Rankine_DNE_04;
-
-    model CS_Rankine_DNE_AR
-
-      extends RankineCycle.BaseClasses.Partial_ControlSystem;
-
-      TRANSFORM.Controls.LimPID     CR(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-7,
-        Ti=15,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-24,-76},{-14,-66}})));
-      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
-        annotation (Placement(transformation(extent={{-42,-74},{-36,-68}})));
-      Data.CS_HTGR_Pebble_RankineCycle data(
-        T_Rx_Exit_Ref=1023.15,
-        m_flow_nom=50,
-        T_Steam_Ref=838.15,
-        Q_Nom=43750000,
-        Q_RX_Therm_Nom=200e6,
-        T_Feedwater=466.45)
-        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
-      TRANSFORM.Controls.LimPID Blower_Speed(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=0.05,
-        Ti=30,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-6,-22},{2,-30}})));
-      Modelica.Blocks.Sources.Constant const2(k=78)
-        annotation (Placement(transformation(extent={{-20,-22},{-12,-30}})));
-      TRANSFORM.Controls.LimPID FWCP_Speed(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=-1e-3,
-        Ti=60,
-        yMax=1500,
-        yMin=-1000,
-        initType=Modelica.Blocks.Types.Init.InitialState,
-        xi_start=1500)
-        annotation (Placement(transformation(extent={{-32,-6},{-24,2}})));
-      Modelica.Blocks.Sources.Constant const3(k=data.T_Steam_Ref)
-        annotation (Placement(transformation(extent={{-58,-6},{-50,2}})));
-      Modelica.Blocks.Sources.Constant const4(k=1500)
-        annotation (Placement(transformation(extent={{-18,2},{-12,8}})));
-      Modelica.Blocks.Math.Add         add
-        annotation (Placement(transformation(extent={{-4,-4},{6,6}})));
-      TRANSFORM.Controls.LimPID Turb_Divert_Valve(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=5e-4,
-        Ti=1,
-        yMax=1 - 1e-6,
-        yMin=0,
-        initType=Modelica.Blocks.Types.Init.InitialState,
-        xi_start=1500)
-        annotation (Placement(transformation(extent={{-42,82},{-34,74}})));
-      Modelica.Blocks.Sources.Constant const5(k=data.T_Feedwater)
-        annotation (Placement(transformation(extent={{-62,72},{-50,84}})));
-      TRANSFORM.Controls.LimPID TCV_Position(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-3,
-        Ti=5,
-        yMax=0,
-        yMin=-1,
-        initType=Modelica.Blocks.Types.Init.InitialState,
-        xi_start=1500)
-        annotation (Placement(transformation(extent={{-34,44},{-26,52}})));
-      Modelica.Blocks.Sources.Constant const6(k=87.01e6)
-        annotation (Placement(transformation(extent={{-50,44},{-42,52}})));
-      Modelica.Blocks.Sources.Constant const7(k=1)
-        annotation (Placement(transformation(extent={{-20,52},{-14,58}})));
-      Modelica.Blocks.Math.Add         add1
-        annotation (Placement(transformation(extent={{-2,56},{6,48}})));
-      Modelica.Blocks.Sources.Constant const8(k=1e-6)
-        annotation (Placement(transformation(extent={{-22,64},{-14,72}})));
-      Modelica.Blocks.Math.Add         add2
-        annotation (Placement(transformation(extent={{-2,68},{6,76}})));
-      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Timer
-        timer(Start_Time=1e-2)
-        annotation (Placement(transformation(extent={{-22,74},{-14,82}})));
-      TRANSFORM.Controls.LimPID PI_TBV(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=-5e-7,
-        Ti=15,
-        yMax=1.0,
-        yMin=0.0,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-2,22},{6,30}})));
-      Modelica.Blocks.Sources.Constant const9(k=200e5)
-        annotation (Placement(transformation(extent={{-20,20},{-8,32}})));
-      TRANSFORM.Controls.LimPID     CR1(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-10,
-        Ti=15,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-22,-52},{-14,-60}})));
-      Modelica.Blocks.Sources.Constant const10(k=data.Q_Nom)
-        annotation (Placement(transformation(extent={{-42,-60},{-34,-52}})));
-      Modelica.Blocks.Math.Add         add3
-        annotation (Placement(transformation(extent={{-2,-68},{6,-60}})));
-      Modelica.Blocks.Sources.Constant const11(k=-0.01)
-        annotation (Placement(transformation(extent={{-14,-52},{-6,-44}})));
-      Modelica.Blocks.Math.Add3        add3_1
-        annotation (Placement(transformation(extent={{12,-36},{20,-28}})));
-      Modelica.Blocks.Sources.Constant const12(k=80)
-        annotation (Placement(transformation(extent={{-38,-36},{-30,-28}})));
-      Modelica.Blocks.Logical.GreaterThreshold greaterThreshold
-        annotation (Placement(transformation(extent={{-34,96},{-14,116}})));
-      Modelica.Blocks.Logical.Switch switch1
-        annotation (Placement(transformation(extent={{10,116},{30,96}})));
-      Modelica.Blocks.Sources.Constant const13(k=0.0)
-        annotation (Placement(transformation(extent={{-34,124},{-26,132}})));
-      TRANSFORM.Controls.LimPID Blower_Speed1(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-7,
-        Ti=10,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-4,-44},{4,-36}})));
-      Modelica.Blocks.Sources.Constant const14(k=165e5)
-        annotation (Placement(transformation(extent={{-24,-42},{-16,-34}})));
-      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
-        minMaxFilter(min=10, max=100)
-        annotation (Placement(transformation(extent={{66,-60},{86,-40}})));
-    equation
-
-      connect(const1.y,CR. u_s) annotation (Line(points={{-35.7,-71},{-25,-71}},
-                                color={0,0,127}));
-      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
-          points={{-30,-100},{-30,-82},{-14,-82},{-14,-77},{-19,-77}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const2.y, Blower_Speed.u_s)
-        annotation (Line(points={{-11.6,-26},{-6.8,-26}},
-                                                   color={0,0,127}));
-      connect(const3.y, FWCP_Speed.u_s) annotation (Line(points={{-49.6,-2},{-32.8,
-              -2}},               color={0,0,127}));
-      connect(sensorBus.Steam_Temperature, FWCP_Speed.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,-12},{-28,-12},{-28,-6.8}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const4.y, add.u1) annotation (Line(points={{-11.7,5},{-11.7,4},{-5,4}},
-                                       color={0,0,127}));
-      connect(FWCP_Speed.y, add.u2) annotation (Line(points={{-23.6,-2},{-5,-2}},
-                        color={0,0,127}));
-      connect(actuatorBus.Feed_Pump_Speed, add.y) annotation (Line(
-          points={{30,-100},{30,1},{6.5,1}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const5.y, Turb_Divert_Valve.u_s)
-        annotation (Line(points={{-49.4,78},{-42.8,78}}, color={0,0,127}));
-      connect(sensorBus.Feedwater_Temp, Turb_Divert_Valve.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,92},{-38,92},{-38,82.8}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const6.y, TCV_Position.u_s)
-        annotation (Line(points={{-41.6,48},{-34.8,48}}, color={0,0,127}));
-      connect(const7.y, add1.u2) annotation (Line(points={{-13.7,55},{-12,55},{-12,
-              54.4},{-2.8,54.4}},         color={0,0,127}));
-      connect(TCV_Position.y, add1.u1) annotation (Line(points={{-25.6,48},{-14,48},
-              {-14,49.6},{-2.8,49.6}},                color={0,0,127}));
-      connect(actuatorBus.TCV_Position, add1.y) annotation (Line(
-          points={{30,-100},{30,52},{6.4,52}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(add2.u2, const8.y) annotation (Line(points={{-2.8,69.6},{-10,69.6},{
-              -10,68},{-13.6,68}},                                           color=
-              {0,0,127}));
-      connect(Turb_Divert_Valve.y, timer.u) annotation (Line(points={{-33.6,78},{
-              -22.8,78}},                                                color={0,0,
-              127}));
-      connect(const9.y, PI_TBV.u_s)
-        annotation (Line(points={{-7.4,26},{-2.8,26}}, color={0,0,127}));
-      connect(sensorBus.Steam_Pressure, PI_TBV.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,-12},{-72,-12},{-72,14},{2,14},{2,
-              21.2}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.TBV, PI_TBV.y) annotation (Line(
-          points={{30,-100},{30,26},{6.4,26}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(sensorBus.thermal_power, CR1.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,-46},{-18,-46},{-18,-51.2}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const10.y, CR1.u_s)
-        annotation (Line(points={{-33.6,-56},{-22.8,-56}},
-                                                       color={0,0,127}));
-      connect(actuatorBus.CR_Reactivity, add3.y) annotation (Line(
-          points={{30,-100},{30,-64},{6.4,-64}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(add3.u2, CR.y) annotation (Line(points={{-2.8,-66.4},{-12,-66.4},{-12,
-              -71},{-13.5,-71}},
-                         color={0,0,127}));
-      connect(add3_1.u2, const12.y)
-        annotation (Line(points={{11.2,-32},{-29.6,-32}}, color={0,0,127}));
-      connect(add3_1.u1, Blower_Speed.y) annotation (Line(points={{11.2,-28.8},{10,
-              -28.8},{10,-30},{2.4,-30},{2.4,-26}}, color={0,0,127}));
-      connect(sensorBus.Core_Mass_Flow, Blower_Speed.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,-18},{-2,-18},{-2,-21.2}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(add3.u1, const11.y) annotation (Line(points={{-2.8,-61.6},{-4,-61.6},
-              {-4,-48},{-5.6,-48}}, color={0,0,127}));
-      connect(sensorBus.Power, TCV_Position.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,38},{-30,38},{-30,43.2}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(sensorBus.Bypass_flow, greaterThreshold.u) annotation (Line(
-          points={{-30,-100},{-30,-64},{-102,-64},{-102,106},{-36,106}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(greaterThreshold.y, switch1.u2)
-        annotation (Line(points={{-13,106},{8,106}}, color={255,0,255}));
-      connect(const13.y, switch1.u3) annotation (Line(points={{-25.6,128},{-6,128},
-              {-6,114},{8,114}}, color={0,0,127}));
-      connect(timer.y, switch1.u1) annotation (Line(points={{-13.44,78},{-10,78},{
-              -10,80},{-8,80},{-8,98},{8,98}}, color={0,0,127}));
-      connect(switch1.y, add2.u1) annotation (Line(points={{31,106},{40,106},{40,86},
-              {38,86},{38,82},{-6,82},{-6,74.4},{-2.8,74.4}}, color={0,0,127}));
-      connect(actuatorBus.Divert_Valve_Position, add2.y) annotation (Line(
-          points={{30,-100},{32,-100},{32,72},{6.4,72}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const14.y, Blower_Speed1.u_s)
-        annotation (Line(points={{-15.6,-38},{-16,-38},{-16,-40},{-4.8,-40}},
-                                                          color={0,0,127}));
-      connect(sensorBus.Steam_Pressure, Blower_Speed1.u_m) annotation (Line(
-          points={{-30,-100},{-30,-62},{-8,-62},{-8,-44.8},{0,-44.8}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(Blower_Speed1.y, add3_1.u3) annotation (Line(points={{4.4,-40},{4.4,
-              -35.2},{11.2,-35.2}}, color={0,0,127}));
-      connect(add3_1.y, minMaxFilter.u) annotation (Line(points={{20.4,-32},{58,-32},
-              {58,-50},{64,-50}}, color={0,0,127}));
-      connect(actuatorBus.PR_Compressor, minMaxFilter.y) annotation (Line(
-          points={{30,-100},{96,-100},{96,-46},{87.4,-46},{87.4,-50}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
-    end CS_Rankine_DNE_AR;
-
-    model CS_Rankine_DNE_PowerManuever
-
-      extends RankineCycle.BaseClasses.Partial_ControlSystem;
-
-      TRANSFORM.Controls.LimPID     CR(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-6,
-        Ti=15,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-24,-76},{-14,-66}})));
-      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
-        annotation (Placement(transformation(extent={{-42,-74},{-36,-68}})));
-      Data.CS_HTGR_Pebble_RankineCycle data(
-        T_Rx_Exit_Ref=1023.15,
-        m_flow_nom=250,
-        Q_Nom=43.75e6)
-        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
-      TRANSFORM.Controls.LimPID Blower_Speed(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-5,
-        Ti=30,
-        yMax=250,
-        yMin=25,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-2,-22},{6,-30}})));
-      Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
-        annotation (Placement(transformation(extent={{-20,-32},{-12,-24}})));
-      TRANSFORM.Controls.LimPID FWCP_Speed(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=-1e-2,
-        Ti=30,
-        yMax=750,
-        yMin=-1000,
-        initType=Modelica.Blocks.Types.Init.InitialState,
-        xi_start=1500)
-        annotation (Placement(transformation(extent={{-32,-6},{-24,2}})));
-      Modelica.Blocks.Sources.Constant const3(k=data.T_Steam_Ref)
-        annotation (Placement(transformation(extent={{-58,-6},{-50,2}})));
-      Modelica.Blocks.Sources.Constant const4(k=1500)
-        annotation (Placement(transformation(extent={{-18,2},{-12,8}})));
-      Modelica.Blocks.Math.Add         add
-        annotation (Placement(transformation(extent={{-4,-4},{6,6}})));
-      TRANSFORM.Controls.LimPID Turb_Divert_Valve(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=5e-6,
-        Ti=15,
-        yMax=1 - 1e-6,
-        yMin=0,
-        initType=Modelica.Blocks.Types.Init.InitialState,
-        xi_start=1500)
-        annotation (Placement(transformation(extent={{-42,82},{-34,74}})));
-      Modelica.Blocks.Sources.Constant const5(k=data.T_Feedwater)
-        annotation (Placement(transformation(extent={{-60,72},{-48,84}})));
-      TRANSFORM.Controls.LimPID TCV_Position(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-9,
-        Ti=5,
-        yMax=0,
-        yMin=-1,
-        initType=Modelica.Blocks.Types.Init.InitialState,
-        xi_start=1500)
-        annotation (Placement(transformation(extent={{-34,44},{-26,52}})));
-      Modelica.Blocks.Sources.Trapezoid trapezoid(
-        amplitude=0.0*data.Q_Nom,
-        rising=600,
-        width=1200,
-        falling=600,
-        period=86400,
-        offset=data.Q_Nom,
-        startTime=86400 + 900)
-        annotation (Placement(transformation(extent={{-50,44},{-42,52}})));
-      Modelica.Blocks.Sources.Constant const7(k=1)
-        annotation (Placement(transformation(extent={{-20,52},{-14,58}})));
-      Modelica.Blocks.Math.Add         add1
-        annotation (Placement(transformation(extent={{-2,56},{6,48}})));
-      Modelica.Blocks.Sources.Constant const8(k=1e-6)
-        annotation (Placement(transformation(extent={{-22,64},{-14,72}})));
-      Modelica.Blocks.Math.Add         add2
-        annotation (Placement(transformation(extent={{-2,68},{6,76}})));
-      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Timer
-        timer(Start_Time=1e-2)
-        annotation (Placement(transformation(extent={{-22,74},{-14,82}})));
-      TRANSFORM.Controls.LimPID PI_TBV(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=-5e-7,
-        Ti=15,
-        yMax=1.0,
-        yMin=0.0,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-2,22},{6,30}})));
-      Modelica.Blocks.Sources.Constant const9(k=150e5)
-        annotation (Placement(transformation(extent={{-20,20},{-8,32}})));
-      TRANSFORM.Controls.LimPID     CR1(
-        controllerType=Modelica.Blocks.Types.SimpleController.PI,
-        k=1e-9,
-        Ti=15,
-        initType=Modelica.Blocks.Types.Init.NoInit)
-        annotation (Placement(transformation(extent={{-22,-52},{-14,-60}})));
-      Modelica.Blocks.Sources.Constant const10(k=125e6)
-        annotation (Placement(transformation(extent={{-42,-60},{-34,-52}})));
-      Modelica.Blocks.Math.Add         add3
-        annotation (Placement(transformation(extent={{-2,-68},{6,-60}})));
-      Modelica.Blocks.Sources.Constant const11(k=-0.01)
-        annotation (Placement(transformation(extent={{-14,-48},{-6,-40}})));
-      Modelica.Blocks.Math.Add         add4(k2=-1)
-        annotation (Placement(transformation(extent={{-46,98},{-38,106}})));
-      Modelica.Blocks.Logical.GreaterEqualThreshold greaterEqualThreshold
-        annotation (Placement(transformation(extent={{-22,98},{-14,106}})));
-      Modelica.Blocks.Logical.Switch switch1
-        annotation (Placement(transformation(extent={{4,98},{12,106}})));
-      Modelica.Blocks.Sources.Constant const6(k=1.0)
-        annotation (Placement(transformation(extent={{-12,110},{-4,118}})));
-      Modelica.Blocks.Sources.Constant const12(k=0.0)
-        annotation (Placement(transformation(extent={{-10,88},{-2,96}})));
-      Modelica.Blocks.Math.Product product1
-        annotation (Placement(transformation(extent={{12,84},{20,92}})));
-      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
-        delay1(Ti=0.25)
-        annotation (Placement(transformation(extent={{32,100},{38,104}})));
-    equation
-
-      connect(const1.y,CR. u_s) annotation (Line(points={{-35.7,-71},{-25,-71}},
-                                color={0,0,127}));
-      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
-          points={{-30,-100},{-30,-82},{-14,-82},{-14,-77},{-19,-77}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const2.y, Blower_Speed.u_s)
-        annotation (Line(points={{-11.6,-28},{-8,-28},{-8,-26},{-2.8,-26}},
-                                                   color={0,0,127}));
-      connect(const3.y, FWCP_Speed.u_s) annotation (Line(points={{-49.6,-2},{-32.8,
-              -2}},               color={0,0,127}));
-      connect(sensorBus.Steam_Temperature, FWCP_Speed.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,-12},{-28,-12},{-28,-6.8}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const4.y, add.u1) annotation (Line(points={{-11.7,5},{-11.7,4},{-5,4}},
-                                       color={0,0,127}));
-      connect(FWCP_Speed.y, add.u2) annotation (Line(points={{-23.6,-2},{-5,-2}},
-                        color={0,0,127}));
-      connect(actuatorBus.Feed_Pump_Speed, add.y) annotation (Line(
-          points={{30,-100},{30,1},{6.5,1}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const5.y, Turb_Divert_Valve.u_s)
-        annotation (Line(points={{-47.4,78},{-42.8,78}}, color={0,0,127}));
-      connect(sensorBus.Feedwater_Temp, Turb_Divert_Valve.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,92},{-38,92},{-38,82.8}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(trapezoid.y, TCV_Position.u_s)
-        annotation (Line(points={{-41.6,48},{-34.8,48}}, color={0,0,127}));
-      connect(sensorBus.Power, TCV_Position.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,38},{-30,38},{-30,43.2}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const7.y, add1.u2) annotation (Line(points={{-13.7,55},{-12,55},{-12,
-              54.4},{-2.8,54.4}},         color={0,0,127}));
-      connect(TCV_Position.y, add1.u1) annotation (Line(points={{-25.6,48},{-14,48},
-              {-14,49.6},{-2.8,49.6}},                color={0,0,127}));
-      connect(actuatorBus.TCV_Position, add1.y) annotation (Line(
-          points={{30,-100},{30,52},{6.4,52}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.Divert_Valve_Position, add2.y) annotation (Line(
-          points={{30,-100},{30,72},{6.4,72}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(add2.u2, const8.y) annotation (Line(points={{-2.8,69.6},{-10,69.6},{
-              -10,68},{-13.6,68}},                                           color=
-              {0,0,127}));
-      connect(Turb_Divert_Valve.y, timer.u) annotation (Line(points={{-33.6,78},{
-              -22.8,78}},                                                color={0,0,
-              127}));
-      connect(const9.y, PI_TBV.u_s)
-        annotation (Line(points={{-7.4,26},{-2.8,26}}, color={0,0,127}));
-      connect(sensorBus.Steam_Pressure, PI_TBV.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,-12},{-72,-12},{-72,14},{2,14},{2,
-              21.2}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.TBV, PI_TBV.y) annotation (Line(
-          points={{30,-100},{30,26},{6.4,26}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(sensorBus.Steam_Pressure, Blower_Speed.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,-12},{2,-12},{2,-21.2}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus.PR_Compressor, Blower_Speed.y) annotation (Line(
-          points={{30,-100},{30,-26},{6.4,-26}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(sensorBus.thermal_power, CR1.u_m) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,-46},{-18,-46},{-18,-51.2}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(const10.y, CR1.u_s)
-        annotation (Line(points={{-33.6,-56},{-22.8,-56}},
-                                                       color={0,0,127}));
-      connect(actuatorBus.CR_Reactivity, add3.y) annotation (Line(
-          points={{30,-100},{30,-64},{6.4,-64}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(add3.u2, CR.y) annotation (Line(points={{-2.8,-66.4},{-12,-66.4},{-12,
-              -71},{-13.5,-71}},
-                         color={0,0,127}));
-      connect(add3.u1, const11.y) annotation (Line(points={{-2.8,-61.6},{-2.8,-48},
-              {0,-48},{0,-44},{-5.6,-44}}, color={0,0,127}));
-      connect(sensorBus.Condensate_Pump_Pressure, add4.u2) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,99.6},{-46.8,99.6}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(sensorBus.HPT_Outlet_Pressure, add4.u1) annotation (Line(
-          points={{-30,-100},{-100,-100},{-100,104.4},{-46.8,104.4}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(greaterEqualThreshold.u, add4.y)
-        annotation (Line(points={{-22.8,102},{-37.6,102}}, color={0,0,127}));
-      connect(greaterEqualThreshold.y, switch1.u2)
-        annotation (Line(points={{-13.6,102},{3.2,102}}, color={255,0,255}));
-      connect(timer.y, product1.u2) annotation (Line(points={{-13.44,78},{-2,78},{
-              -2,85.6},{11.2,85.6}}, color={0,0,127}));
-      connect(add2.u1, product1.y) annotation (Line(points={{-2.8,74.4},{-4,74.4},{
-              -4,82},{6,82},{6,80},{24,80},{24,88},{20.4,88}}, color={0,0,127}));
-      connect(switch1.u3, const12.y) annotation (Line(points={{3.2,98.8},{0,98.8},{
-              0,92},{-1.6,92}}, color={0,0,127}));
-      connect(switch1.u1, const6.y) annotation (Line(points={{3.2,105.2},{-3.6,
-              105.2},{-3.6,114}}, color={0,0,127}));
-      connect(switch1.y, delay1.u)
-        annotation (Line(points={{12.4,102},{31.4,102}}, color={0,0,127}));
-      connect(product1.u1, delay1.y) annotation (Line(points={{11.2,90.4},{6,90.4},
-              {6,92},{46,92},{46,102},{38.42,102}}, color={0,0,127}));
-    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
-    end CS_Rankine_DNE_PowerManuever;
-
-  end ControlSystems;
-
-  package Data
-
-    model CS_HTGR_Pebble_RankineCycle
-
-      extends BaseClasses.Record_Data;
-      parameter Modelica.Units.SI.Temperature T_Rx_Exit_Ref = 850+273.15;
-      parameter Modelica.Units.SI.MassFlowRate m_flow_nom = 600;
-      parameter Modelica.Units.SI.Temperature T_Steam_Ref = 540+273.15;
-      parameter Modelica.Units.SI.Power Q_Nom = 36e6;
-      parameter Modelica.Units.SI.Power Q_RX_Therm_Nom = 125e6;
-      parameter Modelica.Units.SI.Temperature T_Feedwater = 208+273.15;
-      parameter Modelica.Units.SI.Pressure P_Steam_Ref = 140e5;
-
-      annotation (
-        defaultComponentName="data",
-        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
-              lineColor={0,0,0},
-              extent={{-100,-90},{100,-70}},
-              textString="changeMe")}),
-        Diagram(coordinateSystem(preserveAspectRatio=false)),
-        Documentation(info="<html>
-</html>"));
-    end CS_HTGR_Pebble_RankineCycle;
-
-    model Model_HTGR_Pebble_RankineCycle
-
-      extends BaseClasses.Record_Data;
-
-      import TRANSFORM.Units.Conversions.Functions.Distance_m.from_in;
-
-      replaceable package Coolant_Medium =
-          Modelica.Media.Interfaces.PartialMedium                                           annotation(choicesAllMatching = true,dialog(group="Media"));
-      replaceable package Fuel_Medium =
-          TRANSFORM.Media.Interfaces.Solids.PartialAlloy                                    annotation(choicesAllMatching = true,dialog(group = "Media"));
-      replaceable package Pebble_Medium =
-          TRANSFORM.Media.Interfaces.Solids.PartialAlloy                                    annotation(dialog(group = "Media"),choicesAllMatching=true);
-          replaceable package Aux_Heat_App_Medium =
-          Modelica.Media.Interfaces.PartialMedium                                           annotation(choicesAllMatching = true, dialog(group = "Media"));
-          replaceable package Waste_Heat_App_Medium =
-          Modelica.Media.Interfaces.PartialMedium                                           annotation(choicesAllMatching = true, dialog(group = "Media"));
-
-      //-----------------------------------------------------------------//
-      // General //
-      //-----------------------------------------------------------------//
-      parameter SI.Power Q_total=160e6 "Total thermal output"                                                              annotation(dialog(tab = "General", group = "System Reference"));
-      parameter SI.Power Q_total_el=45e6 "Total electrical output"                                                         annotation(dialog(tab = "General", group = "System Reference"));
-      parameter Real eta=Q_total_el/Q_total "Net efficiency"                                                               annotation(dialog(tab = "General", group = "System Reference"));
-
-      parameter SI.Pressure P_Release = 19.3e5 "Boundary release valve pressure downstream of precooler"                   annotation(dialog(tab = "General", group = "System Boundary Conditions"));
-      parameter SI.Temperature T_Intercooler = 35+273.15                                                                   annotation(dialog(tab = "General", group = "System Boundary Conditions"));
-      parameter SI.Temperature T_Precooler = 33+273.15                                                                     annotation(dialog(tab = "General", group = "System Boundary Conditions"));
-      parameter SI.MassFlowRate m_flow=700 "Primary Side Flow"                                                             annotation(dialog(tab = "General", group = "System Boundary Conditions"));
-
-      parameter SI.Length length_core=2.408 "meters (based on 1.33 H/D ratio)"                                             annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Length d_core=1.5                                                                                       annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Length r_outer_fuelRod=0.5*from_in(0.374) "Outside diameter of fuel rod (d3s1)"                         annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Length th_clad_fuelRod=from_in(0.024) "Cladding thickness of fuel rod (d3s1)"                           annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Length th_gap_fuelRod=0.5*from_in(0.0065) "Gap thickness between pellet and cladding (d3s1)"            annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Length r_pellet_fuelRod=0.5*from_in(0.3195) "Pellet radius (d3s1)"                                      annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Length pitch_fuelRod=from_in(0.496) "Fuel rod pitch (d3s1)"                                             annotation(dialog(tab = "General", group = "Geometry"));
-      parameter TRANSFORM.Units.NonDim sizeAssembly=17 "square size of assembly (e.g., 17 = 17x17)"                        annotation(dialog(tab = "General", group = "Geometry"));
-      parameter TRANSFORM.Units.NonDim nRodFuel_assembly=264 "# of fuel rods per assembly (d3s1)"                          annotation(dialog(tab = "General", group = "Geometry"));
-      parameter TRANSFORM.Units.NonDim nRodNonFuel_assembly=sizeAssembly^2 - 264 "# of non-fuel rods per assembly (d3s1)"  annotation(dialog(tab = "General", group = "Geometry"));
-      parameter TRANSFORM.Units.NonDim nAssembly=floor(Modelica.Constants.pi*d_core^2/4/(pitch_fuelRod*sizeAssembly)^2)    annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Volume V_Core_Outlet = 0.5                                                                              annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Area A_LPDelay = 1                                                                                      annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Length L_LPDelay = 5                                                                                    annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Area A_HPDelay = 1                                                                                      annotation(dialog(tab = "General", group = "Geometry"));
-      parameter SI.Length L_HPDelay = 1                                                                                    annotation(dialog(tab = "General", group = "Geometry"));
-
-      parameter Real K_P_Release( unit="1/(m.kg)")                                                                         annotation(dialog(tab = "General",group = "Valves"));
-
-      parameter Real Turbine_Efficiency = 0.93                                                                             annotation(dialog(tab = "General", group = "Turbine"));
-      parameter Real Turbine_Pressure_Ratio = 2.975                                                                        annotation(dialog(tab = "General", group = "Turbine"));
-      parameter SI.MassFlowRate Turbine_Nominal_MassFlowRate = 296                                                         annotation(dialog(tab = "General", group = "Turbine"));
-
-      parameter Real LP_Comp_Efficiency = 0.91                                                                             annotation(dialog(tab = "General", group = "Compressors"));
-      parameter Real LP_Comp_P_Ratio = 1.77                                                                                annotation(dialog(tab = "General", group = "Compressors"));
-      parameter SI.MassFlowRate LP_Comp_MassFlowRate = 300                                                                 annotation(dialog(tab = "General", group = "Compressors"));
-      parameter Real HP_Comp_Efficiency = 0.91                                                                             annotation(dialog(tab = "General", group = "Compressors"));
-      parameter Real HP_Comp_P_Ratio = 1.77                                                                                annotation(dialog(tab = "General", group = "Compressors"));
-      parameter SI.MassFlowRate HP_Comp_MassFlowRate = 300                                                                 annotation(dialog(tab = "General", group = "Compressors"));
-
-      parameter Real HX_Aux_NTU = 1                                                                                        annotation(dialog(tab = "General", group = "HX_Aux"));
-      parameter SI.Volume HX_Aux_Tube_Vol = 3                                                                              annotation(dialog(tab = "General", group = "HX_Aux"));
-      parameter SI.Volume HX_Aux_Shell_Vol = 3                                                                             annotation(dialog(tab = "General", group = "HX_Aux"));
-      parameter SI.Volume HX_Aux_Buffer_Vol = 1                                                                            annotation(dialog(tab = "General", group = "HX_Aux"));
-      parameter Real HX_Aux_K_tube(unit = "1/m4") = 1                                                                      annotation(dialog(tab = "General", group = "HX_Aux"));
-      parameter Real HX_Aux_K_shell(unit = "1/m4") = 1                                                                     annotation(dialog(tab = "General", group = "HX_Aux"));
-
-      parameter Real HX_Reheat_NTU = 10                                                                                    annotation(dialog(tab = "General", group = "HX_Reheat"));
-      parameter SI.Volume HX_Reheat_Tube_Vol = 0.2                                                                         annotation(dialog(tab = "General", group = "HX_Reheat"));
-      parameter SI.Volume HX_Reheat_Shell_Vol = 0.2                                                                        annotation(dialog(tab = "General", group = "HX_Reheat"));
-      parameter SI.Volume HX_Reheat_Buffer_Vol = 0.1                                                                       annotation(dialog(tab = "General", group = "HX_Reheat"));
-      parameter Real HX_Reheat_K_tube(unit = "1/m4") = 1                                                                   annotation(dialog(tab = "General", group = "HX_Reheat"));
-      parameter Real HX_Reheat_K_shell(unit = "1/m4") = 1                                                                  annotation(dialog(tab = "General", group = "HX_Reheat"));
-
-      parameter SI.Volume V_Intercooler = 0.0                                                                              annotation(dialog(tab = "General", group = "Coolers"));
-      parameter SI.Volume V_Precooler = 0.0                                                                                annotation(dialog(tab = "General", group = "Coolers"));
-
-      parameter Real nKernel_per_Pebble = 15000                                                                            annotation(dialog(tab = "General", group = "Pebble"));
-      parameter Real nPebble = 55000                                                                                       annotation(dialog(tab = "General", group = "Pebble"));
-      parameter Integer nR_Fuel = 1                                                                                        annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.Length r_Pebble = 0.03                                                                                  annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.Length r_Fuel = 200e-6                                                                                  annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.Length r_Buffer = r_Fuel + 100e-6                                                                       annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.Length r_IPyC = r_Buffer+40e-6                                                                          annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.Length r_SiC = r_IPyC+35e-6                                                                             annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.Length r_OPyC = r_SiC+40e-6                                                                             annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.ThermalConductivity k_Buffer= 2.25                                                                      annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.ThermalConductivity k_IPyC = 8.0                                                                        annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.ThermalConductivity k_SiC = 175                                                                         annotation(dialog(tab = "General", group = "Pebble"));
-      parameter SI.ThermalConductivity k_OPyC = 8.0                                                                        annotation(dialog(tab = "General", group = "Pebble"));
-
-      //-----------------------------------------------------------------//
-      // Initialization //
-      //-----------------------------------------------------------------//
-      parameter SI.Temperature Pebble_Surface_Init = 750+273.15           annotation(dialog(tab = "Initialization", group = "Start Value: Fuel"));
-      parameter SI.Temperature Pebble_Center_Init = 1100+273.15           annotation(dialog(tab = "Initialization", group = "Start Value: Fuel"));
-
-      parameter SI.Pressure P_Turbine_Ref = 19.9e5                        annotation(dialog(tab = "Initialization", group = "Turbine"));
-      parameter SI.Temperature TStart_In_Turbine = 850+273.15             annotation(dialog(tab = "Initialization", group = "Turbine"));
-      parameter SI.Temperature TStart_Out_Turbine = 478+273.15            annotation(dialog(tab = "Initialization", group = "Turbine"));
-
-      parameter SI.Pressure P_LP_Comp_Ref = 19.3e5                        annotation(dialog(tab = "Initialization", group = "Turbine"));
-      parameter SI.Temperature TStart_LP_Comp_In = 33+273.15              annotation(dialog(tab = "Initialization", group = "Turbine"));
-      parameter SI.Temperature TStart_LP_Comp_Out = 123+273.15            annotation(dialog(tab = "Initialization", group = "Turbine"));
-
-      parameter SI.Pressure P_HP_Comp_Ref = 19.9e5                        annotation(dialog(tab = "Initialization", group = "Turbine"));
-      parameter SI.Temperature TStart_HP_Comp_In = 850+273.15             annotation(dialog(tab = "Initialization", group = "Turbine"));
-      parameter SI.Temperature TStart_HP_Comp_Out = 478+273.15            annotation(dialog(tab = "Initialization", group = "Turbine"));
-
-      parameter SI.Power HX_Aux_Q_Init = -1e6                             annotation(dialog(tab = "Initialization", group = "HX_Aux"));
-      parameter SI.SpecificEnthalpy HX_Aux_h_tube_in = 100e3              annotation(dialog(tab = "Initialization", group = "HX_Aux"));
-      parameter SI.SpecificEnthalpy HX_Aux_h_tube_out = 900e3             annotation(dialog(tab = "Initialization", group = "HX_Aux"));
-      parameter SI.Pressure HX_Aux_p_tube = 1e5                           annotation(dialog(tab = "Initialization", group = "HX_Aux"));
-
-      parameter SI.Pressure P_Core_Inlet = 60e5                         annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
-      parameter SI.Pressure P_Core_Outlet = 59.4e5                      annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
-      parameter SI.Temperature T_Core_Inlet = 623.15                    annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
-      parameter SI.Temperature T_Core_Outlet = 1023.15                  annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
-      parameter SI.Temperature T_Pebble_Init = T_Core_Outlet            annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
-      parameter SI.Temperature T_Fuel_Center_Init = 1473.15             annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
-
-      parameter SI.Pressure Recuperator_P_Tube = 19.4e5                   annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
-      parameter SI.SpecificEnthalpy Recuperator_h_Tube_Inlet = 2307e3     annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
-      parameter SI.SpecificEnthalpy Recuperator_h_Tube_Outlet = 3600e3    annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
-      parameter SI.Pressure Recuperator_dp_Tube = 0.3e5                   annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
-      parameter SI.MassFlowRate Recuperator_m_Tube = 296.1                annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
-
-      parameter SI.Pressure Recuperator_P_Shell = 60.4e5                  annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
-      parameter SI.SpecificEnthalpy Recuperator_h_Shell_Inlet = 3600e3    annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
-      parameter SI.SpecificEnthalpy Recuperator_h_Shell_Outlet = 2700e3   annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
-      parameter SI.Pressure Recuperator_dp_Shell = 0.4e5                  annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
-      parameter SI.MassFlowRate Recuperator_m_Shell = 296.1               annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
-
-      parameter SI.Pressure P_Intercooler = 59.2e5                        annotation(dialog(tab = "Initialization", group = "Cooler"));
-      parameter SI.Pressure P_Precooler = 30e5                            annotation(dialog(tab = "Initialization", group = "Cooler"));
-
-    equation
-     // assert(abs(lengths[1] - lengths[2]) <= Modelica.Constants.eps, "Hot/cold leg lengths must be equal");
-     // assert(abs(length_reactorVessel - lengths[1] - length_pressurizer) <= Modelica.Constants.eps, "Hot leg and pressurizer must be equal to reactor vessel length");
-
-      annotation (
-        defaultComponentName="data",
-        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
-              lineColor={0,0,0},
-              extent={{-100,-90},{100,-70}},
-              textString="Pebble Bed")}),
-        Diagram(coordinateSystem(preserveAspectRatio=false)),
-        Documentation(info="<html>
-</html>"));
-    end Model_HTGR_Pebble_RankineCycle;
-
-  end Data;
-
   package Examples
     extends Modelica.Icons.ExamplesPackage;
 
@@ -6151,6 +4275,1732 @@ package RankineCycle
     end PebbleBed_PrimaryLoop_Transient;
   end Models;
 
+  package ControlSystems
+    model ED_Dummy
+
+      extends BaseClasses.Partial_EventDriver;
+
+    equation
+
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
+    end ED_Dummy;
+
+    model CS_Rankine
+
+      extends RankineCycle.BaseClasses.Partial_ControlSystem;
+
+      TRANSFORM.Controls.LimPID     CR(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=5e-7,
+        Ti=15,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-40,-56},{-20,-36}})));
+      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
+        annotation (Placement(transformation(extent={{-80,-56},{-60,-36}})));
+      Data.CS_HTGR_Pebble_RankineCycle data(T_Rx_Exit_Ref=1023.15, m_flow_nom=
+            300)
+        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
+      TRANSFORM.Controls.LimPID     CR1(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-2,
+        Ti=15,
+        yMin=50,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-38,14},{-18,-6}})));
+      Modelica.Blocks.Sources.Constant const2(k=data.m_flow_nom)
+        annotation (Placement(transformation(extent={{-78,-6},{-58,14}})));
+    equation
+
+      connect(const1.y,CR. u_s) annotation (Line(points={{-59,-46},{-42,-46}},
+                                color={0,0,127}));
+      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
+          points={{-30,-100},{-30,-58}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.CR_Reactivity, CR.y) annotation (Line(
+          points={{30,-100},{30,-46},{-19,-46}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const2.y, CR1.u_s)
+        annotation (Line(points={{-57,4},{-40,4}}, color={0,0,127}));
+      connect(sensorBus.Core_Mass_Flow, CR1.u_m) annotation (Line(
+          points={{-30,-100},{-30,-74},{-106,-74},{-106,28},{-28,28},{-28,16}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.PR_Compressor, CR1.y) annotation (Line(
+          points={{30,-100},{30,4},{-17,4}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
+    end CS_Rankine;
+
+    model CS_Rankine_Primary
+
+      extends RankineCycle.BaseClasses.Partial_ControlSystem;
+
+      TRANSFORM.Controls.LimPID     CR(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-9,
+        Ti=15,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
+      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
+        annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
+      replaceable Data.CS_HTGR_Pebble_RankineCycle data(
+        T_Rx_Exit_Ref=1023.15,
+        m_flow_nom=250,
+        Q_Nom=45e6,
+        P_Steam_Ref=15000000)
+        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
+      TRANSFORM.Controls.LimPID Blower_Speed(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-7,
+        Ti=30,
+        yMax=75,
+        yMin=45,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-36,14},{-16,-6}})));
+      Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
+        annotation (Placement(transformation(extent={{-80,-6},{-60,14}})));
+    equation
+
+      connect(const1.y,CR. u_s) annotation (Line(points={{-59,-40},{-38,-40}},
+                                color={0,0,127}));
+      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
+          points={{-30,-100},{-30,-96},{-96,-96},{-96,-72},{-26,-72},{-26,-52}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const2.y, Blower_Speed.u_s)
+        annotation (Line(points={{-59,4},{-38,4}}, color={0,0,127}));
+      connect(sensorBus.Steam_Pressure, Blower_Speed.u_m) annotation (Line(
+          points={{-30,-100},{-30,-96},{-96,-96},{-96,22},{-26,22},{-26,16}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.CR_Reactivity, CR.y) annotation (Line(
+          points={{30,-100},{28,-100},{28,-40},{-15,-40}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.PR_Compressor, Blower_Speed.y) annotation (Line(
+          points={{30,-100},{30,4},{-15,4}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
+    end CS_Rankine_Primary;
+
+    model CS_Rankine_Primary_Direct
+
+      extends RankineCycle.BaseClasses.Partial_ControlSystem;
+
+      TRANSFORM.Controls.LimPID     CR(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=4.5e-9,
+        Ti=15,
+        yb=-8e-3,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
+      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
+        annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
+      replaceable Data.CS_HTGR_Pebble_RankineCycle data(
+        T_Rx_Exit_Ref=1023.15,
+        m_flow_nom=250,
+        Q_Nom=45e6,
+        P_Steam_Ref=15000000)
+        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
+      TRANSFORM.Controls.LimPID Blower_Speed(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-7,
+        Ti=30,
+        yMax=75,
+        yMin=45,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-36,14},{-16,-6}})));
+      Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
+        annotation (Placement(transformation(extent={{-80,-6},{-60,14}})));
+      TRANSFORM.Controls.LimPID PID_FeedPump(
+        controllerType=Modelica.Blocks.Types.SimpleController.PID,
+        Ti=5,
+        Td=0.001,
+        yMax=100,
+        yMin=5,
+        wp=0.5,
+        wd=0.5,
+        y_start=67,
+        k=-8e-6,
+        initType=Modelica.Blocks.Types.Init.NoInit,
+        xi_start=1.0,
+        k_s=1,
+        k_m=1)
+        annotation (Placement(transformation(extent={{-20,68},{0,48}})));
+      Modelica.Blocks.Sources.Constant const3(k=140e5)
+        annotation (Placement(transformation(extent={{-58,48},{-38,68}})));
+    equation
+
+      connect(const1.y,CR. u_s) annotation (Line(points={{-59,-40},{-38,-40}},
+                                color={0,0,127}));
+      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
+          points={{-30,-100},{-30,-96},{-96,-96},{-96,-72},{-26,-72},{-26,-52}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const2.y, Blower_Speed.u_s)
+        annotation (Line(points={{-59,4},{-38,4}}, color={0,0,127}));
+      connect(sensorBus.Steam_Pressure, Blower_Speed.u_m) annotation (Line(
+          points={{-30,-100},{-30,-96},{-96,-96},{-96,22},{-26,22},{-26,16}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.CR_Reactivity, CR.y) annotation (Line(
+          points={{30,-100},{28,-100},{28,-40},{-15,-40}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.PR_Compressor, Blower_Speed.y) annotation (Line(
+          points={{30,-100},{30,4},{-15,4}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.mfeedpump,PID_FeedPump. y) annotation (Line(
+          points={{30,-100},{30,58},{1,58}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const3.y, PID_FeedPump.u_s)
+        annotation (Line(points={{-37,58},{-22,58}}, color={0,0,127}));
+      connect(sensorBus.feedpressure, PID_FeedPump.u_m) annotation (Line(
+          points={{-30,-100},{-64,-100},{-64,-96},{-96,-96},{-96,34},{-30,34},{-30,
+              78},{-10,78},{-10,70}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
+    end CS_Rankine_Primary_Direct;
+
+    model CS_Rankine_Primary_SS
+
+      extends RankineCycle.BaseClasses.Partial_ControlSystem;
+
+      TRANSFORM.Controls.LimPID     CR(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=2e-5,
+        Ti=90,
+        Td=100,
+        wp=0.9,
+        wd=0.1,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
+      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
+        annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
+      replaceable Data.CS_HTGR_Pebble_RankineCycle data(
+        T_Rx_Exit_Ref=1023.15,
+        m_flow_nom=250,
+        Q_Nom=45e6,
+        P_Steam_Ref=14000000)
+        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
+      Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
+        annotation (Placement(transformation(extent={{-80,-6},{-60,14}})));
+      Modelica.Blocks.Sources.Constant valvedelay1(k=7e5)
+        annotation (Placement(transformation(extent={{-44,74},{-24,94}})));
+      Modelica.Blocks.Sources.ContinuousClock clock1(offset=0, startTime=0)
+        annotation (Placement(transformation(extent={{-48,38},{-28,58}})));
+      Modelica.Blocks.Logical.Greater greater1
+        annotation (Placement(transformation(extent={{-4,74},{16,54}})));
+      Modelica.Blocks.Logical.Switch MinPumpSpeed
+        annotation (Placement(transformation(extent={{60,54},{80,74}})));
+      Modelica.Blocks.Sources.Constant const3(k=45)
+        annotation (Placement(transformation(extent={{26,96},{46,116}})));
+      Modelica.Blocks.Sources.Constant const4(k=45)
+        annotation (Placement(transformation(extent={{28,28},{48,48}})));
+      Modelica.Blocks.Math.Add         add
+        annotation (Placement(transformation(extent={{14,-8},{34,12}})));
+      Modelica.Blocks.Sources.Trapezoid trapezoid1(
+        amplitude=-40,
+        rising=780,
+        width=1020,
+        falling=780,
+        period=3600,
+        nperiod=1,
+        offset=0,
+        startTime=1e6 + 900)
+        annotation (Placement(transformation(extent={{-174,-12},{-154,8}})));
+      SupportComponent.VarLimVarK_PID PID(
+        use_k_in=true,
+        use_lowlim_in=true,
+        use_uplim_in=true,
+        controllerType=Modelica.Blocks.Types.SimpleController.PID,
+        with_FF=true,
+        k=1e-6,
+        Ti=55,
+        Td=1,
+        yMax=50,
+        yMin=0)
+        annotation (Placement(transformation(extent={{-32,-10},{-12,10}})));
+      Modelica.Blocks.Sources.Constant const5(k=50)
+        annotation (Placement(transformation(extent={{-96,14},{-86,24}})));
+      Modelica.Blocks.Sources.Constant const6(k=0)
+        annotation (Placement(transformation(extent={{-96,-30},{-86,-20}})));
+      Modelica.Blocks.Sources.Constant const11(k=2e-6)
+        annotation (Placement(transformation(extent={{-128,26},{-120,34}})));
+      Modelica.Blocks.Sources.Constant const7(k=0)
+        annotation (Placement(transformation(extent={{-132,-20},{-122,-10}})));
+    equation
+
+      connect(const1.y,CR. u_s) annotation (Line(points={{-59,-40},{-38,-40}},
+                                color={0,0,127}));
+      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
+          points={{-30,-100},{-30,-96},{-96,-96},{-96,-72},{-26,-72},{-26,-52}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.CR_Reactivity, CR.y) annotation (Line(
+          points={{30,-100},{28,-100},{28,-40},{-15,-40}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(valvedelay1.y, greater1.u2) annotation (Line(points={{-23,84},{-14,84},
+              {-14,72},{-6,72}}, color={0,0,127}));
+      connect(clock1.y, greater1.u1) annotation (Line(points={{-27,48},{-16,48},{-16,
+              64},{-6,64}}, color={0,0,127}));
+      connect(greater1.y, MinPumpSpeed.u2)
+        annotation (Line(points={{17,64},{58,64}}, color={255,0,255}));
+      connect(const3.y, MinPumpSpeed.u1) annotation (Line(points={{47,106},{50,106},
+              {50,72},{58,72}}, color={0,0,127}));
+      connect(const4.y, MinPumpSpeed.u3) annotation (Line(points={{49,38},{52,38},{52,
+              56},{58,56}}, color={0,0,127}));
+      connect(actuatorBus.PR_Compressor, add.y) annotation (Line(
+          points={{30,-100},{30,-18},{42,-18},{42,2},{35,2}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(MinPumpSpeed.y, add.u1) annotation (Line(points={{81,64},{86,64},{86,
+              66},{88,66},{88,20},{6,20},{6,8},{12,8}}, color={0,0,127}));
+      connect(sensorBus.Steam_Pressure, PID.u_m) annotation (Line(
+          points={{-30,-100},{-30,-74},{-10,-74},{-10,-20},{-22,-20},{-22,-12}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,-6},{-3,-6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(PID.y, add.u2)
+        annotation (Line(points={{-11,0},{4,0},{4,-4},{12,-4}}, color={0,0,127}));
+      connect(const5.y, PID.upperlim) annotation (Line(points={{-85.5,19},{-42,19},
+              {-42,11},{-28,11}},     color={0,0,127}));
+      connect(const2.y, PID.u_s) annotation (Line(points={{-59,4},{-40,4},{-40,0},{
+              -34,0}}, color={0,0,127}));
+      connect(const6.y, PID.lowerlim) annotation (Line(points={{-85.5,-25},{-40,-25},
+              {-40,11},{-22,11}},     color={0,0,127}));
+      connect(const11.y, PID.prop_k) annotation (Line(points={{-119.6,30},{-38,30},
+              {-38,11.4},{-14.6,11.4}},
+                                      color={0,0,127}));
+      connect(const7.y, PID.u_ff) annotation (Line(points={{-121.5,-15},{-102,-15},
+              {-102,32},{-34,32},{-34,8}}, color={0,0,127}));
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
+    end CS_Rankine_Primary_SS;
+
+    model CS_Rankine_Primary_SS_ClosedFeedheat
+
+      extends RankineCycle.BaseClasses.Partial_ControlSystem;
+
+      TRANSFORM.Controls.LimPID     CR(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=2e-5,
+        Ti=90,
+        Td=100,
+        wp=0.9,
+        wd=0.1,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
+      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
+        annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
+      replaceable Data.CS_HTGR_Pebble_RankineCycle data(
+        T_Rx_Exit_Ref=1023.15,
+        m_flow_nom=250,
+        Q_Nom=45e6,
+        P_Steam_Ref=14000000)
+        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
+      Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
+        annotation (Placement(transformation(extent={{-80,-6},{-60,14}})));
+      Modelica.Blocks.Sources.Constant valvedelay1(k=7e5)
+        annotation (Placement(transformation(extent={{-44,74},{-24,94}})));
+      Modelica.Blocks.Sources.ContinuousClock clock1(offset=0, startTime=0)
+        annotation (Placement(transformation(extent={{-48,38},{-28,58}})));
+      Modelica.Blocks.Logical.Greater greater1
+        annotation (Placement(transformation(extent={{-4,74},{16,54}})));
+      Modelica.Blocks.Logical.Switch MinPumpSpeed
+        annotation (Placement(transformation(extent={{60,54},{80,74}})));
+      Modelica.Blocks.Sources.Constant const3(k=20)
+        annotation (Placement(transformation(extent={{26,96},{46,116}})));
+      Modelica.Blocks.Sources.Constant const4(k=35)
+        annotation (Placement(transformation(extent={{28,28},{48,48}})));
+      Modelica.Blocks.Math.Add         add
+        annotation (Placement(transformation(extent={{14,-8},{34,12}})));
+      Modelica.Blocks.Sources.Trapezoid trapezoid1(
+        amplitude=-40,
+        rising=780,
+        width=1020,
+        falling=780,
+        period=3600,
+        nperiod=1,
+        offset=0,
+        startTime=1e6 + 900)
+        annotation (Placement(transformation(extent={{-138,-26},{-118,-6}})));
+      SupportComponent.VarLimVarK_PID PID(
+        use_k_in=true,
+        use_lowlim_in=true,
+        use_uplim_in=true,
+        controllerType=Modelica.Blocks.Types.SimpleController.PID,
+        with_FF=true,
+        k=1e-6,
+        Ti=55,
+        Td=1,
+        yMax=50,
+        yMin=0)
+        annotation (Placement(transformation(extent={{-32,-10},{-12,10}})));
+      Modelica.Blocks.Sources.Constant const5(k=50)
+        annotation (Placement(transformation(extent={{-96,14},{-86,24}})));
+      Modelica.Blocks.Sources.Constant const6(k=0)
+        annotation (Placement(transformation(extent={{-96,-30},{-86,-20}})));
+      Modelica.Blocks.Sources.Constant const11(k=2e-5)
+        annotation (Placement(transformation(extent={{-128,26},{-120,34}})));
+    equation
+
+      connect(const1.y,CR. u_s) annotation (Line(points={{-59,-40},{-38,-40}},
+                                color={0,0,127}));
+      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
+          points={{-30,-100},{-30,-96},{-96,-96},{-96,-72},{-26,-72},{-26,-52}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.CR_Reactivity, CR.y) annotation (Line(
+          points={{30,-100},{28,-100},{28,-40},{-15,-40}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(valvedelay1.y, greater1.u2) annotation (Line(points={{-23,84},{-14,84},
+              {-14,72},{-6,72}}, color={0,0,127}));
+      connect(clock1.y, greater1.u1) annotation (Line(points={{-27,48},{-16,48},{-16,
+              64},{-6,64}}, color={0,0,127}));
+      connect(greater1.y, MinPumpSpeed.u2)
+        annotation (Line(points={{17,64},{58,64}}, color={255,0,255}));
+      connect(const3.y, MinPumpSpeed.u1) annotation (Line(points={{47,106},{50,106},
+              {50,72},{58,72}}, color={0,0,127}));
+      connect(const4.y, MinPumpSpeed.u3) annotation (Line(points={{49,38},{52,38},{52,
+              56},{58,56}}, color={0,0,127}));
+      connect(actuatorBus.PR_Compressor, add.y) annotation (Line(
+          points={{30,-100},{30,-18},{42,-18},{42,2},{35,2}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(MinPumpSpeed.y, add.u1) annotation (Line(points={{81,64},{86,64},{86,
+              66},{88,66},{88,20},{6,20},{6,8},{12,8}}, color={0,0,127}));
+      connect(sensorBus.Steam_Pressure, PID.u_m) annotation (Line(
+          points={{-30,-100},{-30,-74},{-10,-74},{-10,-20},{-22,-20},{-22,-12}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,-6},{-3,-6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(PID.y, add.u2)
+        annotation (Line(points={{-11,0},{4,0},{4,-4},{12,-4}}, color={0,0,127}));
+      connect(const5.y, PID.upperlim) annotation (Line(points={{-85.5,19},{-56,19},
+              {-56,20},{-28,20},{-28,11}},
+                                      color={0,0,127}));
+      connect(trapezoid1.y, PID.u_ff) annotation (Line(points={{-117,-16},{-46,-16},
+              {-46,8},{-34,8}}, color={0,0,127}));
+      connect(const2.y, PID.u_s) annotation (Line(points={{-59,4},{-40,4},{-40,0},{
+              -34,0}}, color={0,0,127}));
+      connect(const6.y, PID.lowerlim) annotation (Line(points={{-85.5,-25},{-40,-25},
+              {-40,18},{-22,18},{-22,11}},
+                                      color={0,0,127}));
+      connect(const11.y, PID.prop_k) annotation (Line(points={{-119.6,30},{-14,30},
+              {-14,11.4},{-14.6,11.4}},
+                                      color={0,0,127}));
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
+    end CS_Rankine_Primary_SS_ClosedFeedheat;
+
+    model CS_Rankine_Primary_TransientControl
+
+      extends RankineCycle.BaseClasses.Partial_ControlSystem;
+
+      TRANSFORM.Controls.LimPID     CR(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=2e-5,
+        Ti=90,
+        Td=100,
+        wp=0.9,
+        wd=0.1,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-36,-50},{-16,-30}})));
+      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
+        annotation (Placement(transformation(extent={{-80,-50},{-60,-30}})));
+      replaceable Data.CS_HTGR_Pebble_RankineCycle data(
+        T_Rx_Exit_Ref=1023.15,
+        m_flow_nom=250,
+        Q_Nom=45e6,
+        P_Steam_Ref=14000000)
+        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
+      Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
+        annotation (Placement(transformation(extent={{-80,-6},{-60,14}})));
+      Modelica.Blocks.Sources.Constant valvedelay1(k=7e5)
+        annotation (Placement(transformation(extent={{-44,74},{-24,94}})));
+      Modelica.Blocks.Sources.ContinuousClock clock1(offset=0, startTime=0)
+        annotation (Placement(transformation(extent={{-48,38},{-28,58}})));
+      Modelica.Blocks.Logical.Greater greater1
+        annotation (Placement(transformation(extent={{-4,74},{16,54}})));
+      Modelica.Blocks.Logical.Switch MinPumpSpeed
+        annotation (Placement(transformation(extent={{60,54},{80,74}})));
+      Modelica.Blocks.Sources.Constant const3(k=20)
+        annotation (Placement(transformation(extent={{26,96},{46,116}})));
+      Modelica.Blocks.Sources.Constant const4(k=45)
+        annotation (Placement(transformation(extent={{28,28},{48,48}})));
+      Modelica.Blocks.Math.Add         add
+        annotation (Placement(transformation(extent={{14,-8},{34,12}})));
+      Modelica.Blocks.Sources.Trapezoid trapezoid1(
+        amplitude=-40,
+        rising=780,
+        width=1020,
+        falling=780,
+        period=3600,
+        nperiod=1,
+        offset=0,
+        startTime=1e6 + 900)
+        annotation (Placement(transformation(extent={{-138,-26},{-118,-6}})));
+      SupportComponent.VarLimVarK_PID PID(
+        use_k_in=true,
+        use_lowlim_in=true,
+        use_uplim_in=true,
+        controllerType=Modelica.Blocks.Types.SimpleController.PID,
+        with_FF=true,
+        k=1e-6,
+        Ti=55,
+        Td=1,
+        yMax=50,
+        yMin=0)
+        annotation (Placement(transformation(extent={{-32,-10},{-12,10}})));
+      Modelica.Blocks.Sources.Constant const5(k=50)
+        annotation (Placement(transformation(extent={{-96,14},{-86,24}})));
+      Modelica.Blocks.Sources.Constant const6(k=0)
+        annotation (Placement(transformation(extent={{-96,-30},{-86,-20}})));
+      Modelica.Blocks.Sources.Constant const11(k=2e-6)
+        annotation (Placement(transformation(extent={{-128,26},{-120,34}})));
+    equation
+
+      connect(const1.y,CR. u_s) annotation (Line(points={{-59,-40},{-38,-40}},
+                                color={0,0,127}));
+      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
+          points={{-30,-100},{-30,-96},{-96,-96},{-96,-72},{-26,-72},{-26,-52}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.CR_Reactivity, CR.y) annotation (Line(
+          points={{30,-100},{28,-100},{28,-40},{-15,-40}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(valvedelay1.y, greater1.u2) annotation (Line(points={{-23,84},{-14,84},
+              {-14,72},{-6,72}}, color={0,0,127}));
+      connect(clock1.y, greater1.u1) annotation (Line(points={{-27,48},{-16,48},{-16,
+              64},{-6,64}}, color={0,0,127}));
+      connect(greater1.y, MinPumpSpeed.u2)
+        annotation (Line(points={{17,64},{58,64}}, color={255,0,255}));
+      connect(const3.y, MinPumpSpeed.u1) annotation (Line(points={{47,106},{50,106},
+              {50,72},{58,72}}, color={0,0,127}));
+      connect(const4.y, MinPumpSpeed.u3) annotation (Line(points={{49,38},{52,38},{52,
+              56},{58,56}}, color={0,0,127}));
+      connect(actuatorBus.PR_Compressor, add.y) annotation (Line(
+          points={{30,-100},{30,-18},{42,-18},{42,2},{35,2}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(MinPumpSpeed.y, add.u1) annotation (Line(points={{81,64},{86,64},{86,
+              66},{88,66},{88,20},{6,20},{6,8},{12,8}}, color={0,0,127}));
+      connect(sensorBus.Steam_Pressure, PID.u_m) annotation (Line(
+          points={{-30,-100},{-30,-74},{-10,-74},{-10,-20},{-22,-20},{-22,-12}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-3,-6},{-3,-6}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(PID.y, add.u2)
+        annotation (Line(points={{-11,0},{4,0},{4,-4},{12,-4}}, color={0,0,127}));
+      connect(const5.y, PID.upperlim) annotation (Line(points={{-85.5,19},{-42,19},
+              {-42,11},{-28,11}},     color={0,0,127}));
+      connect(trapezoid1.y, PID.u_ff) annotation (Line(points={{-117,-16},{-46,-16},
+              {-46,8},{-34,8}}, color={0,0,127}));
+      connect(const2.y, PID.u_s) annotation (Line(points={{-59,4},{-40,4},{-40,0},{
+              -34,0}}, color={0,0,127}));
+      connect(const6.y, PID.lowerlim) annotation (Line(points={{-85.5,-25},{-40,-25},
+              {-40,11},{-22,11}},     color={0,0,127}));
+      connect(const11.y, PID.prop_k) annotation (Line(points={{-119.6,30},{-38,30},
+              {-38,11.4},{-14.6,11.4}},
+                                      color={0,0,127}));
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
+    end CS_Rankine_Primary_TransientControl;
+
+    model CS_Rankine_DNE
+
+      extends RankineCycle.BaseClasses.Partial_ControlSystem;
+
+      TRANSFORM.Controls.LimPID     CR(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-6,
+        Ti=15,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-24,-76},{-14,-66}})));
+      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
+        annotation (Placement(transformation(extent={{-42,-74},{-36,-68}})));
+      Data.CS_HTGR_Pebble_RankineCycle data(
+        T_Rx_Exit_Ref=1023.15,
+        m_flow_nom=250,
+        Q_Nom=43.75e6)
+        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
+      TRANSFORM.Controls.LimPID Blower_Speed(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-5,
+        Ti=30,
+        yMax=250,
+        yMin=25,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-2,-22},{6,-30}})));
+      Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
+        annotation (Placement(transformation(extent={{-20,-32},{-12,-24}})));
+      TRANSFORM.Controls.LimPID FWCP_Speed(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-1e-2,
+        Ti=30,
+        yMax=750,
+        yMin=-1000,
+        initType=Modelica.Blocks.Types.Init.InitialState,
+        xi_start=1500)
+        annotation (Placement(transformation(extent={{-32,-6},{-24,2}})));
+      Modelica.Blocks.Sources.Constant const3(k=data.T_Steam_Ref)
+        annotation (Placement(transformation(extent={{-58,-6},{-50,2}})));
+      Modelica.Blocks.Sources.Constant const4(k=1500)
+        annotation (Placement(transformation(extent={{-18,2},{-12,8}})));
+      Modelica.Blocks.Math.Add         add
+        annotation (Placement(transformation(extent={{-4,-4},{6,6}})));
+      TRANSFORM.Controls.LimPID Turb_Divert_Valve(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=5e-6,
+        Ti=15,
+        yMax=1 - 1e-6,
+        yMin=0,
+        initType=Modelica.Blocks.Types.Init.InitialState,
+        xi_start=1500)
+        annotation (Placement(transformation(extent={{-42,82},{-34,74}})));
+      Modelica.Blocks.Sources.Constant const5(k=data.T_Feedwater)
+        annotation (Placement(transformation(extent={{-62,72},{-50,84}})));
+      TRANSFORM.Controls.LimPID TCV_Position(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-9,
+        Ti=5,
+        yMax=0,
+        yMin=-1,
+        initType=Modelica.Blocks.Types.Init.InitialState,
+        xi_start=1500)
+        annotation (Placement(transformation(extent={{-34,44},{-26,52}})));
+      Modelica.Blocks.Sources.Constant const6(k=data.Q_Nom)
+        annotation (Placement(transformation(extent={{-50,44},{-42,52}})));
+      Modelica.Blocks.Sources.Constant const7(k=1)
+        annotation (Placement(transformation(extent={{-20,52},{-14,58}})));
+      Modelica.Blocks.Math.Add         add1
+        annotation (Placement(transformation(extent={{-2,56},{6,48}})));
+      Modelica.Blocks.Sources.Constant const8(k=1e-6)
+        annotation (Placement(transformation(extent={{-22,64},{-14,72}})));
+      Modelica.Blocks.Math.Add         add2
+        annotation (Placement(transformation(extent={{-2,68},{6,76}})));
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Timer
+        timer(Start_Time=1e-2)
+        annotation (Placement(transformation(extent={{-22,74},{-14,82}})));
+      TRANSFORM.Controls.LimPID PI_TBV(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-5e-7,
+        Ti=15,
+        yMax=1.0,
+        yMin=0.0,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-2,22},{6,30}})));
+      Modelica.Blocks.Sources.Constant const9(k=150e5)
+        annotation (Placement(transformation(extent={{-20,20},{-8,32}})));
+      TRANSFORM.Controls.LimPID     CR1(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-9,
+        Ti=15,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-22,-52},{-14,-60}})));
+      Modelica.Blocks.Sources.Constant const10(k=125e6)
+        annotation (Placement(transformation(extent={{-42,-60},{-34,-52}})));
+      Modelica.Blocks.Math.Add         add3
+        annotation (Placement(transformation(extent={{-2,-68},{6,-60}})));
+      Modelica.Blocks.Sources.Constant const11(k=-0.01)
+        annotation (Placement(transformation(extent={{-14,-48},{-6,-40}})));
+    equation
+
+      connect(const1.y,CR. u_s) annotation (Line(points={{-35.7,-71},{-25,-71}},
+                                color={0,0,127}));
+      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
+          points={{-30,-100},{-30,-82},{-14,-82},{-14,-77},{-19,-77}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const2.y, Blower_Speed.u_s)
+        annotation (Line(points={{-11.6,-28},{-8,-28},{-8,-26},{-2.8,-26}},
+                                                   color={0,0,127}));
+      connect(const3.y, FWCP_Speed.u_s) annotation (Line(points={{-49.6,-2},{-32.8,
+              -2}},               color={0,0,127}));
+      connect(sensorBus.Steam_Temperature, FWCP_Speed.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,-12},{-28,-12},{-28,-6.8}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const4.y, add.u1) annotation (Line(points={{-11.7,5},{-11.7,4},{-5,4}},
+                                       color={0,0,127}));
+      connect(FWCP_Speed.y, add.u2) annotation (Line(points={{-23.6,-2},{-5,-2}},
+                        color={0,0,127}));
+      connect(actuatorBus.Feed_Pump_Speed, add.y) annotation (Line(
+          points={{30,-100},{30,1},{6.5,1}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const5.y, Turb_Divert_Valve.u_s)
+        annotation (Line(points={{-49.4,78},{-42.8,78}}, color={0,0,127}));
+      connect(sensorBus.Feedwater_Temp, Turb_Divert_Valve.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,92},{-38,92},{-38,82.8}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const6.y, TCV_Position.u_s)
+        annotation (Line(points={{-41.6,48},{-34.8,48}}, color={0,0,127}));
+      connect(sensorBus.Power, TCV_Position.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,38},{-30,38},{-30,43.2}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const7.y, add1.u2) annotation (Line(points={{-13.7,55},{-12,55},{-12,
+              54.4},{-2.8,54.4}},         color={0,0,127}));
+      connect(TCV_Position.y, add1.u1) annotation (Line(points={{-25.6,48},{-14,48},
+              {-14,49.6},{-2.8,49.6}},                color={0,0,127}));
+      connect(actuatorBus.TCV_Position, add1.y) annotation (Line(
+          points={{30,-100},{30,52},{6.4,52}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.Divert_Valve_Position, add2.y) annotation (Line(
+          points={{30,-100},{30,72},{6.4,72}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(add2.u2, const8.y) annotation (Line(points={{-2.8,69.6},{-10,69.6},{
+              -10,68},{-13.6,68}},                                           color=
+              {0,0,127}));
+      connect(add2.u1, timer.y) annotation (Line(points={{-2.8,74.4},{-6,74.4},{-6,
+              78},{-13.44,78}},                                     color={0,0,127}));
+      connect(Turb_Divert_Valve.y, timer.u) annotation (Line(points={{-33.6,78},{
+              -22.8,78}},                                                color={0,0,
+              127}));
+      connect(const9.y, PI_TBV.u_s)
+        annotation (Line(points={{-7.4,26},{-2.8,26}}, color={0,0,127}));
+      connect(sensorBus.Steam_Pressure, PI_TBV.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,-12},{-72,-12},{-72,14},{2,14},{2,
+              21.2}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.TBV, PI_TBV.y) annotation (Line(
+          points={{30,-100},{30,26},{6.4,26}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.Steam_Pressure, Blower_Speed.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,-12},{2,-12},{2,-21.2}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.PR_Compressor, Blower_Speed.y) annotation (Line(
+          points={{30,-100},{30,-26},{6.4,-26}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.thermal_power, CR1.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,-46},{-18,-46},{-18,-51.2}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const10.y, CR1.u_s)
+        annotation (Line(points={{-33.6,-56},{-22.8,-56}},
+                                                       color={0,0,127}));
+      connect(actuatorBus.CR_Reactivity, add3.y) annotation (Line(
+          points={{30,-100},{30,-64},{6.4,-64}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(add3.u2, CR.y) annotation (Line(points={{-2.8,-66.4},{-12,-66.4},{-12,
+              -71},{-13.5,-71}},
+                         color={0,0,127}));
+      connect(add3.u1, const11.y) annotation (Line(points={{-2.8,-61.6},{-2.8,-48},
+              {0,-48},{0,-44},{-5.6,-44}}, color={0,0,127}));
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
+    end CS_Rankine_DNE;
+
+    model CS_Rankine_DNE_04
+
+      extends RankineCycle.BaseClasses.Partial_ControlSystem;
+
+      TRANSFORM.Controls.LimPID     CR(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-7,
+        Ti=15,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-24,-76},{-14,-66}})));
+      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
+        annotation (Placement(transformation(extent={{-42,-74},{-36,-68}})));
+      Data.CS_HTGR_Pebble_RankineCycle data(
+        T_Rx_Exit_Ref=1023.15,
+        m_flow_nom=50,
+        Q_Nom=43750000)
+        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
+      TRANSFORM.Controls.LimPID Blower_Speed(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=0.05,
+        Ti=30,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-6,-22},{2,-30}})));
+      Modelica.Blocks.Sources.Constant const2(k=48)
+        annotation (Placement(transformation(extent={{-20,-22},{-12,-30}})));
+      TRANSFORM.Controls.LimPID FWCP_Speed(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-1e-3,
+        Ti=30,
+        yMax=750,
+        yMin=-1000,
+        initType=Modelica.Blocks.Types.Init.InitialState,
+        xi_start=1500)
+        annotation (Placement(transformation(extent={{-32,-6},{-24,2}})));
+      Modelica.Blocks.Sources.Constant const3(k=data.T_Steam_Ref)
+        annotation (Placement(transformation(extent={{-58,-6},{-50,2}})));
+      Modelica.Blocks.Sources.Constant const4(k=1500)
+        annotation (Placement(transformation(extent={{-18,2},{-12,8}})));
+      Modelica.Blocks.Math.Add         add
+        annotation (Placement(transformation(extent={{-4,-4},{6,6}})));
+      TRANSFORM.Controls.LimPID Turb_Divert_Valve(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=5e-4,
+        Ti=1,
+        yMax=1 - 1e-6,
+        yMin=0,
+        initType=Modelica.Blocks.Types.Init.InitialState,
+        xi_start=1500)
+        annotation (Placement(transformation(extent={{-42,82},{-34,74}})));
+      Modelica.Blocks.Sources.Constant const5(k=data.T_Feedwater)
+        annotation (Placement(transformation(extent={{-62,72},{-50,84}})));
+      TRANSFORM.Controls.LimPID TCV_Position(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-3,
+        Ti=5,
+        yMax=0,
+        yMin=-1,
+        initType=Modelica.Blocks.Types.Init.InitialState,
+        xi_start=1500)
+        annotation (Placement(transformation(extent={{-34,44},{-26,52}})));
+      Modelica.Blocks.Sources.Constant const6(k=43.75e6)
+        annotation (Placement(transformation(extent={{-50,44},{-42,52}})));
+      Modelica.Blocks.Sources.Constant const7(k=1)
+        annotation (Placement(transformation(extent={{-20,52},{-14,58}})));
+      Modelica.Blocks.Math.Add         add1
+        annotation (Placement(transformation(extent={{-2,56},{6,48}})));
+      Modelica.Blocks.Sources.Constant const8(k=1e-6)
+        annotation (Placement(transformation(extent={{-22,64},{-14,72}})));
+      Modelica.Blocks.Math.Add         add2
+        annotation (Placement(transformation(extent={{-2,68},{6,76}})));
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Timer
+        timer(Start_Time=1e-2)
+        annotation (Placement(transformation(extent={{-22,74},{-14,82}})));
+      TRANSFORM.Controls.LimPID PI_TBV(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-5e-7,
+        Ti=15,
+        yMax=1.0,
+        yMin=0.0,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-2,22},{6,30}})));
+      Modelica.Blocks.Sources.Constant const9(k=150e5)
+        annotation (Placement(transformation(extent={{-20,20},{-8,32}})));
+      TRANSFORM.Controls.LimPID     CR1(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-10,
+        Ti=15,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-22,-52},{-14,-60}})));
+      Modelica.Blocks.Sources.Constant const10(k=125e6)
+        annotation (Placement(transformation(extent={{-42,-60},{-34,-52}})));
+      Modelica.Blocks.Math.Add         add3
+        annotation (Placement(transformation(extent={{-2,-68},{6,-60}})));
+      Modelica.Blocks.Sources.Constant const11(k=-0.01)
+        annotation (Placement(transformation(extent={{-14,-52},{-6,-44}})));
+      Modelica.Blocks.Math.Add3        add3_1
+        annotation (Placement(transformation(extent={{12,-36},{20,-28}})));
+      Modelica.Blocks.Sources.Constant const12(k=50)
+        annotation (Placement(transformation(extent={{-38,-36},{-30,-28}})));
+      Modelica.Blocks.Logical.GreaterThreshold greaterThreshold
+        annotation (Placement(transformation(extent={{-34,96},{-14,116}})));
+      Modelica.Blocks.Logical.Switch switch1
+        annotation (Placement(transformation(extent={{10,116},{30,96}})));
+      Modelica.Blocks.Sources.Constant const13(k=0.0)
+        annotation (Placement(transformation(extent={{-34,124},{-26,132}})));
+      TRANSFORM.Controls.LimPID Blower_Speed1(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-9,
+        Ti=10,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-4,-42},{4,-34}})));
+      Modelica.Blocks.Sources.Constant const14(k=140e5)
+        annotation (Placement(transformation(extent={{-24,-42},{-16,-34}})));
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        minMaxFilter(min=10, max=80)
+        annotation (Placement(transformation(extent={{66,-60},{86,-40}})));
+    equation
+
+      connect(const1.y,CR. u_s) annotation (Line(points={{-35.7,-71},{-25,-71}},
+                                color={0,0,127}));
+      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
+          points={{-30,-100},{-30,-82},{-14,-82},{-14,-77},{-19,-77}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const2.y, Blower_Speed.u_s)
+        annotation (Line(points={{-11.6,-26},{-6.8,-26}},
+                                                   color={0,0,127}));
+      connect(const3.y, FWCP_Speed.u_s) annotation (Line(points={{-49.6,-2},{-32.8,
+              -2}},               color={0,0,127}));
+      connect(sensorBus.Steam_Temperature, FWCP_Speed.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,-12},{-28,-12},{-28,-6.8}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const4.y, add.u1) annotation (Line(points={{-11.7,5},{-11.7,4},{-5,4}},
+                                       color={0,0,127}));
+      connect(FWCP_Speed.y, add.u2) annotation (Line(points={{-23.6,-2},{-5,-2}},
+                        color={0,0,127}));
+      connect(actuatorBus.Feed_Pump_Speed, add.y) annotation (Line(
+          points={{30,-100},{30,1},{6.5,1}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const5.y, Turb_Divert_Valve.u_s)
+        annotation (Line(points={{-49.4,78},{-42.8,78}}, color={0,0,127}));
+      connect(sensorBus.Feedwater_Temp, Turb_Divert_Valve.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,92},{-38,92},{-38,82.8}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const6.y, TCV_Position.u_s)
+        annotation (Line(points={{-41.6,48},{-34.8,48}}, color={0,0,127}));
+      connect(const7.y, add1.u2) annotation (Line(points={{-13.7,55},{-12,55},{-12,
+              54.4},{-2.8,54.4}},         color={0,0,127}));
+      connect(TCV_Position.y, add1.u1) annotation (Line(points={{-25.6,48},{-14,48},
+              {-14,49.6},{-2.8,49.6}},                color={0,0,127}));
+      connect(actuatorBus.TCV_Position, add1.y) annotation (Line(
+          points={{30,-100},{30,52},{6.4,52}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(add2.u2, const8.y) annotation (Line(points={{-2.8,69.6},{-10,69.6},{
+              -10,68},{-13.6,68}},                                           color=
+              {0,0,127}));
+      connect(Turb_Divert_Valve.y, timer.u) annotation (Line(points={{-33.6,78},{
+              -22.8,78}},                                                color={0,0,
+              127}));
+      connect(const9.y, PI_TBV.u_s)
+        annotation (Line(points={{-7.4,26},{-2.8,26}}, color={0,0,127}));
+      connect(sensorBus.Steam_Pressure, PI_TBV.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,-12},{-72,-12},{-72,14},{2,14},{2,
+              21.2}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.TBV, PI_TBV.y) annotation (Line(
+          points={{30,-100},{30,26},{6.4,26}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.thermal_power, CR1.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,-46},{-18,-46},{-18,-51.2}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const10.y, CR1.u_s)
+        annotation (Line(points={{-33.6,-56},{-22.8,-56}},
+                                                       color={0,0,127}));
+      connect(actuatorBus.CR_Reactivity, add3.y) annotation (Line(
+          points={{30,-100},{30,-64},{6.4,-64}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(add3.u2, CR.y) annotation (Line(points={{-2.8,-66.4},{-12,-66.4},{-12,
+              -71},{-13.5,-71}},
+                         color={0,0,127}));
+      connect(add3_1.u2, const12.y)
+        annotation (Line(points={{11.2,-32},{-29.6,-32}}, color={0,0,127}));
+      connect(add3_1.u1, Blower_Speed.y) annotation (Line(points={{11.2,-28.8},{10,
+              -28.8},{10,-30},{2.4,-30},{2.4,-26}}, color={0,0,127}));
+      connect(sensorBus.Core_Mass_Flow, Blower_Speed.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,-18},{-2,-18},{-2,-21.2}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(add3.u1, const11.y) annotation (Line(points={{-2.8,-61.6},{-4,-61.6},
+              {-4,-48},{-5.6,-48}}, color={0,0,127}));
+      connect(sensorBus.Power, TCV_Position.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,38},{-30,38},{-30,43.2}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.Bypass_flow, greaterThreshold.u) annotation (Line(
+          points={{-30,-100},{-30,-64},{-102,-64},{-102,106},{-36,106}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(greaterThreshold.y, switch1.u2)
+        annotation (Line(points={{-13,106},{8,106}}, color={255,0,255}));
+      connect(const13.y, switch1.u3) annotation (Line(points={{-25.6,128},{-6,128},
+              {-6,114},{8,114}}, color={0,0,127}));
+      connect(timer.y, switch1.u1) annotation (Line(points={{-13.44,78},{-10,78},{
+              -10,80},{-8,80},{-8,98},{8,98}}, color={0,0,127}));
+      connect(switch1.y, add2.u1) annotation (Line(points={{31,106},{40,106},{40,86},
+              {38,86},{38,82},{-6,82},{-6,74.4},{-2.8,74.4}}, color={0,0,127}));
+      connect(actuatorBus.Divert_Valve_Position, add2.y) annotation (Line(
+          points={{30,-100},{32,-100},{32,72},{6.4,72}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const14.y, Blower_Speed1.u_s)
+        annotation (Line(points={{-15.6,-38},{-4.8,-38}}, color={0,0,127}));
+      connect(sensorBus.Steam_Pressure, Blower_Speed1.u_m) annotation (Line(
+          points={{-30,-100},{-30,-62},{-8,-62},{-8,-58},{-2,-58},{-2,-52},{0,-52},
+              {0,-42.8}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(Blower_Speed1.y, add3_1.u3) annotation (Line(points={{4.4,-38},{4.4,
+              -35.2},{11.2,-35.2}}, color={0,0,127}));
+      connect(add3_1.y, minMaxFilter.u) annotation (Line(points={{20.4,-32},{58,-32},
+              {58,-50},{64,-50}}, color={0,0,127}));
+      connect(actuatorBus.PR_Compressor, minMaxFilter.y) annotation (Line(
+          points={{30,-100},{96,-100},{96,-46},{87.4,-46},{87.4,-50}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
+    end CS_Rankine_DNE_04;
+
+    model CS_Rankine_DNE_AR
+
+      extends RankineCycle.BaseClasses.Partial_ControlSystem;
+
+      TRANSFORM.Controls.LimPID     CR(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-7,
+        Ti=15,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-24,-76},{-14,-66}})));
+      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
+        annotation (Placement(transformation(extent={{-42,-74},{-36,-68}})));
+      Data.CS_HTGR_Pebble_RankineCycle data(
+        T_Rx_Exit_Ref=1023.15,
+        m_flow_nom=50,
+        T_Steam_Ref=838.15,
+        Q_Nom=43750000,
+        Q_RX_Therm_Nom=200e6,
+        T_Feedwater=466.45)
+        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
+      TRANSFORM.Controls.LimPID Blower_Speed(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=0.05,
+        Ti=30,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-6,-22},{2,-30}})));
+      Modelica.Blocks.Sources.Constant const2(k=78)
+        annotation (Placement(transformation(extent={{-20,-22},{-12,-30}})));
+      TRANSFORM.Controls.LimPID FWCP_Speed(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-1e-3,
+        Ti=60,
+        yMax=1500,
+        yMin=-1000,
+        initType=Modelica.Blocks.Types.Init.InitialState,
+        xi_start=1500)
+        annotation (Placement(transformation(extent={{-32,-6},{-24,2}})));
+      Modelica.Blocks.Sources.Constant const3(k=data.T_Steam_Ref)
+        annotation (Placement(transformation(extent={{-58,-6},{-50,2}})));
+      Modelica.Blocks.Sources.Constant const4(k=1500)
+        annotation (Placement(transformation(extent={{-18,2},{-12,8}})));
+      Modelica.Blocks.Math.Add         add
+        annotation (Placement(transformation(extent={{-4,-4},{6,6}})));
+      TRANSFORM.Controls.LimPID Turb_Divert_Valve(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=5e-4,
+        Ti=1,
+        yMax=1 - 1e-6,
+        yMin=0,
+        initType=Modelica.Blocks.Types.Init.InitialState,
+        xi_start=1500)
+        annotation (Placement(transformation(extent={{-42,82},{-34,74}})));
+      Modelica.Blocks.Sources.Constant const5(k=data.T_Feedwater)
+        annotation (Placement(transformation(extent={{-62,72},{-50,84}})));
+      TRANSFORM.Controls.LimPID TCV_Position(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-3,
+        Ti=5,
+        yMax=0,
+        yMin=-1,
+        initType=Modelica.Blocks.Types.Init.InitialState,
+        xi_start=1500)
+        annotation (Placement(transformation(extent={{-34,44},{-26,52}})));
+      Modelica.Blocks.Sources.Constant const6(k=87.01e6)
+        annotation (Placement(transformation(extent={{-50,44},{-42,52}})));
+      Modelica.Blocks.Sources.Constant const7(k=1)
+        annotation (Placement(transformation(extent={{-20,52},{-14,58}})));
+      Modelica.Blocks.Math.Add         add1
+        annotation (Placement(transformation(extent={{-2,56},{6,48}})));
+      Modelica.Blocks.Sources.Constant const8(k=1e-6)
+        annotation (Placement(transformation(extent={{-22,64},{-14,72}})));
+      Modelica.Blocks.Math.Add         add2
+        annotation (Placement(transformation(extent={{-2,68},{6,76}})));
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Timer
+        timer(Start_Time=1e-2)
+        annotation (Placement(transformation(extent={{-22,74},{-14,82}})));
+      TRANSFORM.Controls.LimPID PI_TBV(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-5e-7,
+        Ti=15,
+        yMax=1.0,
+        yMin=0.0,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-2,22},{6,30}})));
+      Modelica.Blocks.Sources.Constant const9(k=200e5)
+        annotation (Placement(transformation(extent={{-20,20},{-8,32}})));
+      TRANSFORM.Controls.LimPID     CR1(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-10,
+        Ti=15,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-22,-52},{-14,-60}})));
+      Modelica.Blocks.Sources.Constant const10(k=data.Q_Nom)
+        annotation (Placement(transformation(extent={{-42,-60},{-34,-52}})));
+      Modelica.Blocks.Math.Add         add3
+        annotation (Placement(transformation(extent={{-2,-68},{6,-60}})));
+      Modelica.Blocks.Sources.Constant const11(k=-0.01)
+        annotation (Placement(transformation(extent={{-14,-52},{-6,-44}})));
+      Modelica.Blocks.Math.Add3        add3_1
+        annotation (Placement(transformation(extent={{12,-36},{20,-28}})));
+      Modelica.Blocks.Sources.Constant const12(k=80)
+        annotation (Placement(transformation(extent={{-38,-36},{-30,-28}})));
+      Modelica.Blocks.Logical.GreaterThreshold greaterThreshold
+        annotation (Placement(transformation(extent={{-34,96},{-14,116}})));
+      Modelica.Blocks.Logical.Switch switch1
+        annotation (Placement(transformation(extent={{10,116},{30,96}})));
+      Modelica.Blocks.Sources.Constant const13(k=0.0)
+        annotation (Placement(transformation(extent={{-34,124},{-26,132}})));
+      TRANSFORM.Controls.LimPID Blower_Speed1(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-7,
+        Ti=10,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-4,-44},{4,-36}})));
+      Modelica.Blocks.Sources.Constant const14(k=165e5)
+        annotation (Placement(transformation(extent={{-24,-42},{-16,-34}})));
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
+        minMaxFilter(min=10, max=100)
+        annotation (Placement(transformation(extent={{66,-60},{86,-40}})));
+    equation
+
+      connect(const1.y,CR. u_s) annotation (Line(points={{-35.7,-71},{-25,-71}},
+                                color={0,0,127}));
+      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
+          points={{-30,-100},{-30,-82},{-14,-82},{-14,-77},{-19,-77}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const2.y, Blower_Speed.u_s)
+        annotation (Line(points={{-11.6,-26},{-6.8,-26}},
+                                                   color={0,0,127}));
+      connect(const3.y, FWCP_Speed.u_s) annotation (Line(points={{-49.6,-2},{-32.8,
+              -2}},               color={0,0,127}));
+      connect(sensorBus.Steam_Temperature, FWCP_Speed.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,-12},{-28,-12},{-28,-6.8}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const4.y, add.u1) annotation (Line(points={{-11.7,5},{-11.7,4},{-5,4}},
+                                       color={0,0,127}));
+      connect(FWCP_Speed.y, add.u2) annotation (Line(points={{-23.6,-2},{-5,-2}},
+                        color={0,0,127}));
+      connect(actuatorBus.Feed_Pump_Speed, add.y) annotation (Line(
+          points={{30,-100},{30,1},{6.5,1}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const5.y, Turb_Divert_Valve.u_s)
+        annotation (Line(points={{-49.4,78},{-42.8,78}}, color={0,0,127}));
+      connect(sensorBus.Feedwater_Temp, Turb_Divert_Valve.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,92},{-38,92},{-38,82.8}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const6.y, TCV_Position.u_s)
+        annotation (Line(points={{-41.6,48},{-34.8,48}}, color={0,0,127}));
+      connect(const7.y, add1.u2) annotation (Line(points={{-13.7,55},{-12,55},{-12,
+              54.4},{-2.8,54.4}},         color={0,0,127}));
+      connect(TCV_Position.y, add1.u1) annotation (Line(points={{-25.6,48},{-14,48},
+              {-14,49.6},{-2.8,49.6}},                color={0,0,127}));
+      connect(actuatorBus.TCV_Position, add1.y) annotation (Line(
+          points={{30,-100},{30,52},{6.4,52}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(add2.u2, const8.y) annotation (Line(points={{-2.8,69.6},{-10,69.6},{
+              -10,68},{-13.6,68}},                                           color=
+              {0,0,127}));
+      connect(Turb_Divert_Valve.y, timer.u) annotation (Line(points={{-33.6,78},{
+              -22.8,78}},                                                color={0,0,
+              127}));
+      connect(const9.y, PI_TBV.u_s)
+        annotation (Line(points={{-7.4,26},{-2.8,26}}, color={0,0,127}));
+      connect(sensorBus.Steam_Pressure, PI_TBV.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,-12},{-72,-12},{-72,14},{2,14},{2,
+              21.2}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.TBV, PI_TBV.y) annotation (Line(
+          points={{30,-100},{30,26},{6.4,26}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.thermal_power, CR1.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,-46},{-18,-46},{-18,-51.2}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const10.y, CR1.u_s)
+        annotation (Line(points={{-33.6,-56},{-22.8,-56}},
+                                                       color={0,0,127}));
+      connect(actuatorBus.CR_Reactivity, add3.y) annotation (Line(
+          points={{30,-100},{30,-64},{6.4,-64}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(add3.u2, CR.y) annotation (Line(points={{-2.8,-66.4},{-12,-66.4},{-12,
+              -71},{-13.5,-71}},
+                         color={0,0,127}));
+      connect(add3_1.u2, const12.y)
+        annotation (Line(points={{11.2,-32},{-29.6,-32}}, color={0,0,127}));
+      connect(add3_1.u1, Blower_Speed.y) annotation (Line(points={{11.2,-28.8},{10,
+              -28.8},{10,-30},{2.4,-30},{2.4,-26}}, color={0,0,127}));
+      connect(sensorBus.Core_Mass_Flow, Blower_Speed.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,-18},{-2,-18},{-2,-21.2}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(add3.u1, const11.y) annotation (Line(points={{-2.8,-61.6},{-4,-61.6},
+              {-4,-48},{-5.6,-48}}, color={0,0,127}));
+      connect(sensorBus.Power, TCV_Position.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,38},{-30,38},{-30,43.2}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.Bypass_flow, greaterThreshold.u) annotation (Line(
+          points={{-30,-100},{-30,-64},{-102,-64},{-102,106},{-36,106}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(greaterThreshold.y, switch1.u2)
+        annotation (Line(points={{-13,106},{8,106}}, color={255,0,255}));
+      connect(const13.y, switch1.u3) annotation (Line(points={{-25.6,128},{-6,128},
+              {-6,114},{8,114}}, color={0,0,127}));
+      connect(timer.y, switch1.u1) annotation (Line(points={{-13.44,78},{-10,78},{
+              -10,80},{-8,80},{-8,98},{8,98}}, color={0,0,127}));
+      connect(switch1.y, add2.u1) annotation (Line(points={{31,106},{40,106},{40,86},
+              {38,86},{38,82},{-6,82},{-6,74.4},{-2.8,74.4}}, color={0,0,127}));
+      connect(actuatorBus.Divert_Valve_Position, add2.y) annotation (Line(
+          points={{30,-100},{32,-100},{32,72},{6.4,72}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const14.y, Blower_Speed1.u_s)
+        annotation (Line(points={{-15.6,-38},{-16,-38},{-16,-40},{-4.8,-40}},
+                                                          color={0,0,127}));
+      connect(sensorBus.Steam_Pressure, Blower_Speed1.u_m) annotation (Line(
+          points={{-30,-100},{-30,-62},{-8,-62},{-8,-44.8},{0,-44.8}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(Blower_Speed1.y, add3_1.u3) annotation (Line(points={{4.4,-40},{4.4,
+              -35.2},{11.2,-35.2}}, color={0,0,127}));
+      connect(add3_1.y, minMaxFilter.u) annotation (Line(points={{20.4,-32},{58,-32},
+              {58,-50},{64,-50}}, color={0,0,127}));
+      connect(actuatorBus.PR_Compressor, minMaxFilter.y) annotation (Line(
+          points={{30,-100},{96,-100},{96,-46},{87.4,-46},{87.4,-50}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
+    end CS_Rankine_DNE_AR;
+
+    model CS_Rankine_DNE_PowerManuever
+
+      extends RankineCycle.BaseClasses.Partial_ControlSystem;
+
+      TRANSFORM.Controls.LimPID     CR(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-6,
+        Ti=15,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-24,-76},{-14,-66}})));
+      Modelica.Blocks.Sources.Constant const1(k=data.T_Rx_Exit_Ref)
+        annotation (Placement(transformation(extent={{-42,-74},{-36,-68}})));
+      Data.CS_HTGR_Pebble_RankineCycle data(
+        T_Rx_Exit_Ref=1023.15,
+        m_flow_nom=250,
+        Q_Nom=43.75e6)
+        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
+      TRANSFORM.Controls.LimPID Blower_Speed(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-5,
+        Ti=30,
+        yMax=250,
+        yMin=25,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-2,-22},{6,-30}})));
+      Modelica.Blocks.Sources.Constant const2(k=data.P_Steam_Ref)
+        annotation (Placement(transformation(extent={{-20,-32},{-12,-24}})));
+      TRANSFORM.Controls.LimPID FWCP_Speed(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-1e-2,
+        Ti=30,
+        yMax=750,
+        yMin=-1000,
+        initType=Modelica.Blocks.Types.Init.InitialState,
+        xi_start=1500)
+        annotation (Placement(transformation(extent={{-32,-6},{-24,2}})));
+      Modelica.Blocks.Sources.Constant const3(k=data.T_Steam_Ref)
+        annotation (Placement(transformation(extent={{-58,-6},{-50,2}})));
+      Modelica.Blocks.Sources.Constant const4(k=1500)
+        annotation (Placement(transformation(extent={{-18,2},{-12,8}})));
+      Modelica.Blocks.Math.Add         add
+        annotation (Placement(transformation(extent={{-4,-4},{6,6}})));
+      TRANSFORM.Controls.LimPID Turb_Divert_Valve(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=5e-6,
+        Ti=15,
+        yMax=1 - 1e-6,
+        yMin=0,
+        initType=Modelica.Blocks.Types.Init.InitialState,
+        xi_start=1500)
+        annotation (Placement(transformation(extent={{-42,82},{-34,74}})));
+      Modelica.Blocks.Sources.Constant const5(k=data.T_Feedwater)
+        annotation (Placement(transformation(extent={{-60,72},{-48,84}})));
+      TRANSFORM.Controls.LimPID TCV_Position(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-9,
+        Ti=5,
+        yMax=0,
+        yMin=-1,
+        initType=Modelica.Blocks.Types.Init.InitialState,
+        xi_start=1500)
+        annotation (Placement(transformation(extent={{-34,44},{-26,52}})));
+      Modelica.Blocks.Sources.Trapezoid trapezoid(
+        amplitude=0.0*data.Q_Nom,
+        rising=600,
+        width=1200,
+        falling=600,
+        period=86400,
+        offset=data.Q_Nom,
+        startTime=86400 + 900)
+        annotation (Placement(transformation(extent={{-50,44},{-42,52}})));
+      Modelica.Blocks.Sources.Constant const7(k=1)
+        annotation (Placement(transformation(extent={{-20,52},{-14,58}})));
+      Modelica.Blocks.Math.Add         add1
+        annotation (Placement(transformation(extent={{-2,56},{6,48}})));
+      Modelica.Blocks.Sources.Constant const8(k=1e-6)
+        annotation (Placement(transformation(extent={{-22,64},{-14,72}})));
+      Modelica.Blocks.Math.Add         add2
+        annotation (Placement(transformation(extent={{-2,68},{6,76}})));
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Timer
+        timer(Start_Time=1e-2)
+        annotation (Placement(transformation(extent={{-22,74},{-14,82}})));
+      TRANSFORM.Controls.LimPID PI_TBV(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-5e-7,
+        Ti=15,
+        yMax=1.0,
+        yMin=0.0,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-2,22},{6,30}})));
+      Modelica.Blocks.Sources.Constant const9(k=150e5)
+        annotation (Placement(transformation(extent={{-20,20},{-8,32}})));
+      TRANSFORM.Controls.LimPID     CR1(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=1e-9,
+        Ti=15,
+        initType=Modelica.Blocks.Types.Init.NoInit)
+        annotation (Placement(transformation(extent={{-22,-52},{-14,-60}})));
+      Modelica.Blocks.Sources.Constant const10(k=125e6)
+        annotation (Placement(transformation(extent={{-42,-60},{-34,-52}})));
+      Modelica.Blocks.Math.Add         add3
+        annotation (Placement(transformation(extent={{-2,-68},{6,-60}})));
+      Modelica.Blocks.Sources.Constant const11(k=-0.01)
+        annotation (Placement(transformation(extent={{-14,-48},{-6,-40}})));
+      Modelica.Blocks.Math.Add         add4(k2=-1)
+        annotation (Placement(transformation(extent={{-46,98},{-38,106}})));
+      Modelica.Blocks.Logical.GreaterEqualThreshold greaterEqualThreshold
+        annotation (Placement(transformation(extent={{-22,98},{-14,106}})));
+      Modelica.Blocks.Logical.Switch switch1
+        annotation (Placement(transformation(extent={{4,98},{12,106}})));
+      Modelica.Blocks.Sources.Constant const6(k=1.0)
+        annotation (Placement(transformation(extent={{-12,110},{-4,118}})));
+      Modelica.Blocks.Sources.Constant const12(k=0.0)
+        annotation (Placement(transformation(extent={{-10,88},{-2,96}})));
+      Modelica.Blocks.Math.Product product1
+        annotation (Placement(transformation(extent={{12,84},{20,92}})));
+      BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
+        delay1(Ti=0.25)
+        annotation (Placement(transformation(extent={{32,100},{38,104}})));
+    equation
+
+      connect(const1.y,CR. u_s) annotation (Line(points={{-35.7,-71},{-25,-71}},
+                                color={0,0,127}));
+      connect(sensorBus.Core_Outlet_T, CR.u_m) annotation (Line(
+          points={{-30,-100},{-30,-82},{-14,-82},{-14,-77},{-19,-77}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const2.y, Blower_Speed.u_s)
+        annotation (Line(points={{-11.6,-28},{-8,-28},{-8,-26},{-2.8,-26}},
+                                                   color={0,0,127}));
+      connect(const3.y, FWCP_Speed.u_s) annotation (Line(points={{-49.6,-2},{-32.8,
+              -2}},               color={0,0,127}));
+      connect(sensorBus.Steam_Temperature, FWCP_Speed.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,-12},{-28,-12},{-28,-6.8}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const4.y, add.u1) annotation (Line(points={{-11.7,5},{-11.7,4},{-5,4}},
+                                       color={0,0,127}));
+      connect(FWCP_Speed.y, add.u2) annotation (Line(points={{-23.6,-2},{-5,-2}},
+                        color={0,0,127}));
+      connect(actuatorBus.Feed_Pump_Speed, add.y) annotation (Line(
+          points={{30,-100},{30,1},{6.5,1}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const5.y, Turb_Divert_Valve.u_s)
+        annotation (Line(points={{-47.4,78},{-42.8,78}}, color={0,0,127}));
+      connect(sensorBus.Feedwater_Temp, Turb_Divert_Valve.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,92},{-38,92},{-38,82.8}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(trapezoid.y, TCV_Position.u_s)
+        annotation (Line(points={{-41.6,48},{-34.8,48}}, color={0,0,127}));
+      connect(sensorBus.Power, TCV_Position.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,38},{-30,38},{-30,43.2}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const7.y, add1.u2) annotation (Line(points={{-13.7,55},{-12,55},{-12,
+              54.4},{-2.8,54.4}},         color={0,0,127}));
+      connect(TCV_Position.y, add1.u1) annotation (Line(points={{-25.6,48},{-14,48},
+              {-14,49.6},{-2.8,49.6}},                color={0,0,127}));
+      connect(actuatorBus.TCV_Position, add1.y) annotation (Line(
+          points={{30,-100},{30,52},{6.4,52}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.Divert_Valve_Position, add2.y) annotation (Line(
+          points={{30,-100},{30,72},{6.4,72}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(add2.u2, const8.y) annotation (Line(points={{-2.8,69.6},{-10,69.6},{
+              -10,68},{-13.6,68}},                                           color=
+              {0,0,127}));
+      connect(Turb_Divert_Valve.y, timer.u) annotation (Line(points={{-33.6,78},{
+              -22.8,78}},                                                color={0,0,
+              127}));
+      connect(const9.y, PI_TBV.u_s)
+        annotation (Line(points={{-7.4,26},{-2.8,26}}, color={0,0,127}));
+      connect(sensorBus.Steam_Pressure, PI_TBV.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,-12},{-72,-12},{-72,14},{2,14},{2,
+              21.2}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.TBV, PI_TBV.y) annotation (Line(
+          points={{30,-100},{30,26},{6.4,26}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.Steam_Pressure, Blower_Speed.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,-12},{2,-12},{2,-21.2}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.PR_Compressor, Blower_Speed.y) annotation (Line(
+          points={{30,-100},{30,-26},{6.4,-26}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.thermal_power, CR1.u_m) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,-46},{-18,-46},{-18,-51.2}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(const10.y, CR1.u_s)
+        annotation (Line(points={{-33.6,-56},{-22.8,-56}},
+                                                       color={0,0,127}));
+      connect(actuatorBus.CR_Reactivity, add3.y) annotation (Line(
+          points={{30,-100},{30,-64},{6.4,-64}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(add3.u2, CR.y) annotation (Line(points={{-2.8,-66.4},{-12,-66.4},{-12,
+              -71},{-13.5,-71}},
+                         color={0,0,127}));
+      connect(add3.u1, const11.y) annotation (Line(points={{-2.8,-61.6},{-2.8,-48},
+              {0,-48},{0,-44},{-5.6,-44}}, color={0,0,127}));
+      connect(sensorBus.Condensate_Pump_Pressure, add4.u2) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,99.6},{-46.8,99.6}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus.HPT_Outlet_Pressure, add4.u1) annotation (Line(
+          points={{-30,-100},{-100,-100},{-100,104.4},{-46.8,104.4}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(greaterEqualThreshold.u, add4.y)
+        annotation (Line(points={{-22.8,102},{-37.6,102}}, color={0,0,127}));
+      connect(greaterEqualThreshold.y, switch1.u2)
+        annotation (Line(points={{-13.6,102},{3.2,102}}, color={255,0,255}));
+      connect(timer.y, product1.u2) annotation (Line(points={{-13.44,78},{-2,78},{
+              -2,85.6},{11.2,85.6}}, color={0,0,127}));
+      connect(add2.u1, product1.y) annotation (Line(points={{-2.8,74.4},{-4,74.4},{
+              -4,82},{6,82},{6,80},{24,80},{24,88},{20.4,88}}, color={0,0,127}));
+      connect(switch1.u3, const12.y) annotation (Line(points={{3.2,98.8},{0,98.8},{
+              0,92},{-1.6,92}}, color={0,0,127}));
+      connect(switch1.u1, const6.y) annotation (Line(points={{3.2,105.2},{-3.6,
+              105.2},{-3.6,114}}, color={0,0,127}));
+      connect(switch1.y, delay1.u)
+        annotation (Line(points={{12.4,102},{31.4,102}}, color={0,0,127}));
+      connect(product1.u1, delay1.y) annotation (Line(points={{11.2,90.4},{6,90.4},
+              {6,92},{46,92},{46,102},{38.42,102}}, color={0,0,127}));
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics));
+    end CS_Rankine_DNE_PowerManuever;
+
+  end ControlSystems;
+
+  package Data
+
+    model CS_HTGR_Pebble_RankineCycle
+
+      extends BaseClasses.Record_Data;
+      parameter Modelica.Units.SI.Temperature T_Rx_Exit_Ref = 850+273.15;
+      parameter Modelica.Units.SI.MassFlowRate m_flow_nom = 600;
+      parameter Modelica.Units.SI.Temperature T_Steam_Ref = 540+273.15;
+      parameter Modelica.Units.SI.Power Q_Nom = 36e6;
+      parameter Modelica.Units.SI.Power Q_RX_Therm_Nom = 125e6;
+      parameter Modelica.Units.SI.Temperature T_Feedwater = 208+273.15;
+      parameter Modelica.Units.SI.Pressure P_Steam_Ref = 140e5;
+
+      annotation (
+        defaultComponentName="data",
+        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
+              lineColor={0,0,0},
+              extent={{-100,-90},{100,-70}},
+              textString="changeMe")}),
+        Diagram(coordinateSystem(preserveAspectRatio=false)),
+        Documentation(info="<html>
+</html>"));
+    end CS_HTGR_Pebble_RankineCycle;
+
+    model Model_HTGR_Pebble_RankineCycle
+
+      extends BaseClasses.Record_Data;
+
+      import TRANSFORM.Units.Conversions.Functions.Distance_m.from_in;
+
+      replaceable package Coolant_Medium =
+          Modelica.Media.Interfaces.PartialMedium                                           annotation(choicesAllMatching = true,dialog(group="Media"));
+      replaceable package Fuel_Medium =
+          TRANSFORM.Media.Interfaces.Solids.PartialAlloy                                    annotation(choicesAllMatching = true,dialog(group = "Media"));
+      replaceable package Pebble_Medium =
+          TRANSFORM.Media.Interfaces.Solids.PartialAlloy                                    annotation(dialog(group = "Media"),choicesAllMatching=true);
+          replaceable package Aux_Heat_App_Medium =
+          Modelica.Media.Interfaces.PartialMedium                                           annotation(choicesAllMatching = true, dialog(group = "Media"));
+          replaceable package Waste_Heat_App_Medium =
+          Modelica.Media.Interfaces.PartialMedium                                           annotation(choicesAllMatching = true, dialog(group = "Media"));
+
+      //-----------------------------------------------------------------//
+      // General //
+      //-----------------------------------------------------------------//
+      parameter SI.Power Q_total=160e6 "Total thermal output"                                                              annotation(dialog(tab = "General", group = "System Reference"));
+      parameter SI.Power Q_total_el=45e6 "Total electrical output"                                                         annotation(dialog(tab = "General", group = "System Reference"));
+      parameter Real eta=Q_total_el/Q_total "Net efficiency"                                                               annotation(dialog(tab = "General", group = "System Reference"));
+
+      parameter SI.Pressure P_Release = 19.3e5 "Boundary release valve pressure downstream of precooler"                   annotation(dialog(tab = "General", group = "System Boundary Conditions"));
+      parameter SI.Temperature T_Intercooler = 35+273.15                                                                   annotation(dialog(tab = "General", group = "System Boundary Conditions"));
+      parameter SI.Temperature T_Precooler = 33+273.15                                                                     annotation(dialog(tab = "General", group = "System Boundary Conditions"));
+      parameter SI.MassFlowRate m_flow=700 "Primary Side Flow"                                                             annotation(dialog(tab = "General", group = "System Boundary Conditions"));
+
+      parameter SI.Length length_core=2.408 "meters (based on 1.33 H/D ratio)"                                             annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length d_core=1.5                                                                                       annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length r_outer_fuelRod=0.5*from_in(0.374) "Outside diameter of fuel rod (d3s1)"                         annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length th_clad_fuelRod=from_in(0.024) "Cladding thickness of fuel rod (d3s1)"                           annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length th_gap_fuelRod=0.5*from_in(0.0065) "Gap thickness between pellet and cladding (d3s1)"            annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length r_pellet_fuelRod=0.5*from_in(0.3195) "Pellet radius (d3s1)"                                      annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length pitch_fuelRod=from_in(0.496) "Fuel rod pitch (d3s1)"                                             annotation(dialog(tab = "General", group = "Geometry"));
+      parameter TRANSFORM.Units.NonDim sizeAssembly=17 "square size of assembly (e.g., 17 = 17x17)"                        annotation(dialog(tab = "General", group = "Geometry"));
+      parameter TRANSFORM.Units.NonDim nRodFuel_assembly=264 "# of fuel rods per assembly (d3s1)"                          annotation(dialog(tab = "General", group = "Geometry"));
+      parameter TRANSFORM.Units.NonDim nRodNonFuel_assembly=sizeAssembly^2 - 264 "# of non-fuel rods per assembly (d3s1)"  annotation(dialog(tab = "General", group = "Geometry"));
+      parameter TRANSFORM.Units.NonDim nAssembly=floor(Modelica.Constants.pi*d_core^2/4/(pitch_fuelRod*sizeAssembly)^2)    annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Volume V_Core_Outlet = 0.5                                                                              annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Area A_LPDelay = 1                                                                                      annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length L_LPDelay = 5                                                                                    annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Area A_HPDelay = 1                                                                                      annotation(dialog(tab = "General", group = "Geometry"));
+      parameter SI.Length L_HPDelay = 1                                                                                    annotation(dialog(tab = "General", group = "Geometry"));
+
+      parameter Real K_P_Release( unit="1/(m.kg)")                                                                         annotation(dialog(tab = "General",group = "Valves"));
+
+      parameter Real Turbine_Efficiency = 0.93                                                                             annotation(dialog(tab = "General", group = "Turbine"));
+      parameter Real Turbine_Pressure_Ratio = 2.975                                                                        annotation(dialog(tab = "General", group = "Turbine"));
+      parameter SI.MassFlowRate Turbine_Nominal_MassFlowRate = 296                                                         annotation(dialog(tab = "General", group = "Turbine"));
+
+      parameter Real LP_Comp_Efficiency = 0.91                                                                             annotation(dialog(tab = "General", group = "Compressors"));
+      parameter Real LP_Comp_P_Ratio = 1.77                                                                                annotation(dialog(tab = "General", group = "Compressors"));
+      parameter SI.MassFlowRate LP_Comp_MassFlowRate = 300                                                                 annotation(dialog(tab = "General", group = "Compressors"));
+      parameter Real HP_Comp_Efficiency = 0.91                                                                             annotation(dialog(tab = "General", group = "Compressors"));
+      parameter Real HP_Comp_P_Ratio = 1.77                                                                                annotation(dialog(tab = "General", group = "Compressors"));
+      parameter SI.MassFlowRate HP_Comp_MassFlowRate = 300                                                                 annotation(dialog(tab = "General", group = "Compressors"));
+
+      parameter Real HX_Aux_NTU = 1                                                                                        annotation(dialog(tab = "General", group = "HX_Aux"));
+      parameter SI.Volume HX_Aux_Tube_Vol = 3                                                                              annotation(dialog(tab = "General", group = "HX_Aux"));
+      parameter SI.Volume HX_Aux_Shell_Vol = 3                                                                             annotation(dialog(tab = "General", group = "HX_Aux"));
+      parameter SI.Volume HX_Aux_Buffer_Vol = 1                                                                            annotation(dialog(tab = "General", group = "HX_Aux"));
+      parameter Real HX_Aux_K_tube(unit = "1/m4") = 1                                                                      annotation(dialog(tab = "General", group = "HX_Aux"));
+      parameter Real HX_Aux_K_shell(unit = "1/m4") = 1                                                                     annotation(dialog(tab = "General", group = "HX_Aux"));
+
+      parameter Real HX_Reheat_NTU = 10                                                                                    annotation(dialog(tab = "General", group = "HX_Reheat"));
+      parameter SI.Volume HX_Reheat_Tube_Vol = 0.2                                                                         annotation(dialog(tab = "General", group = "HX_Reheat"));
+      parameter SI.Volume HX_Reheat_Shell_Vol = 0.2                                                                        annotation(dialog(tab = "General", group = "HX_Reheat"));
+      parameter SI.Volume HX_Reheat_Buffer_Vol = 0.1                                                                       annotation(dialog(tab = "General", group = "HX_Reheat"));
+      parameter Real HX_Reheat_K_tube(unit = "1/m4") = 1                                                                   annotation(dialog(tab = "General", group = "HX_Reheat"));
+      parameter Real HX_Reheat_K_shell(unit = "1/m4") = 1                                                                  annotation(dialog(tab = "General", group = "HX_Reheat"));
+
+      parameter SI.Volume V_Intercooler = 0.0                                                                              annotation(dialog(tab = "General", group = "Coolers"));
+      parameter SI.Volume V_Precooler = 0.0                                                                                annotation(dialog(tab = "General", group = "Coolers"));
+
+      parameter Real nKernel_per_Pebble = 15000                                                                            annotation(dialog(tab = "General", group = "Pebble"));
+      parameter Real nPebble = 55000                                                                                       annotation(dialog(tab = "General", group = "Pebble"));
+      parameter Integer nR_Fuel = 1                                                                                        annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_Pebble = 0.03                                                                                  annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_Fuel = 200e-6                                                                                  annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_Buffer = r_Fuel + 100e-6                                                                       annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_IPyC = r_Buffer+40e-6                                                                          annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_SiC = r_IPyC+35e-6                                                                             annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.Length r_OPyC = r_SiC+40e-6                                                                             annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.ThermalConductivity k_Buffer= 2.25                                                                      annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.ThermalConductivity k_IPyC = 8.0                                                                        annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.ThermalConductivity k_SiC = 175                                                                         annotation(dialog(tab = "General", group = "Pebble"));
+      parameter SI.ThermalConductivity k_OPyC = 8.0                                                                        annotation(dialog(tab = "General", group = "Pebble"));
+
+      //-----------------------------------------------------------------//
+      // Initialization //
+      //-----------------------------------------------------------------//
+      parameter SI.Temperature Pebble_Surface_Init = 750+273.15           annotation(dialog(tab = "Initialization", group = "Start Value: Fuel"));
+      parameter SI.Temperature Pebble_Center_Init = 1100+273.15           annotation(dialog(tab = "Initialization", group = "Start Value: Fuel"));
+
+      parameter SI.Pressure P_Turbine_Ref = 19.9e5                        annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_In_Turbine = 850+273.15             annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_Out_Turbine = 478+273.15            annotation(dialog(tab = "Initialization", group = "Turbine"));
+
+      parameter SI.Pressure P_LP_Comp_Ref = 19.3e5                        annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_LP_Comp_In = 33+273.15              annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_LP_Comp_Out = 123+273.15            annotation(dialog(tab = "Initialization", group = "Turbine"));
+
+      parameter SI.Pressure P_HP_Comp_Ref = 19.9e5                        annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_HP_Comp_In = 850+273.15             annotation(dialog(tab = "Initialization", group = "Turbine"));
+      parameter SI.Temperature TStart_HP_Comp_Out = 478+273.15            annotation(dialog(tab = "Initialization", group = "Turbine"));
+
+      parameter SI.Power HX_Aux_Q_Init = -1e6                             annotation(dialog(tab = "Initialization", group = "HX_Aux"));
+      parameter SI.SpecificEnthalpy HX_Aux_h_tube_in = 100e3              annotation(dialog(tab = "Initialization", group = "HX_Aux"));
+      parameter SI.SpecificEnthalpy HX_Aux_h_tube_out = 900e3             annotation(dialog(tab = "Initialization", group = "HX_Aux"));
+      parameter SI.Pressure HX_Aux_p_tube = 1e5                           annotation(dialog(tab = "Initialization", group = "HX_Aux"));
+
+      parameter SI.Pressure P_Core_Inlet = 60e5                         annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+      parameter SI.Pressure P_Core_Outlet = 59.4e5                      annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+      parameter SI.Temperature T_Core_Inlet = 623.15                    annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+      parameter SI.Temperature T_Core_Outlet = 1023.15                  annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+      parameter SI.Temperature T_Pebble_Init = T_Core_Outlet            annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+      parameter SI.Temperature T_Fuel_Center_Init = 1473.15             annotation(dialog(tab = "Initialization", group = "Reactor_Core"));
+
+      parameter SI.Pressure Recuperator_P_Tube = 19.4e5                   annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
+      parameter SI.SpecificEnthalpy Recuperator_h_Tube_Inlet = 2307e3     annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
+      parameter SI.SpecificEnthalpy Recuperator_h_Tube_Outlet = 3600e3    annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
+      parameter SI.Pressure Recuperator_dp_Tube = 0.3e5                   annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
+      parameter SI.MassFlowRate Recuperator_m_Tube = 296.1                annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Tube"));
+
+      parameter SI.Pressure Recuperator_P_Shell = 60.4e5                  annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
+      parameter SI.SpecificEnthalpy Recuperator_h_Shell_Inlet = 3600e3    annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
+      parameter SI.SpecificEnthalpy Recuperator_h_Shell_Outlet = 2700e3   annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
+      parameter SI.Pressure Recuperator_dp_Shell = 0.4e5                  annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
+      parameter SI.MassFlowRate Recuperator_m_Shell = 296.1               annotation(dialog(tab = "Initialization", group = "HX_Recuperator_Shell"));
+
+      parameter SI.Pressure P_Intercooler = 59.2e5                        annotation(dialog(tab = "Initialization", group = "Cooler"));
+      parameter SI.Pressure P_Precooler = 30e5                            annotation(dialog(tab = "Initialization", group = "Cooler"));
+
+    equation
+     // assert(abs(lengths[1] - lengths[2]) <= Modelica.Constants.eps, "Hot/cold leg lengths must be equal");
+     // assert(abs(length_reactorVessel - lengths[1] - length_pressurizer) <= Modelica.Constants.eps, "Hot leg and pressurizer must be equal to reactor vessel length");
+
+      annotation (
+        defaultComponentName="data",
+        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
+              lineColor={0,0,0},
+              extent={{-100,-90},{100,-70}},
+              textString="Pebble Bed")}),
+        Diagram(coordinateSystem(preserveAspectRatio=false)),
+        Documentation(info="<html>
+</html>"));
+    end Model_HTGR_Pebble_RankineCycle;
+
+  end Data;
+
   package SupportComponent
     block VarLimVarK_PID
       "P, PI, PD, and PID controller with limited output, anti-windup compensation, setpoint weighting, feed forward, and reset"
@@ -6688,6 +6538,156 @@ package RankineCycle
               pattern=LinePattern.None)}));
     end TRISO;
   end SupportComponent;
+
+  package BaseClasses
+    extends TRANSFORM.Icons.BasesPackage;
+
+    partial model Partial_SubSystem
+
+      extends NHES.Systems.BaseClasses.Partial_SubSystem;
+
+      extends Record_SubSystem;
+
+      replaceable Partial_ControlSystem CS annotation (choicesAllMatching=true,
+          Placement(transformation(extent={{-18,122},{-2,138}})));
+      replaceable Partial_EventDriver ED annotation (choicesAllMatching=true,
+          Placement(transformation(extent={{2,122},{18,138}})));
+      replaceable Record_Data data
+        annotation (Placement(transformation(extent={{42,122},{58,138}})));
+
+      SignalSubBus_ActuatorInput actuatorBus
+        annotation (Placement(transformation(extent={{10,80},{50,120}}),
+            iconTransformation(extent={{10,80},{50,120}})));
+      SignalSubBus_SensorOutput sensorBus
+        annotation (Placement(transformation(extent={{-50,80},{-10,120}}),
+            iconTransformation(extent={{-50,80},{-10,120}})));
+
+    equation
+      connect(sensorBus, ED.sensorBus) annotation (Line(
+          points={{-30,100},{-16,100},{7.6,100},{7.6,122}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus, CS.sensorBus) annotation (Line(
+          points={{-30,100},{-12.4,100},{-12.4,122}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus, CS.actuatorBus) annotation (Line(
+          points={{30,100},{12,100},{-7.6,100},{-7.6,122}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus, ED.actuatorBus) annotation (Line(
+          points={{30,100},{20,100},{12.4,100},{12.4,122}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+
+      annotation (
+        defaultComponentName="changeMe",
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}})),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,140}})));
+    end Partial_SubSystem;
+
+    partial model Partial_SubSystem_A
+
+      extends Partial_SubSystem;
+
+      extends Record_SubSystem_A;
+
+      annotation (
+        defaultComponentName="changeMe",
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                140}})));
+    end Partial_SubSystem_A;
+
+    partial model Record_Data
+
+      extends Modelica.Icons.Record;
+
+      annotation (defaultComponentName="data",
+      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end Record_Data;
+
+    partial record Record_SubSystem
+
+      annotation (defaultComponentName="subsystem",
+      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end Record_SubSystem;
+
+    partial record Record_SubSystem_A
+
+      extends Record_SubSystem;
+
+      annotation (defaultComponentName="subsystem",
+      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end Record_SubSystem_A;
+
+    partial model Partial_ControlSystem
+
+      extends NHES.Systems.BaseClasses.Partial_ControlSystem;
+
+      SignalSubBus_ActuatorInput actuatorBus
+        annotation (Placement(transformation(extent={{10,-120},{50,-80}}),
+            iconTransformation(extent={{10,-120},{50,-80}})));
+      SignalSubBus_SensorOutput sensorBus
+        annotation (Placement(transformation(extent={{-50,-120},{-10,-80}}),
+            iconTransformation(extent={{-50,-120},{-10,-80}})));
+
+      annotation (
+        defaultComponentName="CS",
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}})),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}})));
+
+    end Partial_ControlSystem;
+
+    partial model Partial_EventDriver
+
+      extends NHES.Systems.BaseClasses.Partial_EventDriver;
+
+      SignalSubBus_ActuatorInput actuatorBus
+        annotation (Placement(transformation(extent={{10,-120},{50,-80}}),
+            iconTransformation(extent={{10,-120},{50,-80}})));
+      SignalSubBus_SensorOutput sensorBus
+        annotation (Placement(transformation(extent={{-50,-120},{-10,-80}}),
+            iconTransformation(extent={{-50,-120},{-10,-80}})));
+
+      annotation (
+        defaultComponentName="ED",
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}})));
+
+    end Partial_EventDriver;
+
+    expandable connector SignalSubBus_ActuatorInput
+
+      extends NHES.Systems.Interfaces.SignalSubBus_ActuatorInput;
+
+      annotation (defaultComponentName="actuatorBus",
+      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end SignalSubBus_ActuatorInput;
+
+    expandable connector SignalSubBus_SensorOutput
+
+      extends NHES.Systems.Interfaces.SignalSubBus_SensorOutput;
+
+      annotation (defaultComponentName="sensorBus",
+      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end SignalSubBus_SensorOutput;
+
+  end BaseClasses;
 annotation (Documentation(info="<html>
 <p>The HTGR Rankine system appears to be the leading candidate for early deployment internationally. As such, it is included as an option here. </p>
 <p>The specific reference paper most used in this model development was &quot;A control approach investigation fo the Xe-100 plant to perform load following within the operational range of 100 - 25 - 100&percnt;&quot;, 2018 paper from Nuclear Engineering and Design by Brits et al. </p>
