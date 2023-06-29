@@ -185,7 +185,7 @@ model TEDSloop_allmodes_test_3WV_exp2023b
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
     T_hot_design=573.15,
-    T_cold_design=323.15,
+    T_cold_design=30+273.15,
     Heater_Demand(table=[0,0.05; 3500,0.05; 3600,1; 4800,1; 7200,1; 9000,1;
           9600,1; 10800,1; 12600,1; 12700,0.75; 17900,0.75; 18000,0.005; 23400,
           0.005; 25000,0.005]),
@@ -214,7 +214,7 @@ model TEDSloop_allmodes_test_3WV_exp2023b
       Insulation_thickness=3*0.051,
       Wall_Thickness=0.019,
       Height_Tank=4.435),
-    T_Init=323.15)
+    T_Init=303.15)
     annotation (Placement(transformation(extent={{102,-50},{134,-6}})));
   Modelica.Fluid.Sources.MassFlowSource_T Chiller_Mass_Flow(
     redeclare package Medium =
@@ -283,7 +283,7 @@ model TEDSloop_allmodes_test_3WV_exp2023b
     annotation (Placement(transformation(
         extent={{-6,-6},{6,6}},
         rotation=0,
-        origin={-148,46})));
+        origin={-150,46})));
   TRANSFORM.Controls.LimPID Chromolox_Heater_Control(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=7,
@@ -406,7 +406,8 @@ model TEDSloop_allmodes_test_3WV_exp2023b
     annotation (Placement(transformation(extent={{-22,-194},{-34,-182}})));
   Modelica.Blocks.Sources.RealExpression Heater_BOP_Demand1(y=1 - BV2.opening)
     annotation (Placement(transformation(extent={{100,-110},{122,-88}})));
-  Modelica.Blocks.Sources.Constant const1(k=273.15 + 50) annotation (Placement(
+  Modelica.Blocks.Sources.Constant const1(k=273.15 + 100)
+                                                         annotation (Placement(
         transformation(
         extent={{4,-4},{-4,4}},
         rotation=0,
@@ -537,7 +538,7 @@ equation
     annotation (Line(points={{-73,64},{-62,64}}, color={0,0,127}));
   connect(boundary3.port, Chromolox_Heater.heatPorts[:, 1])
     annotation (Line(points={{-48,64},{-40,64},{-40,50}}, color={191,0,0}));
-  connect(const.y, Chromolox_Heater_Control.u_s) annotation (Line(points={{-141.4,
+  connect(const.y, Chromolox_Heater_Control.u_s) annotation (Line(points={{-143.4,
           46},{-123.2,46}},                     color={0,0,127}));
   connect(Chromolox_exit_temperature.T, Chromolox_Heater_Control.u_m)
     annotation (Line(points={{-10,50.32},{-10,84},{-116,84},{-116,53.2}}, color=
