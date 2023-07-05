@@ -186,7 +186,7 @@ equation
     annotation (Line(points={{30,-6},{36,-6},{36,-8},{50,-8}},
                                                color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC.portElec_b, SY.port_a[1])
-    annotation (Line(points={{90,0},{98,0},{98,-1.1}},               color={255,
+    annotation (Line(points={{90,0},{98,0},{98,-0.55}},              color={255,
           0,0}));
   connect(SMR_Taveprogram.port_b, stateSensor1.port_a) annotation (Line(points={{
           -51.0909,12.7692},{-51.0909,11},{-38,11}},  color={0,127,255}));
@@ -244,8 +244,8 @@ equation
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_b)
     annotation (Line(points={{68,-55},{68,-73.4},{106,-73.4}}, color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.portElec_b,
-    SY.port_a[2]) annotation (Line(points={{144,-65},{144,-28},{94,-28},{94,0},{
-          98,0},{98,1.1}},      color={255,0,0}));
+    SY.port_a[2]) annotation (Line(points={{144,-65},{144,-28},{94,-28},{94,0},
+          {98,0},{98,0.55}},    color={255,0,0}));
   connect(SY.port_Grid, sensorW.port_a)
     annotation (Line(points={{138,0},{142,0}}, color={255,0,0}));
   connect(sensorW.port_b, EG.portElec_a)

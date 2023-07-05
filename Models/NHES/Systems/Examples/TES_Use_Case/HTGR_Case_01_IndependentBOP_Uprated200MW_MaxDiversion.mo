@@ -1,5 +1,5 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model HTGR_Case_01_IndependentBOP_Ups2TT2
+model HTGR_Case_01_IndependentBOP_Uprated200MW_MaxDiversion
   "TES use case demonstration of a NuScale-style LWR operating within an energy arbitrage IES, storing and dispensing energy on demand from a two tank molten salt energy storage system nominally using HITEC salt to store heat."
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
@@ -22,7 +22,7 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2
     port_b3_nominal_m_flow={-0.67},
     nPorts_b3=1)
     annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-  BalanceOfPlant.Turbine.HTGR_RankineCycles.SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR
+  BalanceOfPlant.Turbine.HTGR_RankineCycles.SteamTurbine_OpenFeedHeat_DivertPowerControl_HTGR_AR1_HighDiversion
     intermediate_Rankine_Cycle_TESUC(
     redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.TESTurbine
       data(
@@ -31,28 +31,28 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2
       V_condensor=10000,
       V_FeedwaterMixVolume=25,
       V_Header=10,
-      valve_TCV_mflow=50,
+      valve_TCV_mflow=100,
       valve_TCV_dp_nominal=500000,
-      valve_SHS_mflow=15,
-      valve_SHS_dp_nominal=3000000,
+      valve_SHS_mflow=50,
+      valve_SHS_dp_nominal=1000000,
       valve_TCV_LPT_mflow=30,
       valve_TCV_LPT_dp_nominal=10000,
       InternalBypassValve_mflow_small=0,
       InternalBypassValve_p_spring=20000000,
       InternalBypassValve_K(unit="1/(m.kg)") = 40,
       InternalBypassValve_tau(unit="1/s"),
-      HPT_p_exit_nominal=2500000,
-      HPT_T_in_nominal=823.15,
-      HPT_nominal_mflow=39,
+      HPT_p_exit_nominal=5000000,
+      HPT_T_in_nominal=838.15,
+      HPT_nominal_mflow=60,
       HPT_efficiency=1,
-      LPT_p_in_nominal=2500000,
+      LPT_p_in_nominal=5000000,
       LPT_p_exit_nominal=7000,
-      LPT_T_in_nominal=573.15,
-      LPT_nominal_mflow=41,
+      LPT_T_in_nominal=673.15,
+      LPT_nominal_mflow=120,
       LPT_efficiency=1,
-      firstfeedpump_p_nominal=6000000,
+      firstfeedpump_p_nominal=11000000,
       secondfeedpump_p_nominal=5500000,
-      controlledfeedpump_mflow_nominal=75,
+      controlledfeedpump_mflow_nominal=45,
       MainFeedHeater_K_tube(unit="1/m4"),
       MainFeedHeater_K_shell(unit="1/m4"),
       BypassFeedHeater_K_tube(unit="1/m4"),
@@ -63,32 +63,18 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl_HTGR_3VNb
+      BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl_HTGR_3VNb_AR1_HighDiversion
       CS(
-      electric_demand=switch1.y,
+      electric_demand=sum1.y,
       Overall_Power=sensorW.W,
       m_required=m_req.y,
       data(
-        p_steam=14000000,
-        Q_Nom=49e6,
-        T_Feedwater=481.15,
-        p_steam_vent=16500000,
-        m_flow_reactor=50),
-      Charge_OnOff_Throttle(k=-3e-7, Ti=20),
-      FWCP_mflow(
-        k=-0.004,
-        Ti=70,
-        yMin=1080),
-      ramp1(
-        height=-1200,
-        duration=1.1*5000,
-        offset=1200,
-        startTime=2500),
-      ramp3(height=0, offset=0),
-      ramp2(duration=0.9*5000, startTime=2500),
-      add6(k1=+1),
-      TCV_Power(k=-3e-5, Ti=30),
-      const6(k=1.526e6)),
+        p_steam=16500000,
+        T_Steam_Ref=838.15,
+        Q_Nom=48e6,
+        T_Feedwater=466.15,
+        p_steam_vent=18500000,
+        m_flow_reactor=50)),
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.Data.IntermediateTurbineInitialisation
       init(
@@ -100,9 +86,8 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2
       HPT_p_b_start=10000,
       HPT_T_a_start=523.15,
       HPT_T_b_start=333.15),
-    pump_SimpleMassFlow1(m_flow_start=50),
     const(k=0))
-    annotation (Placement(transformation(extent={{50,-20},{90,20}})));
+    annotation (Placement(transformation(extent={{52,-18},{92,22}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
     annotation (Placement(transformation(extent={{98,-22},{138,22}})));
   ElectricalGrid.InfiniteGrid.Infinite EG
@@ -121,7 +106,8 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2
   EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_BestModel
     two_Tank_SHS_System_NTU(
     redeclare
-      NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_BestExample CS(
+      NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_BestExample_HighDiversion
+      CS(
       data(hot_tank_ref_temp=673.15, cold_tank_ref_temp=533.15),
       one8(k=+273.15 + 260),
       one1(k=273.15 + 400),
@@ -133,11 +119,11 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2
     redeclare replaceable NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS
       data(
       ht_level_max=11.7,
-      ht_area=1.5*3390,
+      ht_area=10*3390,
       ht_surface_pressure=120000,
       hot_tank_init_temp=673.15,
       cold_tank_level_max=11.7,
-      cold_tank_area=1.5*3390,
+      cold_tank_area=10*3390,
       ct_surface_pressure=120000,
       cold_tank_init_temp=533.15,
       m_flow_ch_min=0.1,
@@ -203,15 +189,15 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2
     startTime=2000)
     annotation (Placement(transformation(extent={{-26,72},{-6,92}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
-    amplitude=-30.58e6,
+    amplitude=-76.24e6,
     rising=100,
     width=9800,
     falling=100,
     period=20000,
-    offset=45e6,
+    offset=86.24e6,
     startTime=4e5 + 2000)
-    annotation (Placement(transformation(extent={{-232,256},{-212,276}})));
-  BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
+    annotation (Placement(transformation(extent={{-230,254},{-210,274}})));
+  BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat_AR1
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
@@ -219,18 +205,18 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat
-      CS(electric_demand=switch1.y,
+      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_SmallCycle_NoFeedHeat_AR1
+      CS(
+      electric_demand=sum1.y,
       data(
         p_steam=10500000,
         T_Steam_Ref=668.15,
-        Q_Nom=49e6),
+        Q_Nom=86.24e6),
       FWCP_Speed(yMax=3500),
       const15(k=0.005),
       minMaxFilter1(max=1 - 0.005),
       const11(k=0.0005),
-      minMaxFilter(max=1 - 0.0005),
-      Discharge_OnOFF(k=2e-9, Ti=7)),
+      minMaxFilter(max=1 - 0.0005)),
     firstfeedpump1(m_flow_start=5),
     init(
       HPT_p_a_start=1500000,
@@ -246,14 +232,14 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2
       valve_TCV_LPT_dp_nominal=70000,
       LPT_p_in_nominal=10000000,
       LPT_T_in_nominal=668.15,
-      LPT_nominal_mflow=50))
-    annotation (Placement(transformation(extent={{104,-86},{142,-44}})));
+      LPT_nominal_mflow=30))
+    annotation (Placement(transformation(extent={{104,-84},{142,-42}})));
   TRANSFORM.Electrical.Sensors.PowerSensor sensorW
     annotation (Placement(transformation(extent={{142,-6},{156,6}})));
   Modelica.Blocks.Math.Add         add
     annotation (Placement(transformation(extent={{-190,240},{-170,260}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid1(
-    amplitude=10e6 + 20.14e6,
+    amplitude=31.84e6,
     rising=100,
     width=7800 + 5000,
     falling=100,
@@ -273,16 +259,14 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2
     annotation (Placement(transformation(extent={{-98,112},{-78,132}})));
   Modelica.Blocks.Math.Sum sum1
     annotation (Placement(transformation(extent={{-102,256},{-82,276}})));
-  PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_TESUC
-    hTGR_PebbleBed_Primary_Loop_TESUCa(
-                                      redeclare
-      PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_PrimaryVNa
-                                                                            CS(
-        data(T_Rx_Exit_Ref=1023.15, P_Steam_Ref=14000000), CR(k=1e-7)),
-                                                            STHX(nParallel=4))
-    annotation (Placement(transformation(extent={{-104,-22},{-56,24}})));
+  PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_TESUC_AR1
+    hTGR_PebbleBed_Primary_Loop_TESUC_AR1_1(redeclare
+      PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_PrimaryVNa_AR1
+      CS(data(T_Rx_Exit_Ref=1023.15, P_Steam_Ref=16500000), const3(k=200e6)),
+      STHX(nParallel=4))
+    annotation (Placement(transformation(extent={{-106,-22},{-58,24}})));
   Modelica.Blocks.Sources.RealExpression m_req(y=
-        hTGR_PebbleBed_Primary_Loop_TESUCa.core.Q_total.y/(1295088 -
+        hTGR_PebbleBed_Primary_Loop_TESUC_AR1_1.core.Q_total.y/(1295088 -
         stateSensor3.specificEnthalpy.h_out))
     annotation (Placement(transformation(extent={{-112,158},{-92,178}})));
   Modelica.Blocks.Sources.Constant MinPower(k=12000000)
@@ -368,7 +352,7 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2
     fileName=
         "C:/Users/NOVOV/projects/HYBRID/Models/NHES/Resources/Data/RAVEN/timeSeriesDataVN.txt",
     shiftTime=0)
-    annotation (Placement(transformation(extent={{-70,238},{-50,258}})));
+    annotation (Placement(transformation(extent={{-96,228},{-76,248}})));
 
   Modelica.Blocks.Sources.RealExpression Qin_main(y=
         intermediate_Rankine_Cycle_TESUC.TCV.m_flow*(stateSensor2.specificEnthalpy.h_out
@@ -395,23 +379,26 @@ model HTGR_Case_01_IndependentBOP_Ups2TT2
   Modelica.Blocks.Math.Add         add4
     annotation (Placement(transformation(extent={{-150,254},{-130,274}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid2(
-    amplitude=25e6,
+    amplitude=0,
     rising=1000,
     width=0 + 5000,
     falling=1000,
     period=20000,
     offset=0,
     startTime=3e5 + 8e4 - 5000)
-    annotation (Placement(transformation(extent={{-202,310},{-182,330}})));
+    annotation (Placement(transformation(extent={{-204,310},{-184,330}})));
+  Modelica.Blocks.Math.Product product4
+    annotation (Placement(transformation(extent={{34,258},{42,250}})));
+  Modelica.Blocks.Sources.Constant MinPower1(k=70/48)
+    annotation (Placement(transformation(extent={{-38,250},{-32,256}})));
 equation
-  hTGR_PebbleBed_Primary_Loop_TESUCa.input_steam_pressure =
+  hTGR_PebbleBed_Primary_Loop_TESUC_AR1_1.input_steam_pressure =
     intermediate_Rankine_Cycle_TESUC.sensor_p.p;
 
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)
-    annotation (Line(points={{28,-6},{36,-6},{36,-8},{50,-8}},
-                                               color={0,127,255}));
+    annotation (Line(points={{28,-6},{52,-6}}, color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC.portElec_b, SY.port_a[1])
-    annotation (Line(points={{90,0},{98,0},{98,-0.55}},              color={255,
+    annotation (Line(points={{92,2},{98,2},{98,-0.55}},              color={255,
           0,0}));
   connect(stateSensor1.port_b, EM.port_a1) annotation (Line(points={{-24,11},{-22,
           11},{-22,12},{-16,12},{-16,10},{-12,10}}, color={0,127,255}));
@@ -421,7 +408,7 @@ equation
   connect(EM.port_b2, stateSensor2.port_a) annotation (Line(points={{28,10},{32,
           10},{32,9}},                        color={0,127,255}));
   connect(stateSensor2.port_b, intermediate_Rankine_Cycle_TESUC.port_a)
-    annotation (Line(points={{46,9},{48,9},{48,8},{50,8}},          color={0,127,
+    annotation (Line(points={{46,9},{48,9},{48,10},{52,10}},        color={0,127,
           255}));
   connect(stateSensor2.statePort, stateDisplay2.statePort) annotation (Line(
         points={{39.035,9.045},{39.035,37.1},{47,37.1}}, color={0,0,0}));
@@ -454,33 +441,33 @@ equation
       Line(points={{23.6,-44.4},{42,-44.4},{42,-55},{48,-55}},          color={0,
           127,255}));
   connect(stateSensor5.port_b, intermediate_Rankine_Cycle_TESUC.port_a1)
-    annotation (Line(points={{30,-30},{57.2,-30},{57.2,-19.2}}, color={0,127,255}));
+    annotation (Line(points={{30,-30},{59.2,-30},{59.2,-17.2}}, color={0,127,255}));
   connect(stateSensor6.port_b,
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_a)
     annotation (Line(points={{62,-68},{100,-68},{100,-60},{102,-60},{102,-56},{
-          104,-56},{104,-56.6}},
+          104,-56},{104,-54.6}},
                              color={0,127,255}));
   connect(stateSensor7.port_a,
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_b)
-    annotation (Line(points={{68,-55},{68,-73.4},{104,-73.4}}, color={0,127,255}));
+    annotation (Line(points={{68,-55},{68,-71.4},{104,-71.4}}, color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.portElec_b,
-    SY.port_a[2]) annotation (Line(points={{142,-65},{142,-28},{94,-28},{94,0},
+    SY.port_a[2]) annotation (Line(points={{142,-63},{142,-28},{94,-28},{94,0},
           {98,0},{98,0.55}},    color={255,0,0}));
   connect(SY.port_Grid, sensorW.port_a)
     annotation (Line(points={{138,0},{142,0}}, color={255,0,0}));
   connect(sensorW.port_b, EG.portElec_a)
     annotation (Line(points={{156,0},{160,0}}, color={255,0,0}));
-  connect(trapezoid.y, add.u1) annotation (Line(points={{-211,266},{-211,262},{
+  connect(trapezoid.y, add.u1) annotation (Line(points={{-209,264},{-209,262},{
           -198,262},{-198,256},{-192,256}},
                          color={0,0,127}));
   connect(trapezoid1.y, add.u2) annotation (Line(points={{-211,228},{-198,228},
           {-198,244},{-192,244}},
                          color={0,0,127}));
-  connect(hTGR_PebbleBed_Primary_Loop_TESUCa.port_b, stateSensor1.port_a)
-    annotation (Line(points={{-56.72,12.27},{-47.36,12.27},{-47.36,11},{-38,11}},
+  connect(hTGR_PebbleBed_Primary_Loop_TESUC_AR1_1.port_b, stateSensor1.port_a)
+    annotation (Line(points={{-58.72,12.27},{-47.36,12.27},{-47.36,11},{-38,11}},
         color={0,127,255}));
-  connect(hTGR_PebbleBed_Primary_Loop_TESUCa.port_a, stateSensor3.port_b)
-    annotation (Line(points={{-56.72,-6.59},{-48.36,-6.59},{-48.36,-6},{-40,-6}},
+  connect(hTGR_PebbleBed_Primary_Loop_TESUC_AR1_1.port_a, stateSensor3.port_b)
+    annotation (Line(points={{-58.72,-6.59},{-48.36,-6.59},{-48.36,-6},{-40,-6}},
         color={0,127,255}));
   connect(one3.y,add1. u1) annotation (Line(points={{16.3,283},{20,283},{20,
           278.8},{25.4,278.8}},                                   color={0,0,
@@ -532,12 +519,16 @@ equation
           248},{-152,258}}, color={0,0,127}));
   connect(add4.y, sum1.u[1]) annotation (Line(points={{-129,264},{-104,264},{
           -104,266}}, color={0,0,127}));
-  connect(trapezoid2.y, add4.u1) annotation (Line(points={{-181,320},{-181,286},
+  connect(trapezoid2.y, add4.u1) annotation (Line(points={{-183,320},{-183,286},
           {-152,286},{-152,270}}, color={0,0,127}));
-  connect(demand_BOP2.y[1], max1.u2) annotation (Line(points={{-49,248},{-49,
-          234},{81,234},{81,228}}, color={0,0,127}));
-  connect(demand_BOP2.y[1], min3.u2) annotation (Line(points={{-49,248},{-49,
-          250},{75.2,250},{75.2,259.6}}, color={0,0,127}));
+  connect(MinPower1.y, product4.u2) annotation (Line(points={{-31.7,253},{30,
+          253},{30,256.4},{33.2,256.4}}, color={0,0,127}));
+  connect(min3.u2, product4.y) annotation (Line(points={{75.2,259.6},{48,259.6},
+          {48,254},{42.4,254}}, color={0,0,127}));
+  connect(max1.u2, product4.y) annotation (Line(points={{81,228},{48,228},{48,
+          254},{42.4,254}}, color={0,0,127}));
+  connect(demand_BOP2.y[1], product4.u1) annotation (Line(points={{-75,238},{28,
+          238},{28,251.6},{33.2,251.6}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{200,100}}), graphics={
         Ellipse(lineColor = {75,138,73},
@@ -562,4 +553,4 @@ equation
 </html>"),
     __Dymola_experimentSetupOutput(events=false),
     conversion(noneFromVersion=""));
-end HTGR_Case_01_IndependentBOP_Ups2TT2;
+end HTGR_Case_01_IndependentBOP_Uprated200MW_MaxDiversion;

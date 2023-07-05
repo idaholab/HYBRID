@@ -183,7 +183,7 @@ model HTGR_Case_01_IndependentBOP
     offset=47e6,
     startTime=2000)
     annotation (Placement(transformation(extent={{66,112},{86,132}})));
-  BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat_a
+  BalanceOfPlant.Turbine.SteamTurbine_Basic_NoFeedHeat
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle(
     port_a_nominal(
       p=EM.port_b2_nominal.p,

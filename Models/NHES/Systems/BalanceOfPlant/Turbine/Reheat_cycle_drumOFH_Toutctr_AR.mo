@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.Turbine;
-model Reheat_cycle_drumOFH_Toutctr
+model Reheat_cycle_drumOFH_Toutctr_AR
 
   replaceable package LT_HTF =
       Modelica.Media.IdealGases.SingleGases.He annotation (__Dymola_choicesAllMatching=true);
@@ -206,7 +206,7 @@ replaceable package Medium = Modelica.Media.Water.StandardWater annotation (__Dy
         origin={181,-93})));
   TRANSFORM.Fluid.Valves.ValveLinear LPT_Bypass(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
-    dp_nominal=50000,
+    dp_nominal=500000,
     m_flow_nominal=17)                            annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=180,
@@ -267,9 +267,10 @@ replaceable package Medium = Modelica.Media.Water.StandardWater annotation (__Dy
         rotation=180,
         origin={267,-11})));
   replaceable ControlSystems.CS_ReheatOFWH CS(FWH_Valve(
-      k=-0.8,
+      controllerType=Modelica.Blocks.Types.SimpleController.P,
+      k=-0.008,
       Ti=15,
-      yMin=0.05), delay3(Ti=5))               constrainedby
+      yMin=0.002),delay3(Ti=5))               constrainedby
     ControlSystems.CS_SteamTSlidingP annotation (choicesAllMatching=true,
       Placement(transformation(extent={{-50,258},{-34,274}})));
   replaceable ControlSystems.ED_Dummy
@@ -303,8 +304,9 @@ replaceable package Medium = Modelica.Media.Water.StandardWater annotation (__Dy
     annotation (Placement(transformation(extent={{-92,-106},{-72,-86}})));
   TRANSFORM.Fluid.Valves.ValveLinear valveLinear(
     redeclare package Medium = Media.SolarSalt.ConstantPropertyLiquidSolarSalt,
+
     dp_nominal=50000,
-    m_flow_nominal=50)
+    m_flow_nominal=70)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
         rotation=90,
         origin={-68,-72})));
@@ -399,14 +401,26 @@ replaceable package Medium = Modelica.Media.Water.StandardWater annotation (__Dy
     annotation (Placement(transformation(extent={{-258,-48},{-246,-36}})));
   TRANSFORM.Controls.LimPID PID2(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-1.1e-2,
-    Ti=500,
+    k=-5e-2,
+    Ti=1000,
     yMax=1.0,
     yMin=0.0,
     y_start=0.0)
     annotation (Placement(transformation(extent={{-216,-6},{-208,2}})));
   Modelica.Blocks.Sources.Constant one1(k=220 + 273.15)
     annotation (Placement(transformation(extent={{-244,-4},{-238,2}})));
+  Modelica.Blocks.Sources.Constant const7(k=8.3e5)
+    annotation (Placement(transformation(extent={{106,206},{126,226}})));
+  TRANSFORM.Controls.LimPID PartialAdmission(
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    k=-1e-6,
+    Ti=40000,
+    Td=0.1,
+    yMax=1,
+    yMin=0.05,
+    initType=Modelica.Blocks.Types.Init.NoInit,
+    xi_start=0.98)
+    annotation (Placement(transformation(extent={{134,206},{148,220}})));
 equation
   connect(steam_Drum.downcomer_port, pump.port_a) annotation (Line(points={{15.4,4},
           {15.4,-6},{14,-6},{14,-16}},   color={0,127,255}));
@@ -680,6 +694,13 @@ equation
         color={0,0,127}));
   connect(PID2.y, valveLinear.opening) annotation (Line(points={{-207.6,-2},{
           -188,-2},{-188,-72},{-76,-72}}, color={0,0,127}));
+  connect(const7.y,PartialAdmission. u_s) annotation (Line(points={{127,216},{
+          127,213},{132.6,213}},   color={0,0,127}));
+  connect(sensor_pT15.p, PartialAdmission.u_m) annotation (Line(points={{18,
+          174.4},{141,174.4},{141,204.6}}, color={0,0,127}));
+  connect(PartialAdmission.y, steamTurbine1.partialArc) annotation (Line(points
+        ={{148.7,213},{172,213},{172,72},{176,72},{176,60},{153,60},{153,72}},
+        color={0,0,127}));
   annotation (Diagram(coordinateSystem(extent={{-280,-180},{300,300}})), Icon(
         coordinateSystem(extent={{-280,-180},{300,300}}), graphics={
                               Bitmap(extent={{-116,-124},{222,212}}, fileName=
@@ -1030,4 +1051,4 @@ equation
       StopTime=200,
       Tolerance=0.005,
       __Dymola_Algorithm="Esdirk34a"));
-end Reheat_cycle_drumOFH_Toutctr;
+end Reheat_cycle_drumOFH_Toutctr_AR;

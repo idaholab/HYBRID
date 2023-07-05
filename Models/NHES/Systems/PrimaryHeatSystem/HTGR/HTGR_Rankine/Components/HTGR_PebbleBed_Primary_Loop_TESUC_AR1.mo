@@ -1,14 +1,15 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.Components;
-model HTGR_PebbleBed_Primary_Loop_TESUC_Direct
+model HTGR_PebbleBed_Primary_Loop_TESUC_AR1
   extends BaseClasses.Partial_SubSystem_A(
     redeclare replaceable ControlSystems.CS_Rankine_Primary CS,
     redeclare replaceable ED_Dummy ED,
     redeclare replaceable Data.Data_HTGR_Pebble data(
-      Q_total=600000000,
-      Q_total_el=300000000,
+      Q_total=200000000,
+      Q_total_el=100000000,
       K_P_Release=10000,
       m_flow=637.1,
       length_core=10,
+      d_core=2.5,
       r_outer_fuelRod=0.03,
       th_clad_fuelRod=0.025,
       th_gap_fuelRod=0.02,
@@ -20,7 +21,7 @@ model HTGR_PebbleBed_Primary_Loop_TESUC_Direct
       HX_Reheat_Tube_Vol=0.1,
       HX_Reheat_Shell_Vol=0.1,
       HX_Reheat_Buffer_Vol=0.1,
-      nPebble=220000));
+      nPebble=400000));
   input Modelica.Units.SI.Pressure input_steam_pressure;
   replaceable package Coolant_Medium =
        Modelica.Media.IdealGases.SingleGases.He  constrainedby
@@ -43,7 +44,7 @@ model HTGR_PebbleBed_Primary_Loop_TESUC_Direct
     annotation (Placement(transformation(extent={{90,84},{102,98}})));
 
   Modelica.Blocks.Sources.RealExpression Thermal_Power(y=core.Q_total.y)
-    annotation (Placement(transformation(extent={{-92,88},{-80,102}})));
+    annotation (Placement(transformation(extent={{-150,72},{-138,86}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
                         annotation (Placement(
@@ -59,6 +60,7 @@ model HTGR_PebbleBed_Primary_Loop_TESUC_Direct
     annotation (Placement(transformation(extent={{-92,98},{-80,112}})));
   Nuclear.CoreSubchannels.Pebble_Bed_New
                                        core(
+    nPebble=40000,
     redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
     redeclare package Pebble_Material = Media.Solids.Graphite_5,
     redeclare model Geometry = Nuclear.New_Geometries.PackedBed (d_pebble=2*
@@ -70,13 +72,13 @@ model HTGR_PebbleBed_Primary_Loop_TESUC_Direct
     Q_fission_input(displayUnit="MW") = 100000000,
     alpha_fuel=-5e-5,
     alpha_coolant=0.0,
-    p_b_start(displayUnit="bar") = 3915000,
-    Q_nominal(displayUnit="MW") = 125000000,
+    p_b_start(displayUnit="bar") = 4015000,
+    Q_nominal(displayUnit="MW") = 200000000,
     SigmaF_start=26,
-    p_a_start(displayUnit="bar") = 3920000,
+    p_a_start(displayUnit="bar") = 4010000,
     T_a_start(displayUnit="K") = dataInitial.T_Core_Inlet,
     T_b_start(displayUnit="K") = dataInitial.T_Core_Outlet,
-    m_flow_a_start=300,
+    m_flow_a_start=500,
     exposeState_a=false,
     exposeState_b=false,
     Ts_start(displayUnit="degC"),
@@ -94,10 +96,10 @@ model HTGR_PebbleBed_Primary_Loop_TESUC_Direct
     Teffref_fuel=1273.15,
     Teffref_coolant=923.15,
     T_inlet=723.15,
-    T_outlet=1123.15) annotation (Placement(transformation(
+    T_outlet=1023.15) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=270,
-        origin={-78,38})));
+        origin={-78,34})));
 
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
         Coolant_Medium) annotation (Placement(transformation(
@@ -114,7 +116,7 @@ model HTGR_PebbleBed_Primary_Loop_TESUC_Direct
     use_w0_port=true,
     PR0=1.05,
     w0nom=300)
-    annotation (Placement(transformation(extent={{-44,-24},{-64,-4}})));
+    annotation (Placement(transformation(extent={{-42,-24},{-62,-4}})));
   TRANSFORM.Fluid.Valves.ValveLinear Primary_PRV(
     redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
     dp_nominal=100000,
@@ -128,8 +130,8 @@ model HTGR_PebbleBed_Primary_Loop_TESUC_Direct
         origin={-42,-79})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
     redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
-    p=4000000,
-    T=573.15,
+    p=6000000,
+    T=533.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-94,-68},{-74,-48}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
@@ -138,17 +140,18 @@ model HTGR_PebbleBed_Primary_Loop_TESUC_Direct
         rotation=270,
         origin={-39,63})));
   TRANSFORM.HeatExchangers.GenericDistributed_HX STHX(
-    nParallel=3,
+    nParallel=4,
     redeclare model FlowModel_shell =
         TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable,
     redeclare model FlowModel_tube =
         TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.TwoPhase_Developed_2Region_NumStable,
+
     p_b_start_shell=3910000,
     p_a_start_tube=14100000,
     p_b_start_tube=14000000,
     use_Ts_start_tube=true,
-    T_a_start_tube=573.15,
-    T_b_start_tube=873.15,
+    T_a_start_tube=481.15,
+    T_b_start_tube=813.15,
     h_a_start_tube=500e3,
     h_b_start_tube=2e3,
     exposeState_b_shell=true,
@@ -156,12 +159,13 @@ model HTGR_PebbleBed_Primary_Loop_TESUC_Direct
     redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS304,
     redeclare model HeatTransfer_tube =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Alphas_TwoPhase_5Region,
+
     p_a_start_shell=3915000,
     T_a_start_shell=1023.15,
     T_b_start_shell=523.15,
     m_flow_a_start_shell=50,
     m_flow_a_start_tube=50,
-    redeclare package Medium_tube = Modelica.Media.Water.StandardWater,
+    redeclare package Medium_tube = Modelica.Media.Water.WaterIF97_ph,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.HeatExchanger.ShellAndTubeHX
         (
@@ -183,30 +187,6 @@ model HTGR_PebbleBed_Primary_Loop_TESUC_Direct
         rotation=90,
         origin={29,18})));
 
-  TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump_SimpleMassFlow1(
-    redeclare package Medium = Modelica.Media.Water.StandardWater,
-    m_flow_nominal=50,
-    use_input=true)                                      annotation (
-      Placement(transformation(
-        extent={{-11,11},{11,-11}},
-        rotation=180,
-        origin={71,-33})));
-  TRANSFORM.Fluid.Sensors.Pressure     sensor_p(redeclare package Medium =
-        Modelica.Media.Water.StandardWater, redeclare function iconUnit =
-        TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_bar)
-                                                       annotation (Placement(
-        transformation(
-        extent={{10,-10},{-10,10}},
-        rotation=0,
-        origin={50,-20})));
-  TRANSFORM.Fluid.Sensors.Pressure     sensor_p1(redeclare package Medium =
-        Coolant_Medium, redeclare function iconUnit =
-        TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_bar)
-                                                       annotation (Placement(
-        transformation(
-        extent={{10,-10},{-10,10}},
-        rotation=0,
-        origin={-8,44})));
 initial equation
 
 equation
@@ -222,23 +202,18 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.Power, Thermal_Power.y) annotation (Line(
-      points={{-30,100},{-74,100},{-74,95},{-79.4,95}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(sensor_m_flow.port_b,core. port_a) annotation (Line(points={{-88,-2},
-          {-86,-2},{-86,18},{-78,18},{-78,28}},    color={0,127,255}));
+          {-86,-2},{-86,18},{-78,18},{-78,24}},    color={0,127,255}));
   connect(compressor_Controlled.outlet,sensor_m_flow. port_a)
-    annotation (Line(points={{-60,-6},{-62,-6},{-62,-2},{-68,-2}},
+    annotation (Line(points={{-58,-6},{-62,-6},{-62,-2},{-68,-2}},
                                                           color={0,127,255},
       thickness=0.5));
   connect(compressor_Controlled.inlet,STHX. port_b_shell) annotation (Line(
-        points={{-48,-6},{22,-6},{22,2},{23.94,2},{23.94,6}},
+        points={{-46,-6},{22,-6},{22,2},{23.94,2},{23.94,6}},
                                                       color={0,127,255}));
   connect(Primary_PRV.port_a,compressor_Controlled. inlet) annotation (Line(
         points={{-34,-56},{-28,-56},{-28,-38},{-38,-38},{-38,-26},{-40,-26},{
-          -40,-6},{-48,-6}},
+          -40,-6},{-46,-6}},
                            color={0,127,255}));
   connect(Thermal_Power1.y,Primary_PRV. opening) annotation (Line(points={{-42,
           -72.4},{-42,-62.4}},        color={0,0,127}));
@@ -247,7 +222,7 @@ equation
                                                    color={0,127,255}));
   connect(sensor_T.port_b,STHX. port_a_shell) annotation (Line(points={{-39,58},
           {-39,34},{23.94,34},{23.94,30}},  color={0,127,255}));
-  connect(core.port_b,sensor_T. port_a) annotation (Line(points={{-78,48},{-78,
+  connect(core.port_b,sensor_T. port_a) annotation (Line(points={{-78,44},{-78,
           80},{-39,80},{-39,68}},
                               color={0,127,255}));
   connect(sensorBus.Core_Outlet_T,sensor_T. T) annotation (Line(
@@ -255,43 +230,26 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(STHX.port_a_tube, port_a) annotation (Line(points={{29,6},{29,-24},{
+          36,-24},{36,-33},{97,-33}}, color={0,127,255}));
+  connect(STHX.port_b_tube, port_b) annotation (Line(points={{29,30},{28,30},{
+          28,49},{97,49}}, color={0,127,255}));
   connect(actuatorBus.PR_Compressor, compressor_Controlled.w0in) annotation (
       Line(
-      points={{30,100},{114,100},{114,-100},{-108,-100},{-108,-2},{-54,-2},{-54,
+      points={{30,100},{114,100},{114,-100},{-108,-100},{-108,-2},{-52,-2},{-52,
           -5.4}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(actuatorBus.mfeedpump,pump_SimpleMassFlow1. in_m_flow) annotation (
-      Line(
-      points={{30,100},{52,100},{52,58},{71,58},{71,-24.97}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(port_a, pump_SimpleMassFlow1.port_a)
-    annotation (Line(points={{97,-33},{82,-33}}, color={0,127,255}));
-  connect(pump_SimpleMassFlow1.port_b, sensor_p.port)
-    annotation (Line(points={{60,-33},{50,-33},{50,-30}}, color={0,127,255}));
-  connect(sensor_p.port, STHX.port_a_tube) annotation (Line(points={{50,-30},{
-          46,-30},{46,-32},{29,-32},{29,6}}, color={0,127,255}));
-  connect(sensorBus.feedpressure, sensor_p.p) annotation (Line(
-      points={{-30,100},{-30,-24},{44,-24},{44,-20}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(STHX.port_b_tube, port_b) annotation (Line(points={{29,30},{30,30},{
-          30,49},{97,49}}, color={0,127,255}));
-  connect(sensor_T.port_b, sensor_p1.port)
-    annotation (Line(points={{-39,58},{-39,34},{-8,34}}, color={0,127,255}));
-  connect(sensorBus.primarypressure, sensor_p1.p) annotation (Line(
-      points={{-30,100},{-30,44},{-14,44}},
+  connect(sensorBus.thermal_power, Thermal_Power.y) annotation (Line(
+      points={{-30,100},{-74,100},{-74,79},{-137.4,79}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
       string="%first",
       index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
+      extent={{6,3},{6,3}},
+      horizontalAlignment=TextAlignment.Left));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
           Bitmap(extent={{-80,-92},{78,84}}, fileName="modelica://NHES/Icons/PrimaryHeatSystemPackage/HTGRPB.jpg")}),
                                                                  Diagram(
@@ -304,4 +262,4 @@ equation
 <p>The primary side of a HTGR reactor with a heat exchanger set up to send heat to a Rankine cycle to produce electricity. The pebble bed reactor core used is the same as in the Brayton cycle reactor style. </p>
 <p>This model is used in the third example in this package. As it is taken from the Rankine_Complex model, that model should be used as a reference. </p>
 </html>"));
-end HTGR_PebbleBed_Primary_Loop_TESUC_Direct;
+end HTGR_PebbleBed_Primary_Loop_TESUC_AR1;
