@@ -126,6 +126,11 @@ model SteamTurbine_Basic_NoFeedHeat_AR1 "Two stage BOP model"
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     nPorts_b=1)
     annotation (Placement(transformation(extent={{-146,30},{-126,50}})));
+  Modelica.Blocks.Math.Add         add2(k1=-1)
+    annotation (Placement(transformation(extent={{110,4},{130,24}})));
+  Modelica.Blocks.Sources.RealExpression W_balance1(y=firstfeedpump1.W)
+    "Electricity loss/gain not accounted for in connections (e.g., heating/cooling, pumps, etc.) [W]"
+    annotation (Placement(transformation(extent={{74,12},{86,24}})));
 initial equation
 
 equation
@@ -135,15 +140,6 @@ equation
                                                    color={255,0,0}));
   connect(sensorW.port_b, portElec_b) annotation (Line(points={{130,-48},{146,
           -48},{146,0},{160,0}},                     color={255,0,0}));
-  connect(sensorBus.Power, sensorW.W) annotation (Line(
-      points={{-30,100},{120,100},{120,-37}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-3,6},{-3,6}},
-      horizontalAlignment=TextAlignment.Right));
   connect(powerSensor.flange_b, generator1.shaft_a) annotation (Line(points={{72,-76},
           {84,-76},{84,-82}},                      color={0,0,0}));
   connect(LPT.shaft_b, powerSensor.flange_a)
@@ -213,6 +209,19 @@ equation
           {-152,40},{-160,40}}, color={0,127,255}));
   connect(header.port_b[1], sensor_T3.port_a) annotation (Line(points={{-130,40},
           {150,40},{150,72},{144,72}}, color={0,127,255}));
+  connect(sensorW.W, add2.u2) annotation (Line(points={{120,-37},{120,0},{102,0},
+          {102,8},{108,8}}, color={0,0,127}));
+  connect(W_balance1.y, add2.u1) annotation (Line(points={{86.6,18},{102,18},{
+          102,20},{108,20}}, color={0,0,127}));
+  connect(sensorBus.Power, sensorW.W) annotation (Line(
+      points={{-30,100},{158,100},{158,-37},{120,-37}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{6,3},{6,3}},
+      horizontalAlignment=TextAlignment.Left));
 annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-24,2},{24,-2}},
