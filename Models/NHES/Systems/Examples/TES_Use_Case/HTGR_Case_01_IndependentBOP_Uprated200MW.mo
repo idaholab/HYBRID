@@ -381,7 +381,7 @@ equation
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)
     annotation (Line(points={{28,-6},{52,-6}}, color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC.portElec_b, SY.port_a[1])
-    annotation (Line(points={{92,2},{98,2},{98,-0.55}},              color={255,
+    annotation (Line(points={{92,2},{98,2},{98,-1.1}},               color={255,
           0,0}));
   connect(stateSensor1.port_b, EM.port_a1) annotation (Line(points={{-24,11},{-22,
           11},{-22,12},{-16,12},{-16,10},{-12,10}}, color={0,127,255}));
@@ -435,7 +435,7 @@ equation
     annotation (Line(points={{68,-55},{68,-71.4},{104,-71.4}}, color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.portElec_b,
     SY.port_a[2]) annotation (Line(points={{142,-63},{142,-28},{94,-28},{94,0},
-          {98,0},{98,0.55}},    color={255,0,0}));
+          {98,0},{98,1.1}},     color={255,0,0}));
   connect(SY.port_Grid, sensorW.port_a)
     annotation (Line(points={{138,0},{142,0}}, color={255,0,0}));
   connect(sensorW.port_b, EG.portElec_a)
