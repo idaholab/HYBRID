@@ -240,15 +240,8 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(sensorBus.Power, Charge_OnOff_Throttle.u_m) annotation (Line(
-      points={{-30,-100},{-30,-74},{126,-74},{126,-68},{142,-68},{142,-74}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
+  connect(realExpression1.y, Charge_OnOff_Throttle.u_m)
+    annotation (Line(points={{94.7,30},{142,30},{142,-74}}, color={0,0,127}));
   annotation (Diagram(graphics={Text(
           extent={{-70,-142},{-20,-160}},
           textColor={28,108,200},
