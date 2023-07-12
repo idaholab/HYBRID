@@ -228,6 +228,14 @@ Medium.BaseProperties mediums;
     annotation (Placement(transformation(extent={{84,212},{104,232}})));
   Data.Initial_Data_Dummy data_initial
     annotation (Placement(transformation(extent={{-92,160},{-72,180}})));
+  Modelica.Blocks.Sources.RealExpression BV1_opening(y=1e-8)
+    annotation (Placement(transformation(extent={{18,-136},{42,-114}})));
+  Modelica.Blocks.Sources.RealExpression BV_2(y=0.8)
+    annotation (Placement(transformation(extent={{18,-152},{42,-130}})));
+  Modelica.Blocks.Sources.RealExpression valve_MAGNET(y=1e-8)
+    annotation (Placement(transformation(extent={{18,-192},{42,-170}})));
+  Modelica.Blocks.Sources.RealExpression valve_MAGNET_bypass(y=0.8)
+    annotation (Placement(transformation(extent={{18,-174},{42,-152}})));
 initial equation
   Q_TES_discharge = 0.0;
   //storage_button=0;
@@ -396,8 +404,8 @@ equation
       thickness=0.5));
   connect(const6.y, Chromolox_Heater_Control.u_s)
     annotation (Line(points={{50.6,166},{66.8,166}}, color={0,0,127}));
-  connect(sensorBus.T_Chromolox_Exit, Chromolox_Heater_Control.u_m) annotation
-    (Line(
+  connect(sensorBus.T_Chromolox_Exit, Chromolox_Heater_Control.u_m) annotation (
+     Line(
       points={{-30,-100},{-180,-100},{-180,144},{74,144},{74,158.8}},
       color={239,82,82},
       pattern=LinePattern.Dash,
@@ -434,6 +442,27 @@ equation
           {66.4,232}}, color={0,0,127}));
   connect(actuatorBus.glycol_water_flow_rate, add1.y) annotation (Line(
       points={{30,-100},{118,-100},{118,222},{105,222}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.BV1_opening, BV1_opening.y) annotation (Line(
+      points={{30,-100},{52,-100},{52,-124},{48,-124},{48,-125},{43.2,-125}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.BV2_opening, BV_2.y) annotation (Line(
+      points={{30,-100},{52,-100},{52,-142},{43.2,-142},{43.2,-141}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.valve_MAGNET_bypass_opening, valve_MAGNET_bypass.y)
+    annotation (Line(
+      points={{30,-100},{52,-100},{52,-163},{43.2,-163}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.valve_MAGNET, valve_MAGNET.y) annotation (Line(
+      points={{30,-100},{52,-100},{52,-181},{43.2,-181}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));

@@ -1,11 +1,10 @@
-within NHES.ExperimentalSystems.TEDS_New.Examples;
+within NHES.ExperimentalSystems.TEDS_New.Components;
 model TEDSloop_allmodes_test_DMM
     extends BaseClasses.Partial_SubSystem_A(
     redeclare replaceable TEDS_New.CS.CS_Dummy CS(redeclare Data.Data_Dummy
-        data=data, redeclare Data.Initial_Data_Dummy data_initial),
+        data=data),
     redeclare replaceable TEDS_New.CS.ED_Dummy ED,
-    redeclare TEDS_New.Data.Data_Dummy data(m_flow_glycolwater_chiller=14),
-    redeclare TEDS_New.Data.Initial_Data_Dummy data_initial);
+    redeclare TEDS_New.Data.Data_Dummy data(m_flow_glycolwater_chiller=14));
   //"Test designed to ensure the TEDS loop can operate in all modes."
   TRANSFORM.Fluid.Pipes.GenericPipe_MultiTransferSurface Chromolox_Heater(
     redeclare package Medium =
@@ -72,7 +71,6 @@ model TEDSloop_allmodes_test_DMM
     T_ambient=498.15,
     m_flow_start=0.84)
     annotation (Placement(transformation(extent={{220,120},{240,140}})));
-
 
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
@@ -225,7 +223,7 @@ model TEDSloop_allmodes_test_DMM
     T_b_start_shell=data.T_cold_design,
     p_b_start_tube=boundary1.p,
     counterCurrent=true,
-    m_flow_a_start_tube=dataInitial.MassFlow_Controlstart,
+    m_flow_a_start_tube=data.MassFlow_Controlstart,
     redeclare package Medium_tube =
         TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
     redeclare package Medium_shell =
@@ -570,16 +568,7 @@ equation
       thickness=0.5));
   annotation (
     Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,-220},{240,
-            140}}), graphics={
-        Ellipse(lineColor = {75,138,73},
-                fillColor={255,255,255},
-                fillPattern = FillPattern.Solid,
-                extent={{-156,-208},{232,138}}),
-        Polygon(lineColor = {0,0,255},
-                fillColor = {75,138,73},
-                pattern = LinePattern.None,
-                fillPattern = FillPattern.Solid,
-                points={{-24,68},{176,-30},{-24,-150},{-24,68}})}),
+            140}})),
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-160,-220},{
             240,140}})),
     experiment(

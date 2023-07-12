@@ -2,10 +2,10 @@ within NHES.ExperimentalSystems.TEDS_New;
 model SubSystem_Dummy
 
   extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable NHES.ExperimentalSystems.TEDS_New.CS.CS_Dummy CS,
+    redeclare replaceable NHES.ExperimentalSystems.TEDS_New.CS.CS_Dummy CS(
+        redeclare Data.Data_Dummy data=data),
     redeclare replaceable NHES.ExperimentalSystems.TEDS_New.CS.ED_Dummy ED,
-    redeclare Data.Data_Dummy data,
-    redeclare Data.Initial_Data_Dummy data_initial);
+    redeclare Data.Data_Dummy data);
 
 equation
 
