@@ -118,11 +118,11 @@ model HTGR_Case_01_IndependentBOP_Uprated200MW
     redeclare replaceable NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS
       data(
       ht_level_max=11.7,
-      ht_area=10*3390,
+      ht_area=3390,
       ht_surface_pressure=120000,
       hot_tank_init_temp=673.15,
       cold_tank_level_max=11.7,
-      cold_tank_area=10*3390,
+      cold_tank_area=3390,
       ct_surface_pressure=120000,
       cold_tank_init_temp=533.15,
       m_flow_ch_min=0.1,
@@ -313,29 +313,6 @@ model HTGR_Case_01_IndependentBOP_Uprated200MW
     annotation (Placement(transformation(extent={{4,290},{10,296}})));
   Modelica.Blocks.Math.Product product1
     annotation (Placement(transformation(extent={{56,284},{64,276}})));
-  Modelica.Blocks.Sources.CombiTimeTable demand_BOP2(
-    tableOnFile=false,
-    table=[0,86e6; 604400,86e6; 605000,42756000.42; 608000,42756000.42; 608600,
-        42756000.42; 611600,42756000.42; 612200,42756000.42; 615200,42756000.42;
-        615800,125383981.3; 618800,125383981.3; 619400,42756000.42; 622400,
-        42756000.42; 623000,125383981.3; 626000,125383981.3; 626600,125383981.3;
-        629600,125383981.3; 630200,125383981.3; 633200,125383981.3; 633800,
-        42756000.43; 636800,42756000.43; 637400,42756000.43; 640400,42756000.43;
-        641000,125383981.3; 644000,125383981.3; 644600,42756000.42; 647600,
-        42756000.42; 648200,42756000.42; 651200,42756000.42; 651800,125383981.3;
-        654800,125383981.3; 655400,42756000.42; 658400,42756000.42; 659000,
-        125383981.3; 662000,125383981.3; 662600,85260000.85; 665600,85260000.85;
-        666200,125383981.2; 669200,125383981.2; 669800,101909712.5; 672800,
-        101909712.5; 673400,85260000.86; 676400,85260000.86; 677000,85260000.85;
-        680000,85260000.85; 680600,42756000.42; 683600,42756000.42; 684200,
-        125383981.3; 687200,125383981.3; 687800,85260000.85; 690800,85260000.85],
-    startTime=0,
-    tableName="BOP",
-    timeScale=1,
-    fileName=
-        "C:/Users/NOVOV/projects/HYBRID/Models/NHES/Resources/Data/RAVEN/timeSeriesDataVN.txt",
-    shiftTime=0)
-    annotation (Placement(transformation(extent={{-96,228},{-76,248}})));
 
   Modelica.Blocks.Sources.RealExpression Qin_main(y=
         intermediate_Rankine_Cycle_TESUC.TCV.m_flow*(stateSensor2.specificEnthalpy.h_out
@@ -374,6 +351,31 @@ model HTGR_Case_01_IndependentBOP_Uprated200MW
     annotation (Placement(transformation(extent={{34,258},{42,250}})));
   Modelica.Blocks.Sources.Constant MinPower1(k=1)
     annotation (Placement(transformation(extent={{-38,250},{-32,256}})));
+  Modelica.Blocks.Sources.CombiTimeTable demand_BOP1(
+    tableOnFile=false,
+    table=[0,86e6; 604400,86e6; 605000,42756000.42; 608000,42756000.42; 608600,
+        42756000.42; 611600,42756000.42; 612200,42756000.42; 615200,42756000.42;
+        615800,125383981.3; 618800,125383981.3; 619400,42756000.42; 622400,
+        42756000.42; 623000,125383981.3; 626000,125383981.3; 626600,125383981.3;
+        629600,125383981.3; 630200,125383981.3; 633200,125383981.3; 633800,
+        42756000.43; 636800,42756000.43; 637400,42756000.43; 640400,42756000.43;
+        641000,125383981.3; 644000,125383981.3; 644600,42756000.42; 647600,
+        42756000.42; 648200,42756000.42; 651200,42756000.42; 651800,125383981.3;
+        654800,125383981.3; 655400,42756000.42; 658400,42756000.42; 659000,
+        125383981.3; 662000,125383981.3; 662600,85260000.85; 665600,85260000.85;
+        666200,125383981.2; 669200,125383981.2; 669800,101909712.5; 672800,
+        101909712.5; 673400,85260000.86; 676400,85260000.86; 677000,85260000.85;
+        680000,85260000.85; 680600,42756000.42; 683600,42756000.42; 684200,
+        125383981.3; 687200,125383981.3; 687800,85260000.85; 690800,85260000.85],
+
+    startTime=0,
+    tableName="BOP",
+    timeScale=1,
+    fileName=
+        "C:/Users/NOVOV/projects/HYBRID/Models/NHES/Resources/Data/RAVEN/timeSeriesDataVN.txt",
+
+    shiftTime=0)
+    annotation (Placement(transformation(extent={{-104,226},{-84,246}})));
 equation
   hTGR_PebbleBed_Primary_Loop_TESUC_AR1_1.input_steam_pressure =
     intermediate_Rankine_Cycle_TESUC.sensor_p.p;
@@ -381,7 +383,7 @@ equation
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)
     annotation (Line(points={{28,-6},{52,-6}}, color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC.portElec_b, SY.port_a[1])
-    annotation (Line(points={{92,2},{98,2},{98,-1.1}},               color={255,
+    annotation (Line(points={{92,2},{98,2},{98,-0.55}},              color={255,
           0,0}));
   connect(stateSensor1.port_b, EM.port_a1) annotation (Line(points={{-24,11},{-22,
           11},{-22,12},{-16,12},{-16,10},{-12,10}}, color={0,127,255}));
@@ -435,7 +437,7 @@ equation
     annotation (Line(points={{68,-55},{68,-71.4},{104,-71.4}}, color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.portElec_b,
     SY.port_a[2]) annotation (Line(points={{142,-63},{142,-28},{94,-28},{94,0},
-          {98,0},{98,1.1}},     color={255,0,0}));
+          {98,0},{98,0.55}},    color={255,0,0}));
   connect(SY.port_Grid, sensorW.port_a)
     annotation (Line(points={{138,0},{142,0}}, color={255,0,0}));
   connect(sensorW.port_b, EG.portElec_a)
@@ -508,10 +510,10 @@ equation
           {48,254},{42.4,254}}, color={0,0,127}));
   connect(max1.u2, product4.y) annotation (Line(points={{81,228},{48,228},{48,
           254},{42.4,254}}, color={0,0,127}));
-  connect(demand_BOP2.y[1], product4.u1) annotation (Line(points={{-75,238},{28,
-          238},{28,251.6},{33.2,251.6}}, color={0,0,127}));
-  connect(demand_BOP2.y[1], sum1.u[1]) annotation (Line(points={{-75,238},{-70,
-          238},{-70,282},{-112,282},{-112,266},{-104,266}}, color={0,0,127}));
+  connect(demand_BOP1.y[1], product4.u1) annotation (Line(points={{-83,236},{28,
+          236},{28,251.6},{33.2,251.6}}, color={0,0,127}));
+  connect(demand_BOP1.y[1], sum1.u[1]) annotation (Line(points={{-83,236},{-96,
+          236},{-96,266},{-104,266}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{200,100}}), graphics={
         Ellipse(lineColor = {75,138,73},
