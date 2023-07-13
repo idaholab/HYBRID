@@ -1,5 +1,5 @@
 within NHES.ExperimentalSystems.TEDS.Examples;
-model TEDSloop_allmodes_test_3WV_exp2023b
+model TEDSloop_allmodes_test_3WV_exp2023TT2
   "Test designed to ensure the TEDS loop can operate in all modes."
   TRANSFORM.Fluid.Pipes.GenericPipe_MultiTransferSurface Chromolox_Heater(
     redeclare package Medium =
@@ -176,10 +176,12 @@ model TEDSloop_allmodes_test_3WV_exp2023b
     m_flow_nominal=0.840) annotation (Placement(transformation(
         extent={{-6,-6},{6,6}},
         rotation=0,
-        origin={-38,-146})));
+        origin={-90,-146})));
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow5(redeclare package Medium
       = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
-       3) annotation (Placement(transformation(extent={{-62,-154},{-80,-138}})));
+       3) annotation (Placement(transformation(extent={{9,-8},{-9,8}},
+        rotation=270,
+        origin={-103,-128})));
   Control_Systems.Control_System_Therminol_4_element_all_modes_ExpTest
     control_System_Therminol_4_element_all_modes_ExpTest(
     redeclare package Medium =
@@ -422,6 +424,53 @@ model TEDSloop_allmodes_test_3WV_exp2023b
     annotation (Placement(transformation(extent={{6,-8},{-6,8}},
         rotation=0,
         origin={16,-146})));
+  Modelica.Blocks.Sources.CombiTimeTable V1(table=[0,0; 3300,0; 3480,1; 12400,1;
+        12580,0; 17800,0; 17980,0; 23300,0; 23480,0; 23580,0], startTime=0)
+    annotation (Placement(transformation(extent={{42,158},{56,172}})));
+  Modelica.Blocks.Sources.CombiTimeTable V2(table=[0,0.003; 3300,0.003; 3480,
+        0.0003; 12400,0.0003; 12580,1; 17800,1; 17980,0.0003; 23300,0.0003;
+        23480,0.0003; 23580,0.0003], startTime=0)
+    annotation (Placement(transformation(extent={{92,158},{106,172}})));
+  Modelica.Blocks.Sources.CombiTimeTable V3(table=[0,0; 3300,0; 3480,0; 12400,0;
+        12580,0; 17800,0; 17980,1; 23300,1; 23480,0; 23580,0], startTime=0)
+    annotation (Placement(transformation(extent={{134,158},{148,172}})));
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow1(redeclare package Medium
+      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
+      =3) annotation (Placement(transformation(extent={{-24,-154},{-42,-138}})));
+  TRANSFORM.Fluid.Valves.ValveLinear ValveFl(
+    redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+    allowFlowReversal=true,
+    m_flow_start=0.41,
+    dp_nominal=3000,
+    m_flow_nominal=0.840) annotation (Placement(transformation(
+        extent={{6,-6},{-6,6}},
+        rotation=0,
+        origin={-54,-146})));
+  Modelica.Blocks.Sources.CombiTimeTable Flow(table=[0,0.015; 3300,0.015; 3480,
+        0.31; 12400,0.31; 12580,0.23; 17800,0.23; 17980,0.23; 23300,0.23; 23480,
+        0.001; 23580,0.001], startTime=0)
+    annotation (Placement(transformation(extent={{-64,-98},{-50,-84}})));
+  TRANSFORM.Controls.LimPID MassFlow_Control2(
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    k=0.04,
+    Ti=50,
+    yMax=0.99,
+    yMin=0.01,
+    initType=Modelica.Blocks.Types.Init.InitialOutput,
+    y_start=0.5)
+    annotation (Placement(transformation(extent={{-40,-98},{-28,-86}})));
+  Fluid.Pipes.NonLinear_Break nonLinear_Break1(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C)
+    annotation (Placement(transformation(extent={{-6,-8},{6,8}},
+        rotation=0,
+        origin={-16,-126})));
+  Modelica.Blocks.Sources.RealExpression Heater_BOP_Demand2(y=1/
+        sensor_m_flow1.Medium.density_ph(sensor_m_flow1.port_b.p,
+        sensor_m_flow1.port_b.h_outflow))
+    annotation (Placement(transformation(extent={{-140,-178},{-118,-156}})));
+  Modelica.Blocks.Sources.RealExpression GPMconversion(y=15850.323140625002)
+    annotation (Placement(transformation(extent={{-140,-202},{-118,-180}})));
 equation
   connect(pipe4.port_b, sensor_T.port_a)
     annotation (Line(points={{-95,-38},{-95,45},{-80,45}},
@@ -449,24 +498,12 @@ equation
   connect(valve4.port_b, pipe3.port_a) annotation (Line(points={{182,-134},{182,
           -142},{176,-142}},
                       color={0,127,255}));
-  connect(Valve5.port_b, Valve6.port_b) annotation (Line(points={{80,-122},{80,
-          -126},{-18,-126},{-18,-146},{-32,-146}},
-                                      color={0,127,255}));
   connect(Valve6.port_a, sensor_m_flow5.port_a)
-    annotation (Line(points={{-44,-146},{-62,-146}},
+    annotation (Line(points={{-96,-146},{-100,-146},{-100,-137},{-103,-137}},
                                                    color={0,127,255}));
-  connect(sensor_m_flow5.port_b, pipe4.port_a) annotation (Line(points={{-80,
-          -146},{-95,-146},{-95,-56}},
+  connect(sensor_m_flow5.port_b, pipe4.port_a) annotation (Line(points={{-103,
+          -119},{-104,-119},{-104,-62},{-95,-62},{-95,-56}},
                                color={0,127,255}));
-  connect(sensorSubBus.Valve_1_Opening, Valve1.opening) annotation (Line(
-      points={{1,106},{26,106},{26,56},{79.2,56}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
   connect(control_System_Therminol_4_element_all_modes_ExpTest.actuatorSubBus,
     actuatorSubBus) annotation (Line(
       points={{30.7067,118.092},{30.7067,106},{-31,106}},
@@ -479,24 +516,6 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorSubBus.Valve_2_Opening, Valve2.opening) annotation (Line(
-      points={{1,106},{132,106},{132,80.8}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-3,6},{-3,6}},
-      horizontalAlignment=TextAlignment.Right));
-  connect(sensorSubBus.Valve_3_Opening, Valve3.opening) annotation (Line(
-      points={{1,106},{170,106},{170,66},{158.8,66}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{6,3},{6,3}},
-      horizontalAlignment=TextAlignment.Left));
   connect(sensorSubBus.Valve_4_Opening, valve4.opening) annotation (Line(
       points={{1,106},{202,106},{202,-128},{186.8,-128}},
       color={111,216,99},
@@ -516,7 +535,8 @@ equation
       extent={{-6,3},{-6,3}},
       horizontalAlignment=TextAlignment.Right));
   connect(sensorSubBus.Valve_6_Opening, Valve6.opening) annotation (Line(
-      points={{1,106},{26,106},{26,-116},{-38,-116},{-38,-141.2}},
+      points={{1,106},{2,106},{2,64},{8,64},{8,-124},{-78,-124},{-78,-136},{-90,
+          -136},{-90,-141.2}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -610,7 +630,8 @@ equation
       thickness=0.5));
   connect(actuatorSubBus.Heater_flowrate, sensor_m_flow5.m_flow) annotation (
       Line(
-      points={{-31,106},{26,106},{26,-116},{-71,-116},{-71,-143.12}},
+      points={{-31,106},{-82,106},{-82,80},{-100,80},{-100,44},{-86,44},{-86,
+          -32},{-80,-32},{-80,-128},{-100.12,-128}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -640,8 +661,6 @@ equation
     annotation (Line(points={{7.6,75.2},{7.6,76},{18,76}}, color={0,127,255}));
   connect(sensor_after_tank.port_b, pipe2.port_a)
     annotation (Line(points={{42,76},{46,76}}, color={0,127,255}));
-  connect(Valve6.port_b, pump.port_b)
-    annotation (Line(points={{-32,-146},{-16,-146}},color={0,127,255}));
   connect(Heater_BOP_Demand.y, pump.in_p) annotation (Line(points={{-30.9,-169},
           {-30.9,-170},{6,-170},{6,-151.84},{-8,-151.84}},
                                  color={0,0,127}));
@@ -675,6 +694,29 @@ equation
           98,-144},{98,-142},{106,-142}}, color={0,127,255}));
   connect(BV1.port_b, HX_exit_temperature_T66.port_b)
     annotation (Line(points={{86,-144},{52,-145}}, color={0,127,255}));
+  connect(V1.y[1], Valve1.opening) annotation (Line(points={{56.7,165},{62,165},
+          {62,90},{74,90},{74,56},{79.2,56}}, color={0,0,127}));
+  connect(V2.y[1], Valve2.opening) annotation (Line(points={{106.7,165},{112,
+          165},{112,92},{132,92},{132,80.8}}, color={0,0,127}));
+  connect(V3.y[1], Valve3.opening) annotation (Line(points={{148.7,165},{156,
+          165},{156,78},{164,78},{164,66},{158.8,66}}, color={0,0,127}));
+  connect(sensor_m_flow1.port_a, pump.port_b)
+    annotation (Line(points={{-24,-146},{-16,-146}}, color={0,127,255}));
+  connect(Valve6.port_b, ValveFl.port_b)
+    annotation (Line(points={{-84,-146},{-60,-146}}, color={0,127,255}));
+  connect(ValveFl.port_a, sensor_m_flow1.port_b)
+    annotation (Line(points={{-48,-146},{-42,-146}}, color={0,127,255}));
+  connect(Flow.y[1], MassFlow_Control2.u_s) annotation (Line(points={{-49.3,-91},
+          {-49.3,-92},{-41.2,-92}}, color={0,0,127}));
+  connect(sensor_m_flow1.m_flow, MassFlow_Control2.u_m) annotation (Line(points
+        ={{-33,-143.12},{-34,-143.12},{-34,-99.2}}, color={0,0,127}));
+  connect(MassFlow_Control2.y, ValveFl.opening) annotation (Line(points={{-27.4,
+          -92},{-20,-92},{-20,-98},{-16,-98},{-16,-116},{-54,-116},{-54,-141.2}},
+        color={0,0,127}));
+  connect(Valve5.port_b, nonLinear_Break1.port_b) annotation (Line(points={{80,
+          -122},{80,-128},{58,-128},{58,-126},{-10,-126}}, color={0,127,255}));
+  connect(nonLinear_Break1.port_a, Valve6.port_b) annotation (Line(points={{-22,
+          -126},{-74,-126},{-74,-146},{-84,-146}}, color={0,127,255}));
   annotation (
     Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,-220},{240,
             140}}), graphics={
@@ -690,10 +732,11 @@ equation
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-160,-220},{
             240,140}})),
     experiment(
-      StopTime=18000,
+      StopTime=1800,
       Interval=10,
+      Tolerance=0.001,
       __Dymola_Algorithm="Esdirk45a"),
     __Dymola_Commands(file="../../TEDS/Basic_TEDS_setup.mos" "Basic_TEDS_setup",
         file="../../TEDS/M3_TEDS.mos" "M3_TEDS"),
     conversion(noneFromVersion=""));
-end TEDSloop_allmodes_test_3WV_exp2023b;
+end TEDSloop_allmodes_test_3WV_exp2023TT2;

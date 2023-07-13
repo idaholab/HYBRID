@@ -1,5 +1,5 @@
 within NHES.ExperimentalSystems.TEDS.Examples;
-model TEDSloop_allmodes_test_3WV_exp2023b
+model TEDSloop_allmodes_test_3WV_exp2023TT
   "Test designed to ensure the TEDS loop can operate in all modes."
   TRANSFORM.Fluid.Pipes.GenericPipe_MultiTransferSurface Chromolox_Heater(
     redeclare package Medium =
@@ -422,6 +422,18 @@ model TEDSloop_allmodes_test_3WV_exp2023b
     annotation (Placement(transformation(extent={{6,-8},{-6,8}},
         rotation=0,
         origin={16,-146})));
+  Modelica.Blocks.Sources.CombiTimeTable V1(table=[0,0; 3300,0; 3480,0.07;
+        12400,0.07; 12580,0; 17800,0; 17980,0; 23300,0; 23480,0; 23580,0],
+      startTime=0)
+    annotation (Placement(transformation(extent={{42,158},{56,172}})));
+  Modelica.Blocks.Sources.CombiTimeTable V2(table=[0,0.003; 3300,0.003; 3480,
+        0.0003; 12400,0.0003; 12580,0.0475; 17800,0.0475; 17980,0.0003; 23300,
+        0.0003; 23480,0.0003; 23580,0.0003], startTime=0)
+    annotation (Placement(transformation(extent={{92,158},{106,172}})));
+  Modelica.Blocks.Sources.CombiTimeTable V3(table=[0,0; 3300,0; 3480,0; 12400,0;
+        12580,0; 17800,0; 17980,0.046; 23300,0.046; 23480,0; 23580,0],
+      startTime=0)
+    annotation (Placement(transformation(extent={{134,158},{148,172}})));
 equation
   connect(pipe4.port_b, sensor_T.port_a)
     annotation (Line(points={{-95,-38},{-95,45},{-80,45}},
@@ -458,15 +470,6 @@ equation
   connect(sensor_m_flow5.port_b, pipe4.port_a) annotation (Line(points={{-80,
           -146},{-95,-146},{-95,-56}},
                                color={0,127,255}));
-  connect(sensorSubBus.Valve_1_Opening, Valve1.opening) annotation (Line(
-      points={{1,106},{26,106},{26,56},{79.2,56}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
   connect(control_System_Therminol_4_element_all_modes_ExpTest.actuatorSubBus,
     actuatorSubBus) annotation (Line(
       points={{30.7067,118.092},{30.7067,106},{-31,106}},
@@ -479,24 +482,6 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorSubBus.Valve_2_Opening, Valve2.opening) annotation (Line(
-      points={{1,106},{132,106},{132,80.8}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-3,6},{-3,6}},
-      horizontalAlignment=TextAlignment.Right));
-  connect(sensorSubBus.Valve_3_Opening, Valve3.opening) annotation (Line(
-      points={{1,106},{170,106},{170,66},{158.8,66}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{6,3},{6,3}},
-      horizontalAlignment=TextAlignment.Left));
   connect(sensorSubBus.Valve_4_Opening, valve4.opening) annotation (Line(
       points={{1,106},{202,106},{202,-128},{186.8,-128}},
       color={111,216,99},
@@ -675,6 +660,12 @@ equation
           98,-144},{98,-142},{106,-142}}, color={0,127,255}));
   connect(BV1.port_b, HX_exit_temperature_T66.port_b)
     annotation (Line(points={{86,-144},{52,-145}}, color={0,127,255}));
+  connect(V1.y[1], Valve1.opening) annotation (Line(points={{56.7,165},{62,165},
+          {62,90},{74,90},{74,56},{79.2,56}}, color={0,0,127}));
+  connect(V2.y[1], Valve2.opening) annotation (Line(points={{106.7,165},{112,
+          165},{112,92},{132,92},{132,80.8}}, color={0,0,127}));
+  connect(V3.y[1], Valve3.opening) annotation (Line(points={{148.7,165},{156,
+          165},{156,78},{164,78},{164,66},{158.8,66}}, color={0,0,127}));
   annotation (
     Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,-220},{240,
             140}}), graphics={
@@ -696,4 +687,4 @@ equation
     __Dymola_Commands(file="../../TEDS/Basic_TEDS_setup.mos" "Basic_TEDS_setup",
         file="../../TEDS/M3_TEDS.mos" "M3_TEDS"),
     conversion(noneFromVersion=""));
-end TEDSloop_allmodes_test_3WV_exp2023b;
+end TEDSloop_allmodes_test_3WV_exp2023TT;
