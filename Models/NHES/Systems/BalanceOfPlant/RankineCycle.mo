@@ -12511,14 +12511,14 @@ package RankineCycle
       connect(R_InternalBypass.port_b, BypassFeedwaterHeater.Shell_in) annotation (
           Line(points={{-24,-9},{-24,-34},{-20,-34}}, color={0,127,255}));
       connect(BypassFeedwaterHeater.Shell_out, FeedwaterMixVolume.port_a[1])
-        annotation (Line(points={{0,-34},{30,-34},{30,-80},{33.6667,-80},{
-              33.6667,-88}},           color={0,127,255}));
+        annotation (Line(points={{0,-34},{30,-34},{30,-80},{33.3333,-80},{
+              33.3333,-88}},           color={0,127,255}));
       connect(LPT_Bypass.port_b, FeedwaterMixVolume.port_a[2])
         annotation (Line(points={{84,-36},{84,-44},{72,-44},{72,-58},{34,-58},{34,
               -88}},                                          color={0,127,255}));
       connect(Moisture_Separator.port_Liquid, FeedwaterMixVolume.port_a[3])
-        annotation (Line(points={{64,36},{64,-44},{72,-44},{72,-58},{34.3333,
-              -58},{34.3333,-88}},
+        annotation (Line(points={{64,36},{64,-44},{72,-44},{72,-58},{34.6667,
+              -58},{34.6667,-88}},
                      color={0,127,255}));
 
       connect(LPT.shaft_b, generator1.shaft_a)
@@ -12567,7 +12567,7 @@ package RankineCycle
       connect(R_entry.port_b, header.port_a[1])
         annotation (Line(points={{-125,40},{-118,40}}, color={0,127,255}));
       connect(header.port_b[1], TCV.port_a)
-        annotation (Line(points={{-106,39.75},{-60,39.75},{-60,40},{-12,40}},
+        annotation (Line(points={{-106,39.5},{-60,39.5},{-60,40},{-12,40}},
                                                       color={0,127,255}));
       connect(actuatorBus.Feed_Pump_Speed, pump_SimpleMassFlow1.in_m_flow)
         annotation (Line(
@@ -12593,7 +12593,7 @@ package RankineCycle
           extent={{-3,6},{-3,6}},
           horizontalAlignment=TextAlignment.Right));
       connect(InternalBypassValve.port_a, header.port_b[2]) annotation (Line(points={{-82,20},
-              {-104,20},{-104,40},{-106,40},{-106,40.25}},         color={0,127,255}));
+              {-104,20},{-104,40},{-106,40},{-106,40.5}},          color={0,127,255}));
       connect(InternalBypassValve.port_b, R_InternalBypass.port_a)
         annotation (Line(points={{-62,20},{-24,20},{-24,5}}, color={0,127,255}));
       connect(firstfeedpump.port_b, sensor_T4.port_b) annotation (Line(points={{98,-144},
@@ -12800,17 +12800,16 @@ package RankineCycle
           Interval=10,
           __Dymola_Algorithm="Esdirk45a"),
         Documentation(info="<html>
+<p><b><span style=\"font-size: 18pt;\">Model Name</span></b></p>
 <p>A two stage turbine rankine cycle with feedwater heating internal to the system - can be externally bypassed or LPT can be bypassed both will feedwater heat post bypass</p>
-<p>&nbsp; </p>
-<p align=\"center\"><img src=\"file:///C:/Users/RIGBAC/AppData/Local/Temp/1/msohtmlclip1/01/clip_image002.jpg\"/> </p>
-<p><b><span style=\"font-size: 18pt;\">Design Purpose</span></b> </p>
+<p><br><b><span style=\"font-size: 18pt;\">Design Purpose</span></b> </p>
 <p>The main purpose of this model is to provide a simple and flexible two stage BOP with realistic accounting of feedwater heating. It should be used in cases where a more rigorous accounting of efficiency is required compared to the SteamTurbines_L1_boundaries model and the StageByStage turbine model would add unnecessary complexity. </p>
-<p><b><span style=\"font-size: 18pt;\">Location and Examples</span></b> </p>
+<p><br><b><span style=\"font-size: 18pt;\">Location and Examples</span></b> </p>
 <p>The location of this model is at NHES.Systems.BalanceOfPlant.Turbine.SteamTurbine_L2_ClosedFeedHeat the best use case example of this model is at NHES.Systems.Examples.SMR_highfidelity_L2_Turbine. </p>
 <p>&nbsp; </p>
 <p><b><span style=\"font-size: 18pt;\">Normal Operation</span></b> </p>
 <p>The model uses two TRANSFORM SteamTurbine models with the intermediate pressure to be chosen by the user (nominally set at 7 Bar). Any liquid condensing in the turbines is removed via a moisture separator. The model has closed feedwater heating with steam bled from between the two turbines fed to the main NTU heat exchanger with contact to the main feedwater flow. Additional feedwater heating can be provided with an internal bypass loop from the main steam line to a supplementary NTU heat exchanger with this flow controlled by a set pressure spring valve. This steam is used again in the main NTU heat exchanger after mixing in the feedwater mixing volume. The model uses an ideal condenser with a fixed pressure that must be specified by the user (nominally set to 0.1 Bar). In the feedwater line &ndash; fixed &ldquo;pressure booster&rdquo; pumps are used to move the steam away from saturation conditions. Depending on the set pressure between turbines these pumps must be set sufficiently to prevent saturation in either of the heat exchangers tube sides. An additional final feedwater pump is used to control pressure exiting the primary heat system. Finally, the model also has a blow-off valve to an external boundary condition on the main steam line to prevent over-pressurization. </p>
-<p><b><span style=\"font-size: 18pt;\">Control system</span></b> </p>
+<p><br><b><span style=\"font-size: 18pt;\">Control system</span></b> </p>
 <table cellspacing=\"0\" cellpadding=\"0\" border=\"1\" width=\"662\"><tr>
 <td valign=\"top\"><p align=\"center\"><span style=\"font-size: 11pt;\">Label</span> </p></td>
 <td valign=\"top\"><p><span style=\"font-size: 11pt;\">Name</span> </p></td>
@@ -12848,12 +12847,10 @@ package RankineCycle
 <td valign=\"top\"><p><span style=\"font-size: 11pt;\">150 bar</span> </p></td>
 </tr>
 </table>
-<p><br><img src=\"file:///C:/Users/RIGBAC/AppData/Local/Temp/1/msohtmlclip1/01/clip_image004.png\"/> </p>
-<p>&nbsp; </p>
-<p>The control system is designed to ensure nominal conditions in normal operation. In load follow or extreme transients additional control elements may be required in the model. The three key required setpoint conditions are power, feedwater temperature and steam inlet pressure to the BOP. These are specified in the data table in the control system model. The internal bypass valve spring pressure is not a controlled variable and is set in the BOP model data table. Depending on the K value of this valve (also specified in the BOP data table) one can control the leakage mass flow required for the supplementary heat exchanger to prevent no flow errors. </p>
-<p><b><span style=\"font-size: 18pt;\">Changing Parameters</span></b> </p>
+<p><br><br>The control system is designed to ensure nominal conditions in normal operation. In load follow or extreme transients additional control elements may be required in the model. The three key required setpoint conditions are power, feedwater temperature and steam inlet pressure to the BOP. These are specified in the data table in the control system model. The internal bypass valve spring pressure is not a controlled variable and is set in the BOP model data table. Depending on the K value of this valve (also specified in the BOP data table) one can control the leakage mass flow required for the supplementary heat exchanger to prevent no flow errors. </p>
+<p><br><b><span style=\"font-size: 18pt;\">Changing Parameters</span></b> </p>
 <p>All parameters in the model should be accessible and changed in the data table data. All initialization conditions should be changed using the init table. These have initial value in to guide your choices or aid simulation set up. </p>
-<p><b><span style=\"font-size: 18pt;\">Considerations In Parameters</span></b> </p>
+<p><br><b><span style=\"font-size: 18pt;\">Considerations In Parameters</span></b> </p>
 <p>The key considerations when changing the turbine parameters to match an arbitrary Rankine cycle are the pressures in the fixed pressure booster pumps. These should be adjusted so the outlets of the HX tube sides are pushed away from saturation conditions. The further these exit flows are away from the saturation condition the better reliability in transient operation the model will have but this will impact your efficiencies. These pump pressures are a function of setting the intermediate pressure and the first feed pump should always be sufficiently low pressure rise for heat to flow from the bypass stream to the feedwater heat not the other way round. </p>
 <p>Other considerations when parameterizing the model are listed below </p>
 <p>1.<span style=\"font-family: Times New Roman; font-size: 7pt;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Valve sizes </p>
@@ -12864,7 +12861,7 @@ package RankineCycle
 <p>a.<span style=\"font-family: Times New Roman; font-size: 7pt;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>These must be fine tuned to desired power output for given steam conditions. There doesn&rsquo;t seem to be an exact way to do this but it would be good to know if found. </p>
 <p>3.<span style=\"font-family: Times New Roman; font-size: 7pt;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Volumes in system </p>
 <p>a.<span style=\"font-family: Times New Roman; font-size: 7pt;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>Many of the volumes are set too large to aid initialization. These may be changed to reflect actual BOP designs, but initialization may be more difficult. </p>
-<p><b><span style=\"font-size: 18pt;\">Contact Deatils</span></b> </p>
+<p><br><b><span style=\"font-size: 18pt;\">Contact Deatils</span></b> </p>
 <p>This model was designed by Aidan Rigby (<a href=\"mailto:aidan.rigby@inl.gov\">aidan.rigby@inl.gov</a> , <a href=\"mailto:acrigby@wisc.edu\">acrigby@wisc.edu</a> ). All initial questions should be directed to Daniel Mikkelson (<a href=\"mailto:Daniel.Mikkelson@inl.gov\">Daniel.Mikkelson@inl.gov</a>). </p>
 </html>"));
     end SteamTurbine_L2_ClosedFeedHeat;
