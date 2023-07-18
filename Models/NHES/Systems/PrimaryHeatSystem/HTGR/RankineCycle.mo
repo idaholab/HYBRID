@@ -3465,14 +3465,14 @@ package RankineCycle
       input Modelica.Units.SI.Pressure input_steam_pressure;
       replaceable package Coolant_Medium =
            Modelica.Media.IdealGases.SingleGases.He  constrainedby
-        Modelica.Media.Interfaces.PartialMedium                                                                                annotation(choicesAllMatching = true,dialog(group="Media"));
+        Modelica.Media.Interfaces.PartialMedium                                                       annotation(choicesAllMatching = true,dialog(group="Media"));
       replaceable package Fuel_Medium =  TRANSFORM.Media.Solids.UO2                                   annotation(choicesAllMatching = true,dialog(group = "Media"));
       replaceable package Pebble_Medium =
-          Media.Solids.Graphite_5                                                                                   annotation(dialog(group = "Media"),choicesAllMatching=true);
+          Media.Solids.Graphite_5                                                                     annotation(dialog(group = "Media"),choicesAllMatching=true);
           replaceable package Aux_Heat_App_Medium =
-          Modelica.Media.Water.StandardWater                                           annotation(choicesAllMatching = true, dialog(group = "Media"));
+          Modelica.Media.Water.StandardWater                                                          annotation(choicesAllMatching = true, dialog(group = "Media"));
           replaceable package Waste_Heat_App_Medium =
-          Modelica.Media.Water.StandardWater                                            annotation(choicesAllMatching = true, dialog(group = "Media"));
+          Modelica.Media.Water.StandardWater                                                          annotation(choicesAllMatching = true, dialog(group = "Media"));
 
       //Modelica.Units.SI.Power Q_Recup;
 

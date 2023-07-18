@@ -240,15 +240,7 @@ package HTGR_BOP
     extends Modelica.Icons.Example;
 
     Real Thermal_Power_Norm;
-    BalanceOfPlant.RankineCycle.Models.SteamTurbine_L3_HTGR BOP(redeclare
-        NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_threeStagedTurbine_HTGR
-        CS(trap_LTV1bypass_power(
-          amplitude=amplitude,
-          rising=rising,
-          width=width,
-          falling=falling,
-          period=period,
-          offset=offset)))
+    BalanceOfPlant.RankineCycle.Models.SteamTurbine_L3_HTGR BOP
             annotation (Placement(transformation(extent={{-6,-10},{62,38}})));
     TRANSFORM.Electrical.Sources.FrequencySource
                                        sinkElec(f=60)
@@ -267,16 +259,7 @@ package HTGR_BOP
       annotation (Placement(transformation(extent={{-42,34},{-2,64}})));
     Fluid.Sensors.stateDisplay stateDisplay1
       annotation (Placement(transformation(extent={{-42,-10},{-2,-40}})));
-    parameter Real amplitude=-16e6 "Eelctrical power ocscilation magnitude";
-    parameter SI.Time rising=7200
-      "Amount of time needed to spent for reaching to maximum exlectirical power";
-    parameter SI.Time width=3600
-      "Amount of time of maintaining maximum electrical power generation";
-    parameter SI.Time falling=7200
-      "Amount of time needed for coming back to minimum amount of electricity generation";
-    parameter Real offset=44e6
-      "Maximum possible amount of electricity generated ";
-    parameter SI.Time period=21600 "Amount of time for one cycle of oscilation";
+
   equation
     hTGR_PebbleBed_Primary_Loop.input_steam_pressure =BOP.sensor_p.p;
     Thermal_Power_Norm = hTGR_PebbleBed_Primary_Loop.Thermal_Power.y/2.26177E8;
@@ -304,7 +287,7 @@ package HTGR_BOP
 <p><span style=\"font-size: 12pt;\">Transient test of HTGR(PebbleBed)_ThreeSectionBOP(Rankine). The simulation should experience transient where external electricity demand is oscilating and control valves are opening and closing corresponding to the required power demand. </span></p>
 <p><span style=\"font-size: 12pt;\">This example is developed in order to compare results with HTGR-1_ Section_BOP (Rankine cycle with feedwater heating internal to the system). Details of comparison can be found in [1]. </span></p>
 <p><br><b><span style=\"font-size: 18pt;\">What Users Can Do </span></b></p>
-<p><span style=\"font-size: 12pt;\">Users should... </span></p>
+<p><span style=\"font-size: 12pt;\">Users of this example model can test transient initiated from external electricity demand (i.e., time for demand increase; time for demand decrease; time for maximum electricity demand; one-cycle time period for electricity demand; and maximum anout of electricity demanded). See <i>Parameters</i> in the <i><span style=\"font-family: (Default);\">BOP</span></i> model.</p>
 <p><br><b><span style=\"font-size: 18pt;\">Reference </span></b></p>
 <p><span style=\"font-size: 12pt;\">[1] Status Report on Thermal Extraction Modeling in HYBRID (INL/RPT-23-03062)</span></p>
 <p><br><b><span style=\"font-size: 18pt;\">Contact Deatils </span></b></p>
