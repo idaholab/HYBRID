@@ -1,5 +1,5 @@
 within NHES.ExperimentalSystems.TEDS.Examples;
-model TEDSloop_allmodes_test_3WV_exp2023TTAdjTime2
+model TEDSloop_allmodes_test_3WV_exp2023TTAdjTime3
   "Test designed to ensure the TEDS loop can operate in all modes."
   TRANSFORM.Fluid.Pipes.GenericPipe_MultiTransferSurface Chromolox_Heater(
     redeclare package Medium =
@@ -293,7 +293,7 @@ model TEDSloop_allmodes_test_3WV_exp2023TTAdjTime2
     Ti=0.05,
     k_s=1,
     k_m=1,
-    yMax=200e3,
+    yMax=225e3,
     yMin=0,
     initType=Modelica.Blocks.Types.Init.InitialOutput,
     y_start=200e3)
@@ -448,10 +448,10 @@ model TEDSloop_allmodes_test_3WV_exp2023TTAdjTime2
         extent={{6,-6},{-6,6}},
         rotation=0,
         origin={-54,-146})));
-  Modelica.Blocks.Sources.CombiTimeTable Flow(table=[0,44; 2220,44; 2400,35;
-        2760,35; 2860,23; 3120,23; 3220,17; 3840,17; 3940,13; 5280,13; 5380,
-        11.5; 9180,11.5; 9280,11.5; 10980,11.5; 11080,11.5; 14640,11.5; 14740,
-        0.5; 15740,0.5],
+  Modelica.Blocks.Sources.CombiTimeTable Flow(table=[0,44; 2220,44; 2400,34;
+        2760,34; 2860,23; 3120,23; 3220,15; 3840,15; 3940,13; 5280,13; 5380,
+        11.2; 9180,11.2; 9280,10.1; 10980,10.8; 11080,11.1; 14640,11.1; 14740,
+        12; 15740,12],
       startTime=0)
     annotation (Placement(transformation(extent={{-76,-80},{-62,-66}})));
   TRANSFORM.Controls.LimPID VolFlow_Control2(
@@ -504,9 +504,8 @@ model TEDSloop_allmodes_test_3WV_exp2023TTAdjTime2
         extent={{-4,-4},{4,4}},
         rotation=0,
         origin={-190,78})));
-  Modelica.Blocks.Sources.CombiTimeTable THeater(table=[0,400; 2220,400; 2400,
-        400; 9180,400; 9280,138; 10980,138; 11080,138; 14640,138; 14740,138;
-        15740,138], startTime=0)
+  Modelica.Blocks.Sources.CombiTimeTable THeater(table=[0,300; 3000,300; 3060,
+        250; 14640,250; 14740,0], startTime=0)
     annotation (Placement(transformation(extent={{-190,96},{-176,110}})));
   Modelica.Blocks.Math.Add add1
     annotation (Placement(transformation(extent={{-164,72},{-144,92}})));
@@ -579,8 +578,6 @@ equation
     annotation (Line(points={{-73,64},{-62,64}}, color={0,0,127}));
   connect(boundary3.port, Chromolox_Heater.heatPorts[:, 1])
     annotation (Line(points={{-48,64},{-40,64},{-40,50}}, color={191,0,0}));
-  connect(const.y, Chromolox_Heater_Control.u_s) annotation (Line(points={{-149.4,
-          46},{-123.2,46}},                     color={0,0,127}));
   connect(Chromolox_exit_temperature.T, Chromolox_Heater_Control.u_m)
     annotation (Line(points={{-10,50.32},{-10,84},{-116,84},{-116,53.2}}, color=
          {0,0,127}));
@@ -770,6 +767,8 @@ equation
           -174,76},{-166,76}}, color={0,0,127}));
   connect(THeater.y[1], add1.u1) annotation (Line(points={{-175.3,103},{-175.3,
           96},{-170,96},{-170,88},{-166,88}}, color={0,0,127}));
+  connect(add1.y, Chromolox_Heater_Control.u_s) annotation (Line(points={{-143,
+          82},{-130,82},{-130,46},{-123.2,46}}, color={0,0,127}));
   annotation (
     Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,-220},{240,
             140}}), graphics={
@@ -792,4 +791,4 @@ equation
     __Dymola_Commands(file="../../TEDS/Basic_TEDS_setup.mos" "Basic_TEDS_setup",
         file="../../TEDS/M3_TEDS.mos" "M3_TEDS"),
     conversion(noneFromVersion=""));
-end TEDSloop_allmodes_test_3WV_exp2023TTAdjTime2;
+end TEDSloop_allmodes_test_3WV_exp2023TTAdjTime3;
