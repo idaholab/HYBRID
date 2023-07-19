@@ -59,7 +59,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{158,60},{198,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI_TempControl_2_new_pumps
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU_GMI_TempControl_2_new_pumps
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TempControl_4
@@ -343,7 +343,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_BestModel
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_BestModel
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_BestExample
@@ -611,7 +611,7 @@ package ObsoleteTESUseCaseExamples
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{158,60},{198,100}})));
 
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_BestModel
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_BestModel
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_BestExample
@@ -897,7 +897,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{158,60},{198,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI_TempControl_2
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU_GMI_TempControl_2
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TempControl_4
@@ -1177,7 +1177,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI_TempControl_2
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU_GMI_TempControl_2
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TempControl_5
@@ -1438,7 +1438,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI_TempControl_2
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU_GMI_TempControl_2
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TempControl_2
@@ -1662,7 +1662,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI_TempControl_2
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU_GMI_TempControl_2
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TempControl_2
@@ -1903,7 +1903,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI_TempControl_2
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU_GMI_TempControl_2
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TempControl_2
@@ -2127,7 +2127,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI_TempControl
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU_GMI_TempControl
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TempControl
@@ -2340,7 +2340,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI_TempControl
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU_GMI_TempControl
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TempControl
@@ -2581,7 +2581,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU_GMI
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Boiler_03_GMI
@@ -2807,7 +2807,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU_GMI
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TESUC
@@ -3046,7 +3046,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_TESUC
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU_TESUC
       two_Tank_SHS_System_NTU(
       redeclare replaceable
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Basic_TESUC
@@ -3274,7 +3274,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU_GMI
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Boiler_03_GMI
@@ -3501,7 +3501,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU_GMI
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TESUC
@@ -3740,7 +3740,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU_GMI
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ObseleteControlSystems.CS_Boiler_03_GMI_TESUC
@@ -4055,7 +4055,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_GMI
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU_GMI
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Boiler_03_GMI
@@ -4282,7 +4282,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU_TESUC
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU_TESUC
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Basic_TESUC
@@ -4435,7 +4435,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{160,60},{200,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Boiler_03 CS,
@@ -4585,7 +4585,7 @@ package ObsoleteTESUseCaseExamples
       fileName=Modelica.Utilities.Files.loadResource(
           "modelica://NHES/Resources/Data/RAVEN/Uprate_timeSeries.txt"))
       annotation (Placement(transformation(extent={{158,60},{198,100}})));
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_NTU
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_NTU
       two_Tank_SHS_System_NTU(redeclare replaceable
         NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         DHX_K_tube(unit="1/m4"),
@@ -4736,7 +4736,7 @@ package ObsoleteTESUseCaseExamples
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{158,60},{198,100}})));
 
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_BestModel
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_BestModel
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_BestExample
@@ -5060,7 +5060,7 @@ package ObsoleteTESUseCaseExamples
           "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
       annotation (Placement(transformation(extent={{158,60},{198,100}})));
 
-    EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_BestModel
+    EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_BestModel
       two_Tank_SHS_System_NTU(
       redeclare
         NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_BestExample

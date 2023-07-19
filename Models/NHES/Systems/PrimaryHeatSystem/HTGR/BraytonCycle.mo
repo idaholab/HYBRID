@@ -175,7 +175,7 @@ package BraytonCycle
         nPorts=1) annotation (Placement(transformation(extent={{-86,20},{-66,40}})));
       ElectricalGrid.InfiniteGrid.Infinite EG(Q_nominal=280e6)
         annotation (Placement(transformation(extent={{50,-6},{104,42}})));
-      EnergyStorage.Concrete_Solid_Media.Components.Dual_Pipe_Model_Two_HTFs
+      EnergyStorage.Concrete_Solid_Media.SupportComponent.Dual_Pipe_Model_Two_HTFs
         dual_Pipe_Model_Two_HTFs(Hot_Con_Start=673.15, Cold_Con_Start=398.15)
         annotation (Placement(transformation(extent={{-54,-14},{-82,6}})));
       TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Steam_Offtake_Dump(

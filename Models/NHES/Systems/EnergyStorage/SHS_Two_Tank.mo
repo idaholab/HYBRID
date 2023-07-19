@@ -21,7 +21,7 @@ package SHS_Two_Tank
     model Build_Test
       "Initial build test of two tank system. No reference documents were used, the test is simply to evaluate overall system behavior."
       extends Modelica.Icons.Example;
-      NHES.Systems.EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System
+      NHES.Systems.EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System
         two_Tank_SHS_System(
         redeclare
           NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Boiler_03
@@ -160,7 +160,7 @@ package SHS_Two_Tank
     model Build_Test_NTU
       "Initial build test of two tank system. No reference documents were used, the test is simply to evaluate overall system behavior."
       extends Modelica.Icons.Example;
-      Components.Two_Tank_SHS_System_NTU two_Tank_SHS_System_NTU(
+      Models.Two_Tank_SHS_System_NTU two_Tank_SHS_System_NTU(
         redeclare
           NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Boiler_03
           CS,
@@ -319,7 +319,7 @@ package SHS_Two_Tank
     model Build_Test_NTU_GMI
       "Initial build test of two tank system. No reference documents were used, the test is simply to evaluate overall system behavior."
       extends Modelica.Icons.Example;
-      Components.Two_Tank_SHS_System_NTU_GMI two_Tank_SHS_System_NTU_GMI(
+      Models.Two_Tank_SHS_System_NTU_GMI two_Tank_SHS_System_NTU_GMI(
         redeclare
           NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Boiler_03_GMI
           CS,
@@ -580,11 +580,13 @@ package SHS_Two_Tank
       Modelica.Blocks.Interfaces.RealOutput TES_HT_Level_Ramprate annotation (
           Placement(transformation(extent={{48,-20},{64,-4}}),
             iconTransformation(extent={{128,-40},{152,-16}})));
-      NHES.Systems.EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_HT_Power_ANL TES(
-        redeclare NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_TES_HT_Power_ANL CS(
-            electric_demand_TES=MW_W_Gain_TES.y, Round_Trip_Efficiency=0.21),
-        redeclare replaceable NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS
-          data(
+      NHES.Systems.EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_HT_Power_ANL
+        TES(
+        redeclare
+          NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_TES_HT_Power_ANL
+          CS(electric_demand_TES=MW_W_Gain_TES.y, Round_Trip_Efficiency=0.21),
+        redeclare replaceable
+          NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
           ht_level_max=11.7,
           ht_area=3390,
           ht_surface_pressure=120000,
@@ -675,66 +677,11 @@ package SHS_Two_Tank
     end Two_Tank_SHS_HT_Power_Test;
   end Examples;
 
-  model SubSystem_Dummy
-
-    extends BaseClasses.Partial_SubSystem_A(
-      redeclare replaceable CS_Dummy CS,
-      redeclare replaceable ED_Dummy ED,
-      redeclare Data.Data_Dummy data);
-
-  equation
-
-    annotation (
-      defaultComponentName="changeMe",
-      Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-              140}})),
-      Icon(coordinateSystem(extent={{-100,-100},{100,100}}), graphics={
-          Text(
-            extent={{-94,82},{94,74}},
-            lineColor={0,0,0},
-            lineThickness=1,
-            fillColor={255,255,237},
-            fillPattern=FillPattern.Solid,
-            textString="Change Me")}));
-  end SubSystem_Dummy;
-
-  model CS_Dummy
-
-    extends BaseClasses.Partial_ControlSystem;
-
-  equation
-
-  annotation(defaultComponentName="changeMe_CS", Icon(graphics={
-          Text(
-            extent={{-94,82},{94,74}},
-            lineColor={0,0,0},
-            lineThickness=1,
-            fillColor={255,255,237},
-            fillPattern=FillPattern.Solid,
-            textString="Change Me")}));
-  end CS_Dummy;
-
-  model ED_Dummy
-
-    extends BaseClasses.Partial_EventDriver;
-
-  equation
-
-  annotation(defaultComponentName="changeMe_CS", Icon(graphics={
-          Text(
-            extent={{-94,82},{94,74}},
-            lineColor={0,0,0},
-            lineThickness=1,
-            fillColor={255,255,237},
-            fillPattern=FillPattern.Solid,
-            textString="Change Me")}));
-  end ED_Dummy;
-
-  package Components
+  package Models
     model Two_Tank_SHS_System_BestModel
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Boiler_04 CS,
-        redeclare replaceable ED_Dummy ED,
+        redeclare replaceable ControlSystems.ED_Dummy ED,
         redeclare replaceable Data.Data_SHS data(DHX_v_shell=1.0));
         replaceable package Storage_Medium =
           TRANSFORM.Media.Fluids.Therminol_66.TableBasedTherminol66 constrainedby
@@ -797,7 +744,7 @@ package SHS_Two_Tank
         annotation (Placement(transformation(extent={{-10,10},{10,-10}},
             rotation=90,
             origin={68,-42})));
-      BaseClasses.DumpTank_Init_T      hot_tank(
+      SupportComponent.DumpTank_Init_T hot_tank(
         redeclare package Medium = Storage_Medium,
         A=data.ht_area,
         V0=data.ht_zero_level_volume,
@@ -837,7 +784,7 @@ package SHS_Two_Tank
             extent={{10,10},{-10,-10}},
             rotation=0,
             origin={12,44})));
-      BaseClasses.DumpTank_Init_T      cold_tank(
+      SupportComponent.DumpTank_Init_T cold_tank(
         redeclare package Medium = Storage_Medium,
         A=data.cold_tank_area,
         V0=data.ct_zero_level_volume,
@@ -1379,7 +1326,7 @@ package SHS_Two_Tank
     model SHS_Mikk_Two_Tank_NTUs
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Boiler CS,
-        redeclare replaceable ED_Dummy ED,
+        redeclare replaceable ControlSystems.ED_Dummy ED,
         redeclare replaceable Data.Data_Dummy data);
         replaceable package Storage_Medium =
           TRANSFORM.Media.Fluids.Therminol_66.TableBasedTherminol66;
@@ -1456,7 +1403,7 @@ package SHS_Two_Tank
         annotation (Placement(transformation(extent={{-10,10},{10,-10}},
             rotation=90,
             origin={82,-28})));
-      BaseClasses.DumpTank_Init_T      hot_tank(
+      SupportComponent.DumpTank_Init_T hot_tank(
         redeclare package Medium = Storage_Medium,
         A=50,
         V0=1,
@@ -1500,7 +1447,7 @@ package SHS_Two_Tank
         annotation (Placement(transformation(extent={{10,10},{-10,-10}},
             rotation=270,
             origin={-22,26})));
-      BaseClasses.DumpTank_Init_T      cold_tank(
+      SupportComponent.DumpTank_Init_T cold_tank(
         redeclare package Medium = Storage_Medium,
         A=50,
         V0=1,
@@ -1746,7 +1693,7 @@ package SHS_Two_Tank
     model SHS_Mikk_Two_Tank_NTUs_New_Control
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Boiler_02 CS,
-        redeclare replaceable ED_Dummy ED,
+        redeclare replaceable ControlSystems.ED_Dummy ED,
         redeclare replaceable Data.Data_Dummy data);
         replaceable package Storage_Medium =
           TRANSFORM.Media.Fluids.Therminol_66.TableBasedTherminol66;
@@ -1824,7 +1771,7 @@ package SHS_Two_Tank
         annotation (Placement(transformation(extent={{-10,10},{10,-10}},
             rotation=90,
             origin={82,-28})));
-      BaseClasses.DumpTank_Init_T      hot_tank(
+      SupportComponent.DumpTank_Init_T hot_tank(
         redeclare package Medium = Storage_Medium,
         A=50,
         V0=1,
@@ -1868,7 +1815,7 @@ package SHS_Two_Tank
         annotation (Placement(transformation(extent={{10,10},{-10,-10}},
             rotation=270,
             origin={-22,26})));
-      BaseClasses.DumpTank_Init_T      cold_tank(
+      SupportComponent.DumpTank_Init_T cold_tank(
         redeclare package Medium = Storage_Medium,
         A=50,
         V0=1,
@@ -2408,7 +2355,7 @@ package SHS_Two_Tank
     model Two_Tank_SHS_System
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Boiler_02 CS,
-        redeclare replaceable ED_Dummy ED,
+        redeclare replaceable ControlSystems.ED_Dummy ED,
         redeclare replaceable Data.Data_SHS data);
         replaceable package Storage_Medium =
           TRANSFORM.Media.Fluids.Therminol_66.TableBasedTherminol66 constrainedby
@@ -2468,7 +2415,7 @@ package SHS_Two_Tank
         annotation (Placement(transformation(extent={{-10,10},{10,-10}},
             rotation=90,
             origin={82,-28})));
-      BaseClasses.DumpTank_Init_T      hot_tank(
+      SupportComponent.DumpTank_Init_T hot_tank(
         redeclare package Medium = Storage_Medium,
         A=data.ht_area,
         V0=data.ht_zero_level_volume,
@@ -2515,7 +2462,7 @@ package SHS_Two_Tank
             extent={{10,10},{-10,-10}},
             rotation=270,
             origin={-22,26})));
-      BaseClasses.DumpTank_Init_T      cold_tank(
+      SupportComponent.DumpTank_Init_T cold_tank(
         redeclare package Medium = Storage_Medium,
         A=data.cold_tank_area,
         V0=data.ct_zero_level_volume,
@@ -3015,7 +2962,7 @@ package SHS_Two_Tank
     model Two_Tank_SHS_System_NTU
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Boiler_04 CS,
-        redeclare replaceable ED_Dummy ED,
+        redeclare replaceable ControlSystems.ED_Dummy ED,
         redeclare replaceable Data.Data_SHS data);
         replaceable package Storage_Medium =
           TRANSFORM.Media.Fluids.Therminol_66.TableBasedTherminol66 constrainedby
@@ -3075,7 +3022,7 @@ package SHS_Two_Tank
         annotation (Placement(transformation(extent={{-10,10},{10,-10}},
             rotation=90,
             origin={82,-28})));
-      BaseClasses.DumpTank_Init_T      hot_tank(
+      SupportComponent.DumpTank_Init_T hot_tank(
         redeclare package Medium = Storage_Medium,
         A=data.ht_area,
         V0=data.ht_zero_level_volume,
@@ -3115,7 +3062,7 @@ package SHS_Two_Tank
             extent={{10,10},{-10,-10}},
             rotation=270,
             origin={-22,26})));
-      BaseClasses.DumpTank_Init_T      cold_tank(
+      SupportComponent.DumpTank_Init_T cold_tank(
         redeclare package Medium = Storage_Medium,
         A=data.cold_tank_area,
         V0=data.ct_zero_level_volume,
@@ -3600,7 +3547,7 @@ package SHS_Two_Tank
     model Two_Tank_SHS_System_NTU_GMI
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Boiler_04 CS,
-        redeclare replaceable ED_Dummy ED,
+        redeclare replaceable ControlSystems.ED_Dummy ED,
         redeclare replaceable Data.Data_SHS data(DHX_v_shell=1.0));
         replaceable package Storage_Medium =
           TRANSFORM.Media.Fluids.Therminol_66.TableBasedTherminol66 constrainedby
@@ -3660,7 +3607,7 @@ package SHS_Two_Tank
         annotation (Placement(transformation(extent={{-10,10},{10,-10}},
             rotation=90,
             origin={68,-42})));
-      BaseClasses.DumpTank_Init_T      hot_tank(
+      SupportComponent.DumpTank_Init_T hot_tank(
         redeclare package Medium = Storage_Medium,
         A=data.ht_area,
         V0=data.ht_zero_level_volume,
@@ -3700,7 +3647,7 @@ package SHS_Two_Tank
             extent={{10,10},{-10,-10}},
             rotation=0,
             origin={12,44})));
-      BaseClasses.DumpTank_Init_T      cold_tank(
+      SupportComponent.DumpTank_Init_T cold_tank(
         redeclare package Medium = Storage_Medium,
         A=data.cold_tank_area,
         V0=data.ct_zero_level_volume,
@@ -4184,7 +4131,7 @@ package SHS_Two_Tank
     model Two_Tank_SHS_System_NTU_TESUC
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Basic_TESUC CS,
-        redeclare replaceable ED_Dummy ED,
+        redeclare replaceable ControlSystems.ED_Dummy ED,
         redeclare replaceable Data.Data_SHS data(
           DHX_p_start_shell=1100000,
           DHX_Q_init=1e6,
@@ -4248,7 +4195,7 @@ package SHS_Two_Tank
         annotation (Placement(transformation(extent={{-10,10},{10,-10}},
             rotation=90,
             origin={76,-30})));
-      BaseClasses.DumpTank_Init_T      hot_tank(
+      SupportComponent.DumpTank_Init_T hot_tank(
         redeclare package Medium = Storage_Medium,
         A=data.ht_area,
         V0=data.ht_zero_level_volume,
@@ -4285,7 +4232,7 @@ package SHS_Two_Tank
             extent={{10,10},{-10,-10}},
             rotation=270,
             origin={-22,26})));
-      BaseClasses.DumpTank_Init_T      cold_tank(
+      SupportComponent.DumpTank_Init_T cold_tank(
         redeclare package Medium = Storage_Medium,
         A=data.cold_tank_area,
         V0=data.ct_zero_level_volume,
@@ -4765,7 +4712,7 @@ package SHS_Two_Tank
     model Two_Tank_SHS_System_NTU_GMI_TempControl
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Boiler_04 CS,
-        redeclare replaceable ED_Dummy ED,
+        redeclare replaceable ControlSystems.ED_Dummy ED,
         redeclare replaceable Data.Data_SHS data(DHX_v_shell=1.0));
         replaceable package Storage_Medium =
           TRANSFORM.Media.Fluids.Therminol_66.TableBasedTherminol66 constrainedby
@@ -4828,7 +4775,7 @@ package SHS_Two_Tank
         annotation (Placement(transformation(extent={{-10,10},{10,-10}},
             rotation=90,
             origin={68,-42})));
-      BaseClasses.DumpTank_Init_T      hot_tank(
+      SupportComponent.DumpTank_Init_T hot_tank(
         redeclare package Medium = Storage_Medium,
         A=data.ht_area,
         V0=data.ht_zero_level_volume,
@@ -4868,7 +4815,7 @@ package SHS_Two_Tank
             extent={{10,10},{-10,-10}},
             rotation=0,
             origin={12,44})));
-      BaseClasses.DumpTank_Init_T      cold_tank(
+      SupportComponent.DumpTank_Init_T cold_tank(
         redeclare package Medium = Storage_Medium,
         A=data.cold_tank_area,
         V0=data.ct_zero_level_volume,
@@ -5391,7 +5338,7 @@ package SHS_Two_Tank
     model Two_Tank_SHS_System_NTU_GMI_TempControl_2
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Boiler_04 CS,
-        redeclare replaceable ED_Dummy ED,
+        redeclare replaceable ControlSystems.ED_Dummy ED,
         redeclare replaceable Data.Data_SHS data(DHX_v_shell=1.0));
         replaceable package Storage_Medium =
           TRANSFORM.Media.Fluids.Therminol_66.TableBasedTherminol66 constrainedby
@@ -5454,7 +5401,7 @@ package SHS_Two_Tank
         annotation (Placement(transformation(extent={{-10,10},{10,-10}},
             rotation=90,
             origin={68,-42})));
-      BaseClasses.DumpTank_Init_T      hot_tank(
+      SupportComponent.DumpTank_Init_T hot_tank(
         redeclare package Medium = Storage_Medium,
         A=data.ht_area,
         V0=data.ht_zero_level_volume,
@@ -5494,7 +5441,7 @@ package SHS_Two_Tank
             extent={{10,10},{-10,-10}},
             rotation=0,
             origin={12,44})));
-      BaseClasses.DumpTank_Init_T      cold_tank(
+      SupportComponent.DumpTank_Init_T cold_tank(
         redeclare package Medium = Storage_Medium,
         A=data.cold_tank_area,
         V0=data.ct_zero_level_volume,
@@ -6033,7 +5980,7 @@ package SHS_Two_Tank
     model Two_Tank_SHS_System_NTU_GMI_TempControl_2_new_pumps
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Boiler_04 CS,
-        redeclare replaceable ED_Dummy ED,
+        redeclare replaceable ControlSystems.ED_Dummy ED,
         redeclare replaceable Data.Data_SHS data(DHX_v_shell=1.0));
         replaceable package Storage_Medium =
           TRANSFORM.Media.Fluids.Therminol_66.TableBasedTherminol66 constrainedby
@@ -6096,7 +6043,7 @@ package SHS_Two_Tank
         annotation (Placement(transformation(extent={{-10,10},{10,-10}},
             rotation=90,
             origin={68,-42})));
-      BaseClasses.DumpTank_Init_T      hot_tank(
+      SupportComponent.DumpTank_Init_T hot_tank(
         redeclare package Medium = Storage_Medium,
         A=data.ht_area,
         V0=data.ht_zero_level_volume,
@@ -6140,7 +6087,7 @@ package SHS_Two_Tank
             extent={{10,10},{-10,-10}},
             rotation=0,
             origin={12,44})));
-      BaseClasses.DumpTank_Init_T      cold_tank(
+      SupportComponent.DumpTank_Init_T cold_tank(
         redeclare package Medium = Storage_Medium,
         A=data.cold_tank_area,
         V0=data.ct_zero_level_volume,
@@ -6659,7 +6606,7 @@ package SHS_Two_Tank
       Two_Tank_SHS_System_NTU_GMI_TempControl_SmallTanks_DirectCoupling_HTGR
       extends BaseClasses.Partial_SubSystem_A(
         redeclare replaceable ControlSystems.CS_Boiler_04 CS,
-        redeclare replaceable ED_Dummy ED,
+        redeclare replaceable ControlSystems.ED_Dummy ED,
         redeclare replaceable Data.Data_SHS data(DHX_v_shell=1.0));
         replaceable package Storage_Medium =
           TRANSFORM.Media.Fluids.Therminol_66.TableBasedTherminol66 constrainedby
@@ -6722,7 +6669,7 @@ package SHS_Two_Tank
         annotation (Placement(transformation(extent={{-10,10},{10,-10}},
             rotation=90,
             origin={68,-42})));
-      BaseClasses.DumpTank_Init_T      hot_tank(
+      SupportComponent.DumpTank_Init_T hot_tank(
         redeclare package Medium = Storage_Medium,
         A=data.ht_area,
         V0=data.ht_zero_level_volume,
@@ -6762,7 +6709,7 @@ package SHS_Two_Tank
             extent={{10,10},{-10,-10}},
             rotation=0,
             origin={12,44})));
-      BaseClasses.DumpTank_Init_T      cold_tank(
+      SupportComponent.DumpTank_Init_T cold_tank(
         redeclare package Medium = Storage_Medium,
         A=data.cold_tank_area,
         V0=data.ct_zero_level_volume,
@@ -7328,10 +7275,13 @@ package SHS_Two_Tank
       extends
         NHES.Systems.EnergyStorage.SHS_Two_Tank.BaseClasses.Partial_SubSystem_A(
         redeclare replaceable
-          NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Boiler_04 CS,
-        redeclare replaceable NHES.Systems.EnergyStorage.SHS_Two_Tank.ED_Dummy ED,
-        redeclare replaceable NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS
-          data(DHX_v_shell=1.0));
+          NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_Boiler_04
+          CS,
+        redeclare replaceable
+          NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.ED_Dummy ED,
+        redeclare replaceable
+          NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
+            DHX_v_shell=1.0));
         replaceable package Storage_Medium =
           TRANSFORM.Media.Fluids.Therminol_66.TableBasedTherminol66 constrainedby
         Modelica.Media.Interfaces.PartialMedium                                                                           annotation(Dialog(tab="General", group="Mediums"), choicesAllMatching=true);
@@ -7393,7 +7343,8 @@ package SHS_Two_Tank
             extent={{-10,10},{10,-10}},
             rotation=90,
             origin={68,-42})));
-      NHES.Systems.EnergyStorage.SHS_Two_Tank.BaseClasses.DumpTank_Init_T hot_tank(
+      NHES.Systems.EnergyStorage.SHS_Two_Tank.SupportComponent.DumpTank_Init_T
+        hot_tank(
         redeclare package Medium = Storage_Medium,
         A=data.ht_area,
         V0=data.ht_zero_level_volume,
@@ -7417,7 +7368,8 @@ package SHS_Two_Tank
             extent={{10,10},{-10,-10}},
             rotation=0,
             origin={34,44})));
-      NHES.Systems.EnergyStorage.SHS_Two_Tank.BaseClasses.DumpTank_Init_T cold_tank(
+      NHES.Systems.EnergyStorage.SHS_Two_Tank.SupportComponent.DumpTank_Init_T
+        cold_tank(
         redeclare package Medium = Storage_Medium,
         A=data.cold_tank_area,
         V0=data.ct_zero_level_volume,
@@ -8072,516 +8024,7 @@ package SHS_Two_Tank
               lineThickness=1)}),
         Diagram(coordinateSystem(extent={{-100,-100},{100,140}})));
     end Two_Tank_SHS_HT_Power_ANL;
-  end Components;
-
-  package Data
-
-    model Data_Dummy
-
-      extends BaseClasses.Record_Data;
-
-      annotation (
-        defaultComponentName="data",
-        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
-              lineColor={0,0,0},
-              extent={{-100,-90},{100,-70}},
-              textString="changeMe")}),
-        Diagram(coordinateSystem(preserveAspectRatio=false)),
-        Documentation(info="<html>
-</html>"));
-    end Data_Dummy;
-
-    model Data_Default
-
-      extends BaseClasses.Record_Data;
-      parameter Modelica.Units.SI.Length hot_tank_level_max = 15;
-      parameter Modelica.Units.SI.Length cold_tank_level_max = 15;
-      parameter Modelica.Units.SI.Temperature hot_tank_ref_temp = 273.15+245;
-      parameter Modelica.Units.SI.Temperature cold_tank_ref_temp = 273.15+160;
-
-      annotation (
-        defaultComponentName="data",
-        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
-              lineColor={0,0,0},
-              extent={{-100,-90},{100,-70}},
-              textString="changeMe")}),
-        Diagram(coordinateSystem(preserveAspectRatio=false)),
-        Documentation(info="<html>
-</html>"));
-    end Data_Default;
-
-    model Data_CS
-
-      extends BaseClasses.Record_Data;
-      parameter Modelica.Units.SI.Length hot_tank_level_min = 1.0;
-      parameter Modelica.Units.SI.Length cold_tank_level_min = 1.0;
-      parameter Modelica.Units.SI.Temperature hot_tank_ref_temp = 273.15+245;
-      parameter Modelica.Units.SI.Temperature cold_tank_ref_temp = 273.15+160;
-      parameter Modelica.Units.SI.MassFlowRate steam_prod_rate = 2.5;
-      parameter Modelica.Units.SI.MassFlowRate reference_charging_m_flow = 20;
-      parameter Modelica.Units.SI.MassFlowRate reference_discharging_m_flow = 10;
-      parameter Real discharge_control_ref_value = 100 "Change this value based on what control is based on. For temperature, make sure to enter in K";
-
-      annotation (
-        defaultComponentName="data",
-        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
-              lineColor={0,0,0},
-              extent={{-100,-90},{100,-70}},
-              textString="changeMe")}),
-        Diagram(coordinateSystem(preserveAspectRatio=false)),
-        Documentation(info="<html>
-</html>"));
-    end Data_CS;
-
-    model Data_SHS
-
-      extends BaseClasses.Record_Data;
-      parameter Modelica.Units.SI.Length ht_level_max = 15 annotation(Dialog(group = "Hot Tank"));
-      parameter Modelica.Units.SI.Area ht_area = 50 annotation(Dialog(group = "Hot Tank"));
-      parameter Modelica.Units.SI.Volume ht_zero_level_volume = 1 annotation(Dialog(group = "Hot Tank"));
-      parameter Modelica.Units.SI.Pressure ht_surface_pressure = 101325 annotation(Dialog(group = "Hot Tank"));
-      parameter Modelica.Units.SI.Length ht_init_level = ht_level_max*0.5 annotation(Dialog(tab = "Initialization", group = "Hot Tank"));
-      parameter Modelica.Units.SI.Temperature hot_tank_init_temp = 273.15+240 annotation(Dialog(tab = "Initialization", group = "Hot Tank"));
-      parameter Modelica.Units.SI.Length cold_tank_level_max = 15 annotation(Dialog(group = "Cold Tank"));
-      parameter Modelica.Units.SI.Area cold_tank_area = 50 annotation(Dialog(group = "Cold Tank"));
-      parameter Modelica.Units.SI.Volume ct_zero_level_volume = 1 annotation(Dialog(group = "Cold Tank"));
-      parameter Modelica.Units.SI.Pressure ct_surface_pressure = 101325 annotation(Dialog(group = "Cold Tank"));
-      parameter Modelica.Units.SI.Length cold_tank_init_level = ht_level_max*0.5 annotation(Dialog(tab = "Initialization", group = "Cold Tank"));
-      parameter Modelica.Units.SI.Temperature cold_tank_init_temp = 273.15+240 annotation(Dialog(tab = "Initialization", group = "Cold Tank"));
-      parameter Modelica.Units.SI.MassFlowRate m_flow_ch_min = 2.0;
-      parameter Integer CHXnV = 5 "Number of nodes in CHX" annotation(Dialog(tab = "Heat Exchangers", group = "CHX"));
-      parameter Real DHX_NTU = 4.0 "DHX NTU value" annotation(Dialog(tab = "Heat Exchangers", group = "DHX"));
-      parameter Boolean DHX_Use_derQ = true annotation (Evaluate = true,
-                    Dialog(enable = use_derQ, tab = "Heat Exchangers", group = "DHX"));
-      parameter Modelica.Units.SI.Time DHX_tau = 1.0 annotation(Dialog(tab="Heat Exchangers", group = "DHX"));
-      parameter Real DHX_K_tube(unit = "1/m4") = 100 "Pressure drop coefficient" annotation(Dialog(tab = "Heat Exchangers", group = "DHX"));
-      parameter Real DHX_K_shell(unit = "1/m4") = 100 "Pressure drop coefficient" annotation(Dialog(tab = "Heat Exchangers", group = "DHX"));
-      parameter Modelica.Units.SI.Volume DHX_v_tube = 10 "Tube side (SHS side) volume" annotation(Dialog(tab = "Heat Exchangers", group = "DHX"));
-      parameter Modelica.Units.SI.Volume DHX_v_shell = 10 "Shell side volume" annotation(Dialog(tab = "Heat Exchangers", group = "DHX"));
-
-      parameter Modelica.Units.SI.Pressure DHX_p_start_tube = 100000 annotation(Dialog(tab = "Initialization", group = "DHX"));
-      parameter Modelica.Units.SI.Pressure DHX_dp_init_tube = 1000 annotation(Dialog(tab = "Initialization", group = "DHX"));
-      parameter Modelica.Units.SI.SpecificEnthalpy DHX_h_start_tube_inlet = 300e3 annotation(Dialog(tab = "Initialization", group = "DHX"));
-      parameter Modelica.Units.SI.SpecificEnthalpy DHX_h_start_tube_outlet = 100e3 annotation(Dialog(tab = "Initialization", group = "DHX"));
-      parameter Modelica.Units.SI.Pressure DHX_p_start_shell = 5e5 annotation(Dialog(tab = "Initialization", group = "DHX"));
-      parameter Modelica.Units.SI.Pressure DHX_dp_init_shell = 1000 annotation(Dialog(tab = "Initialization", group = "DHX"));
-      parameter Modelica.Units.SI.SpecificEnthalpy DHX_h_start_shell_inlet = 1400e3 annotation(Dialog(tab = "Initialization", group = "DHX"));
-      parameter Modelica.Units.SI.SpecificEnthalpy DHX_h_start_shell_outlet = 2000e3 annotation(Dialog(tab = "Initialization", group = "DHX"));
-      parameter Modelica.Units.SI.Power DHX_Q_init = 1 "Do not set to 0" annotation(Dialog(tab = "Initialization", group = "DHX"));
-
-      parameter Modelica.Units.SI.Volume discharge_pump_volume = 1 annotation(Dialog(tab = "Pumps", group = "Discharge"));
-      parameter Modelica.Units.SI.Length discharge_pump_diameter = 0.5  annotation(Dialog(tab = "Pumps", group = "Discharge"));
-      parameter Modelica.Units.NonSI.AngularVelocity_rpm discharge_pump_rpm_nominal = 1500  annotation(Dialog(tab = "Pumps", group = "Discharge"));
-      parameter Modelica.Units.SI.Length discharge_pump_diameter_nominal = 0.5  annotation(Dialog(tab = "Pumps", group = "Discharge"));
-      parameter Modelica.Units.SI.Pressure discharge_pump_dp_nominal = 2e5  annotation(Dialog(tab = "Pumps", group = "Discharge"));
-      parameter Modelica.Units.SI.MassFlowRate discharge_pump_m_flow_nominal = 10  annotation(Dialog(tab = "Pumps", group = "Discharge"));
-      parameter Modelica.Units.SI.Density discharge_pump_rho_nominal = 1  annotation(Dialog(tab = "Pumps", group = "Discharge"));
-      parameter Modelica.Units.NonSI.AngularVelocity_rpm discharge_pump_constantRPM = 1500  annotation(Dialog(tab = "Pumps", group = "Discharge"));
-
-      parameter Modelica.Units.SI.Volume charge_pump_volume = 1 annotation(Dialog(tab = "Pumps", group = "Charge"));
-      parameter Modelica.Units.SI.Length charge_pump_diamter = 0.5  annotation(Dialog(tab = "Pumps", group = "Charge"));
-      parameter Modelica.Units.NonSI.AngularVelocity_rpm charge_pump_rpm_nominal = 1500  annotation(Dialog(tab = "Pumps", group = "Charge"));
-      parameter Modelica.Units.SI.Length charge_pump_diameter_nominal = 0.5  annotation(Dialog(tab = "Pumps", group = "Charge"));
-      parameter Modelica.Units.SI.Pressure charge_pump_dp_nominal = 7e5  annotation(Dialog(tab = "Pumps", group = "Charge"));
-      parameter Modelica.Units.SI.MassFlowRate charge_pump_m_flow_nominal = 20  annotation(Dialog(tab = "Pumps", group = "Charge"));
-      parameter Modelica.Units.SI.Density charge_pump_rho_nominal = 1  annotation(Dialog(tab = "Pumps", group = "Charge"));
-      parameter Modelica.Units.NonSI.AngularVelocity_rpm charge_pump_constantRPM = 2000  annotation(Dialog(tab = "Pumps", group = "Charge"));
-
-      parameter Modelica.Units.SI.Area ctdp_area = 1 annotation(Dialog(tab = "Piping", group = "Discharge"));
-      parameter Modelica.Units.SI.Length ctdp_length = 10 annotation(Dialog(tab = "Piping", group = "Discharge"));
-      parameter Modelica.Units.SI.Length ctdp_d_height = 0.0 annotation(Dialog(tab = "Piping", group = "Discharge"));
-      parameter Modelica.Units.SI.Volume ctvolume_volume = 1.0 annotation(Dialog(tab = "Piping", group = "Disharge"));
-      parameter Modelica.Units.SI.MassFlowRate disvalve_m_flow_nom = 25 annotation(Dialog(tab = "Piping", group = "Discharge"));
-      parameter Modelica.Units.SI.Pressure disvalve_dp_nominal = 1e5 annotation(Dialog(tab = "Piping", group = "Discharge"));
-      parameter Modelica.Units.SI.Area htdp_area = 1 annotation(Dialog(tab = "Piping", group = "Charge"));
-      parameter Modelica.Units.SI.Length htdp_length = 10 annotation(Dialog(tab = "Piping", group = "Charge"));
-      parameter Modelica.Units.SI.Length htdp_d_height = 0.0 annotation(Dialog(tab = "Piping", group = "Charge"));
-      parameter Modelica.Units.SI.MassFlowRate chvalve_m_flow_nom = 25 annotation(Dialog(tab = "Piping", group = "Charge"));
-      parameter Modelica.Units.SI.Pressure chvalve_dp_nominal = 1e5 annotation(Dialog(tab = "Piping", group = "Charge"));
-      annotation (
-        defaultComponentName="data",
-        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
-              lineColor={0,0,0},
-              extent={{-100,-90},{100,-70}},
-              textString="changeMe")}),
-        Diagram(coordinateSystem(preserveAspectRatio=false)),
-        Documentation(info="<html>
-</html>"));
-    end Data_SHS;
-  end Data;
-
-  package BaseClasses
-    extends TRANSFORM.Icons.BasesPackage;
-
-    partial model Partial_SubSystem
-
-      extends NHES.Systems.BaseClasses.Partial_SubSystem;
-
-      extends Record_SubSystem;
-
-      replaceable Partial_ControlSystem CS annotation (choicesAllMatching=true,
-          Placement(transformation(extent={{-18,122},{-2,138}})));
-      replaceable Partial_EventDriver ED annotation (choicesAllMatching=true,
-          Placement(transformation(extent={{2,122},{18,138}})));
-      replaceable Record_Data data
-        annotation (Placement(transformation(extent={{42,122},{58,138}})));
-
-      SignalSubBus_ActuatorInput actuatorBus
-        annotation (Placement(transformation(extent={{10,80},{50,120}}),
-            iconTransformation(extent={{10,80},{50,120}})));
-      SignalSubBus_SensorOutput sensorBus
-        annotation (Placement(transformation(extent={{-50,80},{-10,120}}),
-            iconTransformation(extent={{-50,80},{-10,120}})));
-
-    equation
-      connect(sensorBus, ED.sensorBus) annotation (Line(
-          points={{-30,100},{-16,100},{7.6,100},{7.6,122}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(sensorBus, CS.sensorBus) annotation (Line(
-          points={{-30,100},{-12.4,100},{-12.4,122}},
-          color={239,82,82},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus, CS.actuatorBus) annotation (Line(
-          points={{30,100},{12,100},{-7.6,100},{-7.6,122}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-      connect(actuatorBus, ED.actuatorBus) annotation (Line(
-          points={{30,100},{20,100},{12.4,100},{12.4,122}},
-          color={111,216,99},
-          pattern=LinePattern.Dash,
-          thickness=0.5));
-
-      annotation (
-        defaultComponentName="changeMe",
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}})),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
-                100,140}})));
-    end Partial_SubSystem;
-
-    partial model Partial_SubSystem_A
-
-      extends Partial_SubSystem;
-
-      extends Record_SubSystem_A;
-
-      annotation (
-        defaultComponentName="changeMe",
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                140}})));
-    end Partial_SubSystem_A;
-
-    partial model Record_Data
-
-      extends Modelica.Icons.Record;
-
-      annotation (defaultComponentName="data",
-      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end Record_Data;
-
-    partial record Record_SubSystem
-
-      annotation (defaultComponentName="subsystem",
-      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end Record_SubSystem;
-
-    partial record Record_SubSystem_A
-
-      extends Record_SubSystem;
-
-      annotation (defaultComponentName="subsystem",
-      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end Record_SubSystem_A;
-
-    partial model Partial_ControlSystem
-
-      extends NHES.Systems.BaseClasses.Partial_ControlSystem;
-
-      SignalSubBus_ActuatorInput actuatorBus
-        annotation (Placement(transformation(extent={{10,-120},{50,-80}}),
-            iconTransformation(extent={{10,-120},{50,-80}})));
-      SignalSubBus_SensorOutput sensorBus
-        annotation (Placement(transformation(extent={{-50,-120},{-10,-80}}),
-            iconTransformation(extent={{-50,-120},{-10,-80}})));
-
-      annotation (
-        defaultComponentName="CS",
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}})),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
-                100,100}})));
-
-    end Partial_ControlSystem;
-
-    partial model Partial_EventDriver
-
-      extends NHES.Systems.BaseClasses.Partial_EventDriver;
-
-      SignalSubBus_ActuatorInput actuatorBus
-        annotation (Placement(transformation(extent={{10,-120},{50,-80}}),
-            iconTransformation(extent={{10,-120},{50,-80}})));
-      SignalSubBus_SensorOutput sensorBus
-        annotation (Placement(transformation(extent={{-50,-120},{-10,-80}}),
-            iconTransformation(extent={{-50,-120},{-10,-80}})));
-
-      annotation (
-        defaultComponentName="ED",
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
-        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                100}})));
-
-    end Partial_EventDriver;
-
-    expandable connector SignalSubBus_ActuatorInput
-
-      extends NHES.Systems.Interfaces.SignalSubBus_ActuatorInput;
-
-      annotation (defaultComponentName="actuatorBus",
-      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end SignalSubBus_ActuatorInput;
-
-    expandable connector SignalSubBus_SensorOutput
-
-      extends NHES.Systems.Interfaces.SignalSubBus_SensorOutput;
-
-      annotation (defaultComponentName="sensorBus",
-      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-            coordinateSystem(preserveAspectRatio=false)));
-    end SignalSubBus_SensorOutput;
-
-    model DumpTank_Init_T "Expansion tank with cover gas"
-      import Modelica.Fluid.Types.Dynamics;
-      extends TRANSFORM.Fluid.Interfaces.Records.Medium_fluid;
-      TRANSFORM.Fluid.Interfaces.FluidPort_State port_a(
-        redeclare package Medium = Medium,
-        m_flow(min=if allowFlowReversal then -Modelica.Constants.inf else 0))
-        "Fluid connector a (positive design flow direction is from port_a to port_b)"
-        annotation (Placement(transformation(extent={{-20,60},{20,100}}, rotation=0),
-            iconTransformation(extent={{-10,74},{10,94}})));
-      TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(
-        redeclare package Medium = Medium,
-        m_flow(max=if allowFlowReversal then +Modelica.Constants.inf else 0))
-        "Fluid connector b (positive design flow direction is from port_a to port_b)"
-        annotation (Placement(transformation(extent={{-20,-100},{20,-60}}, rotation=
-               0), iconTransformation(extent={{-10,-94},{10,-74}})));
-      parameter SI.Area A "Cross-sectional area";
-      parameter SI.Volume V0=0 "Volume at zero level";
-      input SI.Pressure p_surface=p_start "Liquid surface/gas pressure"
-        annotation (Dialog(group="Inputs"));
-      parameter Boolean allowFlowReversal=true
-        "= true to allow flow reversal, false restricts to design direction"
-        annotation (Dialog(tab="Advanced"));
-      parameter Dynamics energyDynamics=Dynamics.DynamicFreeInitial
-        "Formulation of energy balances"
-        annotation (Evaluate=true, Dialog(tab="Advanced", group="Dynamics"));
-      parameter Dynamics massDynamics=energyDynamics "Formulation of mass balances"
-        annotation (Evaluate=true, Dialog(tab="Advanced", group="Dynamics"));
-      final parameter Dynamics substanceDynamics=massDynamics
-        "Formulation of substance balances"
-        annotation (Evaluate=true, Dialog(tab="Advanced", group="Dynamics"));
-      parameter Dynamics traceDynamics=massDynamics
-        "Formulation of trace substance balances"
-        annotation (Evaluate=true, Dialog(tab="Advanced", group="Dynamics"));
-      input Real g_n=Modelica.Constants.g_n annotation(Dialog(tab="Advanced"));
-      // Initialization
-      parameter SI.Pressure p_start=1e5 annotation (Dialog(tab="Initialization"));
-      parameter SI.Length level_start "Start level"
-        annotation (Dialog(tab="Initialization"));
-        parameter Boolean Use_T_Start = true annotation(Dialog(tab = "Initialization"));
-
-      parameter SI.SpecificEnthalpy h_start=1e5
-        annotation (Dialog(tab="Initialization", enable = not Use_T_Start));
-        parameter SI.Temperature T_start = 150 annotation(Dialog(tab = "Initialization", enable = Use_T_Start));
-      parameter SI.MassFraction X_start[Medium.nX]=Medium.X_default "Mass fraction"
-        annotation (Dialog(
-          tab="Initialization",
-          group="Start Value: Species Mass Fraction",
-          enable=Medium.nXi > 0));
-      parameter TRANSFORM.Units.ExtraProperty C_start[Medium.nC]=fill(0, Medium.nC)
-        "Mass-Specific value" annotation (Dialog(
-          tab="Initialization",
-          group="Start Value: Trace Substances",
-          enable=Medium.nC > 0));
-      SI.Length level(start=level_start, stateSelect=StateSelect.prefer)
-        "Level";
-      SI.Volume V "Volume";
-      SI.Mass m "Mmass";
-      SI.InternalEnergy U "Liquid internal energy";
-      Medium.SpecificEnthalpy h(start=h_start, stateSelect=StateSelect.prefer)
-        "Specific enthalpy";
-      Medium.AbsolutePressure p(start=p_start) "Pressure";
-      Medium.ThermodynamicState state=Medium.setState_phX(p_surface, h,Xi)
-        "Thermodynamic state";
-      Medium.Density d=Medium.density(state) "Density";
-      Medium.Temperature T = Medium.temperature(state) "Temperature";
-      SI.Mass mXi[Medium.nXi] "Species mass";
-      SI.MassFraction Xi[Medium.nXi](start=Medium.reference_X[1:Medium.nXi])
-        "Structurally independent mass fractions";
-      TRANSFORM.Units.ExtraPropertyExtrinsic mC[Medium.nC]
-        "Trace substance extrinsic value";
-      TRANSFORM.Units.ExtraProperty C[Medium.nC](stateSelect=StateSelect.prefer,
-          start=C_start) "Trace substance mass-specific value";
-      // Mass Balance
-      SI.MassFlowRate mb=port_a.m_flow + port_b.m_flow
-        "Mass flow rate source/sinks within volumes";
-      // Energy Balance
-      SI.HeatFlowRate Ub=port_a.m_flow*actualStream(port_a.h_outflow) + port_b.m_flow
-          *actualStream(port_b.h_outflow) + Q_flow_internal + Q_gen
-        "Energy source/sinks within volumes (e.g., ohmic heating, external convection)";
-      // Species Balance
-      SI.MassFlowRate mXib[Medium.nXi]={port_a.m_flow*actualStream(port_a.Xi_outflow[
-          i]) + port_b.m_flow*actualStream(port_b.Xi_outflow[i]) for i in 1:Medium.nXi}
-        "Species mass flow rates source/sinks within volumes";
-      // Trace Balance
-      TRANSFORM.Units.ExtraPropertyFlowRate mCb[Medium.nC]={port_a.m_flow*
-          actualStream(port_a.C_outflow[i]) + port_b.m_flow*actualStream(port_b.C_outflow[
-          i]) + mC_gen[i] + mC_flow_internal[i] for i in 1:Medium.nC}
-        "Trace flow rate source/sinks within volumes (e.g., chemical reactions, external convection)";
-      parameter Boolean use_HeatPort=false "=true to toggle heat port"
-        annotation (Dialog(tab="Advanced", group="Heat Transfer"), Evaluate=true);
-      input SI.HeatFlowRate Q_gen=0 "Internal heat generation"
-        annotation (Dialog(tab="Advanced", group="Heat Transfer"));
-      parameter Boolean use_TraceMassPort=false "=true to toggle trace mass port"
-        annotation (Dialog(tab="Advanced", group="Trace Mass Transfer"), Evaluate=true);
-      parameter Real MMs[Medium.nC]=fill(1, Medium.nC)
-        "Conversion from fluid mass-specific value to moles (e.g., molar mass [kg/mol] or Avogadro's number [atoms/mol])" annotation (Dialog(
-          tab="Advanced",
-          group="Trace Mass Transfer",
-          enable=use_TraceMassPort));
-      input TRANSFORM.Units.ExtraPropertyFlowRate mC_gen[Medium.nC]=fill(0, Medium.nC)
-        "Internal trace mass generation"
-        annotation (Dialog(tab="Advanced", group="Trace Mass Transfer"));
-      TRANSFORM.HeatAndMassTransfer.Interfaces.HeatPort_State heatPort(T=T, Q_flow=
-            Q_flow_internal) if use_HeatPort annotation (Placement(transformation(
-              extent={{74,-10},{94,10}}), iconTransformation(extent={{74,-10},{94,10}})));
-      TRANSFORM.HeatAndMassTransfer.Interfaces.MolePort_State traceMassPort(
-        nC=Medium.nC,
-        C=C .* d ./ MMs,
-        n_flow=mC_flow_internal ./ MMs) if use_TraceMassPort annotation (Placement(
-            transformation(extent={{50,-70},{70,-50}}), iconTransformation(extent={{
-                50,-70},{70,-50}})));
-      // Visualization
-      parameter Boolean showName=true annotation (Dialog(tab="Visualization"));
-    protected
-      SI.HeatFlowRate Q_flow_internal;
-      TRANSFORM.Units.ExtraPropertyFlowRate mC_flow_internal[Medium.nC];
-    initial equation
-      // Mass Balance
-      if massDynamics == Dynamics.FixedInitial then
-        level = level_start;
-      elseif massDynamics == Dynamics.SteadyStateInitial then
-        der(level) = 0;
-      end if;
-      // Energy Balance
-      if energyDynamics == Dynamics.FixedInitial then
-        if Use_T_Start then
-          h = Medium.specificEnthalpy_pTX(p_start, T_start, Medium.X_default);
-          else
-        h = h_start;
-        end if;
-      elseif energyDynamics == Dynamics.SteadyStateInitial then
-        der(h) = 0;
-      end if;
-      // Species Balance
-      if substanceDynamics == Dynamics.FixedInitial then
-        Xi = X_start[1:Medium.nXi];
-      elseif substanceDynamics == Dynamics.SteadyStateInitial then
-        der(Xi) = zeros(Medium.nXi);
-      end if;
-      // Trace Balance
-      if traceDynamics == Dynamics.FixedInitial then
-        C = C_start;
-      elseif traceDynamics == Dynamics.SteadyStateInitial then
-        der(mC) = zeros(Medium.nC);
-      end if;
-    equation
-      if not use_HeatPort then
-        Q_flow_internal = 0;
-      end if;
-      if not use_TraceMassPort then
-        mC_flow_internal = zeros(Medium.nC);
-      end if;
-      // Total Quantities
-      V = V0 + A*level;
-      m = V*d;
-      U = m*Medium.specificInternalEnergy(state);
-      p = p_surface + d*g_n*0.5*level;
-      mC = m*C;
-      // Mass Balance
-      if massDynamics == Dynamics.SteadyState then
-        0 = mb;
-      else
-        der(m) = mb;
-      end if;
-      // Energy Balance
-      if massDynamics == Dynamics.SteadyState then
-        0 = Ub;
-      else
-        der(U) = Ub;
-      end if;
-      // Species Balance
-      if massDynamics == Dynamics.SteadyState then
-        zeros(Medium.nXi) = mXib;
-      else
-        der(mXi) = mXib;
-      end if;
-      // Trace Balance
-      if traceDynamics == Dynamics.SteadyState then
-        zeros(Medium.nC) = mCb;
-      else
-        der(mC) = mCb;
-      end if;
-      // Boundary Conditions
-      port_a.p = p_surface;
-      port_b.p = p_surface + d*g_n*level;
-      port_a.h_outflow = h;
-      port_b.h_outflow = h;
-      port_a.Xi_outflow = Xi;
-      port_b.Xi_outflow = Xi;
-      port_a.C_outflow = C;
-      port_b.C_outflow = C;
-      annotation (defaultComponentName="tank",
-        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
-            graphics={
-            Ellipse(
-              extent={{-85,85},{85,-85}},
-              fillColor={0,128,255},
-              fillPattern=FillPattern.Sphere,
-              pattern=LinePattern.None,
-              lineColor={0,0,0}),
-            Ellipse(
-              extent={{-85,-85},{85,85}},
-              pattern=LinePattern.None,
-              lineColor={135,135,135},
-              fillColor={255,255,255},
-              fillPattern=FillPattern.Sphere,
-              startAngle=0,
-              endAngle=180),
-            Text(
-              extent={{-150,20},{150,-20}},
-              lineColor={0,0,255},
-              textString="%name",
-              visible=DynamicSelect(true, showName),
-              origin={-111,0},
-              rotation=90)}),
-        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
-                100}})),
-        Documentation(info="<html>
-<p>Tank where port_a is assumped to empty at the liquid surface level (regardless of level), i.e., port_a.p=p_surface.</p>
-<p>p = p_surface + 0.5*fluid pressure</p>
-<p>port_b.p = p_surface + fluid pressure</p>
-</html>"));
-    end DumpTank_Init_T;
-  end BaseClasses;
+  end Models;
 
   package ControlSystems
     model CS_Default
@@ -12423,5 +11866,572 @@ package SHS_Two_Tank
               textString="Don't set lower bound lower than -9
 "),     Line(points={{-70,-42},{-64,-46}}, color={28,108,200})}));
     end CS_TES_HT_Power_ANL;
+
+    model CS_Dummy
+
+      extends BaseClasses.Partial_ControlSystem;
+
+    equation
+
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics={
+            Text(
+              extent={{-94,82},{94,74}},
+              lineColor={0,0,0},
+              lineThickness=1,
+              fillColor={255,255,237},
+              fillPattern=FillPattern.Solid,
+              textString="Change Me")}));
+    end CS_Dummy;
+
+    model ED_Dummy
+
+      extends BaseClasses.Partial_EventDriver;
+
+    equation
+
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics={
+            Text(
+              extent={{-94,82},{94,74}},
+              lineColor={0,0,0},
+              lineThickness=1,
+              fillColor={255,255,237},
+              fillPattern=FillPattern.Solid,
+              textString="Change Me")}));
+    end ED_Dummy;
   end ControlSystems;
+
+  package Data
+
+    model Data_Dummy
+
+      extends BaseClasses.Record_Data;
+
+      annotation (
+        defaultComponentName="data",
+        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
+              lineColor={0,0,0},
+              extent={{-100,-90},{100,-70}},
+              textString="changeMe")}),
+        Diagram(coordinateSystem(preserveAspectRatio=false)),
+        Documentation(info="<html>
+</html>"));
+    end Data_Dummy;
+
+    model Data_Default
+
+      extends BaseClasses.Record_Data;
+      parameter Modelica.Units.SI.Length hot_tank_level_max = 15;
+      parameter Modelica.Units.SI.Length cold_tank_level_max = 15;
+      parameter Modelica.Units.SI.Temperature hot_tank_ref_temp = 273.15+245;
+      parameter Modelica.Units.SI.Temperature cold_tank_ref_temp = 273.15+160;
+
+      annotation (
+        defaultComponentName="data",
+        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
+              lineColor={0,0,0},
+              extent={{-100,-90},{100,-70}},
+              textString="changeMe")}),
+        Diagram(coordinateSystem(preserveAspectRatio=false)),
+        Documentation(info="<html>
+</html>"));
+    end Data_Default;
+
+    model Data_CS
+
+      extends BaseClasses.Record_Data;
+      parameter Modelica.Units.SI.Length hot_tank_level_min = 1.0;
+      parameter Modelica.Units.SI.Length cold_tank_level_min = 1.0;
+      parameter Modelica.Units.SI.Temperature hot_tank_ref_temp = 273.15+245;
+      parameter Modelica.Units.SI.Temperature cold_tank_ref_temp = 273.15+160;
+      parameter Modelica.Units.SI.MassFlowRate steam_prod_rate = 2.5;
+      parameter Modelica.Units.SI.MassFlowRate reference_charging_m_flow = 20;
+      parameter Modelica.Units.SI.MassFlowRate reference_discharging_m_flow = 10;
+      parameter Real discharge_control_ref_value = 100 "Change this value based on what control is based on. For temperature, make sure to enter in K";
+
+      annotation (
+        defaultComponentName="data",
+        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
+              lineColor={0,0,0},
+              extent={{-100,-90},{100,-70}},
+              textString="changeMe")}),
+        Diagram(coordinateSystem(preserveAspectRatio=false)),
+        Documentation(info="<html>
+</html>"));
+    end Data_CS;
+
+    model Data_SHS
+
+      extends BaseClasses.Record_Data;
+      parameter Modelica.Units.SI.Length ht_level_max = 15 annotation(Dialog(group = "Hot Tank"));
+      parameter Modelica.Units.SI.Area ht_area = 50 annotation(Dialog(group = "Hot Tank"));
+      parameter Modelica.Units.SI.Volume ht_zero_level_volume = 1 annotation(Dialog(group = "Hot Tank"));
+      parameter Modelica.Units.SI.Pressure ht_surface_pressure = 101325 annotation(Dialog(group = "Hot Tank"));
+      parameter Modelica.Units.SI.Length ht_init_level = ht_level_max*0.5 annotation(Dialog(tab = "Initialization", group = "Hot Tank"));
+      parameter Modelica.Units.SI.Temperature hot_tank_init_temp = 273.15+240 annotation(Dialog(tab = "Initialization", group = "Hot Tank"));
+      parameter Modelica.Units.SI.Length cold_tank_level_max = 15 annotation(Dialog(group = "Cold Tank"));
+      parameter Modelica.Units.SI.Area cold_tank_area = 50 annotation(Dialog(group = "Cold Tank"));
+      parameter Modelica.Units.SI.Volume ct_zero_level_volume = 1 annotation(Dialog(group = "Cold Tank"));
+      parameter Modelica.Units.SI.Pressure ct_surface_pressure = 101325 annotation(Dialog(group = "Cold Tank"));
+      parameter Modelica.Units.SI.Length cold_tank_init_level = ht_level_max*0.5 annotation(Dialog(tab = "Initialization", group = "Cold Tank"));
+      parameter Modelica.Units.SI.Temperature cold_tank_init_temp = 273.15+240 annotation(Dialog(tab = "Initialization", group = "Cold Tank"));
+      parameter Modelica.Units.SI.MassFlowRate m_flow_ch_min = 2.0;
+      parameter Integer CHXnV = 5 "Number of nodes in CHX" annotation(Dialog(tab = "Heat Exchangers", group = "CHX"));
+      parameter Real DHX_NTU = 4.0 "DHX NTU value" annotation(Dialog(tab = "Heat Exchangers", group = "DHX"));
+      parameter Boolean DHX_Use_derQ = true annotation (Evaluate = true,
+                    Dialog(enable = use_derQ, tab = "Heat Exchangers", group = "DHX"));
+      parameter Modelica.Units.SI.Time DHX_tau = 1.0 annotation(Dialog(tab="Heat Exchangers", group = "DHX"));
+      parameter Real DHX_K_tube(unit = "1/m4") = 100 "Pressure drop coefficient" annotation(Dialog(tab = "Heat Exchangers", group = "DHX"));
+      parameter Real DHX_K_shell(unit = "1/m4") = 100 "Pressure drop coefficient" annotation(Dialog(tab = "Heat Exchangers", group = "DHX"));
+      parameter Modelica.Units.SI.Volume DHX_v_tube = 10 "Tube side (SHS side) volume" annotation(Dialog(tab = "Heat Exchangers", group = "DHX"));
+      parameter Modelica.Units.SI.Volume DHX_v_shell = 10 "Shell side volume" annotation(Dialog(tab = "Heat Exchangers", group = "DHX"));
+
+      parameter Modelica.Units.SI.Pressure DHX_p_start_tube = 100000 annotation(Dialog(tab = "Initialization", group = "DHX"));
+      parameter Modelica.Units.SI.Pressure DHX_dp_init_tube = 1000 annotation(Dialog(tab = "Initialization", group = "DHX"));
+      parameter Modelica.Units.SI.SpecificEnthalpy DHX_h_start_tube_inlet = 300e3 annotation(Dialog(tab = "Initialization", group = "DHX"));
+      parameter Modelica.Units.SI.SpecificEnthalpy DHX_h_start_tube_outlet = 100e3 annotation(Dialog(tab = "Initialization", group = "DHX"));
+      parameter Modelica.Units.SI.Pressure DHX_p_start_shell = 5e5 annotation(Dialog(tab = "Initialization", group = "DHX"));
+      parameter Modelica.Units.SI.Pressure DHX_dp_init_shell = 1000 annotation(Dialog(tab = "Initialization", group = "DHX"));
+      parameter Modelica.Units.SI.SpecificEnthalpy DHX_h_start_shell_inlet = 1400e3 annotation(Dialog(tab = "Initialization", group = "DHX"));
+      parameter Modelica.Units.SI.SpecificEnthalpy DHX_h_start_shell_outlet = 2000e3 annotation(Dialog(tab = "Initialization", group = "DHX"));
+      parameter Modelica.Units.SI.Power DHX_Q_init = 1 "Do not set to 0" annotation(Dialog(tab = "Initialization", group = "DHX"));
+
+      parameter Modelica.Units.SI.Volume discharge_pump_volume = 1 annotation(Dialog(tab = "Pumps", group = "Discharge"));
+      parameter Modelica.Units.SI.Length discharge_pump_diameter = 0.5  annotation(Dialog(tab = "Pumps", group = "Discharge"));
+      parameter Modelica.Units.NonSI.AngularVelocity_rpm discharge_pump_rpm_nominal = 1500  annotation(Dialog(tab = "Pumps", group = "Discharge"));
+      parameter Modelica.Units.SI.Length discharge_pump_diameter_nominal = 0.5  annotation(Dialog(tab = "Pumps", group = "Discharge"));
+      parameter Modelica.Units.SI.Pressure discharge_pump_dp_nominal = 2e5  annotation(Dialog(tab = "Pumps", group = "Discharge"));
+      parameter Modelica.Units.SI.MassFlowRate discharge_pump_m_flow_nominal = 10  annotation(Dialog(tab = "Pumps", group = "Discharge"));
+      parameter Modelica.Units.SI.Density discharge_pump_rho_nominal = 1  annotation(Dialog(tab = "Pumps", group = "Discharge"));
+      parameter Modelica.Units.NonSI.AngularVelocity_rpm discharge_pump_constantRPM = 1500  annotation(Dialog(tab = "Pumps", group = "Discharge"));
+
+      parameter Modelica.Units.SI.Volume charge_pump_volume = 1 annotation(Dialog(tab = "Pumps", group = "Charge"));
+      parameter Modelica.Units.SI.Length charge_pump_diamter = 0.5  annotation(Dialog(tab = "Pumps", group = "Charge"));
+      parameter Modelica.Units.NonSI.AngularVelocity_rpm charge_pump_rpm_nominal = 1500  annotation(Dialog(tab = "Pumps", group = "Charge"));
+      parameter Modelica.Units.SI.Length charge_pump_diameter_nominal = 0.5  annotation(Dialog(tab = "Pumps", group = "Charge"));
+      parameter Modelica.Units.SI.Pressure charge_pump_dp_nominal = 7e5  annotation(Dialog(tab = "Pumps", group = "Charge"));
+      parameter Modelica.Units.SI.MassFlowRate charge_pump_m_flow_nominal = 20  annotation(Dialog(tab = "Pumps", group = "Charge"));
+      parameter Modelica.Units.SI.Density charge_pump_rho_nominal = 1  annotation(Dialog(tab = "Pumps", group = "Charge"));
+      parameter Modelica.Units.NonSI.AngularVelocity_rpm charge_pump_constantRPM = 2000  annotation(Dialog(tab = "Pumps", group = "Charge"));
+
+      parameter Modelica.Units.SI.Area ctdp_area = 1 annotation(Dialog(tab = "Piping", group = "Discharge"));
+      parameter Modelica.Units.SI.Length ctdp_length = 10 annotation(Dialog(tab = "Piping", group = "Discharge"));
+      parameter Modelica.Units.SI.Length ctdp_d_height = 0.0 annotation(Dialog(tab = "Piping", group = "Discharge"));
+      parameter Modelica.Units.SI.Volume ctvolume_volume = 1.0 annotation(Dialog(tab = "Piping", group = "Disharge"));
+      parameter Modelica.Units.SI.MassFlowRate disvalve_m_flow_nom = 25 annotation(Dialog(tab = "Piping", group = "Discharge"));
+      parameter Modelica.Units.SI.Pressure disvalve_dp_nominal = 1e5 annotation(Dialog(tab = "Piping", group = "Discharge"));
+      parameter Modelica.Units.SI.Area htdp_area = 1 annotation(Dialog(tab = "Piping", group = "Charge"));
+      parameter Modelica.Units.SI.Length htdp_length = 10 annotation(Dialog(tab = "Piping", group = "Charge"));
+      parameter Modelica.Units.SI.Length htdp_d_height = 0.0 annotation(Dialog(tab = "Piping", group = "Charge"));
+      parameter Modelica.Units.SI.MassFlowRate chvalve_m_flow_nom = 25 annotation(Dialog(tab = "Piping", group = "Charge"));
+      parameter Modelica.Units.SI.Pressure chvalve_dp_nominal = 1e5 annotation(Dialog(tab = "Piping", group = "Charge"));
+      annotation (
+        defaultComponentName="data",
+        Icon(coordinateSystem(preserveAspectRatio=false), graphics={Text(
+              lineColor={0,0,0},
+              extent={{-100,-90},{100,-70}},
+              textString="changeMe")}),
+        Diagram(coordinateSystem(preserveAspectRatio=false)),
+        Documentation(info="<html>
+</html>"));
+    end Data_SHS;
+  end Data;
+
+  package SupportComponent
+    model DumpTank_Init_T "Expansion tank with cover gas"
+      import Modelica.Fluid.Types.Dynamics;
+      extends TRANSFORM.Fluid.Interfaces.Records.Medium_fluid;
+      TRANSFORM.Fluid.Interfaces.FluidPort_State port_a(
+        redeclare package Medium = Medium,
+        m_flow(min=if allowFlowReversal then -Modelica.Constants.inf else 0))
+        "Fluid connector a (positive design flow direction is from port_a to port_b)"
+        annotation (Placement(transformation(extent={{-20,60},{20,100}}, rotation=0),
+            iconTransformation(extent={{-10,74},{10,94}})));
+      TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(
+        redeclare package Medium = Medium,
+        m_flow(max=if allowFlowReversal then +Modelica.Constants.inf else 0))
+        "Fluid connector b (positive design flow direction is from port_a to port_b)"
+        annotation (Placement(transformation(extent={{-20,-100},{20,-60}}, rotation=
+               0), iconTransformation(extent={{-10,-94},{10,-74}})));
+      parameter SI.Area A "Cross-sectional area";
+      parameter SI.Volume V0=0 "Volume at zero level";
+      input SI.Pressure p_surface=p_start "Liquid surface/gas pressure"
+        annotation (Dialog(group="Inputs"));
+      parameter Boolean allowFlowReversal=true
+        "= true to allow flow reversal, false restricts to design direction"
+        annotation (Dialog(tab="Advanced"));
+      parameter Dynamics energyDynamics=Dynamics.DynamicFreeInitial
+        "Formulation of energy balances"
+        annotation (Evaluate=true, Dialog(tab="Advanced", group="Dynamics"));
+      parameter Dynamics massDynamics=energyDynamics "Formulation of mass balances"
+        annotation (Evaluate=true, Dialog(tab="Advanced", group="Dynamics"));
+      final parameter Dynamics substanceDynamics=massDynamics
+        "Formulation of substance balances"
+        annotation (Evaluate=true, Dialog(tab="Advanced", group="Dynamics"));
+      parameter Dynamics traceDynamics=massDynamics
+        "Formulation of trace substance balances"
+        annotation (Evaluate=true, Dialog(tab="Advanced", group="Dynamics"));
+      input Real g_n=Modelica.Constants.g_n annotation(Dialog(tab="Advanced"));
+      // Initialization
+      parameter SI.Pressure p_start=1e5 annotation (Dialog(tab="Initialization"));
+      parameter SI.Length level_start "Start level"
+        annotation (Dialog(tab="Initialization"));
+        parameter Boolean Use_T_Start = true annotation(Dialog(tab = "Initialization"));
+
+      parameter SI.SpecificEnthalpy h_start=1e5
+        annotation (Dialog(tab="Initialization", enable = not Use_T_Start));
+        parameter SI.Temperature T_start = 150 annotation(Dialog(tab = "Initialization", enable = Use_T_Start));
+      parameter SI.MassFraction X_start[Medium.nX]=Medium.X_default "Mass fraction"
+        annotation (Dialog(
+          tab="Initialization",
+          group="Start Value: Species Mass Fraction",
+          enable=Medium.nXi > 0));
+      parameter TRANSFORM.Units.ExtraProperty C_start[Medium.nC]=fill(0, Medium.nC)
+        "Mass-Specific value" annotation (Dialog(
+          tab="Initialization",
+          group="Start Value: Trace Substances",
+          enable=Medium.nC > 0));
+      SI.Length level(start=level_start, stateSelect=StateSelect.prefer)
+        "Level";
+      SI.Volume V "Volume";
+      SI.Mass m "Mmass";
+      SI.InternalEnergy U "Liquid internal energy";
+      Medium.SpecificEnthalpy h(start=h_start, stateSelect=StateSelect.prefer)
+        "Specific enthalpy";
+      Medium.AbsolutePressure p(start=p_start) "Pressure";
+      Medium.ThermodynamicState state=Medium.setState_phX(p_surface, h,Xi)
+        "Thermodynamic state";
+      Medium.Density d=Medium.density(state) "Density";
+      Medium.Temperature T = Medium.temperature(state) "Temperature";
+      SI.Mass mXi[Medium.nXi] "Species mass";
+      SI.MassFraction Xi[Medium.nXi](start=Medium.reference_X[1:Medium.nXi])
+        "Structurally independent mass fractions";
+      TRANSFORM.Units.ExtraPropertyExtrinsic mC[Medium.nC]
+        "Trace substance extrinsic value";
+      TRANSFORM.Units.ExtraProperty C[Medium.nC](stateSelect=StateSelect.prefer,
+          start=C_start) "Trace substance mass-specific value";
+      // Mass Balance
+      SI.MassFlowRate mb=port_a.m_flow + port_b.m_flow
+        "Mass flow rate source/sinks within volumes";
+      // Energy Balance
+      SI.HeatFlowRate Ub=port_a.m_flow*actualStream(port_a.h_outflow) + port_b.m_flow
+          *actualStream(port_b.h_outflow) + Q_flow_internal + Q_gen
+        "Energy source/sinks within volumes (e.g., ohmic heating, external convection)";
+      // Species Balance
+      SI.MassFlowRate mXib[Medium.nXi]={port_a.m_flow*actualStream(port_a.Xi_outflow[
+          i]) + port_b.m_flow*actualStream(port_b.Xi_outflow[i]) for i in 1:Medium.nXi}
+        "Species mass flow rates source/sinks within volumes";
+      // Trace Balance
+      TRANSFORM.Units.ExtraPropertyFlowRate mCb[Medium.nC]={port_a.m_flow*
+          actualStream(port_a.C_outflow[i]) + port_b.m_flow*actualStream(port_b.C_outflow[
+          i]) + mC_gen[i] + mC_flow_internal[i] for i in 1:Medium.nC}
+        "Trace flow rate source/sinks within volumes (e.g., chemical reactions, external convection)";
+      parameter Boolean use_HeatPort=false "=true to toggle heat port"
+        annotation (Dialog(tab="Advanced", group="Heat Transfer"), Evaluate=true);
+      input SI.HeatFlowRate Q_gen=0 "Internal heat generation"
+        annotation (Dialog(tab="Advanced", group="Heat Transfer"));
+      parameter Boolean use_TraceMassPort=false "=true to toggle trace mass port"
+        annotation (Dialog(tab="Advanced", group="Trace Mass Transfer"), Evaluate=true);
+      parameter Real MMs[Medium.nC]=fill(1, Medium.nC)
+        "Conversion from fluid mass-specific value to moles (e.g., molar mass [kg/mol] or Avogadro's number [atoms/mol])" annotation (Dialog(
+          tab="Advanced",
+          group="Trace Mass Transfer",
+          enable=use_TraceMassPort));
+      input TRANSFORM.Units.ExtraPropertyFlowRate mC_gen[Medium.nC]=fill(0, Medium.nC)
+        "Internal trace mass generation"
+        annotation (Dialog(tab="Advanced", group="Trace Mass Transfer"));
+      TRANSFORM.HeatAndMassTransfer.Interfaces.HeatPort_State heatPort(T=T, Q_flow=
+            Q_flow_internal) if use_HeatPort annotation (Placement(transformation(
+              extent={{74,-10},{94,10}}), iconTransformation(extent={{74,-10},{94,10}})));
+      TRANSFORM.HeatAndMassTransfer.Interfaces.MolePort_State traceMassPort(
+        nC=Medium.nC,
+        C=C .* d ./ MMs,
+        n_flow=mC_flow_internal ./ MMs) if use_TraceMassPort annotation (Placement(
+            transformation(extent={{50,-70},{70,-50}}), iconTransformation(extent={{
+                50,-70},{70,-50}})));
+      // Visualization
+      parameter Boolean showName=true annotation (Dialog(tab="Visualization"));
+    protected
+      SI.HeatFlowRate Q_flow_internal;
+      TRANSFORM.Units.ExtraPropertyFlowRate mC_flow_internal[Medium.nC];
+    initial equation
+      // Mass Balance
+      if massDynamics == Dynamics.FixedInitial then
+        level = level_start;
+      elseif massDynamics == Dynamics.SteadyStateInitial then
+        der(level) = 0;
+      end if;
+      // Energy Balance
+      if energyDynamics == Dynamics.FixedInitial then
+        if Use_T_Start then
+          h = Medium.specificEnthalpy_pTX(p_start, T_start, Medium.X_default);
+          else
+        h = h_start;
+        end if;
+      elseif energyDynamics == Dynamics.SteadyStateInitial then
+        der(h) = 0;
+      end if;
+      // Species Balance
+      if substanceDynamics == Dynamics.FixedInitial then
+        Xi = X_start[1:Medium.nXi];
+      elseif substanceDynamics == Dynamics.SteadyStateInitial then
+        der(Xi) = zeros(Medium.nXi);
+      end if;
+      // Trace Balance
+      if traceDynamics == Dynamics.FixedInitial then
+        C = C_start;
+      elseif traceDynamics == Dynamics.SteadyStateInitial then
+        der(mC) = zeros(Medium.nC);
+      end if;
+    equation
+      if not use_HeatPort then
+        Q_flow_internal = 0;
+      end if;
+      if not use_TraceMassPort then
+        mC_flow_internal = zeros(Medium.nC);
+      end if;
+      // Total Quantities
+      V = V0 + A*level;
+      m = V*d;
+      U = m*Medium.specificInternalEnergy(state);
+      p = p_surface + d*g_n*0.5*level;
+      mC = m*C;
+      // Mass Balance
+      if massDynamics == Dynamics.SteadyState then
+        0 = mb;
+      else
+        der(m) = mb;
+      end if;
+      // Energy Balance
+      if massDynamics == Dynamics.SteadyState then
+        0 = Ub;
+      else
+        der(U) = Ub;
+      end if;
+      // Species Balance
+      if massDynamics == Dynamics.SteadyState then
+        zeros(Medium.nXi) = mXib;
+      else
+        der(mXi) = mXib;
+      end if;
+      // Trace Balance
+      if traceDynamics == Dynamics.SteadyState then
+        zeros(Medium.nC) = mCb;
+      else
+        der(mC) = mCb;
+      end if;
+      // Boundary Conditions
+      port_a.p = p_surface;
+      port_b.p = p_surface + d*g_n*level;
+      port_a.h_outflow = h;
+      port_b.h_outflow = h;
+      port_a.Xi_outflow = Xi;
+      port_b.Xi_outflow = Xi;
+      port_a.C_outflow = C;
+      port_b.C_outflow = C;
+      annotation (defaultComponentName="tank",
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
+            graphics={
+            Ellipse(
+              extent={{-85,85},{85,-85}},
+              fillColor={0,128,255},
+              fillPattern=FillPattern.Sphere,
+              pattern=LinePattern.None,
+              lineColor={0,0,0}),
+            Ellipse(
+              extent={{-85,-85},{85,85}},
+              pattern=LinePattern.None,
+              lineColor={135,135,135},
+              fillColor={255,255,255},
+              fillPattern=FillPattern.Sphere,
+              startAngle=0,
+              endAngle=180),
+            Text(
+              extent={{-150,20},{150,-20}},
+              lineColor={0,0,255},
+              textString="%name",
+              visible=DynamicSelect(true, showName),
+              origin={-111,0},
+              rotation=90)}),
+        Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{100,
+                100}})),
+        Documentation(info="<html>
+<p>Tank where port_a is assumped to empty at the liquid surface level (regardless of level), i.e., port_a.p=p_surface.</p>
+<p>p = p_surface + 0.5*fluid pressure</p>
+<p>port_b.p = p_surface + fluid pressure</p>
+</html>"));
+    end DumpTank_Init_T;
+  end SupportComponent;
+
+  package BaseClasses
+    extends TRANSFORM.Icons.BasesPackage;
+
+    partial model Partial_SubSystem
+
+      extends NHES.Systems.BaseClasses.Partial_SubSystem;
+
+      extends Record_SubSystem;
+
+      replaceable Partial_ControlSystem CS annotation (choicesAllMatching=true,
+          Placement(transformation(extent={{-18,122},{-2,138}})));
+      replaceable Partial_EventDriver ED annotation (choicesAllMatching=true,
+          Placement(transformation(extent={{2,122},{18,138}})));
+      replaceable Record_Data data
+        annotation (Placement(transformation(extent={{42,122},{58,138}})));
+
+      SignalSubBus_ActuatorInput actuatorBus
+        annotation (Placement(transformation(extent={{10,80},{50,120}}),
+            iconTransformation(extent={{10,80},{50,120}})));
+      SignalSubBus_SensorOutput sensorBus
+        annotation (Placement(transformation(extent={{-50,80},{-10,120}}),
+            iconTransformation(extent={{-50,80},{-10,120}})));
+
+    equation
+      connect(sensorBus, ED.sensorBus) annotation (Line(
+          points={{-30,100},{-16,100},{7.6,100},{7.6,122}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(sensorBus, CS.sensorBus) annotation (Line(
+          points={{-30,100},{-12.4,100},{-12.4,122}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus, CS.actuatorBus) annotation (Line(
+          points={{30,100},{12,100},{-7.6,100},{-7.6,122}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus, ED.actuatorBus) annotation (Line(
+          points={{30,100},{20,100},{12.4,100},{12.4,122}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+
+      annotation (
+        defaultComponentName="changeMe",
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}})),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,140}})));
+    end Partial_SubSystem;
+
+    partial model Partial_SubSystem_A
+
+      extends Partial_SubSystem;
+
+      extends Record_SubSystem_A;
+
+      annotation (
+        defaultComponentName="changeMe",
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                140}})));
+    end Partial_SubSystem_A;
+
+    partial model Record_Data
+
+      extends Modelica.Icons.Record;
+
+      annotation (defaultComponentName="data",
+      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end Record_Data;
+
+    partial record Record_SubSystem
+
+      annotation (defaultComponentName="subsystem",
+      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end Record_SubSystem;
+
+    partial record Record_SubSystem_A
+
+      extends Record_SubSystem;
+
+      annotation (defaultComponentName="subsystem",
+      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end Record_SubSystem_A;
+
+    partial model Partial_ControlSystem
+
+      extends NHES.Systems.BaseClasses.Partial_ControlSystem;
+
+      SignalSubBus_ActuatorInput actuatorBus
+        annotation (Placement(transformation(extent={{10,-120},{50,-80}}),
+            iconTransformation(extent={{10,-120},{50,-80}})));
+      SignalSubBus_SensorOutput sensorBus
+        annotation (Placement(transformation(extent={{-50,-120},{-10,-80}}),
+            iconTransformation(extent={{-50,-120},{-10,-80}})));
+
+      annotation (
+        defaultComponentName="CS",
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}})),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
+                100,100}})));
+
+    end Partial_ControlSystem;
+
+    partial model Partial_EventDriver
+
+      extends NHES.Systems.BaseClasses.Partial_EventDriver;
+
+      SignalSubBus_ActuatorInput actuatorBus
+        annotation (Placement(transformation(extent={{10,-120},{50,-80}}),
+            iconTransformation(extent={{10,-120},{50,-80}})));
+      SignalSubBus_SensorOutput sensorBus
+        annotation (Placement(transformation(extent={{-50,-120},{-10,-80}}),
+            iconTransformation(extent={{-50,-120},{-10,-80}})));
+
+      annotation (
+        defaultComponentName="ED",
+        Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                100}})));
+
+    end Partial_EventDriver;
+
+    expandable connector SignalSubBus_ActuatorInput
+
+      extends NHES.Systems.Interfaces.SignalSubBus_ActuatorInput;
+
+      annotation (defaultComponentName="actuatorBus",
+      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end SignalSubBus_ActuatorInput;
+
+    expandable connector SignalSubBus_SensorOutput
+
+      extends NHES.Systems.Interfaces.SignalSubBus_SensorOutput;
+
+      annotation (defaultComponentName="sensorBus",
+      Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+            coordinateSystem(preserveAspectRatio=false)));
+    end SignalSubBus_SensorOutput;
+
+    model SubSystem_Dummy
+
+      extends BaseClasses.Partial_SubSystem_A(
+        redeclare replaceable ControlSystems.CS_Dummy CS,
+        redeclare replaceable ControlSystems.ED_Dummy ED,
+        redeclare Data.Data_Dummy data);
+
+    equation
+
+      annotation (
+        defaultComponentName="changeMe",
+        Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                140}})),
+        Icon(coordinateSystem(extent={{-100,-100},{100,100}}), graphics={
+            Text(
+              extent={{-94,82},{94,74}},
+              lineColor={0,0,0},
+              lineThickness=1,
+              fillColor={255,255,237},
+              fillPattern=FillPattern.Solid,
+              textString="Change Me")}));
+    end SubSystem_Dummy;
+  end BaseClasses;
+
 end SHS_Two_Tank;

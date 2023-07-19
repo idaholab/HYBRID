@@ -8,8 +8,10 @@ model RO_Desal_Test
     Q_nominal=1e11,
     droop=0.5,
     n=1)     annotation (Placement(transformation(extent={{48,-10},{68,10}})));
-  NHES.Systems.IndustrialProcess.ReverseOsmosisDesalination.ROplant IP(capacity=
-        dataCapacity.IP_capacity, redeclare CS_LooselyCoupled_stepInput CS(
+  NHES.Systems.IndustrialProcess.ReverseOsmosisDesalination.Models.ROplant IP(
+      capacity=dataCapacity.IP_capacity, redeclare
+      NHES.Systems.IndustrialProcess.ReverseOsmosisDesalination.ControlSystems.CS_LooselyCoupled_stepInput
+      CS(
       capacityScaler=IP.capacityScaler,
       W_IP_nom=IP.capacity_nom,
       NoPumps=IP.NoPumps,

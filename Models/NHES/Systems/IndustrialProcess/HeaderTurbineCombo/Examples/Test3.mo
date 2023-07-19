@@ -2,7 +2,7 @@ within NHES.Systems.IndustrialProcess.HeaderTurbineCombo.Examples;
 model Test3
   extends Modelica.Icons.Example;
 
-  StepDownTurbines IP(redeclare ED_Inputs ED)
+  Models.StepDownTurbines IP(redeclare ControlSystems.ED_Inputs ED)
     annotation (Placement(transformation(extent={{-40,-42},{40,38}})));
 
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary(

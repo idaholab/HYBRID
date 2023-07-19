@@ -74,7 +74,7 @@ model LWR_Case_02_DirectCoupling
     fileName=Modelica.Utilities.Files.loadResource(
         "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
     annotation (Placement(transformation(extent={{160,60},{200,100}})));
-  EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_BestModel
+  EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_BestModel
     two_Tank_SHS_System_NTU(
     redeclare
       NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_DirectCoupling

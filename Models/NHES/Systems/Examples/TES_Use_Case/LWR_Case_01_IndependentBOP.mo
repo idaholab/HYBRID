@@ -60,7 +60,7 @@ model LWR_Case_01_IndependentBOP
         "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
     annotation (Placement(transformation(extent={{158,60},{198,100}})));
 
-  EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_BestModel
+  EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_BestModel
     two_Tank_SHS_System_NTU(
     redeclare
       NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_BestExample CS,

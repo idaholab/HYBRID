@@ -11905,7 +11905,7 @@ package RankineCycle
          redeclare package Medium = Medium,
          each nPorts=1,
         each use_m_flow_in=true,
-        each use_h_in=true)  if nPorts_a3 > 0
+        each use_h_in=true) if  nPorts_a3 > 0
          annotation (Placement(transformation(extent={{72,-150},{92,-130}})));
       TRANSFORM.Fluid.Sensors.MassFlowRate massFlowRate[nPorts_a3](redeclare
           package Medium = Medium) if nPorts_a3 > 0
@@ -23509,7 +23509,7 @@ package RankineCycle
         TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow12(redeclare package
             Medium = Modelica.Media.Examples.TwoPhaseWater)
           annotation (Placement(transformation(extent={{-154,44},{-146,52}})));
-        EnergyStorage.Concrete_Solid_Media.Components.Dual_Pipe_Model TES(
+        EnergyStorage.Concrete_Solid_Media.SupportComponent.Dual_Pipe_Model TES(
           nPipes=TES_nPipes,
           dX=TES_Length,
           Pipe_to_Concrete_Length_Ratio=1,
@@ -24698,7 +24698,7 @@ package RankineCycle
         TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow12(redeclare package
             Medium = Modelica.Media.Examples.TwoPhaseWater)
           annotation (Placement(transformation(extent={{-118,58},{-110,66}})));
-        EnergyStorage.Concrete_Solid_Media.Components.Dual_Pipe_Model TES(
+        EnergyStorage.Concrete_Solid_Media.SupportComponent.Dual_Pipe_Model TES(
           nPipes=TES_nPipes,
           dX=TES_Length,
           Pipe_to_Concrete_Length_Ratio=1,
@@ -27102,14 +27102,14 @@ Block has one continuous Real input and one continuous Real output signal.
             TRANSFORM.Fluid.Interfaces.FluidPort_Flow Pipe_flow(redeclare
                 package Medium =                                                           medium)
               annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-                Modelica.Blocks.Interfaces.RealOutput v_rout
-                                                            if Vels_out annotation (Placement(transformation(
+                Modelica.Blocks.Interfaces.RealOutput v_rout if
+                                                               Vels_out annotation (Placement(transformation(
                     extent={{-32,32},{8,72}}), iconTransformation(
                   extent={{-20,-20},{20,20}},
                   rotation=270,
                   origin={58,-46})));
-            Modelica.Blocks.Interfaces.RealOutput v_theout
-                                                          if Vels_out annotation (Placement(transformation(
+            Modelica.Blocks.Interfaces.RealOutput v_theout if
+                                                             Vels_out annotation (Placement(transformation(
                     extent={{-32,32},{8,72}}), iconTransformation(
                   extent={{20,-20},{-20,20}},
                   rotation=270,
@@ -28539,18 +28539,18 @@ features are:
               "Fixed values of trace substances"
               annotation (Evaluate=true,
                           Dialog(enable = (not use_C_in) and Medium.nC > 0));
-            Modelica.Blocks.Interfaces.RealInput m_flow_in     if use_m_flow_in
+            Modelica.Blocks.Interfaces.RealInput m_flow_in if     use_m_flow_in
               "Prescribed mass flow rate"
               annotation (Placement(transformation(extent={{-120,60},{-80,100}})));
-            Modelica.Blocks.Interfaces.RealInput h_in              if use_h_in
+            Modelica.Blocks.Interfaces.RealInput h_in if              use_h_in
               "Prescribed fluid specific enthalpy"
               annotation (Placement(transformation(extent={{-140,20},{-100,60}}), iconTransformation(extent={{-140,20},{-100,60}})));
-            Modelica.Blocks.Interfaces.RealInput X_in[Medium.nX]
-                                                               if use_X_in
+            Modelica.Blocks.Interfaces.RealInput X_in[Medium.nX] if
+                                                                  use_X_in
               "Prescribed fluid composition"
               annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
-            Modelica.Blocks.Interfaces.RealInput C_in[Medium.nC]
-                                                               if use_C_in
+            Modelica.Blocks.Interfaces.RealInput C_in[Medium.nC] if
+                                                                  use_C_in
               "Prescribed boundary trace substances"
               annotation (Placement(transformation(extent={{-120,-100},{-80,-60}}), iconTransformation(extent={{-120,-100},{-80,-60}})));
           protected
@@ -32971,7 +32971,7 @@ Real input u2, otherwise the output is <strong>false</strong>.
            redeclare package Medium = Medium,
            each nPorts=1,
           each use_m_flow_in=true,
-          each use_h_in=true)  if nPorts_a3 > 0
+          each use_h_in=true) if  nPorts_a3 > 0
            annotation (Placement(transformation(extent={{72,-150},{92,-130}})));
         TRANSFORM.Fluid.Sensors.MassFlowRate massFlowRate[nPorts_a3](redeclare
             package Medium = Medium) if nPorts_a3 > 0
@@ -33910,7 +33910,7 @@ Real input u2, otherwise the output is <strong>false</strong>.
            redeclare package Medium = Medium,
            each nPorts=1,
           each use_m_flow_in=true,
-          each use_h_in=true)  if nPorts_a3 > 0
+          each use_h_in=true) if  nPorts_a3 > 0
            annotation (Placement(transformation(extent={{72,-150},{92,-130}})));
         TRANSFORM.Fluid.Sensors.MassFlowRate massFlowRate[nPorts_a3](redeclare
             package Medium = Medium) if nPorts_a3 > 0
@@ -39723,14 +39723,14 @@ Real input u2, otherwise the output is <strong>false</strong>.
         "Value to which the controller output is reset if the boolean trigger has a rising edge, used if reset == TRANSFORM.Types.Reset.Parameter"
         annotation(Dialog(enable=reset == TRANSFORM.Types.Reset.Parameter,
                           group="Integrator reset"));
-      Modelica.Blocks.Interfaces.BooleanInput trigger
-        if reset <> TRANSFORM.Types.Reset.Disabled
+      Modelica.Blocks.Interfaces.BooleanInput trigger if
+           reset <> TRANSFORM.Types.Reset.Disabled
         "Resets the controller output when trigger becomes true"
         annotation (Placement(transformation(extent={{-20,-20},{20,20}},
             rotation=90,
             origin={-80,-120})));
-      Modelica.Blocks.Interfaces.RealInput y_reset_in
-        if reset == TRANSFORM.Types.Reset.Input
+      Modelica.Blocks.Interfaces.RealInput y_reset_in if
+           reset == TRANSFORM.Types.Reset.Input
         "Input signal for state to which integrator is reset, enabled if reset = TRANSFORM.Types.Reset.Input"
         annotation (Placement(transformation(extent={{-140,-100},{-100,-60}})));
       Modelica.Blocks.Math.Add addP(k1=wp, k2=-1)
@@ -39766,7 +39766,7 @@ Real input u2, otherwise the output is <strong>false</strong>.
             origin={80,-50},
             extent={{-10,-10},{10,10}},
             rotation=270)));
-      Modelica.Blocks.Math.Gain gainTrack(k=1/(k*Ni))  if with_I
+      Modelica.Blocks.Math.Gain gainTrack(k=1/(k*Ni)) if  with_I
         annotation (Placement(transformation(extent={{40,-80},{20,-60}})));
       Modelica.Blocks.Nonlinear.VariableLimiter
                                         variableLimiter(
@@ -39814,8 +39814,8 @@ Real input u2, otherwise the output is <strong>false</strong>.
        "Internal connector for controller output reset"
        annotation(Evaluate=true);
       Modelica.Blocks.Sources.RealExpression intRes(final y=y_reset_internal/k -
-            addPID.u1 - addPID.u2)
-        if reset <> TRANSFORM.Types.Reset.Disabled
+            addPID.u1 - addPID.u2) if
+           reset <> TRANSFORM.Types.Reset.Disabled
         "Signal source for integrator reset"
         annotation (Placement(transformation(extent={{-90,-100},{-70,-80}})));
       Modelica.Blocks.Interfaces.RealInput k_in_internal

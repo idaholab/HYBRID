@@ -17,7 +17,8 @@ package IntegratedEnergySystem
         port_b1_nominal(p=PHS.port_a_nominal.p, h=PHS.port_a_nominal.h),
         nPorts_b3=1,
         port_b3_nominal_m_flow={-IP.port_a_nominal.m_flow}),
-      redeclare BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries BOP(
+      redeclare BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries
+        BOP(
         port_a_nominal(
           p=EM.port_b2_nominal.p,
           h=EM.port_b2_nominal.h,
@@ -30,14 +31,15 @@ package IntegratedEnergySystem
         redeclare
           NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_PressureAndPowerControl
           CS(p_nominal=BOP.port_a_nominal.p, W_totalSetpoint=SC.W_totalSetpoint_BOP)),
-      redeclare EnergyStorage.Battery.Logical ES(
+      redeclare EnergyStorage.Battery.Models.Logical ES(
         capacity_max=dataCapacity.ES_capacity,
         capacity_min=0.2*dataCapacity.ES_capacity,
         chargePower_max=0.25*Modelica.Units.Conversions.from_Wh(dataCapacity.ES_capacity)
             /Modelica.Units.Conversions.from_hour(1),
         dischargePower_max=0.25*Modelica.Units.Conversions.from_Wh(dataCapacity.ES_capacity)
             /Modelica.Units.Conversions.from_hour(1),
-        redeclare NHES.Systems.EnergyStorage.Battery.CS_InputSetpoint CS(
+        redeclare
+          NHES.Systems.EnergyStorage.Battery.ControlSystems.CS_InputSetpoint CS(
             W_totalSetpoint=SC.W_totalSetpoint_ES)),
       redeclare SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=4),
       redeclare ElectricalGrid.InfiniteGrid.Infinite EG,
@@ -48,12 +50,12 @@ package IntegratedEnergySystem
           delayStart=delayStart.k,
           W_totalSetpoint=SC.W_totalSetpoint_SES)),
       redeclare
-        IndustrialProcess.HighTempSteamElectrolysis.TightlyCoupled_SteamFlowCtrl_FY17
+        IndustrialProcess.HighTempSteamElectrolysis.Models.TightlyCoupled_SteamFlowCtrl_FY17
         IP(
         capacity=dataCapacity.IP_capacity,
         port_a_nominal(m_flow=IP.capacityScaler_steamFlow*7.311637),
         redeclare
-          NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.CS_TightlyCoupled_SteamFlowCtrl_stepInput_FY17
+          NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.ControlSystems.CS_TightlyCoupled_SteamFlowCtrl_stepInput_FY17
           CS(capacityScaler=IP.capacityScaler),
         flowSplit(port_2(h_outflow(start=2.95398e6, fixed=false))),
         returnPump(PR0=62.7/51.3042, pstart_out=6270000),
@@ -127,7 +129,8 @@ package IntegratedEnergySystem
         port_b1_nominal(p=PHS.port_a_nominal.p, h=PHS.port_a_nominal.h),
         nPorts_b3=1,
         port_b3_nominal_m_flow={-IP.port_a_nominal.m_flow}),
-      redeclare BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries BOP(
+      redeclare BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries
+        BOP(
         port_a_nominal(
           p=EM.port_b2_nominal.p,
           h=EM.port_b2_nominal.h,
@@ -140,14 +143,15 @@ package IntegratedEnergySystem
         redeclare
           NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_PressureAndPowerControl
           CS(p_nominal=BOP.port_a_nominal.p, W_totalSetpoint=SC.W_totalSetpoint_BOP)),
-      redeclare EnergyStorage.Battery.Logical ES(
+      redeclare EnergyStorage.Battery.Models.Logical ES(
         capacity_max=dataCapacity.ES_capacity,
         capacity_min=0.2*dataCapacity.ES_capacity,
         chargePower_max=0.25*Modelica.Units.Conversions.from_Wh(dataCapacity.ES_capacity)
             /Modelica.Units.Conversions.from_hour(1),
         dischargePower_max=0.25*Modelica.Units.Conversions.from_Wh(dataCapacity.ES_capacity)
             /Modelica.Units.Conversions.from_hour(1),
-        redeclare NHES.Systems.EnergyStorage.Battery.CS_InputSetpoint CS(
+        redeclare
+          NHES.Systems.EnergyStorage.Battery.ControlSystems.CS_InputSetpoint CS(
             W_totalSetpoint=SC.W_totalSetpoint_ES)),
       redeclare SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=4),
       redeclare ElectricalGrid.InfiniteGrid.Infinite EG,
@@ -158,12 +162,12 @@ package IntegratedEnergySystem
           delayStart=delayStart.k,
           W_totalSetpoint=SC.W_totalSetpoint_SES)),
       redeclare
-        IndustrialProcess.HighTempSteamElectrolysis.TightlyCoupled_SteamFlowCtrl_FY17
+        IndustrialProcess.HighTempSteamElectrolysis.Models.TightlyCoupled_SteamFlowCtrl_FY17
         IP(
         capacity=dataCapacity.IP_capacity,
         port_a_nominal(m_flow=IP.capacityScaler_steamFlow*7.311637),
         redeclare
-          NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.CS_TightlyCoupled_SteamFlowCtrl_stepInput_FY17
+          NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.ControlSystems.CS_TightlyCoupled_SteamFlowCtrl_stepInput_FY17
           CS(capacityScaler=IP.capacityScaler),
         flowSplit(port_2(h_outflow(start=2.95398e6, fixed=false))),
         returnPump(PR0=62.7/51.3042, pstart_out=6270000),
@@ -228,7 +232,8 @@ package IntegratedEnergySystem
         port_b1_nominal(p=PHS.port_a_nominal.p, h=PHS.port_a_nominal.h),
         nPorts_b3=2,
         port_b3_nominal_m_flow={-IP.port_a_nominal.m_flow,-ES.port_a_nominal.m_flow}),
-      redeclare BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries BOP(
+      redeclare BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries
+        BOP(
         port_a_nominal(
           p=EM.port_b2_nominal.p,
           h=EM.port_b2_nominal.h,
@@ -241,8 +246,10 @@ package IntegratedEnergySystem
         port_a3_nominal_m_flow={-IP.port_b_nominal.m_flow,-ES.port_b_nominal.m_flow},
         port_a3_nominal_p={IP.port_b_nominal.p,ES.port_b_nominal.p},
         port_a3_nominal_h={IP.port_b_nominal.h,ES.port_b_nominal.h}),
-      redeclare EnergyStorage.SensibleHeatStorage.TwentyPercentNominal3400MWtPWR
-        ES(redeclare EnergyStorage.SensibleHeatStorage.CS_TextRead CS(
+      redeclare
+        EnergyStorage.SensibleHeatStorage.Models.TwentyPercentNominal3400MWtPWR
+        ES(redeclare
+          EnergyStorage.SensibleHeatStorage.ControlSystems.CS_TextRead CS(
             W_totalSetpoint=SC.W_totalSetpoint_ES)),
       redeclare SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=4),
       redeclare ElectricalGrid.InfiniteGrid.Infinite EG,
@@ -253,12 +260,12 @@ package IntegratedEnergySystem
           delayStart=delayStart.k,
           W_totalSetpoint=SC.W_totalSetpoint_SES)),
       redeclare
-        IndustrialProcess.HighTempSteamElectrolysis.TightlyCoupled_SteamFlowCtrl_FY17
+        IndustrialProcess.HighTempSteamElectrolysis.Models.TightlyCoupled_SteamFlowCtrl_FY17
         IP(
         capacity=dataCapacity.IP_capacity,
         port_a_nominal(m_flow=IP.capacityScaler_steamFlow*7.311637),
         redeclare
-          NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.CS_TightlyCoupled_SteamFlowCtrl_stepInput_FY17
+          NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.ControlSystems.CS_TightlyCoupled_SteamFlowCtrl_stepInput_FY17
           CS(capacityScaler=IP.capacityScaler),
         flowSplit(port_2(h_outflow(start=2.95398e6, fixed=false))),
         returnPump(PR0=62.7/51.3042, pstart_out=6270000),
@@ -954,10 +961,10 @@ package IntegratedEnergySystem
 
   model SMR_IES_CTES
 
-    EnergyStorage.Concrete_Solid_Media.Dual_Pipe_CTES_Controlled
+    EnergyStorage.Concrete_Solid_Media.Models.Dual_Pipe_CTES_Controlled
       dual_Pipe_CTES_Controlled(redeclare
-        NHES.Systems.EnergyStorage.Concrete_Solid_Media.CS_DFV CS)
-      annotation (Placement(transformation(extent={{110,-42},{204,26}})));
+        NHES.Systems.EnergyStorage.Concrete_Solid_Media.ControlSystems.CS_DFV
+        CS) annotation (Placement(transformation(extent={{110,-42},{204,26}})));
     PrimaryHeatSystem.SMR_Generic.Components.SMR_High_fidelity_no_pump            Reactor(
       Q_total_th=160e6,
       Q_total_el=52e6,
@@ -1071,24 +1078,26 @@ package IntegratedEnergySystem
       "{IP.port_b_nominal.p}{IP.port_b_nominal.h}{-IP.port_b_nominal.m_flow}"
       annotation (Placement(transformation(extent={{-18,82},{38,138}})));
 
-       IndustrialProcess.HighTempSteamElectrolysis.TightlyCoupled_SteamFlowCtrl_FY17
-         IP(
+    IndustrialProcess.HighTempSteamElectrolysis.Models.TightlyCoupled_SteamFlowCtrl_FY17
+      IP(
       capacity=dataCapacity.IP_capacity,
       port_a_nominal(m_flow=IP.capacityScaler_steamFlow*7.311637),
       redeclare
-        IndustrialProcess.HighTempSteamElectrolysis.CS_TightlyCoupled_SteamFlowCtrl_stepInput_FY17
+        IndustrialProcess.HighTempSteamElectrolysis.ControlSystems.CS_TightlyCoupled_SteamFlowCtrl_stepInput_FY17
         CS(capacityScaler=IP.capacityScaler),
       flowSplit(port_2(h_outflow(start=2.95398e6, fixed=false))),
       returnPump(PR0=62.7/51.3042, pstart_out=6270000),
-      hEX_nuclearHeatCathodeGasRecup_ROM(hShell_out(start=962881, fixed=false)))  annotation (Placement(transformation(extent={{-118,-38},{-62,18}})));
-    EnergyStorage.Battery.Logical ES(
+      hEX_nuclearHeatCathodeGasRecup_ROM(hShell_out(start=962881, fixed=false)))
+      annotation (Placement(transformation(extent={{-118,-38},{-62,18}})));
+    EnergyStorage.Battery.Models.Logical ES(
       capacity_max=dataCapacity.ES_capacity,
       capacity_min=0.2*dataCapacity.ES_capacity,
       chargePower_max=0.25*Modelica.Units.Conversions.from_Wh(dataCapacity.ES_capacity)
           /Modelica.Units.Conversions.from_hour(1),
       dischargePower_max=0.25*Modelica.Units.Conversions.from_Wh(dataCapacity.ES_capacity)
           /Modelica.Units.Conversions.from_hour(1),
-      redeclare EnergyStorage.Battery.CS_InputSetpoint CS(W_totalSetpoint=SC.W_totalSetpoint_ES))
+      redeclare EnergyStorage.Battery.ControlSystems.CS_InputSetpoint CS(
+          W_totalSetpoint=SC.W_totalSetpoint_ES))
       annotation (Placement(transformation(extent={{-18,2},{38,58}})));
        SecondaryEnergySupply.NaturalGasFiredTurbine.GTPP_PowerCtrl SES(capacity=
           dataCapacity.SES_capacity, redeclare
@@ -1228,14 +1237,15 @@ package IntegratedEnergySystem
       "{IP.port_b_nominal.p}{IP.port_b_nominal.h}{-IP.port_b_nominal.m_flow}"
       annotation (Placement(transformation(extent={{-18,82},{38,138}})));
 
-    EnergyStorage.Battery.Logical ES(
+    EnergyStorage.Battery.Models.Logical ES(
       capacity_max=dataCapacity.ES_capacity,
       capacity_min=0.2*dataCapacity.ES_capacity,
       chargePower_max=0.25*Modelica.Units.Conversions.from_Wh(dataCapacity.ES_capacity)
           /Modelica.Units.Conversions.from_hour(1),
       dischargePower_max=0.25*Modelica.Units.Conversions.from_Wh(dataCapacity.ES_capacity)
           /Modelica.Units.Conversions.from_hour(1),
-      redeclare EnergyStorage.Battery.CS_InputSetpoint CS(W_totalSetpoint=SC.W_totalSetpoint_ES))
+      redeclare EnergyStorage.Battery.ControlSystems.CS_InputSetpoint CS(
+          W_totalSetpoint=SC.W_totalSetpoint_ES))
       annotation (Placement(transformation(extent={{-18,2},{38,58}})));
        SecondaryEnergySupply.NaturalGasFiredTurbine.GTPP_PowerCtrl SES(capacity=
           dataCapacity.SES_capacity, redeclare
@@ -1267,12 +1277,14 @@ package IntegratedEnergySystem
       nPorts_b=3,
       nPorts_a=1)
       annotation (Placement(transformation(extent={{-110,88},{-130,108}})));
-    IndustrialProcess.HeaderTurbineCombo.StepDownTurbine IP(port_a_nominal(
+    IndustrialProcess.HeaderTurbineCombo.Models.StepDownTurbine IP(
+        port_a_nominal(
         p=IP.data.p_HP,
         h=IP.data.h_HP,
         m_flow=IP.data.m_flow_total), port_b_nominal(p=IP.data.p_IP, h=IP.data.h_IP))
       annotation (Placement(transformation(extent={{-150,2},{-94,58}})));
-    IndustrialProcess.HeaderTurbineCombo.StepDownTurbine IP1(port_a_nominal(
+    IndustrialProcess.HeaderTurbineCombo.Models.StepDownTurbine IP1(
+        port_a_nominal(
         p=IP.data.p_IP,
         h=IP.data.h_IP,
         m_flow=IP.data.m_flow_HP), port_b_nominal(p=IP.data.p_LP, h=IP.data.h_LP))
@@ -1396,14 +1408,15 @@ package IntegratedEnergySystem
         delayStartTCV=200))
       "{IP.port_b_nominal.p}{IP.port_b_nominal.h}{-IP.port_b_nominal.m_flow}"
       annotation (Placement(transformation(extent={{-18,82},{38,138}})));
-    EnergyStorage.Battery.Logical ES(
+    EnergyStorage.Battery.Models.Logical ES(
       capacity_max=dataCapacity.ES_capacity,
       capacity_min=0.2*dataCapacity.ES_capacity,
       chargePower_max=0.25*Modelica.Units.Conversions.from_Wh(dataCapacity.ES_capacity)
           /Modelica.Units.Conversions.from_hour(1),
       dischargePower_max=0.25*Modelica.Units.Conversions.from_Wh(dataCapacity.ES_capacity)
           /Modelica.Units.Conversions.from_hour(1),
-      redeclare EnergyStorage.Battery.CS_InputSetpoint CS(W_totalSetpoint=SC.W_totalSetpoint_ES))
+      redeclare EnergyStorage.Battery.ControlSystems.CS_InputSetpoint CS(
+          W_totalSetpoint=SC.W_totalSetpoint_ES))
       annotation (Placement(transformation(extent={{-18,2},{38,58}})));
        SecondaryEnergySupply.NaturalGasFiredTurbine.GTPP_PowerCtrl SES(capacity=
           dataCapacity.SES_capacity, redeclare
@@ -1413,11 +1426,14 @@ package IntegratedEnergySystem
         W_totalSetpoint=SC.W_totalSetpoint_SES))    annotation (Placement(transformation(extent={{-18,-78},{38,-22}})));
        SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=4) annotation (Placement(transformation(extent={{82,2},{138,58}})));
        ElectricalGrid.InfiniteGrid.Infinite EG annotation (Placement(transformation(extent={{162,2},{218,58}})));
-    IndustrialProcess.HeaderTurbineCombo.StepDownTurbines IP(port_a_nominal(
+    IndustrialProcess.HeaderTurbineCombo.Models.StepDownTurbines IP(
+      port_a_nominal(
         p=IP.data.p_HP,
         h=IP.data.h_HP,
-        m_flow=IP.data.m_flow_total), port_b_nominal(p=IP.data.p_LP, h=IP.data.h_LP),
-      redeclare IndustrialProcess.HeaderTurbineCombo.ED_Inputs ED(
+        m_flow=IP.data.m_flow_total),
+      port_b_nominal(p=IP.data.p_LP, h=IP.data.h_LP),
+      redeclare IndustrialProcess.HeaderTurbineCombo.ControlSystems.ED_Inputs
+        ED(
         m_flow_IP_toProcess=IP_signal.y,
         m_flow_LP_toProcess=LP_signal.y,
         m_flow_HP_toProcess=HP_signalmod.y))
@@ -1777,7 +1793,8 @@ package IntegratedEnergySystem
         port_b1_nominal(p=PHS.port_a_nominal.p, h=PHS.port_a_nominal.h),
         nPorts_b3=2,
         port_b3_nominal_m_flow={-IP.port_a_nominal.m_flow,-ES.port_a_nominal.m_flow}),
-      redeclare BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries BOP(
+      redeclare BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries
+        BOP(
         port_a_nominal(
           p=EM.port_b2_nominal.p,
           h=EM.port_b2_nominal.h,
@@ -1790,8 +1807,10 @@ package IntegratedEnergySystem
         port_a3_nominal_m_flow={-IP.port_b_nominal.m_flow,-ES.port_b_nominal.m_flow},
         port_a3_nominal_p={IP.port_b_nominal.p,ES.port_b_nominal.p},
         port_a3_nominal_h={IP.port_b_nominal.h,ES.port_b_nominal.h}),
-      redeclare EnergyStorage.SensibleHeatStorage.TwentyPercentNominal3400MWtPWR
-        ES(redeclare EnergyStorage.SensibleHeatStorage.CS_TextRead CS(
+      redeclare
+        EnergyStorage.SensibleHeatStorage.Models.TwentyPercentNominal3400MWtPWR
+        ES(redeclare
+          EnergyStorage.SensibleHeatStorage.ControlSystems.CS_TextRead CS(
             W_totalSetpoint=SC.W_totalSetpoint_ES)),
       redeclare SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=4),
       redeclare ElectricalGrid.InfiniteGrid.Infinite EG,
@@ -1802,12 +1821,12 @@ package IntegratedEnergySystem
           delayStart=delayStart.k,
           W_totalSetpoint=SC.W_totalSetpoint_SES)),
       redeclare
-        IndustrialProcess.HighTempSteamElectrolysis.TightlyCoupled_SteamFlowCtrl_FY17
+        IndustrialProcess.HighTempSteamElectrolysis.Models.TightlyCoupled_SteamFlowCtrl_FY17
         IP(
         capacity=dataCapacity.IP_capacity,
         port_a_nominal(m_flow=IP.capacityScaler_steamFlow*7.311637),
         redeclare
-          IndustrialProcess.HighTempSteamElectrolysis.CS_TightlyCoupled_SteamFlowCtrl_FY17
+          IndustrialProcess.HighTempSteamElectrolysis.ControlSystems.CS_TightlyCoupled_SteamFlowCtrl_FY17
           CS(
           delayStart=delayStart.k,
           capacityScaler=dataCapacity.IP_capacity/IP.CS.W_IP_nom,
@@ -2040,11 +2059,13 @@ package IntegratedEnergySystem
     NHES.Fluid.Sensors.stateSensor stateSensor7(redeclare package Medium =
           Modelica.Media.Water.StandardWater)
       annotation (Placement(transformation(extent={{48,0},{34,16}})));
-    NHES.Systems.EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_HT_Power_ANL TES(
-      redeclare NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_TES_HT_Power_ANL CS(
-          electric_demand_TES=MW_W_Gain_TES.y, Round_Trip_Efficiency=0.21),
-      redeclare replaceable NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS
-        data(
+    NHES.Systems.EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_HT_Power_ANL
+      TES(
+      redeclare
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_TES_HT_Power_ANL
+        CS(electric_demand_TES=MW_W_Gain_TES.y, Round_Trip_Efficiency=0.21),
+      redeclare replaceable
+        NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS data(
         ht_level_max=11.7,
         ht_area=3390,
         ht_surface_pressure=120000,

@@ -7,8 +7,7 @@ model LiIonBattery_Level_0_Test
         50; 10800,100; 14400,0; 18000,0])
     annotation (Placement(transformation(extent={{-96,70},{-76,90}})));
 
-  BatteryModels.BatteryLevel_0
-                             battery
+  Models.BatteryLevel_0 battery
     annotation (Placement(transformation(extent={{-20,-22},{24,22}})));
   Modelica.Blocks.Sources.Sine sine(
     amplitude=1e4,
@@ -34,7 +33,16 @@ equation
       __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput(events=false),
     Documentation(info="<html>
-    <p>Assuming an ideal battery, whose output power echoes the demanded power. </p>
-
+<p><b><span style=\"font-size: 16pt;\">Example Name</span></b></p>
+<p><span style=\"font-size: 12pt;\">Simple Litium-Ion Battery model (ver.0)</span></p>
+<p><br><b><span style=\"font-size: 16pt;\">Design Purpose of Exampe</span></b></p>
+<p><span style=\"font-size: 12pt;\">Assuming an ideal battery, whose output power echoes the demanded power. </span></p>
+<p><br><b><span style=\"font-size: 16pt;\">What Users Can Do </span></b></p>
+<p><i><span style=\"font-size: 12pt;\">&lt; Please fill this section, if needed &gt;</span></i></p>
+<p><br><b><span style=\"font-size: 16pt;\">Reference </span></b></p>
+<p><span style=\"font-size: 12pt;\">[1] <span style=\"font-family: Arial; color: #222222; background-color: #ffffff;\">Wang, Haoyu, Roberto Ponciroli, and Richard B. Vilim.&nbsp;<i>Development of Electro-chemical Battery Model for Plug-and-Play Eco-system Library</i>. No. ANL/NSE-21/26. Argonne National Lab.(ANL), Argonne, IL (United States), 2021.</span></p>
+<p><b><span style=\"font-size: 16pt;\">Contact Deatils </span></b></p>
+<p><span style=\"font-size: 12pt;\">This model was designed by Haoyu Wang.</span></p>
+<p><span style=\"font-size: 12pt;\">All initial questions should be directed to Haoyu Wang (haoyuwang@anl.gov). </span></p>
 </html>"));
 end LiIonBattery_Level_0_Test;

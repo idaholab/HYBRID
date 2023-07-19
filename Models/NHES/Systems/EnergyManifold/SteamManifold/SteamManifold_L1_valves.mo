@@ -76,8 +76,8 @@ model SteamManifold_L1_valves
     redeclare each package Medium = Medium,
     each rho_nominal=Medium_1.density_ph(port_a1_nominal.p, port_a1_nominal.h),
     m_flow_nominal={max(-port_b3_nominal_m_flow[i], 0.001) for i in 1:nPorts_b3},
-    dp_nominal=dp_nominal_valve_b3)
-                            if nPorts_b3 > 0 annotation (Placement(
+    dp_nominal=dp_nominal_valve_b3) if
+                               nPorts_b3 > 0 annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
@@ -111,8 +111,8 @@ model SteamManifold_L1_valves
         length=length_b3),
     m_flow_a_start=-port_b3_start_m_flow,
     p_a_start={port_a1_start.p - valve_b3[i].dp_start for i in 1:nPorts_b3},
-    each use_Ts_start=false)
-                            if nPorts_b3 > 0 annotation (Placement(
+    each use_Ts_start=false) if
+                               nPorts_b3 > 0 annotation (Placement(
         transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,

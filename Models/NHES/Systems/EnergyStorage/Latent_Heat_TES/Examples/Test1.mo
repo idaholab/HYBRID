@@ -17,7 +17,8 @@ model Test1
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={50,0})));
-  FVM_LHTES fVM_LHTES annotation (Placement(transformation(extent={{-4,-10},{16,10}})));
+  BaseClasses.FVM_LHTES fVM_LHTES
+    annotation (Placement(transformation(extent={{-4,-10},{16,10}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
     amplitude=70,
     width=500,

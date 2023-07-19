@@ -2,7 +2,8 @@ within NHES.Systems.EnergyStorage.Battery.Examples;
 model Logical_Test
 
   extends Modelica.Icons.Example;
-  Logical ES annotation (Placement(transformation(extent={{-32,-30},{28,30}})));
+  Models.Logical ES
+    annotation (Placement(transformation(extent={{-32,-30},{28,30}})));
   Electrical.Sources.FrequencySource boundary(f=60)
     annotation (Placement(transformation(extent={{70,-10},{50,10}})));
 equation

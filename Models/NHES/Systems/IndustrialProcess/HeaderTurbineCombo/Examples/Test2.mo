@@ -15,21 +15,17 @@ model Test2
     p=IP.data.p_LP,
     T=IP.data.T_LP)
     annotation (Placement(transformation(extent={{-128,-42},{-108,-22}})));
-  StepDownTurbine IP(
-    port_a_nominal(
+  Models.StepDownTurbine IP(port_a_nominal(
       p=IP.data.p_HP,
       h=IP.data.h_HP,
-      m_flow=IP.data.m_flow_total),
-    port_b_nominal(p=IP.data.p_IP, h=IP.data.h_IP))
+      m_flow=IP.data.m_flow_total), port_b_nominal(p=IP.data.p_IP, h=IP.data.h_IP))
     annotation (Placement(transformation(extent={{-40,10},{-20,30}})));
   TRANSFORM.Electrical.Grid grid(Q_nominal=1e10, droop=0.01)
     annotation (Placement(transformation(extent={{20,-10},{40,10}})));
-  StepDownTurbine IP1(
-    port_a_nominal(
+  Models.StepDownTurbine IP1(port_a_nominal(
       p=IP.data.p_IP,
       h=IP.data.h_IP,
-      m_flow=IP.data.m_flow_HP),
-    port_b_nominal(p=IP.data.p_LP, h=IP.data.h_LP))
+      m_flow=IP.data.m_flow_HP), port_b_nominal(p=IP.data.p_LP, h=IP.data.h_LP))
     annotation (Placement(transformation(extent={{-40,-30},{-20,-10}})));
 equation
   connect(IP.portElec, grid.port) annotation (Line(points={{-20,20},{0,20},{0,

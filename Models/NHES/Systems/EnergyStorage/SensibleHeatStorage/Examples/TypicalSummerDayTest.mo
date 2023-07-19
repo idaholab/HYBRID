@@ -2,8 +2,7 @@ within NHES.Systems.EnergyStorage.SensibleHeatStorage.Examples;
 model TypicalSummerDayTest "Compared to Thesis"
   extends Modelica.Icons.Example;
 
-  Typical_Summer_Day
-                  ES
+  Models.Typical_Summer_Day ES
     annotation (Placement(transformation(extent={{-44,-38},{36,42}})));
 
   Modelica.Blocks.Sources.Constant hsg(k=1244*2326)

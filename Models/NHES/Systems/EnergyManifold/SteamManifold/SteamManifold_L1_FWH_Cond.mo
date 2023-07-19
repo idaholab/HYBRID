@@ -61,8 +61,8 @@ model SteamManifold_L1_FWH_Cond
     redeclare each package Medium = Medium,
     each rho_nominal=Medium_1.density_ph(port_a1_nominal.p, port_a1_nominal.h),
     each dp_nominal=100000,
-    m_flow_nominal={max(-port_b3_nominal_m_flow[i], 0.001) for i in 1:nPorts_b3})
-                            if nPorts_b3 > 0 annotation (Placement(
+    m_flow_nominal={max(-port_b3_nominal_m_flow[i], 0.001) for i in 1:nPorts_b3}) if
+                               nPorts_b3 > 0 annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,

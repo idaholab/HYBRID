@@ -4,7 +4,7 @@ model HTSE_TightlyledCoupled_PowerCtrl_Test
   extends Modelica.Icons.Example;
 
   TightlyCoupled_PowerCtrl_Standalone IP(
-    redeclare CS_TightlyCoupled_PowerCtrl CS,
+    redeclare ControlSystems.CS_TightlyCoupled_PowerCtrl CS,
     capacityScaler=1.5,
     port_a_nominal(m_flow=IP.capacityScaler*9.0942),
     port_b_nominal(p=4317930))

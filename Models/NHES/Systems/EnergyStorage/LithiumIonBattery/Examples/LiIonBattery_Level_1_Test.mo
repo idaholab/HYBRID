@@ -7,8 +7,7 @@ model LiIonBattery_Level_1_Test
         50; 10800,100; 14400,0; 18000,0])
     annotation (Placement(transformation(extent={{-96,70},{-76,90}})));
 
-  BatteryModels.BatteryLevel_1
-                             battery
+  Models.BatteryLevel_1 battery
     annotation (Placement(transformation(extent={{-20,-22},{24,22}})));
   Electrical.Sources.FrequencySource      boundary
     annotation (Placement(transformation(extent={{80,-60},{60,-40}})));
@@ -32,11 +31,16 @@ equation
       __Dymola_Algorithm="Dassl"),
     __Dymola_experimentSetupOutput(events=false),
     Documentation(info="<html>
-    <p>This battery has built-in input/output power regulator. </p>
-    <p>The constraints of max charging power and max discharging power can be specified in the battery model. </p>
-    <p>In addition to the hard constraints, </p>
-    <p>When charging, the input power will gradually decrease when the charging level is approaching the max capacity. </p>
-    <p>When discharging, the output power will gradually decrease when the capacity is approaching the emptyness. </p>
-
+<p><b><span style=\"font-size: 16pt;\">Example Name</span></b></p>
+<p><span style=\"font-size: 12pt;\">Simple Litium-Ion Battery model (ver.1)</span></p>
+<p><br><b><span style=\"font-size: 16pt;\">Design Purpose of Exampe</span></b></p>
+<p><span style=\"font-size: 12pt;\">This battery has built-in input/output power regulator. The constraints of max charging power and max discharging power can be specified in the battery model. In addition to the hard constraints, when charging, the input power will gradually decrease when the charging level is approaching the max capacity. When discharging, the output power will gradually decrease when the capacity is approaching the emptyness. </span></p>
+<p><br><b><span style=\"font-size: 16pt;\">What Users Can Do </span></b></p>
+<p><i><span style=\"font-size: 12pt;\">&lt; Please fill this section, if needed &gt;</span></i></p>
+<p><br><b><span style=\"font-size: 16pt;\">Reference </span></b></p>
+<p><span style=\"font-size: 12pt;\">[1] Wang, Haoyu, Roberto Ponciroli, and Richard B. Vilim. Development of Electro-chemical Battery Model for Plug-and-Play Eco-system Library. No. ANL/NSE-21/26. Argonne National Lab.(ANL), Argonne, IL (United States), 2021.</span></p>
+<p><br><b><span style=\"font-size: 16pt;\">Contact Deatils </span></b></p>
+<p><span style=\"font-size: 12pt;\">This model was designed by Haoyu Wang.</span></p>
+<p><span style=\"font-size: 12pt;\">All initial questions should be directed to Haoyu Wang (haoyuwang@anl.gov). </span></p>
 </html>"));
 end LiIonBattery_Level_1_Test;

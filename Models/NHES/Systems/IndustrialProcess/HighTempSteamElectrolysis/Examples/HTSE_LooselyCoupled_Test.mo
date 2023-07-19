@@ -4,9 +4,9 @@ model HTSE_LooselyCoupled_Test
   import NHES;
   extends Modelica.Icons.Example;
 
-  NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.LooselyCoupled IP(
-                                         redeclare
-      NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.CS_LooselyCoupled_stepInput
+  NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.Models.LooselyCoupled
+    IP(redeclare
+      NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.ControlSystems.CS_LooselyCoupled_stepInput
       CS(capacityScaler=IP.capacityScaler), capacity=100000000)
     annotation (Placement(transformation(extent={{-32,-34},{32,34}})));
 
