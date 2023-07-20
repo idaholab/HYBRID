@@ -190,7 +190,8 @@ package ObsoleteTESUseCaseExamples
       annotation (Line(points={{28,-6},{44,-6},{44,-8},{60,-8}},
                                                  color={0,127,255}));
     connect(intermediate_Rankine_Cycle_TESUC.portElec_b, SY.port_a[1])
-      annotation (Line(points={{100,0},{108,0},{108,-1.1},{112,-1.1}}, color={255,
+      annotation (Line(points={{100,0},{108,0},{108,-0.55},{112,-0.55}},
+                                                                       color={255,
             0,0}));
     connect(SMR_Taveprogram.port_b, stateSensor1.port_a) annotation (Line(points={{
             -51.0909,12.7692},{-51.0909,11},{-38,11}},  color={0,127,255}));
@@ -248,7 +249,7 @@ package ObsoleteTESUseCaseExamples
       annotation (Line(points={{68,-55},{68,-71.4},{108,-71.4}}, color={0,127,255}));
     connect(intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.portElec_b,
       SY.port_a[2]) annotation (Line(points={{146,-63},{152,-63},{152,-26},{108,
-            -26},{108,1.1},{112,1.1}},
+            -26},{108,0.55},{112,0.55}},
                                   color={255,0,0}));
     connect(SY.port_Grid, sensorW.port_a)
       annotation (Line(points={{152,0},{166,0}}, color={255,0,0}));
