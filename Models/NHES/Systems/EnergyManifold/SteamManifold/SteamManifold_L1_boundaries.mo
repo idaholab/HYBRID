@@ -108,8 +108,8 @@ model SteamManifold_L1_boundaries
         rotation=0,
         origin={-60,-80})));
   TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance_b3[
-    nPorts_b3](redeclare package Medium = Medium, each R=1) if
-                                                     nPorts_b3 > 0 and use_pipeDelay_b3
+    nPorts_b3](redeclare package Medium = Medium, each R=1)
+                                                  if nPorts_b3 > 0 and use_pipeDelay_b3
     annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=180,
@@ -127,8 +127,8 @@ model SteamManifold_L1_boundaries
         length=length_b3),
     m_flow_a_start=-port_b3_start_m_flow,
     each use_Ts_start=false,
-    p_a_start={port_a1_start.p for i in 1:nPorts_b3}) if
-                                nPorts_b3 > 0 and use_pipeDelay_b3 annotation (
+    p_a_start={port_a1_start.p for i in 1:nPorts_b3})
+                             if nPorts_b3 > 0 and use_pipeDelay_b3 annotation (
       Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=180,
@@ -137,8 +137,8 @@ model SteamManifold_L1_boundaries
       package Medium = Medium) if nPorts_b3 > 0
     annotation (Placement(transformation(extent={{20,-90},{40,-70}})));
   TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort specificEnthalpy_b3_return[
-    nPorts_b3](redeclare package Medium = Medium) if
-                                           nPorts_b3 > 0
+    nPorts_b3](redeclare package Medium = Medium)
+                                        if nPorts_b3 > 0
     annotation (Placement(transformation(extent={{50,-90},{70,-70}})));
   Modelica.Blocks.Sources.RealExpression pressure_steamHeader[nPorts_b3](each y=
         steamHeader.medium.p) if nPorts_b3 > 0

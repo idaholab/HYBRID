@@ -36,7 +36,7 @@ package BrineDriesner "NaCl solution using Driesner density and enthalpy functio
     "density calculation according to Driesner et al: 10-1000degC; 0.1-500MPa; 0.25-5 mol/kg"
       constant Real M_NaCl = Salt_data.M_NaCl "molar mass in [kg/mol]";
 
-protected
+  protected
       Types.Molality mola = state.X[1] / M_NaCl "molality b (mol_NaCl/kg_sol)";
   Modelica.Units.NonSI.Temperature_degC T_C=Modelica.Units.Conversions.to_degC(
       state.T);

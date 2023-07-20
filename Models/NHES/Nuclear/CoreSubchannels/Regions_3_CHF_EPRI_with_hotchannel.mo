@@ -73,8 +73,7 @@ model Regions_3_CHF_EPRI_with_hotchannel
   replaceable record Data_FP =
       TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.fissionProducts_0
     constrainedby
-    TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.PartialFissionProduct
-                                                                                                                                                        annotation (
+    TRANSFORM.Nuclear.ReactorKinetics.Data.FissionProducts.PartialFissionProduct                                                                        annotation (
      choicesAllMatching=true,Dialog(tab="Kinetics",group="Fission Products"));
   parameter SI.Area sigmasA_add_start[Medium.nC]=fill(0, Medium.nC)
     "Microscopic absorption cross-section for reactivity feedback" annotation(Dialog(tab="Kinetics",group="Fluid Trace Substances"));
