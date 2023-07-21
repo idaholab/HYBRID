@@ -28,11 +28,11 @@ model NonLinear_Break "Oneway non linear break for fuild systems"
   replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
     annotation (choicesAllMatching=true);
   Modelica.Blocks.Nonlinear.Limiter limiter1(uMax=Modelica.Constants.inf)
-    annotation (Placement(transformation(extent={{-40,-60},{-20,-40}})));
+    annotation (Placement(transformation(extent={{-40,-70},{-20,-50}})));
   Modelica.Blocks.Nonlinear.Limiter limiter2(uMax=Modelica.Constants.inf)
     annotation (Placement(transformation(extent={{40,18},{20,38}})));
   Modelica.Blocks.Nonlinear.Limiter limiter(uMax=Modelica.Constants.inf)
-    annotation (Placement(transformation(extent={{34,-46},{54,-26}})));
+    annotation (Placement(transformation(extent={{-40,-40},{-20,-20}})));
 equation
   connect(boundary1.ports[1], sensor_p.port)
     annotation (Line(points={{40,0},{66,0}}, color={0,127,255}));
@@ -44,18 +44,19 @@ equation
     annotation (Line(points={{-80,0},{-70,0}}, color={0,127,255}));
   connect(sensor_m_flow.port_b, boundary.ports[1])
     annotation (Line(points={{-50,0},{-40,0}}, color={0,127,255}));
-  connect(limiter1.y, boundary1.h_in) annotation (Line(points={{-19,-50},{8,-50},
+  connect(limiter1.y, boundary1.h_in) annotation (Line(points={{-19,-60},{8,-60},
           {8,4},{18,4}}, color={0,0,127}));
   connect(limiter2.y, boundary.p_in)
     annotation (Line(points={{19,28},{-18,28},{-18,8}}, color={0,0,127}));
   connect(limiter2.u, sensor_p.p) annotation (Line(points={{42,28},{50,28},{50,
           10},{60,10}}, color={0,0,127}));
   connect(sensor_h.h_out, limiter1.u)
-    annotation (Line(points={{-74,-10},{-74,-50},{-42,-50}}, color={0,0,127}));
-  connect(limiter.y, boundary1.m_flow_in) annotation (Line(points={{55,-36},{58,
-          -36},{58,-20},{6,-20},{6,8},{20,8}}, color={0,0,127}));
+    annotation (Line(points={{-74,-10},{-74,-60},{-42,-60}}, color={0,0,127}));
+  connect(limiter.y, boundary1.m_flow_in) annotation (Line(points={{-19,-30},{
+          -20,-30},{-20,-14},{6,-14},{6,8},{20,8}},
+                                               color={0,0,127}));
   connect(sensor_m_flow.m_flow, limiter.u) annotation (Line(points={{-60,-3.6},
-          {-60,-24},{24,-24},{24,-36},{32,-36}}, color={0,0,127}));
+          {-60,-30},{-42,-30}},                  color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Polygon(
           points={{20,-44},{60,-59},{20,-74},{20,-44}},

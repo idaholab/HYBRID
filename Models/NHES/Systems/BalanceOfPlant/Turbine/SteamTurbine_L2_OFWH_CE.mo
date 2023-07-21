@@ -335,6 +335,10 @@ equation
           {{-14,60.25},{-24,60.25},{-24,22},{70,22}}, color={0,127,255}));
   connect(sensor_p1.port, prt_b_steamdump) annotation (Line(points={{70,22},{70,
           -86},{60,-86},{60,-100}}, color={0,127,255}));
+  connect(pump1.port_e, port_a_elec) annotation (Line(points={{0,-70},{0,-116},
+          {100,-116},{100,0}}, color={255,0,0}));
+  connect(pump.port_e, port_a_elec) annotation (Line(points={{56,-70},{56,-72},
+          {100,-72},{100,0}}, color={255,0,0}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-2.09756,2},{83.9024,-2}},

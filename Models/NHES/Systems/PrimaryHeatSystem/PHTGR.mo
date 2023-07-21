@@ -87,10 +87,10 @@ package PHTGR
           NHES.Systems.PrimaryHeatSystem.PHTGR.CS.CS_Texit_rhoInset CS)
         annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
     equation
-      connect(RX.port_b, exit.ports[1]) annotation (Line(points={{40,-28},{42,
-              -28},{42,-30},{80,-30}}, color={0,127,255}));
-      connect(RX.port_a, inlet.ports[1]) annotation (Line(points={{40,-12},{74,
-              -12},{74,10},{80,10}}, color={0,127,255}));
+      connect(RX.port_b, exit.ports[1]) annotation (Line(points={{40,-24},{42,
+              -24},{42,-30},{80,-30}}, color={0,127,255}));
+      connect(RX.port_a, inlet.ports[1]) annotation (Line(points={{40,24},{74,
+              24},{74,10},{80,10}},  color={0,127,255}));
       annotation (experiment(
           StopTime=1000000,
           Interval=50,
@@ -226,6 +226,34 @@ package PHTGR
           Interval=10,
           __Dymola_Algorithm="Esdirk45a"));
     end RX_TES_Test;
+
+    model Reactor_Testspeed
+       extends Modelica.Icons.Example;
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT inlet(
+        redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+        T=573.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{100,0},{80,20}})));
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_ph exit(
+        redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+        p=3000000,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{100,-40},{80,-20}})));
+      ReactorCRspeed
+              RX(redeclare replaceable
+          NHES.Systems.PrimaryHeatSystem.PHTGR.CS.CS_Texitspeed CS, controlRod(
+            Pos(start=0.75, fixed=true)))
+        annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
+    equation
+      connect(RX.port_b, exit.ports[1]) annotation (Line(points={{40,-24},{42,
+              -24},{42,-30},{80,-30}}, color={0,127,255}));
+      connect(RX.port_a, inlet.ports[1]) annotation (Line(points={{40,24},{74,
+              24},{74,10},{80,10}},  color={0,127,255}));
+      annotation (experiment(
+          StopTime=1000000,
+          Interval=50,
+          __Dymola_Algorithm="Esdirk45a"));
+    end Reactor_Testspeed;
   end Examples;
 
   package Components
@@ -1274,6 +1302,101 @@ package PHTGR
               fillPattern=FillPattern.Solid,
               pattern=LinePattern.None)}));
     end TRISO_Pellet;
+
+    model ControlRod
+      parameter Real Worth_total=500e5 "Total Control Rod Bank Worth";
+      Real Worth "Control Rod Woth at a Given Position";
+      SI.Velocity v "Control Rod Speed";
+      SI.Position Pos "Relative Control Rod Postion (0,1)";
+      Real rho "Total Inserted Reactivity";
+
+
+      Modelica.Blocks.Interfaces.RealInput u
+        annotation (Placement(transformation(extent={{-120,-20},{-80,20}})));
+      Modelica.Blocks.Interfaces.RealOutput y
+        annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+    equation
+      Worth=Worth_total*( 6.6672*(Pos^5) - 14.904*(Pos^4)+ 7.9331*(Pos^3)+ 1.5262*(Pos^2)- 0.2382*(Pos)+ 0.0027);
+
+      rho=Worth*Pos;
+      if Pos<1 and Pos>0 then
+      der(Pos)=v;
+      elseif Pos>=1 then
+      der(Pos)=min(0,v);
+      else
+      der(Pos)=max(0,v);
+      end if;
+
+      v=u;
+      rho=y;
+
+      annotation (Icon(graphics={
+            Rectangle(
+              extent={{-100,-100},{-80,0}},
+              lineColor={238,46,47},
+              fillColor={238,46,47},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{-10,-100},{10,0}},
+              lineColor={238,46,47},
+              fillColor={238,46,47},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{80,-100},{100,0}},
+              lineColor={238,46,47},
+              fillColor={238,46,47},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{20,-100},{40,0}},
+              lineColor={238,46,47},
+              fillColor={238,46,47},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{50,-100},{70,0}},
+              lineColor={238,46,47},
+              fillColor={238,46,47},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{-70,-100},{-50,0}},
+              lineColor={238,46,47},
+              fillColor={238,46,47},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{-40,-100},{-20,0}},
+              lineColor={238,46,47},
+              fillColor={238,46,47},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{-70,(-4 - Pos*96)},{-80,(100 - Pos*96)}},
+              lineColor={0,0,0},
+              fillColor={0,0,0},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{-40,(-4 - Pos*96)},{-50,(100 - Pos*96)}},
+              lineColor={0,0,0},
+              fillColor={0,0,0},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{-10,(-4 - Pos*96)},{-20,(100 - Pos*96)}},
+              lineColor={0,0,0},
+              fillColor={0,0,0},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{20,(-4 - Pos*96)},{10,(100 - Pos*96)}},
+              lineColor={0,0,0},
+              fillColor={0,0,0},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{50,(-4 - Pos*96)},{40,(100 - Pos*96)}},
+              lineColor={0,0,0},
+              fillColor={0,0,0},
+              fillPattern=FillPattern.Solid),
+            Rectangle(
+              extent={{80,(-4 - Pos*96)},{70,(100 - Pos*96)}},
+              lineColor={0,0,0},
+              fillColor={0,0,0},
+              fillPattern=FillPattern.Solid)}));
+    end ControlRod;
   end Components;
 
   package CS "Control systems package"
@@ -1329,6 +1452,18 @@ package PHTGR
         annotation (Placement(transformation(extent={{0,40},{20,60}})));
       Modelica.Blocks.Sources.RealExpression CoreExit_T_Ref(y=T_exit_nom)
         annotation (Placement(transformation(extent={{-80,40},{-60,60}})));
+      Modelica.Blocks.Sources.RealExpression power_ref(y=Power_nom)
+        annotation (Placement(transformation(extent={{-80,-40},{-60,-20}})));
+      parameter Modelica.Blocks.Interfaces.RealOutput T_in_nom=330
+        "Value of Real output";
+      Controls.LimOffsetPID RCP_PID(
+        k=1e-8,
+        Ti=360,
+        yMax=12,
+        yMin=2,
+        offset=7,
+        init_output=7)
+        annotation (Placement(transformation(extent={{-20,-40},{0,-20}})));
     equation
 
       connect(actuatorBus.CR_pos, gain.y) annotation (Line(
@@ -1353,6 +1488,26 @@ package PHTGR
         annotation (Line(points={{-59,50},{-42,50}}, color={0,0,127}));
       connect(gain.u, PID_exit_T.y)
         annotation (Line(points={{-2,50},{-19,50}},          color={0,0,127}));
+      connect(power_ref.y, RCP_PID.u_s)
+        annotation (Line(points={{-59,-30},{-22,-30}}, color={0,0,127}));
+      connect(actuatorBus.Pump_flow, RCP_PID.y) annotation (Line(
+          points={{30,-100},{30,-30},{1,-30}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.Q_RX, RCP_PID.u_m) annotation (Line(
+          points={{-30,-100},{-30,-52},{-10,-52},{-10,-42}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
     annotation(defaultComponentName="changeMe_CS", Icon(graphics={
             Text(
               extent={{-94,82},{94,74}},
@@ -1502,6 +1657,88 @@ package PHTGR
                 textString="Change Me")}));
       end CS_TES;
     end TES_CS;
+
+    model CS_Texitspeed
+
+      extends BaseClasses.Partial_ControlSystem;
+      parameter Modelica.Units.SI.Power Power_nom= 15e6;
+      parameter Real CR_worth=2000e-5;
+      parameter Modelica.Units.SI.Temperature T_exit_nom=903.15;
+      TRANSFORM.Controls.LimPID PID_exit_T(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-0.0000001,
+        Ti=3600,
+        yMax=0.0032,
+        yMin=-0.0032,
+        Ni=3,
+        y_start=8.75)
+        annotation (Placement(transformation(extent={{-40,40},{-20,60}})));
+      Modelica.Blocks.Sources.RealExpression CoreExit_T_Ref(y=T_exit_nom)
+        annotation (Placement(transformation(extent={{-80,40},{-60,60}})));
+      Modelica.Blocks.Sources.RealExpression power_ref(y=Power_nom)
+        annotation (Placement(transformation(extent={{-80,-40},{-60,-20}})));
+      parameter Modelica.Blocks.Interfaces.RealOutput T_in_nom=330
+        "Value of Real output";
+      Controls.LimOffsetPID RCP_PID(
+        k=1e-8,
+        Ti=360,
+        yMax=12,
+        yMin=2,
+        offset=6,
+        delayTime=0,
+        init_output=6)
+        annotation (Placement(transformation(extent={{-20,-40},{0,-20}})));
+    equation
+
+      connect(sensorBus.T_out, PID_exit_T.u_m) annotation (Line(
+          points={{-30,-100},{-30,38}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(CoreExit_T_Ref.y, PID_exit_T.u_s)
+        annotation (Line(points={{-59,50},{-42,50}}, color={0,0,127}));
+      connect(power_ref.y, RCP_PID.u_s)
+        annotation (Line(points={{-59,-30},{-22,-30}}, color={0,0,127}));
+      connect(actuatorBus.Pump_flow, RCP_PID.y) annotation (Line(
+          points={{30,-100},{30,-30},{1,-30}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+      connect(sensorBus.Q_RX, RCP_PID.u_m) annotation (Line(
+          points={{-30,-100},{-30,-52},{-10,-52},{-10,-42}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{-6,3},{-6,3}},
+          horizontalAlignment=TextAlignment.Right));
+      connect(actuatorBus.CR_speed, PID_exit_T.y) annotation (Line(
+          points={{30,-100},{30,50},{-19,50}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5), Text(
+          string="%first",
+          index=-1,
+          extent={{6,3},{6,3}},
+          horizontalAlignment=TextAlignment.Left));
+    annotation(defaultComponentName="changeMe_CS", Icon(graphics={
+            Text(
+              extent={{-94,82},{94,74}},
+              lineColor={0,0,0},
+              lineThickness=1,
+              fillColor={255,255,237},
+              fillPattern=FillPattern.Solid,
+              textString="%name")}));
+    end CS_Texitspeed;
   end CS;
 
   package Data
@@ -1733,7 +1970,7 @@ package PHTGR
 
     TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump(
       redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
-      use_input=false,
+      use_input=true,
       m_flow_nominal=8.75)
       annotation (Placement(transformation(
           extent={{10,-10},{-10,10}},
@@ -1846,10 +2083,12 @@ package PHTGR
       annotation (Placement(transformation(extent={{-90,-20},{-110,0}})));
     TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium =
           Modelica.Media.IdealGases.SingleGases.He)
-      annotation (Placement(transformation(extent={{90,-40},{110,-20}})));
+      annotation (Placement(transformation(extent={{90,50},{110,70}}),
+          iconTransformation(extent={{90,50},{110,70}})));
     TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium =
           Modelica.Media.IdealGases.SingleGases.He)
-      annotation (Placement(transformation(extent={{90,-80},{110,-60}})));
+      annotation (Placement(transformation(extent={{90,-70},{110,-50}}),
+          iconTransformation(extent={{90,-70},{110,-50}})));
     Modelica.Blocks.Sources.RealExpression RX_Power(y=core.Total_Power.y)
       annotation (Placement(transformation(extent={{-100,90},{-80,110}})));
     TRANSFORM.Blocks.RealExpression CR_rho
@@ -1912,10 +2151,10 @@ package PHTGR
         index=-1,
         extent={{6,3},{6,3}},
         horizontalAlignment=TextAlignment.Left));
-    connect(fRX.port_b,port_b)  annotation (Line(points={{10,-92},{86,-92},{86,-70},
-            {100,-70}},         color={0,127,255}));
-    connect(port_a,pump. port_a) annotation (Line(points={{100,-30},{66,-30},{66,-18}},
-                       color={0,127,255}));
+    connect(fRX.port_b,port_b)  annotation (Line(points={{10,-92},{86,-92},{86,
+            -60},{100,-60}},    color={0,127,255}));
+    connect(port_a,pump. port_a) annotation (Line(points={{100,60},{66,60},{66,
+            -18}},     color={0,127,255}));
     connect(sensorBus.Q_RX,RX_Power. y) annotation (Line(
         points={{-30,100},{-79,100}},
         color={239,82,82},
@@ -1938,6 +2177,15 @@ package PHTGR
       annotation (Line(points={{-70,30},{-70,22}}, color={0,127,255}));
     connect(core.port_b, Core_oulet.port_a)
       annotation (Line(points={{-70,-18},{-70,-30}}, color={0,127,255}));
+    connect(actuatorBus.Pump_flow, pump.in_m_flow) annotation (Line(
+        points={{30,100},{30,6},{80,6},{80,-8},{73.3,-8}},
+        color={111,216,99},
+        pattern=LinePattern.Dash,
+        thickness=0.5), Text(
+        string="%first",
+        index=-1,
+        extent={{-3,6},{-3,6}},
+        horizontalAlignment=TextAlignment.Right));
     annotation (
       defaultComponentName="changeMe",
       Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
@@ -1951,4 +2199,243 @@ package PHTGR
             fillPattern=FillPattern.Solid,
             textString="%name")}));
   end Reactor;
+
+  model ReactorCRspeed
+
+    extends BaseClasses.Partial_SubSystem_A(
+      redeclare replaceable NHES.Systems.PrimaryHeatSystem.PHTGR.CS.CS_Texit CS,
+      redeclare replaceable NHES.Systems.PrimaryHeatSystem.PHTGR.CS.ED_Dummy ED,
+      redeclare Data.Data_1 data);
+
+    TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump(
+      redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+      use_input=true,
+      m_flow_nominal=8.75)
+      annotation (Placement(transformation(
+          extent={{10,-10},{-10,10}},
+          rotation=90,
+          origin={70,10})));
+    TRANSFORM.Fluid.Pipes.GenericPipe_MultiTransferSurface Core_inlet(
+      nParallel=data.nAsm*data.nSCs,
+      redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+      p_a_start=3400000,
+      T_a_start=573.15,
+      m_flow_a_start=8.75,
+      redeclare model Geometry =
+          TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.StraightPipe
+          (
+          dimension=data.r_coolant,
+          length=data.l_ci,
+          angle=-1.5707963267949,
+          nV=2)) annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=270,
+          origin={-70,40})));
+    TRANSFORM.Fluid.Pipes.GenericPipe_MultiTransferSurface Core_oulet(
+      nParallel=data.nAsm*data.nSCs,
+      redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+      p_a_start=3100000,
+      T_a_start=1173.15,
+      m_flow_a_start=8.75,
+      redeclare model Geometry =
+          TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.StraightPipe
+          (
+          dimension=data.r_coolant,
+          length=data.l_co,
+          angle=-1.5707963267949,
+          nV=2)) annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=270,
+          origin={-70,-40})));
+    TRANSFORM.Fluid.Volumes.SimpleVolume UP(
+      redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+      p_start=3400000,
+      T_start=573.15,
+      redeclare model Geometry =
+          TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
+          (V=data.V_up, dheight=-3)) annotation (Placement(transformation(
+          extent={{10,-10},{-10,10}},
+          rotation=90,
+          origin={-70,82})));
+    TRANSFORM.Fluid.Volumes.SimpleVolume LP(
+      redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+      p_start=3000000,
+      T_start=1173.15,
+      redeclare model Geometry =
+          TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
+          (V=data.V_lp, dheight=-3)) annotation (Placement(transformation(
+          extent={{10,-10},{-10,10}},
+          rotation=90,
+          origin={-70,-70})));
+    TRANSFORM.Fluid.Pipes.GenericPipe_MultiTransferSurface fRX(
+      redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+      p_a_start=3000000,
+      T_a_start=1173.15,
+      m_flow_a_start=8.75,
+      redeclare model Geometry =
+          TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.StraightPipe
+          (
+          dimension=data.r_fRX,
+          length=data.l_fRX,
+          nV=3))
+      annotation (Placement(transformation(extent={{-10,-102},{10,-82}})));
+    TRANSFORM.Fluid.Pipes.GenericPipe_MultiTransferSurface tRX(
+      redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+      p_a_start=3500000,
+      T_a_start=573.15,
+      m_flow_a_start=8.75,
+      redeclare model Geometry =
+          TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.GenericAnnulus
+          (
+          rs_inner=data.r_i_tRX*ones(3),
+          rs_outer=data.r_o_tRX*ones(3),
+          nV=3,
+          dlengths=(data.l_tRX/3)*ones(3)))
+      annotation (Placement(transformation(extent={{10,-82},{-10,-62}})));
+    TRANSFORM.Fluid.Pipes.GenericPipe_MultiTransferSurface Core_Outer(
+      redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+      p_a_start=3450000,
+      T_a_start=573.15,
+      m_flow_a_start=8.75,
+      redeclare model Geometry =
+          TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.GenericAnnulus
+          (
+          rs_inner=data.r_i_CO*ones(3),
+          rs_outer=data.r_o_CO*ones(3),
+          nV=3,
+          dlengths=(data.l_CO/3)*ones(3),
+          dheights=(data.l_CO/3)*ones(3))) annotation (Placement(transformation(
+          extent={{10,-10},{-10,10}},
+          rotation=270,
+          origin={-40,0})));
+    TRANSFORM.Fluid.Sensors.Temperature Core_inlet_T(redeclare package Medium
+        = Modelica.Media.IdealGases.SingleGases.He)
+      annotation (Placement(transformation(extent={{-90,40},{-110,60}})));
+    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
+        = Modelica.Media.IdealGases.SingleGases.He)    annotation (Placement(
+          transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=90,
+          origin={-70,62})));
+    TRANSFORM.Fluid.Sensors.Temperature Core_outlet_T(redeclare package Medium
+        = Modelica.Media.IdealGases.SingleGases.He)
+      annotation (Placement(transformation(extent={{-90,-20},{-110,0}})));
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium
+        = Modelica.Media.IdealGases.SingleGases.He)
+      annotation (Placement(transformation(extent={{90,50},{110,70}}),
+          iconTransformation(extent={{90,50},{110,70}})));
+    TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium
+        = Modelica.Media.IdealGases.SingleGases.He)
+      annotation (Placement(transformation(extent={{90,-70},{110,-50}}),
+          iconTransformation(extent={{90,-70},{110,-50}})));
+    Modelica.Blocks.Sources.RealExpression RX_Power(y=core.Total_Power.y)
+      annotation (Placement(transformation(extent={{-100,90},{-80,110}})));
+    Components.Core core(
+      Q_nominal=15e6,
+      rho_input=controlRod.y + 0.3,
+      Teffref_fuel(displayUnit="K") = 273.15,
+      Teffref_mod(displayUnit="K") = 273.15,
+      T_Fouter_start=1073.15,
+      T_Finner_start=1123.15)                        annotation (Placement(
+          transformation(
+          extent={{20,-20},{-20,20}},
+          rotation=90,
+          origin={-70,6})));
+    Components.ControlRod controlRod(Worth_total=-500e-3)
+      annotation (Placement(transformation(extent={{58,90},{78,110}})));
+  equation
+
+    connect(Core_oulet.port_b,LP. port_a)
+      annotation (Line(points={{-70,-50},{-70,-64}}, color={0,127,255}));
+    connect(LP.port_b,fRX. port_a) annotation (Line(points={{-70,-76},{-70,-92},{-10,
+            -92}},      color={0,127,255}));
+    connect(pump.port_b,tRX. port_a) annotation (Line(points={{70,0},{70,-72},{
+            10,-72}},              color={0,127,255}));
+    connect(tRX.port_b,Core_Outer. port_a) annotation (Line(points={{-10,-72},{-40,
+            -72},{-40,-10}},     color={0,127,255}));
+    connect(Core_Outer.port_b,UP. port_a) annotation (Line(points={{-40,10},{-40,92},
+            {-70,92},{-70,88}},         color={0,127,255}));
+    connect(sensor_m_flow.port_a,Core_inlet. port_a)
+      annotation (Line(points={{-70,52},{-70,50}}, color={0,127,255}));
+    connect(sensor_m_flow.port_b,UP. port_b)
+      annotation (Line(points={{-70,72},{-70,76}}, color={0,127,255}));
+    connect(Core_outlet_T.port,Core_oulet. port_a) annotation (Line(points={{-100,
+            -20},{-100,-30},{-70,-30}},      color={0,127,255}));
+    connect(Core_inlet_T.port,Core_inlet. port_b) annotation (Line(points={{-100,40},
+            {-100,30},{-70,30}},          color={0,127,255}));
+    connect(sensorBus.T_in,Core_inlet_T. T) annotation (Line(
+        points={{-30,100},{-60,100},{-60,120},{-120,120},{-120,50},{-106,50}},
+        color={239,82,82},
+        pattern=LinePattern.Dash,
+        thickness=0.5), Text(
+        string="%first",
+        index=-1,
+        extent={{6,3},{6,3}},
+        horizontalAlignment=TextAlignment.Left));
+    connect(sensorBus.T_out,Core_outlet_T. T) annotation (Line(
+        points={{-30,100},{-60,100},{-60,120},{-120,120},{-120,-10},{-106,-10}},
+        color={239,82,82},
+        pattern=LinePattern.Dash,
+        thickness=0.5), Text(
+        string="%first",
+        index=-1,
+        extent={{-3,6},{-3,6}},
+        horizontalAlignment=TextAlignment.Right));
+    connect(sensorBus.m_RX,sensor_m_flow. m_flow) annotation (Line(
+        points={{-30,100},{-60,100},{-60,120},{-120,120},{-120,62},{-73.6,62}},
+        color={239,82,82},
+        pattern=LinePattern.Dash,
+        thickness=0.5), Text(
+        string="%first",
+        index=-1,
+        extent={{6,3},{6,3}},
+        horizontalAlignment=TextAlignment.Left));
+    connect(fRX.port_b,port_b)  annotation (Line(points={{10,-92},{86,-92},{86,
+            -60},{100,-60}},    color={0,127,255}));
+    connect(port_a,pump. port_a) annotation (Line(points={{100,60},{70,60},{70,
+            20}},      color={0,127,255}));
+    connect(sensorBus.Q_RX,RX_Power. y) annotation (Line(
+        points={{-30,100},{-79,100}},
+        color={239,82,82},
+        pattern=LinePattern.Dash,
+        thickness=0.5), Text(
+        string="%first",
+        index=-1,
+        extent={{6,3},{6,3}},
+        horizontalAlignment=TextAlignment.Left));
+    connect(Core_inlet.port_b, core.port_a)
+      annotation (Line(points={{-70,30},{-70,26}}, color={0,127,255}));
+    connect(core.port_b, Core_oulet.port_a)
+      annotation (Line(points={{-70,-14},{-70,-30}}, color={0,127,255}));
+    connect(actuatorBus.Pump_flow, pump.in_m_flow) annotation (Line(
+        points={{30,100},{30,10},{62.7,10}},
+        color={111,216,99},
+        pattern=LinePattern.Dash,
+        thickness=0.5), Text(
+        string="%first",
+        index=-1,
+        extent={{-3,6},{-3,6}},
+        horizontalAlignment=TextAlignment.Right));
+    connect(actuatorBus.CR_speed, controlRod.u) annotation (Line(
+        points={{30,100},{58,100}},
+        color={111,216,99},
+        pattern=LinePattern.Dash,
+        thickness=0.5), Text(
+        string="%first",
+        index=-1,
+        extent={{-6,3},{-6,3}},
+        horizontalAlignment=TextAlignment.Right));
+    annotation (
+      defaultComponentName="changeMe",
+      Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+              140}})),
+      Icon(coordinateSystem(extent={{-100,-100},{100,100}}), graphics={
+          Text(
+            extent={{-94,82},{94,74}},
+            lineColor={0,0,0},
+            lineThickness=1,
+            fillColor={255,255,237},
+            fillPattern=FillPattern.Solid,
+            textString="%name")}));
+  end ReactorCRspeed;
 end PHTGR;

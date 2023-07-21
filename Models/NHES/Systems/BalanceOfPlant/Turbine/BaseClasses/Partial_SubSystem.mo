@@ -10,7 +10,7 @@ partial model Partial_SubSystem
       Placement(transformation(extent={{-18,122},{-2,138}})));
   replaceable Partial_EventDriver ED annotation (choicesAllMatching=true,
       Placement(transformation(extent={{2,122},{18,138}})));
-  replaceable Record_Data data
+  inner replaceable Record_Data data
     annotation (Placement(transformation(extent={{42,122},{58,138}})));
 
   SignalSubBus_ActuatorInput actuatorBus

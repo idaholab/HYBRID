@@ -2844,6 +2844,94 @@ package HeatTransport
     end ED_Dummy;
   end ControlSystems;
 
+  model steamTransport
+    extends BaseClasses.Partial_SubSystem_B(
+      redeclare replaceable ControlSystems.CS_Dummy CS,
+      redeclare replaceable ControlSystems.ED_Dummy ED,
+      redeclare replaceable data.pipe_data_1 Supply_pipe_data);
+
+      parameter Real  K= 1
+                          "Local Loss Coe";
+      parameter Integer nV=3 "nodes";
+    parameter Modelica.Units.SI.MassFlowRate mFlow=1 "system mass flow rate";
+    parameter Modelica.Units.SI.AbsolutePressure p_sink=1e5
+      "sink pressure";
+    parameter Modelica.Units.SI.SpecificEnthalpy h_source=1000e3
+      "inlet specific enthalpy";
+
+
+    TRANSFORM.Fluid.Pipes.GenericPipe_MultiTransferSurface pipe[Supply_pipe_data.nV](
+      redeclare package Medium = Modelica.Media.Water.StandardWater,
+      use_Ts_start=false,
+      p_a_start=p_sink,
+      h_a_start=h_source,
+      h_b_start=h_source,
+      m_flow_a_start=mFlow,
+      redeclare model Geometry =
+          TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.StraightPipe
+          (
+          dimension=Supply_pipe_data.D,
+          length=Supply_pipe_data.L,
+          dheight=Supply_pipe_data.dH,
+          nV=Supply_pipe_data.nV),
+      redeclare model FlowModel =
+          TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable)
+      annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
+    TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h source(
+      redeclare package Medium = Modelica.Media.Water.StandardWater,
+      use_m_flow_in=true,
+      use_h_in=true,
+      nPorts=1)
+      annotation (Placement(transformation(extent={{-120,-10},{-100,10}})));
+    TRANSFORM.Fluid.BoundaryConditions.Boundary_ph sink(
+      redeclare package Medium = Modelica.Media.Water.StandardWater,
+      use_p_in=true,
+      use_h_in=false,
+      nPorts=1)
+      annotation (Placement(transformation(extent={{120,-10},{100,10}})));
+
+
+    Modelica.Blocks.Sources.RealExpression realExpression(y=mFlow)
+      annotation (Placement(transformation(extent={{-160,0},{-140,20}})));
+    Modelica.Blocks.Sources.RealExpression realExpression1(y=h_source)
+      annotation (Placement(transformation(extent={{-160,-20},{-140,0}})));
+    Modelica.Blocks.Sources.RealExpression realExpression2(y=p_sink)
+      annotation (Placement(transformation(extent={{160,0},{140,20}})));
+    TRANSFORM.Fluid.TemporaryBlock_Fluid temporary(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
+      annotation (Placement(transformation(extent={{-68,-10},{-48,10}})));
+    Fluid.FittingsAndResistances.LocalLoss resistance[Supply_pipe_data.nV](
+        redeclare package Medium = Modelica.Media.Water.StandardWater, Ax=pi*(
+          Supply_pipe_data.D^2)/4)
+      annotation (Placement(transformation(extent={{28,-10},{48,10}})));
+    TRANSFORM.Fluid.TemporaryBlock_Fluid temporary1(redeclare package Medium =
+          Modelica.Media.Water.StandardWater)
+      annotation (Placement(transformation(extent={{58,-10},{78,10}})));
+  equation
+
+    connect(realExpression1.y, source.h_in) annotation (Line(points={{-139,-10},{-130,
+            -10},{-130,4},{-122,4}}, color={0,0,127}));
+    connect(realExpression2.y, sink.p_in) annotation (Line(points={{139,10},{130,10},
+            {130,8},{122,8}}, color={0,0,127}));
+    connect(realExpression.y, source.m_flow_in)
+      annotation (Line(points={{-139,10},{-139,8},{-120,8}}, color={0,0,127}));
+
+
+    connect(source.ports[1], temporary.port_a)
+      annotation (Line(points={{-100,0},{-65,0}}, color={0,127,255}));
+    connect(temporary.port_b, pipe[1].port_a)
+      annotation (Line(points={{-51,0},{-20,0}}, color={0,127,255}));
+    connect(pipe.port_b, resistance.port_a)
+      annotation (Line(points={{20,0},{31,0}}, color={0,127,255}));
+    connect(resistance[Supply_pipe_data.nV].port_b, temporary1.port_a)
+      annotation (Line(points={{45,0},{60,0}}, color={0,127,255}));
+    connect(temporary1.port_b, sink.ports[1])
+      annotation (Line(points={{75,0},{100,0}}, color={0,127,255}));
+    connect(resistance[1:Supply_pipe_data.nV - 1].port_b, pipe[2:Supply_pipe_data.nV].port_a)
+      annotation (Line(points={{45,0},{12.5,0},{12.5,-2},{-20,-2}}, color={0,127,255}));
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+          coordinateSystem(preserveAspectRatio=false)));
+  end steamTransport;
   annotation (            Icon(graphics={
         Rectangle(
           extent={{-70,-30},{30,40}},

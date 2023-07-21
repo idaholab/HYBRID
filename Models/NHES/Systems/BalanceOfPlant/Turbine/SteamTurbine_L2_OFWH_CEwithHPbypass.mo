@@ -32,7 +32,7 @@ model SteamTurbine_L2_OFWH_CEwithHPbypass
     use_T_nominal=false,
     T_nominal=data.Tin,
     d_nominal=data.d_HPT_in)
-    annotation (Placement(transformation(extent={{-46,42},{-26,62}})));
+    annotation (Placement(transformation(extent={{-46,44},{-26,64}})));
   TRANSFORM.Fluid.Machines.SteamTurbine LPT(
     energyDynamics=TRANSFORM.Types.Dynamics.DynamicFreeInitial,
     eta_mech=data.eta_mech,
@@ -88,13 +88,13 @@ model SteamTurbine_L2_OFWH_CEwithHPbypass
         origin={100,44})));
   TRANSFORM.Electrical.Interfaces.ElectricalPowerPort_Flow port_a_elec
     annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-  Fluid.Machines.Pump_Pressure                  pump(redeclare package Medium
-      = Modelica.Media.Water.StandardWater,
+  Fluid.Machines.Pump_Pressure                  pump(redeclare package Medium =
+        Modelica.Media.Water.StandardWater,
     p_nominal=data.p_i2,
     eta=data.eta_p)
-    annotation (Placement(transformation(extent={{66,-70},{46,-50}})));
-  Fluid.Machines.Pump_Pressure                  pump1(redeclare package Medium
-      = Modelica.Media.Water.StandardWater,
+    annotation (Placement(transformation(extent={{68,-70},{48,-50}})));
+  Fluid.Machines.Pump_Pressure                  pump1(redeclare package Medium =
+        Modelica.Media.Water.StandardWater,
     use_input=false,
     p_nominal=data.HPT_p_in - 1e5,
     eta=data.eta_p)
@@ -105,7 +105,7 @@ model SteamTurbine_L2_OFWH_CEwithHPbypass
     T_start=333.15,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=2)) annotation (Placement(transformation(extent={{38,-70},{18,-50}})));
+        (V=2)) annotation (Placement(transformation(extent={{34,-70},{14,-50}})));
   TRANSFORM.Fluid.Valves.ValveLinear HPT_bypass_valve(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     dp_nominal=100000,
@@ -187,14 +187,13 @@ equation
   connect(LPT.shaft_b, generator.shaft)
     annotation (Line(points={{94,54},{100,54}}, color={0,0,0}));
   connect(condenser.port_b, pump.port_a)
-    annotation (Line(points={{86,-58},{86,-60},{66,-60}}, color={0,127,255}));
+    annotation (Line(points={{86,-58},{86,-60},{68,-60}}, color={0,127,255}));
   connect(FWCP.port_b, port_b_feed)
     annotation (Line(points={{-66,-60},{-100,-60}}, color={0,127,255}));
   connect(LPT.portLP, condenser.port_a)
     annotation (Line(points={{94,60},{94,-43},{93,-43}}, color={0,127,255}));
   connect(HPT.portHP, TCV.port_b)
-    annotation (Line(points={{-46,58},{-50,58},{-50,60},{-52,60}},
-                                                 color={0,127,255}));
+    annotation (Line(points={{-46,60},{-52,60}}, color={0,127,255}));
   connect(TCV.port_a, SteamHeader.port_b)
     annotation (Line(points={{-72,60},{-80,60}}, color={0,127,255}));
   connect(actuatorBus.opening_TCV, TCV.opening) annotation (Line(
@@ -273,23 +272,23 @@ equation
       horizontalAlignment=TextAlignment.Right));
 
   connect(moistureSeperator.port_a[1], HPT.portLP) annotation (Line(points={{-14,
-          59.75},{-20,59.75},{-20,58},{-26,58}},
+          59.75},{-20,59.75},{-20,60},{-26,60}},
                                          color={0,127,255}));
-  connect(HPT.shaft_b, LPT.shaft_a) annotation (Line(points={{-26,52},{-26,46},
+  connect(HPT.shaft_b, LPT.shaft_a) annotation (Line(points={{-26,54},{-26,46},
           {68,46},{68,54},{74,54}},     color={0,0,0}));
   connect(HPT_bypass_valve.port_a, TCV.port_a) annotation (Line(points={{-34,6},
           {-34,40},{-72,40},{-72,60}}, color={0,127,255}));
   connect(OFWH_1.port_b, pump1.port_a)
-    annotation (Line(points={{22,-60},{10,-60}}, color={0,127,255}));
+    annotation (Line(points={{18,-60},{10,-60}}, color={0,127,255}));
   connect(OFWH_1.port_a, pump.port_b)
-    annotation (Line(points={{34,-60},{46,-60}}, color={0,127,255}));
+    annotation (Line(points={{30,-60},{48,-60}}, color={0,127,255}));
   connect(pump1.port_b, OFWH_2.port_a)
     annotation (Line(points={{-10,-60},{-22,-60}}, color={0,127,255}));
   connect(OFWH_2.port_b, FWCP.port_a)
     annotation (Line(points={{-34,-60},{-46,-60}}, color={0,127,255}));
   connect(HPT_bypass_valve.port_b, OFWH_2.port_a) annotation (Line(points={{-34,
           -14},{-34,-46},{-14,-46},{-14,-60},{-22,-60}}, color={0,127,255}));
-  connect(OFWH_1.port_a, moistureSeperator.port_Liquid) annotation (Line(points={{34,-60},
+  connect(OFWH_1.port_a, moistureSeperator.port_Liquid) annotation (Line(points={{30,-60},
           {42,-60},{42,24},{-12,24},{-12,56}},        color={0,127,255}));
   connect(moistureSeperator.port_b[1], ECV.port_a)
     annotation (Line(points={{-2,60},{40,60}}, color={0,127,255}));
@@ -314,7 +313,7 @@ equation
       extent={{-6,3},{-6,3}},
       horizontalAlignment=TextAlignment.Right));
   connect(actuatorBus.HPT_pArc, HPT.partialArc) annotation (Line(
-      points={{30,100},{30,10},{-41,10},{-41,48}},
+      points={{30,100},{30,10},{-41,10},{-41,50}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -323,7 +322,7 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(sensor_p2.port, HPT.portHP) annotation (Line(points={{-76,78},{-62,78},
-          {-62,58},{-46,58}},          color={0,127,255}));
+          {-62,60},{-46,60}},          color={0,127,255}));
   connect(sensorBus.Imp_pressure, sensor_p2.p) annotation (Line(
       points={{-30,100},{-56,100},{-56,88},{-82,88}},
       color={239,82,82},
@@ -336,8 +335,9 @@ equation
 
   connect(port_a_return, lpTBV.port_a) annotation (Line(points={{-60,-100},{-60,
           -78},{-50,-78}}, color={0,127,255}));
-  connect(lpTBV.port_b, OFWH_1.port_a) annotation (Line(points={{-30,-78},{42,-78},
-          {42,-60},{34,-60}}, color={0,127,255}));
+  connect(lpTBV.port_b, OFWH_1.port_a) annotation (Line(points={{-30,-78},{42,
+          -78},{42,-60},{30,-60}},
+                              color={0,127,255}));
   connect(actuatorBus.Divert_Valve_Position, lpTBV.opening) annotation (Line(
       points={{30,100},{30,-20},{-40,-20},{-40,-70}},
       color={111,216,99},

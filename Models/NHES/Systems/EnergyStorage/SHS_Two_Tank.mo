@@ -1174,7 +1174,8 @@ package SHS_Two_Tank
               origin={-87,52},
               rotation=180),
             Rectangle(
-              extent=DynamicSelect({{-56,6},{-6,66}},{{-56,6},{-6,6+60*hot_tank.level/tank_height}}),
+              extent=DynamicSelect({{-56,6},{-6,66}}, {{-56,6},{-6,6 + 60*
+                  hot_tank.level/tank_height}}),
               lineColor={175,175,175},
               fillColor={255,128,0},
               fillPattern=FillPattern.HorizontalCylinder,
@@ -7187,8 +7188,8 @@ package SHS_Two_Tank
             extent={{-10,10},{10,-10}},
             rotation=270,
             origin={72,20})));
-      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium
-          = Storage_Medium, redeclare model Geometry =
+      TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium =
+            Storage_Medium, redeclare model Geometry =
             TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
             (V=data.ctvolume_volume))
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},
@@ -7315,23 +7316,23 @@ package SHS_Two_Tank
       TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_ch_a(redeclare package
           Medium =
             Charging_Medium)                                                                           annotation (Placement(
-            transformation(extent={{-108,-72},{-88,-52}}), iconTransformation(
-              extent={{-108,-72},{-88,-52}})));
+            transformation(extent={{-110,-70},{-90,-50}}), iconTransformation(
+              extent={{-110,-70},{-90,-50}})));
       TRANSFORM.Fluid.Interfaces.FluidPort_State port_ch_b(redeclare package
           Medium =
             Charging_Medium)                                                                            annotation (Placement(
-            transformation(extent={{-108,44},{-88,64}}), iconTransformation(extent={
-                {-108,44},{-88,64}})));
+            transformation(extent={{-110,50},{-90,70}}), iconTransformation(extent={{-110,50},
+                {-90,70}})));
       TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_dch_a(redeclare package
           Medium =
             Discharging_Medium)                                                                            annotation (Placement(
-            transformation(extent={{88,48},{108,68}}), iconTransformation(extent={{88,
-                48},{108,68}})));
+            transformation(extent={{90,50},{110,70}}), iconTransformation(extent={{90,50},
+                {110,70}})));
       TRANSFORM.Fluid.Interfaces.FluidPort_State port_dch_b(redeclare package
           Medium =
             Discharging_Medium)                                                                             annotation (Placement(
-            transformation(extent={{90,-72},{110,-52}}), iconTransformation(extent={
-                {90,-72},{110,-52}})));
+            transformation(extent={{90,-70},{110,-50}}), iconTransformation(extent={{90,-70},
+                {110,-50}})));
       TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance(
           redeclare package Medium =
             Storage_Medium, R=100)
@@ -7429,10 +7430,11 @@ package SHS_Two_Tank
           color={239,82,82},
           pattern=LinePattern.Dash,
           thickness=0.5));
-      connect(port_dch_a, DHX.Shell_in) annotation (Line(points={{98,58},{74,58},{
-              74,30}},                      color={0,127,255}));
-      connect(DHX.Shell_out, port_dch_b) annotation (Line(points={{74,10},{74,-4},{
-              86,-4},{86,-40},{94,-40},{94,-62},{100,-62}},    color={0,127,255}));
+      connect(port_dch_a, DHX.Shell_in) annotation (Line(points={{100,60},{74,
+              60},{74,30}},                 color={0,127,255}));
+      connect(DHX.Shell_out, port_dch_b) annotation (Line(points={{74,10},{74,
+              -4},{86,-4},{86,-40},{94,-40},{94,-60},{100,-60}},
+                                                               color={0,127,255}));
       connect(boundary2.h_in, delay1.y)
         annotation (Line(points={{-86,-88},{-93.44,-88}}, color={0,0,127}));
       connect(CHX.Tube_in, Charging_Valve.port_b) annotation (Line(points={{-40,-44},
@@ -7451,8 +7453,9 @@ package SHS_Two_Tank
         annotation (Line(points={{-14,-76},{-1,-76}},         color={0,127,255}));
       connect(CHX.Shell_out, sensor_T1.port_b) annotation (Line(points={{-46,-44},{
               -46,-36},{-58,-36},{-58,-30}},           color={0,127,255}));
-      connect(port_ch_a, CHX.Shell_in) annotation (Line(points={{-98,-62},{-76,-62},
-              {-76,-64},{-46,-64}}, color={0,127,255}));
+      connect(port_ch_a, CHX.Shell_in) annotation (Line(points={{-100,-60},{-76,
+              -60},{-76,-64},{-46,-64}},
+                                    color={0,127,255}));
       connect(sensorBus.Coolant_Water_temp, Coolant_Water_temp.y) annotation (Line(
           points={{-30,100},{-32,100},{-32,86},{-47,86}},
           color={239,82,82},
@@ -7473,8 +7476,9 @@ package SHS_Two_Tank
           horizontalAlignment=TextAlignment.Right));
       connect(sensor_m_flow.port_a, sensor_T1.port_a) annotation (Line(points={{-86,
               -4},{-86,-30},{-78,-30}}, color={0,127,255}));
-      connect(sensor_m_flow.port_b, port_ch_b) annotation (Line(points={{-86,16},{
-              -88,16},{-88,54},{-98,54}}, color={0,127,255}));
+      connect(sensor_m_flow.port_b, port_ch_b) annotation (Line(points={{-86,16},
+              {-88,16},{-88,60},{-100,60}},
+                                          color={0,127,255}));
       connect(sensorBus.ChargeSteam_mFlow, sensor_m_flow.m_flow) annotation (Line(
           points={{-30,100},{-30,62},{-80,62},{-80,24},{-102,24},{-102,6},{-89.6,6}},
           color={239,82,82},
