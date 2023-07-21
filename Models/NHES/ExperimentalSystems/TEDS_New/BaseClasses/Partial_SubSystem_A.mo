@@ -5,8 +5,7 @@ partial model Partial_SubSystem_A
 
   extends Record_SubSystem_A;
 
-  Data.Initial_Data_Dummy data_initial
-    annotation (Placement(transformation(extent={{72,122},{92,142}})));
+
   annotation (
     defaultComponentName="changeMe",
     Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),

@@ -12,8 +12,6 @@ partial model Partial_ControlSystem
 
   replaceable Data.Data_Dummy data
     annotation (Placement(transformation(extent={{-100,84},{-80,104}})), choicesAllMatching = true);
-  replaceable Data.Initial_Data_Dummy data_initial
-    annotation (Placement(transformation(extent={{-80,84},{-60,104}})), choicesAllMatching = true);
   annotation (
     defaultComponentName="CS",
     Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,

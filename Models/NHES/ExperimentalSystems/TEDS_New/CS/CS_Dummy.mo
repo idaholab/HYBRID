@@ -13,17 +13,17 @@ model CS_Dummy
   TRANSFORM.Blocks.RealExpression BOP_mass_flow
     annotation (Placement(transformation(extent={{-82,-86},{-58,-66}})));
   Modelica.Blocks.Sources.RealExpression valve_4_opening(y=0.1)
-    annotation (Placement(transformation(extent={{0,-10},{24,12}})));
+    annotation (Placement(transformation(extent={{0,12},{24,34}})));
   Modelica.Blocks.Sources.RealExpression valve_2_opening(y=0.25)
-    annotation (Placement(transformation(extent={{0,-46},{24,-24}})));
+    annotation (Placement(transformation(extent={{0,-24},{24,-2}})));
   Modelica.Blocks.Sources.RealExpression valve_1_opening(y=0.1)
-    annotation (Placement(transformation(extent={{0,-64},{24,-42}})));
+    annotation (Placement(transformation(extent={{0,-42},{24,-20}})));
   Modelica.Blocks.Sources.RealExpression valve_3_opening(y=0.0)
-    annotation (Placement(transformation(extent={{0,-30},{24,-8}})));
+    annotation (Placement(transformation(extent={{0,-8},{24,14}})));
   Modelica.Blocks.Sources.RealExpression valve_5_opening(y=0.0)
-    annotation (Placement(transformation(extent={{0,8},{24,30}})));
+    annotation (Placement(transformation(extent={{0,30},{24,52}})));
   Modelica.Blocks.Sources.RealExpression valve_6_opening(y=1.0)
-    annotation (Placement(transformation(extent={{0,24},{24,46}})));
+    annotation (Placement(transformation(extent={{0,46},{24,68}})));
   TRANSFORM.Blocks.RealExpression discharging_flow_rate
     annotation (Placement(transformation(extent={{-80,10},{-56,32}})));
   TRANSFORM.Blocks.RealExpression T_discharge_outlet
@@ -37,42 +37,52 @@ model CS_Dummy
   TRANSFORM.Blocks.RealExpression heater_flow_rate
     annotation (Placement(transformation(extent={{-80,-36},{-56,-16}})));
   Modelica.Blocks.Sources.RealExpression pump_outlet_pressure(y=121325)
-    annotation (Placement(transformation(extent={{0,40},{24,62}})));
+    annotation (Placement(transformation(extent={{0,62},{24,84}})));
   Modelica.Blocks.Sources.RealExpression heater_power_out(y=200e3)
-    annotation (Placement(transformation(extent={{0,56},{24,78}})));
+    annotation (Placement(transformation(extent={{0,78},{24,100}})));
   TRANSFORM.Blocks.RealExpression chromolox_exit_temperature
     annotation (Placement(transformation(extent={{-80,72},{-56,94}})));
   TRANSFORM.Blocks.RealExpression pump_inlet_pressure
     annotation (Placement(transformation(extent={{-80,-102},{-56,-82}})));
+  Modelica.Blocks.Sources.RealExpression BV1_opening(y=1e-8)
+    annotation (Placement(transformation(extent={{0,-58},{24,-36}})));
+  Modelica.Blocks.Sources.RealExpression BV_2(y=0.8)
+    annotation (Placement(transformation(extent={{0,-74},{24,-52}})));
+  Modelica.Blocks.Sources.RealExpression glycol_water_mix_flow(y=5.6)
+    annotation (Placement(transformation(extent={{-2,94},{22,116}})));
+  Modelica.Blocks.Sources.RealExpression valve_MAGNET(y=1e-8)
+    annotation (Placement(transformation(extent={{-4,-138},{20,-116}})));
+  Modelica.Blocks.Sources.RealExpression valve_MAGNET_bypass(y=0.8)
+    annotation (Placement(transformation(extent={{-4,-92},{20,-70}})));
 equation
 
   connect(actuatorBus.valve_1_opening, valve_1_opening.y) annotation (Line(
-      points={{30,-100},{30,-54},{28,-54},{28,-53},{25.2,-53}},
+      points={{30,-100},{30,-31},{25.2,-31}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.valve_2_opening, valve_2_opening.y) annotation (Line(
-      points={{30,-100},{30,-35},{25.2,-35}},
+      points={{30,-100},{30,-13},{25.2,-13}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.valve_3_opening, valve_3_opening.y) annotation (Line(
-      points={{30,-100},{30,-19},{25.2,-19}},
+      points={{30,-100},{30,3},{25.2,3}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.valve_4_opening, valve_4_opening.y) annotation (Line(
-      points={{30,-100},{30,1},{25.2,1}},
+      points={{30,-100},{30,23},{25.2,23}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.valve_5_opening, valve_5_opening.y) annotation (Line(
-      points={{30,-100},{30,19},{25.2,19}},
+      points={{30,-100},{30,41},{25.2,41}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.valve_6_opening, valve_6_opening.y) annotation (Line(
-      points={{30,-100},{30,35},{25.2,35}},
+      points={{30,-100},{30,57},{25.2,57}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -129,17 +139,17 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.pump_dp, pump_outlet_pressure.y) annotation (Line(
-      points={{30,-100},{30,51},{25.2,51}},
+      points={{30,-100},{30,73},{25.2,73}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.heater_power, heater_power_out.y) annotation (Line(
-      points={{30,-100},{30,67},{25.2,67}},
+      points={{30,-100},{30,89},{25.2,89}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.T_Chromolox_Exit, chromolox_exit_temperature.u) annotation
-    (Line(
+  connect(sensorBus.T_Chromolox_Exit, chromolox_exit_temperature.u) annotation (
+     Line(
       points={{-30,-100},{-104,-100},{-104,84},{-94,84},{-94,83},{-82.4,83}},
       color={239,82,82},
       pattern=LinePattern.Dash,
@@ -148,6 +158,33 @@ equation
       Line(
       points={{-30,-100},{-104,-100},{-104,-92},{-82.4,-92}},
       color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.BV2_opening, BV_2.y) annotation (Line(
+      points={{30,-100},{30,-63},{25.2,-63}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.BV1_opening, BV1_opening.y) annotation (Line(
+      points={{30,-100},{30,-47},{25.2,-47}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.glycol_water_flow_rate, glycol_water_mix_flow.y)
+    annotation (Line(
+      points={{30,-100},{30,105},{23.2,105}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.valve_MAGNET, valve_MAGNET.y) annotation (Line(
+      points={{30,-100},{30,-76},{21.2,-76},{21.2,-127}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.valve_MAGNET_bypass_opening, valve_MAGNET_bypass.y)
+    annotation (Line(
+      points={{30,-100},{30,-81},{21.2,-81}},
+      color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics={
