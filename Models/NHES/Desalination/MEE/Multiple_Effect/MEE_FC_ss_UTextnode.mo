@@ -39,8 +39,7 @@ model MEE_FC_ss_UTextnode "Multi-Effect Evaporator"
  final parameter Modelica.Units.SI.SpecificGibbsFreeEnergy [data.nE] gW(fixed=false)=fill(30,data.nE);
  SI.MassFlowRate Cond_out;
   Real GOR;
-  MEE_innernodelized
-            mEE_innernodelized(
+  MEE_innernodelizednew mEE_innernodelized(
     Cs_in=Cs_in,
     Cs_out=Cs_out,
     Ax=Ax,
@@ -50,7 +49,8 @@ model MEE_FC_ss_UTextnode "Multi-Effect Evaporator"
     h_input=sensor_h.h_out,
     m_flow_input=sensor_m_flow.m_flow,
     p_input=sensor_p.p,
-    nV=nV)
+    nV=nV,
+    delay(y_start=mdot[2:data.nE]))
     annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium =
         Medium)
@@ -58,11 +58,12 @@ model MEE_FC_ss_UTextnode "Multi-Effect Evaporator"
   TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium =
         Medium)
     annotation (Placement(transformation(extent={{-110,-70},{-90,-50}})));
-  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph steam_in(
-    redeclare package Medium = Medium,                    use_p_in=true,
-    h=2700e3,                                                            nPorts
-      =1) annotation (Placement(transformation(extent={{0,50},{-20,70}})));
-  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h liquid_return(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph steam_in(
+    redeclare package Medium = Medium,
+    use_p_in=true,
+    h=2700e3,
+    nPorts=1) annotation (Placement(transformation(extent={{0,50},{-20,70}})));
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_h liquid_return(
     redeclare package Medium = Medium,
     use_m_flow_in=true,
     use_h_in=true,
@@ -93,9 +94,9 @@ initial equation
    h_in[j,1]=h_steam[j-1];
  end for;
  for i in 1:data.nE loop
-  0=m_b_in[i]+m_b_out[i]+m_steam[i];
+  0=m_b_in[i]-m_b_out[i]+m_steam[i];
   Cs_out=Cs_in*abs(m_b_in[i]/m_b_out[i]);
-  0=Qhx[i]+h_steam[i]*m_steam[i]+h_b_innom*m_b_in[i]+h_b_out[i]*m_b_out[i];
+  0=Qhx[i]+h_steam[i]*m_steam[i]+h_b_innom*m_b_in[i]-h_b_out[i]*m_b_out[i];
   h_b_out[i]=MediumB.specificEnthalpy(MediumB.setState_pTX(p[i],T[i],Xo));
   chemp[i]=MediumB.mu_pTX(p[i],T[i],Xo);
   h_steam[i]=Medium.specificEnthalpy(Medium.setState_pT(p[i], T[i]));

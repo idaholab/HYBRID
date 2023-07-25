@@ -1,19 +1,18 @@
 within NHES.Desalination.MEE.Examples;
 model Utest "Test of a single effect with constant"
 
-  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph cond_out(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph cond_out(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=200000,
-    nPorts=1)
-    annotation (Placement(transformation(extent={{100,-10},{80,10}})));
-  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Tube_Inlet(
+    nPorts=1) annotation (Placement(transformation(extent={{100,-10},{80,10}})));
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_h Tube_Inlet(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_m_flow_in=true,
     use_h_in=true,
     m_flow=1,
     h=2706.9e3,
-    nPorts=1) annotation (Placement(transformation(extent={{-100,-10},{-80,
-            10}})));
+    nPorts=1)
+    annotation (Placement(transformation(extent={{-100,-10},{-80,10}})));
 
   Components.SEE_Tube_Side_Ue          sEE_Tube_Side_Ue(Ax=15.8)
     annotation (Placement(transformation(extent={{-42,-38},{38,42}})));

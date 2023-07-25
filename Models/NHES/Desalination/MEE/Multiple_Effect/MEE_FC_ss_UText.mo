@@ -56,11 +56,12 @@ model MEE_FC_ss_UText "Multi-Effect Evaporator"
   TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium =
         Medium)
     annotation (Placement(transformation(extent={{-110,-70},{-90,-50}})));
-  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph steam_in(
-    redeclare package Medium = Medium,                    use_p_in=true,
-    h=2700e3,                                                            nPorts
-      =1) annotation (Placement(transformation(extent={{0,50},{-20,70}})));
-  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h liquid_return(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph steam_in(
+    redeclare package Medium = Medium,
+    use_p_in=true,
+    h=2700e3,
+    nPorts=1) annotation (Placement(transformation(extent={{0,50},{-20,70}})));
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_h liquid_return(
     redeclare package Medium = Medium,
     use_m_flow_in=true,
     use_h_in=true,

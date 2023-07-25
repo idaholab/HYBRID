@@ -1,38 +1,39 @@
 within NHES.Desalination.MEE.Examples;
 model Single_Effect_pool "Test of a single effect with constant UA"
 
-  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Steam_Exit2(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph Steam_Exit2(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=70000,
     nPorts=1) annotation (Placement(transformation(extent={{-6,38},{-26,58}})));
-  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Tube_Inlet2(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_h Tube_Inlet2(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_m_flow_in=false,
     m_flow=1,
     h=2725.9e3,
-    nPorts=1) annotation (Placement(transformation(extent={{-146,-60},{-126,
-            -40}})));
-  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Brine_Oulet1(
+    nPorts=1)
+    annotation (Placement(transformation(extent={{-146,-60},{-126,-40}})));
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph Brine_Oulet1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=100000,
-    nPorts=1) annotation (Placement(transformation(extent={{-6,-60},{-26,
-            -40}})));
-  TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary2(
+    nPorts=1)
+    annotation (Placement(transformation(extent={{-6,-60},{-26,-40}})));
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary2(
     redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+
     p=10000,
     X={0.92,0.08},
     nPorts=1)
     annotation (Placement(transformation(extent={{-148,-20},{-128,0}})));
 
-  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary3(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_T boundary3(
     redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+
     use_m_flow_in=false,
     use_X_in=false,
     m_flow=4,
     T=353.15,
     X={0.92,0.08},
-    nPorts=1)
-    annotation (Placement(transformation(extent={{-8,-20},{-28,0}})));
+    nPorts=1) annotation (Placement(transformation(extent={{-8,-20},{-28,0}})));
 
   Single_Effect.Brine_Models.Single_Effect_pool
                                            single_Effect_pool(

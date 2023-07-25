@@ -7,14 +7,14 @@ model MEE_ss_test_delay "Test of a single effect with constant UA"
       data(nE=12, T_b_in=333.15), Cs_in=0.01,
     firstOrder(y_start=4))
     annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
-  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_T boundary(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_m_flow_in=true,
     m_flow=5,
     T=396.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-120,22},{-100,42}})));
-  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary1(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph boundary1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=200000,
     nPorts=1)

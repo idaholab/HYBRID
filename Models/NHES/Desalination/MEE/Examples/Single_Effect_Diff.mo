@@ -1,12 +1,12 @@
 within NHES.Desalination.MEE.Examples;
 model Single_Effect_Diff "Test of a single effect with constant UA"
 
-  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Brine_Oulet(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph Brine_Oulet(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=10000,
-    nPorts=1) annotation (Placement(transformation(extent={{-120,-10},{-100,
-            10}})));
-  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Steam_Exit(
+    nPorts=1)
+    annotation (Placement(transformation(extent={{-120,-10},{-100,10}})));
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph Steam_Exit(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=70000,
     nPorts=1) annotation (Placement(transformation(extent={{22,50},{2,70}})));
@@ -18,18 +18,18 @@ model Single_Effect_Diff "Test of a single effect with constant UA"
     Ax=2.68e4,
     pT=100000)
     annotation (Placement(transformation(extent={{-80,-30},{-20,30}})));
-  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Tube_Inlet(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_h Tube_Inlet(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_m_flow_in=false,
     m_flow=1.5,
     h=2725.9e3,
-    nPorts=1) annotation (Placement(transformation(extent={{-120,-50},{-100,
-            -30}})));
-  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Brine_Oulet1(
+    nPorts=1)
+    annotation (Placement(transformation(extent={{-120,-50},{-100,-30}})));
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph Brine_Oulet1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=100000,
     nPorts=1) annotation (Placement(transformation(extent={{22,-48},{2,-28}})));
-  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Brine_Inlet1(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_h Brine_Inlet1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_m_flow_in=false,
     m_flow=4,
@@ -38,30 +38,31 @@ model Single_Effect_Diff "Test of a single effect with constant UA"
   Modelica.Blocks.Sources.RealExpression realExpression1(y=0.08)
                                                                 annotation (Placement(transformation(extent={{20,8},{
             0,28}})));
-  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Steam_Exit1(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph Steam_Exit1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=70000,
     nPorts=1) annotation (Placement(transformation(extent={{182,48},{162,68}})));
-  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Tube_Inlet1(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_h Tube_Inlet1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_m_flow_in=false,
     m_flow=1,
     h=2725.9e3,
     nPorts=1) annotation (Placement(transformation(extent={{42,-50},{62,-30}})));
-  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Brine_Oulet2(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph Brine_Oulet2(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=100000,
-    nPorts=1) annotation (Placement(transformation(extent={{182,-50},{162,
-            -30}})));
-  TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary(
+    nPorts=1)
+    annotation (Placement(transformation(extent={{182,-50},{162,-30}})));
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary(
     redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+
     p=10000,
     X={0.92,0.08},
-    nPorts=1)
-    annotation (Placement(transformation(extent={{40,-10},{60,10}})));
+    nPorts=1) annotation (Placement(transformation(extent={{40,-10},{60,10}})));
 
-  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary1(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_T boundary1(
     redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
+
     use_m_flow_in=false,
     use_X_in=false,
     m_flow=4,

@@ -1,12 +1,12 @@
 within NHES.Desalination.MEE.Examples;
 model MEE_FC_test3 "Test of a multi effect with full condensing"
 
-  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Liquid_Return(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph Liquid_Return(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=200000,
     nPorts=1)
     annotation (Placement(transformation(extent={{-100,-26},{-80,-6}})));
-  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T Tube_Inlet(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_T Tube_Inlet(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_m_flow_in=true,
     m_flow=1,
@@ -31,12 +31,11 @@ model MEE_FC_test3 "Test of a multi effect with full condensing"
     SCV(PID_k=-5, m_flow_nominal=16),
     Effect(m_brine_out=1, KV=-0.1))
     annotation (Placement(transformation(extent={{-34,-30},{46,50}})));
-  TRANSFORM.Fluid.BoundaryConditions.Boundary_pT Purified_Water(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT Purified_Water(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=5000,
     T=328.15,
-    nPorts=1)
-    annotation (Placement(transformation(extent={{78,-16},{58,4}})));
+    nPorts=1) annotation (Placement(transformation(extent={{78,-16},{58,4}})));
   Modelica.Blocks.Sources.Step step(offset=1, startTime=3000)
     annotation (Placement(transformation(extent={{-160,20},{-140,40}})));
 equation

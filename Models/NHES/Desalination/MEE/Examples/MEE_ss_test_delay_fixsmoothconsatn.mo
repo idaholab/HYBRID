@@ -5,17 +5,16 @@ model MEE_ss_test_delay_fixsmoothconsatn
   Multiple_Effect.MEE_FC_ss_UTextnode
                                   mEE_FC_ss_UTextnode(
     redeclare replaceable Data.MEE_Data data(nE=12, p_h=150000),
-                                 Cs_in=0.03,
-    nV=20)
+                                 Cs_in=0.03)
     annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
-  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h boundary(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_h boundary(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_m_flow_in=false,
     m_flow=2,
     h=2700e3,
     nPorts=1)
     annotation (Placement(transformation(extent={{-120,14},{-100,34}})));
-  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary1(
+  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph boundary1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=200000,
     nPorts=1)

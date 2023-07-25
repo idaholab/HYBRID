@@ -1,5 +1,5 @@
 within NHES.Desalination.MEE.Multiple_Effect;
-model MEE_innernodelized
+model MEE_innernodelizednew
     parameter SI.MassFraction Cs_in=0.08;
   parameter SI.MassFraction Cs_out=X_nom;
   import Modelica.Units.SI;
@@ -29,7 +29,7 @@ parameter  SI.Area [nE] Ax={54.8782,467.2145,378.3631,308.78772,254.02841,210.70
   Modelica.Units.SI.MassFraction [2] Xo;
   Modelica.Units.SI.Temperature [nE,nV] T_tube;
   Modelica.Units.SI.Temperature [nE] T;
-  Modelica.Units.SI.SpecificEnthalpy [nE] h_f;
+  Modelica.Units.SI.SpecificEnthalpy [nE] h_min;
   Modelica.Units.SI.SpecificEnthalpy [nE,nV] h_in;
   Modelica.Units.SI.SpecificEnthalpy [nE,nV] h_out;
   Modelica.Units.SI.AbsolutePressure [nE] p;
@@ -61,14 +61,14 @@ equation
  end for;
  for i in 1:nE loop
   0=m_b_in[i]-m_b_out[i]+m_steam[i];
-  Cs_out=Cs_in*abs(m_b_in[i]/m_b_out[i]);
+  Cs_out=Cs_in*abs(m_b_in[i]/max(m_b_out[i],1e-6));
   0=Qhx[i]+h_steam[i]*m_steam[i]+h_b_innom*m_b_in[i]-h_b_out[i]*m_b_out[i];
   h_b_out[i]=MediumB.specificEnthalpy(MediumB.setState_pTX(p[i],T[i],Xo));
   chemp[i]=MediumB.mu_pTX(p[i],T[i],Xo);
   h_steam[i]=Medium.specificEnthalpy(Medium.setState_pT(p[i], T[i]));
   gW[i]=Medium.specificGibbsEnergy(Medium.setState_pT(p[i], T[i]));
   gW[i]=chemp[i];
-  h_f[i]=Medium.bubbleEnthalpy(Medium.setSat_p(pT[i]));
+  h_min[i]=Medium.specificEnthalpy(Medium.setState_pT(pT[i],T[i]));
   U[i]=(1939.4+1.40562*(T[i]-273.15)-0.020725*((T[i]-273.15)^2)+0.0023186*((T[i]-273.15)^3));
    for z in 2:nV loop
   h_in[i,z]=h_out[i,z-1];
@@ -76,15 +76,14 @@ equation
    for k in 1:nV loop
   T_tube[i,k]=Medium.temperature_ph(pT[i],h_in[i,k]);
   h_out[i,k]=h_in[i,k]-(Q[i,k]/mdot[i]);
-  if h_out[i,k] >h_f[i] then
+  if h_out[i,k] >h_min[i] then
   Q[i,k]=(Ax[i]/nV)*U[i]*(T_tube[i,k]-T[i]);
   else
-    h_f[i]=h_out[i,k];
+    h_min[i]=h_out[i,k];
   end if;
    end for;
   Qhx[i]=sum(Q[i,:]);
  end for;
 
-
   annotation ();
-end MEE_innernodelized;
+end MEE_innernodelizednew;
