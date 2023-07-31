@@ -57,7 +57,7 @@ model CS_L2_MEE
     annotation (Placement(transformation(extent={{52,-48},{72,-28}})));
   Modelica.Blocks.Sources.RealExpression TBV1(y=1)
     annotation (Placement(transformation(extent={{72,-20},{52,0}})));
-  Modelica.Blocks.Sources.RealExpression Dis_mflow_set(y=37)
+  Modelica.Blocks.Sources.Ramp           Dis_mflow_set
     annotation (Placement(transformation(extent={{-100,-140},{-80,-120}})));
   Controls.LimOffsetPID     MEE_CVs(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
