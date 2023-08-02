@@ -1,10 +1,10 @@
 within NHES.Systems.BalanceOfPlant.Turbine.ControlSystems;
-model CS_SteamTurbine_L2_OFWH_VN
+model CS_SteamTurbine_L2_OFWH_NoPump
   extends NHES.Systems.BalanceOfPlant.Turbine.BaseClasses.Partial_ControlSystem;
 
   extends NHES.Icons.DummyIcon;
 
-  input Real electric_demand_int;
+  input Real electric_demand_int = data.Q_Nom;
 
   TRANSFORM.Controls.LimPID Turb_Divert_Valve(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -51,11 +51,11 @@ model CS_SteamTurbine_L2_OFWH_VN
     T_Feedwater=421.15)
     annotation (Placement(transformation(extent={{-98,12},{-78,32}})));
   Modelica.Blocks.Sources.Constant const3(k=400 + 273.15)
-    annotation (Placement(transformation(extent={{-74,36},{-54,56}})));
+    annotation (Placement(transformation(extent={{-74,38},{-54,58}})));
   Modelica.Blocks.Sources.Constant const4(k=70)
-    annotation (Placement(transformation(extent={{-14,48},{-6,56}})));
+    annotation (Placement(transformation(extent={{-20,50},{-12,58}})));
   Modelica.Blocks.Math.Add         add
-    annotation (Placement(transformation(extent={{2,36},{22,56}})));
+    annotation (Placement(transformation(extent={{-4,38},{16,58}})));
   Modelica.Blocks.Sources.Constant const2(k=1)
     annotation (Placement(transformation(extent={{2,74},{22,94}})));
   TRANSFORM.Controls.LimPID PI_TBV(
@@ -77,7 +77,7 @@ model CS_SteamTurbine_L2_OFWH_VN
     wp=0.8,
     Ni=0.1,
     y_start=30)
-    annotation (Placement(transformation(extent={{-34,30},{-20,44}})));
+    annotation (Placement(transformation(extent={{-40,32},{-26,46}})));
 equation
   connect(const5.y,Turb_Divert_Valve. u_s)
     annotation (Line(points={{-71,-46},{-66,-46},{-66,-48},{-60,-48}},
@@ -123,7 +123,8 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(const4.y, add.u1)
-    annotation (Line(points={{-5.6,52},{0,52}}, color={0,0,127}));
+    annotation (Line(points={{-11.6,54},{-6,54}},
+                                                color={0,0,127}));
   connect(const9.y, PI_TBV.u_s)
     annotation (Line(points={{-57,82},{-40,82}}, color={0,0,127}));
   connect(sensorBus.Steam_Pressure, PI_TBV.u_m) annotation (Line(
@@ -144,10 +145,10 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(const3.y, Pump_Speed.u_s) annotation (Line(points={{-53,46},{-40,46},
-          {-40,37},{-35.4,37}},   color={0,0,127}));
+  connect(const3.y, Pump_Speed.u_s) annotation (Line(points={{-53,48},{-46,48},{
+          -46,39},{-41.4,39}},    color={0,0,127}));
   connect(sensorBus.Steam_Temperature, Pump_Speed.u_m) annotation (Line(
-      points={{-30,-100},{-100,-100},{-100,8},{-27,8},{-27,28.6}},
+      points={{-30,-100},{-100,-100},{-100,8},{-33,8},{-33,30.6}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -156,7 +157,7 @@ equation
       extent={{-6,3},{-6,3}},
       horizontalAlignment=TextAlignment.Right));
   connect(actuatorBus.Feed_Pump_Speed, add.y) annotation (Line(
-      points={{30,-100},{30,46},{23,46}},
+      points={{30,-100},{30,48},{17,48}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -164,8 +165,8 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(add.u2, Pump_Speed.y) annotation (Line(points={{0,40},{-4,40},{-4,37},
-          {-19.3,37}}, color={0,0,127}));
+  connect(add.u2, Pump_Speed.y) annotation (Line(points={{-6,42},{-10,42},{-10,39},
+          {-25.3,39}}, color={0,0,127}));
   connect(add1.y, actuatorBus.opening_TCV) annotation (Line(points={{13,-18},{
           30.1,-18},{30.1,-99.9}}, color={0,0,127}), Text(
       string="%second",
@@ -174,4 +175,4 @@ equation
       horizontalAlignment=TextAlignment.Left));
   connect(realExpression.y, TCV_Power.u_s) annotation (Line(points={{-79.3,0},{-60,
           0},{-60,-12},{-52,-12}}, color={0,0,127}));
-end CS_SteamTurbine_L2_OFWH_VN;
+end CS_SteamTurbine_L2_OFWH_NoPump;

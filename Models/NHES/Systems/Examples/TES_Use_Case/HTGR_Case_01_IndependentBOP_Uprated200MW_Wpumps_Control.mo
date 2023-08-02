@@ -1,5 +1,5 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model HTGR_Case_01_IndependentBOP_Uprated200MW
+model HTGR_Case_01_IndependentBOP_Uprated200MW_Wpumps_Control
   "TES use case demonstration of a NuScale-style LWR operating within an energy arbitrage IES, storing and dispensing energy on demand from a two tank molten salt energy storage system nominally using HITEC salt to store heat."
  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
@@ -66,7 +66,7 @@ model HTGR_Case_01_IndependentBOP_Uprated200MW
       BalanceOfPlant.Turbine.ControlSystems.CS_DivertPowerControl_HTGR_3VNb_AR1
       CS(
       electric_demand=sum1.y,
-      Overall_Power=sensorW.W,
+      Overall_Power=intermediate_Rankine_Cycle_TESUC.sensorW.W,
       m_required=m_req.y,
       data(
         p_steam=16500000,
@@ -74,7 +74,11 @@ model HTGR_Case_01_IndependentBOP_Uprated200MW
         Q_Nom=48e6,
         T_Feedwater=466.15,
         p_steam_vent=18500000,
-        m_flow_reactor=50)),
+        m_flow_reactor=50),
+      Charge_OnOff_Throttle(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-5e-8,
+        Ti=800)),
     redeclare
       NHES.Systems.BalanceOfPlant.Turbine.Data.IntermediateTurbineInitialisation
       init(
@@ -86,8 +90,9 @@ model HTGR_Case_01_IndependentBOP_Uprated200MW
       HPT_p_b_start=10000,
       HPT_T_a_start=523.15,
       HPT_T_b_start=333.15),
-    const(k=0))
-    annotation (Placement(transformation(extent={{52,-18},{92,22}})));
+    const(k=0.0001),
+    firstfeedpump(allowFlowReversal=true))
+    annotation (Placement(transformation(extent={{46,-20},{86,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=2)
     annotation (Placement(transformation(extent={{98,-22},{138,22}})));
   ElectricalGrid.InfiniteGrid.Infinite EG
@@ -118,11 +123,11 @@ model HTGR_Case_01_IndependentBOP_Uprated200MW
     redeclare replaceable NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS
       data(
       ht_level_max=11.7,
-      ht_area=3390,
+      ht_area=100*3390,
       ht_surface_pressure=120000,
       hot_tank_init_temp=673.15,
       cold_tank_level_max=11.7,
-      cold_tank_area=3390,
+      cold_tank_area=100*3390,
       ct_surface_pressure=120000,
       cold_tank_init_temp=533.15,
       m_flow_ch_min=0.1,
@@ -256,8 +261,8 @@ model HTGR_Case_01_IndependentBOP_Uprated200MW
     timeScale=timeScale,
     fileName=fileName)
     annotation (Placement(transformation(extent={{-98,112},{-78,132}})));
-  Modelica.Blocks.Math.Sum sum1
-    annotation (Placement(transformation(extent={{-102,256},{-82,276}})));
+  Modelica.Blocks.Math.Sum sum1(nin=1)
+    annotation (Placement(transformation(extent={{216,254},{236,274}})));
   PrimaryHeatSystem.HTGR.HTGR_Rankine.Components.HTGR_PebbleBed_Primary_Loop_TESUC_AR1
     hTGR_PebbleBed_Primary_Loop_TESUC_AR1_1(redeclare
       PrimaryHeatSystem.HTGR.HTGR_Rankine.ControlSystems.CS_Rankine_PrimaryVNa_AR1
@@ -270,8 +275,11 @@ model HTGR_Case_01_IndependentBOP_Uprated200MW
     annotation (Placement(transformation(extent={{-112,158},{-92,178}})));
   Modelica.Blocks.Sources.Constant MinPower(k=12000000)
     annotation (Placement(transformation(extent={{-22,216},{-16,222}})));
-  Modelica.Blocks.Sources.RealExpression Power(y=sensorW.W)
-    annotation (Placement(transformation(extent={{98,184},{118,204}})));
+  Modelica.Blocks.Sources.RealExpression Power(y=sensorW.W - (
+        intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.firstfeedpump1.W
+         + intermediate_Rankine_Cycle_TESUC.pump_SimpleMassFlow1.W -
+        intermediate_Rankine_Cycle_TESUC.W_1stpump.y))
+    annotation (Placement(transformation(extent={{96,184},{116,204}})));
   Modelica.Blocks.Math.Min min1
     annotation (Placement(transformation(extent={{6,266},{14,274}})));
   Modelica.Blocks.Sources.Constant one3(k=-0.25)
@@ -309,10 +317,33 @@ model HTGR_Case_01_IndependentBOP_Uprated200MW
   Modelica.Blocks.Sources.BooleanExpression booleanExpression(y=
         two_Tank_SHS_System_NTU.hot_tank.level < two_Tank_SHS_System_NTU.cold_tank.level)
     annotation (Placement(transformation(extent={{82,238},{98,252}})));
-  Modelica.Blocks.Sources.Constant MaxPower(k=101000000)
+  Modelica.Blocks.Sources.Constant MaxPower(k=1.25e8)
     annotation (Placement(transformation(extent={{4,290},{10,296}})));
   Modelica.Blocks.Math.Product product1
     annotation (Placement(transformation(extent={{56,284},{64,276}})));
+  Modelica.Blocks.Sources.CombiTimeTable demand_BOP2(
+    tableOnFile=false,
+    table=[0,86e6; 603000,86e6; 605300,42756000.42; 608300,42756000.42; 608900,
+        42756000.42; 611900,42756000.42; 612500,42756000.42; 615500,42756000.42;
+        616100,125383981.3; 619100,125383981.3; 619700,42756000.42; 622700,
+        42756000.42; 623300,125383981.3; 626300,125383981.3; 626900,125383981.3;
+        629900,125383981.3; 630500,125383981.3; 633500,125383981.3; 634100,
+        42756000.43; 637100,42756000.43; 637700,42756000.43; 640700,42756000.43;
+        641300,125383981.3; 644300,125383981.3; 644900,42756000.42; 647900,
+        42756000.42; 648500,42756000.42; 651500,42756000.42; 652100,125383981.3;
+        655100,125383981.3; 655700,42756000.42; 658700,42756000.42; 659300,
+        125383981.3; 662300,125383981.3; 662900,85260000.85; 665900,85260000.85;
+        666500,125383981.2; 669500,125383981.2; 670100,101909712.5; 673100,
+        101909712.5; 673700,85260000.86; 676700,85260000.86; 677300,85260000.85;
+        680300,85260000.85; 680900,42756000.42; 683900,42756000.42; 684500,
+        125383981.3; 687500,125383981.3; 688100,85260000.85; 691100,85260000.85],
+    startTime=0,
+    tableName="BOP",
+    timeScale=1,
+    fileName=
+        "C:/Users/NOVOV/projects/HYBRID/Models/NHES/Resources/Data/RAVEN/timeSeriesDataVN.txt",
+    shiftTime=0)
+    annotation (Placement(transformation(extent={{-96,228},{-76,248}})));
 
   Modelica.Blocks.Sources.RealExpression Qin_main(y=
         intermediate_Rankine_Cycle_TESUC.TCV.m_flow*(stateSensor2.specificEnthalpy.h_out
@@ -324,7 +355,9 @@ model HTGR_Case_01_IndependentBOP_Uprated200MW
         intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.firstfeedpump1.port_b.h_outflow))
     annotation (Placement(transformation(extent={{94,132},{114,152}})));
   Modelica.Blocks.Sources.RealExpression Pwr_main(y=
-        intermediate_Rankine_Cycle_TESUC.sensorW.W)
+        intermediate_Rankine_Cycle_TESUC.sensorW.W -
+        intermediate_Rankine_Cycle_TESUC.pump_SimpleMassFlow1.W +
+        intermediate_Rankine_Cycle_TESUC.W_1stpump.y)
     annotation (Placement(transformation(extent={{144,184},{164,204}})));
   Modelica.Blocks.Sources.RealExpression Pwr_dedic(y=
         intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.sensorW.W)
@@ -351,38 +384,33 @@ model HTGR_Case_01_IndependentBOP_Uprated200MW
     annotation (Placement(transformation(extent={{34,258},{42,250}})));
   Modelica.Blocks.Sources.Constant MinPower1(k=1)
     annotation (Placement(transformation(extent={{-38,250},{-32,256}})));
-  Modelica.Blocks.Sources.CombiTimeTable demand_BOP1(
-    tableOnFile=false,
-    table=[0,86e6; 604400,86e6; 605000,42756000.42; 608000,42756000.42; 608600,
-        42756000.42; 611600,42756000.42; 612200,42756000.42; 615200,42756000.42;
-        615800,125383981.3; 618800,125383981.3; 619400,42756000.42; 622400,
-        42756000.42; 623000,125383981.3; 626000,125383981.3; 626600,125383981.3;
-        629600,125383981.3; 630200,125383981.3; 633200,125383981.3; 633800,
-        42756000.43; 636800,42756000.43; 637400,42756000.43; 640400,42756000.43;
-        641000,125383981.3; 644000,125383981.3; 644600,42756000.42; 647600,
-        42756000.42; 648200,42756000.42; 651200,42756000.42; 651800,125383981.3;
-        654800,125383981.3; 655400,42756000.42; 658400,42756000.42; 659000,
-        125383981.3; 662000,125383981.3; 662600,85260000.85; 665600,85260000.85;
-        666200,125383981.2; 669200,125383981.2; 669800,101909712.5; 672800,
-        101909712.5; 673400,85260000.86; 676400,85260000.86; 677000,85260000.85;
-        680000,85260000.85; 680600,42756000.42; 683600,42756000.42; 684200,
-        125383981.3; 687200,125383981.3; 687800,85260000.85; 690800,85260000.85],
-    startTime=0,
-    tableName="BOP",
-    timeScale=1,
-    fileName=
-        "C:/Users/NOVOV/projects/HYBRID/Models/NHES/Resources/Data/RAVEN/timeSeriesDataVN.txt",
-    shiftTime=0)
-    annotation (Placement(transformation(extent={{-104,226},{-84,246}})));
-
+  Modelica.Blocks.Sources.RealExpression Wpumps(y=(
+        intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.firstfeedpump1.W
+         + intermediate_Rankine_Cycle_TESUC.pump_SimpleMassFlow1.W -
+        intermediate_Rankine_Cycle_TESUC.W_1stpump.y))
+    annotation (Placement(transformation(extent={{150,210},{170,230}})));
+  Modelica.Blocks.Math.Product product5
+    annotation (Placement(transformation(extent={{200,244},{208,236}})));
+  Modelica.Blocks.Sources.Ramp ramp(
+    height=1,
+    duration=1e5,
+    startTime=1e5)
+    annotation (Placement(transformation(extent={{154,236},{174,256}})));
+  Modelica.Blocks.Sources.Ramp ramp1(
+    height=0,
+    duration=2e4,
+    offset=86e6,
+    startTime=3e5)
+    annotation (Placement(transformation(extent={{-16,132},{4,152}})));
 equation
   hTGR_PebbleBed_Primary_Loop_TESUC_AR1_1.input_steam_pressure =
     intermediate_Rankine_Cycle_TESUC.sensor_p.p;
 
   connect(EM.port_a2, intermediate_Rankine_Cycle_TESUC.port_b)
-    annotation (Line(points={{28,-6},{52,-6}}, color={0,127,255}));
+    annotation (Line(points={{28,-6},{40,-6},{40,-8},{46,-8}},
+                                               color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC.portElec_b, SY.port_a[1])
-    annotation (Line(points={{92,2},{98,2},{98,-0.55}},              color={255,
+    annotation (Line(points={{86,0},{98,0},{98,-0.55}},              color={255,
           0,0}));
   connect(stateSensor1.port_b, EM.port_a1) annotation (Line(points={{-24,11},{-22,
           11},{-22,12},{-16,12},{-16,10},{-12,10}}, color={0,127,255}));
@@ -392,7 +420,7 @@ equation
   connect(EM.port_b2, stateSensor2.port_a) annotation (Line(points={{28,10},{32,
           10},{32,9}},                        color={0,127,255}));
   connect(stateSensor2.port_b, intermediate_Rankine_Cycle_TESUC.port_a)
-    annotation (Line(points={{46,9},{48,9},{48,10},{52,10}},        color={0,127,
+    annotation (Line(points={{46,9},{48,9},{48,8},{46,8}},          color={0,127,
           255}));
   connect(stateSensor2.statePort, stateDisplay2.statePort) annotation (Line(
         points={{39.035,9.045},{39.035,37.1},{47,37.1}}, color={0,0,0}));
@@ -425,7 +453,7 @@ equation
       Line(points={{23.6,-44.4},{42,-44.4},{42,-55},{48,-55}},          color={0,
           127,255}));
   connect(stateSensor5.port_b, intermediate_Rankine_Cycle_TESUC.port_a1)
-    annotation (Line(points={{30,-30},{59.2,-30},{59.2,-17.2}}, color={0,127,255}));
+    annotation (Line(points={{30,-30},{53.2,-30},{53.2,-19.2}}, color={0,127,255}));
   connect(stateSensor6.port_b,
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_a)
     annotation (Line(points={{62,-68},{100,-68},{100,-60},{102,-60},{102,-56},{
@@ -435,8 +463,8 @@ equation
     intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.port_b)
     annotation (Line(points={{68,-55},{68,-71.4},{104,-71.4}}, color={0,127,255}));
   connect(intermediate_Rankine_Cycle_TESUC_1_Independent_SmallCycle.portElec_b,
-    SY.port_a[2]) annotation (Line(points={{142,-63},{142,-28},{94,-28},{94,0},
-          {98,0},{98,0.55}},    color={255,0,0}));
+    SY.port_a[2]) annotation (Line(points={{142,-63},{142,-28},{94,-28},{94,0},{
+          98,0},{98,0.55}},     color={255,0,0}));
   connect(SY.port_Grid, sensorW.port_a)
     annotation (Line(points={{138,0},{142,0}}, color={255,0,0}));
   connect(sensorW.port_b, EG.portElec_a)
@@ -509,10 +537,15 @@ equation
           {48,254},{42.4,254}}, color={0,0,127}));
   connect(max1.u2, product4.y) annotation (Line(points={{81,228},{48,228},{48,
           254},{42.4,254}}, color={0,0,127}));
-  connect(demand_BOP1.y[1], product4.u1) annotation (Line(points={{-83,236},{28,
-          236},{28,251.6},{33.2,251.6}}, color={0,0,127}));
-  connect(demand_BOP1.y[1], sum1.u[1]) annotation (Line(points={{-83,236},{-96,
-          236},{-96,266},{-104,266}}, color={0,0,127}));
+  connect(demand_BOP2.y[1], product4.u1) annotation (Line(points={{-75,238},{28,
+          238},{28,251.6},{33.2,251.6}}, color={0,0,127}));
+  connect(demand_BOP2.y[1], sum1.u[1]) annotation (Line(points={{-75,238},{28,
+          238},{28,268},{72,268},{72,270},{204,270},{204,264},{214,264}}, color
+        ={0,0,127}));
+  connect(Wpumps.y, product5.u1) annotation (Line(points={{171,220},{194,220},{
+          194,237.6},{199.2,237.6}}, color={0,0,127}));
+  connect(ramp.y, product5.u2) annotation (Line(points={{175,246},{194,246},{
+          194,242.4},{199.2,242.4}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{200,100}}), graphics={
         Ellipse(lineColor = {75,138,73},
@@ -537,4 +570,4 @@ equation
 </html>"),
     __Dymola_experimentSetupOutput(events=false),
     conversion(noneFromVersion=""));
-end HTGR_Case_01_IndependentBOP_Uprated200MW;
+end HTGR_Case_01_IndependentBOP_Uprated200MW_Wpumps_Control;
