@@ -1,93 +1,83 @@
 within NHES.Electrolysis.Electrolyzers.SOEC_Examples_AS;
-model HTSE_CS_HW
+model HTSE_V4_Final_AR
   //extends Modelica.Icons.Example;
 
-  input Real electric_demand_HTSE
-  annotation(Dialog(tab="General"));
-
-  NHES.Electrolysis.Electrolyzers.BaseClasses.OxEonV7_Complex SOEC(
-    numStacks=24,
-    V_cathode=0.001,
-    V_anode=0.001)
-    annotation (Placement(transformation(extent={{118,-97},{148,-67}})));
-  Modelica.Fluid.Sensors.MassFlowRate cathodeFlowOut(redeclare package Medium =
+  BaseClasses.OxEonV7_Complex SOEC(V_cathode=0.001, V_anode=0.001)
+                                   annotation (Placement(transformation(extent={{194,-55},{224,-25}})));
+  Modelica.Fluid.Sensors.MassFlowRate cathodeFlowOut(redeclare package Medium
+      =
         NHES.Electrolysis.Media.Electrolysis.CathodeGas)
-    annotation (Placement(transformation(extent={{198,-60},{218,-40}})));
+    annotation (Placement(transformation(extent={{292,-18},{312,2}})));
   TRANSFORM.Fluid.Volumes.SimpleVolume AirTH(redeclare package Medium =
         NHES.Electrolysis.Media.Electrolysis.AnodeGas_air,                                                                 use_HeatPort=true)
-    annotation (Placement(transformation(extent={{76,-144},{96,-124}})));
+    annotation (Placement(transformation(extent={{166,-102},{186,-82}})));
   TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.HeatFlow
                                                       boundary(use_port=true)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={86,-164})));
+        origin={176,-122})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort AirTempSensor(redeclare package
       Medium =
         NHES.Electrolysis.Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=90,
-        origin={100,-108})));
+        origin={190,-66})));
   TRANSFORM.Controls.LimPID PID_Air(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=1e3,
     Ti=5,
-    yMax=1e7,
-    yMin=0) annotation (Placement(transformation(extent={{140,-142},{120,
-            -162}})));
-  Modelica.Blocks.Sources.RealExpression realExpression(y=790 + 273.15) annotation (Placement(transformation(extent={{172,
-            -162},{152,-142}})));
+    yMax=1000,
+    yMin=0) annotation (Placement(transformation(extent={{230,-100},{210,-120}})));
+  Modelica.Blocks.Sources.RealExpression realExpression(y=790 + 273.15) annotation (Placement(transformation(extent={{262,-120},{242,-100}})));
   TRANSFORM.Fluid.Volumes.SimpleVolume FuelTH(redeclare package Medium =
-        NHES.Electrolysis.Media.Electrolysis.CathodeGas,
+        Media.Electrolysis.CathodeGas,
     p_start(displayUnit="kPa") = 103800,
     X_start={0.0122804,0.9877196},                                                                      use_HeatPort=true)
-    annotation (Placement(transformation(extent={{94,-14},{114,-34}})));
+    annotation (Placement(transformation(extent={{170,28},{190,8}})));
   TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.HeatFlow
                                                       boundary1(use_port=true)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
         rotation=90,
-        origin={104,4})));
+        origin={180,46})));
   TRANSFORM.Controls.LimPID PID_Fuel(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=1e3,
     Ti=5,
     yMax=1000,
-    yMin=0) annotation (Placement(transformation(extent={{144,8},{124,28}})));
+    yMin=0) annotation (Placement(transformation(extent={{220,50},{200,70}})));
   Modelica.Blocks.Sources.RealExpression realExpression1(y=790 + 273.15)
-                                                                        annotation (Placement(transformation(extent={{180,8},
-            {160,28}})));
+                                                                        annotation (Placement(transformation(extent={{252,50},{232,70}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort FuelTempSensor(redeclare package
       Medium =
-        NHES.Electrolysis.Media.Electrolysis.CathodeGas)
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
-        origin={116,-48})));
+        origin={192,-6})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort CathodeOutTemp(redeclare package
       Medium =
-        NHES.Electrolysis.Media.Electrolysis.CathodeGas)                                                                                 annotation (Placement(transformation(extent={{172,-60},
-            {192,-40}})));
+        Media.Electrolysis.CathodeGas)                                                                                                   annotation (Placement(transformation(extent={{248,-18},
+            {268,2}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort AnodeOutTemp(redeclare package
       Medium =
-        NHES.Electrolysis.Media.Electrolysis.AnodeGas_air)                                                                               annotation (Placement(transformation(extent={{158,
-            -120},{178,-100}})));
+        Media.Electrolysis.AnodeGas_air)                                                                                                 annotation (Placement(transformation(extent={{270,-78},
+            {290,-58}})));
   Modelica.Fluid.Sources.Boundary_pT cathodeSink1(
-    redeclare package Medium =
-        NHES.Electrolysis.Media.Electrolysis.CathodeGas,
+    redeclare package Medium = Media.Electrolysis.CathodeGas,
     p(displayUnit="Pa") = 103299.8,
     T=313.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
         rotation=90,
-        origin={-22,204})));
-  Modelica.Fluid.Sensors.MassFlowRate cathodeFlowIn2(redeclare package Medium =
-        NHES.Electrolysis.Media.Electrolysis.CathodeGas)
-    annotation (Placement(transformation(extent={{76,20},{96,40}})));
+        origin={-78,286})));
+  Modelica.Fluid.Sensors.MassFlowRate cathodeFlowIn2(redeclare package Medium
+      =
+        Media.Electrolysis.CathodeGas)
+    annotation (Placement(transformation(extent={{20,102},{40,122}})));
   TRANSFORM.HeatExchangers.Simple_HX FuelHX(
-    redeclare package Medium_1 =
-        NHES.Electrolysis.Media.Electrolysis.CathodeGas,
-    redeclare package Medium_2 =
-        NHES.Electrolysis.Media.Electrolysis.CathodeGas,
+    redeclare package Medium_1 = Media.Electrolysis.CathodeGas,
+    redeclare package Medium_2 = Media.Electrolysis.CathodeGas,
     nV=20,
     V_1=0.01,
     V_2=0.01,
@@ -103,19 +93,16 @@ model HTSE_CS_HW
     T_b_start_2=981.25,
     X_a_start_2={0.0122804,0.9877196},
     X_b_start_2={0.0122804,0.9877196},
-    m_flow_start_2=13.47/3600) annotation (Placement(transformation(extent={{134,38},
-            {114,58}})));
+    m_flow_start_2=13.47/3600) annotation (Placement(transformation(extent={{78,120},{58,140}})));
   Modelica.Fluid.Sensors.MassFlowRate AnodeFlowIn1(redeclare package Medium =
-        NHES.Electrolysis.Media.Electrolysis.AnodeGas_air)
-    annotation (Placement(transformation(extent={{178,-192},{158,-172}})));
+        Media.Electrolysis.AnodeGas_air)
+    annotation (Placement(transformation(extent={{274,-184},{254,-164}})));
   Modelica.Fluid.Sensors.MassFlowRate AnodeFlowIn3(redeclare package Medium =
-        NHES.Electrolysis.Media.Electrolysis.AnodeGas_air)
-    annotation (Placement(transformation(extent={{-36,-126},{-16,-106}})));
+        Media.Electrolysis.AnodeGas_air)
+    annotation (Placement(transformation(extent={{26,-134},{46,-114}})));
   TRANSFORM.HeatExchangers.Simple_HX AirHX(
-    redeclare package Medium_1 =
-        NHES.Electrolysis.Media.Electrolysis.AnodeGas_air,
-    redeclare package Medium_2 =
-        NHES.Electrolysis.Media.Electrolysis.AnodeGas_air,
+    redeclare package Medium_1 = Media.Electrolysis.AnodeGas_air,
+    redeclare package Medium_2 = Media.Electrolysis.AnodeGas_air,
     nV=20,
     V_1=0.01,
     V_2=0.01,
@@ -129,70 +116,68 @@ model HTSE_CS_HW
     p_b_start_2(displayUnit="kPa") = 103200,
     T_a_start_2=293.15,
     T_b_start_2=1053.15,
-    m_flow_start_2=5.555e-3) annotation (Placement(transformation(extent={{20,-128},
-            {0,-148}})));
+    m_flow_start_2=5.555e-3) annotation (Placement(transformation(extent={{86,-118},{66,-138}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort AnodeOutTemp1(redeclare package
       Medium =
-        NHES.Electrolysis.Media.Electrolysis.AnodeGas_air)                                                                               annotation (Placement(transformation(extent={{34,-144},
-            {54,-124}})));
+        Media.Electrolysis.AnodeGas_air)                                                                                                 annotation (Placement(transformation(extent={{124,
+            -102},{144,-82}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort ShellOut_Temp(redeclare package
       Medium =
-        NHES.Electrolysis.Media.Electrolysis.CathodeGas)
-    annotation (Placement(transformation(extent={{62,-34},{82,-14}})));
+        Media.Electrolysis.CathodeGas)
+    annotation (Placement(transformation(extent={{138,8},{158,28}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort FuelHXOutTemp(redeclare package
       Medium =
-        NHES.Electrolysis.Media.Electrolysis.CathodeGas)
-    annotation (Placement(transformation(extent={{86,42},{66,62}})));
+        Media.Electrolysis.CathodeGas)
+    annotation (Placement(transformation(extent={{30,124},{10,144}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort AirHXOutTemp(redeclare package
       Medium =
-        NHES.Electrolysis.Media.Electrolysis.AnodeGas_air)
+        Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
-        rotation=0,
-        origin={-20,-156})));
+        rotation=90,
+        origin={60,-174})));
   TRANSFORM.Fluid.Volumes.SimpleVolume condenser(
-    redeclare package Medium =
-        NHES.Electrolysis.Media.Electrolysis.CathodeGas,
+    redeclare package Medium = Media.Electrolysis.CathodeGas,
     p_start(displayUnit="kPa") = 103800,
     X_start={0.0122804,0.9877196},
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
         (                                                                                                   V=0.1),
-    use_HeatPort=true) annotation (Placement(transformation(extent={{48,64},
-            {24,40}})));
+    use_HeatPort=true) annotation (Placement(transformation(extent={{-8,146},{-32,122}})));
   TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Temperature
                                                       boundary3(T=313.15)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
         rotation=90,
-        origin={36,80})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort SinkTemp(redeclare package Medium =
-        NHES.Electrolysis.Media.Electrolysis.CathodeGas)
-    annotation (Placement(transformation(extent={{10,42},{-10,62}})));
+        origin={-20,162})));
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort SinkTemp(redeclare package Medium
+      =
+        Media.Electrolysis.CathodeGas)
+    annotation (Placement(transformation(extent={{-46,124},{-66,144}})));
   Modelica.Fluid.Sensors.MassFractions X_H2(redeclare package Medium =
-        NHES.Electrolysis.Media.Electrolysis.CathodeGas,                                              substanceName="H2")
+        Media.Electrolysis.CathodeGas,                                                                substanceName="H2")
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={-32,74})));
+        origin={-88,156})));
   Modelica.Fluid.Sensors.MassFractions X_H2O(redeclare package Medium =
-        NHES.Electrolysis.Media.Electrolysis.CathodeGas,                                               substanceName="H2O")
+        Media.Electrolysis.CathodeGas,                                                                 substanceName="H2O")
     annotation (Placement(transformation(extent={{-10,10},{10,-10}},
         rotation=90,
-        origin={-12,102})));
+        origin={-68,184})));
   Modelica.Blocks.Math.Product mH2_sep_out annotation (Placement(
         transformation(
         extent={{9,-9},{-9,9}},
         rotation=0,
-        origin={-67,135})));
+        origin={-123,217})));
   Modelica.Fluid.Sensors.MassFlowRate massFlowRate(redeclare package Medium =
-        NHES.Electrolysis.Media.Electrolysis.CathodeGas)
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={-22,140})));
+        origin={-78,222})));
   Modelica.Blocks.Math.Product mH2O_sep_out annotation (Placement(
         transformation(
         extent={{-9,-9},{9,9}},
         rotation=0,
-        origin={23,135})));
+        origin={-33,217})));
   Modelica.Fluid.Sources.MassFlowSource_T H2_flowOut(
     use_m_flow_in=true,
     m_flow=1.35415,
@@ -203,18 +188,18 @@ model HTSE_CS_HW
     T=618.329) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=0,
-        origin={-104,146})));
+        origin={-160,228})));
   Modelica.Fluid.Sources.MassFlowSource_T H2O_flowOut(
     use_m_flow_in=true,
     m_flow=1.35415,
     use_T_in=true,
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_X_in=false,
-    T=423.15,
+    T=618.329,
     nPorts=1) annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=0,
-        origin={68,147})));
+        origin={12,229})));
   Modelica.Fluid.Sources.Boundary_pT H2Product(
     redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2,
     p(displayUnit="Pa") = 103299.8,
@@ -222,17 +207,17 @@ model HTSE_CS_HW
     nPorts=1) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
-        origin={-162,146})));
+        origin={-218,228})));
   Modelica.Fluid.Sensors.Temperature temperature(redeclare package Medium =
-        NHES.Electrolysis.Media.Electrolysis.CathodeGas)
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
         rotation=90,
-        origin={-32,176})));
+        origin={-90,258})));
   Modelica.Fluid.Sensors.MassFractions X_H1(redeclare package Medium =
-        NHES.Electrolysis.Media.Electrolysis.CathodeGas,                                              substanceName="H2")
+        Media.Electrolysis.CathodeGas,                                                                substanceName="H2")
     annotation (Placement(transformation(extent={{10,10},{-10,-10}},
         rotation=180,
-        origin={-8,-22})));
+        origin={-64,60})));
   Modelica.Fluid.Sources.MassFlowSource_T H2_recycleFeed(
     use_m_flow_in=true,
     m_flow=1.35415,
@@ -243,36 +228,36 @@ model HTSE_CS_HW
     T=414.15) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
-        origin={-126,-14})));
-  NHES.Electrolysis.Separator.Combiner_H2_Steam combiner_FinalV2_1
-    annotation (Placement(transformation(extent={{-50,-56},{-30,-36}})));
+        origin={-182,50})));
+  Separator.Combiner_H2_Steam combiner_FinalV2_1 annotation (Placement(transformation(extent={{-106,26},{-86,46}})));
   TRANSFORM.Controls.LimPID PID_Fuel1(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=1e3,
     Ti=5,
     yMax=1000,
-    yMin=0) annotation (Placement(transformation(extent={{-58,2},{-78,22}})));
-  Modelica.Blocks.Sources.RealExpression realExpression2(y=0.0123)      annotation (Placement(transformation(extent={{-30,2},
-            {-50,22}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort SinkTemp1(redeclare package Medium =
-        NHES.Electrolysis.Media.Electrolysis.CathodeGas)
-    annotation (Placement(transformation(extent={{12,-70},{32,-50}})));
-  Modelica.Fluid.Sensors.MassFlowRate SteamFlowMeasure(redeclare package Medium =
+    yMin=0) annotation (Placement(transformation(extent={{-114,84},{-134,104}})));
+  Modelica.Blocks.Sources.RealExpression realExpression2(y=0.0123)      annotation (Placement(transformation(extent={{-86,84},{-106,104}})));
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort SinkTemp1(redeclare package Medium
+      =
+        Media.Electrolysis.CathodeGas)
+    annotation (Placement(transformation(extent={{4,12},{24,32}})));
+  Modelica.Fluid.Sensors.MassFlowRate SteamFlowMeasure(redeclare package Medium
+      =
         Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{-158,-52},{-138,-32}})));
+    annotation (Placement(transformation(extent={{-144,-12},{-124,8}})));
   Modelica.Fluid.Sensors.MassFlowRate H2_recycleMassFlowRate(redeclare package
       Medium =
         Modelica.Media.IdealGases.SingleGases.H2)
-    annotation (Placement(transformation(extent={{-98,-42},{-78,-22}})));
+    annotation (Placement(transformation(extent={{-154,40},{-134,60}})));
   Modelica.Fluid.Interfaces.FluidPort_b H2Port_Out(redeclare package Medium =
         Modelica.Media.IdealGases.SingleGases.H2)
-    annotation (Placement(transformation(extent={{-32,-254},{32,-186}}), iconTransformation(extent={{-20,
-            -240},{20,-200}})));
+    annotation (Placement(transformation(extent={{-330,-300},{-266,-232}}),
+                                                                         iconTransformation(extent={{88,-10},{108,10}})));
   Modelica.Blocks.Sources.RealExpression realExpression3(y=mH2_sep_out.y - H2_recycleMassFlowRate.m_flow)
     annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
-        rotation=180,
-        origin={-176,-190})));
+        rotation=90,
+        origin={-220,-152})));
   Modelica.Fluid.Sources.MassFlowSource_T H2_feed2(
     use_m_flow_in=true,
     m_flow=1.35415,
@@ -282,217 +267,113 @@ model HTSE_CS_HW
     use_X_in=false,
     T=414.15)  annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
-        rotation=180,
-        origin={-108,-200})));
-  NHES.Electrolysis.Interfaces.ElectricalPowerPort_a electricalLoad
-    annotation (Placement(transformation(extent={{-278,-156},{-210,-88}}),
-        iconTransformation(extent={{220,-20},{260,20}})));
-  Modelica.Fluid.Interfaces.FluidPort_a SteamIn_Port(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{-278,-76},{-208,-6}}), iconTransformation(extent={{-260,
-            -110},{-220,-70}})));
-  Modelica.Fluid.Interfaces.FluidPort_b WaterPort_Out(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{194,108},{274,186}}),   iconTransformation(extent={{-260,70},
-            {-220,110}})));
-  Modelica.Fluid.Sources.MassFlowSource_T AirSource(
-    redeclare package Medium =
-        NHES.Electrolysis.Media.Electrolysis.AnodeGas_air,
-    use_m_flow_in=true,
-    X=NHES.Electrolysis.Utilities.moleToMassFractions({0.79,0.21}, {Modelica.Media.IdealGases.Common.SingleGasesData.N2.MM
-        *1000,Modelica.Media.IdealGases.Common.SingleGasesData.O2.MM*1000}),
-    m_flow=0.908085*5,
-    T=293.15,
-    nPorts=1) annotation (Placement(transformation(extent={{-66,-126},{-46,
-            -106}})));
-  Modelica.Blocks.Sources.Constant AnodeFlowControl2(k=100*5.555e-3)
-                                                                   annotation (Placement(transformation(extent={{-104,
-            -118},{-84,-98}})));
-  Modelica.Fluid.Sources.Boundary_pT AirExhaust(
-    redeclare package Medium =
-        NHES.Electrolysis.Media.Electrolysis.AnodeGas_air,
-    p(displayUnit="kPa") = 101300,
-    T=504.55,
-    nPorts=1) annotation (Placement(transformation(extent={{-10,-10},{10,10}},
-        rotation=0,
-        origin={-58,-156})));
-  NHES.Electrical.Load        load_IP(Wn=1e6, fn=30)
-                                                   annotation (Placement(
-        transformation(
-        extent={{-14,-14},{14,14}},
         rotation=90,
-        origin={-198,-122})));
-  Modelica.Blocks.Sources.RealExpression realExpressionLoad(y=-1*
-        electric_demand_HTSE)
-    annotation (Placement(transformation(extent={{-224,-152},{-204,-132}})));
-  NHES.Electrolysis.Sources.PrescribedPowerFlow
-                                           prescribedPowerFlow
-    annotation (Placement(transformation(extent={{-162,-92},{-142,-72}})));
-  NHES.Fluid.Valves.ValveLinear SteamValve(
-    redeclare package Medium = Modelica.Media.Water.StandardWater,
-    allowFlowReversal=true,
-    dp_nominal(displayUnit="bar") = 1000000,
-    m_flow_nominal=1)  annotation (Placement(transformation(
-        extent={{10,10},{-10,-10}},
-        rotation=180,
-        origin={-196,-42})));
-  TRANSFORM.Controls.LimPID PID_Steam(
-    controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=1,
-    Ti=5,
-    yMax=1,
-    yMin=0) annotation (Placement(transformation(extent={{-170,18},{-190,38}})));
-  Modelica.Blocks.Sources.RealExpression realExpression4(y=0.36929)     annotation (Placement(transformation(extent={{-122,18},
-            {-142,38}})));
+        origin={-212,-198})));
+  Modelica.Fluid.Interfaces.FluidPort_a SteamIn_Port(redeclare package Medium
+      =
+        Modelica.Media.Water.StandardWater)
+    annotation (Placement(transformation(extent={{-332,6},{-262,80}}),   iconTransformation(extent={{-110,70},{-90,90}})));
+  Modelica.Fluid.Interfaces.FluidPort_a AirIn_Port(redeclare package Medium =
+        Media.Electrolysis.AnodeGas_air)
+    annotation (Placement(transformation(extent={{-142,-338},{-74,-266}}),  iconTransformation(extent={{-30,-108},{-10,-88}})));
+  Interfaces.ElectricalPowerPort_a electricalLoad
+    annotation (Placement(transformation(extent={{-340,-75},{-270,-5}}),  iconTransformation(extent={{-110,-10},{-90,10}})));
+  Modelica.Fluid.Interfaces.FluidPort_b AirPort_Out(redeclare package Medium =
+        Media.Electrolysis.AnodeGas_air)
+    annotation (Placement(transformation(extent={{4,-342},{80,-260}}),      iconTransformation(extent={{10,-108},{30,-88}})));
+  Modelica.Fluid.Interfaces.FluidPort_b WaterPort_Out(redeclare package Medium
+      =
+        Modelica.Media.Water.StandardWater)
+    annotation (Placement(transformation(extent={{258,186},{338,264}}),   iconTransformation(extent={{-110,30},{-90,50}})));
 equation
-
-  connect(AirTH.heatPort, boundary.port) annotation (Line(points={{86,-140},
-          {86,-154}},                                                                   color={191,0,0}));
-  connect(AirTH.port_b, AirTempSensor.port_a) annotation (Line(points={{92,-134},
-          {100,-134},{100,-118}},                                                                      color={0,127,255}));
-  connect(AirTempSensor.port_b, SOEC.AnodeIn) annotation (Line(points={{100,-98},
-          {100,-89.5},{118,-89.5}},                                                                      color={0,127,255}));
-  connect(PID_Air.u_s, realExpression.y) annotation (Line(points={{142,-152},
-          {151,-152}},                                                                color={0,0,127}));
-  connect(AirTempSensor.T, PID_Air.u_m) annotation (Line(points={{103.6,
-          -108},{130,-108},{130,-140}},                                                          color={0,0,127}));
-  connect(boundary1.port,FuelTH. heatPort) annotation (Line(points={{104,-6},
-          {104,-18}},                                                                   color={191,0,0}));
-  connect(FuelTempSensor.port_b, SOEC.CathodeIn) annotation (Line(points={{116,-58},
-          {116,-74.5},{118,-74.5}},                                                                      color={0,127,255}));
-  connect(PID_Fuel.y, boundary1.Q_flow_ext) annotation (Line(points={{123,18},
-          {104,18},{104,8}},                                                                     color={0,0,127}));
-  connect(PID_Fuel.u_m, FuelTempSensor.T) annotation (Line(points={{134,6},
-          {134,-48},{119.6,-48}},                                                             color={0,0,127}));
-  connect(realExpression1.y, PID_Fuel.u_s) annotation (Line(points={{159,18},
-          {146,18}},                                                                  color={0,0,127}));
-  connect(cathodeFlowOut.port_a, CathodeOutTemp.port_b) annotation (Line(points={{198,-50},
-          {192,-50}},                                                                               color={0,127,255}));
-  connect(CathodeOutTemp.port_a, SOEC.CathodeOut) annotation (Line(points={{172,-50},
-          {158,-50},{158,-74.5},{148,-74.5}},                                                                  color={0,127,255}));
-  connect(AnodeOutTemp.port_a, SOEC.AnodeOut) annotation (Line(points={{158,
-          -110},{158,-89.5},{148,-89.5}},                                                                      color={0,127,255}));
-  connect(cathodeFlowIn2.port_b,FuelHX. port_a2) annotation (Line(points={{96,30},
-          {108,30},{108,44},{114,44}},                                                                      color={0,127,255}));
-  connect(cathodeFlowOut.port_b, FuelHX.port_a1) annotation (Line(points={{218,-50},
-          {224,-50},{224,52},{134,52}},                                                                  color={0,127,255}));
-  connect(AnodeFlowIn1.port_b, AirHX.port_a1) annotation (Line(points={{158,
-          -182},{30,-182},{30,-150},{20,-150},{20,-142}},                                                              color={0,127,255}));
-  connect(AnodeFlowIn3.port_b, AirHX.port_a2) annotation (Line(points={{-16,
-          -116},{-10,-116},{-10,-134},{0,-134}},                                                 color={0,127,255}));
-  connect(AnodeOutTemp.port_b, AnodeFlowIn1.port_a) annotation (Line(points={{178,
-          -110},{186,-110},{186,-182},{178,-182}},                                                                   color={0,127,255}));
-  connect(AirHX.port_b2, AnodeOutTemp1.port_a) annotation (Line(points={{20,-134},
-          {34,-134}},                                                                           color={0,127,255}));
+  connect(AirTH.heatPort, boundary.port) annotation (Line(points={{176,-98},{176,-112}},color={191,0,0}));
+  connect(AirTH.port_b, AirTempSensor.port_a) annotation (Line(points={{182,-92},{190,-92},{190,-76}}, color={0,127,255}));
+  connect(AirTempSensor.port_b, SOEC.AnodeIn) annotation (Line(points={{190,-56},{190,-47.5},{194,-47.5}},
+                                                                                                         color={0,127,255}));
+  connect(PID_Air.u_s, realExpression.y) annotation (Line(points={{232,-110},{241,-110}},
+                                                                                      color={0,0,127}));
+  connect(AirTempSensor.T, PID_Air.u_m) annotation (Line(points={{193.6,-66},{220,-66},{220,-98}},
+                                                                                                 color={0,0,127}));
+  connect(boundary.Q_flow_ext, PID_Air.y) annotation (Line(points={{176,-126},{176,-136},{204,-136},{204,-110},{209,-110}},
+                                                                                                                   color={0,0,127}));
+  connect(boundary1.port,FuelTH. heatPort) annotation (Line(points={{180,36},{180,24}}, color={191,0,0}));
+  connect(FuelTempSensor.port_b, SOEC.CathodeIn) annotation (Line(points={{192,-16},{192,-32.5},{194,-32.5}},
+                                                                                                         color={0,127,255}));
+  connect(PID_Fuel.y, boundary1.Q_flow_ext) annotation (Line(points={{199,60},{180,60},{180,50}},color={0,0,127}));
+  connect(PID_Fuel.u_m, FuelTempSensor.T) annotation (Line(points={{210,48},{210,-6},{195.6,-6}},
+                                                                                              color={0,0,127}));
+  connect(realExpression1.y, PID_Fuel.u_s) annotation (Line(points={{231,60},{222,60}},
+                                                                                      color={0,0,127}));
+  connect(cathodeFlowOut.port_a, CathodeOutTemp.port_b) annotation (Line(points={{292,-8},{268,-8}},color={0,127,255}));
+  connect(CathodeOutTemp.port_a, SOEC.CathodeOut) annotation (Line(points={{248,-8},{234,-8},{234,-32.5},{224,-32.5}},
+                                                                                                               color={0,127,255}));
+  connect(AnodeOutTemp.port_a, SOEC.AnodeOut) annotation (Line(points={{270,-68},{234,-68},{234,-47.5},{224,-47.5}},
+                                                                                                               color={0,127,255}));
+  connect(cathodeFlowIn2.port_b,FuelHX. port_a2) annotation (Line(points={{40,112},{52,112},{52,126},{58,126}},
+                                                                                                            color={0,127,255}));
+  connect(cathodeFlowOut.port_b, FuelHX.port_a1) annotation (Line(points={{312,-8},{318,-8},{318,162},{88,162},{88,134},{78,134}},
+                                                                                                         color={0,127,255}));
+  connect(AnodeFlowIn1.port_b, AirHX.port_a1) annotation (Line(points={{254,-174},{96,-174},{96,-132},{86,-132}},      color={0,127,255}));
+  connect(AnodeFlowIn3.port_b, AirHX.port_a2) annotation (Line(points={{46,-124},{66,-124}},     color={0,127,255}));
+  connect(AnodeOutTemp.port_b, AnodeFlowIn1.port_a) annotation (Line(points={{290,-68},{316,-68},{316,-174},{274,-174}},
+                                                                                                                     color={0,127,255}));
+  connect(AirHX.port_b2, AnodeOutTemp1.port_a) annotation (Line(points={{86,-124},{118,-124},{118,-92},{124,-92}},
+                                                                                                color={0,127,255}));
   connect(AnodeOutTemp1.port_b, AirTH.port_a)
-    annotation (Line(points={{54,-134},{80,-134}},                                           color={0,127,255}));
-  connect(ShellOut_Temp.port_b, FuelTH.port_a) annotation (Line(points={{82,-24},
-          {98,-24}},                                                                        color={0,127,255}));
-  connect(FuelTH.port_b, FuelTempSensor.port_a) annotation (Line(points={{110,-24},
-          {116,-24},{116,-38}},                                                                       color={0,127,255}));
-  connect(FuelHX.port_b2, ShellOut_Temp.port_a) annotation (Line(points={{134,44},
-          {136,44},{136,30},{110,30},{110,16},{88,16},{88,-8},{52,-8},{52,
-          -24},{62,-24}},                                                                                 color={0,127,255}));
-  connect(FuelHX.port_b1, FuelHXOutTemp.port_a) annotation (Line(points={{114,52},
-          {86,52}},                                                                          color={0,127,255}));
-  connect(AirHX.port_b1, AirHXOutTemp.port_a) annotation (Line(points={{0,-142},
-          {-10,-142},{-10,-156}},                                                                      color={0,127,255}));
-  connect(FuelHXOutTemp.port_b, condenser.port_a) annotation (Line(points={{66,52},
-          {43.2,52}},                                                                            color={0,127,255}));
-  connect(condenser.heatPort, boundary3.port) annotation (Line(points={{36,59.2},
-          {36,70}},                                                                           color={191,0,0}));
-  connect(condenser.port_b, SinkTemp.port_a) annotation (Line(points={{28.8,52},
-          {10,52}},                                                                           color={0,127,255}));
-  connect(H2O_flowOut.m_flow_in, mH2O_sep_out.y) annotation (Line(points={{58,139},
-          {44,139},{44,135},{32.9,135}},                                                                            color={0,0,127}));
-  connect(H2_flowOut.ports[1], H2Product.ports[1]) annotation (Line(points={{-114,
-          146},{-152,146}},                                                                         color={0,127,255}));
-  connect(combiner_FinalV2_1.Outlet, X_H1.port) annotation (Line(points={{-40,-55},
-          {-40,-60},{-8,-60},{-8,-32}},                                                                            color={0,127,255}));
-  connect(X_H1.Xi, PID_Fuel1.u_m) annotation (Line(points={{3,-22},{16,-22},
-          {16,0},{-68,0}},                                                                                     color={0,0,127}));
-  connect(realExpression2.y, PID_Fuel1.u_s) annotation (Line(points={{-51,12},
-          {-56,12}},                                                                       color={0,0,127}));
-  connect(H2_recycleFeed.m_flow_in, PID_Fuel1.y) annotation (Line(points={{-136,-6},
-          {-136,12},{-79,12}},                                                                            color={0,0,127}));
-  connect(X_H1.port, SinkTemp1.port_a) annotation (Line(points={{-8,-32},{
-          -8,-60},{12,-60}},                                                                    color={0,127,255}));
+    annotation (Line(points={{144,-92},{170,-92}},                                           color={0,127,255}));
+  connect(ShellOut_Temp.port_b, FuelTH.port_a) annotation (Line(points={{158,18},{174,18}}, color={0,127,255}));
+  connect(FuelTH.port_b, FuelTempSensor.port_a) annotation (Line(points={{186,18},{192,18},{192,4}},  color={0,127,255}));
+  connect(FuelHX.port_b2, ShellOut_Temp.port_a) annotation (Line(points={{78,126},{132,126},{132,18},{138,18}},
+                                                                                                          color={0,127,255}));
+  connect(FuelHX.port_b1, FuelHXOutTemp.port_a) annotation (Line(points={{58,134},{30,134}}, color={0,127,255}));
+  connect(AirHX.port_b1, AirHXOutTemp.port_a) annotation (Line(points={{66,-132},{60,-132},{60,-164}}, color={0,127,255}));
+  connect(FuelHXOutTemp.port_b, condenser.port_a) annotation (Line(points={{10,134},{-12.8,134}},color={0,127,255}));
+  connect(condenser.heatPort, boundary3.port) annotation (Line(points={{-20,141.2},{-20,152}},color={191,0,0}));
+  connect(condenser.port_b, SinkTemp.port_a) annotation (Line(points={{-27.2,134},{-46,134},{-46,134}},
+                                                                                              color={0,127,255}));
+  connect(H2O_flowOut.m_flow_in, mH2O_sep_out.y) annotation (Line(points={{2,221},{-12,221},{-12,217},{-23.1,217}}, color={0,0,127}));
+  connect(H2_flowOut.ports[1], H2Product.ports[1]) annotation (Line(points={{-170,228},{-208,228}}, color={0,127,255}));
+  connect(combiner_FinalV2_1.Outlet, X_H1.port) annotation (Line(points={{-96,27},{-96,22},{-64,22},{-64,50}},     color={0,127,255}));
+  connect(X_H1.Xi, PID_Fuel1.u_m) annotation (Line(points={{-53,60},{-40,60},{-40,82},{-124,82}},              color={0,0,127}));
+  connect(realExpression2.y, PID_Fuel1.u_s) annotation (Line(points={{-107,94},{-112,94}}, color={0,0,127}));
+  connect(H2_recycleFeed.m_flow_in, PID_Fuel1.y) annotation (Line(points={{-192,58},{-192,94},{-135,94}}, color={0,0,127}));
+  connect(X_H1.port, SinkTemp1.port_a) annotation (Line(points={{-64,50},{-64,22},{4,22}},      color={0,127,255}));
   connect(SteamFlowMeasure.port_b, combiner_FinalV2_1.liquidInlet)
-    annotation (Line(points={{-138,-42},{-138,-58},{-56,-58},{-56,-52},{-50,
-          -52}},                                                       color={0,127,255}));
-  connect(H2_recycleFeed.ports[1], H2_recycleMassFlowRate.port_a) annotation (Line(points={{-116,
-          -14},{-108,-14},{-108,-32},{-98,-32}},                                                                 color={0,127,255}));
+    annotation (Line(points={{-124,-2},{-112,-2},{-112,30},{-106,30}}, color={0,127,255}));
+  connect(H2_recycleFeed.ports[1], H2_recycleMassFlowRate.port_a) annotation (Line(points={{-172,50},{-154,50}}, color={0,127,255}));
   connect(H2_recycleMassFlowRate.port_b, combiner_FinalV2_1.vaporInlet)
-    annotation (Line(points={{-78,-32},{-56,-32},{-56,-40},{-50,-40}}, color={0,127,255}));
-  connect(cathodeFlowIn2.port_a, SinkTemp1.port_b) annotation (Line(points={{76,30},
-          {46,30},{46,-60},{32,-60}},                                                                               color={0,127,255}));
-  connect(H2_feed2.ports[1], H2Port_Out) annotation (Line(points={{-98,-200},
-          {-38,-200},{-38,-180},{0,-180},{0,-220}},                                              color={0,127,255}));
-  connect(SinkTemp.port_b, massFlowRate.port_a) annotation (Line(points={{-10,52},
-          {-22,52},{-22,130}},                                                                           color={0,127,255}));
-  connect(massFlowRate.port_b, temperature.port) annotation (Line(points={{-22,150},
-          {-22,176}},                                                                                     color={0,127,255}));
-  connect(temperature.port, cathodeSink1.ports[1]) annotation (Line(points={{-22,176},
-          {-22,194}},                                                                                       color={0,127,255}));
-  connect(SinkTemp.port_b, X_H2.port) annotation (Line(points={{-10,52},{
-          -22,52},{-22,74}},                                                                   color={0,127,255}));
-  connect(SinkTemp.port_b, X_H2O.port) annotation (Line(points={{-10,52},{
-          -22,52},{-22,102}},                                                                   color={0,127,255}));
-  connect(H2_flowOut.m_flow_in, mH2_sep_out.y) annotation (Line(points={{-94,138},
-          {-94,136},{-76.9,136},{-76.9,135}},                                                                             color={0,0,127}));
-  connect(X_H2O.Xi, mH2O_sep_out.u2) annotation (Line(points={{-12,113},{
-          -12,122},{4,122},{4,129.6},{12.2,129.6}},                                                                     color={0,0,127}));
-  connect(X_H2.Xi, mH2_sep_out.u2) annotation (Line(points={{-32,85},{-32,
-          114},{-56.2,114},{-56.2,129.6}},                                                                    color={0,0,127}));
-  connect(massFlowRate.m_flow, mH2_sep_out.u1) annotation (Line(points={{-33,140},
-          {-44,140},{-44,140.4},{-56.2,140.4}},                                                                            color={0,0,127}));
+    annotation (Line(points={{-134,50},{-112,50},{-112,42},{-106,42}}, color={0,127,255}));
+  connect(cathodeFlowIn2.port_a, SinkTemp1.port_b) annotation (Line(points={{20,112},{8,112},{8,40},{32,40},{32,22},{24,22}},
+                                                                                                                    color={0,127,255}));
+  connect(H2_feed2.ports[1], H2Port_Out) annotation (Line(points={{-212,-208},{-212,-266},{-298,-266}},
+                                                                                                 color={0,127,255}));
+  connect(SinkTemp.port_b, massFlowRate.port_a) annotation (Line(points={{-66,134},{-78,134},{-78,212}}, color={0,127,255}));
+  connect(massFlowRate.port_b, temperature.port) annotation (Line(points={{-78,232},{-78,258},{-80,258}}, color={0,127,255}));
+  connect(temperature.port, cathodeSink1.ports[1]) annotation (Line(points={{-80,258},{-80,276},{-78,276}}, color={0,127,255}));
+  connect(SinkTemp.port_b, X_H2.port) annotation (Line(points={{-66,134},{-78,134},{-78,156}}, color={0,127,255}));
+  connect(SinkTemp.port_b, X_H2O.port) annotation (Line(points={{-66,134},{-78,134},{-78,184}}, color={0,127,255}));
+  connect(H2_flowOut.m_flow_in, mH2_sep_out.y) annotation (Line(points={{-150,220},{-150,218},{-132.9,218},{-132.9,217}}, color={0,0,127}));
+  connect(X_H2O.Xi, mH2O_sep_out.u2) annotation (Line(points={{-68,195},{-68,204},{-52,204},{-52,211.6},{-43.8,211.6}}, color={0,0,127}));
+  connect(X_H2.Xi, mH2_sep_out.u2) annotation (Line(points={{-88,167},{-88,196},{-112.2,196},{-112.2,211.6}}, color={0,0,127}));
+  connect(massFlowRate.m_flow, mH2_sep_out.u1) annotation (Line(points={{-89,222},{-100,222},{-100,222.4},{-112.2,222.4}}, color={0,0,127}));
   connect(massFlowRate.m_flow, mH2O_sep_out.u1)
-    annotation (Line(points={{-33,140},{-44,140},{-44,126},{0,126},{0,150},
-          {12.2,150},{12.2,140.4}},                                                                          color={0,0,127}));
-  connect(H2_flowOut.T_in, temperature.T) annotation (Line(points={{-92,142},
-          {-92,158},{-32,158},{-32,169}},                                                                      color={0,0,127}));
-  connect(realExpression3.y, H2_feed2.m_flow_in) annotation (Line(points={{-165,
-          -190},{-128,-190},{-128,-208},{-118,-208}},                                           color={0,0,127}));
-  connect(WaterPort_Out, H2O_flowOut.ports[1]) annotation (Line(points={{234,147},
-          {78,147}},                                                                                   color={0,127,255}));
-  connect(PID_Air.y, boundary.Q_flow_ext) annotation (Line(points={{119,
-          -152},{106,-152},{106,-168},{86,-168}},  color={0,0,127}));
-  connect(AirSource.m_flow_in,AnodeFlowControl2. y) annotation (Line(points={{-66,
-          -108},{-83,-108}},                                                                       color={0,0,127}));
-  connect(AirSource.ports[1], AnodeFlowIn3.port_a)
-    annotation (Line(points={{-46,-116},{-36,-116}},
-                                                   color={0,127,255}));
-  connect(AirHXOutTemp.port_b, AirExhaust.ports[1]) annotation (Line(points={{-30,
-          -156},{-48,-156}},          color={0,127,255}));
-  connect(electricalLoad, load_IP.portElec_a) annotation (Line(
-      points={{-244,-122},{-209.2,-122}},
+    annotation (Line(points={{-89,222},{-100,222},{-100,208},{-56,208},{-56,232},{-43.8,232},{-43.8,222.4}}, color={0,0,127}));
+  connect(H2_flowOut.T_in, temperature.T) annotation (Line(points={{-148,224},{-148,240},{-90,240},{-90,251}}, color={0,0,127}));
+  connect(temperature.T, H2O_flowOut.T_in) annotation (Line(points={{-90,251},{-90,240},{-12,240},{-12,225},{0,225}}, color={0,0,127}));
+  connect(realExpression3.y, H2_feed2.m_flow_in) annotation (Line(points={{-220,-163},{-220,-188}},
+                                                                                                color={0,0,127}));
+  connect(SOEC.DC_PowerIn, electricalLoad)
+    annotation (Line(
+      points={{194,-40},{-305,-40}},
       color={255,0,0},
       thickness=0.5));
-  connect(realExpressionLoad.y, load_IP.powerConsumption) annotation (Line(
-        points={{-203,-142},{-198,-142},{-198,-126.62}},         color={0,0,127}));
-  connect(prescribedPowerFlow.port_b, SOEC.DC_PowerIn) annotation (Line(
-      points={{-142,-82},{118,-82}},
-      color={255,0,0},
-      thickness=0.5));
-  connect(realExpressionLoad.y, prescribedPowerFlow.P_flow) annotation (Line(
-        points={{-203,-142},{-172,-142},{-172,-82},{-160,-82}},
-                                                   color={0,0,127}));
-  connect(SteamIn_Port, SteamValve.port_a) annotation (Line(points={{-243,
-          -41},{-222.5,-41},{-222.5,-42},{-206,-42}},
-                                    color={0,127,255}));
-  connect(SteamValve.port_b, SteamFlowMeasure.port_a)
-    annotation (Line(points={{-186,-42},{-158,-42}},
-                                                 color={0,127,255}));
-  connect(PID_Steam.u_s, realExpression4.y)
-    annotation (Line(points={{-168,28},{-143,28}},   color={0,0,127}));
-  connect(SteamFlowMeasure.m_flow, PID_Steam.u_m) annotation (Line(points={{-148,
-          -31},{-148,6},{-180,6},{-180,16}},  color={0,0,127}));
-  connect(PID_Steam.y, SteamValve.opening) annotation (Line(points={{-191,28},
-          {-200,28},{-200,-34},{-196,-34}},         color={0,0,127}));
-  connect(temperature.T, H2O_flowOut.T_in) annotation (Line(points={{-32,169},
-          {-32,158},{44,158},{44,143},{56,143}},       color={0,0,127}));
-  annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-240,
-            -220},{240,220}},
+  connect(SteamIn_Port, SteamFlowMeasure.port_a) annotation (Line(points={{-297,43},{-200,43},{-200,-2},{-144,-2}}, color={0,127,255}));
+  connect(AirIn_Port, AnodeFlowIn3.port_a) annotation (Line(points={{-108,-302},{-108,-124},{26,-124}}, color={0,127,255}));
+  connect(AirHXOutTemp.port_b, AirPort_Out)
+    annotation (Line(points={{60,-184},{60,-252},{40,-252},{40,-292},{42,-292},{42,-301}}, color={0,127,255}));
+  connect(WaterPort_Out, H2O_flowOut.ports[1]) annotation (Line(points={{298,225},{298,229},{22,229}}, color={0,127,255}));
+  annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-300,
+            -300},{300,300}},
 Icon(coordinateSystem(preserveAspectRatio=false,
                    extent={{-100,-100},{100,100}})))),
             experiment(StopTime=1e5,__Dymola_Algorithm="Dassl"),
@@ -504,16 +385,14 @@ Icon(coordinateSystem(preserveAspectRatio=false,
     The Gibbs Free Energy term is calculated using NASA's 7-term polynomial.
     For any questions regarding the model, please contact Amey Shigrekar (amey.shigreka@inl.gov)</p>        
  </html>"),
-    Icon(coordinateSystem(extent={{-240,-220},{240,220}}),
-         graphics={
+    Icon(graphics={
         Rectangle(
-          extent={{-240,220},{240,-220}},
-          lineColor={0,0,0},
+          extent={{-100,100},{100,-100}},
+          lineColor={28,108,200},
           fillColor={255,255,255},
-          fillPattern=FillPattern.Solid,
-          lineThickness=1),
+          fillPattern=FillPattern.Solid),
         Bitmap(
-          extent={{-184,-150},{184,116}},
+          extent={{-68,-66},{80,62}},
           imageSource=
               "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"
                +
@@ -523,11 +402,9 @@ Icon(coordinateSystem(preserveAspectRatio=false,
                +
               "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",
           fileName="modelica://NHES/Electrolysis/Electrolyzers/SOEC_Examples_AS/HTSE.png"),
-                  Text(
-          extent={{-202,178},{212,120}},
-          lineColor={0,0,0},
-          lineThickness=1,
-          fillColor={255,255,237},
-          fillPattern=FillPattern.Solid,
-          textString="High Temperature Steam Electrolysis")}));
-end HTSE_CS_HW;
+        Text(
+          extent={{-80,108},{86,54}},
+          textColor={28,108,200},
+          textString="High Temperature Steam Electrolysis",
+          textStyle={TextStyle.Bold})}));
+end HTSE_V4_Final_AR;
