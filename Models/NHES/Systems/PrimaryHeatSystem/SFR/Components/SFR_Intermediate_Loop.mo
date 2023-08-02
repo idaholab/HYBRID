@@ -5,12 +5,14 @@ model SFR_Intermediate_Loop
     redeclare replaceable CS_Dummy CS,
     redeclare replaceable ED_Dummy ED,
     redeclare Data.Data_Dummy data);
-    replaceable package Coolant = TRANSFORM.Media.Fluids.Sodium.LinearSodium_pT
+    replaceable package Coolant =
+      TRANSFORM.Media.Fluids.Sodium.LinearSodium_pT
     constrainedby Modelica.Media.Interfaces.PartialMedium              annotation(choicesAllMatching=true);
     replaceable package Medium_IHX_Loop =
       TRANSFORM.Media.Fluids.Sodium.LinearSodium_pT constrainedby
     Modelica.Media.Interfaces.PartialMedium                                                                                                  annotation(choicesAllMatching=true);
-    replaceable package Medium_SG = Modelica.Media.Water.StandardWater constrainedby
+    replaceable package Medium_SG =
+      Modelica.Media.Water.StandardWater                               constrainedby
     Modelica.Media.Interfaces.PartialMedium                                                                                  annotation(choicesAllMatching=true);
 
   Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase SG(

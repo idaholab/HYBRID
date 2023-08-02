@@ -5968,8 +5968,10 @@ package ObsoleteRankines
       NTU=20,
       K_tube=17000,
       K_shell=500,
-      redeclare package Tube_medium = Modelica.Media.Water.StandardWater,
-      redeclare package Shell_medium = Modelica.Media.Water.StandardWater,
+      redeclare package Tube_medium =
+          Modelica.Media.Water.StandardWater,
+      redeclare package Shell_medium =
+          Modelica.Media.Water.StandardWater,
       V_Tube=5,
       V_Shell=5,
       p_start_tube=1000000,
@@ -5989,8 +5991,10 @@ package ObsoleteRankines
       NTU=20,
       K_tube=17000,
       K_shell=500,
-      redeclare package Tube_medium = Modelica.Media.Water.StandardWater,
-      redeclare package Shell_medium = Modelica.Media.Water.StandardWater,
+      redeclare package Tube_medium =
+          Modelica.Media.Water.StandardWater,
+      redeclare package Shell_medium =
+          Modelica.Media.Water.StandardWater,
       V_Tube=5,
       V_Shell=5,
       p_start_tube=1000000,
@@ -6638,8 +6642,10 @@ package ObsoleteRankines
       NTU=20,
       K_tube=17000,
       K_shell=500,
-      redeclare package Tube_medium = Modelica.Media.Water.StandardWater,
-      redeclare package Shell_medium = Modelica.Media.Water.StandardWater,
+      redeclare package Tube_medium =
+          Modelica.Media.Water.StandardWater,
+      redeclare package Shell_medium =
+          Modelica.Media.Water.StandardWater,
       V_Tube=5,
       V_Shell=5,
       p_start_tube=1000000,
@@ -6659,8 +6665,10 @@ package ObsoleteRankines
       NTU=20,
       K_tube=17000,
       K_shell=500,
-      redeclare package Tube_medium = Modelica.Media.Water.StandardWater,
-      redeclare package Shell_medium = Modelica.Media.Water.StandardWater,
+      redeclare package Tube_medium =
+          Modelica.Media.Water.StandardWater,
+      redeclare package Shell_medium =
+          Modelica.Media.Water.StandardWater,
       V_Tube=5,
       V_Shell=5,
       p_start_tube=1000000,
@@ -9194,8 +9202,10 @@ package ObsoleteRankines
       NTU=data.MainFeedHeater_NTU,
       K_tube=data.MainFeedHeater_K_tube,
       K_shell=data.MainFeedHeater_K_shell,
-      redeclare package Tube_medium = Modelica.Media.Water.StandardWater,
-      redeclare package Shell_medium = Modelica.Media.Water.StandardWater,
+      redeclare package Tube_medium =
+          Modelica.Media.Water.StandardWater,
+      redeclare package Shell_medium =
+          Modelica.Media.Water.StandardWater,
       V_Tube=data.MainFeedHeater_V_tube,
       V_Shell=data.MainFeedHeater_V_shell,
       p_start_tube=init.MainFeedHeater_p_start_tube,
@@ -9780,8 +9790,10 @@ package ObsoleteRankines
       NTU=data.MainFeedHeater_NTU,
       K_tube=data.MainFeedHeater_K_tube,
       K_shell=data.MainFeedHeater_K_shell,
-      redeclare package Tube_medium = Modelica.Media.Water.StandardWater,
-      redeclare package Shell_medium = Modelica.Media.Water.StandardWater,
+      redeclare package Tube_medium =
+          Modelica.Media.Water.StandardWater,
+      redeclare package Shell_medium =
+          Modelica.Media.Water.StandardWater,
       V_Tube=data.MainFeedHeater_V_tube,
       V_Shell=data.MainFeedHeater_V_shell,
       p_start_tube=init.MainFeedHeater_p_start_tube,
@@ -9800,8 +9812,10 @@ package ObsoleteRankines
       NTU=data.BypassFeedHeater_NTU,
       K_tube=data.BypassFeedHeater_K_tube,
       K_shell=data.BypassFeedHeater_K_shell,
-      redeclare package Tube_medium = Modelica.Media.Water.StandardWater,
-      redeclare package Shell_medium = Modelica.Media.Water.StandardWater,
+      redeclare package Tube_medium =
+          Modelica.Media.Water.StandardWater,
+      redeclare package Shell_medium =
+          Modelica.Media.Water.StandardWater,
       V_Tube=data.BypassFeedHeater_V_tube,
       V_Shell=data.BypassFeedHeater_V_shell,
       p_start_tube=init.BypassFeedHeater_p_start_tube,

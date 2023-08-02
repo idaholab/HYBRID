@@ -17,14 +17,14 @@ model MEE_ss_test_delay_fixsmooth "Test of a single effect with constant UA"
       TwSst=373.15,
       tau=0.1))
     annotation (Placement(transformation(extent={{-38,-44},{42,36}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_T boundary(
+  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_m_flow_in=false,
     m_flow=0.001,
     T=396.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-120,12},{-100,32}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph boundary1(
+  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=200000,
     nPorts=1)

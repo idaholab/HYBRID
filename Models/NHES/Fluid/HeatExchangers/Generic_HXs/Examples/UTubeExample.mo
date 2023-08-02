@@ -12,9 +12,12 @@ model UTubeExample
         dimension_tube=0.0254,
         length_tube=15,
         length_tube_two=10),
-    redeclare package Medium_shell = Modelica.Media.IdealGases.SingleGases.He,
-    redeclare package Medium_tube = Modelica.Media.IdealGases.SingleGases.He,
-    redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS304,
+    redeclare package Medium_shell =
+        Modelica.Media.IdealGases.SingleGases.He,
+    redeclare package Medium_tube =
+        Modelica.Media.IdealGases.SingleGases.He,
+    redeclare package Material_tubeWall =
+        TRANSFORM.Media.Solids.SS304,
     counterCurrent=false,
     redeclare model HeatTransfer_shell =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_SinglePhase_2Region
@@ -39,22 +42,26 @@ model UTubeExample
     annotation (Placement(transformation(extent={{-32,-26},{52,42}})));
 
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary(
-    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    redeclare package Medium =
+        Modelica.Media.IdealGases.SingleGases.He,
     m_flow=0.2,
     T=673.15,
     nPorts=1) annotation (Placement(transformation(extent={{-98,-2},{-78,18}})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary1(
-    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    redeclare package Medium =
+        Modelica.Media.IdealGases.SingleGases.He,
     m_flow=0.2,
     T=1123.15,
     nPorts=1) annotation (Placement(transformation(extent={{126,14},{106,34}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary2(
-    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    redeclare package Medium =
+        Modelica.Media.IdealGases.SingleGases.He,
     p=3000000,
     nPorts=1)
     annotation (Placement(transformation(extent={{-104,40},{-84,60}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary3(
-    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    redeclare package Medium =
+        Modelica.Media.IdealGases.SingleGases.He,
     p=4000000,
     nPorts=1)
     annotation (Placement(transformation(extent={{134,-10},{114,10}})));

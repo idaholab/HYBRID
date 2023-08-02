@@ -20,20 +20,20 @@ model MEE_pool "Test of a multi effect with heat transfer correlations"
       valveLinear(m_flow_start=2),
       PID(yMin=0.05)))
     annotation (Placement(transformation(extent={{-54,-46},{46,54}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph Liquid_Return(
+  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Liquid_Return(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_p_in=true,
     p=10000,
     nPorts=1)
     annotation (Placement(transformation(extent={{-100,-26},{-80,-6}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_T Tube_Inlet(
+  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T Tube_Inlet(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_m_flow_in=false,
     m_flow=1,
     T=398.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-100,14},{-80,34}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT Steam_Exit(
+  TRANSFORM.Fluid.BoundaryConditions.Boundary_pT Steam_Exit(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=5000,
     T=328.15,

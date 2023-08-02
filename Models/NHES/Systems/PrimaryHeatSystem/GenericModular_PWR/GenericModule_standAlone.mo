@@ -230,7 +230,8 @@ final parameter SI.SpecificEnthalpy h_start_pressurizer_tee = 1.48888e+06;
     T=data.T_steam_cold)
     annotation (Placement(transformation(extent={{70,-42},{50,-22}})));
   TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump_SimpleMassFlow(
-      m_flow_nominal=data.m_flow, redeclare package Medium = Medium_PHTS)
+      m_flow_nominal=data.m_flow, redeclare package Medium =
+        Medium_PHTS)
     annotation (Placement(transformation(extent={{0,-100},{-20,-80}})));
   TRANSFORM.Fluid.Volumes.ExpansionTank_1Port pressurizer(
     redeclare package Medium = Medium_PHTS,

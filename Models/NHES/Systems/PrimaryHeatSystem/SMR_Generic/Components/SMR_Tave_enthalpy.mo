@@ -7,8 +7,10 @@ model SMR_Tave_enthalpy
     redeclare replaceable CS_Dummy CS,
     redeclare replaceable ED_Dummy ED,
     redeclare Data.Data_GenericModule_SMR data,
-    port_b(redeclare package Medium = Modelica.Media.Water.StandardWater),
-    port_a(redeclare package Medium = Modelica.Media.Water.StandardWater));
+    port_b(redeclare package Medium =
+          Modelica.Media.Water.StandardWater),
+    port_a(redeclare package Medium =
+          Modelica.Media.Water.StandardWater));
 
 Real Tave=(Tcore_inlet.T+Tcore_exit.T)/2.0;
 
@@ -103,7 +105,8 @@ Real Tave=(Tcore_inlet.T+Tcore_exit.T)/2.0;
   TRANSFORM.HeatExchangers.GenericDistributed_HX STHX(
     exposeState_b_shell=true,
     exposeState_b_tube=true,
-    redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS304,
+    redeclare package Material_tubeWall =
+        TRANSFORM.Media.Solids.SS304,
     redeclare model HeatTransfer_tube =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Alphas_TwoPhase_3Region,
     p_a_start_shell=data.p,
@@ -120,7 +123,8 @@ Real Tave=(Tcore_inlet.T+Tcore_exit.T)/2.0;
     ps_start_tube=dataInitial.p_start_STHX_tube,
     hs_start_tube=dataInitial.h_start_STHX_tube,
     Ts_wall_start=dataInitial.T_start_STHX_tubeWall,
-    redeclare package Medium_tube = Modelica.Media.Water.StandardWater,
+    redeclare package Medium_tube =
+        Modelica.Media.Water.StandardWater,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.HeatExchanger.ShellAndTubeHX
         (
@@ -136,8 +140,8 @@ Real Tave=(Tcore_inlet.T+Tcore_exit.T)/2.0;
         angle_shell=-1.5707963267949),
     redeclare model HeatTransfer_shell =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_SinglePhase_2Region,
-    redeclare package Medium_shell = Modelica.Media.Water.StandardWater)
-                                                                  annotation (Placement(transformation(
+    redeclare package Medium_shell =
+        Modelica.Media.Water.StandardWater)                       annotation (Placement(transformation(
         extent={{-12,-11},{12,11}},
         rotation=90,
         origin={27,0})));

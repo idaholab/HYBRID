@@ -28,7 +28,6 @@ redeclare function extends specificHeatCapacity
 algorithm
   cp := 500;
 end specificHeatCapacity;
-
   annotation (Documentation(info="<html>
 <p>Source: http://www.osti.gov/scitech/servlets/purl/455553/</p>
 <p><br>Metals design handbook.</p>

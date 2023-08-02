@@ -109,7 +109,8 @@ features are:
   partial model PartialVolume_cyl "Base class for volume models"
     import Modelica.Fluid.Types.Dynamics;
     import Modelica.Media.Interfaces.Choices.IndependentVariables;
-    replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
+    replaceable package Medium =
+        Modelica.Media.Interfaces.PartialMedium
       "Medium properties" annotation (choicesAllMatching=true);
     // Inputs provided to the volume model
     input Modelica.Units.SI.Volume V(min=0) "Volume"

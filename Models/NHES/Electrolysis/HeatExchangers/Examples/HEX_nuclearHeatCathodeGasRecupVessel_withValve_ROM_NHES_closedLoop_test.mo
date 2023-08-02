@@ -1,5 +1,7 @@
 within NHES.Electrolysis.HeatExchangers.Examples;
-model HEX_nuclearHeatCathodeGasRecupVessel_withValve_ROM_NHES_closedLoop_test
+model
+  HEX_nuclearHeatCathodeGasRecupVessel_withValve_ROM_NHES_closedLoop_test
+
 
   import NHES;
 

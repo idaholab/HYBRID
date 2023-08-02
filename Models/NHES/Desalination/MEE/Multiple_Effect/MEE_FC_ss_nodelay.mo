@@ -43,13 +43,13 @@ model MEE_FC_ss_nodelay "Multi-Effect Evaporator"
   Components.SEE_Tube_Side_PoolBoiling_portlesss HXs[data.nE - 1](p_start=data.psys[
         1:data.nE - 1], Ax=Ax[2:data.nE])
     annotation (Placement(transformation(extent={{-20,-120},{20,-80}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_h boundary(
+  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h boundary(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_m_flow_in=true,
     h=3500e3,
     nPorts=1)
     annotation (Placement(transformation(extent={{-180,30},{-160,50}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph boundary1(
+  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=200000,
     h=3500e3,

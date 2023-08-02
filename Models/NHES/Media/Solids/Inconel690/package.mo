@@ -32,7 +32,6 @@ algorithm
       cpTable,
       T);
 end specificHeatCapacity;
-
   annotation (Documentation(info="<html>
 <p>Source: http://www.specialmetals.com/assets/documents/alloys/inconel/inconel-alloy-690.pdf</p>
 </html>"));

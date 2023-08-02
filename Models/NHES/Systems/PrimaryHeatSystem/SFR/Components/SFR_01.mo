@@ -34,7 +34,8 @@ model SFR_01
     redeclare package Rods_RB = Media.Solids.UZr20,
     redeclare package Fuel_gap_material = Media.Solids.Sodium,
     redeclare package Fuel_Cladding = Media.Solids.HT9,
-    redeclare model Geometry = NHES.Nuclear.New_Geometries.Generic_SFR (
+    redeclare model Geometry =
+        NHES.Nuclear.New_Geometries.Generic_SFR (
         nPins=271,
         dimension=0.0074,
         length=1.19),

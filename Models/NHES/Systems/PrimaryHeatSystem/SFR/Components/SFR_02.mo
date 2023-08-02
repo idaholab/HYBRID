@@ -23,7 +23,8 @@ model SFR_02
     redeclare package Rods_RB = Media.Solids.UZr20,
     redeclare package Fuel_gap_material = Media.Solids.Sodium,
     redeclare package Fuel_Cladding = Media.Solids.HT9,
-    redeclare model Geometry = NHES.Nuclear.New_Geometries.Generic_SFR (
+    redeclare model Geometry =
+        NHES.Nuclear.New_Geometries.Generic_SFR (
         nPins=271,
         dimension=0.0074,
         length=1.20,
@@ -118,7 +119,8 @@ model SFR_02
     redeclare package Medium_shell = Coolant,
     redeclare package Medium_tube =
         Coolant,
-    redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS304_TRACE,
+    redeclare package Material_tubeWall =
+        TRANSFORM.Media.Solids.SS304_TRACE,
     counterCurrent=false,
     redeclare model HeatTransfer_shell =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple,

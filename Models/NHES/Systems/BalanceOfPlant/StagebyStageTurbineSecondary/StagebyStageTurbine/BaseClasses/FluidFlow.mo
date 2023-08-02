@@ -2,7 +2,8 @@ within NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.StagebyStageTurb
 connector FluidFlow
   "Interface for quasi one-dimensional fluid flow in a piping network (incompressible or compressible, one or more phases, one or more substances)"
 
-  replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
+  replaceable package Medium =
+      Modelica.Media.Interfaces.PartialMedium
     "Medium model" annotation (choicesAllMatching=true);
     //  parameter Modelica.SIunits.Area A "flow area";
   flow Modelica.Units.SI.MassFlowRate m_flow

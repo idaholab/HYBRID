@@ -1240,7 +1240,8 @@ package SHS_Two_Tank
         K_tube=100,
         K_shell=100,
         redeclare package Tube_medium = Storage_Medium,
-        redeclare package Shell_medium = Modelica.Media.Examples.TwoPhaseWater,
+        redeclare package Shell_medium =
+            Modelica.Media.Examples.TwoPhaseWater,
         V_Tube=10,
         V_Shell=25,
         p_start_tube=100000,
@@ -1357,7 +1358,8 @@ package SHS_Two_Tank
         K_shell=100,                                           redeclare
           package Tube_medium =
             Storage_Medium,
-        redeclare package Shell_medium = Modelica.Media.Water.StandardWater,
+        redeclare package Shell_medium =
+            Modelica.Media.Water.StandardWater,
         V_Tube=10,
         V_Shell=0.001,
         Q_init=1)          annotation (Placement(transformation(
@@ -1608,7 +1610,8 @@ package SHS_Two_Tank
         K_tube=100,
         K_shell=100,
         redeclare package Tube_medium = Storage_Medium,
-        redeclare package Shell_medium = Modelica.Media.Examples.TwoPhaseWater,
+        redeclare package Shell_medium =
+            Modelica.Media.Examples.TwoPhaseWater,
         V_Tube=10,
         V_Shell=25,
         p_start_tube=100000,
@@ -1789,9 +1792,11 @@ package SHS_Two_Tank
             dimension_tube=0.04,
             length_tube=25,
             th_wall=0.003),
-        redeclare package Medium_shell = Modelica.Media.Water.StandardWater,
+        redeclare package Medium_shell =
+            Modelica.Media.Water.StandardWater,
         redeclare package Medium_tube = Storage_Medium,
-        redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS316,
+        redeclare package Material_tubeWall =
+            TRANSFORM.Media.Solids.SS316,
         redeclare model FlowModel_shell =
             TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.TwoPhase_Developed_2Region_NumStable,
         redeclare model HeatTransfer_shell =
@@ -2416,7 +2421,8 @@ package SHS_Two_Tank
             th_wall=0.003),
         redeclare package Medium_shell = Charging_Medium,
         redeclare package Medium_tube = Storage_Medium,
-        redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS316,
+        redeclare package Material_tubeWall =
+            TRANSFORM.Media.Solids.SS316,
         redeclare model FlowModel_shell =
             TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.TwoPhase_Developed_2Region_NumStable,
         redeclare model HeatTransfer_shell =

@@ -1,7 +1,8 @@
 within NHES.Systems.PrimaryHeatSystem.SFR.Examples;
 model SFR_Example_03
   package Coolant = TRANSFORM.Media.Fluids.Sodium.LinearSodium_pT;
-  package IL_Medium = NHES.Media.SolarSalt.ConstantPropertyLiquidSolarSalt;
+  package IL_Medium =
+      NHES.Media.SolarSalt.ConstantPropertyLiquidSolarSalt;
 
   Components.SFR_Intermediate_Loop sFR_Intermediate_Loop(redeclare package
       Medium_IHX_Loop = IL_Medium)

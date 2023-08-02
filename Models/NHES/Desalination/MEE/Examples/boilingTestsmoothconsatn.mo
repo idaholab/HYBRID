@@ -1,11 +1,11 @@
 within NHES.Desalination.MEE.Examples;
 model boilingTestsmoothconsatn "Test of a single effect with constant UA"
 
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph cond_out(
+  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph cond_out(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=200000,
     nPorts=1) annotation (Placement(transformation(extent={{100,-10},{80,10}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_h Tube_Inlet(
+  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h Tube_Inlet(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_m_flow_in=true,
     use_h_in=true,

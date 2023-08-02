@@ -162,7 +162,8 @@ model IHXShellconnector4_outer2_ports
   Modelica.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium =
         Medium)
     annotation (Placement(transformation(extent={{30,-150},{50,-130}})));
-  replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
+  replaceable package Medium =
+      Modelica.Media.Interfaces.PartialMedium
     annotation (__Dymola_choicesAllMatching=true);
 equation
   connect(TESErrorCalculator.FlowErr4, PIDTESTBV4.u_s) annotation (Line(

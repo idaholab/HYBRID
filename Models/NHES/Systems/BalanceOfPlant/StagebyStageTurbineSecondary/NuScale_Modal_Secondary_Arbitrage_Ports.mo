@@ -766,7 +766,8 @@ public
         rotation=180,
         origin={85,61})));
   NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.TemperatureTwoPort_Superheat
-    sensor_T(redeclare package Medium = Modelica.Media.Examples.TwoPhaseWater)
+    sensor_T(redeclare package Medium =
+        Modelica.Media.Examples.TwoPhaseWater)
     annotation (Placement(transformation(extent={{126,50},{106,70}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
                                        sensor_T1(redeclare package Medium =

@@ -86,9 +86,11 @@ model Pebble_Bed_Rankine_Complex_New_Core_200MW
   Nuclear.CoreSubchannels.Pebble_Bed_New
                                        core(
     nPebble=330000,
-    redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
+    redeclare package Fuel_Kernel_Material =
+        TRANSFORM.Media.Solids.UO2,
     redeclare package Pebble_Material = Media.Solids.Graphite_5,
-    redeclare model Geometry = NHES.Nuclear.New_Geometries.PackedBed (d_pebble=
+    redeclare model Geometry =
+        NHES.Nuclear.New_Geometries.PackedBed (                       d_pebble=
             2*data.r_Pebble, nPebble=data.nPebble),
     redeclare model FlowModel =
         TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable,
@@ -274,14 +276,16 @@ model Pebble_Bed_Rankine_Complex_New_Core_200MW
     nPorts=1)
     annotation (Placement(transformation(extent={{-82,62},{-62,82}})));
   TRANSFORM.Fluid.Valves.ValveLinear Primary_PRV(
-    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    redeclare package Medium =
+        Modelica.Media.IdealGases.SingleGases.He,
     dp_nominal=100000,
     m_flow_nominal=1) annotation (Placement(transformation(
         extent={{-8,-8},{8,8}},
         rotation=180,
         origin={-46,-92})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
-    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    redeclare package Medium =
+        Modelica.Media.IdealGases.SingleGases.He,
     p=4000000,
     T=573.15,
     nPorts=1)
@@ -308,7 +312,8 @@ model Pebble_Bed_Rankine_Complex_New_Core_200MW
     h_b_start_tube=3500e3,
     exposeState_b_shell=true,
     exposeState_b_tube=true,
-    redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS304,
+    redeclare package Material_tubeWall =
+        TRANSFORM.Media.Solids.SS304,
     redeclare model HeatTransfer_tube =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Alphas_TwoPhase_5Region,
     p_a_start_shell=3915000,
@@ -316,7 +321,8 @@ model Pebble_Bed_Rankine_Complex_New_Core_200MW
     T_b_start_shell=523.15,
     m_flow_a_start_shell=50,
     m_flow_a_start_tube=50,
-    redeclare package Medium_tube = Modelica.Media.Water.WaterIF97_ph,
+    redeclare package Medium_tube =
+        Modelica.Media.Water.WaterIF97_ph,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.HeatExchanger.ShellAndTubeHX
         (
@@ -332,7 +338,8 @@ model Pebble_Bed_Rankine_Complex_New_Core_200MW
         nR=3),
     redeclare model HeatTransfer_shell =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_SinglePhase_2Region,
-    redeclare package Medium_shell = Modelica.Media.IdealGases.SingleGases.He)
+    redeclare package Medium_shell =
+        Modelica.Media.IdealGases.SingleGases.He)
     annotation (Placement(transformation(
         extent={{-12,-11},{12,11}},
         rotation=90,

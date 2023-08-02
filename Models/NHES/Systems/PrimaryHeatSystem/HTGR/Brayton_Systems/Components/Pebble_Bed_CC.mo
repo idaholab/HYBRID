@@ -324,7 +324,8 @@ model Pebble_Bed_CC
     annotation (Placement(transformation(extent={{-60,104},{-48,118}})));
   Nuclear.CoreSubchannels.Pebble_Bed_New
                                        core(
-    redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
+    redeclare package Fuel_Kernel_Material =
+        TRANSFORM.Media.Solids.UO2,
     redeclare package Pebble_Material = Media.Solids.Graphite_5,
     redeclare model Geometry = Nuclear.New_Geometries.PackedBed (
         d_pebble=2*data.r_Pebble,

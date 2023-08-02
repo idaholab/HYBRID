@@ -60,7 +60,8 @@ model HTGR_PebbleBed_Primary_Loop_Transient "Resized HX"
   Nuclear.CoreSubchannels.Pebble_Bed_New
                                        core(
     nV=8,
-    redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
+    redeclare package Fuel_Kernel_Material =
+        TRANSFORM.Media.Solids.UO2,
     redeclare package Pebble_Material = Media.Solids.Graphite_5,
     redeclare model Geometry = Nuclear.New_Geometries.PackedBed (d_pebble=2*
             data.r_Pebble, nPebble=data.nPebble),
@@ -117,7 +118,8 @@ model HTGR_PebbleBed_Primary_Loop_Transient "Resized HX"
     w0nom=300)
     annotation (Placement(transformation(extent={{-44,-24},{-64,-4}})));
   TRANSFORM.Fluid.Valves.ValveLinear Primary_PRV(
-    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    redeclare package Medium =
+        Modelica.Media.IdealGases.SingleGases.He,
     dp_nominal=100000,
     m_flow_nominal=1) annotation (Placement(transformation(
         extent={{-8,-8},{8,8}},
@@ -128,7 +130,8 @@ model HTGR_PebbleBed_Primary_Loop_Transient "Resized HX"
         rotation=90,
         origin={-42,-79})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
-    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    redeclare package Medium =
+        Modelica.Media.IdealGases.SingleGases.He,
     use_T_in=true,
     p=4000000,
     T=573.15,
@@ -155,7 +158,8 @@ model HTGR_PebbleBed_Primary_Loop_Transient "Resized HX"
     h_b_start_tube=3000e3,
     exposeState_b_shell=true,
     exposeState_b_tube=true,
-    redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS304,
+    redeclare package Material_tubeWall =
+        TRANSFORM.Media.Solids.SS304,
     redeclare model HeatTransfer_tube =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Alphas_TwoPhase_5Region,
     p_a_start_shell=3915000,
@@ -163,7 +167,8 @@ model HTGR_PebbleBed_Primary_Loop_Transient "Resized HX"
     T_b_start_shell=523.15,
     m_flow_a_start_shell=50,
     m_flow_a_start_tube=50,
-    redeclare package Medium_tube = Modelica.Media.Water.WaterIF97_ph,
+    redeclare package Medium_tube =
+        Modelica.Media.Water.WaterIF97_ph,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.HeatExchanger.ShellAndTubeHX
         (
@@ -179,7 +184,8 @@ model HTGR_PebbleBed_Primary_Loop_Transient "Resized HX"
         nR=3),
     redeclare model HeatTransfer_shell =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_SinglePhase_2Region,
-    redeclare package Medium_shell = Modelica.Media.IdealGases.SingleGases.He)
+    redeclare package Medium_shell =
+        Modelica.Media.IdealGases.SingleGases.He)
     annotation (Placement(transformation(
         extent={{-12,-11},{12,11}},
         rotation=90,

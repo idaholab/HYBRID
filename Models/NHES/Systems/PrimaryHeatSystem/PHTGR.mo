@@ -11,7 +11,8 @@ package PHTGR
             Modelica.Media.IdealGases.SingleGases.He)
         annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
       TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary(
-        redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+        redeclare package Medium =
+            Modelica.Media.IdealGases.SingleGases.He,
         m_flow=0.5,
         T=773.15,
         nPorts=1)
@@ -38,7 +39,8 @@ package PHTGR
     model Core_Test
        extends Modelica.Icons.Example;
       TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary(
-        redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+        redeclare package Medium =
+            Modelica.Media.IdealGases.SingleGases.He,
         m_flow=8.75,
         T=573.15,
         nPorts=1)
@@ -74,12 +76,14 @@ package PHTGR
     model Reactor_Test
        extends Modelica.Icons.Example;
       TRANSFORM.Fluid.BoundaryConditions.Boundary_pT inlet(
-        redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+        redeclare package Medium =
+            Modelica.Media.IdealGases.SingleGases.He,
         T=573.15,
         nPorts=1)
         annotation (Placement(transformation(extent={{100,0},{80,20}})));
       TRANSFORM.Fluid.BoundaryConditions.Boundary_ph exit(
-        redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+        redeclare package Medium =
+            Modelica.Media.IdealGases.SingleGases.He,
         p=3000000,
         nPorts=1)
         annotation (Placement(transformation(extent={{100,-40},{80,-20}})));
@@ -135,14 +139,16 @@ package PHTGR
         nPorts=1)
         annotation (Placement(transformation(extent={{144,-54},{124,-34}})));
       TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary2(
-        redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+        redeclare package Medium =
+            Modelica.Media.IdealGases.SingleGases.He,
         use_m_flow_in=false,
         m_flow=8.75,
         T=903.15,
         nPorts=1)
         annotation (Placement(transformation(extent={{-100,-34},{-80,-14}})));
       TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary3(
-        redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+        redeclare package Medium =
+            Modelica.Media.IdealGases.SingleGases.He,
         p=3000000,
         T=573.15,
         nPorts=1)
@@ -230,12 +236,14 @@ package PHTGR
     model Reactor_Testspeed
        extends Modelica.Icons.Example;
       TRANSFORM.Fluid.BoundaryConditions.Boundary_pT inlet(
-        redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+        redeclare package Medium =
+            Modelica.Media.IdealGases.SingleGases.He,
         T=573.15,
         nPorts=1)
         annotation (Placement(transformation(extent={{100,0},{80,20}})));
       TRANSFORM.Fluid.BoundaryConditions.Boundary_ph exit(
-        redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+        redeclare package Medium =
+            Modelica.Media.IdealGases.SingleGases.He,
         p=3000000,
         nPorts=1)
         annotation (Placement(transformation(extent={{100,-40},{80,-20}})));
@@ -634,7 +642,8 @@ package PHTGR
         annotation (Placement(transformation(extent={{-190,-50},{-170,-30}})));
       Modelica.Blocks.Math.Product HotChannel
         annotation (Placement(transformation(extent={{-120,84},{-100,104}})));
-      replaceable package Medium = Modelica.Media.IdealGases.SingleGases.He
+      replaceable package Medium =
+          Modelica.Media.IdealGases.SingleGases.He
         annotation (choicesAllMatching=true);
          /* Kinetics */
       parameter Modelica.Units.SI.Power Q_nominal=1e6
@@ -2308,24 +2317,24 @@ package PHTGR
           extent={{10,-10},{-10,10}},
           rotation=270,
           origin={-40,0})));
-    TRANSFORM.Fluid.Sensors.Temperature Core_inlet_T(redeclare package Medium
-        = Modelica.Media.IdealGases.SingleGases.He)
+    TRANSFORM.Fluid.Sensors.Temperature Core_inlet_T(redeclare package Medium =
+          Modelica.Media.IdealGases.SingleGases.He)
       annotation (Placement(transformation(extent={{-90,40},{-110,60}})));
-    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-        = Modelica.Media.IdealGases.SingleGases.He)    annotation (Placement(
+    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+          Modelica.Media.IdealGases.SingleGases.He)    annotation (Placement(
           transformation(
           extent={{-10,-10},{10,10}},
           rotation=90,
           origin={-70,62})));
-    TRANSFORM.Fluid.Sensors.Temperature Core_outlet_T(redeclare package Medium
-        = Modelica.Media.IdealGases.SingleGases.He)
+    TRANSFORM.Fluid.Sensors.Temperature Core_outlet_T(redeclare package Medium =
+          Modelica.Media.IdealGases.SingleGases.He)
       annotation (Placement(transformation(extent={{-90,-20},{-110,0}})));
-    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium
-        = Modelica.Media.IdealGases.SingleGases.He)
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium =
+          Modelica.Media.IdealGases.SingleGases.He)
       annotation (Placement(transformation(extent={{90,50},{110,70}}),
           iconTransformation(extent={{90,50},{110,70}})));
-    TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium
-        = Modelica.Media.IdealGases.SingleGases.He)
+    TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium =
+          Modelica.Media.IdealGases.SingleGases.He)
       annotation (Placement(transformation(extent={{90,-70},{110,-50}}),
           iconTransformation(extent={{90,-70},{110,-50}})));
     Modelica.Blocks.Sources.RealExpression RX_Power(y=core.Total_Power.y)

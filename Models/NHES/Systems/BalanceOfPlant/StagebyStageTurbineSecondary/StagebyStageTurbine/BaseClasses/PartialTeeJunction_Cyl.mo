@@ -4,7 +4,8 @@ partial model PartialTeeJunction_Cyl
   import Modelica.Fluid.Types;
   import Modelica.Fluid.Types.PortFlowDirection;
 
-  replaceable package Medium=Modelica.Media.Interfaces.PartialMedium
+  replaceable package Medium =
+      Modelica.Media.Interfaces.PartialMedium
     "Medium in the component"
     annotation (choicesAllMatching=true);
 

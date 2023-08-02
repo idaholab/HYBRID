@@ -128,8 +128,10 @@ package HTGR_RankineCycles
       NTU=data.MainFeedHeater_NTU,
       K_tube=data.MainFeedHeater_K_tube,
       K_shell=data.MainFeedHeater_K_shell,
-      redeclare package Tube_medium = Modelica.Media.Water.StandardWater,
-      redeclare package Shell_medium = Modelica.Media.Water.StandardWater,
+      redeclare package Tube_medium =
+          Modelica.Media.Water.StandardWater,
+      redeclare package Shell_medium =
+          Modelica.Media.Water.StandardWater,
       V_Tube=data.MainFeedHeater_V_tube,
       V_Shell=data.MainFeedHeater_V_shell,
       p_start_tube=init.MainFeedHeater_p_start_tube,

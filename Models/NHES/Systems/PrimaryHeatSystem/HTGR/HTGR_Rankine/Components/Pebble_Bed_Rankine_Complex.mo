@@ -85,7 +85,8 @@ model Pebble_Bed_Rankine_Complex
         rotation=180,
         origin={-80,-40})));
   Nuclear.CoreSubchannels.Pebble_Bed_2 core(
-    redeclare package Fuel_Kernel_Material = TRANSFORM.Media.Solids.UO2,
+    redeclare package Fuel_Kernel_Material =
+        TRANSFORM.Media.Solids.UO2,
     redeclare package Pebble_Material = Media.Solids.Graphite_5,
     redeclare model HeatTransfer =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple,
@@ -209,7 +210,8 @@ model Pebble_Bed_Rankine_Complex
     T_b_start_tube=773.15,
     exposeState_b_shell=true,
     exposeState_b_tube=true,
-    redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS304,
+    redeclare package Material_tubeWall =
+        TRANSFORM.Media.Solids.SS304,
     redeclare model HeatTransfer_tube =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Alphas_TwoPhase_5Region,
     p_a_start_shell=14400000,
@@ -219,7 +221,8 @@ model Pebble_Bed_Rankine_Complex
     p_a_start_tube=4000000,
     use_Ts_start_tube=true,
     m_flow_a_start_tube=50,
-    redeclare package Medium_tube = Modelica.Media.Water.WaterIF97_ph,
+    redeclare package Medium_tube =
+        Modelica.Media.Water.WaterIF97_ph,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.HeatExchanger.ShellAndTubeHX
         (
@@ -332,14 +335,16 @@ model Pebble_Bed_Rankine_Complex
   Modelica.Blocks.Sources.RealExpression Pump_Pressure(y=condenser_pump_outlet)
     annotation (Placement(transformation(extent={{22,-94},{34,-80}})));
   TRANSFORM.Fluid.Valves.ValveLinear Primary_PRV(
-    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    redeclare package Medium =
+        Modelica.Media.IdealGases.SingleGases.He,
     dp_nominal=8000000,
     m_flow_nominal=1) annotation (Placement(transformation(
         extent={{-8,8},{8,-8}},
         rotation=180,
         origin={-116,28})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
-    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.He,
+    redeclare package Medium =
+        Modelica.Media.IdealGases.SingleGases.He,
     p=4000000,
     T=573.15,
     nPorts=1)

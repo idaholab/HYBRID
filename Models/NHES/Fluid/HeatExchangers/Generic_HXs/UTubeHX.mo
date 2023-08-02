@@ -28,7 +28,8 @@ model UTubeHX
   replaceable package Medium_shell =
       Modelica.Media.Interfaces.PartialMedium
     "Shell side medium" annotation (choicesAllMatching=true);
-  replaceable package Medium_tube = Modelica.Media.Interfaces.PartialMedium
+  replaceable package Medium_tube =
+      Modelica.Media.Interfaces.PartialMedium
     "Tube side medium" annotation (choicesAllMatching=true);
   replaceable package Material_tubeWall =
       TRANSFORM.Media.Interfaces.Solids.PartialAlloy

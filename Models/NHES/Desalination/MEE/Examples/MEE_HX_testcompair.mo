@@ -10,20 +10,20 @@ model MEE_HX_testcompair
       Axnom=1e4,
       pTsys={200000,100000,500000}), PCV(PID(yMin=0.1)))
     annotation (Placement(transformation(extent={{-54,-46},{46,54}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph Liquid_Return(
+  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Liquid_Return(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_p_in=true,
     p=10000,
     nPorts=1)
     annotation (Placement(transformation(extent={{-100,-26},{-80,-6}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_T Tube_Inlet(
+  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T Tube_Inlet(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_m_flow_in=true,
     m_flow=1,
     T=398.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-102,14},{-82,34}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT Steam_Exit(
+  TRANSFORM.Fluid.BoundaryConditions.Boundary_pT Steam_Exit(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=5000,
     T=328.15,
@@ -44,14 +44,14 @@ model MEE_HX_testcompair
     nV=20,
     m_flow_input=1)
     annotation (Placement(transformation(extent={{-16,-172},{64,-92}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_T boundary(
+  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_m_flow_in=true,
     m_flow=1,
     T=398.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-96,-118},{-76,-98}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph boundary1(
+  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=200000,
     nPorts=1)

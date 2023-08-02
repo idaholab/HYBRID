@@ -10,8 +10,10 @@ model NTUHX_Example
     NTU=3.6,
     K_tube=17000,
     K_shell=5,
-    redeclare package Tube_medium = Modelica.Media.Water.StandardWater,
-    redeclare package Shell_medium = Modelica.Media.Water.StandardWater,
+    redeclare package Tube_medium =
+        Modelica.Media.Water.StandardWater,
+    redeclare package Shell_medium =
+        Modelica.Media.Water.StandardWater,
     V_Tube=4.,
     V_Shell=4,
     p_start_tube=2340000,

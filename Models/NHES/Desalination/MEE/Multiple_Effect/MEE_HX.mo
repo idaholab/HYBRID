@@ -56,9 +56,8 @@ model MEE_HX "Multi-Effect Evaporator"
     multiPort_nonScaling(redeclare package Medium =
         Modelica.Media.Water.StandardWater, nPorts_b=data.nE)
     annotation (Placement(transformation(extent={{66,-50},{58,-30}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT Brine_Source(
+  TRANSFORM.Fluid.BoundaryConditions.Boundary_pT Brine_Source(
     redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-
     p=200000,
     T=data.T_b_in,
     X={0.92,0.08},
@@ -71,9 +70,8 @@ model MEE_HX "Multi-Effect Evaporator"
     FlowRate_target=data.msys,
     m_flow_nominal=data.msys) if data.use_flowrates
     annotation (Placement(transformation(extent={{66,30},{46,50}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT Brine_Dump(
+  TRANSFORM.Fluid.BoundaryConditions.Boundary_pT Brine_Dump(
     redeclare package Medium = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-
     p=10000,
     X={0.92,0.08},
     nPorts=data.nE)

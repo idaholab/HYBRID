@@ -173,7 +173,8 @@ model GenericModule
       redeclare package Medium = Medium, R=1*p_units/data.m_flow_steam)
     annotation (Placement(transformation(extent={{26,30},{46,50}})));
   TRANSFORM.Fluid.Machines.Pump_SimpleMassFlow pump_SimpleMassFlow(
-      m_flow_nominal=data.m_flow, redeclare package Medium = Medium_PHTS)
+      m_flow_nominal=data.m_flow, redeclare package Medium =
+        Medium_PHTS)
     annotation (Placement(transformation(extent={{0,-100},{-20,-80}})));
   TRANSFORM.Fluid.Volumes.ExpansionTank_1Port pressurizer(
     redeclare package Medium = Medium_PHTS,

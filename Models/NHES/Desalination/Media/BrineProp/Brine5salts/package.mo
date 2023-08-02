@@ -111,7 +111,6 @@ package Brine5salts "One-phase (liquid) multisalt brine solution"
       T_corr := max(273.16, T);
       eta := Viscosities.dynamicViscosity_Duan_pTX(p, T_corr, X, MM_vec, Salt_data.saltConstants);
   end dynamicViscosity_pTX;
-
   annotation(Documentation(info = "<html>
 <p><b>BrineProp.Brine_5salts</b> is a medium package that provides properties of one-phase solution of five salts (NaCl, KCl, CaCl<sub>2</sub>, MgCl<sub>2</sub>, SrCl<sub>2</sub>).</p>
 <h4>Usage</h4>

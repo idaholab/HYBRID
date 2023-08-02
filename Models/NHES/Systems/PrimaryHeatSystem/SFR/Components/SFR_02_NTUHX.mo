@@ -4,7 +4,8 @@ model SFR_02_NTUHX
     redeclare replaceable CS_01 CS,
     redeclare replaceable ED_Dummy ED,
     redeclare Data.Data_Dummy data);
-    replaceable package Coolant = TRANSFORM.Media.Fluids.Sodium.LinearSodium_pT
+    replaceable package Coolant =
+      TRANSFORM.Media.Fluids.Sodium.LinearSodium_pT
     constrainedby Modelica.Media.Interfaces.PartialMedium              annotation(choicesAllMatching=true);
     replaceable package Medium_IHX_Loop =
       TRANSFORM.Media.Fluids.Sodium.LinearSodium_pT constrainedby
@@ -26,25 +27,26 @@ model SFR_02_NTUHX
     redeclare package Rods_R3 = Media.Solids.UZr20,
     redeclare package Rods_R4 = Media.Solids.UZr20,
     redeclare package Fuel_gap_R1 = Media.Solids.Sodium,
-    redeclare model Geometry_R1 = NHES.Nuclear.New_Geometries.Generic_SFR (
+    redeclare model Geometry_R1 =
+        NHES.Nuclear.New_Geometries.Generic_SFR (
         nPins=271,
         dimension=0.0074,
         length=1.2,
         angle=pi/2),
-          redeclare model Geometry_R2 = NHES.Nuclear.New_Geometries.Generic_SFR
-        (
+          redeclare model Geometry_R2 =
+        NHES.Nuclear.New_Geometries.Generic_SFR (
         nPins=271,
         dimension=0.0074,
         length=1.2,
         angle=pi/2),
-          redeclare model Geometry_R3 = NHES.Nuclear.New_Geometries.Generic_SFR
-        (
+          redeclare model Geometry_R3 =
+        NHES.Nuclear.New_Geometries.Generic_SFR (
         nPins=271,
         dimension=0.0074,
         length=1.2,
         angle=pi/2),
-          redeclare model Geometry_R4 = NHES.Nuclear.New_Geometries.Generic_SFR
-        (
+          redeclare model Geometry_R4 =
+        NHES.Nuclear.New_Geometries.Generic_SFR (
         nPins=271,
         dimension=0.0074,
         length=1.2,

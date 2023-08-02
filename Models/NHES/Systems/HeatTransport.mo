@@ -13,10 +13,10 @@ package HeatTransport
         nV=Supply_pipe_data.nV,
         dH=-Supply_pipe_data.dH));
          replaceable package S_Medium = Modelica.Media.Interfaces.PartialMedium
-                                                                                "Supply Media"
-      annotation (Dialog(group="Fluid Medium"), __Dymola_choicesAllMatching=
-          true);
-      replaceable package R_Medium = Modelica.Media.Interfaces.PartialMedium "Return Media"
+      "Supply Media" annotation (Dialog(group="Fluid Medium"),
+        __Dymola_choicesAllMatching=true);
+      replaceable package R_Medium =
+        Modelica.Media.Interfaces.PartialMedium                              "Return Media"
       annotation (Dialog(group="Fluid Medium"),__Dymola_choicesAllMatching=true);
        //HT-----------------------------------------------------------------
 
@@ -717,10 +717,10 @@ package HeatTransport
         nV=Supply_pipe_data.nV,
         dH=-Supply_pipe_data.dH));
          replaceable package S_Medium = Modelica.Media.Interfaces.PartialMedium
-                                                                                "Supply Media"
-      annotation (Dialog(group="Fluid Medium"), __Dymola_choicesAllMatching=
-          true);
-      replaceable package R_Medium = Modelica.Media.Interfaces.PartialMedium "Return Media"
+      "Supply Media" annotation (Dialog(group="Fluid Medium"),
+        __Dymola_choicesAllMatching=true);
+      replaceable package R_Medium =
+        Modelica.Media.Interfaces.PartialMedium                              "Return Media"
       annotation (Dialog(group="Fluid Medium"),__Dymola_choicesAllMatching=true);
        //HT-----------------------------------------------------------------
 
@@ -1492,7 +1492,8 @@ package HeatTransport
       redeclare replaceable ControlSystems.ED_Dummy ED,
       redeclare replaceable data.pipe_data_1 Supply_pipe_data);
 
-      replaceable package S_Medium = Modelica.Media.Interfaces.PartialMedium "Supply Media"
+      replaceable package S_Medium =
+        Modelica.Media.Interfaces.PartialMedium                              "Supply Media"
       annotation (Dialog(group="Fluid Medium"),__Dymola_choicesAllMatching=true);
 
       replaceable model S_FlowModel =
@@ -1853,7 +1854,8 @@ package HeatTransport
       redeclare replaceable ControlSystems.ED_Dummy ED,
       redeclare replaceable data.pipe_data_1 Supply_pipe_data);
 
-      replaceable package S_Medium = Modelica.Media.Interfaces.PartialMedium "Supply Media"
+      replaceable package S_Medium =
+        Modelica.Media.Interfaces.PartialMedium                              "Supply Media"
       annotation (Dialog(group="Fluid Medium"),__Dymola_choicesAllMatching=true);
 
       replaceable model S_FlowModel =
@@ -2367,13 +2369,13 @@ package HeatTransport
       extends Modelica.Icons.ExamplesPackage;
     model HTtest
       extends Modelica.Icons.Example;
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary1(
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
         p=100000,
         T=573.15,
         nPorts=1)
         annotation (Placement(transformation(extent={{-114,-38},{-94,-18}})));
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary2(
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary2(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
         p=100000,
         T=323.15,
@@ -2390,13 +2392,13 @@ package HeatTransport
         dp_init_shell=500,
         m_start_shell=50)
         annotation (Placement(transformation(extent={{138,-2},{158,18}})));
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary3(
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary3(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
         p=100000,
         T=573.15,
         nPorts=1)
         annotation (Placement(transformation(extent={{94,40},{114,60}})));
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_T boundary4(
+      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary4(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
         m_flow=50,
         T=283.15,
@@ -2448,7 +2450,7 @@ package HeatTransport
 
     model HTtest2
       extends Modelica.Icons.Example;
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary1(
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
         p=100000,
         T=573.15,
@@ -2460,7 +2462,7 @@ package HeatTransport
       TRANSFORM.Fluid.Sensors.Pressure sensor_p1(redeclare package Medium =
             Modelica.Media.Water.StandardWater)
         annotation (Placement(transformation(extent={{-82,-32},{-62,-12}})));
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary2(
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary2(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
         p=200000,
         T=573.15,
@@ -2500,8 +2502,10 @@ package HeatTransport
       package Medium = Modelica.Media.IdealGases.SingleGases.He;
       HeatTransport heatTransport(
         Return_pipe_data(D=1, ith=1),
-        redeclare package S_Medium = Modelica.Media.IdealGases.SingleGases.He,
-        redeclare package R_Medium = Modelica.Media.IdealGases.SingleGases.He,
+        redeclare package S_Medium =
+            Modelica.Media.IdealGases.SingleGases.He,
+        redeclare package R_Medium =
+            Modelica.Media.IdealGases.SingleGases.He,
         S_use_HeatTransfer=true,
         S_use_wall_res=false,
         S_use_ins_res=false,
@@ -2536,13 +2540,13 @@ package HeatTransport
           HX_Reheat_K_tube(unit="1/m4"),
           HX_Reheat_K_shell(unit="1/m4")), redeclare package Medium = Medium)
         annotation (Placement(transformation(extent={{-40,-20},{40,60}})));
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary(
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary(
         p=5940000,
         T=1123.15,
         redeclare package Medium = Medium,
         nPorts=1)
         annotation (Placement(transformation(extent={{-252,18},{-232,38}})));
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary5(
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary5(
         p=6000000,
         redeclare package Medium = Medium,
         T=623.15,
@@ -2571,13 +2575,13 @@ package HeatTransport
 
     model HTtest4
       extends Modelica.Icons.Example;
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary1(
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
         redeclare package Medium = Modelica.Media.Air.MoistAir,
         p=100000,
         T=573.15,
         nPorts=1)
         annotation (Placement(transformation(extent={{-102,-14},{-82,6}})));
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary2(
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary2(
         redeclare package Medium = Modelica.Media.Air.MoistAir,
         p=100000,
         T=573.15,
@@ -2602,13 +2606,13 @@ package HeatTransport
         annotation (Placement(transformation(extent={{10,10},{-10,-10}},
             rotation=90,
             origin={58,8})));
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary3(
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary3(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
         p=100000,
         T=573.15,
         nPorts=1)
         annotation (Placement(transformation(extent={{104,22},{84,42}})));
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_T boundary4(
+      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary4(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
         m_flow=50,
         T=473.15,
@@ -2667,13 +2671,13 @@ package HeatTransport
 
     model HTtest6
       extends Modelica.Icons.Example;
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary1(
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
         redeclare package Medium = Medium,
         p=100000,
         T=T_out,
         nPorts=1)
         annotation (Placement(transformation(extent={{-100,-22},{-80,-2}})));
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary2(
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary2(
         redeclare package Medium = Medium,
         p=100000,
         T=T_in,
@@ -2755,13 +2759,13 @@ package HeatTransport
     model HTtest7
       extends Modelica.Icons.Example;
       parameter Integer nHT=5;
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary1(
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
         p=500000,
         T=373.15,
         nPorts=1)
         annotation (Placement(transformation(extent={{102,-10},{82,10}})));
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary2(
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary2(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
         p=500000,
         T=573.15,
@@ -2809,13 +2813,13 @@ package HeatTransport
     model HTtest10
       extends Modelica.Icons.Example;
       parameter Integer nHT=5;
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary1(
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
         p=1000000,
         T=373.15,
         nPorts=1)
         annotation (Placement(transformation(extent={{102,-10},{82,10}})));
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_h boundary2(
+      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h boundary2(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
         m_flow=1,
         h=300e3,
@@ -2837,25 +2841,64 @@ package HeatTransport
     model HTtest10node
       extends Modelica.Icons.Example;
       parameter Integer nHT=5;
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT boundary1(
+      TRANSFORM.Fluid.BoundaryConditions.Boundary_pT boundary1(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
+        use_p_in=true,
         p=1000000,
         T=373.15,
         nPorts=1)
         annotation (Placement(transformation(extent={{102,-10},{82,10}})));
-      TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_h boundary2(
+      TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h boundary2(
         redeclare package Medium = Modelica.Media.Water.StandardWater,
+        use_m_flow_in=true,
+        use_h_in=true,
         m_flow=1,
         h=300e3,
         nPorts=1)
         annotation (Placement(transformation(extent={{-100,-10},{-80,10}})));
-      steamTransport steamTransportnode1
+      steamTransport steamTransportnode1(
+        redeclare replaceable data.pipe_data_1 Supply_pipe_data(
+          L=L,
+          D=D,
+          nV=nV),
+        K=K,
+        nV=nV,
+        nK=nK,
+        mFlow=m_flow,
+        p_sink=P_sink,
+        h_source=h_source)
         annotation (Placement(transformation(extent={{-20,-20},{20,20}})));
+      Modelica.Blocks.Sources.RealExpression realExpression(y=m_flow)
+        annotation (Placement(transformation(extent={{-140,2},{-120,22}})));
+      Modelica.Blocks.Sources.RealExpression realExpression1(y=h_source)
+        annotation (Placement(transformation(extent={{-140,-12},{-120,8}})));
+      Modelica.Blocks.Sources.RealExpression realExpression2(y=P_sink)
+        annotation (Placement(transformation(extent={{56,28},{76,48}})));
+
+
+
+        parameter Modelica.Units.SI.MassFlowRate m_flow=1;
+        parameter Modelica.Units.SI.AbsolutePressure P_sink=1e5;
+        parameter Modelica.Units.SI.SpecificEnthalpy h_source=2700e3;
+
+      parameter Integer nK=3 "nodes";
+      parameter Integer nV=3 "nodes";
+      parameter Real K=1 "Local Loss Coe";
+      parameter SI.Length L=100 "Supply Pipe Length";
+      parameter SI.Diameter D=0.25 "Inner Diameter Of Supply Pipe";
+      Modelica.Units.SI.AbsolutePressure P_source;
     equation
+      P_source=boundary2.medium.p;
       connect(boundary2.ports[1], steamTransportnode1.port_a)
         annotation (Line(points={{-80,0},{-20,0}}, color={0,127,255}));
       connect(steamTransportnode1.port_b, boundary1.ports[1])
         annotation (Line(points={{20,0},{82,0}}, color={0,127,255}));
+      connect(realExpression.y, boundary2.m_flow_in) annotation (Line(points={{-119,12},
+              {-106,12},{-106,8},{-100,8}},                color={0,0,127}));
+      connect(realExpression1.y, boundary2.h_in) annotation (Line(points={{-119,-2},
+              {-110,-2},{-110,4},{-102,4}}, color={0,0,127}));
+      connect(realExpression2.y, boundary1.p_in)
+        annotation (Line(points={{77,38},{104,38},{104,8}}, color={0,0,127}));
       annotation (experiment(
           StopTime=10000,
           Interval=100,
@@ -2976,8 +3019,8 @@ package HeatTransport
       annotation (Placement(transformation(extent={{-60,-20},{-20,20}})));
 
     BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.LossResistance
-                                           resistance(redeclare package Medium
-        = Medium, K=K*0.5*(((Modelica.Constants.pi*D^2)/4)^2))
+                                           resistance(redeclare package Medium =
+          Medium, K=K*0.5*(((Modelica.Constants.pi*D^2)/4)^2))
       annotation (Placement(transformation(extent={{-12,-10},{8,10}})));
     TRANSFORM.Fluid.Pipes.GenericPipe_MultiTransferSurface pipe1(
       redeclare package Medium = Medium,
@@ -2999,11 +3042,11 @@ package HeatTransport
       annotation (choicesAllMatching=true);
     replaceable package Medium = Modelica.Media.Water.StandardWater annotation (
         choicesAllMatching=true);
-    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium
-        = Medium)
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium =
+          Medium)
       annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
-    TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium
-        = Medium)
+    TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium =
+          Medium)
       annotation (Placement(transformation(extent={{90,-10},{110,10}})));
   equation
 

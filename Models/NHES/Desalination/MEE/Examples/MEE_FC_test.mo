@@ -17,19 +17,19 @@ model MEE_FC_test "Test of a multi effect with full condensing"
       PID_k=-0.5e-6),
     SCV(dp_nominal=100000))
     annotation (Placement(transformation(extent={{-56,-46},{44,54}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_ph Liquid_Return(
+  TRANSFORM.Fluid.BoundaryConditions.Boundary_ph Liquid_Return(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=200000,
     nPorts=1)
     annotation (Placement(transformation(extent={{-100,-26},{-80,-6}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.MassFlowSource_T Tube_Inlet(
+  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T Tube_Inlet(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_m_flow_in=false,
     m_flow=1,
     T=398.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{-100,14},{-80,34}})));
-  TRANSFORM.Fluid.Interfaces.BoundaryConditions.Boundary_pT Steam_Exit(
+  TRANSFORM.Fluid.BoundaryConditions.Boundary_pT Steam_Exit(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=5000,
     T=328.15,

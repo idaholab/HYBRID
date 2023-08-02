@@ -5,7 +5,8 @@ model Data_HTGR_Pebble
 
   import TRANSFORM.Units.Conversions.Functions.Distance_m.from_in;
 
-  replaceable package Coolant_Medium = Modelica.Media.Interfaces.PartialMedium annotation(choicesAllMatching = true,dialog(group="Media"));
+  replaceable package Coolant_Medium =
+      Modelica.Media.Interfaces.PartialMedium                                  annotation(choicesAllMatching = true,dialog(group="Media"));
   replaceable package Fuel_Medium =
       TRANSFORM.Media.Interfaces.Solids.PartialAlloy                                    annotation(choicesAllMatching = true,dialog(group = "Media"));
   replaceable package Pebble_Medium =

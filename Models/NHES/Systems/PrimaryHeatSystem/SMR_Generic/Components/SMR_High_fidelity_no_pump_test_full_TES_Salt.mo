@@ -17,7 +17,8 @@ model SMR_High_fidelity_no_pump_test_full_TES_Salt
       nAssembly=37),
     port_b(redeclare package Medium = Medium_Secondary),
     port_a(redeclare package Medium = Medium_Secondary));
-  replaceable package Medium_Secondary = NHES.Media.SolarSalt.SolarSalt annotation(Dialog(choicesAllMatching=true));
+  replaceable package Medium_Secondary =
+      NHES.Media.SolarSalt.SolarSalt                                    annotation(Dialog(choicesAllMatching=true));
 Real Tave=(Tcore_inlet.T+Tcore_exit.T)/2.0;
 
   Modelica.Fluid.Pipes.DynamicPipe Lower_Riser(
@@ -110,7 +111,8 @@ Real Tave=(Tcore_inlet.T+Tcore_exit.T)/2.0;
     T_b_start_tube=523.15,
     exposeState_b_shell=true,
     exposeState_b_tube=true,
-    redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS304,
+    redeclare package Material_tubeWall =
+        TRANSFORM.Media.Solids.SS304,
     redeclare model HeatTransfer_tube =
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_SinglePhase_2Region,
     p_a_start_shell=data.p,

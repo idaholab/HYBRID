@@ -28,7 +28,8 @@ model Thermocline_Insulation_Test
     testerofwall_extender(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
-    redeclare package InsulationMaterial = TRANSFORM.Media.Solids.FOAMGLAS,
+    redeclare package InsulationMaterial =
+        TRANSFORM.Media.Solids.FOAMGLAS,
     redeclare package WallMaterial = TRANSFORM.Media.Solids.SS316,
     geometry(
       Radius_Tank=0.438,

@@ -61,7 +61,6 @@ package BrineDuan "NaCl solution using Duan density"
   algorithm
       d := BrineProp.Densities.density_Duan2008_pTX(p, T, X, MM_vec);
   end density_pTX;
-
   annotation(Documentation(info = "<html>
 <p>Implementation of property functions (h,rho,eta) for NaCl solution by Duan.</p>
 <p>Based on multi-salt template.</p>

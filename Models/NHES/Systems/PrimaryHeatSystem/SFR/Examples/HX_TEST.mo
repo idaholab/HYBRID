@@ -1,7 +1,8 @@
 within NHES.Systems.PrimaryHeatSystem.SFR.Examples;
 model HX_TEST
   package Tube_Medium = NHES.Media.SolarSalt.SolarSalt;
-  package Shell_Medium = TRANSFORM.Media.Fluids.Sodium.Sodium_Incompressible;
+  package Shell_Medium =
+      TRANSFORM.Media.Fluids.Sodium.Sodium_Incompressible;
 
   Modelica.Units.SI.Power Q_HX;
 
@@ -47,7 +48,8 @@ model HX_TEST
         length_tube_two=22.3),
     redeclare package Medium_shell = Shell_Medium,
     redeclare package Medium_tube = Tube_Medium,
-    redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS316,
+    redeclare package Material_tubeWall =
+        TRANSFORM.Media.Solids.SS316,
     counterCurrent=false,
     redeclare model FlowModel_shell =
         TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_NumStable,

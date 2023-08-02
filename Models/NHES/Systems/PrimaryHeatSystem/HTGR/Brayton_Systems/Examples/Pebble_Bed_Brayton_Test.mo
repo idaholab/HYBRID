@@ -7,7 +7,8 @@ model Pebble_Bed_Brayton_Test
       CS,
     redeclare NHES.Systems.PrimaryHeatSystem.HTGR.Brayton_Systems.CS.ED_Dummy
       ED,
-    redeclare package Coolant_Medium = Modelica.Media.IdealGases.SingleGases.He)
+    redeclare package Coolant_Medium =
+        Modelica.Media.IdealGases.SingleGases.He)
     annotation (Placement(transformation(extent={{-48,-42},{20,22}})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary2(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
