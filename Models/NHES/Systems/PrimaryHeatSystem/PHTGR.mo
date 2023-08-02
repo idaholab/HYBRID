@@ -587,11 +587,11 @@ package PHTGR
       TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_b(redeclare package Medium =
             Medium)
         annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-      Fluid.Pipes.FlowMultiplier flowMultiplierTin(redeclare package Medium =
-            Medium, capacityScaler=1/geometry.nAsm)
+      Fluid.Ultilities.FlowMultiplier flowMultiplierTin(redeclare package
+          Medium = Medium, capacityScaler=1/geometry.nAsm)
         annotation (Placement(transformation(extent={{-72,-10},{-52,10}})));
-      Fluid.Pipes.FlowMultiplier flowMultiplier1(redeclare package Medium = Medium,
-          capacityScaler=geometry.nAsm)
+      Fluid.Ultilities.FlowMultiplier flowMultiplier1(redeclare package Medium
+          = Medium, capacityScaler=geometry.nAsm)
         annotation (Placement(transformation(extent={{70,-10},{90,10}})));
       TRANSFORM.Fluid.Sensors.Temperature sensor_T_in(redeclare package Medium =
             Medium)
@@ -801,23 +801,23 @@ package PHTGR
         "Change in decay constants for each fission product" annotation (Dialog(tab=
              "Parameter Change", group="Input: Fission Products"));
 
-      Fluid.Pipes.FlowMultiplier flowMultiplierEin(redeclare package Medium =
-            Medium, capacityScaler=1/geometry.nChannels[2])
+      Fluid.Ultilities.FlowMultiplier flowMultiplierEin(redeclare package
+          Medium = Medium, capacityScaler=1/geometry.nChannels[2])
         annotation (Placement(transformation(extent={{-44,10},{-24,30}})));
-      Fluid.Pipes.FlowMultiplier flowMultiplierCein(redeclare package Medium =
-            Medium, capacityScaler=1/geometry.nChannels[1])
+      Fluid.Ultilities.FlowMultiplier flowMultiplierCein(redeclare package
+          Medium = Medium, capacityScaler=1/geometry.nChannels[1])
         annotation (Placement(transformation(extent={{-44,-30},{-24,-10}})));
-      Fluid.Pipes.FlowMultiplier flowMultiplierCoin(redeclare package Medium =
-            Medium, capacityScaler=1/geometry.nChannels[3])
+      Fluid.Ultilities.FlowMultiplier flowMultiplierCoin(redeclare package
+          Medium = Medium, capacityScaler=1/geometry.nChannels[3])
         annotation (Placement(transformation(extent={{-44,-70},{-24,-50}})));
-      Fluid.Pipes.FlowMultiplier flowMultiplierCoout(redeclare package Medium =
-            Medium, capacityScaler=geometry.nChannels[3])
+      Fluid.Ultilities.FlowMultiplier flowMultiplierCoout(redeclare package
+          Medium = Medium, capacityScaler=geometry.nChannels[3])
         annotation (Placement(transformation(extent={{26,-70},{46,-50}})));
-      Fluid.Pipes.FlowMultiplier flowMultiplierCeout(redeclare package Medium =
-            Medium, capacityScaler=geometry.nChannels[1])
+      Fluid.Ultilities.FlowMultiplier flowMultiplierCeout(redeclare package
+          Medium = Medium, capacityScaler=geometry.nChannels[1])
         annotation (Placement(transformation(extent={{26,-30},{46,-10}})));
-      Fluid.Pipes.FlowMultiplier flowMultiplierEout(redeclare package Medium =
-            Medium, capacityScaler=geometry.nChannels[3])
+      Fluid.Ultilities.FlowMultiplier flowMultiplierEout(redeclare package
+          Medium = Medium, capacityScaler=geometry.nChannels[3])
         annotation (Placement(transformation(extent={{26,10},{46,30}})));
       TRANSFORM.Nuclear.ReactorKinetics.PointKinetics_L1_powerBased kinetics(
         Q_nominal=Q_nominal,

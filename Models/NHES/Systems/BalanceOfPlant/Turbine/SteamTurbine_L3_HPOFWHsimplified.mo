@@ -174,13 +174,13 @@ model SteamTurbine_L3_HPOFWHsimplified
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_cond(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{96,-34},{116,-14}})));
-  Fluid.Pipes.NonLinear_Break delay2(redeclare package Medium =
+  Fluid.Ultilities.NonLinear_Break delay2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-18,-56},{-26,-36}})));
-  Fluid.Pipes.NonLinear_Break delay2_1(redeclare package Medium =
+  Fluid.Ultilities.NonLinear_Break delay2_1(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-34,64},{-26,84}})));
-  Fluid.Pipes.NonLinear_Break delay2_2(redeclare package Medium =
+  Fluid.Ultilities.NonLinear_Break delay2_2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-88,80},{-96,100}})));
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =

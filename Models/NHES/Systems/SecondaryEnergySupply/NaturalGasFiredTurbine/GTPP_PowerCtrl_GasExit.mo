@@ -158,7 +158,7 @@ model GTPP_PowerCtrl_GasExit
   Modelica.Fluid.Interfaces.FluidPort_b FlueGas_b(redeclare package Medium =
         NHES.Media.FlueGas)
     annotation (Placement(transformation(extent={{90,50},{110,70}}), iconTransformation(extent={{90,50},{110,70}})));
-  Fluid.Pipes.FlowMultiplier flowMultiplier(redeclare package Medium =
+  Fluid.Ultilities.FlowMultiplier flowMultiplier(redeclare package Medium =
         NHES.Media.FlueGas, capacityScaler=capacityScaler)
     annotation (Placement(transformation(extent={{52,50},{72,70}})));
 equation
