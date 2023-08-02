@@ -123,11 +123,11 @@ model HTGR_Case_01_IndependentBOP_Uprated200MW_Wpumps
     redeclare replaceable NHES.Systems.EnergyStorage.SHS_Two_Tank.Data.Data_SHS
       data(
       ht_level_max=11.7,
-      ht_area=3390,
+      ht_area=100*3390,
       ht_surface_pressure=120000,
       hot_tank_init_temp=673.15,
       cold_tank_level_max=11.7,
-      cold_tank_area=3390,
+      cold_tank_area=100*3390,
       ct_surface_pressure=120000,
       cold_tank_init_temp=533.15,
       m_flow_ch_min=0.1,
@@ -396,6 +396,12 @@ model HTGR_Case_01_IndependentBOP_Uprated200MW_Wpumps
     duration=1e5,
     startTime=1e5)
     annotation (Placement(transformation(extent={{154,236},{174,256}})));
+  Modelica.Blocks.Sources.Ramp ramp1(
+    height=0,
+    duration=2e4,
+    offset=86e6,
+    startTime=3e5)
+    annotation (Placement(transformation(extent={{-16,132},{4,152}})));
 equation
   hTGR_PebbleBed_Primary_Loop_TESUC_AR1_1.input_steam_pressure =
     intermediate_Rankine_Cycle_TESUC.sensor_p.p;
