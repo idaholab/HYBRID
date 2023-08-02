@@ -183,9 +183,9 @@ model HTSE_V4_Final_AR
     m_flow=1.35415,
     use_T_in=true,
     redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2,
-    nPorts=1,
     use_X_in=false,
-    T=618.329) annotation (Placement(transformation(
+    T=618.329,
+    nPorts=1)  annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=0,
         origin={-160,228})));
@@ -200,14 +200,6 @@ model HTSE_V4_Final_AR
         extent={{-10,10},{10,-10}},
         rotation=0,
         origin={12,229})));
-  Modelica.Fluid.Sources.Boundary_pT H2Product(
-    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2,
-    p(displayUnit="Pa") = 103299.8,
-    T=313.15,
-    nPorts=1) annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=0,
-        origin={-218,228})));
   Modelica.Fluid.Sensors.Temperature temperature(redeclare package Medium =
         Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
@@ -218,17 +210,6 @@ model HTSE_V4_Final_AR
     annotation (Placement(transformation(extent={{10,10},{-10,-10}},
         rotation=180,
         origin={-64,60})));
-  Modelica.Fluid.Sources.MassFlowSource_T H2_recycleFeed(
-    use_m_flow_in=true,
-    m_flow=1.35415,
-    use_T_in=false,
-    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2,
-    nPorts=1,
-    use_X_in=false,
-    T=414.15) annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=0,
-        origin={-182,50})));
   Separator.Combiner_H2_Steam combiner_FinalV2_1 annotation (Placement(transformation(extent={{-106,26},{-86,46}})));
   TRANSFORM.Controls.LimPID PID_Fuel1(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
@@ -253,22 +234,6 @@ model HTSE_V4_Final_AR
         Modelica.Media.IdealGases.SingleGases.H2)
     annotation (Placement(transformation(extent={{-330,-300},{-266,-232}}),
                                                                          iconTransformation(extent={{88,-10},{108,10}})));
-  Modelica.Blocks.Sources.RealExpression realExpression3(y=mH2_sep_out.y - H2_recycleMassFlowRate.m_flow)
-    annotation (Placement(transformation(
-        extent={{10,-10},{-10,10}},
-        rotation=90,
-        origin={-220,-152})));
-  Modelica.Fluid.Sources.MassFlowSource_T H2_feed2(
-    use_m_flow_in=true,
-    m_flow=1.35415,
-    use_T_in=false,
-    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2,
-    nPorts=1,
-    use_X_in=false,
-    T=414.15)  annotation (Placement(transformation(
-        extent={{10,-10},{-10,10}},
-        rotation=90,
-        origin={-212,-198})));
   Modelica.Fluid.Interfaces.FluidPort_a SteamIn_Port(redeclare package Medium
       =
         Modelica.Media.Water.StandardWater)
@@ -285,6 +250,24 @@ model HTSE_V4_Final_AR
       =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{258,186},{338,264}}),   iconTransformation(extent={{-110,30},{-90,50}})));
+  TRANSFORM.Fluid.FittingsAndResistances.TeeJunctionVolume tee(
+    redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2,
+    V=0.1,
+    p_start(displayUnit="Pa") = 103299.8,
+    T_start=313.15)
+    annotation (Placement(transformation(extent={{-16,16},{16,-16}},
+        rotation=90,
+        origin={-238,156})));
+  Modelica.Blocks.Sources.Constant const(k=1)
+    annotation (Placement(transformation(extent={{-208,172},{-188,192}})));
+  TRANSFORM.Fluid.Valves.ValveLinear Discharge_OnOff(
+    redeclare package Medium = Modelica.Media.Water.StandardWater,
+    m_flow_start=1,
+    dp_nominal=100000,
+    m_flow_nominal=20) annotation (Placement(transformation(
+        extent={{14,14},{-14,-14}},
+        rotation=180,
+        origin={-172,156})));
 equation
   connect(AirTH.heatPort, boundary.port) annotation (Line(points={{176,-98},{176,-112}},color={191,0,0}));
   connect(AirTH.port_b, AirTempSensor.port_a) annotation (Line(points={{182,-92},{190,-92},{190,-76}}, color={0,127,255}));
@@ -332,21 +315,16 @@ equation
   connect(condenser.port_b, SinkTemp.port_a) annotation (Line(points={{-27.2,134},{-46,134},{-46,134}},
                                                                                               color={0,127,255}));
   connect(H2O_flowOut.m_flow_in, mH2O_sep_out.y) annotation (Line(points={{2,221},{-12,221},{-12,217},{-23.1,217}}, color={0,0,127}));
-  connect(H2_flowOut.ports[1], H2Product.ports[1]) annotation (Line(points={{-170,228},{-208,228}}, color={0,127,255}));
   connect(combiner_FinalV2_1.Outlet, X_H1.port) annotation (Line(points={{-96,27},{-96,22},{-64,22},{-64,50}},     color={0,127,255}));
   connect(X_H1.Xi, PID_Fuel1.u_m) annotation (Line(points={{-53,60},{-40,60},{-40,82},{-124,82}},              color={0,0,127}));
   connect(realExpression2.y, PID_Fuel1.u_s) annotation (Line(points={{-107,94},{-112,94}}, color={0,0,127}));
-  connect(H2_recycleFeed.m_flow_in, PID_Fuel1.y) annotation (Line(points={{-192,58},{-192,94},{-135,94}}, color={0,0,127}));
   connect(X_H1.port, SinkTemp1.port_a) annotation (Line(points={{-64,50},{-64,22},{4,22}},      color={0,127,255}));
   connect(SteamFlowMeasure.port_b, combiner_FinalV2_1.liquidInlet)
     annotation (Line(points={{-124,-2},{-112,-2},{-112,30},{-106,30}}, color={0,127,255}));
-  connect(H2_recycleFeed.ports[1], H2_recycleMassFlowRate.port_a) annotation (Line(points={{-172,50},{-154,50}}, color={0,127,255}));
   connect(H2_recycleMassFlowRate.port_b, combiner_FinalV2_1.vaporInlet)
     annotation (Line(points={{-134,50},{-112,50},{-112,42},{-106,42}}, color={0,127,255}));
   connect(cathodeFlowIn2.port_a, SinkTemp1.port_b) annotation (Line(points={{20,112},{8,112},{8,40},{32,40},{32,22},{24,22}},
                                                                                                                     color={0,127,255}));
-  connect(H2_feed2.ports[1], H2Port_Out) annotation (Line(points={{-212,-208},{-212,-266},{-298,-266}},
-                                                                                                 color={0,127,255}));
   connect(SinkTemp.port_b, massFlowRate.port_a) annotation (Line(points={{-66,134},{-78,134},{-78,212}}, color={0,127,255}));
   connect(massFlowRate.port_b, temperature.port) annotation (Line(points={{-78,232},{-78,258},{-80,258}}, color={0,127,255}));
   connect(temperature.port, cathodeSink1.ports[1]) annotation (Line(points={{-80,258},{-80,276},{-78,276}}, color={0,127,255}));
@@ -360,8 +338,6 @@ equation
     annotation (Line(points={{-89,222},{-100,222},{-100,208},{-56,208},{-56,232},{-43.8,232},{-43.8,222.4}}, color={0,0,127}));
   connect(H2_flowOut.T_in, temperature.T) annotation (Line(points={{-148,224},{-148,240},{-90,240},{-90,251}}, color={0,0,127}));
   connect(temperature.T, H2O_flowOut.T_in) annotation (Line(points={{-90,251},{-90,240},{-12,240},{-12,225},{0,225}}, color={0,0,127}));
-  connect(realExpression3.y, H2_feed2.m_flow_in) annotation (Line(points={{-220,-163},{-220,-188}},
-                                                                                                color={0,0,127}));
   connect(SOEC.DC_PowerIn, electricalLoad)
     annotation (Line(
       points={{194,-40},{-305,-40}},
@@ -372,6 +348,18 @@ equation
   connect(AirHXOutTemp.port_b, AirPort_Out)
     annotation (Line(points={{60,-184},{60,-252},{40,-252},{40,-292},{42,-292},{42,-301}}, color={0,127,255}));
   connect(WaterPort_Out, H2O_flowOut.ports[1]) annotation (Line(points={{298,225},{298,229},{22,229}}, color={0,127,255}));
+  connect(tee.port_1, H2Port_Out) annotation (Line(points={{-238,140},{-240,140},
+          {-240,-266},{-298,-266}}, color={0,127,255}));
+  connect(tee.port_2, H2_flowOut.ports[1]) annotation (Line(points={{-238,172},
+          {-240,172},{-240,212},{-184,212},{-184,228},{-170,228}}, color={0,127,
+          255}));
+  connect(const.y, Discharge_OnOff.opening) annotation (Line(points={{-187,182},
+          {-176,182},{-176,167.2},{-172,167.2}}, color={0,0,127}));
+  connect(tee.port_3, Discharge_OnOff.port_a)
+    annotation (Line(points={{-222,156},{-186,156}}, color={0,127,255}));
+  connect(Discharge_OnOff.port_b, H2_recycleMassFlowRate.port_a) annotation (
+      Line(points={{-158,156},{-152,156},{-152,68},{-164,68},{-164,50},{-154,50}},
+        color={0,127,255}));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-300,
             -300},{300,300}},
 Icon(coordinateSystem(preserveAspectRatio=false,

@@ -1,5 +1,5 @@
 within NHES.Electrolysis.Electrolyzers.SOEC_Examples_AS;
-model HTSEFinal
+model HTSEFinal_AR
   extends Modelica.Icons.Example;
 
   NHES.Electrolysis.Electrolyzers.SOEC_Examples_AS.HTSE_V4_Final HTSE annotation (Placement(transformation(extent={{-34,-36},{38,36}})));
@@ -68,8 +68,5 @@ equation
   connect(HTSE.AirIn_Port, AirSource.ports[1]) annotation (Line(points={{-5.2,-35.28},{-4,-35.28},{-4,-78},{-80,-78}}, color={0,127,255}));
   connect(HTSE.AirPort_Out, AirExhaust.ports[1]) annotation (Line(points={{9.2,-35.28},{8,-35.28},{8,-70},{34,-70},{34,-80}}, color={0,127,255}));
   annotation (
-  experiment(
-      StopTime=100000,
-      Tolerance=0.001,
-      __Dymola_Algorithm="Dassl"));
-end HTSEFinal;
+  experiment(StopTime=1e5,__Dymola_Algorithm="Dassl"));
+end HTSEFinal_AR;
