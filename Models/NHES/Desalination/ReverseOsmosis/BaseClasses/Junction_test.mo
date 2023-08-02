@@ -25,15 +25,15 @@ model Junction_test
         extent={{10,-10},{-10,10}},
         rotation=0,
         origin={60,0})));
-  Fluid.Pipes.parallelFlow nFlow_in(redeclare package Medium =
-        Media.BrineProp.BrineDriesner, nParallel=2)
-    annotation (Placement(transformation(
+  Fluid.Ultilities.parallelFlow nFlow_in(redeclare package Medium =
+        Media.BrineProp.BrineDriesner, nParallel=2) annotation (Placement(
+        transformation(
         extent={{10,10},{-10,-10}},
         rotation=180,
         origin={-30,0})));
-  Fluid.Pipes.parallelFlow nFlow_out(redeclare package Medium =
-        Media.BrineProp.BrineDriesner, nParallel=2)
-    annotation (Placement(transformation(
+  Fluid.Ultilities.parallelFlow nFlow_out(redeclare package Medium =
+        Media.BrineProp.BrineDriesner, nParallel=2) annotation (Placement(
+        transformation(
         extent={{-10,10},{10,-10}},
         rotation=180,
         origin={30,0})));

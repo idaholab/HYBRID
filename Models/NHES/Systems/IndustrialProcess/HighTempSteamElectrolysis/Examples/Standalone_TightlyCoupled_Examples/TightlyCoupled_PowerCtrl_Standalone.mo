@@ -337,15 +337,13 @@ model TightlyCoupled_PowerCtrl_Standalone
         extent={{-12,-12},{12,12}},
         rotation=180,
         origin={140,-40})));
-  Fluid.Pipes.parallelFlow nFlow_in(redeclare package Medium = Medium,
-      nParallel=capacityScaler)
-    annotation (Placement(transformation(
+  Fluid.Ultilities.parallelFlow nFlow_in(redeclare package Medium = Medium,
+      nParallel=capacityScaler) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={-140,-22})));
-  Fluid.Pipes.parallelFlow nFlow_out(redeclare package Medium = Medium,
-      nParallel=capacityScaler)
-    annotation (Placement(transformation(
+  Fluid.Ultilities.parallelFlow nFlow_out(redeclare package Medium = Medium,
+      nParallel=capacityScaler) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-128,-78})));

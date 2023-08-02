@@ -7,8 +7,6 @@ BalanceOfPlant
 EnergyStorage
 IndustrialProcess
 SecondaryEnergySupply
-HeatTransport
-DistrictHeating
 SwitchYard
 ElectricalGrid
 Utilities

@@ -5,18 +5,15 @@ model SMR_Test_3STconstantpower
   BalanceOfPlant.Turbine.SteamTurbine_L3_HPOFWH BOP(
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_L3_SMR CS(data(
-        Power_nom=80e6,
         HPT_p_in=3450000,
         Tin=579.25,
         Tfeed=421.15,
         mdot_total=70,
         mdot_fh=5.7,
-        mdpt_HPFH=5,
         mdot_hpt=65,
         mdot_lpt1=65,
         mdot_lpt2=59.5)),
     redeclare replaceable NHES.Systems.BalanceOfPlant.Turbine.Data.Data_L3 data(
-      Power_nom=80e6,
       HPT_p_in=3450000,
       Tin=579.25,
       Tfeed=421.15,
@@ -24,7 +21,6 @@ model SMR_Test_3STconstantpower
       d_LPT1_in(displayUnit="kg/m3") = 1.7598669,
       mdot_total=70,
       mdot_fh=5.7,
-      mdpt_HPFH=5,
       mdot_hpt=65,
       mdot_lpt1=65,
       mdot_lpt2=53.4891209),

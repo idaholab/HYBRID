@@ -25,16 +25,6 @@ CS_threeStagedTurbine_HTGR
 CS_L3
 CS_L3_SMR
 CS_L3_HTGR
-CS_L3_SFR
-CS_L2
 CS_L3_HTGR_extraction
 CS_L3_HRSG
-CS_L3_HTGR_extractionRamp
-CS_L3_SMR_extraction_maxlfow
 CS_L3_SMR_extraction
-CS_L2_CE
-CS_L2_CEtest
-CS_L3_CE
-CS_L2_MEE
-CS_L3inout
-CS_L3inout2

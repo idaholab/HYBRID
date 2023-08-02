@@ -62,13 +62,11 @@ eta_is=eta;
                    Text(extent={{-22,18},{28,-14}},
           textString="m_flow",
           lineColor={0,0,0})}),
-    Documentation(info="<HTML>
-This component prescribes the flow rate passing through it. The change of
-specific enthalpy due to the pressure difference between the inlet and the
-outlet is ignored; use <t>Pump</t> models if this has to be taken into account correctly.
-<p><b>Modelling options</b></p>
-<p>If <tt>w0Fix</tt> is set to true, the flowrate is given by the parameter <tt>w0</tt>; otherwise, the <tt>in_w0</tt> connector must be wired, providing the (possibly varying) flowrate value.</p>
-</HTML>",
+    Documentation(info="<html>
+<p>This component prescribes the flow rate passing through it. </p>
+<p><br><b><span style=\"font-family: Arial; font-size: 18pt;\">Contact Deatils</span></b></p>
+<p><span style=\"font-family: Arial;\">This model was designed by Logan Williams (<a href=\"mailto:Logan.Williams@inl.gov\">Logan.Williams@inl.gov</a>). All initial questions should be directed to Daniel Mikkelson (<a href=\"mailto:Daniel.Mikkelson@inl.gov\">Daniel.Mikkelson@inl.gov</a>).</span></p>
+</html>",
         revisions="<html>
 <ul>
 <li><i>18 Mar 2005</i>

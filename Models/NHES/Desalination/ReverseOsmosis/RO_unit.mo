@@ -39,18 +39,17 @@ model RO_unit
     wr_start=1.21876,
     Lv_b_start=9.27769e-12)
     annotation (Placement(transformation(extent={{18,26},{42,50}})));
-  Fluid.Pipes.parallelFlow nFlow_feed( nParallel=NoVesselUnits_per_pump,
-      redeclare package Medium = Medium,
-    allowFlowReversal=allowFlowReversal)
-    annotation (Placement(transformation(
+  Fluid.Ultilities.parallelFlow nFlow_feed(
+    nParallel=NoVesselUnits_per_pump,
+    redeclare package Medium = Medium,
+    allowFlowReversal=allowFlowReversal) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=180,
         origin={-70,40})));
-  Fluid.Pipes.parallelFlow nFlow_retentate(
-                                       nParallel=NoVesselUnits_per_pump,
-      redeclare package Medium = Medium,
-    allowFlowReversal=allowFlowReversal)
-    annotation (Placement(transformation(
+  Fluid.Ultilities.parallelFlow nFlow_retentate(
+    nParallel=NoVesselUnits_per_pump,
+    redeclare package Medium = Medium,
+    allowFlowReversal=allowFlowReversal) annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=180,
         origin={70,40})));
@@ -67,11 +66,10 @@ model RO_unit
         rotation=0,
         origin={-14,0})));
 
-  Fluid.Pipes.parallelFlow nFlow_permeate(
-                                       nParallel=NoVesselUnits_per_pump,
-      redeclare package Medium = Medium,
-    allowFlowReversal=allowFlowReversal)
-    annotation (Placement(transformation(
+  Fluid.Ultilities.parallelFlow nFlow_permeate(
+    nParallel=NoVesselUnits_per_pump,
+    redeclare package Medium = Medium,
+    allowFlowReversal=allowFlowReversal) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={0,-50})));

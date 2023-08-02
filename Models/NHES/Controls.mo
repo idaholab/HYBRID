@@ -319,7 +319,7 @@ package Controls
             points={{30,60},{81,60}},
             color={255,0,0})}),
       Documentation(info="<html>
-<p>This model duplicates the LimPID in the Modelica Standard Library but modifies it to enable a feed forward control option.</p>
+<p>This model duplicates the LimPID in the Modelica Standard Library but modifies it to enable a feed forward control option. Aswell as creating an offset to allow for a non-zero start value.</p>
 <p>Via parameter <b>controllerType</b> either <b>P</b>, <b>PI</b>, <b>PD</b>, or <b>PID</b> can be selected. If, e.g., PI is selected, all components belonging to the D-part are removed from the block (via conditional declarations). The example model <a href=\"modelica://Modelica.Blocks.Examples.PID_Controller\">Modelica.Blocks.Examples.PID_Controller</a> demonstrates the usage of this controller. Several practical aspects of PID controller design are incorporated according to chapter 3 of the book: </p>
 <dl><dt>&Aring;str&ouml;m K.J., and H&auml;gglund T.:</dt>
 <dd><b>PID Controllers: Theory, Design, and Tuning</b>. Instrument Society of America, 2nd edition, 1995. </dd>
@@ -331,12 +331,12 @@ package Controls
 <li>Feed forward option is available on any controllerType</li>
 <li>derMeas = true uses the derivative on measurement value only to avoid the derivative kick of setpoint changes. = false will take the derivative w.r.t. error</li>
 <li>It can be configured to enable an input port that allows resetting the controller output. The controller output can be reset as follows: </li>
-<ul>
+<li><ul>
 <li>If reset = TRANSFORM.Types.Reset.Disabled, which is the default, then the controller output is never reset. </li>
 <li>If reset = TRANSFORM.Types.Reset.Parameter, then a boolean input signal trigger is enabled. Whenever the value of this input changes from false to true, the controller output is reset by setting y to the value of the parameter y_reset. </li>
 <li>If reset = TRANSFORM.Types.Reset.Input, then a boolean input signal trigger is enabled. Whenever the value of this input changes from false to true, the controller output is reset by setting y to the value of the input signal y_reset_in. </li>
+</ul></li>
 </ul>
-</ol>
 <p>Note that this controller implements an integrator anti-windup. Therefore, for most applications, keeping the default setting of reset = TRANSFORM.Types.Reset.Disabled is sufficient. Examples where it may be beneficial to reset the controller output are situations where the equipment control input should continuously increase as the equipment is switched on, such as as a light dimmer that may slowly increase the luminance, or a variable speed drive of a motor that should continuously increase the speed. </p>
 <p>The parameters of the controller can be manually adjusted by performing simulations of the closed loop system (= controller + plant connected together) and using the following strategy: </p>
 <ol>
@@ -381,7 +381,7 @@ package Controls
 <td valign=\"top\"><p>NoInit</p></td>
 </tr>
 </table>
-<p><br><br><br><br><br><br>In many cases, the most useful initial condition is <b>SteadyState</b> because initial transients are then no longer present. If initType = InitPID.SteadyState, then in some cases difficulties might occur. The reason is the equation of the integrator: </p>
+<p><br><br><br><br><br><br><br>In many cases, the most useful initial condition is <b>SteadyState</b> because initial transients are then no longer present. If initType = InitPID.SteadyState, then in some cases difficulties might occur. The reason is the equation of the integrator: </p>
 <p><b><span style=\"font-family: Courier New;\">der</span></b>(y) = k*u; </p>
 <p>The steady state equation &quot;der(x)=0&quot; leads to the condition that the input u to the integrator is zero. If the input u is already (directly or indirectly) defined by another initial condition, then the initialization problem is <b>singular</b> (has none or infinitely many solutions). This situation occurs often for mechanical systems, where, e.g., u = desiredSpeed - measuredSpeed and since speed is both a state and a derivative, it is natural to initialize it with zero. As sketched this is, however, not possible. The solution is to not initialize u_m or the variable that is used to compute u_m by an algebraic equation. </p>
 <p>If parameter <b>limitAtInit</b> = <b>false</b>, the limits at the output of this controller block are removed from the initialization problem which leads to a much simpler equation system. After initialization has been performed, it is checked via an assert whether the output is in the defined limits. For backward compatibility reasons <b>limitAtInit</b> = <b>true</b>. In most cases it is best to use <b>limitAtInit</b> = <b>false</b>. </p>

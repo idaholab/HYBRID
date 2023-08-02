@@ -2,8 +2,6 @@ SteamTurbine_L1_boundaries_Test_a
 SteamTurbine_L1_boundaries_Test_b
 SteamTurbine_L2_ClosedFeedHeat_Test_a
 SteamTurbine_L2_ClosedFeedHeat_Test_b
+SteamTurbine_L3_OpenFeedHeat_Test
 Example_FMU_construction
 ObsoleteBOPExamples
-L3_test
-L2_CE_test
-L3_testinout

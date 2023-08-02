@@ -370,15 +370,13 @@ model TightlyCoupled_SteamFlowCtrl_Standalone
         extent={{8,8},{-8,-8}},
         rotation=0,
         origin={-40,-164})));
-  Fluid.Pipes.parallelFlow nFlow_in(redeclare package Medium = Medium,
-      nParallel=capacityScaler)
-    annotation (Placement(transformation(
+  Fluid.Ultilities.parallelFlow nFlow_in(redeclare package Medium = Medium,
+      nParallel=capacityScaler) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={-140,-22})));
-  Fluid.Pipes.parallelFlow nFlow_out(redeclare package Medium = Medium,
-      nParallel=capacityScaler)
-    annotation (Placement(transformation(
+  Fluid.Ultilities.parallelFlow nFlow_out(redeclare package Medium = Medium,
+      nParallel=capacityScaler) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-128,-78})));

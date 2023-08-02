@@ -327,8 +327,8 @@ equation
       thickness=0.5));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-120,
             -120},{100,140}}),
-                         graphics={Bitmap(extent={{-114,-90},{110,90}},fileName=
-             "modelica://NHES/Resources/Images/Systems/PHS/Schematic-of-a-NuScale-power-module.png")}),
+                         graphics={Bitmap(extent={{-114,-90},{110,90}},fileName
+            ="modelica://NHES/Resources/Images/Systems/PHS/Schematic-of-a-NuScale-power-module.png")}),
                                                                  Diagram(
         coordinateSystem(preserveAspectRatio=false, extent={{-120,-120},{100,
             140}})));

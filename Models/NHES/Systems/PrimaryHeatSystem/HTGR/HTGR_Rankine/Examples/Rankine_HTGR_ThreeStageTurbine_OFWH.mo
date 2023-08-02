@@ -19,7 +19,6 @@ model Rankine_HTGR_ThreeStageTurbine_OFWH
   BalanceOfPlant.Turbine.SteamTurbine_L3_HPOFWH BOP(
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_L3_HTGR CS(data(
-        Power_nom=80e6,
         HPT_p_in=14000000,
         p_dump=16000000,
         Tin=788.15,
@@ -33,9 +32,8 @@ model Rankine_HTGR_ThreeStageTurbine_OFWH
         mdot_lpt1=39.945,
         mdot_lpt2=35.7553,
         eta_t=0.9,
-        eta_mech=0.95)),
+        eta_mech=0.95), Power_set(y=1e10)),
     redeclare replaceable BalanceOfPlant.Turbine.Data.Data_L3 data(
-      Power_nom=80e6,
       HPT_p_in=14000000,
       p_dump=16000000,
       Tin=788.15,
@@ -65,6 +63,8 @@ model Rankine_HTGR_ThreeStageTurbine_OFWH
     annotation (Placement(transformation(extent={{0,74},{20,94}})));
   TRANSFORM.Electrical.Sources.FrequencySource boundary
     annotation (Placement(transformation(extent={{180,4},{160,24}})));
+  BalanceOfPlant.Turbine.Data.Data_L3 data(HPT_p_in=14000000, p_dump=16000000, Tin=788.15, Tfeed=481.15, d_HPT_in(displayUnit="kg/m3") = 43.049187, d_LPT1_in(displayUnit="kg/m3") = 1.783316, d_LPT2_in(displayUnit="kg/m3"), mdot_total=50.55, mdot_fh=10.6, mdot_hpt=39.945, mdot_lpt1=39.945, mdot_lpt2=35.7553, eta_t=0.9, eta_mech=0.95)
+    annotation (Placement(transformation(extent={{-100,80},{-80,100}})));
 equation
   hTGR_PebbleBed_Primary_Loop.input_steam_pressure =BOP.TCV.port_a.p;
   connect(hTGR_PebbleBed_Primary_Loop.port_b, stateSensor1.port_a) annotation (

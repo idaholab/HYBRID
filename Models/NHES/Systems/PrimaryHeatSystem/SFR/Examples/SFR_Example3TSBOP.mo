@@ -3,7 +3,7 @@ model SFR_Example3TSBOP
   package Coolant = TRANSFORM.Media.Fluids.Sodium.LinearSodium_pT;
   package IL_Medium =
       NHES.Media.SolarSalt.ConstantPropertyLiquidSolarSalt;
-
+      extends Modelica.Icons.Example;
   Components.SFR_Intermediate_Loop sFR_Intermediate_Loop(redeclare package
       Medium_IHX_Loop = IL_Medium,
     port_SG_a,
@@ -17,7 +17,6 @@ model SFR_Example3TSBOP
   BalanceOfPlant.Turbine.SteamTurbine_L3_HPOFWHsimplified BOP(
     redeclare replaceable BalanceOfPlant.Turbine.ControlSystems.CS_L3_SMR CS(
       data(
-        Power_nom=80e6,
         HPT_p_in=12500000,
         p_dump=14500000,
         Tin=637.15,
@@ -27,7 +26,6 @@ model SFR_Example3TSBOP
         d_LPT2_in(displayUnit="kg/m3"),
         mdot_total=50.14,
         mdot_fh=2.4,
-        mdpt_HPFH=10,
         mdot_hpt=37.99,
         mdot_lpt1=37.99,
         mdot_lpt2=30.016,
@@ -39,7 +37,6 @@ model SFR_Example3TSBOP
       FeedPump_PID(k=-1e-3, yMin=15),
       hysteresis(uLow=135)),
     redeclare replaceable BalanceOfPlant.Turbine.Data.Data_L3 data(
-      Power_nom=80e6,
       HPT_p_in=12500000,
       p_dump=14500000,
       Tin=637.15,
@@ -49,7 +46,6 @@ model SFR_Example3TSBOP
       d_LPT2_in(displayUnit="kg/m3"),
       mdot_total=50.14,
       mdot_fh=2.4,
-      mdpt_HPFH=10,
       mdot_hpt=37.99,
       mdot_lpt1=37.99,
       mdot_lpt2=30.016,

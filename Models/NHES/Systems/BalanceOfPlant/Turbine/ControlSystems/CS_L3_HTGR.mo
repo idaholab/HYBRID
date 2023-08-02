@@ -11,7 +11,7 @@ model CS_L3_HTGR
     annotation (Placement(transformation(extent={{-100,40},{-80,60}})));
   Modelica.Blocks.Sources.RealExpression P_in_set(y=data.HPT_p_in)
     annotation (Placement(transformation(extent={{-100,0},{-80,20}})));
-  replaceable Modelica.Blocks.Sources.RealExpression Power_set(y=data.Power_nom)
+  replaceable Modelica.Blocks.Sources.RealExpression Power_set(y=1e10)
     annotation (choices(choice( redeclare Modelica.Blocks.Sources.Ramp Power_set),
                         choice( redeclare Modelica.Blocks.Sources.Step Power_set),
                         choice( redeclare Modelica.Blocks.Sources.Sine Power_set),

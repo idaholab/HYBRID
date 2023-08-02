@@ -3,19 +3,19 @@ package Ultilities
   extends Modelica.Icons.UtilitiesPackage;
   model NonLinear_Break "Oneway non linear break for fuild systems"
 
-    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium
-        = Medium)
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a(redeclare package Medium =
+          Medium)
       annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
-    TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium
-        = Medium)
+    TRANSFORM.Fluid.Interfaces.FluidPort_State port_b(redeclare package Medium =
+          Medium)
       annotation (Placement(transformation(extent={{90,-10},{110,10}})));
     TRANSFORM.Fluid.Sensors.Pressure sensor_p(redeclare package Medium = Medium)
       annotation (Placement(transformation(extent={{76,0},{56,20}})));
-    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-        = Medium)
+    TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+          Medium)
       annotation (Placement(transformation(extent={{-70,10},{-50,-10}})));
-    TRANSFORM.Fluid.Sensors.SpecificEnthalpy sensor_h(redeclare package Medium
-        = Medium)
+    TRANSFORM.Fluid.Sensors.SpecificEnthalpy sensor_h(redeclare package Medium =
+          Medium)
       annotation (Placement(transformation(extent={{-90,0},{-70,-20}})));
     TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary(
       redeclare package Medium = Medium,
@@ -122,11 +122,16 @@ package Ultilities
             fillPattern=FillPattern.Solid,
             origin={-12,-21},
             rotation=90)}),                                        Diagram(
-          coordinateSystem(preserveAspectRatio=false)));
+          coordinateSystem(preserveAspectRatio=false)),
+      Documentation(info="<html>
+<p>Breaks up non-linear equation set for fluid systems.</p>
+<p><b><span style=\"font-family: Arial; font-size: 18pt;\">Contact Deatils</span></b></p>
+<p><span style=\"font-family: Arial;\">This model was designed by Logan Williams (<a href=\"mailto:Logan.Williams@inl.gov\">Logan.Williams@inl.gov</a>). All initial questions should be directed to Daniel Mikkelson (<a href=\"mailto:Daniel.Mikkelson@inl.gov\">Daniel.Mikkelson@inl.gov</a>).</span></p>
+</html>"));
   end NonLinear_Break;
 
   model FlowMultiplier
-    "Increases outlet flow by a capcity factor.  Used to correct flow rates for Gas Turbine"
+    "Increases outlet flow by a capcity factor."
     extends Modelica.Fluid.Interfaces.PartialTwoPort;
     parameter Real capacityScaler=1;
 
@@ -148,6 +153,59 @@ package Ultilities
             textStyle={TextStyle.Bold}), Line(
             points={{-100,0},{100,0}},
             color={0,0,0},
-            thickness=0.5)}));
+            thickness=0.5)}), Documentation(info="<html>
+<p><b><span style=\"font-family: Arial; font-size: 18pt;\">Contact Deatils</span></b></p>
+<p><span style=\"font-family: Arial;\">This model was designed by Logan Williams (<a href=\"mailto:Logan.Williams@inl.gov\">Logan.Williams@inl.gov</a>). All initial questions should be directed to Daniel Mikkelson (<a href=\"mailto:Daniel.Mikkelson@inl.gov\">Daniel.Mikkelson@inl.gov</a>).</span></p>
+</html>"));
   end FlowMultiplier;
+
+  model parallelFlow "Scales mass flow rate: simulates parallel flow streams"
+    extends NHES.Fluid.Interfaces.PartialTwoPort(
+      showDesignFlowDirection=false);
+
+    parameter Real nParallel = 1 "port_a.m_flow is divided into nParallel flow streams";
+
+  equation
+    // mass balance
+    0 = port_a.m_flow + port_b.m_flow*nParallel;
+
+    // momentum equation (no pressure loss)
+    port_a.p = port_b.p;
+
+    // isenthalpic state transformation (no storage and no loss of energy)
+    port_a.h_outflow = inStream(port_b.h_outflow);
+    port_b.h_outflow = inStream(port_a.h_outflow);
+
+    port_a.Xi_outflow = inStream(port_b.Xi_outflow);
+    port_b.Xi_outflow = inStream(port_a.Xi_outflow);
+
+    port_a.C_outflow = inStream(port_b.C_outflow);
+    port_b.C_outflow = inStream(port_a.C_outflow);
+
+    annotation (defaultComponentName="nFlow",
+          Icon(coordinateSystem(preserveAspectRatio=false), graphics={
+          Rectangle(
+            extent={{-88,60},{88,-60}},
+            pattern=LinePattern.None,
+            fillColor={255,255,255},
+            fillPattern=FillPattern.Solid,
+            lineColor={0,0,0}),
+          Polygon(
+            points={{80,3},{0,3},{0,34},{80,34},{80,40},{-6,40},{-6,-40},{80,-40},
+                {80,-34},{0,-34},{0,-3},{80,-3},{80,3}},
+            fillColor={0,128,255},
+            fillPattern=FillPattern.Solid,
+            pattern=LinePattern.None),
+          Polygon(
+            points={{-6,3},{-80,3},{-80,-3},{-6,-3},{-6,3}},
+            fillColor={0,128,255},
+            fillPattern=FillPattern.Solid,
+            pattern=LinePattern.None)}),                           Diagram(
+          coordinateSystem(preserveAspectRatio=false)),
+      Documentation(info="<html>
+<p>Connects parallel flow paths with a defined number of paths.</p>
+<p><b><span style=\"font-family: Arial; font-size: 18pt;\">Contact Deatils</span></b></p>
+<p><span style=\"font-family: Arial;\">This model was designed by Logan Williams (<a href=\"mailto:Logan.Williams@inl.gov\">Logan.Williams@inl.gov</a>). All initial questions should be directed to Daniel Mikkelson (<a href=\"mailto:Daniel.Mikkelson@inl.gov\">Daniel.Mikkelson@inl.gov</a>).</span></p>
+</html>"));
+  end parallelFlow;
 end Ultilities;

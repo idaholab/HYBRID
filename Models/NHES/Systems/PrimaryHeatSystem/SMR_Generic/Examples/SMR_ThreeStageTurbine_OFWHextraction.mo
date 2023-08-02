@@ -117,24 +117,6 @@ model SMR_ThreeStageTurbine_OFWHextraction
     annotation (Placement(transformation(extent={{-12,76},{8,96}})));
   TRANSFORM.Electrical.Sources.FrequencySource boundary
     annotation (Placement(transformation(extent={{194,22},{174,42}})));
-  NHES.Systems.BalanceOfPlant.Turbine.Data.Data_L3_master data(
-    Power_nom=100e6,
-    HPT_p_in=3450000,
-    p_i1=P_ext*100000,
-    Tin=579.25,
-    Tfeed=421.15,                                                                                                          d_HPT_in(displayUnit="kg/m3") = 14.156995,
-    d_LPT1_in(displayUnit="kg/m3") = d_ext,
-    mdot_total=84.3667,
-    mdot_fh=12.215,                                                                                                                                                                                                        mdpt_HPFH=5,
-    mdot_hpt=72.1517,
-    mdot_lpt1=72.1517,
-    mdot_lpt2=64.8273,
-    m_ext=m_ext,
-    p_use=P_demand*100000,
-    eta_t=0.9,
-    eta_mech=0.99,
-    eta_p=0.8)
-    annotation (Placement(transformation(extent={{-100,80},{-80,100}})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h
                                                  bypassdump1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,

@@ -51,13 +51,13 @@ model RO_twoPasses_mixing
         extent={{10,-10},{-10,10}},
         rotation=0,
         origin={100,0})));
-  Fluid.Pipes.parallelFlow nFlow_feed(redeclare package Medium =
+  Fluid.Ultilities.parallelFlow nFlow_feed(redeclare package Medium =
         Media.BrineProp.BrineDriesner, nParallel=NoVesselUnits_per_pump)
     annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=180,
         origin={-70,0})));
-  Fluid.Pipes.parallelFlow nFlow_retentate(redeclare package Medium =
+  Fluid.Ultilities.parallelFlow nFlow_retentate(redeclare package Medium =
         Media.BrineProp.BrineDriesner, nParallel=NoVesselUnits_per_pump)
     annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
@@ -77,7 +77,7 @@ model RO_twoPasses_mixing
         rotation=0,
         origin={-14,-40})));
 
-  Fluid.Pipes.parallelFlow nFlow_permeate(redeclare package Medium =
+  Fluid.Ultilities.parallelFlow nFlow_permeate(redeclare package Medium =
         Media.BrineProp.BrineDriesner, nParallel=NoVesselUnits_per_pump)
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},

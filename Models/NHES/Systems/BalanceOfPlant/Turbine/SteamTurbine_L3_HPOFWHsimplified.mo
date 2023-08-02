@@ -498,5 +498,10 @@ equation
           pattern=LinePattern.None,
           fillPattern=FillPattern.HorizontalCylinder,
           fillColor={255,255,255})}),                            Diagram(
-        coordinateSystem(preserveAspectRatio=false)));
+        coordinateSystem(preserveAspectRatio=false)),
+    Documentation(info="<html>
+<p><span style=\"font-family: Arial;\">Three stage turbine model with non-linear breaks and no steam header, can be used for uncontrolled extraction.  </span></p>
+<p><b><span style=\"font-family: Arial; font-size: 18pt;\">Contact Deatils</span></b></p>
+<p><span style=\"font-family: Arial;\">This model was designed by Logan Williams (<a href=\"mailto:Logan.Williams@inl.gov\">Logan.Williams@inl.gov</a>). All initial questions should be directed to Daniel Mikkelson (<a href=\"mailto:Daniel.Mikkelson@inl.gov\">Daniel.Mikkelson@inl.gov</a>).</span></p>
+</html>"));
 end SteamTurbine_L3_HPOFWHsimplified;
