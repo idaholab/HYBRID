@@ -1,0 +1,11 @@
+model dsmodelIterationSelect
+  extends NHES.Systems.EnergyStorage.SHS_Two_Tank.Examples.Two_Tank_SHS_HT_Power_Test;
+  annotation(__Dymola_SimulationIterationVariables={"TES.CHX.Tube_out.p", 
+  "TES.discharge_pump.m_flow", "der(TES.discharge_pump.medium.T)", 
+  "der(TES.hot_tank.state.T)", "TES_HT_Level_Ramprate", "TES.CHX.Shell.medium.h",
+   "TES.CHX.Shell.medium.p", "der(TES.CHX.Shell.medium.p)", "der(TES.CHX.Shell.medium.h)",
+   "TES.charge_pump.m_flow", "TES.cold_tank_dump_pipe.state.p", "TES.cold_tank_dump_pipe.v",
+   "TES.cold_tank_dump_pipe.state.T", "Dch_BOP.port_b.p", "Dch_BOP.firstfeedpump1.dh",
+   "TES.DHX.Tube_in.m_flow", "der(TES.cold_tank.state.T)", "der(TES.charge_pump.medium.T)",
+   "der(TES.cold_tank.level)", "Dch_BOP.firstfeedpump1.N"});
+end dsmodelIterationSelect;

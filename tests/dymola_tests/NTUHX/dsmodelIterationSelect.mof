@@ -1,0 +1,5 @@
+model dsmodelIterationSelect
+  extends NHES.Fluid.HeatExchangers.Generic_HXs.Examples.NTUHX_Example;
+  annotation(__Dymola_SimulationIterationVariables={"HX.Tube_out.m_flow", 
+  "HX.Shell_out.m_flow"});
+end dsmodelIterationSelect;

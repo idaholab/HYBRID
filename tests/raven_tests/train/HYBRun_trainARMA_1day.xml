@@ -13,7 +13,7 @@
   </Files>
 
   <Models>
-    <PostProcessor name="TypicalHistory" subType="InterfacedPostProcessor">
+    <PostProcessor name="TypicalHistory" subType="PostProcessorReadyInterface">
       <method>TypicalHistoryFromHistorySet</method>
       <subseqLen>86400</subseqLen>
       <!-- 1 day-->

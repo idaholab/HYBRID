@@ -1,0 +1,20 @@
+model dsmodelIterationSelect
+  extends NHES.Systems.Examples.SMR_highfidelity;
+  annotation(__Dymola_SimulationIterationVariables={"BOP.steamTurbine.portHP.p",
+   "nuScale_Tave_enthalpy_Pressurizer_CR.pipeLoss.port_a.m_flow", 
+  "nuScale_Tave_enthalpy_Pressurizer_CR.pressurizer_Update_Doster_sources.alphag",
+   "nuScale_Tave_enthalpy_Pressurizer_CR.pressurizer_Update_Doster_sources.p", 
+  "der(nuScale_Tave_enthalpy_Pressurizer_CR.pressurizer_tee.medium.h)", 
+  "der(nuScale_Tave_enthalpy_Pressurizer_CR.pressurizer_tee.medium.p)", 
+  "der(nuScale_Tave_enthalpy_Pressurizer_CR.PressurizerandTopper.mediums[2].h)",
+   "der(nuScale_Tave_enthalpy_Pressurizer_CR.Upper_Riser.mediums[2].h)", 
+  "der(nuScale_Tave_enthalpy_Pressurizer_CR.Upper_Riser.mediums[2].p)", 
+  "der(nuScale_Tave_enthalpy_Pressurizer_CR.PressurizerandTopper.mediums[1].h)",
+   "der(nuScale_Tave_enthalpy_Pressurizer_CR.DownComer.mediums[1].h)", 
+  "der(nuScale_Tave_enthalpy_Pressurizer_CR.DownComer.mediums[1].p)", 
+  "der(nuScale_Tave_enthalpy_Pressurizer_CR.STHX.shell.mediums[10].h)", 
+  "der(nuScale_Tave_enthalpy_Pressurizer_CR.Upper_Riser.mediums[1].h)", 
+  "der(nuScale_Tave_enthalpy_Pressurizer_CR.Lower_Riser.mediums[2].p)", 
+  "der(nuScale_Tave_enthalpy_Pressurizer_CR.Lower_Riser.mediums[2].h)", 
+  "EM.port_b2.p"});
+end dsmodelIterationSelect;

@@ -6,5 +6,5 @@ model dsmodelIterationSelect
   "rO_unit.VesselsStage1.Vzb", "rO_unit.VesselsStage1.Osmotic_P_Pa", 
   "rO_unit.VesselsStage2.stateFeed.T", "rO_unit.VesselsStage2.Vzb", 
   "rO_unit.VesselsStage2.Osmotic_P_Pa", "rO_unit.VesselsStage2.Sp", 
-  "rO_unit.VesselsStage1.Sp", "rO_unit.flowJoin.medium.T"});
+  "rO_unit.VesselsStage1.Sp"});
 end dsmodelIterationSelect;

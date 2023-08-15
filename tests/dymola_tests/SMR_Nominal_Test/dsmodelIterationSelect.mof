@@ -1,0 +1,11 @@
+model dsmodelIterationSelect
+  extends NHES.Systems.Examples.SMR_Coupling_Test;
+  annotation(__Dymola_SimulationIterationVariables={"der(SMR_Taveprogram.Upper_Riser.mediums[1].h)",
+   "der(SMR_Taveprogram.Lower_Riser.mediums[2].p)", "der(SMR_Taveprogram.Lower_Riser.mediums[2].h)",
+   "der(SMR_Taveprogram.PressurizerandTopper.mediums[1].h)", "der(SMR_Taveprogram.Upper_Riser.mediums[2].p)",
+   "der(SMR_Taveprogram.Upper_Riser.mediums[2].h)", "SMR_Taveprogram.pipeLoss.port_a.m_flow",
+   "der(SMR_Taveprogram.pressurizer_tee.medium.h)", "der(SMR_Taveprogram.pressurizer_tee.medium.p)",
+   "der(SMR_Taveprogram.PressurizerandTopper.mediums[2].h)", "der(SMR_Taveprogram.DownComer.mediums[1].h)",
+   "der(SMR_Taveprogram.DownComer.mediums[1].p)", "der(SMR_Taveprogram.STHX.shell.mediums[10].h)",
+   "BOP.steamTurbine.portHP.p", "EM.port_b2.p"});
+end dsmodelIterationSelect;

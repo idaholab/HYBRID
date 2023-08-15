@@ -1,0 +1,11 @@
+model dsmodelIterationSelect
+  extends NHES.Systems.EnergyStorage.SensibleHeatStorage.Examples.Twentypercentofnominal3400MWtPWR2;
+  annotation(__Dymola_SimulationIterationVariables={"ES.chargingMode.iHXShellconnector.IHX.alphag",
+   "ES.chargingMode.iHXShellconnector.IHX.P_IHX", "ES.chargingMode.iHXShellconnector.IHX.m_tbv1",
+   "ES.chargingMode.iHXShellconnector.IHX.m_tbv2", "ES.chargingMode.iHXShellconnector.IHX.m_tbv3",
+   "ES.chargingMode.iHXShellconnector.IHX.m_tbv4", "ES.chargingMode.tubeandValveconnector.iHXtubeside.m_tes",
+   "ES.dischargeforHookup.Boiler.Boiler.alphag_boiler", "ES.dischargeforHookup.Boiler.Boiler.P_Boiler",
+   "ES.dischargeforHookup.Boiler.Boiler.m_LPT", "ES.dischargeforHookup.BoilerTubeSide.m_tes2",
+   "ES.dischargeforHookup.Boiler.Boiler.m_FDCV", "ES.chargingMode.iHXShellconnector.IHX.m_ihx",
+   "ES.chargingMode.iHXShellconnector.IHX.m_prv"});
+end dsmodelIterationSelect;
