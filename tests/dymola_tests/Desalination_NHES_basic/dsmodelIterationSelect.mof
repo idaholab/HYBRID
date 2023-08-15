@@ -6,7 +6,8 @@ model dsmodelIterationSelect
    "IP.rO_unit.VesselsStage2.stateRetentate.T", "IP.rO_unit.VesselsStage2.Sr", 
   "IP.rO_unit.VesselsStage1.Sr", "IP.rO_unit.VesselsStage2.stateFeed.T", 
   "IP.rO_unit.VesselsStage1.stateRetentate.p", "IP.pumpingSystem.feedPump.s", 
-  "IP.rO_unit.VesselsStage1.stateFeed.p", "IP.rO_unit.VesselsStage1.stateFeed.X[2]",
-   "IP.rO_unit.VesselsStage2.Osmotic_P_Pa", "IP.rO_unit.VesselsStage2.Sp", 
-  "IP.rO_unit.VesselsStage1.Osmotic_P_Pa", "IP.rO_unit.VesselsStage1.Sp"});
+  "IP.pumpingSystem.feedPump.medium.T", "IP.rO_unit.VesselsStage1.stateFeed.p", 
+  "IP.rO_unit.VesselsStage1.stateFeed.X[2]", "IP.rO_unit.VesselsStage2.Osmotic_P_Pa",
+   "IP.rO_unit.VesselsStage2.Sp", "IP.rO_unit.VesselsStage1.Osmotic_P_Pa", 
+  "IP.rO_unit.VesselsStage1.Sp", "IP.rO_unit.flowJoin.medium.T"});
 end dsmodelIterationSelect;

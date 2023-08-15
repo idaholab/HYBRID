@@ -6,6 +6,7 @@ model dsmodelIterationSelect
   "der(nuScale_Tave_enthalpy.Upper_Riser.mediums[2].p)", "der(nuScale_Tave_enthalpy.Upper_Riser.mediums[2].h)",
    "nuScale_Tave_enthalpy.pipeLoss.port_a.m_flow", "der(nuScale_Tave_enthalpy.pressurizer_tee.medium.h)",
    "der(nuScale_Tave_enthalpy.pressurizer_tee.medium.p)", "der(nuScale_Tave_enthalpy.PressurizerandTopper.mediums[2].h)",
-   "der(nuScale_Tave_enthalpy.DownComer.mediums[1].h)", "der(nuScale_Tave_enthalpy.DownComer.mediums[1].p)",
-   "der(nuScale_Tave_enthalpy.STHX.shell.mediums[10].h)", "der(nuScale_Tave_enthalpy.STHX.tube.mediums[10].h)"});
+   "nuScale_Tave_enthalpy.PressurizerandTopper.port_b.m_flow", "der(nuScale_Tave_enthalpy.DownComer.mediums[1].h)",
+   "der(nuScale_Tave_enthalpy.DownComer.mediums[1].p)", "der(nuScale_Tave_enthalpy.STHX.shell.mediums[10].h)",
+   "der(nuScale_Tave_enthalpy.STHX.tube.mediums[10].h)"});
 end dsmodelIterationSelect;
