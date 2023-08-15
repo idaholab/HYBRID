@@ -1,8 +1,0 @@
-model dsmodelIterationSelect
-  extends NHES.Systems.BalanceOfPlant.Turbine.Examples.SteamTurbine_OpenFeedHeat_DivertPowerControl_Test;
-  annotation(__Dymola_SimulationIterationVariables={"BOP_Turbine_Pressure", 
-  "BOP.pump_SimpleMassFlow1.medium.h", "BOP.pump_SimpleMassFlow1.m_flow", 
-  "BOP.SHS_charge_control.dp", "der(BOP.FeedwaterMixVolume.medium.h)", 
-  "EM.port_b2.p", "der(CHX.Shell.medium.h)", "der(CHX.Shell.medium.p)", 
-  "der(EM.steamHeader.medium.h)", "CHX.Tube.medium.p", "der(CHX.Tube.medium.T)"});
-end dsmodelIterationSelect;

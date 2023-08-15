@@ -1,5 +1,0 @@
-model dsmodelIterationSelect
-  extends NHES.Systems.SwitchYard.SimpleYard.Examples.SimpleBreakers_Test;
-  annotation(__Dymola_SimulationIterationVariables={"generator1.tau", 
-  "der(generator1.shaft_a.phi)", "generator.tau", "der(generator.shaft_a.phi)"});
-end dsmodelIterationSelect;

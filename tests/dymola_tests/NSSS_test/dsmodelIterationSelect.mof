@@ -1,3 +1,0 @@
-model dsmodelIterationSelect
-  extends NHES.Systems.PrimaryHeatSystem.FourLoopPWR.Examples.NSSS_Test;
-end dsmodelIterationSelect;

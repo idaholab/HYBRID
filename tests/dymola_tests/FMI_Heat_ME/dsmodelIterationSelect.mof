@@ -1,4 +1,0 @@
-model dsmodelIterationSelect
-  extends NHES.Utilities.FMI_Templates.Adaptors.MSLHeatAdaptors.Examples.GenerationOfFMUsME;
-  annotation(__Dymola_SimulationIterationVariables={"mSLHeatAdaptors_Utilities_DirectCapacityME_fmu.Q_flow"});
-end dsmodelIterationSelect;

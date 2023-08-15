@@ -1,3 +1,0 @@
-model dsmodelIterationSelect
-  extends NHES.Systems.EnergyStorage.LithiumIonBattery.Examples.LiIonBattery_Level_1_Test;
-end dsmodelIterationSelect;

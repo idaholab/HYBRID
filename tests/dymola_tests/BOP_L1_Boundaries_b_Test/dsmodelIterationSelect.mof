@@ -1,4 +1,0 @@
-model dsmodelIterationSelect
-  extends NHES.Systems.BalanceOfPlant.Turbine.Examples.SteamTurbine_L1_boundaries_Test_b;
-  annotation(__Dymola_SimulationIterationVariables={"BOP.steamTurbine.portHP.p"});
-end dsmodelIterationSelect;

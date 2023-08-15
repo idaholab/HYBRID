@@ -1,5 +1,0 @@
-model dsmodelIterationSelect
-  extends NHES.Systems.IndustrialProcess.HeaderTurbineCombo.Examples.Test3;
-  annotation(__Dymola_SimulationIterationVariables={"IP.generator_HP.tau", 
-  "IP.steamTurbine_IP.tau", "der(IP.generator_HP.shaft.phi)"});
-end dsmodelIterationSelect;
