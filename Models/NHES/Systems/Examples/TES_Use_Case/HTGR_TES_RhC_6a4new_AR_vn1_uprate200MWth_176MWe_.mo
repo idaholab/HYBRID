@@ -13,16 +13,15 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
     charge_pump(T_start=T_start),
     data(
       ht_area=10*100,
-      hot_tank_init_temp=623.15,
+      hot_tank_init_temp=773.15,
       cold_tank_area=10*100,
-      cold_tank_init_temp=573.15,
+      cold_tank_init_temp=523.15,
       discharge_pump_m_flow_nominal=25,
       charge_pump_m_flow_nominal=25,
       disvalve_m_flow_nom=300,
       chvalve_m_flow_nom=703),
     redeclare EnergyStorage.SHS_Two_Tank.ControlSystems.CS_TES_VN2b
-                         CS(
-      one1(k=500 + 273.15),
+                         CS(one1(k=500 + 273.15 - 0),
       PID2(
         k=-0.05e-3,
         Ti=1100,
@@ -32,8 +31,7 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
     CHX(
       NTU=16,
       T_start_shell_inlet=973.15,
-      T_start_shell_outlet=973.15),
-    hot_tank(T_start=773.15))
+      T_start_shell_outlet=973.15))
     annotation (Placement(transformation(extent={{-28,-30},{40,32}})));
   parameter Modelica.Units.SI.Temperature T_start=350+273.15
     "Temperature";
@@ -53,7 +51,7 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
       ramp(startTime=1000),
       const4(k=0),
       ramp1(offset=45, startTime=1000),
-      const6(k=2.5*8e7),
+      const6(k=203.6e6),
       data(Q_Nom=6e7, Q_RX_Therm_Nom=30e6)),
     sensor_T1(p_start=3900000, T_start=T_start),
     sensor_m_flow(p_start=4000000, T_start=T_start),
@@ -67,11 +65,11 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
       T_Fuel_Center_Init=973.15),
     pump(use_input=true, m_flow_nominal=45),
     core(
-      nPebble=2.5*80000,
+      nPebble=2.545*80000,
       Pebble_Surface_Init=773.15,
       Pebble_Center_Init=973.15,
-      Q_nominal=1000000*(2.5*80),
-      Q_fission_input=1000000*(2.5*80)),
+      Q_nominal=203600000,
+      Q_fission_input=203600000),
     data(nPebble=2.5*80000))
     annotation (Placement(transformation(extent={{-164,-32},{-94,26}})));
 
@@ -87,8 +85,8 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
     steam_Drum(
       p_start=21000000,
       alphag_start=0.5,
-      V_drum=30*2.5,
-      A_drum=15*2.5),
+      V_drum=30*2.8,
+      A_drum=15*2.8),
     CS(
       PartialAdmission(Ti=200),
       FWH_Valve(
@@ -125,31 +123,32 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
       T_start_shell_outlet=773.15,
       Q_init=2.5*50000000),
     DHX3(
-      NTU=1.8,
+      NTU=1.9,
       T_start_shell_inlet=1023.15,
       T_start_shell_outlet=673.15,
       Q_init=1,
       m_start_shell=100,
       Tube(medium(T(start=750, fixed=true), p(start=800000, fixed=true)))),
     steamTurbine1(
-      m_flow_nominal=2.5*46,
+      m_flow_nominal=2.85*46,
       use_T_nominal=false,
       d_nominal(displayUnit="kg/m3") = 2.05),
-    DHX1(Q_init=2.5*5000000),
+    DHX1(NTU=6,
+         Q_init=2.5*5000000),
     deaerator(level_start=8, p_start=800000),
     const3(k=1.1*210),
     ramp(height=-0.2, offset=0.2),
     steamTurbine(
-      m_flow_nominal=2.5*57,
-      p_outlet_nominal=900000,
+      m_flow_nominal=2.85*57,
+      p_outlet_nominal=850000,
       T_nominal=823.15),
-    LPT_Bypass(dp_nominal=800000, m_flow_nominal=2.0*50),
+    LPT_Bypass(dp_nominal=800000, m_flow_nominal=2.5*50),
     PartialAdmission(
       k=-1e-4,
       Ti=1000,
       xi_start=0),
     condenser(V_total=2.5*1000),
-    const7(k=8.3e5),
+    const7(k=8.5e5),
     valveLinear(m_flow_nominal=50*0.5))
     annotation (Placement(transformation(extent={{226,6},{324,86}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT3(redeclare package
@@ -181,7 +180,7 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
       hot_tank_init_temp=973.15,
       cold_tank_level_max=15,
       cold_tank_area=10*100,
-      cold_tank_init_temp=743.15,
+      cold_tank_init_temp=753.15,
       discharge_pump_m_flow_nominal=25,
       charge_pump_m_flow_nominal=25,
       disvalve_m_flow_nom=300,
@@ -198,11 +197,11 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
       PID2(yMin=0.01)),
     sensor_m_flow(p_start=3900000, T_start=T_start),
     CHX(
-      NTU=18,
+      NTU=18 + 2,
       T_start_shell_inlet=973.15,
       T_start_shell_outlet=973.15),
-    hot_tank(T_start=773.15),
-    one1(k=0.05),
+    hot_tank(T_start=973.15),
+    one1(k=0.01),
     Charging_bypass(dp_nominal=200000, m_flow_nominal=30))
     annotation (Placement(transformation(extent={{-12,66},{56,128}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT7(redeclare package
@@ -215,7 +214,7 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
   Modelica.Blocks.Sources.RealExpression Cycle_Q_in(y=
         reheat_cycle_drumOFH_Toutctr_AR_vn2_1.Q_in.y)
     "Heat loss/gain not accounted for in connections (e.g., energy vented to atmosphere) [W]"
-    annotation (Placement(transformation(extent={{250,88},{262,100}})));
+    annotation (Placement(transformation(extent={{266,88},{278,100}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT8(redeclare package
       Medium = Media.SolarSalt.ConstPropLiquidSolarSalt_NoLimit)
     annotation (Placement(transformation(extent={{210,106},{230,126}})));
@@ -259,7 +258,7 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
     annotation (Placement(transformation(extent={{-140,94},{-128,106}})));
   TRANSFORM.Controls.LimPID PID2(
     controllerType=Modelica.Blocks.Types.SimpleController.P,
-    k=-1.1e-2,
+    k=-5.1e-2,
     Ti=5000,
     yMax=1.0,
     yMin=0.005,
@@ -298,7 +297,7 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
   Modelica.Blocks.Sources.Trapezoid trapezoid(
     amplitude=-40000000,
     rising=1500,
-    width=23500,
+    width=0.75*23500,
     falling=1000,
     period=27500,
     offset=62000000,
@@ -359,7 +358,7 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
   Modelica.Blocks.Sources.BooleanExpression booleanExpression(y=
         sHS2Tank_VN_SaltOuta.hot_tank.level < sHS2Tank_VN_SaltOuta.cold_tank.level)
     annotation (Placement(transformation(extent={{10,196},{26,210}})));
-  Modelica.Blocks.Sources.Constant MaxLoad(k=2.5*65000000)
+  Modelica.Blocks.Sources.Constant MaxLoad(k=176e6)
     annotation (Placement(transformation(extent={{-68,248},{-62,254}})));
   Modelica.Blocks.Math.Product product1
     annotation (Placement(transformation(extent={{-16,242},{-8,234}})));
@@ -413,7 +412,7 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
     shiftTime=0)
     annotation (Placement(transformation(extent={{-216,202},{-196,222}})));
 
-  Modelica.Blocks.Sources.Constant MaxLoad1(k=2.5)
+  Modelica.Blocks.Sources.Constant MaxLoad1(k=2.8387)
     annotation (Placement(transformation(extent={{-84,206},{-78,212}})));
   Modelica.Blocks.Math.Product product4
     annotation (Placement(transformation(extent={{-66,208},{-58,200}})));
