@@ -35,7 +35,8 @@ model Combiner_H2_CathodeGas
         extent={{-10,10},{10,-10}},
         rotation=180,
         origin={50,-60})));
-  Modelica.Fluid.Interfaces.FluidPort_b Outlet(redeclare package Medium = NHES.Electrolysis.Media.Electrolysis.CathodeGas)
+  Modelica.Fluid.Interfaces.FluidPort_b Outlet(redeclare package Medium =
+        NHES.Electrolysis.Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{90,-10},{110,10}}), iconTransformation(extent={{-10,-100},{10,-80}})));
   Modelica.Fluid.Sources.MassFlowSource_T OutletFlowControl(
     use_m_flow_in=true,

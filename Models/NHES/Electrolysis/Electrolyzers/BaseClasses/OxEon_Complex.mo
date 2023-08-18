@@ -100,7 +100,8 @@ model OxEon_Complex
   SI.Voltage Cell_Potential "Standard Cell Potential";
   SI.Voltage Nernst_Potential "Nernst Contribution";
 
-  HTSE.SimpleVolume_XChange CathodeVolume(redeclare package Medium = MediumCathode, dmX={(molflow_H2_out - molflow_H2_in)*mwH2,(molflow_H2O_out -
+  HTSE.SimpleVolume_XChange CathodeVolume(redeclare package Medium =
+        MediumCathode,                                                              dmX={(molflow_H2_out - molflow_H2_in)*mwH2,(molflow_H2O_out -
         molflow_H2O_in)*mwH2O})                                                                                               annotation (Placement(transformation(extent={{-10,40},
             {10,60}})));
 
@@ -112,11 +113,15 @@ model OxEon_Complex
   //SI.MassFlowRate anode_massflow[MediumAnode.nXi];
   //Interfaces.ElectricalPowerPort_a electricalLoad;
 
-  TRANSFORM.Fluid.Interfaces.FluidPort_State CathodeOut(redeclare package Medium = MediumCathode)   annotation (Placement(transformation(extent={{90,40},{110,60}}), iconTransformation(extent={{90,40},{110,60}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow CathodeIn(redeclare package Medium = MediumCathode)  annotation (Placement(transformation(extent={{-110,40},{-90,60}}), iconTransformation(extent={{-110,40},{-90,60}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow AnodeIn(redeclare package Medium = MediumAnode)  annotation (Placement(transformation(extent={{-110,-58},{-90,-38}}),
+  TRANSFORM.Fluid.Interfaces.FluidPort_State CathodeOut(redeclare package Medium =
+        MediumCathode)                                                                              annotation (Placement(transformation(extent={{90,40},{110,60}}), iconTransformation(extent={{90,40},{110,60}})));
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow CathodeIn(redeclare package Medium =
+        MediumCathode)                                                                           annotation (Placement(transformation(extent={{-110,40},{-90,60}}), iconTransformation(extent={{-110,40},{-90,60}})));
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow AnodeIn(redeclare package Medium =
+        MediumAnode)                                                                         annotation (Placement(transformation(extent={{-110,-58},{-90,-38}}),
                                                                        iconTransformation(extent={{-110,-60},{-90,-40}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_State AnodeOut(redeclare package Medium = MediumAnode)  annotation (Placement(transformation(extent={{90,-58},{110,-38}}),
+  TRANSFORM.Fluid.Interfaces.FluidPort_State AnodeOut(redeclare package Medium =
+        MediumAnode)                                                                           annotation (Placement(transformation(extent={{90,-58},{110,-38}}),
                                                                      iconTransformation(extent={{90,-60},{110,-40}})));
   Interfaces.ElectricalPowerPort_a electricalLoad  annotation (Placement(transformation(extent={{-110,-10},{-90,10}}), iconTransformation(extent={{-110,-10},{-90,10}})));
 

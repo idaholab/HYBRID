@@ -12,10 +12,12 @@ model Temp_flashDrumVessel_v2
   Modelica.Fluid.Interfaces.FluidPort_a feedInlet(redeclare package Medium = Medium) annotation (Placement(
         transformation(extent={{-90,-10},{-70,10}}), iconTransformation(extent={
             {-90,-10},{-70,10}})));
-  Modelica.Fluid.Interfaces.FluidPort_b vaporOutlet(redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2) annotation (Placement(
+  Modelica.Fluid.Interfaces.FluidPort_b vaporOutlet(redeclare package Medium =
+        Modelica.Media.IdealGases.SingleGases.H2)                                                                        annotation (Placement(
         transformation(extent={{-10,80},{10,100}}), iconTransformation(extent={{
             -10,80},{10,100}})));
-  Modelica.Fluid.Interfaces.FluidPort_b liquidOutlet(redeclare package Medium = Modelica.Media.Water.StandardWater) annotation (Placement(
+  Modelica.Fluid.Interfaces.FluidPort_b liquidOutlet(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)                                                                         annotation (Placement(
         transformation(extent={{-10,-100},{10,-80}}), iconTransformation(extent=
            {{-10,-100},{10,-80}})));
   Modelica.Fluid.Sources.Boundary_pT cathodeGasShellSink(

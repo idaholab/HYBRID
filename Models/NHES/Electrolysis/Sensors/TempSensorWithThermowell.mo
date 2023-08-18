@@ -38,8 +38,8 @@ equation
   der(y) = (1*u - y)/tau;
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false,   extent={{-100,-100},{100,100}})),                Icon(coordinateSystem(preserveAspectRatio=false,   extent={{-100,
             -100},{100,100}}),                                                                                                    graphics={                                                                                                                                                         Text(extent={{
-              -134,-128},{134,-168}},                                                                                                                                                                                                        lineColor=
-              {0,0,255},
+              -134,-128},{134,-168}},                                                                                                                                                                                                        lineColor
+            = {0,0,255},
           textString="%name"),                                                                                                                                                                                                        Line(points={{0,
               80},{0,30}},                                                                                                                                                                                                        color = {0, 0, 127}),
                                                                                                                                                          Ellipse(extent={{

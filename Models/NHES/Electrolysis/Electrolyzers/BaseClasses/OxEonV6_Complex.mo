@@ -94,7 +94,8 @@ model OxEonV6_Complex
   SI.Voltage Cell_Potential "Standard Cell Potential";
   SI.Voltage Nernst_Potential "Nernst Contribution";
 
-  HTSE.SimpleVolume_XChange CathodeVolume(redeclare package Medium = MediumCathode,
+  HTSE.SimpleVolume_XChange CathodeVolume(redeclare package Medium =
+        MediumCathode,
     T_start=1063.15,
     Q_gen=Q_gen1 + Q_gen2,                                                          dmX={(molflow_H2_out - molflow_H2_in)*mwH2,(molflow_H2O_out -  molflow_H2O_in)*mwH2O})
    annotation (Placement(transformation(extent={{-10,40},{10,60}})));
@@ -109,17 +110,23 @@ model OxEonV6_Complex
   //SI.MassFlowRate anode_massflow[MediumAnode.nXi];
   //Interfaces.ElectricalPowerPort_a electricalLoad;
 
-  TRANSFORM.Fluid.Interfaces.FluidPort_State CathodeOut(redeclare package Medium = MediumCathode)   annotation (Placement(transformation(extent={{90,40},{110,60}}), iconTransformation(extent={{90,40},{110,60}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow CathodeIn(redeclare package Medium = MediumCathode)  annotation (Placement(transformation(extent={{-110,40},{-90,60}}), iconTransformation(extent={{-110,40},{-90,60}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow AnodeIn(redeclare package Medium = MediumAnode)  annotation (Placement(transformation(extent={{-110,-58},{-90,-38}}),
+  TRANSFORM.Fluid.Interfaces.FluidPort_State CathodeOut(redeclare package Medium =
+        MediumCathode)                                                                              annotation (Placement(transformation(extent={{90,40},{110,60}}), iconTransformation(extent={{90,40},{110,60}})));
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow CathodeIn(redeclare package Medium =
+        MediumCathode)                                                                           annotation (Placement(transformation(extent={{-110,40},{-90,60}}), iconTransformation(extent={{-110,40},{-90,60}})));
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow AnodeIn(redeclare package Medium =
+        MediumAnode)                                                                         annotation (Placement(transformation(extent={{-110,-58},{-90,-38}}),
                                                                        iconTransformation(extent={{-110,-60},{-90,-40}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_State AnodeOut(redeclare package Medium = MediumAnode)  annotation (Placement(transformation(extent={{90,-58},{110,-38}}),
+  TRANSFORM.Fluid.Interfaces.FluidPort_State AnodeOut(redeclare package Medium =
+        MediumAnode)                                                                           annotation (Placement(transformation(extent={{90,-58},{110,-38}}),
                                                                      iconTransformation(extent={{90,-60},{110,-40}})));
   Interfaces.ElectricalPowerPort_a electricalLoad  annotation (Placement(transformation(extent={{-110,-10},{-90,10}}), iconTransformation(extent={{-110,-10},{-90,10}})));
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort CathodeTemp(redeclare package Medium = Media.Electrolysis.CathodeGas)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort CathodeTemp(redeclare package Medium =
+        Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-66,40},{-46,60}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort AnodeTemp(redeclare package Medium = Media.Electrolysis.AnodeGas_air)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort AnodeTemp(redeclare package Medium =
+        Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(extent={{-66,-58},{-46,-38}})));
 
   SI.Power Q_transfer "Energy transfer from Cathode to Anode due to mass transfer. This term only appears in the Anode volume";

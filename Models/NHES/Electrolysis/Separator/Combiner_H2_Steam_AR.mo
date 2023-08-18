@@ -1,40 +1,37 @@
 within NHES.Electrolysis.Separator;
-model Combiner_Final
+model Combiner_H2_Steam_AR
   extends Electrolysis.Icons.FlashDrum;
   import      Modelica.Units.SI;
   //SI.MassFlowRate m_total;
 
   // ---------- Fluid package -------------------------------------------------
-  replaceable package MediumVapor = Modelica.Media.IdealGases.SingleGases.H2
+  replaceable package Medium1 = Modelica.Media.IdealGases.SingleGases.H2
     constrainedby Modelica.Media.Interfaces.PartialMedium "Working fluid model" annotation (choicesAllMatching = true,Dialog(group="Working fluid (Medium)"));
 
-  replaceable package MediumLiquid = Modelica.Media.Water.StandardWater
+  replaceable package Medium2 = Modelica.Media.Water.StandardWater
     constrainedby Modelica.Media.Interfaces.PartialMedium "Working fluid model" annotation (choicesAllMatching = true,Dialog(group="Working fluid (Medium)"));
 
-  Modelica.Fluid.Interfaces.FluidPort_a vaporInlet(redeclare package Medium =
-        MediumVapor)
+  Modelica.Fluid.Interfaces.FluidPort_a vaporInlet(redeclare package Medium = Medium1)
     annotation (Placement(transformation(extent={{-110,50},{-90,70}}), iconTransformation(extent={{-110,50},{-90,70}})));
-  Modelica.Fluid.Interfaces.FluidPort_a liquidInlet(redeclare package Medium =
-        MediumLiquid)
+  Modelica.Fluid.Interfaces.FluidPort_a liquidInlet(redeclare package Medium = Medium2)
     annotation (Placement(transformation(extent={{-110,-70},{-90,-50}}), iconTransformation(extent={{-110,-70},{-90,-50}})));
-  Modelica.Fluid.Sensors.MassFlowRate VaporFlowRate(redeclare package Medium =
-        MediumVapor)
+  Modelica.Fluid.Sensors.MassFlowRate VaporFlowRate(redeclare package Medium = Medium1)
     annotation (Placement(transformation(extent={{-82,70},{-62,50}})));
-  Modelica.Fluid.Sensors.MassFlowRate LiquidFlowRate(redeclare package Medium =
-        MediumLiquid)
+  Modelica.Fluid.Sensors.MassFlowRate LiquidFlowRate(redeclare package Medium
+      =                                                                         Medium2)
     annotation (Placement(transformation(extent={{-82,-70},{-62,-50}})));
   Modelica.Fluid.Sources.Boundary_pT vaporSink(
-    redeclare package Medium = MediumVapor,
-    p=1764315,
-    T=618.329,
+    redeclare package Medium = Medium1,
+    p=100000,
+    T=313.15,
     nPorts=1) annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=180,
         origin={50,60})));
   Modelica.Fluid.Sources.Boundary_pT liquidSink(
-    redeclare package Medium = MediumLiquid,
-    p=1764315,
-    T=618.329,
+    redeclare package Medium = Medium2,
+    p=100000,
+    T=423.15,
     nPorts=1) annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=180,
@@ -54,15 +51,13 @@ model Combiner_Final
         rotation=0,
         origin={68,0})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
-                                     LiquidTemp(redeclare package Medium =
-        MediumLiquid)
+                                     LiquidTemp(redeclare package Medium = Medium2)
     annotation (Placement(transformation(extent={{-28,-70},{-8,-50}})));
 
   Modelica.Blocks.Math.Add add annotation (Placement(transformation(extent={{-54,16},{-34,36}})));
   Utilities.Average average annotation (Placement(transformation(extent={{-8,-6},{12,14}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
-                                     VaporTemp(redeclare package Medium =
-        MediumVapor)
+                                     VaporTemp(redeclare package Medium = Medium1)
     annotation (Placement(transformation(extent={{-28,70},{-8,50}})));
   Utilities.RealExpression_Vector
                         realExpression_Vector(y={division.y,1 - division.y}) annotation (Placement(transformation(extent={{2,-40},{22,-20}})));
@@ -100,4 +95,4 @@ equation
           origin={-92,113},
           rotation=0)}),              Diagram(coordinateSystem(preserveAspectRatio=false,
           extent={{-100,-100},{100,100}})));
-end Combiner_Final;
+end Combiner_H2_Steam_AR;

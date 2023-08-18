@@ -23,7 +23,7 @@ model b14_HTSE_CS_HW
   NHES.Fluid.Sensors.stateSensor stateSensor5(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-94,52},{-108,68}})));
-  HTSE_CS_HW HTSE(electric_demand_HTSE=MW_W_Gain_HTSE.y)
+  DoNotUse.HTSE_CS_HW HTSE(electric_demand_HTSE=MW_W_Gain_HTSE.y)
     annotation (Placement(transformation(extent={{-80,20},{-40,60}})));
   NHES.Systems.SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
     annotation (Placement(transformation(extent={{40,18},{80,62}})));

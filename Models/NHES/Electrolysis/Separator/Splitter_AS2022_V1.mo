@@ -3,12 +3,15 @@ model Splitter_AS2022_V1
   extends Electrolysis.Icons.FlashDrum;
   import      Modelica.Units.SI;
 
-  Modelica.Fluid.Interfaces.FluidPort_a feedInlet(redeclare package Medium = Electrolysis.Media.Electrolysis.CathodeGas) annotation (Placement(
+  Modelica.Fluid.Interfaces.FluidPort_a feedInlet(redeclare package Medium =
+        Electrolysis.Media.Electrolysis.CathodeGas)                                                                      annotation (Placement(
         transformation(extent={{-90,-10},{-70,10}}), iconTransformation(extent={
             {-90,-10},{-70,10}})));
-  Modelica.Fluid.Interfaces.FluidPort_b vaporOutlet(redeclare package Medium = Modelica.Media.IdealGases.SingleGases.H2) annotation (Placement(
+  Modelica.Fluid.Interfaces.FluidPort_b vaporOutlet(redeclare package Medium =
+        Modelica.Media.IdealGases.SingleGases.H2)                                                                        annotation (Placement(
         transformation(extent={{-10,76},{10,96}}),  iconTransformation(extent={{-10,76},{10,96}})));
-  Modelica.Fluid.Interfaces.FluidPort_b liquidOutlet(redeclare package Medium = Modelica.Media.Water.StandardWater) annotation (Placement(
+  Modelica.Fluid.Interfaces.FluidPort_b liquidOutlet(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)                                                                         annotation (Placement(
         transformation(extent={{-10,-100},{10,-80}}), iconTransformation(extent=
            {{-10,-100},{10,-80}})));
   Modelica.Fluid.Sources.Boundary_pT cathodeGasShellSink(

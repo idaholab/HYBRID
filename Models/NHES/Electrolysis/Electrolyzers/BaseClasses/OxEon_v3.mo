@@ -95,21 +95,25 @@ model OxEon_v3 "Solid Oxide Electrolysis Cell (SOEC) stack model"
 
   // ---------- Connectors -----------------------------------------------------
   Modelica.Fluid.Interfaces.FluidPort_a
-                          cathodeFlangeIn(redeclare package Medium = MediumCathode) annotation (Placement(
+                          cathodeFlangeIn(redeclare package Medium =
+        MediumCathode)                                                              annotation (Placement(
         transformation(extent={{-84,20},{-64,40}}),  iconTransformation(extent={{-84,20},
             {-64,40}})));
 
   Modelica.Fluid.Interfaces.FluidPort_b
-                          cathodeFlangeOut(redeclare package Medium = MediumCathode) annotation (Placement(
+                          cathodeFlangeOut(redeclare package Medium =
+        MediumCathode)                                                               annotation (Placement(
         transformation(extent={{64,40},{82,58}}),  iconTransformation(extent={{64,40},
             {84,60}})));
 
   Modelica.Fluid.Interfaces.FluidPort_a
-                          anodeFlangeIn(redeclare package Medium = MediumAnode) annotation (Placement(
+                          anodeFlangeIn(redeclare package Medium = MediumAnode)
+                                                                                annotation (Placement(
         transformation(extent={{-84,-64},{-64,-44}}),  iconTransformation(
           extent={{-84,-64},{-64,-44}})));
   Modelica.Fluid.Interfaces.FluidPort_b
-                          anodeFlangeOut(redeclare package Medium = MediumAnode) annotation (Placement(
+                          anodeFlangeOut(redeclare package Medium = MediumAnode)
+                                                                                 annotation (Placement(
         transformation(extent={{64,-42},{82,-22}}),  iconTransformation(extent={{64,-44},
             {84,-24}})));
 

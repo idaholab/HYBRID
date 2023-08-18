@@ -11,9 +11,11 @@ model Temp_Combiner_Test
   replaceable package MediumLiquid = Modelica.Media.Water.StandardWater
     constrainedby Modelica.Media.Interfaces.PartialMedium "Working fluid model" annotation (choicesAllMatching = true,Dialog(group="Working fluid (Medium)"));
 
-  Modelica.Fluid.Sensors.MassFlowRate VaporFlowRate(redeclare package Medium = MediumVapor)
+  Modelica.Fluid.Sensors.MassFlowRate VaporFlowRate(redeclare package Medium =
+        MediumVapor)
     annotation (Placement(transformation(extent={{-82,70},{-62,50}})));
-  Modelica.Fluid.Sensors.MassFlowRate LiquidFlowRate(redeclare package Medium = MediumLiquid)
+  Modelica.Fluid.Sensors.MassFlowRate LiquidFlowRate(redeclare package Medium =
+        MediumLiquid)
     annotation (Placement(transformation(extent={{-82,-70},{-62,-50}})));
   Modelica.Fluid.Sources.Boundary_pT vaporSink(
     redeclare package Medium = MediumVapor,
@@ -41,13 +43,15 @@ model Temp_Combiner_Test
         rotation=0,
         origin={63,1})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
-                                     LiquidTemp(redeclare package Medium = MediumLiquid)
+                                     LiquidTemp(redeclare package Medium =
+        MediumLiquid)
     annotation (Placement(transformation(extent={{-34,-70},{-14,-50}})));
 
   Modelica.Blocks.Math.Add add annotation (Placement(transformation(extent={{-54,16},{-34,36}})));
   Utilities.Average average annotation (Placement(transformation(extent={{-10,-6},{10,14}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort
-                                     VaporTemp(redeclare package Medium = MediumVapor)
+                                     VaporTemp(redeclare package Medium =
+        MediumVapor)
     annotation (Placement(transformation(extent={{-30,50},{-10,70}})));
   Modelica.Blocks.Math.Division division annotation (Placement(transformation(extent={{-56,-22},{-36,-2}})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T TubeH2In(

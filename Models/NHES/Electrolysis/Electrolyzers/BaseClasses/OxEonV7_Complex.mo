@@ -99,6 +99,7 @@ model OxEonV7_Complex
 
   HTSE.SimpleVolume_XChange CathodeVolume(redeclare package Medium =
         MediumCathode,
+    X_start={0.0122804,0.9877196},
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume(V=V_cathode),
     p_start(displayUnit="kPa") = 103800,
@@ -122,14 +123,12 @@ model OxEonV7_Complex
   TRANSFORM.Fluid.Interfaces.FluidPort_State CathodeOut(redeclare package
       Medium =
         MediumCathode)                                                                              annotation (Placement(transformation(extent={{90,40},{110,60}}), iconTransformation(extent={{90,40},{110,60}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow CathodeIn(redeclare package Medium
-      =
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow CathodeIn(redeclare package Medium =
         MediumCathode)                                                                           annotation (Placement(transformation(extent={{-110,40},{-90,60}}), iconTransformation(extent={{-110,40},{-90,60}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow AnodeIn(redeclare package Medium =
         MediumAnode)                                                                         annotation (Placement(transformation(extent={{-110,-58},{-90,-38}}),
                                                                        iconTransformation(extent={{-110,-60},{-90,-40}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_State AnodeOut(redeclare package Medium
-      =
+  TRANSFORM.Fluid.Interfaces.FluidPort_State AnodeOut(redeclare package Medium =
         MediumAnode)                                                                           annotation (Placement(transformation(extent={{90,-58},{110,-38}}),
                                                                      iconTransformation(extent={{90,-60},{110,-40}})));
   Interfaces.ElectricalPowerPort_a DC_PowerIn
@@ -139,8 +138,7 @@ model OxEonV7_Complex
       Medium =
         Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{-66,40},{-46,60}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort AnodeTemp(redeclare package Medium
-      =
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort AnodeTemp(redeclare package Medium =
         Media.Electrolysis.AnodeGas_air)
     annotation (Placement(transformation(extent={{-66,-58},{-46,-38}})));
 

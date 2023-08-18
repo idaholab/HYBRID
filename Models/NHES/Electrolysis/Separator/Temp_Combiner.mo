@@ -11,13 +11,17 @@ model Temp_Combiner
   replaceable package MediumLiquid = Modelica.Media.Water.StandardWater
     constrainedby Modelica.Media.Interfaces.PartialMedium "Working fluid model" annotation (choicesAllMatching = true,Dialog(group="Working fluid (Medium)"));
 
-  Modelica.Fluid.Interfaces.FluidPort_a vaporInlet(redeclare package Medium = MediumVapor)
+  Modelica.Fluid.Interfaces.FluidPort_a vaporInlet(redeclare package Medium =
+        MediumVapor)
     annotation (Placement(transformation(extent={{-110,50},{-90,70}}), iconTransformation(extent={{-110,50},{-90,70}})));
-  Modelica.Fluid.Interfaces.FluidPort_a liquidInlet(redeclare package Medium = MediumLiquid)
+  Modelica.Fluid.Interfaces.FluidPort_a liquidInlet(redeclare package Medium =
+        MediumLiquid)
     annotation (Placement(transformation(extent={{-110,-70},{-90,-50}}), iconTransformation(extent={{-110,-70},{-90,-50}})));
-  Modelica.Fluid.Sensors.MassFlowRate VaporFlowRate(redeclare package Medium = MediumVapor)
+  Modelica.Fluid.Sensors.MassFlowRate VaporFlowRate(redeclare package Medium =
+        MediumVapor)
     annotation (Placement(transformation(extent={{-82,70},{-62,50}})));
-  Modelica.Fluid.Sensors.MassFlowRate LiquidFlowRate(redeclare package Medium = MediumLiquid)
+  Modelica.Fluid.Sensors.MassFlowRate LiquidFlowRate(redeclare package Medium =
+        MediumLiquid)
     annotation (Placement(transformation(extent={{-82,-70},{-62,-50}})));
   Modelica.Fluid.Sources.Boundary_pT vaporSink(
     redeclare package Medium = MediumVapor,
@@ -35,7 +39,8 @@ model Temp_Combiner
         extent={{-10,10},{10,-10}},
         rotation=180,
         origin={50,-60})));
-  Modelica.Fluid.Interfaces.FluidPort_b Outlet(redeclare package Medium = NHES.Electrolysis.Media.Electrolysis.CathodeGas)
+  Modelica.Fluid.Interfaces.FluidPort_b Outlet(redeclare package Medium =
+        NHES.Electrolysis.Media.Electrolysis.CathodeGas)
     annotation (Placement(transformation(extent={{90,-10},{110,10}}), iconTransformation(extent={{-10,-100},{10,-80}})));
   Modelica.Fluid.Sources.MassFlowSource_T OutletFlowControl(
     use_m_flow_in=true,
@@ -49,13 +54,15 @@ model Temp_Combiner
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={68,0})));
-  Modelica.Fluid.Sensors.Temperature LiquidTemp(redeclare package Medium = MediumLiquid)
+  Modelica.Fluid.Sensors.Temperature LiquidTemp(redeclare package Medium =
+        MediumLiquid)
     annotation (Placement(transformation(extent={{-42,-60},{-22,-40}})));
 
 
   Modelica.Blocks.Math.Add add annotation (Placement(transformation(extent={{-54,16},{-34,36}})));
   Utilities.Average average annotation (Placement(transformation(extent={{-10,-6},{10,14}})));
-  Modelica.Fluid.Sensors.Temperature VaporTemp(redeclare package Medium = MediumVapor)
+  Modelica.Fluid.Sensors.Temperature VaporTemp(redeclare package Medium =
+        MediumVapor)
     annotation (Placement(transformation(extent={{-40,60},{-20,80}})));
 equation
 //   m_total = VaporFlowRate.m_flow + LiquidFlowRate.m_flow;
