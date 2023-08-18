@@ -86,8 +86,8 @@ package Condensor
 
   equation
 
-    stateW1= mediumW.setState_pT(X_1[2]*p,T);
-    stateH1= mediumH.setState_pT(X_1[1]*p,T);
+    stateW1= mediumW.setState_pT((1-yH2_1)*p,T);
+    stateH1= mediumH.setState_pT(yH2_1*p,T);
     stateW2= mediumW.setState_pT(p,T);
 
     h_W_1=mediumW.specificEnthalpy(stateW1);
@@ -1012,8 +1012,8 @@ package Condensor
         annotation (Placement(transformation(extent={{-10,10},{10,-10}},
             rotation=90,
             origin={6,-24})));
-      Modelica.Fluid.Sensors.MassFlowRate massFlowRate(redeclare package Medium
-          = Media.Electrolysis.CathodeGas)
+      Modelica.Fluid.Sensors.MassFlowRate massFlowRate(redeclare package Medium =
+            Media.Electrolysis.CathodeGas)
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},
             rotation=90,
             origin={-4,14})));
