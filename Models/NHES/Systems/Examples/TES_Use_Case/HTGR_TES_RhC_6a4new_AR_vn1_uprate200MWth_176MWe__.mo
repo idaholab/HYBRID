@@ -1,5 +1,5 @@
 within NHES.Systems.Examples.TES_Use_Case;
-model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
+model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe__
   EnergyStorage.SHS_Two_Tank.Components.SHS2Tank_VN_SaltOuta
     sHS2Tank_VN_SaltOuta(
     redeclare package Storage_Medium =
@@ -83,12 +83,12 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
     reheat_cycle_drumOFH_Toutctr_AR_vn2_1(
     pump(m_flow_nominal=200),
     steam_Drum(
-      p_start=21000000,
+      p_start=21200000,
       alphag_start=0.5,
       V_drum=30*2.8,
       A_drum=15*2.8),
     CS(
-      PartialAdmission(Ti=200),
+      PartialAdmission(k=-2.5e-7, Ti=150),
       FWH_Valve(
         controllerType=Modelica.Blocks.Types.SimpleController.PI,
         k=-2,
@@ -102,9 +102,12 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
         Ti=500,
         yMax=80*2.5),
       timer1(Start_Time=1),
-      PID(yMax=120*2.5),
-      SH_mflow(yMax=120*2.5),
-      PID2(yMax=120*2.5),
+      PID(k=-2200, yMax=120*2.8),
+      SH_mflow(
+        k=-1.5,
+        Ti=100,yMax=120*2.5),
+      PID2(Ti=250,
+           yMax=120*2.5),
       const10(k=6)),
     DHX(
       NTU=3.2,
@@ -124,6 +127,7 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
       Q_init=2.5*50000000),
     DHX3(
       NTU=1.9,
+      K_tube=10,
       T_start_shell_inlet=1023.15,
       T_start_shell_outlet=673.15,
       Q_init=1,
@@ -140,15 +144,15 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
     ramp(height=-0.2, offset=0.2),
     steamTurbine(
       m_flow_nominal=2.85*57,
-      p_outlet_nominal=850000,
+      p_outlet_nominal=890000,
       T_nominal=823.15),
-    LPT_Bypass(dp_nominal=800000, m_flow_nominal=2.5*50),
+    LPT_Bypass(dp_nominal=99999.99999999999*(8/8), m_flow_nominal=2.5*50/2.5),
     PartialAdmission(
       k=-1e-4,
       Ti=1000,
       xi_start=0),
     condenser(V_total=2.5*1000),
-    const7(k=8.5e5),
+    const7(k=9e5),
     valveLinear(m_flow_nominal=50*0.5))
     annotation (Placement(transformation(extent={{226,6},{324,86}})));
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT3(redeclare package
@@ -288,17 +292,17 @@ model HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_
     annotation (Placement(transformation(extent={{-68,-40},{-48,-20}})));
   TRANSFORM.Controls.LimPID PID3(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2e-7,
-    Ti=2000,
+    k=2e-8,
+    Ti=500,
     yMax=1.0,
     yMin=0.0,
     y_start=0.0)
     annotation (Placement(transformation(extent={{72,174},{80,182}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
-    amplitude=-57000000,
-    rising=1500,
-    width=0.75*23500,
-    falling=1000,
+    amplitude=-55000000,
+    rising=1200,
+    width=0.7*23500,
+    falling=1200,
     period=27500,
     offset=62000000,
     startTime=13500)
@@ -576,4 +580,4 @@ equation
     Diagram(coordinateSystem(extent={{-180,-100},{320,260}})),
     Icon(coordinateSystem(extent={{-180,-100},{320,260}})),
     conversion(noneFromVersion=""));
-end HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe_;
+end HTGR_TES_RhC_6a4new_AR_vn1_uprate200MWth_176MWe__;
