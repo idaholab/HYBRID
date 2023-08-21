@@ -361,7 +361,8 @@ replaceable package Medium = Modelica.Media.Water.StandardWater annotation (__Dy
   TRANSFORM.Fluid.Sensors.PressureTemperature sensor_pT4(redeclare package
       Medium = Media.SolarSalt.ConstPropLiquidSolarSalt_NoLimit)
     annotation (Placement(transformation(extent={{-72,-2},{-52,18}})));
-  Modelica.Blocks.Sources.RealExpression Tsat5(y=pump_SimpleMassFlow1.m_flow*4.8)
+  Modelica.Blocks.Sources.RealExpression Tsat5(y=pump_SimpleMassFlow1.m_flow*
+        5.8)
     "Heat loss/gain not accounted for in connections (e.g., energy vented to atmosphere) [W]"
     annotation (Placement(transformation(extent={{74,-54},{86,-42}})));
   Modelica.Blocks.Sources.ContinuousClock clock(offset=0, startTime=0)
@@ -423,6 +424,9 @@ replaceable package Medium = Modelica.Media.Water.StandardWater annotation (__Dy
         rotation=90,
         origin={-64,-74})));
 
+  Fluid.Pipes.NonLinear_Break nonLinear_Break1(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)
+    annotation (Placement(transformation(extent={{2,-62},{-18,-42}})));
 equation
   connect(steam_Drum.downcomer_port, pump.port_a) annotation (Line(points={{15.4,4},
           {15.4,-6},{14,-6},{14,-16}},   color={0,127,255}));
@@ -624,8 +628,6 @@ equation
           {0,-22},{0,4},{6.6,4}}, color={0,127,255}));
   connect(sensor_pT3.port, DHX1.Tube_out) annotation (Line(points={{-16,-8},{-24,
           -8},{-24,-22},{-32,-22}}, color={0,127,255}));
-  connect(pump.port_b, DHX1.Tube_in) annotation (Line(points={{14,-36},{14,-48},
-          {12,-48},{12,-52},{-32,-52},{-32,-42}}, color={0,127,255}));
   connect(DHX.Tube_out, steam_Drum.feed_port) annotation (Line(points={{-32,-66},
           {-10,-66},{-10,-64},{44,-64},{44,15},{22,15}}, color={0,127,255}));
   connect(DHX.Tube_in, pump_SimpleMassFlow1.port_b) annotation (Line(points={{-32,
@@ -703,6 +705,10 @@ equation
           -116},{-100,-116},{-100,-108},{-118,-108}}, color={0,127,255}));
   connect(valveLinear.port_a, DHX1.Shell_out) annotation (Line(points={{-64,-64},
           {-52,-64},{-52,-58},{-38,-58},{-38,-42}}, color={0,127,255}));
+  connect(pump.port_b, nonLinear_Break1.port_a) annotation (Line(points={{14,
+          -36},{14,-48},{12,-48},{12,-52},{2,-52}}, color={0,127,255}));
+  connect(nonLinear_Break1.port_b, DHX1.Tube_in) annotation (Line(points={{-18,
+          -52},{-32,-52},{-32,-42}}, color={0,127,255}));
   annotation (Diagram(coordinateSystem(extent={{-280,-180},{300,300}})), Icon(
         coordinateSystem(extent={{-280,-180},{300,300}}), graphics={
                               Bitmap(extent={{-116,-124},{222,212}}, fileName=
