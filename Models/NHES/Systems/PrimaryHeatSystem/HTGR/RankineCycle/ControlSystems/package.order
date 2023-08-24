@@ -4,6 +4,7 @@ CS_Rankine
 CS_Rankine_Primary
 CS_Rankine_Primary_Direct
 CS_Rankine_Primary_SS
+CS_Rankine_Primary_SS_RX
 CS_Rankine_Primary_SS_ClosedFeedheat
 CS_Rankine_Primary_TransientControl
 CS_Rankine_DNE
