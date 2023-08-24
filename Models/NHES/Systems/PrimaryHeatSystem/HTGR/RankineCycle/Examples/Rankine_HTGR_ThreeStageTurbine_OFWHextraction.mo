@@ -10,7 +10,7 @@ model Rankine_HTGR_ThreeStageTurbine_OFWHextraction
 
   Real eta_th "Thermal Cycle Efficiency";
 
-  NHES.Systems.PrimaryHeatSystem.HTGR.RankineCycle.Models.PebbleBed_Primary_Loop_STHX
+  Models.PebbleBed_PrimaryLoop_STHX
     hTGR_PebbleBed_Primary_Loop(redeclare
       NHES.Systems.PrimaryHeatSystem.HTGR.RankineCycle.ControlSystems.CS_Rankine_Primary_SS_RX
       CS) annotation (Placement(transformation(extent={{-100,-20},{-40,40}})));
@@ -121,8 +121,8 @@ model Rankine_HTGR_ThreeStageTurbine_OFWHextraction
     h=192e3,
     nPorts=1)
     annotation (Placement(transformation(extent={{180,-12},{160,8}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
