@@ -1,0 +1,12 @@
+[Tests]
+ [./]
+  #REQUIREMENT: R-F-1
+  type = 'HYBRIDTester'
+  input = 'HTGR_BOP_L3_Transient_OFWHextraction.mos'
+  workingDir = '.'
+  output = 'HTGR_BOP_L3_Transient_OFWHextraction.mat'
+  dymola_mats = 'HTGR_BOP_L3_Transient_OFWHextraction.mat'
+  rel_err = 0.001
+  run_types = 'dymola'
+ [../]
+[]
