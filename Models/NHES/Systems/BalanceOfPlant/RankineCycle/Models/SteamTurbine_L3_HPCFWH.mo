@@ -3,10 +3,11 @@ model SteamTurbine_L3_HPCFWH
   "Three Stage Turbine with open feed water heating using high pressure steam"
   extends
     NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_SubSystem(
-    redeclare replaceable ControlSystems.CS_L3_SMR3 CS,
+    redeclare replaceable ControlSystems.CS_L3_HTGR_extraction_logan CS(data(
+          FH_type=NHES.Systems.BalanceOfPlant.RankineCycle.Data.BOP_Type.CFWH)),
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ED_Dummy ED,
-    redeclare replaceable Data.Data_L3_CFWH_Old data(BypassFeedHeater_NTU=25));
+    redeclare replaceable Data.Data_L3 data(FH_type=NHES.Systems.BalanceOfPlant.RankineCycle.Data.BOP_Type.CFWH));
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_steam_in(redeclare package
       Medium =         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-110,50},{-90,70}})));
@@ -219,12 +220,18 @@ model SteamTurbine_L3_HPCFWH
   TRANSFORM.Fluid.Sensors.Temperature Steam_T2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-16,-60},{-4,-70}})));
-  SupportComponent.NonLinear_Break nonLinear_Break(redeclare package Medium =
+  Fluid.Utilities.NonLinear_Break  nonLinear_Break(redeclare package Medium =
         Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{4,-6},{-4,6}},
         rotation=90,
-        origin={-74,-8})));
+        origin={-72,-8})));
+  Fluid.Utilities.NonLinear_Break  nonLinear_Break1(redeclare package Medium =
+        Modelica.Media.Water.StandardWater) annotation (Placement(
+        transformation(
+        extent={{-4,-6},{4,6}},
+        rotation=90,
+        origin={-72,66})));
 equation
   connect(TBV.port_b, prt_b_steamdump) annotation (Line(points={{-71,86},{-71,
           100},{-100,100}}, color={0,127,255}));
@@ -381,15 +388,19 @@ equation
   connect(pump1.port_b, Steam_T2.port)
     annotation (Line(points={{-2,-60},{-10,-60}}, color={0,127,255}));
   connect(nonLinear_Break.port_b, HPT_bypass_valve.port_a) annotation (Line(
-        points={{-74,-12},{-74,-19},{-62,-19}}, color={0,127,255}));
+        points={{-72,-12},{-72,-19},{-62,-19}}, color={0,127,255}));
   connect(port_a_steam_in, TCV.port_a)
     annotation (Line(points={{-100,60},{-66,60}}, color={0,127,255}));
   connect(port_a_steam_in, nonLinear_Break.port_a)
-    annotation (Line(points={{-100,60},{-74,60},{-74,-4}}, color={0,127,255}));
+    annotation (Line(points={{-100,60},{-72,60},{-72,-4}}, color={0,127,255}));
   connect(Steam_T.port, port_a_steam_in)
     annotation (Line(points={{-92,32},{-92,60},{-100,60}}, color={0,127,255}));
   connect(sensor_p.port, port_a_steam_in) annotation (Line(points={{-110,52},{
           -92,52},{-92,60},{-100,60}}, color={0,127,255}));
+  connect(nonLinear_Break1.port_a, TCV.port_a)
+    annotation (Line(points={{-72,62},{-72,60},{-66,60}}, color={0,127,255}));
+  connect(nonLinear_Break1.port_b, TBV.port_a)
+    annotation (Line(points={{-72,70},{-72,72},{-71,72}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-2.09756,2},{83.9024,-2}},
