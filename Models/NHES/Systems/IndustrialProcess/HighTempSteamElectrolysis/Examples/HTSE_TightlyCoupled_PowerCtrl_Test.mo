@@ -4,10 +4,10 @@ model HTSE_TightlyCoupled_PowerCtrl_Test
   import NHES;
   extends Modelica.Icons.Example;
 
-  NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.TightlyCoupled_PowerCtrl
+  NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.Models.TightlyCoupled_PowerCtrl
     IP(
     redeclare
-      NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.CS_TightlyCoupled_PowerCtrl
+      NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.ControlSystems.CS_TightlyCoupled_PowerCtrl
       CS,
     hEX_nuclearHeatAnodeGasRecup_ROM(TTube_out(start=259 + 273.15, fixed=false)),
     TCV_anodeGas(m_flow(start=2.61448, fixed=false)),

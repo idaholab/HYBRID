@@ -34,7 +34,7 @@ model LWR_Case_03_OversizedTurbine
     port_b3_nominal_m_flow={-0.67},
     nPorts_b3=1)
     annotation (Placement(transformation(extent={{-12,-18},{28,22}})));
-  BalanceOfPlant.Turbine.SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop
+  BalanceOfPlant.RankineCycle.Models.SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop
     intermediate_Rankine_Cycle_TESUC(
     port_a_nominal(
       p=EM.port_b2_nominal.p,
@@ -42,7 +42,7 @@ model LWR_Case_03_OversizedTurbine
       m_flow=-EM.port_b2_nominal.m_flow),
     port_b_nominal(p=EM.port_a2_nominal.p, h=EM.port_a2_nominal.h),
     redeclare
-      NHES.Systems.BalanceOfPlant.Turbine.ControlSystems.CS_PowerBoostLoop_DivertPowerControl
+      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_PowerBoostLoop_DivertPowerControl
       CS(electric_demand=sum1.y))
     annotation (Placement(transformation(extent={{62,-20},{102,20}})));
   SwitchYard.SimpleYard.SimpleConnections SY(nPorts_a=1)
@@ -59,7 +59,7 @@ model LWR_Case_03_OversizedTurbine
     fileName=Modelica.Utilities.Files.loadResource(
         "modelica://NHES/Resources/Data/RAVEN/Nominal_50_timeSeries.txt"))
     annotation (Placement(transformation(extent={{160,60},{200,100}})));
-  EnergyStorage.SHS_Two_Tank.Components.Two_Tank_SHS_System_BestModel
+  EnergyStorage.SHS_Two_Tank.Models.Two_Tank_SHS_System_BestModel
     two_Tank_SHS_System_NTU(
     redeclare
       NHES.Systems.EnergyStorage.SHS_Two_Tank.ControlSystems.CS_BestExample CS,

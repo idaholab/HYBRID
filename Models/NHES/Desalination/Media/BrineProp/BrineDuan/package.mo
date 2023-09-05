@@ -9,7 +9,7 @@ package BrineDuan "NaCl solution using Duan density"
                              constant SI.MolarMass M_NaCl = salt.M_salt; ;
                               "[kg/mol]";*/
 
-protected
+  protected
       Types.Molality mola = X[1] / (MM_salt[1] * (1 - X[1]))
       "molality b (mol_NaCl/kg_H2O)";
   Modelica.Units.NonSI.Temperature_degC T_C=Modelica.Units.Conversions.to_degC(

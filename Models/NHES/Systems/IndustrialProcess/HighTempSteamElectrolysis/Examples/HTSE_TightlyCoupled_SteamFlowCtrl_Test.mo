@@ -19,11 +19,11 @@ model HTSE_TightlyCoupled_SteamFlowCtrl_Test
         extent={{9,9},{-9,-9}},
         rotation=180,
         origin={-59,-12})));
-  NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.TightlyCoupled_SteamFlowCtrl
+  NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.Models.TightlyCoupled_SteamFlowCtrl
     IP(
     capacity=dataCapacity.IP_capacity,
     redeclare
-      NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.CS_TightlyCoupled_SteamFlowCtrl_stepInput
+      NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.ControlSystems.CS_TightlyCoupled_SteamFlowCtrl_stepInput
       CS(capacityScaler=IP.capacityScaler),
     port_a_nominal(m_flow=IP.capacityScaler_steamFlow*9.0942),
     hEX_nuclearHeatAnodeGasRecup_ROM(TTube_out(start=259 + 273.15, fixed=false)),

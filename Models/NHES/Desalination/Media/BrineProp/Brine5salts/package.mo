@@ -37,7 +37,7 @@ package Brine5salts "One-phase (liquid) multisalt brine solution"
   end specificEnthalpy_pTX;
 
   redeclare function extends dynamicViscosity_pTXd
-protected
+  protected
   Modelica.Units.SI.Temperature T_corr;
 
   algorithm
@@ -53,7 +53,7 @@ protected
     "calculation of liquid specific heat capacity from apparent molar heat capacities"
       extends BrineProp.SaltDataDuan.defineSaltOrder;
 
-protected
+  protected
   Modelica.Units.SI.MolarMass MM_vec_salt[:]=BrineProp.SaltData.MM_salt[1:5];
   Modelica.Units.SI.Pressure p=state.p;
   Modelica.Units.SI.Temperature T=state.T;
@@ -100,7 +100,7 @@ protected
   end thermalConductivity;
 
   redeclare function extends dynamicViscosity_pTX
-protected
+  protected
   Modelica.Units.SI.Temperature T_corr;
 
   algorithm

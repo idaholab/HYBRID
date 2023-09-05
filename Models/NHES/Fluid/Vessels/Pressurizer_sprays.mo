@@ -55,10 +55,14 @@ model Pressurizer_sprays
    SI.SpecificEnthalpy h_spray(start=Medium.dewEnthalpy(Medium.setSat_p(p_start))) "Specific enthalpy of sprayPort";
    SI.Pressure p(start=p_start, fixed=true);
 
-  Real rhof_eng = NHES.Systems.EnergyStorage.SensibleHeatStorage.ComponentsTwentyPercentNominalSteamFlow2.rhof(TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_psi(p));
-  Real rhog_eng = NHES.Systems.EnergyStorage.SensibleHeatStorage.ComponentsTwentyPercentNominalSteamFlow2.rhog(TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_psi(p));
-  Real ug_eng = NHES.Systems.EnergyStorage.SensibleHeatStorage.ComponentsTwentyPercentNominalSteamFlow2.ug(TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_psi(p));
-  Real uf_eng = NHES.Systems.EnergyStorage.SensibleHeatStorage.ComponentsTwentyPercentNominalSteamFlow2.uf(TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_psi(p));
+  Real rhof_eng = NHES.Systems.EnergyStorage.SensibleHeatStorage.SupportComponent.ComponentsTwentyPercentNominalSteamFlow2.rhof(
+                                                                                                               TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_psi(p));
+  Real rhog_eng = NHES.Systems.EnergyStorage.SensibleHeatStorage.SupportComponent.ComponentsTwentyPercentNominalSteamFlow2.rhog(
+                                                                                                               TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_psi(p));
+  Real ug_eng = NHES.Systems.EnergyStorage.SensibleHeatStorage.SupportComponent.ComponentsTwentyPercentNominalSteamFlow2.ug(
+                                                                                                           TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_psi(p));
+  Real uf_eng = NHES.Systems.EnergyStorage.SensibleHeatStorage.SupportComponent.ComponentsTwentyPercentNominalSteamFlow2.uf(
+                                                                                                           TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_psi(p));
 
   Modelica.Fluid.Interfaces.FluidPort_b CVCS_Outlet_Port(redeclare package
       Medium = Medium)
@@ -112,9 +116,13 @@ equation
 //Connector Defintions
 
   spray_port.p = p;
-  spray_port.h_outflow = 2326.0*NHES.Systems.EnergyStorage.SensibleHeatStorage.ComponentsTwentyPercentNominalSteamFlow2.hg(TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_psi(p));
+  spray_port.h_outflow =2326.0*
+    NHES.Systems.EnergyStorage.SensibleHeatStorage.SupportComponent.ComponentsTwentyPercentNominalSteamFlow2.hg(
+    TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_psi(p));
   surge_port.p = p + Modelica.Constants.g_n*TRANSFORM.Units.Conversions.Functions.Density_kg_m3.from_lb_ft3((rhof_eng))*level;
-  surge_port.h_outflow = 2326.0*NHES.Systems.EnergyStorage.SensibleHeatStorage.ComponentsTwentyPercentNominalSteamFlow2.hf(TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_psi(p));
+  surge_port.h_outflow =2326.0*
+    NHES.Systems.EnergyStorage.SensibleHeatStorage.SupportComponent.ComponentsTwentyPercentNominalSteamFlow2.hf(
+    TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_psi(p));
   Heaters_Port.T=300; //This doesn't actually do anything. Just need it to solve the equation.
 
   //CVCS_Outlet_Port.h_outflow = 2326.0*NHES.Systems.EnergyStorage.SensibleHeatStorage.ComponentsTwentyPercentNominalSteamFlow2.hg(TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_psi(p));

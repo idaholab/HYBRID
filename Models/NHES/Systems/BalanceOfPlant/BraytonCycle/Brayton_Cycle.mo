@@ -11,7 +11,8 @@ model Brayton_Cycle
 
   //Modelica.Units.SI.Power Q_Recup;
     replaceable package Medium =
-      Modelica.Media.IdealGases.SingleGases.He constrainedby Modelica.Media.Interfaces.PartialMedium annotation(choicesAllMatching=true);
+      Modelica.Media.IdealGases.SingleGases.He constrainedby
+    Modelica.Media.Interfaces.PartialMedium                                                          annotation(choicesAllMatching=true);
     Modelica.Units.SI.Power Q_gen;
 
 
@@ -129,13 +130,13 @@ model Brayton_Cycle
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=90,
         origin={56,-38})));
-  BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.SpringBallValve
+  RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.SpringBallValve
     springBallValve(
     redeclare package Medium = Medium,
     p_spring=data.P_Release,
     K=data.K_P_Release,
-    opening_init=0.)
-    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+    opening_init=0.) annotation (Placement(transformation(
+        extent={{-10,-10},{10,10}},
         rotation=90,
         origin={4,58})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary5(

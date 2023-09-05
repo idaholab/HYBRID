@@ -1,8 +1,8 @@
 within NHES.Systems.EnergyStorage.SensibleHeatStorage.Examples;
 model Twentypercentofnominal3400MWtPWR2 "Compared to Thesis"
   extends Modelica.Icons.Example;
-  TwentyPercentNominal3400MWtPWR2
-                  ES(redeclare CS_20PercentNominal CS)
+  Models.TwentyPercentNominal3400MWtPWR2 ES(redeclare
+      ControlSystems.CS_20PercentNominal CS)
     annotation (Placement(transformation(extent={{-44,-38},{36,42}})));
 
   Modelica.Blocks.Sources.Constant hsg(k=1192.6*2326)

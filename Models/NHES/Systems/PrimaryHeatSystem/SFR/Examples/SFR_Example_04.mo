@@ -9,7 +9,7 @@ model SFR_Example_04
   Components.SFR_02_NTUHX sFR_02_NTUHX(redeclare package Medium_IHX_Loop =
         IL_Medium)
     annotation (Placement(transformation(extent={{-122,-26},{-38,44}})));
-  BalanceOfPlant.Turbine.SFR_Power_Conversion    sFR_Power_Conversion_02_1
+  BalanceOfPlant.RankineCycle.SFR_Power_Conversion sFR_Power_Conversion_02_1
     annotation (Placement(transformation(extent={{84,-30},{162,44}})));
 equation
   connect(sFR_02_NTUHX.port_a, sFR_Intermediate_Loop.port_IHX_b) annotation (

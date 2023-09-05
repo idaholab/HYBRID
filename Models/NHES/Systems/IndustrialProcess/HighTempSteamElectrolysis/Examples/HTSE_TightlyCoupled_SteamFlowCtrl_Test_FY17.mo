@@ -19,12 +19,12 @@ model HTSE_TightlyCoupled_SteamFlowCtrl_Test_FY17
         extent={{9,9},{-9,-9}},
         rotation=180,
         origin={-59,-12})));
-  NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.TightlyCoupled_SteamFlowCtrl_FY17
+  NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.Models.TightlyCoupled_SteamFlowCtrl_FY17
     IP(
     capacity=dataCapacity.IP_capacity,
     port_a_nominal(m_flow=IP.capacityScaler_steamFlow*7.311637),
     redeclare
-      NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.CS_TightlyCoupled_SteamFlowCtrl_stepInput_FY17
+      NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.ControlSystems.CS_TightlyCoupled_SteamFlowCtrl_stepInput_FY17
       CS(capacityScaler=IP.capacityScaler),
     flowSplit(port_2(h_outflow(start=2.95398e6, fixed=false))),
     returnPump(PR0=62.7/51.3042, pstart_out=6270000),

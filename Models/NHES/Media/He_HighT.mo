@@ -3,7 +3,7 @@ package He_HighT
   "Ideal gas \"He\" from NASA Glenn coefficients but Tmax higher"
   extends Modelica.Media.IdealGases.Common.SingleGasNasa(
      mediumName="Helium",
-     data=Systems.PrimaryHeatSystem.HTGR.HTGR_Rankine.BaseClasses.He,
+     data=Systems.PrimaryHeatSystem.HTGR.RankineCycle.BaseClasses.He,
      fluidConstants={Modelica.Media.IdealGases.Common.FluidData.He});
 
   annotation (Documentation(info="<html><div>

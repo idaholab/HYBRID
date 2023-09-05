@@ -3,8 +3,8 @@ model TightlyCoupled_PowerCtrl_Standalone
   extends
     NHES.Systems.IndustrialProcess.HighTempSteamElectrolysis.BaseClasses.Partial_SubSystem_B(
     allowFlowReversal=system.allowFlowReversal,
-    redeclare replaceable CS_Dummy CS,
-    redeclare replaceable ED_Dummy ED,
+    redeclare replaceable ControlSystems.CS_Dummy CS,
+    redeclare replaceable ControlSystems.ED_Dummy ED,
     port_a_nominal(
       p=5.8e6,
       T=591,

@@ -17,11 +17,12 @@ model Test2_Dimensions
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={50,0})));
-  FVM_LHTES fVM_LHTES(
+  BaseClasses.FVM_LHTES fVM_LHTES(
     Length=7.5*0.0254,
     ThicknessF=0.097*0.0254,
     ThicknessT=0.028*0.0254,
-    ThicknessP=0.251*0.0254) annotation (Placement(transformation(extent={{-4,-10},{16,10}})));
+    ThicknessP=0.251*0.0254)
+    annotation (Placement(transformation(extent={{-4,-10},{16,10}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
     amplitude=41,
     width=500,

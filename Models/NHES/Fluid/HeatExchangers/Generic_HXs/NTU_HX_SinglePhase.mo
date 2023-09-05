@@ -136,15 +136,17 @@ public
     nPorts_b=1)
     annotation (Placement(transformation(extent={{-10,-56},{10,-36}})));
 
-  NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.LossResistance
+  NHES.Systems.BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.LossResistance
     Tube_dp(
     redeclare package Medium = Tube_medium,
-            K=K_tube, dp_init=dp_init_tube)
+    K=K_tube,
+    dp_init=dp_init_tube)
     annotation (Placement(transformation(extent={{10,48},{-10,68}})));
-  NHES.Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.LossResistance
+  NHES.Systems.BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.LossResistance
     Shell_dp(
     redeclare package Medium = Shell_medium,
-             K=K_shell, dp_init=dp_init_shell)
+    K=K_shell,
+    dp_init=dp_init_shell)
     annotation (Placement(transformation(extent={{-10,-26},{10,-6}})));
 initial equation
 
