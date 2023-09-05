@@ -24,8 +24,8 @@ model FlowCV "Flow control valve"
     dp_nominal=dp_nominal,
     m_flow_nominal=m_flow_nominal)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Medium)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Medium)
     annotation (Placement(transformation(extent={{20,10},{40,-10}})));
   NHES.Controls.LimOffsetPID PID(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,

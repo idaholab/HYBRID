@@ -14,8 +14,8 @@ model PressureReliefValve "Pressure Relief Valve"
     dp_nominal=dp_nominal,
     m_flow_nominal=m_flow_nominal)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-  TRANSFORM.Fluid.Sensors.Pressure     sensor_p(     redeclare package Medium
-      = Medium)
+  TRANSFORM.Fluid.Sensors.Pressure     sensor_p(     redeclare package Medium =
+        Medium)
     annotation (Placement(transformation(extent={{-76,0},{-56,-20}})));
 
   Modelica.Blocks.Sources.RealExpression One(y=1)
