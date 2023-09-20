@@ -1,5 +1,5 @@
-within NHES.Systems.BalanceOfPlant.RankineCycle.SupportComponents;
-block VarLimVarK_PID
+within NHES.Controls;
+block LimOffsetPID
   "P, PI, PD, and PID controller with limited output, anti-windup compensation, setpoint weighting, feed forward, and reset"
   import InitPID =
          Modelica.Blocks.Types.Init;
@@ -8,15 +8,6 @@ block VarLimVarK_PID
   extends Modelica.Blocks.Interfaces.SVcontrol;
   output Real controlError = u_s - u_m
     "Control error (set point - measurement)";
-  parameter Boolean use_k_in = false
-    "Get the controller gain from the input connector"
-    annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
-  parameter Boolean use_lowlim_in= false
-    "Get the lower limit from the input connector"
-    annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
-  parameter Boolean use_uplim_in = false
-    "Get the upper limit from the input connector"
-    annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
   parameter SimpleController controllerType=
          SimpleController.PID "Type of controller";
   parameter Boolean with_FF=false "enable feed-forward input signal"
@@ -24,13 +15,14 @@ block VarLimVarK_PID
   parameter Boolean derMeas = true "=true avoid derivative kick" annotation(Evaluate=true,Dialog(enable=controllerType==SimpleController.PD or
                                 controllerType==SimpleController.PID));
   parameter Real k = 1 "Controller gain: +/- for direct/reverse acting" annotation(Dialog(group="Parameters: Tuning Controls"));
-  parameter SI.Time Ti(min=Modelica.Constants.small)=0.5
-    "Time constant of Integrator block" annotation (Dialog(group="Parameters: Tuning Controls",enable=
-          controllerType == SimpleController.PI or
-          controllerType == SimpleController.PID));
-  parameter SI.Time Td(min=0)=0.1 "Time constant of Derivative block"
-    annotation (Dialog(group="Parameters: Tuning Controls",enable=controllerType == SimpleController.PD
-           or controllerType == SimpleController.PID));
+  parameter Modelica.Units.SI.Time Ti(min=Modelica.Constants.small)=0.5
+    "Time constant of Integrator block" annotation (Dialog(group=
+          "Parameters: Tuning Controls", enable=controllerType ==
+          SimpleController.PI or controllerType == SimpleController.PID));
+  parameter Modelica.Units.SI.Time Td(min=0)=0.1
+    "Time constant of Derivative block" annotation (Dialog(group=
+          "Parameters: Tuning Controls", enable=controllerType ==
+          SimpleController.PD or controllerType == SimpleController.PID));
   parameter Real yb = 0 "Output bias. May improve simulation";
   parameter Real k_s= 1 "Setpoint input scaling: k_s*u_s. May improve simulation";
   parameter Real k_m= 1 "Measurement input scaling: k_m*u_m. May improve simulation";
@@ -92,16 +84,17 @@ block VarLimVarK_PID
     annotation (Placement(transformation(extent={{-70,-10},{-50,10}})));
   Modelica.Blocks.Math.Gain P(k=1)
     annotation (Placement(transformation(extent={{-40,40},{-20,60}})));
-  TRANSFORM.Blocks.IntegratorWithReset I(
+  TRANSFORM.Blocks.IntegratorWithReset
+                             I(
     k=unitTime/Ti,
     y_start=xi_start,
-    initType=if initType == InitPID.SteadyState then Init.SteadyState else if
-        initType == InitPID.InitialState or initType == InitPID.InitialState
+    initType=if initType == InitPID.SteadyState then Init.SteadyState else
+        if initType == InitPID.InitialState or initType == InitPID.InitialState
          then Init.InitialState else Init.NoInit,
-    reset=if reset == TRANSFORM.Types.Reset.Disabled then reset else TRANSFORM.Types.Reset.Input,
+    reset=if reset == TRANSFORM.Types.Reset.Disabled then reset else
+        TRANSFORM.Types.Reset.Input,
     y_reset=y_reset) if with_I
     annotation (Placement(transformation(extent={{-40,-60},{-20,-40}})));
-
   Modelica.Blocks.Continuous.Derivative D(
     k=Td/unitTime,
     T=max([Td/Nd,1.e-14]),
@@ -110,6 +103,8 @@ block VarLimVarK_PID
          then Init.SteadyState else if initType ==InitPID.InitialState  then
         Init.InitialState else Init.NoInit) if with_D
     annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
+  Modelica.Blocks.Math.Gain gainPID(k=k)
+    annotation (Placement(transformation(extent={{24,-10},{44,10}})));
   Modelica.Blocks.Math.Add3 addPID
     annotation (Placement(transformation(extent={{-4,-10},{16,10}})));
   Modelica.Blocks.Math.Add3 addI(k2=-1) if with_I
@@ -121,8 +116,9 @@ block VarLimVarK_PID
         rotation=270)));
   Modelica.Blocks.Math.Gain gainTrack(k=1/(k*Ni))  if with_I
     annotation (Placement(transformation(extent={{40,-80},{20,-60}})));
-  Modelica.Blocks.Nonlinear.VariableLimiter
-                                    variableLimiter(
+  Modelica.Blocks.Nonlinear.Limiter limiter(
+    uMax=yMax - offset,
+    uMin=yMin - offset,
     strict=strict,
     u(start=y_start))
     annotation (Placement(transformation(extent={{72,-10},{92,10}})));
@@ -149,16 +145,15 @@ block VarLimVarK_PID
         transformation(
         extent={{-6,-6},{6,6}},
         rotation=90,
-        origin={0,-90})));
+        origin={0,-86})));
   Modelica.Blocks.Logical.Switch switch_derKick if with_D
     annotation (Placement(transformation(extent={{-66,-30},{-54,-18}})));
   Modelica.Blocks.Sources.BooleanConstant derKick(k=derMeas) if with_D
     annotation (Placement(transformation(extent={{-98,-30},{-86,-18}})));
   Modelica.Blocks.Sources.Constant null_bias(k=yb)
     annotation (Placement(transformation(extent={{20,-40},{40,-20}})));
-
 protected
-  constant SI.Time unitTime=1  annotation(HideResult=true);
+  constant Modelica.Units.SI.Time unitTime=1 annotation (HideResult=true);
   parameter Boolean with_I = controllerType==SimpleController.PI or
                              controllerType==SimpleController.PID annotation(Evaluate=true, HideResult=true);
   parameter Boolean with_D = controllerType==SimpleController.PD or
@@ -167,54 +162,34 @@ protected
    "Internal connector for controller output reset"
    annotation(Evaluate=true);
   Modelica.Blocks.Sources.RealExpression intRes(final y=y_reset_internal/k -
-        addPID.u1 - addPID.u2)
-    if reset <> TRANSFORM.Types.Reset.Disabled
+        addPID.u1 - addPID.u2) if reset <> TRANSFORM.Types.Reset.Disabled
     "Signal source for integrator reset"
     annotation (Placement(transformation(extent={{-90,-100},{-70,-80}})));
-  Modelica.Blocks.Interfaces.RealInput k_in_internal
-    "Needed to connect to conditional connector";
-  Modelica.Blocks.Interfaces.RealInput lowlim_in_internal
-    "Needed to connect to conditional connector";
-  Modelica.Blocks.Interfaces.RealInput uplim_in_internal
-    "Needed to connect to conditional connector";
 public
   Modelica.Blocks.Math.Gain gain_u_ff(k=k_ff) if with_FF
     annotation (Placement(transformation(extent={{-96,74},{-84,86}})));
-  Modelica.Blocks.Interfaces.RealInput upperlim if use_uplim_in
-    "Prescribed upper limit of output"
-    annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-        rotation=-90,
-        origin={-60,110})));
-  Modelica.Blocks.Interfaces.RealInput lowerlim if use_lowlim_in
-    "Prescribed lower limit of output"
-    annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-        rotation=-90,
-        origin={0,110})));
-  Modelica.Blocks.Math.Product product1
-    annotation (Placement(transformation(extent={{24,-10},{44,10}})));
-  Modelica.Blocks.Interfaces.RealInput prop_k if use_k_in
-    "Prescribed proportional constant"
-    annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-        rotation=-90,
-        origin={74,114})));
+  parameter Modelica.Blocks.Interfaces.RealOutput offset=0
+    "Value of Real output";
+  Modelica.Blocks.Sources.BooleanStep delay_boolean(startTime=delayTime)
+    annotation (Placement(transformation(extent={{-20,100},{0,120}})));
+  Modelica.Blocks.Logical.Switch input_switch
+    annotation (Placement(transformation(extent={{20,94},{40,114}})));
+  parameter Modelica.Units.SI.Time delayTime=0 "Time instant of step start";
+  parameter Modelica.Blocks.Interfaces.RealOutput init_output=0
+    "Value of Real output";
+  Modelica.Blocks.Logical.Switch output_switch
+    annotation (Placement(transformation(extent={{100,92},{120,112}})));
+  Modelica.Blocks.Sources.RealExpression init(y=init_output)
+    annotation (Placement(transformation(extent={{64,84},{84,104}})));
+  Modelica.Blocks.Math.Add add_offset
+    annotation (Placement(transformation(extent={{100,60},{120,80}})));
+  Modelica.Blocks.Sources.RealExpression offset_set(y=offset)
+    annotation (Placement(transformation(extent={{66,54},{86,74}})));
 initial equation
   if initType==InitPID.InitialOutput then
      y = y_start;
   end if;
-
 equation
-  connect(prop_k, k_in_internal);
-  connect(lowerlim, lowlim_in_internal);
-  connect(upperlim, uplim_in_internal);
-  if not use_k_in then
-    k_in_internal = k;
-  end if;
-  if not use_lowlim_in then
-    lowlim_in_internal = yMin;
-  end if;
-  if not use_uplim_in then
-    uplim_in_internal = yMax;
-  end if;
   assert(yMax >= yMin, "LimPID: Limits must be consistent. However, yMax (=" +
     String(yMax) + ") < yMin (=" + String(yMin) + ")");
   if initType ==InitPID.InitialOutput  and (y_start < yMin or y_start > yMax) then
@@ -237,22 +212,19 @@ equation
     annotation (Line(points={{-19,0},{-6,0}}, color={0,0,127}));
   connect(I.y, addPID.u3) annotation (Line(points={{-19,-50},{-10,-50},{-10,-8},
           {-6,-8}},     color={0,0,127}));
-  connect(variableLimiter.y, addSat.u1) annotation (Line(points={{93,0},{96,0},
-          {96,-20},{86,-20},{86,-38}}, color={0,0,127}));
-  connect(variableLimiter.y, y)
-    annotation (Line(points={{93,0},{110,0}}, color={0,0,127}));
+  connect(addPID.y, gainPID.u)
+    annotation (Line(points={{17,0},{22,0}}, color={0,0,127}));
   connect(addSat.y, gainTrack.u) annotation (Line(points={{80,-61},{80,-70},{
           42,-70}}, color={0,0,127}));
   connect(gainTrack.y, addI.u3) annotation (Line(points={{19,-70},{-76,-70},{-76,
           -58},{-72,-58}},     color={0,0,127}));
   connect(Dzero.y, addPID.u2) annotation (Line(points={{-19.5,25},{-14,25},{-14,
           0},{-6,0}},     color={0,0,127}));
+  connect(gainPID.y, addFF.u2)
+    annotation (Line(points={{45,0},{47,0},{47,0},{49,0}},
+                                                    color={0,0,127}));
   connect(Fzero.y, addFF.u1) annotation (Line(points={{35.5,25},{44,25},{44,4},{
           49,4}}, color={0,0,127}));
-  connect(addFF.y, variableLimiter.u)
-    annotation (Line(points={{60.5,0},{64,0},{70,0}}, color={0,0,127}));
-  connect(addSat.u2, variableLimiter.u) annotation (Line(points={{74,-38},{74,-20},
-          {64,-20},{64,0},{70,0}}, color={0,0,127}));
   connect(Izero.y, addPID.u3) annotation (Line(points={{-19.5,-25},{-14,-25},{
           -14,-50},{-10,-50},{-10,-8},{-6,-8}}, color={0,0,127}));
   connect(u_s, gain_u_s.u)
@@ -263,10 +235,6 @@ equation
           56}}, color={0,0,127}));
   connect(gain_u_s.y, addI.u1) annotation (Line(points={{-83.4,0},{-80,0},{-80,-42},
           {-72,-42}}, color={0,0,127}));
-  connect(gain_u_m.u, u_m)
-    annotation (Line(points={{0,-97.2},{0,-120}}, color={0,0,127}));
-  connect(gain_u_m.y, addP.u2) annotation (Line(points={{0,-83.4},{0,-80},{-78,-80},
-          {-78,44},{-72,44}}, color={0,0,127}));
   connect(addD.u2, addP.u2) annotation (Line(points={{-72,-6},{-78,-6},{-78,44},
           {-72,44}}, color={0,0,127}));
   connect(addI.u2, addP.u2) annotation (Line(points={{-72,-50},{-78,-50},{-78,44},
@@ -290,17 +258,36 @@ equation
   connect(gain_u_ff.y, addFF.u1) annotation (Line(points={{-83.4,80},{44,80},{
           44,4},{49,4}},
                       color={0,0,127}));
-  connect(variableLimiter.limit1, uplim_in_internal) annotation (Line(points={{70,8},{
-          64,8},{64,74},{-60,74},{-60,110}},  color={0,0,127}));
-  connect(variableLimiter.limit2, lowlim_in_internal) annotation (Line(points={{70,-8},
-          {62,-8},{62,86},{0,86},{0,110}},           color={0,0,127}));
-  connect(addPID.y, product1.u2) annotation (Line(points={{17,0},{16,0},{16,-14},
-          {22,-14},{22,-6}}, color={0,0,127}));
-  connect(addFF.u2, product1.y)
-    annotation (Line(points={{49,0},{45,0}}, color={0,0,127}));
-  connect(product1.u1, k_in_internal) annotation (Line(points={{22,6},{18,6},{
-          18,16},{74,16},{74,114}},
-                                  color={0,0,127}));
+  connect(delay_boolean.y, input_switch.u2)
+    annotation (Line(points={{1,110},{10,110},{10,104},{18,104}},
+                                                          color={255,0,255}));
+  connect(addFF.y, addSat.u2) annotation (Line(points={{60.5,0},{64,0},{64,-30},
+          {74,-30},{74,-38}}, color={0,0,127}));
+  connect(addFF.y, limiter.u)
+    annotation (Line(points={{60.5,0},{70,0}}, color={0,0,127}));
+  connect(u_m, gain_u_m.u) annotation (Line(points={{0,-120},{0,-106.6},{-4.44089e-16,
+          -106.6},{-4.44089e-16,-93.2}}, color={0,0,127}));
+  connect(gain_u_m.y, input_switch.u1) annotation (Line(points={{0,-79.4},{0,-80},
+          {20,-80},{20,-120},{140,-120},{140,122},{14,122},{14,112},{18,112}},
+        color={0,0,127}));
+  connect(gain_u_s.y, input_switch.u3) annotation (Line(points={{-83.4,0},{-80,0},
+          {-80,96},{18,96}}, color={0,0,127}));
+  connect(addP.u2, input_switch.y) annotation (Line(points={{-72,44},{-78,44},{-78,
+          90},{48,90},{48,104},{41,104}}, color={0,0,127}));
+  connect(delay_boolean.y, output_switch.u2) annotation (Line(points={{1,110},{10,
+          110},{10,134},{88,134},{88,102},{98,102}}, color={255,0,255}));
+  connect(offset_set.y, add_offset.u2)
+    annotation (Line(points={{87,64},{98,64}}, color={0,0,127}));
+  connect(init.y, output_switch.u3)
+    annotation (Line(points={{85,94},{98,94}}, color={0,0,127}));
+  connect(limiter.y, add_offset.u1) annotation (Line(points={{93,0},{92,0},{
+          92,76},{98,76}}, color={0,0,127}));
+  connect(add_offset.y, output_switch.u1) annotation (Line(points={{121,70},{
+          124,70},{124,86},{94,86},{94,110},{98,110}}, color={0,0,127}));
+  connect(output_switch.y, y) annotation (Line(points={{121,102},{126,102},{126,
+          0},{110,0}}, color={0,0,127}));
+  connect(addSat.u1, limiter.y) annotation (Line(points={{86,-38},{86,-14},{
+          93,-14},{93,0}}, color={0,0,127}));
   annotation (defaultComponentName="PID",
     Icon(coordinateSystem(
         preserveAspectRatio=true,
@@ -398,4 +385,4 @@ equation
           extent={{-98,106},{-158,96}},
           lineColor={0,0,255},
           textString="(feed-forward)")}));
-end VarLimVarK_PID;
+end LimOffsetPID;
