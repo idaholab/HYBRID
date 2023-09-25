@@ -75,7 +75,7 @@ model CS_Rankine_Xe100_Based_Secondary_TransientControl
     annotation (Placement(transformation(extent={{88,16},{108,36}})));
   Modelica.Blocks.Sources.ContinuousClock clock2(offset=0, startTime=0)
     annotation (Placement(transformation(extent={{-174,104},{-154,124}})));
-  SupportComponents.VarLimVarK_PID PID(
+  SupportComponent.VarLimVarK_PID PID(
     use_k_in=true,
     use_lowlim_in=true,
     use_uplim_in=true,
