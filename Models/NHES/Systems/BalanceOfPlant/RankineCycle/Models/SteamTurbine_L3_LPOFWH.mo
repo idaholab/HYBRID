@@ -4,7 +4,7 @@ model SteamTurbine_L3_LPOFWH
   extends
     NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_SubSystem(
     redeclare replaceable
-      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_L3 CS,
+      ControlSystems.CS_L3_HTGR_extraction_logan                    CS,
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ED_Dummy ED,
     redeclare replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3
@@ -121,13 +121,13 @@ model SteamTurbine_L3_LPOFWH
         origin={100,44})));
   TRANSFORM.Electrical.Interfaces.ElectricalPowerPort_Flow port_a_elec
     annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-  Fluid.Machines.Pump_Pressure                  pump(redeclare package Medium
-      = Modelica.Media.Water.StandardWater,
+  Fluid.Machines.Pump_Pressure                  pump(redeclare package Medium =
+        Modelica.Media.Water.StandardWater,
     p_nominal=data.p_i2 - 0.2e5,
     eta=data.eta_p)
     annotation (Placement(transformation(extent={{66,-70},{46,-50}})));
-  Fluid.Machines.Pump_Pressure                  pump1(redeclare package Medium
-      = Modelica.Media.Water.StandardWater,
+  Fluid.Machines.Pump_Pressure                  pump1(redeclare package Medium =
+        Modelica.Media.Water.StandardWater,
     use_input=false,
     p_nominal=data.p_i2,
     eta=data.eta_p)
