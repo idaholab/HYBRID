@@ -580,6 +580,6 @@ equation
 </table>
 <p><br><br><br><br>Model developed at INL by Logan Williams <span style=\"font-family: inherit;\"><a href=\"mailto:logan.williams@inl.gov\">logan.williams@inl.gov</a></p>
 <p>Documented September 2023</p>
-<p>More imformation on this model can be found at https://doi.org/10.2172/1988132 </p>
+<p>More imformation on this model can be found at <a href=\"https://doi.org/10.2172/1988132\">https://doi.org/10.2172/1988132</a></p>
 </html>"));
 end SteamTurbine_L3_HPOFWHsimplified;
