@@ -120,5 +120,9 @@ equation
           fillPattern=FillPattern.Solid,
           origin={-12,-21},
           rotation=90)}),                                        Diagram(
-        coordinateSystem(preserveAspectRatio=false)));
+        coordinateSystem(preserveAspectRatio=false)),
+    Documentation(info="<html>
+<p>Non Linear Break, can be used to breakup large sets of non linear equations for fuilds.  </p><p><br><br><br><br><br>Model developed at INL by Logan Williams <span style=\"font-family: inherit;\"><a href=\"mailto:logan.williams@inl.gov\">logan.williams@inl.gov</a></span></p>
+<p>Documented September 2023</p>
+</html>"));
 end NonLinear_Break;

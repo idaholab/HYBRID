@@ -314,72 +314,27 @@ equation
           points={{30,60},{81,60}},
           color={255,0,0})}),
     Documentation(info="<html>
-<p>This model duplicates the LimPID in the Modelica Standard Library but modifies it to enable a feed forward control option.</p>
-<p>Via parameter <b>controllerType</b> either <b>P</b>, <b>PI</b>, <b>PD</b>, or <b>PID</b> can be selected. If, e.g., PI is selected, all components belonging to the D-part are removed from the block (via conditional declarations). The example model <a href=\"modelica://Modelica.Blocks.Examples.PID_Controller\">Modelica.Blocks.Examples.PID_Controller</a> demonstrates the usage of this controller. Several practical aspects of PID controller design are incorporated according to chapter 3 of the book: </p>
-<dl><dt>&Aring;str&ouml;m K.J., and H&auml;gglund T.:</dt>
-<dd><b>PID Controllers: Theory, Design, and Tuning</b>. Instrument Society of America, 2nd edition, 1995. </dd>
-</dl><p>Besides the additive <b>proportional, integral</b> and <b>derivative</b> part of this controller, the following features are present: </p>
-<ol>
-<li>The output of this controller is limited. If the controller is in its limits, anti-windup compensation is activated to drive the integrator state to zero. </li>
-<li>The high-frequency gain of the derivative part is limited to avoid excessive amplification of measurement noise.</li>
-<li>Setpoint weighting is present, which allows to weight the setpoint in the proportional and the derivative part independently from the measurement. The controller will respond to load disturbances and measurement noise independently of this setting (parameters wp, wd). However, setpoint changes will depend on this setting. For example, it is useful to set the setpoint weight wd for the derivative part to zero, if steps may occur in the setpoint signal. </li>
-<li>Feed forward option is available on any controllerType</li>
-<li>derMeas = true uses the derivative on measurement value only to avoid the derivative kick of setpoint changes. = false will take the derivative w.r.t. error</li>
-<li>It can be configured to enable an input port that allows resetting the controller output. The controller output can be reset as follows: </li>
-<ul>
-<li>If reset = TRANSFORM.Types.Reset.Disabled, which is the default, then the controller output is never reset. </li>
-<li>If reset = TRANSFORM.Types.Reset.Parameter, then a boolean input signal trigger is enabled. Whenever the value of this input changes from false to true, the controller output is reset by setting y to the value of the parameter y_reset. </li>
-<li>If reset = TRANSFORM.Types.Reset.Input, then a boolean input signal trigger is enabled. Whenever the value of this input changes from false to true, the controller output is reset by setting y to the value of the input signal y_reset_in. </li>
-</ul>
-</ol>
-<p>Note that this controller implements an integrator anti-windup. Therefore, for most applications, keeping the default setting of reset = TRANSFORM.Types.Reset.Disabled is sufficient. Examples where it may be beneficial to reset the controller output are situations where the equipment control input should continuously increase as the equipment is switched on, such as as a light dimmer that may slowly increase the luminance, or a variable speed drive of a motor that should continuously increase the speed. </p>
-<p>The parameters of the controller can be manually adjusted by performing simulations of the closed loop system (= controller + plant connected together) and using the following strategy: </p>
-<ol>
-<li>Set very large limits, e.g., yMax = Modelica.Constants.inf</li>
-<li>Select a <b>P</b>-controller and manually enlarge parameter <b>k</b> (the total gain of the controller) until the closed-loop response cannot be improved any more.</li>
-<li>Select a <b>PI</b>-controller and manually adjust parameters <b>k</b> and <b>Ti</b> (the time constant of the integrator). The first value of Ti can be selected, such that it is in the order of the time constant of the oscillations occurring with the P-controller. If, e.g., vibrations in the order of T=10 ms occur in the previous step, start with Ti=0.01 s.</li>
-<li>If you want to make the reaction of the control loop faster (but probably less robust against disturbances and measurement noise) select a <b>PID</b>-Controller and manually adjust parameters <b>k</b>, <b>Ti</b>, <b>Td</b> (time constant of derivative block).</li>
-<li>Set the limits yMax and yMin according to your specification.</li>
-<li>Perform simulations such that the output of the PID controller goes in its limits. Tune <b>Ni</b> (Ni*Ti is the time constant of the anti-windup compensation) such that the input to the limiter block (= limiter.u) goes quickly enough back to its limits. If Ni is decreased, this happens faster. If Ni=infinity, the anti-windup compensation is switched off and the controller works bad. </li>
-</ol>
-<p><b>Initialization</b> </p>
-<p>This block can be initialized in different ways controlled by parameter <b>initType</b>. The possible values of initType are defined in <a href=\"modelica://Modelica.Blocks.Types.InitPID\">Modelica.Blocks.Types.InitPID</a>. This type is identical to <a href=\"modelica://Modelica.Blocks.Types.Init\">Types.Init</a>, with the only exception that the additional option <b>DoNotUse_InitialIntegratorState</b> is added for backward compatibility reasons (= integrator is initialized with InitialState whereas differential part is initialized with NoInit which was the initialization in version 2.2 of the Modelica standard library). </p>
-<p>Based on the setting of initType, the integrator (I) and derivative (D) blocks inside the PID controller are initialized according to the following table: </p>
-<table cellspacing=\"0\" cellpadding=\"2\" border=\"1\"><tr>
-<td valign=\"top\"><h4>initType</h4></td>
-<td valign=\"top\"><h4>I.initType</h4></td>
-<td valign=\"top\"><h4>D.initType</h4></td>
+<p>Limit and Offset PID controler is build off of TRANSFORM/Controls/LimPID to add an offset value. This allows for the inital value of the controler to be set along with time delay befor the controler activates.</p>
+<p>There are three addational parameters with this controler</p>
+<table cellspacing=\"0\" cellpadding=\"2\" border=\"1\" width=\"100%\"><tr>
+<td><p>Parameter</p></td>
+<td><p>Discription</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><h4>NoInit</h4></td>
-<td valign=\"top\"><p>NoInit</p></td>
-<td valign=\"top\"><p>NoInit</p></td>
+<td><p>offset</p></td>
+<td><p>The initial output of the controler</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><h4>SteadyState</h4></td>
-<td valign=\"top\"><p>SteadyState</p></td>
-<td valign=\"top\"><p>SteadyState</p></td>
+<td><p>delayTime</p></td>
+<td><p>The time until the contoler turns on</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><h4>InitialState</h4></td>
-<td valign=\"top\"><p>InitialState</p></td>
-<td valign=\"top\"><p>InitialState</p></td>
-</tr>
-<tr>
-<td valign=\"top\"><h4>InitialOutput</h4><p>and initial equation: y = y_start</p></td>
-<td valign=\"top\"><p>NoInit</p></td>
-<td valign=\"top\"><p>SteadyState</p></td>
-</tr>
-<tr>
-<td valign=\"top\"><h4>DoNotUse_InitialIntegratorState</h4></td>
-<td valign=\"top\"><p>InitialState</p></td>
-<td valign=\"top\"><p>NoInit</p></td>
+<td><p>init_output</p></td>
+<td><p>The output value given during the delay, normal set equal to the offset value</p></td>
 </tr>
 </table>
-<p><br><br><br><br><br><br>In many cases, the most useful initial condition is <b>SteadyState</b> because initial transients are then no longer present. If initType = InitPID.SteadyState, then in some cases difficulties might occur. The reason is the equation of the integrator: </p>
-<p><b><span style=\"font-family: Courier New;\">der</span></b>(y) = k*u; </p>
-<p>The steady state equation &quot;der(x)=0&quot; leads to the condition that the input u to the integrator is zero. If the input u is already (directly or indirectly) defined by another initial condition, then the initialization problem is <b>singular</b> (has none or infinitely many solutions). This situation occurs often for mechanical systems, where, e.g., u = desiredSpeed - measuredSpeed and since speed is both a state and a derivative, it is natural to initialize it with zero. As sketched this is, however, not possible. The solution is to not initialize u_m or the variable that is used to compute u_m by an algebraic equation. </p>
-<p>If parameter <b>limitAtInit</b> = <b>false</b>, the limits at the output of this controller block are removed from the initialization problem which leads to a much simpler equation system. After initialization has been performed, it is checked via an assert whether the output is in the defined limits. For backward compatibility reasons <b>limitAtInit</b> = <b>true</b>. In most cases it is best to use <b>limitAtInit</b> = <b>false</b>. </p>
+<p><br><br><br><br>Model developed at INL by Logan Williams <span style=\"font-family: inherit;\"><a href=\"mailto:logan.williams@inl.gov\">Logan.Williams@inl.gov</a></p>
+<p><br>Documented September 2023</p>
 </html>"),
     Diagram(graphics={         Text(
           extent={{-98,106},{-158,96}},
