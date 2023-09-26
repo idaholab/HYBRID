@@ -8122,14 +8122,14 @@ Block has one continuous Real input and one continuous Real output signal.
         TRANSFORM.Fluid.Interfaces.FluidPort_Flow Pipe_flow(redeclare package
                     Medium =                                                           medium)
           annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-            Modelica.Blocks.Interfaces.RealOutput v_rout
-                                                        if Vels_out annotation (Placement(transformation(
+            Modelica.Blocks.Interfaces.RealOutput v_rout if
+                                                           Vels_out annotation (Placement(transformation(
                 extent={{-32,32},{8,72}}), iconTransformation(
               extent={{-20,-20},{20,20}},
               rotation=270,
               origin={58,-46})));
-        Modelica.Blocks.Interfaces.RealOutput v_theout
-                                                      if Vels_out annotation (Placement(transformation(
+        Modelica.Blocks.Interfaces.RealOutput v_theout if
+                                                         Vels_out annotation (Placement(transformation(
                 extent={{-32,32},{8,72}}), iconTransformation(
               extent={{20,-20},{-20,20}},
               rotation=270,
@@ -9559,18 +9559,18 @@ features are:
           "Fixed values of trace substances"
           annotation (Evaluate=true,
                       Dialog(enable = (not use_C_in) and Medium.nC > 0));
-        Modelica.Blocks.Interfaces.RealInput m_flow_in     if use_m_flow_in
+        Modelica.Blocks.Interfaces.RealInput m_flow_in if     use_m_flow_in
           "Prescribed mass flow rate"
           annotation (Placement(transformation(extent={{-120,60},{-80,100}})));
-        Modelica.Blocks.Interfaces.RealInput h_in              if use_h_in
+        Modelica.Blocks.Interfaces.RealInput h_in if              use_h_in
           "Prescribed fluid specific enthalpy"
           annotation (Placement(transformation(extent={{-140,20},{-100,60}}), iconTransformation(extent={{-140,20},{-100,60}})));
-        Modelica.Blocks.Interfaces.RealInput X_in[Medium.nX]
-                                                           if use_X_in
+        Modelica.Blocks.Interfaces.RealInput X_in[Medium.nX] if
+                                                              use_X_in
           "Prescribed fluid composition"
           annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
-        Modelica.Blocks.Interfaces.RealInput C_in[Medium.nC]
-                                                           if use_C_in
+        Modelica.Blocks.Interfaces.RealInput C_in[Medium.nC] if
+                                                              use_C_in
           "Prescribed boundary trace substances"
           annotation (Placement(transformation(extent={{-120,-100},{-80,-60}}), iconTransformation(extent={{-120,-100},{-80,-60}})));
       protected
