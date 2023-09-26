@@ -63,12 +63,10 @@ eta_is=eta;
           textString="m_flow",
           lineColor={0,0,0})}),
     Documentation(info="<HTML>
-This component prescribes the flow rate passing through it. The change of
-specific enthalpy due to the pressure difference between the inlet and the
-outlet is ignored; use <t>Pump</t> models if this has to be taken into account correctly.
-<p><b>Modelling options</b></p>
-<p>If <tt>w0Fix</tt> is set to true, the flowrate is given by the parameter <tt>w0</tt>; otherwise, the <tt>in_w0</tt> connector must be wired, providing the (possibly varying) flowrate value.</p>
-</HTML>",
+This component prescribes the flow rate passing through it. 
+The change of specific enthalpy due to the pressure difference between the inlet and the outlet is calculated.
+<p><br><br><br><br>Model developed at INL by Logan Williams <span style=\"font-family: inherit;\"><a href=\"mailto:logan.williams@inl.gov\">logan.williams@inl.gov</a></span></p>
+<p>Documented September 2023</p></HTML>",
         revisions="<html>
 <ul>
 <li><i>18 Mar 2005</i>
