@@ -119,5 +119,10 @@ equation
           points={{-18,44},{-44,68}},
           color={0,0,0},
           thickness=0.5)}),                 Diagram(coordinateSystem(
-          preserveAspectRatio=false)));
+          preserveAspectRatio=false)),
+    Documentation(info="<html>
+<p>Linear Control Valve with built in hysteresis controller, controlling pressure. If the pressure at the inlet of the value increases beond the set Over_Pressure valve will become wide open, and once the pressure drops below the Reset_Pressure value the valve will fully close. This model is should only be used in model development. Finished model should use control systems for valve controls.</p>
+<p><br><br><br><br>Model developed at INL by Logan Williams <span style=\"font-family: inherit;\"><a href=\"mailto:logan.williams@inl.gov\">Logan.Williams@inl.gov</a></span></p>
+<p><br>Documented September 2023</p>
+</html>"));
 end PressureReliefValve;

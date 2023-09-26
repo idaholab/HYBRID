@@ -314,15 +314,15 @@ equation
           points={{30,60},{81,60}},
           color={255,0,0})}),
     Documentation(info="<html>
-<p>Limit and Offset PID controler is build off of TRANSFORM/Controls/LimPID to add an offset value. This allows for the inital value of the controler to be set along with time delay befor the controler activates.</p>
-<p>There are three addational parameters with this controler</p>
+<p>Limit and Offset PID controller is build off of TRANSFORM/Controls/LimPID to add an offset value. This allows for the inital value of the controller to be set along with time delay befor the controller activates.</p>
+<p>There are three addational parameters with this controller </p>
 <table cellspacing=\"0\" cellpadding=\"2\" border=\"1\" width=\"100%\"><tr>
 <td><p>Parameter</p></td>
 <td><p>Discription</p></td>
 </tr>
 <tr>
 <td><p>offset</p></td>
-<td><p>The initial output of the controler</p></td>
+<td><p>The initial output of the controller </p></td>
 </tr>
 <tr>
 <td><p>delayTime</p></td>
@@ -333,7 +333,7 @@ equation
 <td><p>The output value given during the delay, normal set equal to the offset value</p></td>
 </tr>
 </table>
-<p><br><br><br><br>Model developed at INL by Logan Williams <span style=\"font-family: inherit;\"><a href=\"mailto:logan.williams@inl.gov\">Logan.Williams@inl.gov</a></p>
+<p><br><br><br><br><br>Model developed at INL by Logan Williams <span style=\"font-family: inherit;\"><a href=\"mailto:logan.williams@inl.gov\">Logan.Williams@inl.gov</a></span></p>
 <p><br>Documented September 2023</p>
 </html>"),
     Diagram(graphics={         Text(
