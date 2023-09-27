@@ -4,8 +4,6 @@ model SubSystem_Dummy
   extends BaseClasses.Partial_SubSystem_A(
     redeclare replaceable
       NHES.Systems.Templates.SubSystem_Standalone.CS.CS_Dummy CS,
-    redeclare replaceable
-      NHES.Systems.Templates.SubSystem_Standalone.CS.ED_Dummy ED,
     redeclare Data.Data_Dummy data);
 
 equation

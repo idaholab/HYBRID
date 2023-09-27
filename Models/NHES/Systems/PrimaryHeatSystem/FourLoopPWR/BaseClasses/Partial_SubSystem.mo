@@ -7,9 +7,7 @@ partial model Partial_SubSystem
   extends Record_SubSystem;
 
   replaceable Partial_ControlSystem CS annotation (choicesAllMatching=true,
-      Placement(transformation(extent={{-18,122},{-2,138}})));
-  replaceable Partial_EventDriver ED annotation (choicesAllMatching=true,
-      Placement(transformation(extent={{2,122},{18,138}})));
+      Placement(transformation(extent={{-8,122},{8,138}})));
   replaceable Record_Data data
     annotation (Placement(transformation(extent={{42,122},{58,138}})));
 
@@ -30,44 +28,24 @@ partial model Partial_SubSystem
     "Approximate nuclear fuel consumption [kg/s]"
     annotation (Placement(transformation(extent={{-96,108},{-84,120}})));
 equation
-  connect(sensorBus, ED.sensorBus) annotation (Line(
-      points={{-30,100},{-16,100},{7.6,100},{7.6,122}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(sensorBus, CS.sensorBus) annotation (Line(
-      points={{-30,100},{-12.4,100},{-12.4,122}},
+      points={{-30,100},{-2.4,100},{-2.4,122}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus, CS.actuatorBus) annotation (Line(
-      points={{30,100},{12,100},{-7.6,100},{-7.6,122}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(actuatorBus, ED.actuatorBus) annotation (Line(
-      points={{30,100},{20,100},{12.4,100},{12.4,122}},
+      points={{30,100},{2.4,100},{2.4,122}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
 
-  connect(sensorBus, ED.sensorBus) annotation (Line(
-      points={{-30,100},{-16,100},{7.6,100},{7.6,122}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(sensorBus, CS.sensorBus) annotation (Line(
-      points={{-30,100},{-12.4,100},{-12.4,122}},
+      points={{-30,100},{-2.4,100},{-2.4,122}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus, CS.actuatorBus) annotation (Line(
-      points={{30,100},{12,100},{-7.6,100},{-7.6,122}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(actuatorBus, ED.actuatorBus) annotation (Line(
-      points={{30,100},{20,100},{12.4,100},{12.4,122}},
+      points={{30,100},{2.4,100},{2.4,122}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));

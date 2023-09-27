@@ -2,7 +2,7 @@ within NHES.Systems.EnergyStorage.LithiumIonBattery.BaseClasses;
 partial model Partial_ControlSystem
 
   extends
-    NHES.Systems.Templates.SubSystem_Category.BaseClasses.Partial_ControlSystem;
+    NHES.Systems.BaseClasses.Partial_ControlSystem;
 
   annotation (
     defaultComponentName="CS",

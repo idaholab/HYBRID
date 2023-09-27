@@ -5,7 +5,6 @@ model NSSS
     replaceable package Medium = Modelica.Media.Water.StandardWater,
     allowFlowReversal=system.allowFlowReversal,
     redeclare replaceable CS_Default CS,
-    redeclare replaceable ED_Default ED,
     port_a_nominal(
       p=data.p_shellSide,
       h=Medium.specificEnthalpy_pT(port_a_nominal.p,data.T_inlet_shell),

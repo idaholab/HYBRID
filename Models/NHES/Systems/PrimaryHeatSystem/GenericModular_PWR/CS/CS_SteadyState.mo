@@ -1,29 +1,27 @@
-within NHES.Systems.PrimaryHeatSystem.GenericModular_PWR;
-model CS_LoadFollow
+within NHES.Systems.PrimaryHeatSystem.GenericModular_PWR.CS;
+model CS_SteadyState
 
   extends BaseClasses.Partial_ControlSystem;
-
-  input SI.Power Q_total_setpoint "Setpoint reactor power" annotation(Dialog(group="Inputs"));
 
   TRANSFORM.Controls.LimPID PID_Q(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=1e-3,
-    k_s=1/data.Q_total,
-    k_m=1/data.Q_total)
+    k_s=1/dataCS.Q_total,
+    k_m=1/dataCS.Q_total)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
-  Data.Data_GenericModule data
+  Data.DataCS             dataCS
     annotation (Placement(transformation(extent={{-10,-88},{10,-68}})));
-  Modelica.Blocks.Sources.RealExpression realExpression(y=Q_total_setpoint)
+  Modelica.Blocks.Sources.RealExpression realExpression(y=dataCS.Q_total)
     annotation (Placement(transformation(extent={{-50,-10},{-30,10}})));
   TRANSFORM.Controls.LimPID PID_steam(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    yb=data.m_flow_steam,
-    k_s=1/data.dT_core,
-    k_m=1/data.dT_core,
-    yMax=1.2*data.m_flow_steam,
-    yMin=0.8*data.m_flow_steam)
+    yb=dataCS.m_flow_steam,
+    k_s=1/dataCS.dT_core,
+    k_m=1/dataCS.dT_core,
+    yMax=1.2*dataCS.m_flow_steam,
+    yMin=0.8*dataCS.m_flow_steam)
     annotation (Placement(transformation(extent={{-10,-50},{10,-30}})));
-  Modelica.Blocks.Sources.RealExpression realExpression1(y=data.dT_core)
+  Modelica.Blocks.Sources.RealExpression realExpression1(y=dataCS.dT_core)
     annotation (Placement(transformation(extent={{-50,-50},{-30,-30}})));
 equation
 
@@ -59,4 +57,4 @@ annotation(defaultComponentName="PHS_CS", Icon(graphics={
           fillColor={255,255,237},
           fillPattern=FillPattern.Solid,
           textString="Change Me")}));
-end CS_LoadFollow;
+end CS_SteadyState;

@@ -2,15 +2,15 @@ within NHES.Systems.PrimaryHeatSystem.GenericModular_PWR;
 model GenericModule
 
   extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable CS_Dummy CS,
-    redeclare replaceable ED_Dummy ED,
+    redeclare replaceable
+      NHES.Systems.PrimaryHeatSystem.GenericModular_PWR.CS.CS_Dummy CS,
     redeclare Data.Data_GenericModule data,
-   replaceable package Medium = Modelica.Media.Water.StandardWater,
-   port_a_nominal(
-     p=dataInitial.p_start_STHX_tube[1],
-     h=data.h_steam_cold,
-     m_flow=data.m_flow_steam),
-   port_b_nominal(p=data.p_steam, h=dataInitial.h_start_STHX_tube[end]));
+    replaceable package Medium = Modelica.Media.Water.StandardWater,
+    port_a_nominal(
+      p=dataInitial.p_start_STHX_tube[1],
+      h=data.h_steam_cold,
+      m_flow=data.m_flow_steam),
+    port_b_nominal(p=data.p_steam, h=dataInitial.h_start_STHX_tube[end]));
 
   package Medium_PHTS = Modelica.Media.Water.StandardWater;
 

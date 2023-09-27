@@ -1,10 +1,9 @@
 within NHES.Systems.PrimaryHeatSystem.GenericModular_PWR;
 model GenericModule_standAlone
 
-  extends BaseClasses.Partial_SubSystem(
-    redeclare replaceable CS_Dummy CS,
-    redeclare replaceable ED_Dummy ED,
-    redeclare Data.Data_GenericModule data);
+  extends BaseClasses.Partial_SubSystem(redeclare replaceable
+      NHES.Systems.PrimaryHeatSystem.GenericModular_PWR.CS.CS_Dummy CS,
+      redeclare Data.Data_GenericModule data);
 
   package Medium = Modelica.Media.Water.StandardWater;
   package Medium_PHTS = Modelica.Media.Water.StandardWater;
