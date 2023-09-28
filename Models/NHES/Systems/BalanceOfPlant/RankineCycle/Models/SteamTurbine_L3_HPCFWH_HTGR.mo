@@ -4,7 +4,7 @@ model SteamTurbine_L3_HPCFWH_HTGR
   extends
     NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_SubSystem(
     redeclare replaceable
-      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_threeStagedTurbine_HTGR_JY CS,
+      ControlSystems.CS_L3_HTGR_extraction_logan                    CS,
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ED_Dummy ED,
     redeclare replaceable Data.Data_L3 data(FH_type=NHES.Systems.BalanceOfPlant.RankineCycle.Data.BOP_Type.CFWH));
@@ -207,22 +207,19 @@ model SteamTurbine_L3_HPCFWH_HTGR
     annotation (Placement(transformation(extent={{-6,-8},{6,8}},
         rotation=180,
         origin={60,-28})));
-  Fluid.Utilities.NonLinear_Break   nonLinear_Break(
-                                                   redeclare package Medium =
+  SupportComponent.NonLinear_Break nonLinear_Break(redeclare package Medium =
         Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{4,-6},{-4,6}},
         rotation=90,
         origin={-44,14})));
-  Fluid.Utilities.NonLinear_Break   nonLinear_Break2(
-                                                    redeclare package Medium =
+  SupportComponent.NonLinear_Break nonLinear_Break2(redeclare package Medium =
         Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{-4,6},{4,-6}},
         rotation=0,
         origin={10,-28})));
-  Fluid.Utilities.NonLinear_Break   nonLinear_Break1(
-                                                    redeclare package Medium =
+  SupportComponent.NonLinear_Break nonLinear_Break1(redeclare package Medium =
         Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{-4,-6},{4,6}},
