@@ -154,5 +154,10 @@ equation
           points={{16,48},{42,72}},
           color={0,0,0},
           thickness=0.5)}),                 Diagram(coordinateSystem(
-          preserveAspectRatio=false)));
+          preserveAspectRatio=false)),
+    Documentation(info="<html>
+<p>Linear Control Valve with built in LimOffsetPID controller, controlling a real input value, typically level.  This model is should only be used in model development.  Finished model should use control systems for valve controls.</p>
+<p><br><br><br><br>Target \"level\" can be either a set parameter or a real input.</p><p><br><br><br><br>Model developed at INL by Logan Williams <span style=\"font-family: inherit;\"><a href=\"mailto:logan.williams@inl.gov\">Logan.Williams@inl.gov</a></span></p>
+<p><br>Documented September 2023</p>
+</html>"));
 end LevelCV;

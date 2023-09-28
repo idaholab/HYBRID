@@ -199,5 +199,12 @@ equation
           extent={{-98,134},{104,116}},
           textColor={28,108,200},
           textString="%name")}),                                 Diagram(
-        coordinateSystem(preserveAspectRatio=false)));
+        coordinateSystem(preserveAspectRatio=false)),
+    Documentation(info="<html>
+<p>Steam Drum Model has four fuild connections, feed inlet, riser inlet, steam outlet, and downcomer outlet.</p>
+<p>Three equation balance model is used, the the liquid region assumed to be subcooled and the vapor region assumed to be saturated.  Relative level value (0 to 1) is given as a real output connector.</p>
+<p><br><br><br><br><br><br><br>Model developed at INL by Logan Williams <span style=\"font-family: inherit;\"><a href=\"mailto:logan.williams@inl.gov\">logan.williams@inl.gov</a></span></p>
+<p>Documented September 2023</p>
+<p>More imformation on this model can be found at <a href=\"https://www.ans.org/pubs/transactions/article-51515/\">https://www.ans.org/pubs/transactions/article-51515/ </a></p>
+</html>"));
 end Steam_Drum;

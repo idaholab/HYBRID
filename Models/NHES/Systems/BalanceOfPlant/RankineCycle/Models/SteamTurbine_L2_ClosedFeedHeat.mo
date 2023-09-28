@@ -333,14 +333,14 @@ equation
   connect(R_InternalBypass.port_b, BypassFeedwaterHeater.Shell_in) annotation (
       Line(points={{-24,-9},{-24,-34},{-20,-34}}, color={0,127,255}));
   connect(BypassFeedwaterHeater.Shell_out, FeedwaterMixVolume.port_a[1])
-    annotation (Line(points={{0,-34},{30,-34},{30,-80},{33.6667,-80},{
-          33.6667,-88}},           color={0,127,255}));
+    annotation (Line(points={{0,-34},{30,-34},{30,-80},{33.6667,-80},{33.6667,
+          -88}},                   color={0,127,255}));
   connect(LPT_Bypass.port_b, FeedwaterMixVolume.port_a[2])
     annotation (Line(points={{84,-36},{84,-44},{72,-44},{72,-58},{34,-58},{34,
           -88}},                                          color={0,127,255}));
   connect(Moisture_Separator.port_Liquid, FeedwaterMixVolume.port_a[3])
-    annotation (Line(points={{64,36},{64,-44},{72,-44},{72,-58},{34.3333,
-          -58},{34.3333,-88}},
+    annotation (Line(points={{64,36},{64,-44},{72,-44},{72,-58},{34.3333,-58},{
+          34.3333,-88}},
                  color={0,127,255}));
 
   connect(LPT.shaft_b, generator1.shaft_a)

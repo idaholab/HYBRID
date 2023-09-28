@@ -3,7 +3,6 @@ HTGR_RankineCycles
 Dummy_BOP
 SteamTurbine_L1_boundaries
 SteamTurbine_L2_ClosedFeedHeat
-SteamTurbine_L3_HTGR
 SteamTurbine_Basic_NoFeedHeat
 SteamTurbine_OpenFeedHeat_DivertPowerControl
 SteamTurbine_OpenFeedHeat_DivertPowerControl_PowerBoostLoop
@@ -12,4 +11,5 @@ SteamTurbine_Basic_NoFeedHeat_mFlow_Control
 SteamTurbine_L3_HPCFWH
 SteamTurbine_L3_HPOFWH
 SteamTurbine_L3_LPOFWH
+SteamTurbine_L3_HPOFWHsimplified
 SteamTurbine_L3_HPCFWH_HTGR
