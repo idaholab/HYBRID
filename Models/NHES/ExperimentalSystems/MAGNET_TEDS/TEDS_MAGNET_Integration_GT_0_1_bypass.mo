@@ -74,7 +74,7 @@ public
         TRANSFORM.Units.Conversions.Functions.Temperature_K.to_degC)
     annotation (Placement(transformation(extent={{28,-248},{48,-228}})));
 protected
-  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary1(
+  TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T m_source_cw(
     redeclare package Medium = Medium_cw,
     use_m_flow_in=true,
     m_flow=data.m_flow_cw,
@@ -604,18 +604,6 @@ public
     T_start=data.T_hot_side,
     precision=3)
     annotation (Placement(transformation(extent={{290,-98},{316,-74}})));
-  Modelica.Fluid.Pipes.DynamicPipe pipe3(
-    redeclare package Medium =
-        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
-    length=1,
-    diameter=0.051,
-    redeclare model FlowModel =
-        Modelica.Fluid.Pipes.BaseClasses.FlowModels.NominalLaminarFlow (
-          dp_nominal=600, m_flow_nominal=0.1))
-                    annotation (Placement(transformation(
-        extent={{6,6},{-6,-6}},
-        rotation=0,
-        origin={504,-270})));
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
       = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
@@ -628,10 +616,6 @@ public
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={562,-80})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate Chiller_Mass_flow_T66(redeclare package
-      Medium = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
-      precision=3)
-    annotation (Placement(transformation(extent={{466,-260},{440,-280}})));
   TRANSFORM.Fluid.Valves.ValveLinear PV_049(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
@@ -713,81 +697,6 @@ public
         extent={{10,-10},{-10,10}},
         rotation=-90,
         origin={488,-84})));
-  TRANSFORM.Controls.LimPID MassFlow_Control(
-    controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-1,
-    Ti=5,
-    k_s=2*5e-1,
-    k_m=2*5e-1,
-    yMax=30,
-    yMin=0.05,
-    initType=Modelica.Blocks.Types.Init.InitialOutput,
-    y_start=9.7)
-    annotation (Placement(transformation(extent={{328,-312},{316,-300}})));
-  Modelica.Blocks.Sources.Constant const1(k=data.T_cold_side)              annotation (
-     Placement(transformation(
-        extent={{4,-4},{-4,4}},
-        rotation=0,
-        origin={346,-306})));
-  Modelica.Fluid.Sources.MassFlowSource_T Chiller_Mass_Flow(
-    redeclare package Medium =
-        TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
-    use_m_flow_in=true,
-    m_flow=12.6,
-    T=280.15,
-    nPorts=1)
-    annotation (Placement(transformation(extent={{364,-342},{384,-322}})));
-  Modelica.Fluid.Sources.Boundary_pT boundary2(
-    redeclare package Medium =
-        TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
-    p=300000,
-    T=291.15,
-    nPorts=1)
-    annotation (Placement(transformation(extent={{534,-306},{514,-326}})));
-  TRANSFORM.HeatExchangers.GenericDistributed_HX Glycol_HX(
-    p_b_start_shell=system.p_ambient,
-    T_a_start_shell=data.T_hot_side,
-    T_b_start_shell=data.T_cold_side,
-    p_b_start_tube=boundary2.p,
-    counterCurrent=true,
-    m_flow_a_start_tube=Chiller_Mass_Flow.m_flow,
-    m_flow_a_start_shell=MassFlow_Control.y_start,
-    redeclare package Medium_tube =
-        TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
-    redeclare package Medium_shell =
-        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
-    redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS316,
-    redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.HeatExchanger.ShellAndTubeHX
-        (
-        D_o_shell=0.192,
-        nV=10,
-        nTubes=113,
-        nR=3,
-        length_shell=1.0,
-        dimension_tube=0.013,
-        length_tube=1.0,
-        th_wall=0.0001),
-    p_a_start_tube=boundary2.p + 100,
-    T_a_start_tube=Chiller_Mass_Flow.T,
-    T_b_start_tube=boundary2.T,
-    p_a_start_shell=system.p_ambient + 100,
-    redeclare model HeatTransfer_tube =
-        TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple
-        (CF=1.0),
-    redeclare model HeatTransfer_shell =
-        TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple
-        (CF=2.0))
-    annotation (Placement(transformation(extent={{395,-292},{426,-262}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Ethylene_glycol_exit_temperature(
-      redeclare package Medium =
-        TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
-      precision=3)
-    annotation (Placement(transformation(extent={{462,-328},{492,-304}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort HX_exit_temperature_T66(redeclare
-      package Medium =
-        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
-       3) annotation (Placement(transformation(extent={{358,-260},{384,-288}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_charge_outlet(redeclare package
       Medium = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
       precision=3) annotation (Placement(transformation(
@@ -823,12 +732,6 @@ public
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={440,-52})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_inlet_HX(redeclare package
-      Medium = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
-      precision=3) annotation (Placement(transformation(
-        extent={{-10,12},{10,-12}},
-        rotation=0,
-        origin={480,-270})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_chiller_before(redeclare package
       Medium = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
       precision=3) annotation (Placement(transformation(
@@ -909,6 +812,153 @@ public
         extent={{-9,-10},{9,10}},
         rotation=90,
         origin={454,-181})));
+  Modelica.Fluid.Pipes.DynamicPipe pipe3(
+    redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+    length=1,
+    diameter=0.051,
+    redeclare model FlowModel =
+        Modelica.Fluid.Pipes.BaseClasses.FlowModels.NominalLaminarFlow (
+          dp_nominal=700, m_flow_nominal=0.84))
+                    annotation (Placement(transformation(
+        extent={{6,6},{-6,-6}},
+        rotation=0,
+        origin={532,-274})));
+  TRANSFORM.Fluid.Sensors.MassFlowRate Chiller_Mass_flow_T66(redeclare package
+      Medium = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+      precision=3)
+    annotation (Placement(transformation(extent={{9.5,10.5},{-9.5,-10.5}},
+        rotation=90,
+        origin={468.5,-327.5})));
+  Modelica.Fluid.Sources.MassFlowSource_T Chiller_Mass_Flow(
+    redeclare package Medium =
+        TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
+    use_m_flow_in=true,
+    m_flow=12.6,
+    T=280.15,
+    nPorts=1)
+    annotation (Placement(transformation(extent={{374,-382},{394,-362}})));
+  Modelica.Fluid.Sources.Boundary_pT boundary1(
+    redeclare package Medium =
+        TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
+    p=300000,
+    T=291.15,
+    nPorts=1)
+    annotation (Placement(transformation(extent={{554,-358},{534,-378}})));
+  TRANSFORM.HeatExchangers.GenericDistributed_HX Glycol_HX(
+    p_b_start_shell=system.p_ambient,
+    T_a_start_shell=data.T_hot_side,
+    T_b_start_shell=data.T_cold_side,
+    p_b_start_tube=boundary1.p,
+    counterCurrent=true,
+    m_flow_a_start_tube=Chiller_Mass_Flow.m_flow,
+    m_flow_a_start_shell=12.6,
+    redeclare package Medium_tube =
+        TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
+    redeclare package Medium_shell =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+    redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS316,
+    redeclare model Geometry =
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.HeatExchanger.ShellAndTubeHX
+        (
+        D_o_shell=0.192,
+        nV=10,
+        nTubes=113,
+        nR=3,
+        length_shell=3.0,
+        dimension_tube=0.013,
+        length_tube=3.0,
+        th_wall=0.0001),
+    p_a_start_tube=boundary1.p + 100,
+    T_a_start_tube=Chiller_Mass_Flow.T,
+    T_b_start_tube=m_source_cw.T,
+    p_a_start_shell=system.p_ambient + 100,
+    redeclare model HeatTransfer_tube =
+        TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple
+        (CF=1.0),
+    redeclare model HeatTransfer_shell =
+        TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple
+        (CF=2.0))
+    annotation (Placement(transformation(extent={{413,-382},{444,-352}})));
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort Ethylene_glycol_exit_temperature(
+      redeclare package Medium =
+        TRANSFORM.Media.Fluids.EthyleneGlycol.LinearEthyleneGlycol_50_Water,
+      precision=3)
+    annotation (Placement(transformation(extent={{484,-380},{514,-356}})));
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TC_006(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
+      =3) annotation (Placement(transformation(extent={{372,-286},{396,-262}})));
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TC_004(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
+      =3) annotation (Placement(transformation(
+        extent={{-9,12},{9,-12}},
+        rotation=90,
+        origin={468,-351})));
+  TRANSFORM.Fluid.Valves.ValveLinear PV_012(
+    redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+    allowFlowReversal=true,
+    dp_nominal=3000,
+    m_flow_nominal=0.840) annotation (Placement(transformation(
+        extent={{-6,-6},{6,6}},
+        rotation=90,
+        origin={400,-334})));
+  TRANSFORM.Fluid.Valves.ValveLinear PV_009(
+    redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+    allowFlowReversal=true,
+    dp_nominal=3000,
+    m_flow_nominal=0.840) annotation (Placement(transformation(
+        extent={{6,-6},{-6,6}},
+        rotation=0,
+        origin={436,-274})));
+  Fluid.Pipes.NonLinear_Break nonLinear_Break(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C)
+    annotation (Placement(transformation(extent={{6,-8},{-6,8}},
+        rotation=270,
+        origin={400,-354})));
+  Fluid.Pipes.NonLinear_Break nonLinear_Break2(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C)
+    annotation (Placement(transformation(extent={{6,-8},{-6,8}},
+        rotation=0,
+        origin={360,-274})));
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TC_005(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
+      =3) annotation (Placement(transformation(
+        extent={{-10,12},{10,-12}},
+        rotation=270,
+        origin={400,-288})));
+  Fluid.Pipes.NonLinear_Break nonLinear_Break3(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C)
+    annotation (Placement(transformation(extent={{6,-8},{-6,8}},
+        rotation=0,
+        origin={456,-274})));
+  TRANSFORM.Fluid.Valves.ValveLinear PV_008(
+    redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+    allowFlowReversal=true,
+    dp_nominal=100,
+    m_flow_nominal=0.840) annotation (Placement(transformation(
+        extent={{6,6},{-6,-6}},
+        rotation=90,
+        origin={522,-298})));
+  Modelica.Fluid.Pipes.DynamicPipe pipe8(
+    redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+    length=7,
+    diameter=0.051,
+    redeclare model FlowModel =
+        Modelica.Fluid.Pipes.BaseClasses.FlowModels.NominalLaminarFlow (
+          dp_nominal=10, m_flow_nominal=0.84))
+                    annotation (Placement(transformation(
+        extent={{6,6},{-6,-6}},
+        rotation=0,
+        origin={478,-308})));
+  Modelica.Blocks.Sources.Constant const2(k=12.6)
+    annotation (Placement(transformation(
+        extent={{-4,-4},{4,4}},
+        rotation=0,
+        origin={346,-364})));
 equation
   connect(sensor_hx_cw.port_b,boundary. ports[1])
     annotation (Line(points={{112,-240},{152,-240}},
@@ -980,7 +1030,7 @@ equation
           -102}},                                   color={0,127,255}));
   connect(pipe_vc_rp.port_b, pT_vc_pipe_rp.port_a)
     annotation (Line(points={{22,-162},{32,-162}}, color={0,127,255}));
-  connect(mflow_cw.port_a, boundary1.ports[1])
+  connect(mflow_cw.port_a, m_source_cw.ports[1])
     annotation (Line(points={{-10,-238},{-34,-238}}, color={0,127,255}));
   connect(mflow_cw.port_b, sensor_cw_hx.port_a)
     annotation (Line(points={{10,-238},{28,-238}}, color={0,127,255}));
@@ -1047,9 +1097,6 @@ equation
                                                  color={0,127,255}));
   connect(PV_052.port_a,sensor_m_flow6. port_b) annotation (Line(points={{488,
           -220},{488,-216}},              color={0,127,255}));
-  connect(PV_052.port_b,pipe3. port_a) annotation (Line(points={{488,-232},{492,
-          -232},{492,-252},{520,-252},{520,-270},{510,-270}},
-                      color={0,127,255}));
   connect(PV_051.port_b,Valve6. port_b) annotation (Line(points={{418,-232},{
           418,-244},{364,-244},{364,-248},{320,-248},{320,-274},{302,-274}},
                                       color={0,127,255}));
@@ -1089,28 +1136,6 @@ equation
   connect(PV_050.port_b,sensor_m_flow3. port_b)
     annotation (Line(points={{488,-72},{488,-74}},
                                                  color={0,127,255}));
-  connect(const1.y,MassFlow_Control. u_s)
-    annotation (Line(points={{341.6,-306},{329.2,-306}},
-                                                     color={0,0,127}));
-  connect(Chiller_Mass_Flow.ports[1],Glycol_HX. port_a_tube) annotation (Line(
-        points={{384,-332},{390,-332},{390,-277},{395,-277}},
-                                                          color={0,127,255}));
-  connect(Glycol_HX.port_b_tube,Ethylene_glycol_exit_temperature. port_a)
-    annotation (Line(points={{426,-277},{438,-277},{438,-316},{462,-316}},color=
-         {0,127,255}));
-  connect(Ethylene_glycol_exit_temperature.port_b,boundary2. ports[1])
-    annotation (Line(points={{492,-316},{514,-316}}, color={0,127,255}));
-  connect(MassFlow_Control.y,Chiller_Mass_Flow. m_flow_in) annotation (Line(
-        points={{315.4,-306},{312,-306},{312,-324},{364,-324}},color={0,0,127}));
-  connect(Chiller_Mass_flow_T66.port_b,Glycol_HX. port_a_shell) annotation (
-      Line(points={{440,-270},{426,-270},{426,-270.1}},
-                                                      color={0,127,255}));
-  connect(Glycol_HX.port_b_shell,HX_exit_temperature_T66. port_b) annotation (
-      Line(points={{395,-270.1},{384,-270.1},{384,-274}},
-                                                       color={0,127,255}));
-  connect(MassFlow_Control.u_m,HX_exit_temperature_T66. T) annotation (Line(
-        points={{322,-313.2},{322,-314},{371,-314},{371,-279.04}},
-                                                                 color={0,0,127}));
   connect(sensor_m_flow3.port_a,T_discharge_outlet. port_b)
     annotation (Line(points={{488,-94},{488,-96}},
                                                  color={0,127,255}));
@@ -1174,10 +1199,6 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(pipe3.port_b,T_inlet_HX. port_b)
-    annotation (Line(points={{498,-270},{490,-270}}, color={0,127,255}));
-  connect(T_inlet_HX.port_a,Chiller_Mass_flow_T66. port_a)
-    annotation (Line(points={{470,-270},{466,-270}}, color={0,127,255}));
   connect(sensor_m_flow2.port_b,T_chiller_before. port_a)
     annotation (Line(points={{562,-90},{562,-100}},
                                                  color={0,127,255}));
@@ -1187,8 +1208,6 @@ equation
   connect(pipe7.port_b,T_chiller_after. port_a) annotation (Line(points={{562,
           -154},{562,-180},{561,-180}},
                                      color={0,127,255}));
-  connect(T_chiller_after.port_b,pipe3. port_a) annotation (Line(points={{561,
-          -206},{561,-270},{510,-270}},color={0,127,255}));
   connect(tank1.port_b, TC_003a.port_a)
     annotation (Line(points={{349,-52},{362,-52}}, color={0,127,255}));
   connect(TC_003a.port_b, pipe2.port_a)
@@ -1263,7 +1282,7 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(actuatorSubBus.CW_control, boundary1.m_flow_in) annotation (Line(
+  connect(actuatorSubBus.CW_control, m_source_cw.m_flow_in) annotation (Line(
       points={{335,-22},{-106,-22},{-106,-230},{-54,-230}},
       color={239,82,82},
       pattern=LinePattern.Dash,
@@ -1286,8 +1305,6 @@ equation
       thickness=0.5));
   connect(Valve6.port_b,pump. port_b)
     annotation (Line(points={{302,-274},{328,-274}},color={0,127,255}));
-  connect(pump.port_a, HX_exit_temperature_T66.port_a)
-    annotation (Line(points={{344,-274},{358,-274}}, color={0,127,255}));
   connect(actuatorSubBus.Pump_Flow, pump.in_p) annotation (Line(
       points={{335,-22},{360,-22},{360,-244},{336,-244},{336,-268.16}},
       color={239,82,82},
@@ -1341,6 +1358,75 @@ equation
   connect(T_charge_outlet.port_b, TC_202.port_a) annotation (Line(points={{
           488.5,-176},{488.5,-172},{488,-172},{488,-166},{472,-166},{472,-190},
           {454,-190}}, color={0,127,255}));
+  connect(Chiller_Mass_Flow.ports[1],Glycol_HX. port_a_tube) annotation (Line(
+        points={{394,-372},{394,-367},{413,-367}},        color={0,127,255}));
+  connect(Glycol_HX.port_b_tube,Ethylene_glycol_exit_temperature. port_a)
+    annotation (Line(points={{444,-367},{444,-368},{484,-368}},           color=
+         {0,127,255}));
+  connect(Ethylene_glycol_exit_temperature.port_b,boundary1. ports[1])
+    annotation (Line(points={{514,-368},{534,-368}}, color={0,127,255}));
+  connect(Glycol_HX.port_b_shell,nonLinear_Break. port_a) annotation (Line(
+        points={{413,-360.1},{400,-360.1},{400,-360}},
+                                                    color={0,127,255}));
+  connect(nonLinear_Break.port_b,PV_012. port_a)
+    annotation (Line(points={{400,-348},{400,-340}},
+                                                   color={0,127,255}));
+  connect(TC_006.port_a,nonLinear_Break2. port_a) annotation (Line(points={{372,
+          -274},{366,-274}},    color={0,127,255}));
+  connect(nonLinear_Break2.port_b, pump.port_a) annotation (Line(points={{354,
+          -274},{344,-274}},         color={0,127,255}));
+  connect(PV_009.port_b,TC_006. port_b)
+    annotation (Line(points={{430,-274},{396,-274}},
+                                                   color={0,127,255}));
+  connect(Glycol_HX.port_a_shell,TC_004. port_a) annotation (Line(points={{444,
+          -360.1},{468,-360.1},{468,-360}},
+                                    color={0,127,255}));
+  connect(PV_012.port_b,TC_005. port_b)
+    annotation (Line(points={{400,-328},{400,-298}},
+                                                   color={0,127,255}));
+  connect(TC_005.port_a,TC_006. port_b) annotation (Line(points={{400,-278},{
+          400,-274},{396,-274}},
+                      color={0,127,255}));
+  connect(Chiller_Mass_flow_T66.port_b,TC_004. port_b) annotation (Line(points={{468.5,
+          -337},{470,-337},{470,-340},{468,-340},{468,-342}},        color={0,127,
+          255}));
+  connect(nonLinear_Break3.port_b,PV_009. port_a) annotation (Line(points={{450,
+          -274},{442,-274}},                      color={0,127,255}));
+  connect(pipe3.port_b,nonLinear_Break3. port_a)
+    annotation (Line(points={{526,-274},{462,-274}}, color={0,127,255}));
+  connect(PV_008.port_a,pipe3. port_b) annotation (Line(points={{522,-292},{522,
+          -274},{526,-274}}, color={0,127,255}));
+  connect(pipe8.port_b,Chiller_Mass_flow_T66. port_a) annotation (Line(points={{472,
+          -308},{468.5,-308},{468.5,-318}},     color={0,127,255}));
+  connect(PV_008.port_b,pipe8. port_a) annotation (Line(points={{522,-304},{522,
+          -308},{484,-308}}, color={0,127,255}));
+  connect(const2.y, Chiller_Mass_Flow.m_flow_in)
+    annotation (Line(points={{350.4,-364},{374,-364}}, color={0,0,127}));
+  connect(PV_052.port_b, pipe8.port_a) annotation (Line(points={{488,-232},{488,
+          -308},{484,-308}}, color={0,127,255}));
+  connect(T_chiller_after.port_b, pipe3.port_a) annotation (Line(points={{561,
+          -206},{561,-274},{538,-274}}, color={0,127,255}));
+  connect(sensorSubBus.TC006, TC_006.T) annotation (Line(
+      points={{303,-22},{303,-116},{368,-116},{368,-256},{384,-256},{384,
+          -269.68}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorSubBus.PV012, PV_012.opening) annotation (Line(
+      points={{335,-22},{335,-240},{316,-240},{316,-334},{395.2,-334}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorSubBus.PV008, PV_008.opening) annotation (Line(
+      points={{335,-22},{335,-24},{588,-24},{588,-298},{526.8,-298}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorSubBus.PV009, PV_009.opening) annotation (Line(
+      points={{335,-22},{335,-252},{436,-252},{436,-269.2}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   annotation (experiment(
       StopTime=50400,
       Interval=10,

@@ -8015,6 +8015,21 @@ package Magnet_TEDS
       Modelica.Blocks.Sources.RealExpression GT_Power_Setpoint(y=
             Gas_Turbine_Elec_Demand)
         annotation (Placement(transformation(extent={{66,-104},{88,-82}})));
+      TRANSFORM.Controls.LimPID PV012(
+        controllerType=Modelica.Blocks.Types.SimpleController.PI,
+        k=-0.0004,
+        Ti=5,
+        yMax=0.999,
+        yMin=0.001,
+        initType=Modelica.Blocks.Types.Init.InitialOutput,
+        y_start=0.5)
+        annotation (Placement(transformation(extent={{46,32},{60,46}})));
+      Modelica.Blocks.Sources.RealExpression Valve7(y=T_cold_design)
+        annotation (Placement(transformation(extent={{2,28},{24,50}})));
+      Modelica.Blocks.Sources.RealExpression PV008(y=1)
+        annotation (Placement(transformation(extent={{138,14},{158,34}})));
+      Modelica.Blocks.Sources.RealExpression PV_009(y=1 - PV012.y)
+        annotation (Placement(transformation(extent={{138,-4},{160,18}})));
     protected
       Modelica.Blocks.Sources.Constant Tin_vc_design(k=data.T_rp_vc)
         annotation (Placement(transformation(extent={{10,-178},{22,-166}})));
@@ -8242,7 +8257,8 @@ package Magnet_TEDS
         annotation (Line(points={{138.6,-144},{150.4,-144}},
                                                           color={0,0,127}));
       connect(actuatorBus.MAGNET_flow_control, N2_mf_control.y) annotation (Line(
-          points={{70,-215},{180,-215},{180,-144},{168.8,-144}},
+          points={{70,-215},{126,-215},{126,-214},{180,-214},{180,-144},{168.8,
+              -144}},
           color={239,82,82},
           pattern=LinePattern.Dash,
           thickness=0.5));
@@ -8263,7 +8279,8 @@ package Magnet_TEDS
               {144.75,-93},{134.7,-93}},
                                        color={0,0,127}));
       connect(actuatorBus.MAGNET_valve2_opening, firstOrder7.y) annotation (Line(
-          points={{70,-215},{180,-215},{180,-92},{168.6,-92}},
+          points={{70,-215},{74,-215},{74,-216},{76,-216},{76,-214},{180,-214},
+              {180,-92},{168.6,-92}},
           color={239,82,82},
           pattern=LinePattern.Dash,
           thickness=0.5));
@@ -8350,7 +8367,8 @@ package Magnet_TEDS
           pattern=LinePattern.Dash,
           thickness=0.5));
       connect(actuatorBus.Pump_Flow, TEDS_pump_Control.y) annotation (Line(
-          points={{70,-215},{180,-215},{180,-126},{22.6,-126}},
+          points={{70,-215},{72,-215},{72,-214},{180,-214},{180,-126},{22.6,
+              -126}},
           color={239,82,82},
           pattern=LinePattern.Dash,
           thickness=0.5));
@@ -8363,6 +8381,28 @@ package Magnet_TEDS
               -93},{104.55,-93},{118.6,-93}}, color={0,0,127}));
       connect(switch3.u2, greaterEqual2.y) annotation (Line(points={{126.4,-34},
               {6,-34},{6,-39},{-25.5,-39}}, color={255,0,255}));
+      connect(sensorBus.TC006, PV012.u_m) annotation (Line(
+          points={{-64,-215},{-64,-52},{-84,-52},{-84,24},{53,24},{53,30.6}},
+          color={111,216,99},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(Valve7.y, PV012.u_s)
+        annotation (Line(points={{25.1,39},{44.6,39}}, color={0,0,127}));
+      connect(actuatorBus.PV012, PV012.y) annotation (Line(
+          points={{70,-215},{70,-214},{180,-214},{180,39},{60.7,39}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.PV008, PV008.y) annotation (Line(
+          points={{70,-215},{70,-214},{180,-214},{180,24},{159,24}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
+      connect(actuatorBus.PV009, PV_009.y) annotation (Line(
+          points={{70,-215},{70,-214},{180,-214},{180,7},{161.1,7}},
+          color={239,82,82},
+          pattern=LinePattern.Dash,
+          thickness=0.5));
      annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-180,-220},
                 {180,200}})), Diagram(coordinateSystem(preserveAspectRatio=false,
               extent={{-180,-220},{180,200}})));
