@@ -652,7 +652,7 @@ public
     m_flow_nominal=0.840) annotation (Placement(transformation(
         extent={{-6,-6},{6,6}},
         rotation=-90,
-        origin={488,-260})));
+        origin={488,-240})));
   TRANSFORM.Fluid.Valves.ValveLinear PV_006(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
@@ -663,19 +663,19 @@ public
         extent={{-6,-6},{6,6}},
         rotation=0,
         origin={466,-52})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow4(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
-       3) annotation (Placement(transformation(
+  TRANSFORM.Fluid.Sensors.MassFlowRate FM_201(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
+      =3) annotation (Placement(transformation(
         extent={{-9,-9},{9,9}},
         rotation=-90,
         origin={419,-239})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow6(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
-       3) annotation (Placement(transformation(
+  TRANSFORM.Fluid.Sensors.MassFlowRate FM_202(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
+      =3) annotation (Placement(transformation(
         extent={{-9,-10},{9,10}},
         rotation=-90,
-        origin={488,-241})));
-  TRANSFORM.Fluid.Valves.ValveLinear Valve6(
+        origin={488,-255})));
+  TRANSFORM.Fluid.Valves.ValveLinear PV_004(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
     allowFlowReversal=true,
@@ -684,13 +684,13 @@ public
     m_flow_nominal=0.840) annotation (Placement(transformation(
         extent={{-6,-6},{6,6}},
         rotation=0,
-        origin={296,-290})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow5(
+        origin={272,-290})));
+  TRANSFORM.Fluid.Sensors.MassFlowRate FM_003(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
     T_start=data.T_cold_side,
     precision=3)
-          annotation (Placement(transformation(extent={{272,-298},{254,-282}})));
+    annotation (Placement(transformation(extent={{302,-298},{284,-282}})));
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package Medium
       = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
@@ -700,9 +700,9 @@ public
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_charge_outlet(redeclare package
       Medium = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
       precision=3) annotation (Placement(transformation(
-        extent={{-9.5,8.5},{9.5,-8.5}},
+        extent={{-9,10},{9,-10}},
         rotation=90,
-        origin={487.5,-219.5})));
+        origin={488,-219})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Charge_Inlet(redeclare package
       Medium = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
       precision=3) annotation (Placement(transformation(
@@ -771,7 +771,7 @@ public
   Modelica.Blocks.Sources.RealExpression MAGNET_heater_input(y=
         MAGNET_TEDS_simpleHX1.Q_flow)
     annotation (Placement(transformation(extent={{204,28},{222,44}})));
-  TRANSFORM.Fluid.Machines.Pump_PressureBooster pump(
+  TRANSFORM.Fluid.Machines.Pump_PressureBooster P_001(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
     use_input=true,
@@ -842,7 +842,7 @@ public
     T=291.15,
     nPorts=1)
     annotation (Placement(transformation(extent={{520,-346},{500,-366}})));
-  TRANSFORM.HeatExchangers.GenericDistributed_HX Glycol_HX(
+  TRANSFORM.HeatExchangers.GenericDistributed_HX HX_001(
     p_b_start_shell=system.p_ambient,
     T_a_start_shell=data.T_hot_side,
     T_b_start_shell=data.T_cold_side,
@@ -1089,22 +1089,10 @@ equation
   connect(PV_006.port_b,sensor_m_flow2. port_a)
     annotation (Line(points={{472,-52},{562,-52},{562,-70}},
                                                           color={0,127,255}));
-  connect(PV_051.port_a,sensor_m_flow4. port_b)
-    annotation (Line(points={{418,-254},{419,-254},{419,-248}},
-                                                 color={0,127,255}));
-  connect(PV_052.port_a,sensor_m_flow6. port_b) annotation (Line(points={{488,
-          -254},{488,-250}},              color={0,127,255}));
-  connect(PV_051.port_b,Valve6. port_b) annotation (Line(points={{418,-266},{
-          418,-278},{316,-278},{316,-290},{302,-290}},
-                                      color={0,127,255}));
-  connect(Valve6.port_a,sensor_m_flow5. port_a)
-    annotation (Line(points={{290,-290},{272,-290}},
-                                                   color={0,127,255}));
-  connect(sensor_m_flow5.port_b,pipe4. port_a) annotation (Line(points={{254,
-          -290},{236,-290},{236,-210}},
-                               color={0,127,255}));
+  connect(PV_051.port_a, FM_201.port_b) annotation (Line(points={{418,-254},{
+          419,-254},{419,-248}}, color={0,127,255}));
   connect(actuatorSubBus.Valve_4_Opening, PV_052.opening) annotation (Line(
-      points={{335,-22},{536,-22},{536,-260},{492.8,-260}},
+      points={{335,-22},{536,-22},{536,-240},{492.8,-240}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -1113,7 +1101,8 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(actuatorSubBus.Valve_5_Opening, PV_051.opening) annotation (Line(
-      points={{335,-22},{360,-22},{360,-260},{413.2,-260}},
+      points={{335,-22},{360,-22},{360,-268},{404,-268},{404,-260},{413.2,-260}},
+
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -1121,8 +1110,8 @@ equation
       index=-1,
       extent={{-6,3},{-6,3}},
       horizontalAlignment=TextAlignment.Right));
-  connect(actuatorSubBus.Valve_6_Opening, Valve6.opening) annotation (Line(
-      points={{335,-22},{360,-22},{360,-260},{296,-260},{296,-285.2}},
+  connect(actuatorSubBus.Valve_6_Opening, PV_004.opening) annotation (Line(
+      points={{335,-22},{360,-22},{360,-260},{272,-260},{272,-285.2}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -1139,12 +1128,8 @@ equation
   connect(sensor_m_flow.port_b,T_Charge_Inlet. port_a)
     annotation (Line(points={{418,-94},{418,-96}},
                                                color={0,127,255}));
-  connect(sensor_m_flow6.port_a,T_charge_outlet. port_a)
-    annotation (Line(points={{488,-232},{487.5,-229}},
-                                                   color={0,127,255}));
-  connect(sensor_m_flow4.port_a,T_discharge_Inlet. port_a)
-    annotation (Line(points={{419,-230},{419,-229}},
-                                                 color={0,127,255}));
+  connect(FM_201.port_a, T_discharge_Inlet.port_a)
+    annotation (Line(points={{419,-230},{419,-229}}, color={0,127,255}));
   connect(sensorSubBus.T_discharge_outlet, T_discharge_outlet.T) annotation (
       Line(
       points={{303,-22},{536,-22},{536,-104},{514,-104},{514,-105},{491.6,-105}},
@@ -1159,7 +1144,7 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorSubBus.T_charge_outlet, T_charge_outlet.T) annotation (Line(
-      points={{303,-22},{536,-22},{536,-219.5},{490.56,-219.5}},
+      points={{303,-22},{536,-22},{536,-219},{491.6,-219}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -1168,9 +1153,8 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorSubBus.Charging_flowrate, sensor_m_flow6.m_flow) annotation (
-      Line(
-      points={{303,-22},{536,-22},{536,-241},{491.6,-241}},
+  connect(sensorSubBus.Charging_flowrate, FM_202.m_flow) annotation (Line(
+      points={{303,-22},{536,-22},{536,-256},{491.6,-256},{491.6,-255}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -1180,8 +1164,9 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorSubBus.Heater_flowrate, sensor_m_flow5.m_flow) annotation (Line(
-      points={{303,-22},{360,-22},{360,-260},{263,-260},{263,-287.12}},
+  connect(sensorSubBus.Heater_flowrate, FM_003.m_flow) annotation (Line(
+      points={{303,-22},{360,-22},{360,-260},{294,-260},{294,-276},{293,-276},{
+          293,-287.12}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -1301,9 +1286,7 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(Valve6.port_b,pump. port_b)
-    annotation (Line(points={{302,-290},{328,-290}},color={0,127,255}));
-  connect(actuatorSubBus.Pump_Flow, pump.in_p) annotation (Line(
+  connect(actuatorSubBus.Pump_Flow, P_001.in_p) annotation (Line(
       points={{335,-22},{360,-22},{360,-260},{336,-260},{336,-284.16}},
       color={239,82,82},
       pattern=LinePattern.Dash,
@@ -1351,29 +1334,27 @@ equation
     annotation (Line(points={{454,-180},{454,-182}}, color={0,127,255}));
   connect(T_discharge_Inlet.port_b, TC_202.port_a) annotation (Line(points={{
           419,-210},{419,-200},{454,-200}}, color={0,127,255}));
-  connect(T_charge_outlet.port_b, TC_202.port_a) annotation (Line(points={{
-          487.5,-210},{487.5,-206},{488,-206},{488,-200},{454,-200}}, color={0,
-          127,255}));
-  connect(Chiller_Mass_Flow.ports[1],Glycol_HX. port_a_tube) annotation (Line(
-        points={{386,-358},{396,-358},{396,-338},{411,-338},{411,-337}},
-                                                          color={0,127,255}));
-  connect(Glycol_HX.port_b_tube,Ethylene_glycol_exit_temperature. port_a)
-    annotation (Line(points={{442,-337},{442,-338},{460,-338},{460,-356}},color=
-         {0,127,255}));
+  connect(T_charge_outlet.port_b, TC_202.port_a) annotation (Line(points={{488,
+          -210},{488,-200},{454,-200}}, color={0,127,255}));
+  connect(Chiller_Mass_Flow.ports[1], HX_001.port_a_tube) annotation (Line(
+        points={{386,-358},{396,-358},{396,-338},{411,-338},{411,-337}}, color=
+          {0,127,255}));
+  connect(HX_001.port_b_tube, Ethylene_glycol_exit_temperature.port_a)
+    annotation (Line(points={{442,-337},{442,-338},{460,-338},{460,-356}},
+        color={0,127,255}));
   connect(Ethylene_glycol_exit_temperature.port_b,boundary1. ports[1])
     annotation (Line(points={{484,-356},{500,-356}}, color={0,127,255}));
-  connect(Glycol_HX.port_b_shell,nonLinear_Break. port_a) annotation (Line(
-        points={{411,-330.1},{412,-330},{408,-330}},color={0,127,255}));
+  connect(HX_001.port_b_shell, nonLinear_Break.port_a) annotation (Line(points=
+          {{411,-330.1},{412,-330},{408,-330}}, color={0,127,255}));
   connect(TC_006.port_a,nonLinear_Break2. port_a) annotation (Line(points={{358,
           -290},{356,-290}},    color={0,127,255}));
-  connect(nonLinear_Break2.port_b, pump.port_a) annotation (Line(points={{344,
-          -290},{344,-290}},         color={0,127,255}));
+  connect(nonLinear_Break2.port_b, P_001.port_a)
+    annotation (Line(points={{344,-290},{344,-290}}, color={0,127,255}));
   connect(PV_009.port_b,TC_006. port_b)
     annotation (Line(points={{430,-290},{382,-290}},
                                                    color={0,127,255}));
-  connect(Glycol_HX.port_a_shell,TC_004. port_a) annotation (Line(points={{442,
-          -330.1},{444,-329},{451,-329}},
-                                    color={0,127,255}));
+  connect(HX_001.port_a_shell, TC_004.port_a) annotation (Line(points={{442,
+          -330.1},{444,-329},{451,-329}}, color={0,127,255}));
   connect(FM_002.port_b, TC_004.port_b)
     annotation (Line(points={{475,-329},{469,-329}}, color={0,127,255}));
   connect(nonLinear_Break3.port_b,PV_009. port_a) annotation (Line(points={{450,
@@ -1388,13 +1369,10 @@ equation
           -329},{516,-329}}, color={0,127,255}));
   connect(const2.y, Chiller_Mass_Flow.m_flow_in)
     annotation (Line(points={{346.4,-350},{366,-350}}, color={0,0,127}));
-  connect(PV_052.port_b, pipe8.port_a) annotation (Line(points={{488,-266},{488,
-          -314},{522,-314},{522,-329},{516,-329}}, color={0,127,255}));
   connect(T_chiller_after.port_b, pipe3.port_a) annotation (Line(points={{561,
           -206},{561,-290},{538,-290}}, color={0,127,255}));
   connect(sensorSubBus.TC006, TC_006.T) annotation (Line(
-      points={{303,-22},{303,-58},{360,-58},{360,-268},{370,-268},{370,-285.68}},
-
+      points={{303,-22},{360,-22},{360,-268},{370,-268},{370,-285.68}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -1420,6 +1398,20 @@ equation
   connect(PV_012.port_b, TC_006.port_b) annotation (Line(points={{348,-330},{
           342,-330},{342,-314},{406,-314},{406,-290},{382,-290}}, color={0,127,
           255}));
+  connect(T_charge_outlet.port_a, PV_052.port_a)
+    annotation (Line(points={{488,-228},{488,-234}}, color={0,127,255}));
+  connect(PV_052.port_b, FM_202.port_a)
+    annotation (Line(points={{488,-246},{488,-246}}, color={0,127,255}));
+  connect(FM_202.port_b, PV_008.port_b) annotation (Line(points={{488,-264},{
+          488,-314},{522,-314},{522,-308}}, color={0,127,255}));
+  connect(pipe4.port_a, PV_004.port_a) annotation (Line(points={{236,-210},{236,
+          -290},{266,-290}}, color={0,127,255}));
+  connect(PV_004.port_b, FM_003.port_b)
+    annotation (Line(points={{278,-290},{284,-290}}, color={0,127,255}));
+  connect(FM_003.port_a, P_001.port_b)
+    annotation (Line(points={{302,-290},{328,-290}}, color={0,127,255}));
+  connect(PV_051.port_b, P_001.port_b) annotation (Line(points={{418,-266},{418,
+          -276},{314,-276},{314,-290},{328,-290}}, color={0,127,255}));
   annotation (experiment(
       StopTime=50400,
       Interval=10,
