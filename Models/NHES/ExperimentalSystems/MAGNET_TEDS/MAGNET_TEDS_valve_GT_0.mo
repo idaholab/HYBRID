@@ -444,8 +444,8 @@ public
     T_start=data.T_co_rp,
     precision=3)
     annotation (Placement(transformation(extent={{-10,-248},{10,-228}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TM_HX_Tin(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TM_HX_Tin(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(extent={{6,-30},{26,-10}})));
   Modelica.Blocks.Sources.RealExpression mflow_inside_MAGNET(y=mflow_MAGNET.m_flow)
     annotation (Placement(transformation(extent={{-80,84},{-62,100}})));
