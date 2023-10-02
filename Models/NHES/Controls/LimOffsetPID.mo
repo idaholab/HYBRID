@@ -1,5 +1,5 @@
-within NHES.Systems.BalanceOfPlant.RankineCycle.SupportComponents;
-block VarLimVarK_PID
+within NHES.Controls;
+block LimOffsetPID
   "P, PI, PD, and PID controller with limited output, anti-windup compensation, setpoint weighting, feed forward, and reset"
   import InitPID =
          Modelica.Blocks.Types.Init;
@@ -8,15 +8,6 @@ block VarLimVarK_PID
   extends Modelica.Blocks.Interfaces.SVcontrol;
   output Real controlError = u_s - u_m
     "Control error (set point - measurement)";
-  parameter Boolean use_k_in = false
-    "Get the controller gain from the input connector"
-    annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
-  parameter Boolean use_lowlim_in= false
-    "Get the lower limit from the input connector"
-    annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
-  parameter Boolean use_uplim_in = false
-    "Get the upper limit from the input connector"
-    annotation(Evaluate=true, HideResult=true, choices(checkBox=true));
   parameter SimpleController controllerType=
          SimpleController.PID "Type of controller";
   parameter Boolean with_FF=false "enable feed-forward input signal"
@@ -24,13 +15,14 @@ block VarLimVarK_PID
   parameter Boolean derMeas = true "=true avoid derivative kick" annotation(Evaluate=true,Dialog(enable=controllerType==SimpleController.PD or
                                 controllerType==SimpleController.PID));
   parameter Real k = 1 "Controller gain: +/- for direct/reverse acting" annotation(Dialog(group="Parameters: Tuning Controls"));
-  parameter SI.Time Ti(min=Modelica.Constants.small)=0.5
-    "Time constant of Integrator block" annotation (Dialog(group="Parameters: Tuning Controls",enable=
-          controllerType == SimpleController.PI or
-          controllerType == SimpleController.PID));
-  parameter SI.Time Td(min=0)=0.1 "Time constant of Derivative block"
-    annotation (Dialog(group="Parameters: Tuning Controls",enable=controllerType == SimpleController.PD
-           or controllerType == SimpleController.PID));
+  parameter Modelica.Units.SI.Time Ti(min=Modelica.Constants.small)=0.5
+    "Time constant of Integrator block" annotation (Dialog(group=
+          "Parameters: Tuning Controls", enable=controllerType ==
+          SimpleController.PI or controllerType == SimpleController.PID));
+  parameter Modelica.Units.SI.Time Td(min=0)=0.1
+    "Time constant of Derivative block" annotation (Dialog(group=
+          "Parameters: Tuning Controls", enable=controllerType ==
+          SimpleController.PD or controllerType == SimpleController.PID));
   parameter Real yb = 0 "Output bias. May improve simulation";
   parameter Real k_s= 1 "Setpoint input scaling: k_s*u_s. May improve simulation";
   parameter Real k_m= 1 "Measurement input scaling: k_m*u_m. May improve simulation";
@@ -92,16 +84,17 @@ block VarLimVarK_PID
     annotation (Placement(transformation(extent={{-70,-10},{-50,10}})));
   Modelica.Blocks.Math.Gain P(k=1)
     annotation (Placement(transformation(extent={{-40,40},{-20,60}})));
-  TRANSFORM.Blocks.IntegratorWithReset I(
+  TRANSFORM.Blocks.IntegratorWithReset
+                             I(
     k=unitTime/Ti,
     y_start=xi_start,
-    initType=if initType == InitPID.SteadyState then Init.SteadyState else if
-        initType == InitPID.InitialState or initType == InitPID.InitialState
+    initType=if initType == InitPID.SteadyState then Init.SteadyState else
+        if initType == InitPID.InitialState or initType == InitPID.InitialState
          then Init.InitialState else Init.NoInit,
-    reset=if reset == TRANSFORM.Types.Reset.Disabled then reset else TRANSFORM.Types.Reset.Input,
+    reset=if reset == TRANSFORM.Types.Reset.Disabled then reset else
+        TRANSFORM.Types.Reset.Input,
     y_reset=y_reset) if with_I
     annotation (Placement(transformation(extent={{-40,-60},{-20,-40}})));
-
   Modelica.Blocks.Continuous.Derivative D(
     k=Td/unitTime,
     T=max([Td/Nd,1.e-14]),
@@ -110,6 +103,8 @@ block VarLimVarK_PID
          then Init.SteadyState else if initType ==InitPID.InitialState  then
         Init.InitialState else Init.NoInit) if with_D
     annotation (Placement(transformation(extent={{-40,-10},{-20,10}})));
+  Modelica.Blocks.Math.Gain gainPID(k=k)
+    annotation (Placement(transformation(extent={{24,-10},{44,10}})));
   Modelica.Blocks.Math.Add3 addPID
     annotation (Placement(transformation(extent={{-4,-10},{16,10}})));
   Modelica.Blocks.Math.Add3 addI(k2=-1) if with_I
@@ -121,8 +116,9 @@ block VarLimVarK_PID
         rotation=270)));
   Modelica.Blocks.Math.Gain gainTrack(k=1/(k*Ni))  if with_I
     annotation (Placement(transformation(extent={{40,-80},{20,-60}})));
-  Modelica.Blocks.Nonlinear.VariableLimiter
-                                    variableLimiter(
+  Modelica.Blocks.Nonlinear.Limiter limiter(
+    uMax=yMax - offset,
+    uMin=yMin - offset,
     strict=strict,
     u(start=y_start))
     annotation (Placement(transformation(extent={{72,-10},{92,10}})));
@@ -149,16 +145,15 @@ block VarLimVarK_PID
         transformation(
         extent={{-6,-6},{6,6}},
         rotation=90,
-        origin={0,-90})));
+        origin={0,-86})));
   Modelica.Blocks.Logical.Switch switch_derKick if with_D
     annotation (Placement(transformation(extent={{-66,-30},{-54,-18}})));
   Modelica.Blocks.Sources.BooleanConstant derKick(k=derMeas) if with_D
     annotation (Placement(transformation(extent={{-98,-30},{-86,-18}})));
   Modelica.Blocks.Sources.Constant null_bias(k=yb)
     annotation (Placement(transformation(extent={{20,-40},{40,-20}})));
-
 protected
-  constant SI.Time unitTime=1  annotation(HideResult=true);
+  constant Modelica.Units.SI.Time unitTime=1 annotation (HideResult=true);
   parameter Boolean with_I = controllerType==SimpleController.PI or
                              controllerType==SimpleController.PID annotation(Evaluate=true, HideResult=true);
   parameter Boolean with_D = controllerType==SimpleController.PD or
@@ -167,54 +162,34 @@ protected
    "Internal connector for controller output reset"
    annotation(Evaluate=true);
   Modelica.Blocks.Sources.RealExpression intRes(final y=y_reset_internal/k -
-        addPID.u1 - addPID.u2)
-    if reset <> TRANSFORM.Types.Reset.Disabled
+        addPID.u1 - addPID.u2) if reset <> TRANSFORM.Types.Reset.Disabled
     "Signal source for integrator reset"
     annotation (Placement(transformation(extent={{-90,-100},{-70,-80}})));
-  Modelica.Blocks.Interfaces.RealInput k_in_internal
-    "Needed to connect to conditional connector";
-  Modelica.Blocks.Interfaces.RealInput lowlim_in_internal
-    "Needed to connect to conditional connector";
-  Modelica.Blocks.Interfaces.RealInput uplim_in_internal
-    "Needed to connect to conditional connector";
 public
   Modelica.Blocks.Math.Gain gain_u_ff(k=k_ff) if with_FF
     annotation (Placement(transformation(extent={{-96,74},{-84,86}})));
-  Modelica.Blocks.Interfaces.RealInput upperlim if use_uplim_in
-    "Prescribed upper limit of output"
-    annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-        rotation=-90,
-        origin={-60,110})));
-  Modelica.Blocks.Interfaces.RealInput lowerlim if use_lowlim_in
-    "Prescribed lower limit of output"
-    annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-        rotation=-90,
-        origin={0,110})));
-  Modelica.Blocks.Math.Product product1
-    annotation (Placement(transformation(extent={{24,-10},{44,10}})));
-  Modelica.Blocks.Interfaces.RealInput prop_k if use_k_in
-    "Prescribed proportional constant"
-    annotation (Placement(transformation(extent={{-20,-20},{20,20}},
-        rotation=-90,
-        origin={74,114})));
+  parameter Modelica.Blocks.Interfaces.RealOutput offset=0
+    "Value of Real output";
+  Modelica.Blocks.Sources.BooleanStep delay_boolean(startTime=delayTime)
+    annotation (Placement(transformation(extent={{-20,100},{0,120}})));
+  Modelica.Blocks.Logical.Switch input_switch
+    annotation (Placement(transformation(extent={{20,94},{40,114}})));
+  parameter Modelica.Units.SI.Time delayTime=0 "Time instant of step start";
+  parameter Modelica.Blocks.Interfaces.RealOutput init_output=0
+    "Value of Real output";
+  Modelica.Blocks.Logical.Switch output_switch
+    annotation (Placement(transformation(extent={{100,92},{120,112}})));
+  Modelica.Blocks.Sources.RealExpression init(y=init_output)
+    annotation (Placement(transformation(extent={{64,84},{84,104}})));
+  Modelica.Blocks.Math.Add add_offset
+    annotation (Placement(transformation(extent={{100,60},{120,80}})));
+  Modelica.Blocks.Sources.RealExpression offset_set(y=offset)
+    annotation (Placement(transformation(extent={{66,54},{86,74}})));
 initial equation
   if initType==InitPID.InitialOutput then
      y = y_start;
   end if;
-
 equation
-  connect(prop_k, k_in_internal);
-  connect(lowerlim, lowlim_in_internal);
-  connect(upperlim, uplim_in_internal);
-  if not use_k_in then
-    k_in_internal = k;
-  end if;
-  if not use_lowlim_in then
-    lowlim_in_internal = yMin;
-  end if;
-  if not use_uplim_in then
-    uplim_in_internal = yMax;
-  end if;
   assert(yMax >= yMin, "LimPID: Limits must be consistent. However, yMax (=" +
     String(yMax) + ") < yMin (=" + String(yMin) + ")");
   if initType ==InitPID.InitialOutput  and (y_start < yMin or y_start > yMax) then
@@ -237,22 +212,19 @@ equation
     annotation (Line(points={{-19,0},{-6,0}}, color={0,0,127}));
   connect(I.y, addPID.u3) annotation (Line(points={{-19,-50},{-10,-50},{-10,-8},
           {-6,-8}},     color={0,0,127}));
-  connect(variableLimiter.y, addSat.u1) annotation (Line(points={{93,0},{96,0},
-          {96,-20},{86,-20},{86,-38}}, color={0,0,127}));
-  connect(variableLimiter.y, y)
-    annotation (Line(points={{93,0},{110,0}}, color={0,0,127}));
+  connect(addPID.y, gainPID.u)
+    annotation (Line(points={{17,0},{22,0}}, color={0,0,127}));
   connect(addSat.y, gainTrack.u) annotation (Line(points={{80,-61},{80,-70},{
           42,-70}}, color={0,0,127}));
   connect(gainTrack.y, addI.u3) annotation (Line(points={{19,-70},{-76,-70},{-76,
           -58},{-72,-58}},     color={0,0,127}));
   connect(Dzero.y, addPID.u2) annotation (Line(points={{-19.5,25},{-14,25},{-14,
           0},{-6,0}},     color={0,0,127}));
+  connect(gainPID.y, addFF.u2)
+    annotation (Line(points={{45,0},{47,0},{47,0},{49,0}},
+                                                    color={0,0,127}));
   connect(Fzero.y, addFF.u1) annotation (Line(points={{35.5,25},{44,25},{44,4},{
           49,4}}, color={0,0,127}));
-  connect(addFF.y, variableLimiter.u)
-    annotation (Line(points={{60.5,0},{64,0},{70,0}}, color={0,0,127}));
-  connect(addSat.u2, variableLimiter.u) annotation (Line(points={{74,-38},{74,-20},
-          {64,-20},{64,0},{70,0}}, color={0,0,127}));
   connect(Izero.y, addPID.u3) annotation (Line(points={{-19.5,-25},{-14,-25},{
           -14,-50},{-10,-50},{-10,-8},{-6,-8}}, color={0,0,127}));
   connect(u_s, gain_u_s.u)
@@ -263,10 +235,6 @@ equation
           56}}, color={0,0,127}));
   connect(gain_u_s.y, addI.u1) annotation (Line(points={{-83.4,0},{-80,0},{-80,-42},
           {-72,-42}}, color={0,0,127}));
-  connect(gain_u_m.u, u_m)
-    annotation (Line(points={{0,-97.2},{0,-120}}, color={0,0,127}));
-  connect(gain_u_m.y, addP.u2) annotation (Line(points={{0,-83.4},{0,-80},{-78,-80},
-          {-78,44},{-72,44}}, color={0,0,127}));
   connect(addD.u2, addP.u2) annotation (Line(points={{-72,-6},{-78,-6},{-78,44},
           {-72,44}}, color={0,0,127}));
   connect(addI.u2, addP.u2) annotation (Line(points={{-72,-50},{-78,-50},{-78,44},
@@ -290,17 +258,36 @@ equation
   connect(gain_u_ff.y, addFF.u1) annotation (Line(points={{-83.4,80},{44,80},{
           44,4},{49,4}},
                       color={0,0,127}));
-  connect(variableLimiter.limit1, uplim_in_internal) annotation (Line(points={{70,8},{
-          64,8},{64,74},{-60,74},{-60,110}},  color={0,0,127}));
-  connect(variableLimiter.limit2, lowlim_in_internal) annotation (Line(points={{70,-8},
-          {62,-8},{62,86},{0,86},{0,110}},           color={0,0,127}));
-  connect(addPID.y, product1.u2) annotation (Line(points={{17,0},{16,0},{16,-14},
-          {22,-14},{22,-6}}, color={0,0,127}));
-  connect(addFF.u2, product1.y)
-    annotation (Line(points={{49,0},{45,0}}, color={0,0,127}));
-  connect(product1.u1, k_in_internal) annotation (Line(points={{22,6},{18,6},{
-          18,16},{74,16},{74,114}},
-                                  color={0,0,127}));
+  connect(delay_boolean.y, input_switch.u2)
+    annotation (Line(points={{1,110},{10,110},{10,104},{18,104}},
+                                                          color={255,0,255}));
+  connect(addFF.y, addSat.u2) annotation (Line(points={{60.5,0},{64,0},{64,-30},
+          {74,-30},{74,-38}}, color={0,0,127}));
+  connect(addFF.y, limiter.u)
+    annotation (Line(points={{60.5,0},{70,0}}, color={0,0,127}));
+  connect(u_m, gain_u_m.u) annotation (Line(points={{0,-120},{0,-106.6},{-4.44089e-16,
+          -106.6},{-4.44089e-16,-93.2}}, color={0,0,127}));
+  connect(gain_u_m.y, input_switch.u1) annotation (Line(points={{0,-79.4},{0,-80},
+          {20,-80},{20,-120},{140,-120},{140,122},{14,122},{14,112},{18,112}},
+        color={0,0,127}));
+  connect(gain_u_s.y, input_switch.u3) annotation (Line(points={{-83.4,0},{-80,0},
+          {-80,96},{18,96}}, color={0,0,127}));
+  connect(addP.u2, input_switch.y) annotation (Line(points={{-72,44},{-78,44},{-78,
+          90},{48,90},{48,104},{41,104}}, color={0,0,127}));
+  connect(delay_boolean.y, output_switch.u2) annotation (Line(points={{1,110},{10,
+          110},{10,134},{88,134},{88,102},{98,102}}, color={255,0,255}));
+  connect(offset_set.y, add_offset.u2)
+    annotation (Line(points={{87,64},{98,64}}, color={0,0,127}));
+  connect(init.y, output_switch.u3)
+    annotation (Line(points={{85,94},{98,94}}, color={0,0,127}));
+  connect(limiter.y, add_offset.u1) annotation (Line(points={{93,0},{92,0},{
+          92,76},{98,76}}, color={0,0,127}));
+  connect(add_offset.y, output_switch.u1) annotation (Line(points={{121,70},{
+          124,70},{124,86},{94,86},{94,110},{98,110}}, color={0,0,127}));
+  connect(output_switch.y, y) annotation (Line(points={{121,102},{126,102},{126,
+          0},{110,0}}, color={0,0,127}));
+  connect(addSat.u1, limiter.y) annotation (Line(points={{86,-38},{86,-14},{
+          93,-14},{93,0}}, color={0,0,127}));
   annotation (defaultComponentName="PID",
     Icon(coordinateSystem(
         preserveAspectRatio=true,
@@ -327,75 +314,30 @@ equation
           points={{30,60},{81,60}},
           color={255,0,0})}),
     Documentation(info="<html>
-<p>This model duplicates the LimPID in the Modelica Standard Library but modifies it to enable a feed forward control option.</p>
-<p>Via parameter <b>controllerType</b> either <b>P</b>, <b>PI</b>, <b>PD</b>, or <b>PID</b> can be selected. If, e.g., PI is selected, all components belonging to the D-part are removed from the block (via conditional declarations). The example model <a href=\"modelica://Modelica.Blocks.Examples.PID_Controller\">Modelica.Blocks.Examples.PID_Controller</a> demonstrates the usage of this controller. Several practical aspects of PID controller design are incorporated according to chapter 3 of the book: </p>
-<dl><dt>&Aring;str&ouml;m K.J., and H&auml;gglund T.:</dt>
-<dd><b>PID Controllers: Theory, Design, and Tuning</b>. Instrument Society of America, 2nd edition, 1995. </dd>
-</dl><p>Besides the additive <b>proportional, integral</b> and <b>derivative</b> part of this controller, the following features are present: </p>
-<ol>
-<li>The output of this controller is limited. If the controller is in its limits, anti-windup compensation is activated to drive the integrator state to zero. </li>
-<li>The high-frequency gain of the derivative part is limited to avoid excessive amplification of measurement noise.</li>
-<li>Setpoint weighting is present, which allows to weight the setpoint in the proportional and the derivative part independently from the measurement. The controller will respond to load disturbances and measurement noise independently of this setting (parameters wp, wd). However, setpoint changes will depend on this setting. For example, it is useful to set the setpoint weight wd for the derivative part to zero, if steps may occur in the setpoint signal. </li>
-<li>Feed forward option is available on any controllerType</li>
-<li>derMeas = true uses the derivative on measurement value only to avoid the derivative kick of setpoint changes. = false will take the derivative w.r.t. error</li>
-<li>It can be configured to enable an input port that allows resetting the controller output. The controller output can be reset as follows: </li>
-<ul>
-<li>If reset = TRANSFORM.Types.Reset.Disabled, which is the default, then the controller output is never reset. </li>
-<li>If reset = TRANSFORM.Types.Reset.Parameter, then a boolean input signal trigger is enabled. Whenever the value of this input changes from false to true, the controller output is reset by setting y to the value of the parameter y_reset. </li>
-<li>If reset = TRANSFORM.Types.Reset.Input, then a boolean input signal trigger is enabled. Whenever the value of this input changes from false to true, the controller output is reset by setting y to the value of the input signal y_reset_in. </li>
-</ul>
-</ol>
-<p>Note that this controller implements an integrator anti-windup. Therefore, for most applications, keeping the default setting of reset = TRANSFORM.Types.Reset.Disabled is sufficient. Examples where it may be beneficial to reset the controller output are situations where the equipment control input should continuously increase as the equipment is switched on, such as as a light dimmer that may slowly increase the luminance, or a variable speed drive of a motor that should continuously increase the speed. </p>
-<p>The parameters of the controller can be manually adjusted by performing simulations of the closed loop system (= controller + plant connected together) and using the following strategy: </p>
-<ol>
-<li>Set very large limits, e.g., yMax = Modelica.Constants.inf</li>
-<li>Select a <b>P</b>-controller and manually enlarge parameter <b>k</b> (the total gain of the controller) until the closed-loop response cannot be improved any more.</li>
-<li>Select a <b>PI</b>-controller and manually adjust parameters <b>k</b> and <b>Ti</b> (the time constant of the integrator). The first value of Ti can be selected, such that it is in the order of the time constant of the oscillations occurring with the P-controller. If, e.g., vibrations in the order of T=10 ms occur in the previous step, start with Ti=0.01 s.</li>
-<li>If you want to make the reaction of the control loop faster (but probably less robust against disturbances and measurement noise) select a <b>PID</b>-Controller and manually adjust parameters <b>k</b>, <b>Ti</b>, <b>Td</b> (time constant of derivative block).</li>
-<li>Set the limits yMax and yMin according to your specification.</li>
-<li>Perform simulations such that the output of the PID controller goes in its limits. Tune <b>Ni</b> (Ni*Ti is the time constant of the anti-windup compensation) such that the input to the limiter block (= limiter.u) goes quickly enough back to its limits. If Ni is decreased, this happens faster. If Ni=infinity, the anti-windup compensation is switched off and the controller works bad. </li>
-</ol>
-<p><b>Initialization</b> </p>
-<p>This block can be initialized in different ways controlled by parameter <b>initType</b>. The possible values of initType are defined in <a href=\"modelica://Modelica.Blocks.Types.InitPID\">Modelica.Blocks.Types.InitPID</a>. This type is identical to <a href=\"modelica://Modelica.Blocks.Types.Init\">Types.Init</a>, with the only exception that the additional option <b>DoNotUse_InitialIntegratorState</b> is added for backward compatibility reasons (= integrator is initialized with InitialState whereas differential part is initialized with NoInit which was the initialization in version 2.2 of the Modelica standard library). </p>
-<p>Based on the setting of initType, the integrator (I) and derivative (D) blocks inside the PID controller are initialized according to the following table: </p>
-<table cellspacing=\"0\" cellpadding=\"2\" border=\"1\"><tr>
-<td valign=\"top\"><h4>initType</h4></td>
-<td valign=\"top\"><h4>I.initType</h4></td>
-<td valign=\"top\"><h4>D.initType</h4></td>
+<p>Limit and Offset PID controller is build off of TRANSFORM/Controls/LimPID to add an offset value. This allows for the inital value of the controller to be set along with time delay befor the controller activates.</p>
+<p>There are three addational parameters with this controller </p>
+<table cellspacing=\"0\" cellpadding=\"2\" border=\"1\" width=\"100%\"><tr>
+<td><p>Parameter</p></td>
+<td><p>Discription</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><h4>NoInit</h4></td>
-<td valign=\"top\"><p>NoInit</p></td>
-<td valign=\"top\"><p>NoInit</p></td>
+<td><p>offset</p></td>
+<td><p>The initial output of the controller </p></td>
 </tr>
 <tr>
-<td valign=\"top\"><h4>SteadyState</h4></td>
-<td valign=\"top\"><p>SteadyState</p></td>
-<td valign=\"top\"><p>SteadyState</p></td>
+<td><p>delayTime</p></td>
+<td><p>The time until the contoler turns on</p></td>
 </tr>
 <tr>
-<td valign=\"top\"><h4>InitialState</h4></td>
-<td valign=\"top\"><p>InitialState</p></td>
-<td valign=\"top\"><p>InitialState</p></td>
-</tr>
-<tr>
-<td valign=\"top\"><h4>InitialOutput</h4><p>and initial equation: y = y_start</p></td>
-<td valign=\"top\"><p>NoInit</p></td>
-<td valign=\"top\"><p>SteadyState</p></td>
-</tr>
-<tr>
-<td valign=\"top\"><h4>DoNotUse_InitialIntegratorState</h4></td>
-<td valign=\"top\"><p>InitialState</p></td>
-<td valign=\"top\"><p>NoInit</p></td>
+<td><p>init_output</p></td>
+<td><p>The output value given during the delay, normal set equal to the offset value</p></td>
 </tr>
 </table>
-<p><br><br><br><br><br><br>In many cases, the most useful initial condition is <b>SteadyState</b> because initial transients are then no longer present. If initType = InitPID.SteadyState, then in some cases difficulties might occur. The reason is the equation of the integrator: </p>
-<p><b><span style=\"font-family: Courier New;\">der</span></b>(y) = k*u; </p>
-<p>The steady state equation &quot;der(x)=0&quot; leads to the condition that the input u to the integrator is zero. If the input u is already (directly or indirectly) defined by another initial condition, then the initialization problem is <b>singular</b> (has none or infinitely many solutions). This situation occurs often for mechanical systems, where, e.g., u = desiredSpeed - measuredSpeed and since speed is both a state and a derivative, it is natural to initialize it with zero. As sketched this is, however, not possible. The solution is to not initialize u_m or the variable that is used to compute u_m by an algebraic equation. </p>
-<p>If parameter <b>limitAtInit</b> = <b>false</b>, the limits at the output of this controller block are removed from the initialization problem which leads to a much simpler equation system. After initialization has been performed, it is checked via an assert whether the output is in the defined limits. For backward compatibility reasons <b>limitAtInit</b> = <b>true</b>. In most cases it is best to use <b>limitAtInit</b> = <b>false</b>. </p>
+<p><br><br><br><br><br>Model developed at INL by Logan Williams <span style=\"font-family: inherit;\"><a href=\"mailto:logan.williams@inl.gov\">Logan.Williams@inl.gov</a></span></p>
+<p><br>Documented September 2023</p>
 </html>"),
     Diagram(graphics={         Text(
           extent={{-98,106},{-158,96}},
           lineColor={0,0,255},
           textString="(feed-forward)")}));
-end VarLimVarK_PID;
+end LimOffsetPID;

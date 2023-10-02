@@ -1,6 +1,5 @@
 within NHES.Systems.EnergyStorage.SHS_Two_Tank.Models;
-model
-  Two_Tank_SHS_System_NTU_GMI_TempControl_SmallTanks_DirectCoupling_HTGR
+model Two_Tank_SHS_System_NTU_GMI_TempControl_SmallTanks_DirectCoupling_HTGR
   extends BaseClasses.Partial_SubSystem_A(
     redeclare replaceable ControlSystems.CS_Boiler_04 CS,
     redeclare replaceable ControlSystems.ED_Dummy ED,

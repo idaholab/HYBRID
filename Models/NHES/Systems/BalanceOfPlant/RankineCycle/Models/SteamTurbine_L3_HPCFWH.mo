@@ -220,12 +220,18 @@ model SteamTurbine_L3_HPCFWH
   TRANSFORM.Fluid.Sensors.Temperature Steam_T2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-16,-60},{-4,-70}})));
-  SupportComponent.NonLinear_Break nonLinear_Break(redeclare package Medium =
+  Fluid.Utilities.NonLinear_Break  nonLinear_Break(redeclare package Medium =
         Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{4,-6},{-4,6}},
         rotation=90,
-        origin={-74,-8})));
+        origin={-72,-8})));
+  Fluid.Utilities.NonLinear_Break  nonLinear_Break1(redeclare package Medium =
+        Modelica.Media.Water.StandardWater) annotation (Placement(
+        transformation(
+        extent={{-4,-6},{4,6}},
+        rotation=90,
+        origin={-72,66})));
 equation
   connect(TBV.port_b, prt_b_steamdump) annotation (Line(points={{-71,86},{-71,
           100},{-100,100}}, color={0,127,255}));
@@ -382,15 +388,19 @@ equation
   connect(pump1.port_b, Steam_T2.port)
     annotation (Line(points={{-2,-60},{-10,-60}}, color={0,127,255}));
   connect(nonLinear_Break.port_b, HPT_bypass_valve.port_a) annotation (Line(
-        points={{-74,-12},{-74,-19},{-62,-19}}, color={0,127,255}));
+        points={{-72,-12},{-72,-19},{-62,-19}}, color={0,127,255}));
   connect(port_a_steam_in, TCV.port_a)
     annotation (Line(points={{-100,60},{-66,60}}, color={0,127,255}));
   connect(port_a_steam_in, nonLinear_Break.port_a)
-    annotation (Line(points={{-100,60},{-74,60},{-74,-4}}, color={0,127,255}));
+    annotation (Line(points={{-100,60},{-72,60},{-72,-4}}, color={0,127,255}));
   connect(Steam_T.port, port_a_steam_in)
     annotation (Line(points={{-92,32},{-92,60},{-100,60}}, color={0,127,255}));
   connect(sensor_p.port, port_a_steam_in) annotation (Line(points={{-110,52},{
           -92,52},{-92,60},{-100,60}}, color={0,127,255}));
+  connect(nonLinear_Break1.port_a, TCV.port_a)
+    annotation (Line(points={{-72,62},{-72,60},{-66,60}}, color={0,127,255}));
+  connect(nonLinear_Break1.port_b, TBV.port_a)
+    annotation (Line(points={{-72,70},{-72,72},{-71,72}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-2.09756,2},{83.9024,-2}},
@@ -542,5 +552,87 @@ equation
           pattern=LinePattern.None,
           fillPattern=FillPattern.HorizontalCylinder,
           fillColor={255,255,255})}),                            Diagram(
-        coordinateSystem(preserveAspectRatio=false)));
+        coordinateSystem(preserveAspectRatio=false)),
+    Documentation(info="<html>
+<p>Three stage steam turbine model with open feed water heating. </p>
+<p>This model allows for steam extraction/insertion from inbetween the HPT and LPT1 sections. Moisure is removed between the LPT1 and LPT2 sections and used for feed heating. The remaining feed heating is done using steam from the steam header. </p>
+<p>Nominal conditions are need to step up this model. This conditions can be calculated using the steady state design model found in HYBRID/Steady_State/Systems/BalanceOfPlant/RankineCycle/Models .</p>
+<p>Key parameters are obtained from the steady state design model&apos;s inputs and outputs, and should be placed into the data packages for both the top level model and CS model. Turbines should be initalized using densities NOT temperatures. </p>
+<table cellspacing=\"0\" cellpadding=\"2\" border=\"1\" width=\"100%\"><tr>
+<td><p>Key Parameter</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr>
+<td><p>HPT_p_in</p></td>
+<td><p>High Pressure Turbine Inlet Pressure (bar)</p></td>
+</tr>
+<tr>
+<td><p>p_i1</p></td>
+<td><p>Nomial Pressure Between HPT and LPT1 (bar)</p></td>
+</tr>
+<tr>
+<td><p>p_i2</p></td>
+<td><p>Nomial Pressure Between LPT1 and LPT2 (bar)</p></td>
+</tr>
+<tr>
+<td><p>cond_p</p></td>
+<td><p>Condenser Pressure (bar)</p></td>
+</tr>
+<tr>
+<td><p>Tin</p></td>
+<td><p>Inlet Steam Temperature (C)</p></td>
+</tr>
+<tr>
+<td><p>Tfeed</p></td>
+<td><p>Feed Water Temperature (C)</p></td>
+</tr>
+<tr>
+<td><p>d_HPT_in</p></td>
+<td><p>HPT inlet density (kg/m3)</p></td>
+</tr>
+<tr>
+<td><p>d_LPT1_in</p></td>
+<td><p>LPT1 inlet density (kg/m3)</p></td>
+</tr>
+<tr>
+<td><p>d_LPT2_in</p></td>
+<td><p>LPT2 inlet density (kg/m3)</p></td>
+</tr>
+<tr>
+<td><p>mdot_total</p></td>
+<td><p>Nominal feed pump flow rate (kg/s)</p></td>
+</tr>
+<tr>
+<td><p>mdot_fh</p></td>
+<td><p>Nominal feed heating bypass flow rate (kg/s)</p></td>
+</tr>
+<tr>
+<td><p>mdot_hpt</p></td>
+<td><p>Nominal HPT flow rate (kg/s)</p></td>
+</tr>
+<tr>
+<td><p>mdot_lpt1</p></td>
+<td><p>Nominal LPT1 flow rate (kg/s)</p></td>
+</tr>
+<tr>
+<td><p>mdot_lpt2</p></td>
+<td><p>Nominal LPT2 flow rate (kg/s)</p></td>
+</tr>
+<tr>
+<td><p>eta_t</p></td>
+<td><p>Turbine isentropic efficiency</p></td>
+</tr>
+<tr>
+<td><p>eta_mech</p></td>
+<td><p>Turbine mechincal efficiency</p></td>
+</tr>
+<tr>
+<td><p>eta_p</p></td>
+<td><p>Pump isentropic efficiency</p></td>
+</tr>
+</table>
+<p><br><br><br><br>Model developed at INL by Junyung Kim <span style=\"font-family: inherit;\"><a href=\"mailto:junyung.kim@inl.gov\">junyung.kim@inl.gov</a></p>
+<p><br>Documented September 2023</p>
+<p>More imformation on this model can be found at <a href=\"https://doi.org/10.2172/1988132\">https://doi.org/10.2172/1988132</a> </p>
+</html>"));
 end SteamTurbine_L3_HPCFWH;

@@ -233,7 +233,7 @@ end for;
   connect(multiPort1.port_a, condenser.port_a)
     annotation (Line(points={{80,-70},{80,-77}}, color={0,127,255}));
   connect(condenser.port_b, multiPort.ports_b[1]) annotation (Line(points={{87,-92},
-          {87,-100},{20,-100},{20,-68},{-2,-68},{-2,-76}}, color={0,127,255}));
+          {87,-100},{20,-100},{20,-68},{1,-68},{1,-76}},   color={0,127,255}));
   connect(sensorBus.p_inlet_steamTurbine, pressure.p)
     annotation (Line(
       points={{-29.9,100.1},{-94,100.1},{-94,60}},
@@ -250,8 +250,8 @@ end for;
                                                       color={0,127,255}));
   connect(resistance.port_b, multiPort1.ports_b[2]) annotation (Line(points={{80,-37},
           {80,-62}},                        color={0,127,255}));
-  connect(valve_BV.port_a, header.port_b[1]) annotation (Line(points={{-80,0},
-          {-100,0},{-100,39.3333},{-104,39.3333}},color={0,127,255}));
+  connect(valve_BV.port_a, header.port_b[1]) annotation (Line(points={{-80,0},{
+          -100,0},{-100,39.6667},{-104,39.6667}}, color={0,127,255}));
   connect(valve_TCV.port_a, header.port_b[2]) annotation (Line(points={{-80,40},
           {-92,40},{-92,40},{-104,40}},     color={0,127,255}));
   connect(port_a, resistance4.port_a)
@@ -276,8 +276,8 @@ end for;
     annotation (Line(points={{90,0},{100,0}}, color={0,0,0}));
   connect(valve_TCV.port_b, steamTurbine.portHP)
     annotation (Line(points={{-60,40},{40,40},{40,6}}, color={0,127,255}));
-  connect(pressure.port, header.port_b[3]) annotation (Line(points={{-100,50},
-          {-100,40},{-104,40},{-104,40.6667}},    color={0,127,255}));
+  connect(pressure.port, header.port_b[3]) annotation (Line(points={{-100,50},{
+          -100,40},{-104,40},{-104,40.3333}},     color={0,127,255}));
   connect(actuatorBus.opening_TCV,valve_TCV. opening)
     annotation (Line(
       points={{30.1,100.1},{30.1,100.1},{-8,100.1},{-8,102},{-70,102},{-70,48}},
@@ -308,7 +308,8 @@ end for;
   connect(PID1.y, boundary2.m_flow_in) annotation (Line(points={{-41,-40},{-38,
           -40},{-38,-52},{-28,-52}}, color={0,0,127}));
   connect(boundary2.ports[1], multiPort.ports_b[2])
-    annotation (Line(points={{-8,-60},{2,-60},{2,-76}}, color={0,127,255}));
+    annotation (Line(points={{-8,-60},{-1,-60},{-1,-76}},
+                                                        color={0,127,255}));
   annotation (defaultComponentName="BOP", Icon(coordinateSystem(extent={{-100,-100},
             {100,100}}),                       graphics={
         Rectangle(

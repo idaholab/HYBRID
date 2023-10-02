@@ -121,8 +121,8 @@ model HTGR_BOP_L3_Transient_OFWHextraction
     h=192e3,
     nPorts=1)
     annotation (Placement(transformation(extent={{180,-12},{160,8}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,

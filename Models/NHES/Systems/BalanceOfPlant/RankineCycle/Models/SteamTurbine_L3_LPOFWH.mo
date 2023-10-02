@@ -492,5 +492,87 @@ equation
           pattern=LinePattern.None,
           fillPattern=FillPattern.HorizontalCylinder,
           fillColor={255,255,255})}),                            Diagram(
-        coordinateSystem(preserveAspectRatio=false)));
+        coordinateSystem(preserveAspectRatio=false)),
+    Documentation(info="<html>
+<p>Three stage steam turbine model with open feed water heating. </p>
+<p>This model allows for steam extraction/insertion from inbetween the HPT and LPT1 sections. Moisure is removed between the LPT1 and LPT2 sections and used for feed heating. The remaining feed heating is done using steam from between LPT1 and LPT2. </p>
+<p>Nominal conditions are need to step up this model. This conditions can be calculated using the steady state design model found in HYBRID/Steady_State/Systems/BalanceOfPlant/RankineCycle/Models .</p>
+<p>Key parameters are obtained from the steady state design model&apos;s inputs and outputs, and should be placed into the data packages for both the top level model and CS model. Turbines should be initalized using densities NOT temperatures. </p>
+<table cellspacing=\"0\" cellpadding=\"2\" border=\"1\" width=\"100%\"><tr>
+<td><p>Key Parameter</p></td>
+<td><p>Description</p></td>
+</tr>
+<tr>
+<td><p>HPT_p_in</p></td>
+<td><p>High Pressure Turbine Inlet Pressure (bar)</p></td>
+</tr>
+<tr>
+<td><p>p_i1</p></td>
+<td><p>Nomial Pressure Between HPT and LPT1 (bar)</p></td>
+</tr>
+<tr>
+<td><p>p_i2</p></td>
+<td><p>Nomial Pressure Between LPT1 and LPT2 (bar)</p></td>
+</tr>
+<tr>
+<td><p>cond_p</p></td>
+<td><p>Condenser Pressure (bar)</p></td>
+</tr>
+<tr>
+<td><p>Tin</p></td>
+<td><p>Inlet Steam Temperature (C)</p></td>
+</tr>
+<tr>
+<td><p>Tfeed</p></td>
+<td><p>Feed Water Temperature (C)</p></td>
+</tr>
+<tr>
+<td><p>d_HPT_in</p></td>
+<td><p>HPT inlet density (kg/m3)</p></td>
+</tr>
+<tr>
+<td><p>d_LPT1_in</p></td>
+<td><p>LPT1 inlet density (kg/m3)</p></td>
+</tr>
+<tr>
+<td><p>d_LPT2_in</p></td>
+<td><p>LPT2 inlet density (kg/m3)</p></td>
+</tr>
+<tr>
+<td><p>mdot_total</p></td>
+<td><p>Nominal feed pump flow rate (kg/s)</p></td>
+</tr>
+<tr>
+<td><p>mdot_fh</p></td>
+<td><p>Nominal feed heating bypass flow rate (kg/s)</p></td>
+</tr>
+<tr>
+<td><p>mdot_hpt</p></td>
+<td><p>Nominal HPT flow rate (kg/s)</p></td>
+</tr>
+<tr>
+<td><p>mdot_lpt1</p></td>
+<td><p>Nominal LPT1 flow rate (kg/s)</p></td>
+</tr>
+<tr>
+<td><p>mdot_lpt2</p></td>
+<td><p>Nominal LPT2 flow rate (kg/s)</p></td>
+</tr>
+<tr>
+<td><p>eta_t</p></td>
+<td><p>Turbine isentropic efficiency</p></td>
+</tr>
+<tr>
+<td><p>eta_mech</p></td>
+<td><p>Turbine mechincal efficiency</p></td>
+</tr>
+<tr>
+<td><p>eta_p</p></td>
+<td><p>Pump isentropic efficiency</p></td>
+</tr>
+</table>
+<p><br><br><br><br>Model developed at INL by Logan Williams <span style=\"font-family: inherit;\"><a href=\"mailto:logan.williams@inl.gov\">logan.williams@inl.gov</a></span></p>
+<p>Documented September 2023</p>
+<p>More imformation on this model can be found at <a href=\"https://doi.org/10.2172/1988132\">https://doi.org/10.2172/1988132</a> </p>
+</html>"));
 end SteamTurbine_L3_LPOFWH;
