@@ -8,7 +8,21 @@ model SteamTurbine_L3_HPOFWH
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ED_Dummy ED,
     redeclare replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3
-      data);
+      data(
+      HPT_p_in=12000000,
+      p_dump=20000000,
+      p_i1=2000000,
+      p_i2=150000,
+      cond_p=10000,
+      Tin=846.3,
+      Tfeed=604.8,
+      d_HPT_in=288573.3428,
+      d_LPT1_in=56430,
+      mdot_total=288.5733428,
+      mdot_fh=56.43116714,
+      mdot_hpt=232.1421757,
+      mdot_lpt1=232.1421757,
+      mdot_lpt2=217.023541));
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_steam(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-110,50},{-90,70}})));

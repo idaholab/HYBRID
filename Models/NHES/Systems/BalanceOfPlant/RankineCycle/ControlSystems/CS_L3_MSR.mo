@@ -1,9 +1,9 @@
 within NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems;
 model CS_L3_MSR
 
-  extends PrimaryHeatSystem.MSR.TurbineMSR2.BaseClasses.Partial_ControlSystem;
+  extends NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_ControlSystem;
 
-  replaceable PrimaryHeatSystem.MSR.TurbineMSR2.Data.Data_L3 data(
+  replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3 data(
     Tin=813.15,
     Tfeed=473.15,
     d_HPT_in(displayUnit="kg/m3") = 34.69607167,
