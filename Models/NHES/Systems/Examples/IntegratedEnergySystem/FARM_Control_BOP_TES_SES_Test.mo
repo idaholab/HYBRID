@@ -14,7 +14,8 @@ model FARM_Control_BOP_TES_SES_Test
      + sum(EM.port_b3.m_flow./EM.port_b3_nominal_m_flow)*fracNominal_Other,
      0.5));
 
-  NHES.Systems.EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(
+  NHES.Systems.EnergyManifold.SteamManifold.Components.SteamManifold_L1_boundaries
+    EM(
     port_a1_nominal(
       p(displayUnit="Pa") = 3.398e6,
       h=2.99767e6,

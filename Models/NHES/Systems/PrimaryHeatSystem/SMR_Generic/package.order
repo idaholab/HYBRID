@@ -1,10 +1,6 @@
 Examples
-CS_Dummy
-CS_SMR_Tave
-CS_SMR_Tave_Enthalpy
-CS_SMR_Tave_Enthalpy_RXPower
-CS_SMR_highfidelity
-ED_Dummy
+CS
 Components
+Data
+SupportComponent
 BaseClasses
-CS_SMR_Tave_0721

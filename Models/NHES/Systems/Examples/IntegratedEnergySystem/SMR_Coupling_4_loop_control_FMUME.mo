@@ -17,12 +17,13 @@ model SMR_Coupling_4_loop_control_FMUME
       T(displayUnit="degC") = 579.75,
       h=2997670,
       p=3447380),
-    redeclare PrimaryHeatSystem.SMR_Generic.CS_SMR_Tave_Enthalpy CS(
+    redeclare PrimaryHeatSystem.SMR_Generic.CS.CS_SMR_Tave_Enthalpy CS(
       demand=demandChange,
       T_SG_exit=579.15,
       Q_nom=160e6))
     annotation (Placement(transformation(extent={{-102,-26},{-52,30}})));
-  EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(port_a1_nominal(
+  EnergyManifold.SteamManifold.Components.SteamManifold_L1_boundaries EM(
+      port_a1_nominal(
       p=nuScale_Tave_enthalpy.port_b_nominal.p,
       h=nuScale_Tave_enthalpy.port_b_nominal.h,
       m_flow=-nuScale_Tave_enthalpy.port_b_nominal.m_flow), port_b1_nominal(p=

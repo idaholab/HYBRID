@@ -1,13 +1,8 @@
 within NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.Models;
 model PebbleBed_Brayton_CC
-  extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable
+  extends BaseClasses.Partial_SubSystem_A(redeclare replaceable
       NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.CS_Simple
-      CS,
-    redeclare replaceable
-      NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Simple
-      ED,
-    redeclare Data.Model_HTGR_Pebble_BraytonCycle data(
+      CS, redeclare Data.Model_HTGR_Pebble_BraytonCycle data(
       Q_total=600000000,
       Q_total_el=300000000,
       K_P_Release=10000,

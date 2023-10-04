@@ -96,7 +96,8 @@ model HTGR_L2_Turbine
     fileName=Modelica.Utilities.Files.loadResource(
         "modelica://NHES/Resources/Data/RAVEN/Uprate_timeSeries.txt"))
     annotation (Placement(transformation(extent={{158,60},{198,100}})));
-  EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(port_a1_nominal(
+  EnergyManifold.SteamManifold.Components.SteamManifold_L1_boundaries EM(
+      port_a1_nominal(
       p=14000000,
       h=3e6,
       m_flow=50), port_b1_nominal(p=14100000, h=2e6))

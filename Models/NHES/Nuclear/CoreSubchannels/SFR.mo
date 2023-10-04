@@ -82,8 +82,7 @@ model SFR
     "Total nominal reactor power (fission + decay)";
   parameter Boolean specifyPower=false
     "=true to specify power (i.e., no der(P) equation)";
-  parameter TRANSFORM.Units.NonDim SF_start_power[Geometry_1.nV]=
-                                                               fill(1/geometry.nV,
+  parameter TRANSFORM.Units.NonDim SF_start_power[geometry.nV]=fill(1/geometry.nV,
       geometry.nV) "Shape factor for the power profile, sum(SF) = 1";
   replaceable record Data_PG =
       TRANSFORM.Nuclear.ReactorKinetics.Data.PrecursorGroups.precursorGroups_6_TRACEdefault
@@ -241,21 +240,18 @@ model SFR
     "Cladding temperature"
     annotation (Dialog(tab="Fuel Element Initialization",group="Reference Temperatures for Start Values"));
 
-  parameter SI.Temperature Ts_start_1[Geometry_1.nRs[1],Geometry_1.nV]=
-                                                                   fill(
+  parameter SI.Temperature Ts_start_1[geometry.nRs[1],geometry.nV]=fill(
       T_Fuel_Init,
       geometry.nRs[1],
       geometry.nV) "Fuel temperatures"     annotation (Dialog(tab="Fuel Element Initialization",
         group="Start Value: Temperature"));
-  parameter SI.Temperature Ts_start_2[Geometry_1.nRs[2],Geometry_1.nV]=
-                                                                   [{Ts_start_1
+  parameter SI.Temperature Ts_start_2[geometry.nRs[2],geometry.nV]=[{Ts_start_1
       [end, :]}; fill(
       T_Gap_Init,
       geometry.nRs[2] - 1,
       geometry.nV)] "Gap temperatures" annotation (Dialog(tab="Fuel Element Initialization",
         group="Start Value: Temperature"));
-  parameter SI.Temperature Ts_start_3[Geometry_1.nRs[3],Geometry_1.nV]=
-                                                                   [{
+  parameter SI.Temperature Ts_start_3[geometry.nRs[3],geometry.nV]=[{
       Ts_start_2[end, :]}; fill(
       T_Clad_Init,
       geometry.nRs[3] - 1,
@@ -264,8 +260,7 @@ model SFR
 
 
       // Coolant Initialization
-  parameter SI.AbsolutePressure[Geometry_1.nV]
-                                             ps_start=linspace_1D(
+  parameter SI.AbsolutePressure[geometry.nV] ps_start=linspace_1D(
       p_a_start,
       p_b_start,
       geometry.nV) "Pressure" annotation (Dialog(tab="Coolant Initialization",
@@ -278,8 +273,7 @@ model SFR
   parameter Boolean use_Ts_start=true
     "Use T_start if true, otherwise h_start" annotation (Evaluate=true, Dialog(
         tab="Coolant Initialization", group="Start Value: Temperature"));
-  parameter SI.Temperature Ts_start[Geometry_1.nV]=
-                                                 linspace_1D(
+  parameter SI.Temperature Ts_start[geometry.nV]=linspace_1D(
       T_a_start,
       T_b_start,
       geometry.nV) "Temperature" annotation (Evaluate=true, Dialog(
@@ -297,8 +291,7 @@ model SFR
       group="Start Value: Temperature",
       enable=use_Ts_start));
 
-  parameter SI.SpecificEnthalpy[Geometry_1.nV]
-                                             hs_start=if not
+  parameter SI.SpecificEnthalpy[geometry.nV] hs_start=if not
       use_Ts_start then linspace_1D(
       h_a_start,
       h_b_start,
@@ -325,7 +318,7 @@ model SFR
       group="Start Value: Specific Enthalpy",
       enable=not use_Ts_start));
 
-  parameter SI.MassFraction Xs_start[Geometry_1.nV,Medium.nX]=
+  parameter SI.MassFraction Xs_start[geometry.nV,Medium.nX]=
       linspaceRepeat_1D(
       X_a_start,
       X_b_start,
@@ -340,7 +333,7 @@ model SFR
     "Mass fraction at port b" annotation (Dialog(tab="Coolant Initialization",
         group="Start Value: Species Mass Fraction"));
 
-  parameter SI.MassFraction Cs_start[Geometry_1.nV,Medium.nC]=
+  parameter SI.MassFraction Cs_start[geometry.nV,Medium.nC]=
       linspaceRepeat_1D(
       C_a_start,
       C_b_start,
@@ -355,8 +348,7 @@ model SFR
     "Mass fraction at port b" annotation (Dialog(tab="Coolant Initialization",
         group="Start Value: Trace Substances Mass Fraction"));
 
-  parameter SI.MassFlowRate[Geometry_1.nV + 1]
-                                             m_flows_start=linspace(
+  parameter SI.MassFlowRate[geometry.nV + 1] m_flows_start=linspace(
       m_flow_a_start,
       -m_flow_b_start,
       geometry.nV + 1) "Mass flow rates" annotation (Evaluate=true, Dialog(tab="Coolant Initialization",
@@ -418,8 +410,7 @@ model SFR
   parameter Boolean showName = true annotation(Dialog(tab="Visualization"));
   parameter Boolean showDesignFlowDirection = true annotation(Dialog(tab="Visualization"));
 
-  Real SF_mC_add[Geometry_1.nV,Medium.nC]=
-                                        {{InternalReflectorBlanket.mCs[i, j]/
+  Real SF_mC_add[geometry.nV,Medium.nC]={{InternalReflectorBlanket.mCs[i, j]/
       sum(InternalReflectorBlanket.mCs[:, j]) for j in 1:Medium.nC} for i in 1:
       geometry.nV};
 
@@ -907,37 +898,37 @@ equation
       Line(points={{0.1,-113.8},{0.1,-114},{0,-114},{0,-106.5}},     color={127,
           0,0}));
   connect(RadialBlanket.port_b, multiPort1.ports_b[1]) annotation (Line(points={{15,-100},
-          {46,-100},{46,0},{60,0},{60,3}},        color={0,127,255}));
+          {46,-100},{46,0},{60,0},{60,-1.5}},     color={0,127,255}));
   connect(InnerFuelRing.port_b, multiPort1.ports_b[2]) annotation (Line(points={{15,-30},
-          {46,-30},{46,0},{60,0},{60,1}},   color={0,127,255}));
+          {46,-30},{46,0},{60,0},{60,-0.5}},color={0,127,255}));
   connect(OuterFuelRing.port_b, multiPort1.ports_b[3])
-    annotation (Line(points={{15,28},{46,28},{46,0},{60,0},{60,-1}},
+    annotation (Line(points={{15,28},{46,28},{46,0},{60,0},{60,0.5}},
                                                           color={0,127,255}));
   connect(InternalReflectorBlanket.port_b, multiPort1.ports_b[4]) annotation (
-      Line(points={{15,100},{46,100},{46,0},{60,0},{60,-3}},
+      Line(points={{15,100},{46,100},{46,0},{60,0},{60,1.5}},
                                                   color={0,127,255}));
   connect(InternalReflectorBlanket.port_a, IntRefBlanket_Resistance.port_b)
     annotation (Line(points={{-15,100},{-33,100}},
                                                  color={0,127,255}));
   connect(IntRefBlanket_Resistance.port_a, multiPort.ports_b[1]) annotation (
-      Line(points={{-47,100},{-62,100},{-62,0},{-68,0},{-68,3}},
+      Line(points={{-47,100},{-62,100},{-62,0},{-68,0},{-68,-1.5}},
                                                        color={0,127,255}));
   connect(RadialBlanket.port_a, RadialBlanket_Resistance.port_b)
     annotation (Line(points={{-15,-100},{-33,-100}},
                                                    color={0,127,255}));
   connect(RadialBlanket_Resistance.port_a, multiPort.ports_b[2]) annotation (
-      Line(points={{-47,-100},{-62,-100},{-62,0},{-68,0},{-68,1}},
+      Line(points={{-47,-100},{-62,-100},{-62,0},{-68,0},{-68,-0.5}},
                                                          color={0,127,255}));
   connect(OuterFuelRing.port_a, Outer_Fuel_Resistance.port_b)
     annotation (Line(points={{-15,28},{-33,28}},
                                                color={0,127,255}));
   connect(Outer_Fuel_Resistance.port_a, multiPort.ports_b[3]) annotation (Line(
-        points={{-47,28},{-62,28},{-62,0},{-68,0},{-68,-1}},
+        points={{-47,28},{-62,28},{-62,0},{-68,0},{-68,0.5}},
                                                   color={0,127,255}));
   connect(InnerFuelRing.port_a, Internal_Fuel_Resistance.port_b)
     annotation (Line(points={{-15,-30},{-33,-30}}, color={0,127,255}));
   connect(Internal_Fuel_Resistance.port_a, multiPort.ports_b[4]) annotation (
-      Line(points={{-47,-30},{-62,-30},{-62,0},{-68,0},{-68,-3}},
+      Line(points={{-47,-30},{-62,-30},{-62,0},{-68,0},{-68,1.5}},
                                                          color={0,127,255}));
   connect(multiPort1.port_a, Core_Outlet_T.port_a)
     annotation (Line(points={{68,0},{78,0}}, color={0,127,255}));

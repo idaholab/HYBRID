@@ -13,11 +13,12 @@ model TightlyCoupled_SteamFlowCtrl_FY18_LoadFollowPHS
 
   extends BaseClasses.PartialExample_A(
     redeclare PrimaryHeatSystem.FourLoopPWR.Components.NSSS PHS(redeclare
-        PrimaryHeatSystem.FourLoopPWR.CS_LoadFollow CS(
+        PrimaryHeatSystem.FourLoopPWR.CS.CS_LoadFollow CS(
         delayStart_SGpump=500,
         delayStart_CR=200,
         demandChange=demandChange)),
-    redeclare EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(
+    redeclare
+      EnergyManifold.SteamManifold.Components.SteamManifold_L1_boundaries EM(
       port_a1_nominal(
         p=PHS.port_b_nominal.p,
         h=PHS.port_b_nominal.h,
@@ -25,8 +26,7 @@ model TightlyCoupled_SteamFlowCtrl_FY18_LoadFollowPHS
       port_b1_nominal(p=PHS.port_a_nominal.p, h=PHS.port_a_nominal.h),
       nPorts_b3=1,
       port_b3_nominal_m_flow={-IP.port_a_nominal.m_flow}),
-    redeclare BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries
-      BOP(
+    redeclare BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries BOP(
       port_a_nominal(
         p=EM.port_b2_nominal.p,
         h=EM.port_b2_nominal.h,
@@ -39,6 +39,7 @@ model TightlyCoupled_SteamFlowCtrl_FY18_LoadFollowPHS
       redeclare
         NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_PressureAndPowerControl
         CS(p_nominal=BOP.port_a_nominal.p, W_totalSetpoint=SC.W_totalSetpoint_BOP)),
+
     redeclare EnergyStorage.Battery.Models.Logical ES(
       capacity_max=dataCapacity.ES_capacity,
       capacity_min=0.2*dataCapacity.ES_capacity,
@@ -68,6 +69,7 @@ model TightlyCoupled_SteamFlowCtrl_FY18_LoadFollowPHS
       flowSplit(port_2(h_outflow(start=2.95398e6, fixed=false))),
       returnPump(PR0=62.7/51.3042, pstart_out=6270000),
       hEX_nuclearHeatCathodeGasRecup_ROM(hShell_out(start=962881, fixed=false))),
+
     redeclare SupervisoryControl.InputSetpointData SC(
       delayStart=delayStart.k,
       W_nominal_IP(displayUnit="MW") = 53303300,

@@ -2,7 +2,7 @@ within NHES.Systems.PrimaryHeatSystem.SFR.Examples;
 model Test
   extends Modelica.Icons.Example;
 
-  SubSystem_Dummy changeMe
+  BaseClasses.SubSystem_Dummy changeMe
     annotation (Placement(transformation(extent={{-40,-42},{40,38}})));
 
   annotation (

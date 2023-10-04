@@ -8,6 +8,5 @@ Record_SubSystem_A
 Record_SubSystem_B
 Record_SubSystem_C
 Partial_ControlSystem
-Partial_EventDriver
 SignalSubBus_ActuatorInput
 SignalSubBus_SensorOutput

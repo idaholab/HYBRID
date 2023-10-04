@@ -2,7 +2,7 @@ within NHES.Systems.PrimaryHeatSystem.GenericModular_PWR.Examples;
 model Test
   extends Modelica.Icons.Example;
 
-  GenericModule PHS
+  Components.GenericModule PHS
     annotation (Placement(transformation(extent={{-40,-42},{40,38}})));
 
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT sink(

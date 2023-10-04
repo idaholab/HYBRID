@@ -6,9 +6,11 @@ model SMR_High_fidelity
   extends SMR_Generic.BaseClasses.Partial_SubSystem_A(
     replaceable package Medium = Modelica.Media.Water.StandardWater,
     allowFlowReversal=system.allowFlowReversal,
-    redeclare replaceable CS_Dummy CS,
-    redeclare replaceable ED_Dummy ED,
-    redeclare Data.Data_GenericModule_NuScale data(
+    redeclare replaceable
+      NHES.Systems.PrimaryHeatSystem.SMR_Generic.CS.CS_Dummy CS,
+    redeclare
+      NHES.Systems.PrimaryHeatSystem.SMR_Generic.Data.Data_GenericModule_NuScale
+      data(
       Q_total=200e6,
       Q_total_el=60e6,
       T_hot=586.85,
@@ -153,24 +155,28 @@ Real Tave=(Tcore_inlet.T+Tcore_exit.T)/2.0;
         rotation=90,
         origin={27,0})));
 
-  Data.DataInitial_NS dataInitial(
-    p_start_core_coolantSubchannel(displayUnit="Pa") = {12903247.0,12898190.0,12893307.0,
-      12888614.0},
-    T_start_core_coolantSubchannel(displayUnit="K") = {540.2313,558.79364,576.1813,
-      586.9483},
-    h_start_STHX_tube={957542.44,1226821.5,1475077.8,1743775.2,2041209.8,2374421.2,
-        2749133.0,2919464.0,2980839.5,3004198.5},
+  NHES.Systems.PrimaryHeatSystem.SMR_Generic.Data.DataInitial_NS dataInitial(
+    p_start_core_coolantSubchannel(displayUnit="Pa") = {12903247.0,12898190.0,
+      12893307.0,12888614.0},
+    T_start_core_coolantSubchannel(displayUnit="K") = {540.2313,558.79364,
+      576.1813,586.9483},
+    h_start_STHX_tube={957542.44,1226821.5,1475077.8,1743775.2,2041209.8,
+        2374421.2,2749133.0,2919464.0,2980839.5,3004198.5},
     T_start_STHX_shell(displayUnit="K") = {585.6959,583.2033,576.07135,560.9657,
       554.01654,547.5736,541.4915,535.5601,527.6039,516.3904},
-    Ts_start_core_fuelModel_region_1=[735.3177,865.1219,884.5617,785.37634; 705.33734,
-        814.50995,833.0326,753.8575; 620.802,676.6141,692.713,665.06805],
-    Ts_start_core_fuelModel_region_2=[620.8022,676.6141,692.713,665.06805; 584.4808,
-        623.8399,640.4899,629.82477; 547.5703,569.67633,586.9591,594.09796],
-    Ts_start_core_fuelModel_region_3=[547.5703,569.67633,586.9591,594.09796; 543.7788,
-        564.05676,581.3935,590.4041; 540.2313,558.79364,576.1813,586.9483],
-    T_start_STHX_tubeWall(displayUnit="K") = [511.0002,523.26855,531.58636,537.2081,
-      542.85175,548.7496,555.07025,573.4225,582.2541,585.3353; 516.3904,527.6039,
-      535.5601,541.4915,547.5736,554.01654,560.9657,576.07135,583.2033,585.6959],
+    Ts_start_core_fuelModel_region_1=[735.3177,865.1219,884.5617,785.37634;
+        705.33734,814.50995,833.0326,753.8575; 620.802,676.6141,692.713,
+        665.06805],
+    Ts_start_core_fuelModel_region_2=[620.8022,676.6141,692.713,665.06805;
+        584.4808,623.8399,640.4899,629.82477; 547.5703,569.67633,586.9591,
+        594.09796],
+    Ts_start_core_fuelModel_region_3=[547.5703,569.67633,586.9591,594.09796;
+        543.7788,564.05676,581.3935,590.4041; 540.2313,558.79364,576.1813,
+        586.9483],
+    T_start_STHX_tubeWall(displayUnit="K") = [511.0002,523.26855,531.58636,
+      537.2081,542.85175,548.7496,555.07025,573.4225,582.2541,585.3353;
+      516.3904,527.6039,535.5601,541.4915,547.5736,554.01654,560.9657,576.07135,
+      583.2033,585.6959],
     p_start_pressurizer(displayUnit="Pa") = 12807852,
     p_start_pressurizer_tee(displayUnit="Pa") = 12807852,
     T_start_pressurizer_tee(displayUnit="K") = 586.90674)
@@ -482,8 +488,8 @@ equation
           -33.36,88}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-160,
             -120},{100,160}}),
-                         graphics={Bitmap(extent={{-114,-90},{110,90}},fileName=
-             "modelica://NHES/Resources/Images/Systems/PHS/Schematic-of-a-NuScale-power-module.png")}),
+                         graphics={Bitmap(extent={{-114,-90},{110,90}},fileName
+            ="modelica://NHES/Resources/Images/Systems/PHS/Schematic-of-a-NuScale-power-module.png")}),
                                                                  Diagram(
         coordinateSystem(preserveAspectRatio=false, extent={{-160,-120},{100,
             160}})),

@@ -4,9 +4,7 @@ model ReactorBOPIntegrated_Brayton_WorkshopDemo
   Real total_efficiency;
   Models.PebbleBed_Brayton_CC Pebble_Bed_HTGR(redeclare
       NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.CS_Basic
-      CS, redeclare
-      NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Simple
-      ED) annotation (Placement(transformation(extent={{-48,-20},{20,44}})));
+      CS) annotation (Placement(transformation(extent={{-48,-20},{20,44}})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T Intercooler_Source(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow=20,

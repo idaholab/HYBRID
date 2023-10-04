@@ -2,14 +2,9 @@ within NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.Examples;
 model ReactorBOPIntegrated_Brayton_Simple
   extends Modelica.Icons.Example;
   NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.Models.PebbleBed_Brayton
-    Pebble_Bed_HTGR(
-    redeclare
+    Pebble_Bed_HTGR(redeclare
       NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.CS_Basic
-      CS,
-    redeclare
-      NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Simple
-      ED,
-    redeclare package Coolant_Medium =
+      CS, redeclare package Coolant_Medium =
         Modelica.Media.IdealGases.SingleGases.He)
     annotation (Placement(transformation(extent={{-48,-42},{20,22}})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary2(

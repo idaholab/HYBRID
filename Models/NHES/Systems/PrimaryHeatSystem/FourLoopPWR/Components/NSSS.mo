@@ -4,10 +4,11 @@ model NSSS
   extends BaseClasses.Partial_SubSystem_A(
     replaceable package Medium = Modelica.Media.Water.StandardWater,
     allowFlowReversal=system.allowFlowReversal,
-    redeclare replaceable CS_Default CS,
+    redeclare replaceable
+      NHES.Systems.PrimaryHeatSystem.FourLoopPWR.CS.CS_Dummy CS,
     port_a_nominal(
       p=data.p_shellSide,
-      h=Medium.specificEnthalpy_pT(port_a_nominal.p,data.T_inlet_shell),
+      h=Medium.specificEnthalpy_pT(port_a_nominal.p, data.T_inlet_shell),
       m_flow=data.m_flow_shellSide_total),
     port_b_nominal(p=data.p_shellSide, h=data.h_vsat),
     redeclare Data.Data_Basic data,
@@ -260,7 +261,7 @@ model NSSS
     h_b_start_shell=data.h_vsat - 1e5,
     h_a_start_shell=data.h_inlet_shell,
     redeclare model Geometry =
-      TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.HeatExchanger.ShellAndTubeHX
+        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.HeatExchanger.ShellAndTubeHX
         (
         nV=20,
         nR=3,

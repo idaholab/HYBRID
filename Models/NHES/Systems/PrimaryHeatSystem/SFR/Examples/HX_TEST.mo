@@ -61,10 +61,12 @@ model HX_TEST
         TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_SinglePhase_2Region)
     annotation (Placement(transformation(extent={{60,40},{-24,-28}})));
 
-  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort sensor_h(redeclare package Medium =
+  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort sensor_h(redeclare package
+      Medium =
         Shell_Medium)
     annotation (Placement(transformation(extent={{-70,-20},{-50,0}})));
-  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort sensor_h1(redeclare package Medium =
+  TRANSFORM.Fluid.Sensors.SpecificEnthalpyTwoPort sensor_h1(redeclare package
+      Medium =
         Shell_Medium)
     annotation (Placement(transformation(extent={{78,-20},{98,0}})));
 equation

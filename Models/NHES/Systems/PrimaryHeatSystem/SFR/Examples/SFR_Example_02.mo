@@ -20,9 +20,11 @@ model SFR_Example_02
   Components.SFR_02_NTUHX sFR_02_NTUHX(redeclare package Medium_IHX_Loop =
         IL_Medium)
     annotation (Placement(transformation(extent={{-108,-22},{-30,56}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium = IL_Medium)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
+      =                                                                          IL_Medium)
     annotation (Placement(transformation(extent={{18,-10},{-4,14}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium = IL_Medium)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium
+      =                                                                           IL_Medium)
     annotation (Placement(transformation(extent={{-2,22},{24,46}})));
 equation
   connect(boundary.T_in, const.y) annotation (Line(points={{84,6},{105,6}},

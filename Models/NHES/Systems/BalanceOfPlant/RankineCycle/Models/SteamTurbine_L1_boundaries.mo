@@ -1,10 +1,8 @@
 within NHES.Systems.BalanceOfPlant.RankineCycle.Models;
 model SteamTurbine_L1_boundaries
 
-  extends BaseClasses.Partial_SubSystem_B(
-    redeclare replaceable ControlSystems.CS_Dummy CS,
-    redeclare replaceable ControlSystems.ED_Dummy ED,
-    redeclare Data.IdealTurbine data);
+  extends BaseClasses.Partial_SubSystem_B(redeclare replaceable
+      ControlSystems.CS_Dummy CS, redeclare Data.IdealTurbine data);
 
   parameter SI.Pressure p_condenser=1e4 "Condenser operating pressure";
   parameter SI.Pressure p_reservoir=port_b_nominal.p "Reservoir operating pressure";
@@ -120,9 +118,6 @@ model SteamTurbine_L1_boundaries
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
         rotation=90,
         origin={0,-10})));
-  Modelica.Blocks.Sources.RealExpression W_balance1
-    "Electricity loss/gain not accounted for in connections (e.g., heating/cooling, pumps, etc.) [W]"
-    annotation (Placement(transformation(extent={{-96,118},{-84,130}})));
   TRANSFORM.Fluid.Valves.ValveCompressible valve_TCV(
     rho_nominal=Medium.density_ph(port_a_nominal.p, port_a_nominal.h),
     p_nominal=port_a_nominal.p,
@@ -153,15 +148,14 @@ model SteamTurbine_L1_boundaries
     h=port_a3_nominal_h) if nPorts_a3 > 0
     annotation (Placement(transformation(extent={{50,-150},{30,-130}})));
    TRANSFORM.Fluid.Valves.CheckValve checkValve[nPorts_a3](redeclare package
-              Medium =
-                Medium, m_flow_start=port_a3_start_m_flow) if nPorts_a3 > 0
+      Medium =  Medium, m_flow_start=port_a3_start_m_flow) if nPorts_a3 > 0
      annotation (Placement(transformation(extent={{0,-150},{20,-130}})));
    TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h boundary_m_flow_a3[
      nPorts_a3](
      redeclare package Medium = Medium,
      each nPorts=1,
     each use_m_flow_in=true,
-    each use_h_in=true) if  nPorts_a3 > 0
+    each use_h_in=true)  if nPorts_a3 > 0
      annotation (Placement(transformation(extent={{72,-150},{92,-130}})));
   TRANSFORM.Fluid.Sensors.MassFlowRate massFlowRate[nPorts_a3](redeclare
       package Medium = Medium) if nPorts_a3 > 0
@@ -233,10 +227,10 @@ end for;
   connect(multiPort1.port_a, condenser.port_a)
     annotation (Line(points={{80,-70},{80,-77}}, color={0,127,255}));
   connect(condenser.port_b, multiPort.ports_b[1]) annotation (Line(points={{87,-92},
-          {87,-100},{20,-100},{20,-68},{-2,-68},{-2,-76}}, color={0,127,255}));
+          {87,-100},{20,-100},{20,-68},{1,-68},{1,-76}},   color={0,127,255}));
   connect(sensorBus.p_inlet_steamTurbine, pressure.p)
     annotation (Line(
-      points={{-29.9,100.1},{-94,100.1},{-94,60}},
+      points={{-30,100},{-94,100},{-94,60}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -250,8 +244,8 @@ end for;
                                                       color={0,127,255}));
   connect(resistance.port_b, multiPort1.ports_b[2]) annotation (Line(points={{80,-37},
           {80,-62}},                        color={0,127,255}));
-  connect(valve_BV.port_a, header.port_b[1]) annotation (Line(points={{-80,0},
-          {-100,0},{-100,39.3333},{-104,39.3333}},color={0,127,255}));
+  connect(valve_BV.port_a, header.port_b[1]) annotation (Line(points={{-80,0},{
+          -100,0},{-100,39.6667},{-104,39.6667}}, color={0,127,255}));
   connect(valve_TCV.port_a, header.port_b[2]) annotation (Line(points={{-80,40},
           {-92,40},{-92,40},{-104,40}},     color={0,127,255}));
   connect(port_a, resistance4.port_a)
@@ -276,8 +270,8 @@ end for;
     annotation (Line(points={{90,0},{100,0}}, color={0,0,0}));
   connect(valve_TCV.port_b, steamTurbine.portHP)
     annotation (Line(points={{-60,40},{40,40},{40,6}}, color={0,127,255}));
-  connect(pressure.port, header.port_b[3]) annotation (Line(points={{-100,50},
-          {-100,40},{-104,40},{-104,40.6667}},    color={0,127,255}));
+  connect(pressure.port, header.port_b[3]) annotation (Line(points={{-100,50},{
+          -100,40},{-104,40},{-104,40.3333}},     color={0,127,255}));
   connect(actuatorBus.opening_TCV,valve_TCV. opening)
     annotation (Line(
       points={{30.1,100.1},{30.1,100.1},{-8,100.1},{-8,102},{-70,102},{-70,48}},
@@ -295,11 +289,6 @@ end for;
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.W_total, sensorW.W) annotation (Line(
-      points={{-29.9,100.1},{140,100.1},{140,11}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(level_measure.y, PID1.u_m)
     annotation (Line(points={{-73,-52},{-52,-52}}, color={0,0,127}));
   connect(level_setpoint.y, PID1.u_s)
@@ -308,7 +297,13 @@ end for;
   connect(PID1.y, boundary2.m_flow_in) annotation (Line(points={{-41,-40},{-38,
           -40},{-38,-52},{-28,-52}}, color={0,0,127}));
   connect(boundary2.ports[1], multiPort.ports_b[2])
-    annotation (Line(points={{-8,-60},{2,-60},{2,-76}}, color={0,127,255}));
+    annotation (Line(points={{-8,-60},{-1,-60},{-1,-76}},
+                                                        color={0,127,255}));
+  connect(sensorBus.Power, sensorW.W) annotation (Line(
+      points={{-30,100},{140,100},{140,11}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   annotation (defaultComponentName="BOP", Icon(coordinateSystem(extent={{-100,-100},
             {100,100}}),                       graphics={
         Rectangle(

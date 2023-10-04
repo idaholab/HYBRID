@@ -13,7 +13,7 @@ model HTGR_Case_03_OversizedTurbine
      + sum(EM.port_b3.m_flow./EM.port_b3_nominal_m_flow)*fracNominal_Other,
      0.5));
 
-  EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(
+  EnergyManifold.SteamManifold.Components.SteamManifold_L1_boundaries EM(
     port_a1_nominal(
       p=14000000,
       h=2e6,

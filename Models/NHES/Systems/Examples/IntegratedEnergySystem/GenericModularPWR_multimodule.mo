@@ -12,8 +12,8 @@ model GenericModularPWR_multimodule
      + sum(EM.port_b3.m_flow./EM.port_b3_nominal_m_flow)*fracNominal_Other,
      0.5));
 
-  PrimaryHeatSystem.GenericModular_PWR.GenericModule PHS(redeclare
-      PrimaryHeatSystem.GenericModular_PWR.CS_SteadyState CS)
+  PrimaryHeatSystem.GenericModular_PWR.Components.GenericModule PHS(redeclare
+      PrimaryHeatSystem.GenericModular_PWR.CS.CS_SteadyState CS)
     annotation (Placement(transformation(extent={{-198,82},{-142,138}})));
      SupervisoryControl.InputSetpointDatanew
                                           SC(
@@ -31,16 +31,16 @@ model GenericModularPWR_multimodule
      annotation (Placement(transformation(extent={{-220,160},{-200,180}})));
    Modelica.Blocks.Sources.Constant delayStart(k=7200) "7200"
      annotation (Placement(transformation(extent={{-200,160},{-180,180}})));
-    EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(
+  EnergyManifold.SteamManifold.Components.SteamManifold_L1_boundaries EM(
     port_b3_nominal_m_flow={-IP.port_a_nominal.m_flow},
     port_a1_nominal(
       p=PHS.port_b_nominal.p,
       h=PHS.port_b_nominal.h,
       m_flow=-PHS.port_b_nominal.m_flow - PHS1.port_b_nominal.m_flow - PHS2.port_b_nominal.m_flow),
+
     port_b1_nominal(p=PHS.port_a_nominal.p, h=PHS.port_a_nominal.h),
-    nPorts_b3=1)
-    "{-IP.port_a_nominal.m_flow}"                                                                              annotation (Placement(transformation(extent={{-98,82},
-            {-42,138}})));
+    nPorts_b3=1) "{-IP.port_a_nominal.m_flow}"
+    annotation (Placement(transformation(extent={{-98,82},{-42,138}})));
 
   BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries BOP(
     port_a_nominal(
@@ -89,12 +89,12 @@ model GenericModularPWR_multimodule
       m_flow_LP_toProcess=LP_signal.y,
       m_flow_HP_toProcess=HP_signalmod.y))
     annotation (Placement(transformation(extent={{-98,2},{-42,58}})));
-  PrimaryHeatSystem.GenericModular_PWR.GenericModule PHS1(redeclare
-      PrimaryHeatSystem.GenericModular_PWR.CS_SteadyState CS)
+  PrimaryHeatSystem.GenericModular_PWR.Components.GenericModule PHS1(redeclare
+      PrimaryHeatSystem.GenericModular_PWR.CS.CS_SteadyState CS)
     annotation (Placement(transformation(extent={{-198,22},{-142,78}})));
-  PrimaryHeatSystem.GenericModular_PWR.GenericModule PHS2(redeclare
-      PrimaryHeatSystem.GenericModular_PWR.CS_LoadFollow CS(Q_total_setpoint=
-          demandChange*PHS2.data.Q_total))
+  PrimaryHeatSystem.GenericModular_PWR.Components.GenericModule PHS2(redeclare
+      PrimaryHeatSystem.GenericModular_PWR.CS.CS_LoadFollow CS(Q_total_setpoint
+        =demandChange*PHS2.data.Q_total))
     annotation (Placement(transformation(extent={{-198,-38},{-142,18}})));
   TRANSFORM.Fluid.Volumes.MixingVolume volume(
     redeclare package Medium = Modelica.Media.Water.StandardWater,

@@ -5,10 +5,10 @@ model SMR_IES_CTES
     dual_Pipe_CTES_Controlled(redeclare
       NHES.Systems.EnergyStorage.Concrete_Solid_Media.ControlSystems.CS_DFV
       CS) annotation (Placement(transformation(extent={{110,-42},{204,26}})));
-  PrimaryHeatSystem.SMR_Generic.Components.SMR_High_fidelity_no_pump            Reactor(
+  PrimaryHeatSystem.SMR_Generic.Components.SMR_High_fidelity_no_pump Reactor(
     Q_total_th=160e6,
     Q_total_el=52e6,
-    redeclare PrimaryHeatSystem.SMR_Generic.CS_SMR_highfidelity CS(
+    redeclare PrimaryHeatSystem.SMR_Generic.CS.CS_SMR_highfidelity CS(
       SG_exit_enthalpy=3000e3,
       m_setpoint=675,
       Q_nom=1,

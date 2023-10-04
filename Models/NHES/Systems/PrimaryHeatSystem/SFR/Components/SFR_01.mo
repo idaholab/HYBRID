@@ -1,9 +1,8 @@
 within NHES.Systems.PrimaryHeatSystem.SFR.Components;
 model SFR_01
-    extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable CS_01 CS,
-    redeclare replaceable ED_Dummy ED,
-    redeclare Data.Data_Dummy data);
+  extends BaseClasses.Partial_SubSystem_A(redeclare replaceable
+      NHES.Systems.PrimaryHeatSystem.SFR.CS.CS_01 CS, redeclare Data.Data_Dummy
+      data);
     package Coolant = TRANSFORM.Media.Fluids.Sodium.LinearSodium_pT;
 
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T boundary(
@@ -17,8 +16,8 @@ model SFR_01
     p=100000,
     T=1073.15,
     nPorts=1) annotation (Placement(transformation(extent={{146,-50},{126,-30}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
-        Coolant)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
+      = Coolant)
     annotation (Placement(transformation(extent={{30,-50},{50,-30}})));
   TRANSFORM.Blocks.RealExpression CR
     annotation (Placement(transformation(extent={{88,92},{102,108}})));

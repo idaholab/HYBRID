@@ -1,10 +1,8 @@
 within NHES.Systems.BalanceOfPlant.RankineCycle.Models;
 model SteamTurbine_Basic_NoFeedHeat "Two stage BOP model"
-  extends BaseClasses.Partial_SubSystem_C(
-    redeclare replaceable
-      ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp CS,
-    redeclare replaceable ControlSystems.ED_Dummy ED,
-    redeclare replaceable Data.TESTurbine data(
+  extends BaseClasses.Partial_SubSystem_C(redeclare replaceable
+      ControlSystems.CS_SteamTurbine_L2_PressurePowerFeedtemp CS, redeclare
+      replaceable Data.TESTurbine data(
       p_condensor=7000,
       V_FeedwaterMixVolume=10,
       V_Header=10,

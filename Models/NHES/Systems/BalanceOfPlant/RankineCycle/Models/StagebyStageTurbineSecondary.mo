@@ -584,9 +584,9 @@ package StagebyStageTurbineSecondary
       Modelica.Units.SI.Power Elec_Power;
       Modelica.Units.SI.Temperature Feed_Temp;
 
-      PrimaryHeatSystem.SMR_Generic.Components.SMR_Taveprogram_No_Pump             Reactor(
+      PrimaryHeatSystem.SMR_Generic.Components.SMR_Taveprogram_No_Pump Reactor(
         redeclare
-          NHES.Systems.PrimaryHeatSystem.SMR_Generic.CS_SMR_Tave_Enthalpy_RXPower
+          NHES.Systems.PrimaryHeatSystem.SMR_Generic.CS.CS_SMR_Tave_Enthalpy_RXPower
           CS,
         port_a_nominal(
           m_flow=70,
@@ -681,8 +681,9 @@ package StagebyStageTurbineSecondary
        Real Price;
       Modelica.Units.SI.Temperature T_Feed_Ref=273.15 + 140;
 
-      PrimaryHeatSystem.SMR_Generic.Components.SMR_Taveprogram_No_Pump             Reactor(
-        redeclare PrimaryHeatSystem.SMR_Generic.CS_SMR_Tave_Enthalpy_RXPower CS,
+      PrimaryHeatSystem.SMR_Generic.Components.SMR_Taveprogram_No_Pump Reactor(
+        redeclare PrimaryHeatSystem.SMR_Generic.CS.CS_SMR_Tave_Enthalpy_RXPower
+          CS,
         port_a_nominal(
           m_flow=70,
           p=3447380,
@@ -788,8 +789,10 @@ package StagebyStageTurbineSecondary
       Modelica.Units.SI.Temperature T_Feed_Ref=273.15 + 140;
       Modelica.Units.SI.Time t_sim_post_init(start = -7200);
 
-      PrimaryHeatSystem.SMR_Generic.Components.SMR_High_fidelity_no_pump            Reactor(
-        redeclare NHES.Systems.PrimaryHeatSystem.SMR_Generic.CS_SMR_highfidelity CS(
+      PrimaryHeatSystem.SMR_Generic.Components.SMR_High_fidelity_no_pump
+        Reactor(
+        redeclare
+          NHES.Systems.PrimaryHeatSystem.SMR_Generic.CS.CS_SMR_highfidelity CS(
           SG_exit_enthalpy=3000e3,
           m_setpoint=675,
           Q_nom=1,
@@ -902,8 +905,10 @@ package StagebyStageTurbineSecondary
       Modelica.Units.SI.Temperature T_Feed_Ref=273.15 + 140;
       Modelica.Units.SI.Time t_sim_post_init(start = -7200);
 
-      PrimaryHeatSystem.SMR_Generic.Components.SMR_High_fidelity_no_pump            Reactor(
-        redeclare NHES.Systems.PrimaryHeatSystem.SMR_Generic.CS_SMR_highfidelity CS(
+      PrimaryHeatSystem.SMR_Generic.Components.SMR_High_fidelity_no_pump
+        Reactor(
+        redeclare
+          NHES.Systems.PrimaryHeatSystem.SMR_Generic.CS.CS_SMR_highfidelity CS(
           SG_exit_enthalpy=3000e3,
           m_setpoint=675,
           Q_nom=1,
@@ -1760,7 +1765,7 @@ package StagebyStageTurbineSecondary
             114.08,23.6},{112,23.6}},
                               color={28,108,200}));
     connect(Rotor8.torque, turbine_Editable.Fluidtorques[1]) annotation (Line(
-          points={{116.64,28.6},{116.64,42},{-84.4,42},{-84.4,49.925}},
+          points={{116.64,28.6},{116.64,42},{-84.4,42},{-84.4,50.3625}},
                                                                    color={28,108,200}));
     connect(MoistSep3.Turb_Out, Stator8.Inlet) annotation (Line(points={{102,24},
             {102,23.8},{106.06,23.8}}, color={28,108,200}));
@@ -1769,13 +1774,13 @@ package StagebyStageTurbineSecondary
     connect(Rotor7.Outlet, MoistSep3.Turb_In) annotation (Line(points={{79.92,24},
             {90,24}},                   color={28,108,200}));
     connect(Rotor7.torque, turbine_Editable.Fluidtorques[2]) annotation (Line(
-          points={{74.64,28.6},{74.64,36},{76,36},{76,42},{-84.4,42},{-84.4,50.175}},
-                                                                           color={
+          points={{74.64,28.6},{74.64,36},{76,36},{76,42},{-84.4,42},{-84.4,
+            50.4875}},                                                     color={
             28,108,200}));
     connect(MoistSep2.Turb_Out, Stator7.Inlet) annotation (Line(points={{58,24},
             {58,23.8},{64.06,23.8}},               color={28,108,200}));
     connect(Rotor6.torque, turbine_Editable.Fluidtorques[3]) annotation (Line(
-          points={{36.64,28.6},{36.64,42},{-84.4,42},{-84.4,50.425}},
+          points={{36.64,28.6},{36.64,42},{-84.4,42},{-84.4,50.6125}},
           color={28,108,200}));
     connect(Rotor6.Outlet, MoistSep2.Turb_In) annotation (Line(points={{41.92,24},
             {46,24}},                          color={28,108,200}));
@@ -1788,7 +1793,7 @@ package StagebyStageTurbineSecondary
     connect(Rotor5.Inlet, Stator5.Outlet) annotation (Line(points={{0.08,23.8},{0.08,
             24},{-2,24},{-2,23.6}},                     color={28,108,200}));
     connect(Rotor5.torque, turbine_Editable.Fluidtorques[4]) annotation (Line(
-          points={{2.64,28.6},{0,28.6},{0,42},{-84.4,42},{-84.4,50.675}},
+          points={{2.64,28.6},{0,28.6},{0,42},{-84.4,42},{-84.4,50.7375}},
                             color={28,108,200}));
     connect(Rotor4.Inlet,Stator4. Outlet) annotation (Line(points={{-37.92,
             23.8},{-42,23.8},{-42,23.6}},
@@ -1797,7 +1802,7 @@ package StagebyStageTurbineSecondary
       annotation (Line(points={{-47.94,23.8},{-47.94,24},{-51.94,24},{
             -51.94,23}},                                 color={28,108,200}));
     connect(Rotor4.torque, turbine_Editable.Fluidtorques[5]) annotation (Line(
-          points={{-35.36,28.6},{-35.36,42},{-84.4,42},{-84.4,50.925}},
+          points={{-35.36,28.6},{-35.36,42},{-84.4,42},{-84.4,50.8625}},
                       color={28,108,200}));
     connect(Rotor2.Outlet, turbine_Tap.Turb_flow) annotation (Line(points={{-96.08,
             22},{-91.97,22},{-91.97,23.07}},      color={28,108,200}));
@@ -1814,15 +1819,16 @@ package StagebyStageTurbineSecondary
     connect(Rotor3.Outlet, turbine_Tap1.Turb_flow) annotation (Line(points={{-66.08,
             22},{-62,22},{-62,23.07},{-57.97,23.07}},        color={28,108,200}));
     connect(Rotor3.torque, turbine_Editable.Fluidtorques[6]) annotation (Line(
-          points={{-71.36,26.6},{-70,26.6},{-70,42},{-84.4,42},{-84.4,51.175}},
+          points={{-71.36,26.6},{-70,26.6},{-70,42},{-84.4,42},{-84.4,50.9875}},
                                  color={28,108,200}));
     connect(Rotor2.torque, turbine_Editable.Fluidtorques[7]) annotation (Line(
-          points={{-101.36,26.6},{-101.36,40},{-106,40},{-106,42},{-84.4,42},{-84.4,
-            51.425}},
+          points={{-101.36,26.6},{-101.36,40},{-106,40},{-106,42},{-84.4,42},{
+            -84.4,51.1125}},
           color={28,108,200}));
     connect(Rotor1.torque, turbine_Editable.Fluidtorques[8]) annotation (Line(
-          points={{-125.36,26.6},{-125.36,34},{-124,34},{-124,42},{-84.4,42},{-84.4,
-            51.675}}, color={28,108,200}));
+          points={{-125.36,26.6},{-125.36,34},{-124,34},{-124,42},{-84.4,42},{
+            -84.4,51.2375}},
+                      color={28,108,200}));
     connect(LP.Tube_out, IP.Tube_in) annotation (Line(points={{4,-35.4},{4,
             -34},{-16,-34}},  color={0,127,255}));
     connect(Rotor8.Outlet, turbine_Outlet.Turb_flow) annotation (Line(
@@ -1840,9 +1846,10 @@ package StagebyStageTurbineSecondary
     connect(IP.Shell_out, resistance1.port_a) annotation (Line(points={{-16,-28},
             {-12,-28},{-12,-25.2}},   color={0,127,255}));
     connect(resistance1.port_b, volume1.port_a[1]) annotation (Line(points={{-12,
-            -16.8},{-12,-2},{5.33333,-2},{5.33333,-8}},          color={0,127,255}));
-    connect(volume.port_a[1], resistance.port_b) annotation (Line(points={{-50,-12.5},
-            {-56,-12.5},{-56,-14},{-63.2,-14}}, color={0,127,255}));
+            -16.8},{-12,-2},{5.66667,-2},{5.66667,-8}},          color={0,127,255}));
+    connect(volume.port_a[1], resistance.port_b) annotation (Line(points={{-50,
+            -12.25},{-56,-12.25},{-56,-14},{-63.2,-14}},
+                                                color={0,127,255}));
     connect(HP.Shell_out, resistance.port_a) annotation (Line(points={{-76,
             -26.8},{-74,-26.8},{-74,-14},{-68.8,-14}},
                                                 color={0,127,255}));
@@ -1865,7 +1872,7 @@ package StagebyStageTurbineSecondary
     connect(valveLineartanh3.port_a, sensor_m_flow7.port_b) annotation (
         Line(points={{88,7},{88,6},{86,6},{86,14}}, color={0,127,255}));
     connect(valveLineartanh3.port_b, volume3.port_b[1]) annotation (Line(
-          points={{94,7},{94,6},{98,6},{98,-36.75}},
+          points={{94,7},{94,6},{98,6},{98,-36.375}},
                       color={0,127,255}));
     connect(PI7.u_s, sensor_m_flow3.m_flow) annotation (Line(points={{57.4,
             -19},{57.4,-20},{52,-20},{52,-26},{40,-26},{40,-21.52}}, color=
@@ -1875,7 +1882,7 @@ package StagebyStageTurbineSecondary
     connect(valveLineartanh4.port_a, sensor_m_flow10.port_b) annotation (
         Line(points={{80,-9},{80,-8},{78,-8},{78,-7}}, color={0,127,255}));
     connect(valveLineartanh4.port_b, volume3.port_b[2]) annotation (Line(
-          points={{86,-9},{90,-9},{90,-10},{98,-10},{98,-36.25}},
+          points={{86,-9},{90,-9},{90,-10},{98,-10},{98,-36.125}},
           color={0,127,255}));
     connect(PI5.u_s, sensor_m_flow5.m_flow) annotation (Line(points={{129,
             -7.4},{129,11.52},{110,11.52}}, color={0,0,127}));
@@ -1886,10 +1893,10 @@ package StagebyStageTurbineSecondary
             -9},{147.4,-10},{148.52,-10},{148.52,-19}},
                                                       color={0,0,127}));
     connect(valveLineartanh6.port_b, volume3.port_b[3]) annotation (Line(
-          points={{143,-34},{142,-34},{142,-36},{98,-36},{98,-35.75}},
+          points={{143,-34},{142,-34},{142,-36},{98,-36},{98,-35.875}},
           color={0,127,255}));
     connect(valveLineartanh5.port_b, volume3.port_b[4]) annotation (Line(
-          points={{121,-28},{122,-28},{122,-36},{98,-36},{98,-35.25}},
+          points={{121,-28},{122,-28},{122,-36},{98,-36},{98,-35.625}},
           color={0,127,255}));
     connect(valveLineartanh5.port_a, sensor_m_flow8.port_b) annotation (
         Line(points={{121,-22},{120,-22},{120,-17}}, color={0,127,255}));
@@ -1928,14 +1935,15 @@ package StagebyStageTurbineSecondary
     connect(IPTapValve.port_a, turbine_Tap1.Tap_flow) annotation (Line(points={{-53,10},
             {-54,10},{-54,20.76},{-55,20.76}},     color={0,127,255}));
     connect(IPTapValve.port_b, volume.port_a[2]) annotation (Line(points={{-53,0},
-            {-54,0},{-54,-11.5},{-50,-11.5}}, color={0,127,255}));
+            {-54,0},{-54,-11.75},{-50,-11.75}},
+                                              color={0,127,255}));
     connect(MoistSep3.Liquid, resistance6.port_a) annotation (Line(points={{96,
             22.08},{94,22.08},{94,16},{93.2,16}},
                                            color={0,127,255}));
     connect(volume2.port_a[1], resistance6.port_b) annotation (Line(points={{99.6,15},
             {99.6,15.5},{98.8,15.5},{98.8,16}},     color={0,127,255}));
     connect(resistance4.port_b, volume1.port_a[3]) annotation (Line(points={{-3.2,6},
-            {2,6},{2,-8},{6.66667,-8}},       color={0,127,255}));
+            {2,6},{2,-8},{6.33333,-8}},       color={0,127,255}));
     connect(resistance4.port_a, MoistSep1.Liquid) annotation (Line(points={{-8.8,6},
             {-18,6},{-18,22.08}},                color={0,127,255}));
     connect(MoistSep2.Liquid, resistance5.port_a)
@@ -1982,10 +1990,12 @@ package StagebyStageTurbineSecondary
             {-122,6},{-122,9},{-130,9}},           color={0,127,255}));
     connect(sensor_p2.port, HP.Tube_out) annotation (Line(points={{-108,-26},
             {-102,-26},{-102,-33.4},{-96,-33.4}}, color={0,127,255}));
-    connect(volume5.port_b[1], TBV.port_a) annotation (Line(points={{-182,-18.5},
-            {-186,-18.5},{-186,-4},{-189,-4}}, color={0,127,255}));
+    connect(volume5.port_b[1], TBV.port_a) annotation (Line(points={{-182,
+            -18.25},{-186,-18.25},{-186,-4},{-189,-4}},
+                                               color={0,127,255}));
     connect(volume5.port_b[2], TCV.port_a) annotation (Line(points={{-182,
-            -17.5},{-162,-17.5},{-162,-2},{-143,-2}}, color={0,127,255}));
+            -17.75},{-162,-17.75},{-162,-2},{-143,-2}},
+                                                      color={0,127,255}));
     connect(sensor_m_flow12.port_a, TBV.port_b) annotation (Line(points={{-154,60},
             {-188,60},{-188,6},{-189,6}}, color={0,127,255}));
     connect(volume3.port_a[1], CDP.port_a) annotation (Line(points={{86,-36},{68,-36},
@@ -4635,7 +4645,7 @@ package StagebyStageTurbineSecondary
             114.08,23.6},{112,23.6}},
                               color={28,108,200}));
     connect(Rotor8.torque,turbine_Physical. Fluidtorques[1]) annotation (Line(
-          points={{116.64,28.6},{116.64,42},{-84.4,42},{-84.4,49.925}},
+          points={{116.64,28.6},{116.64,42},{-84.4,42},{-84.4,50.3625}},
                                                                    color={28,108,200}));
     connect(MoistSep3.Turb_Out, Stator8.Inlet) annotation (Line(points={{102,24},
             {102,23.8},{106.06,23.8}}, color={28,108,200}));
@@ -4644,13 +4654,13 @@ package StagebyStageTurbineSecondary
     connect(Rotor7.Outlet, MoistSep3.Turb_In) annotation (Line(points={{79.92,24},
             {90,24}},                   color={28,108,200}));
     connect(Rotor7.torque,turbine_Physical. Fluidtorques[2]) annotation (Line(
-          points={{74.64,28.6},{74.64,36},{76,36},{76,42},{-84.4,42},{-84.4,50.175}},
-                                                                           color={
+          points={{74.64,28.6},{74.64,36},{76,36},{76,42},{-84.4,42},{-84.4,
+            50.4875}},                                                     color={
             28,108,200}));
     connect(MoistSep2.Turb_Out, Stator7.Inlet) annotation (Line(points={{58,24},
             {58,23.8},{64.06,23.8}},               color={28,108,200}));
     connect(Rotor6.torque,turbine_Physical. Fluidtorques[3]) annotation (Line(
-          points={{36.64,28.6},{36.64,42},{-84.4,42},{-84.4,50.425}},
+          points={{36.64,28.6},{36.64,42},{-84.4,42},{-84.4,50.6125}},
           color={28,108,200}));
     connect(Rotor6.Outlet, MoistSep2.Turb_In) annotation (Line(points={{41.92,24},
             {46,24}},                          color={28,108,200}));
@@ -4663,7 +4673,7 @@ package StagebyStageTurbineSecondary
     connect(Rotor5.Inlet, Stator5.Outlet) annotation (Line(points={{0.08,23.8},{0.08,
             24},{-2,24},{-2,23.6}},                     color={28,108,200}));
     connect(Rotor5.torque,turbine_Physical. Fluidtorques[4]) annotation (Line(
-          points={{2.64,28.6},{0,28.6},{0,42},{-84.4,42},{-84.4,50.675}},
+          points={{2.64,28.6},{0,28.6},{0,42},{-84.4,42},{-84.4,50.7375}},
                             color={28,108,200}));
     connect(Rotor4.Inlet,Stator4. Outlet) annotation (Line(points={{-37.92,
             23.8},{-42,23.8},{-42,23.6}},
@@ -4672,7 +4682,7 @@ package StagebyStageTurbineSecondary
       annotation (Line(points={{-47.94,23.8},{-47.94,24},{-51.94,24},{
             -51.94,23}},                                 color={28,108,200}));
     connect(Rotor4.torque,turbine_Physical. Fluidtorques[5]) annotation (Line(
-          points={{-35.36,28.6},{-35.36,42},{-84.4,42},{-84.4,50.925}},
+          points={{-35.36,28.6},{-35.36,42},{-84.4,42},{-84.4,50.8625}},
                       color={28,108,200}));
     connect(Rotor2.Outlet, turbine_Tap.Turb_flow) annotation (Line(points={{-96.08,
             22},{-91.97,22},{-91.97,21.07}},      color={28,108,200}));
@@ -4689,15 +4699,16 @@ package StagebyStageTurbineSecondary
     connect(Rotor3.Outlet, turbine_Tap1.Turb_flow) annotation (Line(points={{-66.08,
             22},{-62,22},{-62,23.07},{-57.97,23.07}},        color={28,108,200}));
     connect(Rotor3.torque,turbine_Physical. Fluidtorques[6]) annotation (Line(
-          points={{-71.36,26.6},{-70,26.6},{-70,42},{-84.4,42},{-84.4,51.175}},
+          points={{-71.36,26.6},{-70,26.6},{-70,42},{-84.4,42},{-84.4,50.9875}},
                                  color={28,108,200}));
     connect(Rotor2.torque,turbine_Physical. Fluidtorques[7]) annotation (Line(
-          points={{-101.36,26.6},{-101.36,40},{-106,40},{-106,42},{-84.4,42},{-84.4,
-            51.425}},
+          points={{-101.36,26.6},{-101.36,40},{-106,40},{-106,42},{-84.4,42},{
+            -84.4,51.1125}},
           color={28,108,200}));
     connect(Rotor1.torque,turbine_Physical. Fluidtorques[8]) annotation (Line(
-          points={{-125.36,26.6},{-125.36,34},{-124,34},{-124,42},{-84.4,42},{-84.4,
-            51.675}}, color={28,108,200}));
+          points={{-125.36,26.6},{-125.36,34},{-124,34},{-124,42},{-84.4,42},{
+            -84.4,51.2375}},
+                      color={28,108,200}));
     connect(LP.Tube_out, IP.Tube_in) annotation (Line(points={{4,-33.4},{4,-32},{-16,
             -32}},            color={0,127,255}));
     connect(Rotor8.Outlet, turbine_Outlet.Turb_flow) annotation (Line(
@@ -4715,9 +4726,10 @@ package StagebyStageTurbineSecondary
     connect(IP.Shell_out, resistance1.port_a) annotation (Line(points={{-16,-26},{
             -12,-26},{-12,-25.2}},    color={0,127,255}));
     connect(resistance1.port_b, volume1.port_a[1]) annotation (Line(points={{-12,
-            -16.8},{-12,-2},{5.33333,-2},{5.33333,-8}},          color={0,127,255}));
-    connect(volume.port_a[1], resistance.port_b) annotation (Line(points={{-50,-12.5},
-            {-56,-12.5},{-56,-14},{-63.2,-14}}, color={0,127,255}));
+            -16.8},{-12,-2},{5.66667,-2},{5.66667,-8}},          color={0,127,255}));
+    connect(volume.port_a[1], resistance.port_b) annotation (Line(points={{-50,
+            -12.25},{-56,-12.25},{-56,-14},{-63.2,-14}},
+                                                color={0,127,255}));
     connect(HP.Shell_out, resistance.port_a) annotation (Line(points={{-76,
             -26.8},{-74,-26.8},{-74,-14},{-68.8,-14}},
                                                 color={0,127,255}));
@@ -4740,7 +4752,7 @@ package StagebyStageTurbineSecondary
     connect(valveLineartanh3.port_a, sensor_m_flow7.port_b) annotation (
         Line(points={{88,7},{88,6},{86,6},{86,14}}, color={0,127,255}));
     connect(valveLineartanh3.port_b, volume3.port_b[1]) annotation (Line(
-          points={{94,7},{94,6},{98,6},{98,-36.75}},
+          points={{94,7},{94,6},{98,6},{98,-36.375}},
                       color={0,127,255}));
     connect(PI7.u_s, sensor_m_flow3.m_flow) annotation (Line(points={{57.4,
             -19},{57.4,-20},{52,-20},{52,-26},{40,-26},{40,-21.52}}, color=
@@ -4750,7 +4762,7 @@ package StagebyStageTurbineSecondary
     connect(valveLineartanh4.port_a, sensor_m_flow10.port_b) annotation (
         Line(points={{80,-9},{80,-8},{78,-8},{78,-7}}, color={0,127,255}));
     connect(valveLineartanh4.port_b, volume3.port_b[2]) annotation (Line(
-          points={{86,-9},{90,-9},{90,-10},{98,-10},{98,-36.25}},
+          points={{86,-9},{90,-9},{90,-10},{98,-10},{98,-36.125}},
           color={0,127,255}));
     connect(PI5.u_s, sensor_m_flow5.m_flow) annotation (Line(points={{129,
             -7.4},{129,11.52},{110,11.52}}, color={0,0,127}));
@@ -4761,10 +4773,10 @@ package StagebyStageTurbineSecondary
             -9},{147.4,-10},{148.52,-10},{148.52,-19}},
                                                       color={0,0,127}));
     connect(valveLineartanh6.port_b, volume3.port_b[3]) annotation (Line(
-          points={{143,-34},{142,-34},{142,-36},{98,-36},{98,-35.75}},
+          points={{143,-34},{142,-34},{142,-36},{98,-36},{98,-35.875}},
           color={0,127,255}));
     connect(valveLineartanh5.port_b, volume3.port_b[4]) annotation (Line(
-          points={{121,-28},{122,-28},{122,-36},{98,-36},{98,-35.25}},
+          points={{121,-28},{122,-28},{122,-36},{98,-36},{98,-35.625}},
           color={0,127,255}));
     connect(valveLineartanh5.port_a, sensor_m_flow8.port_b) annotation (
         Line(points={{121,-22},{120,-22},{120,-17}}, color={0,127,255}));
@@ -4803,14 +4815,15 @@ package StagebyStageTurbineSecondary
     connect(IPTapValve.port_a, turbine_Tap1.Tap_flow) annotation (Line(points={{-53,10},
             {-54,10},{-54,20.76},{-55,20.76}},     color={0,127,255}));
     connect(IPTapValve.port_b, volume.port_a[2]) annotation (Line(points={{-53,0},
-            {-54,0},{-54,-11.5},{-50,-11.5}}, color={0,127,255}));
+            {-54,0},{-54,-11.75},{-50,-11.75}},
+                                              color={0,127,255}));
     connect(MoistSep3.Liquid, resistance6.port_a) annotation (Line(points={{96,
             22.08},{94,22.08},{94,16},{93.2,16}},
                                            color={0,127,255}));
     connect(volume2.port_a[1], resistance6.port_b) annotation (Line(points={{99.6,15},
             {99.6,15.5},{98.8,15.5},{98.8,16}},     color={0,127,255}));
     connect(resistance4.port_b, volume1.port_a[3]) annotation (Line(points={{-3.2,6},
-            {2,6},{2,-8},{6.66667,-8}},       color={0,127,255}));
+            {2,6},{2,-8},{6.33333,-8}},       color={0,127,255}));
     connect(resistance4.port_a, MoistSep1.Liquid) annotation (Line(points={{-8.8,6},
             {-18,6},{-18,22.08}},                color={0,127,255}));
     connect(MoistSep2.Liquid, resistance5.port_a)
@@ -4860,15 +4873,17 @@ package StagebyStageTurbineSecondary
             {-122,6},{-122,9},{-130,9}},           color={0,127,255}));
     connect(sensor_p2.port, HP.Tube_out) annotation (Line(points={{-108,-26},
             {-102,-26},{-102,-33.4},{-96,-33.4}}, color={0,127,255}));
-    connect(volume5.port_b[1], TBV.port_a) annotation (Line(points={{-182,-18.5},
-            {-182,-12},{-180,-12},{-180,-6},{-188,-6},{-188,-4},{-189,-4}},
-                                               color={0,127,255}));
+    connect(volume5.port_b[1], TBV.port_a) annotation (Line(points={{-182,
+            -18.25},{-182,-12},{-180,-12},{-180,-6},{-188,-6},{-188,-4},{-189,
+            -4}},                              color={0,127,255}));
     connect(volume5.port_b[2], TCV.port_a) annotation (Line(points={{-182,
-            -17.5},{-162,-17.5},{-162,-2},{-143,-2}}, color={0,127,255}));
+            -17.75},{-162,-17.75},{-162,-2},{-143,-2}},
+                                                      color={0,127,255}));
     connect(sensor_m_flow12.port_a, TBV.port_b) annotation (Line(points={{-154,48},
             {-189,48},{-189,6}}, color={0,127,255}));
-    connect(volume3.port_a[1], CDP.port_a) annotation (Line(points={{86,-36.5},{68,
-            -36.5},{68,-35},{50,-35}},   color={0,127,255}));
+    connect(volume3.port_a[1], CDP.port_a) annotation (Line(points={{86,-36.25},
+            {68,-36.25},{68,-35},{50,-35}},
+                                         color={0,127,255}));
     connect(PI4.u_s, sensor_m_flow6.m_flow) annotation (Line(points={{151,
             -5.4},{151,5.3},{140.52,5.3},{140.52,15}}, color={0,0,127}));
     connect(sensor_m_flow12.port_b, TES.Charge_Inlet) annotation (Line(
@@ -4900,8 +4915,9 @@ package StagebyStageTurbineSecondary
     connect(transportDelayPipe.port_b, turbine_Inlet3.Pipe_flow)
       annotation (Line(points={{4,34},{-4,34}},                  color={0,
             127,255}));
-    connect(volume3.port_a[2], resistance12.port_a) annotation (Line(points={{86,-35.5},
-            {86,-36},{78,-36},{78,-44},{127,-44}}, color={0,127,255}));
+    connect(volume3.port_a[2], resistance12.port_a) annotation (Line(points={{86,
+            -35.75},{86,-36},{78,-36},{78,-44},{127,-44}},
+                                                   color={0,127,255}));
     connect(resistance12.port_b,DCV. port_a) annotation (Line(points={{141,-44},{158,
             -44},{158,-43}}, color={0,127,255}));
     connect(sensor_m_flow1.port_b, port_b) annotation (Line(points={{-130,-3},{-138,
@@ -5823,7 +5839,7 @@ package StagebyStageTurbineSecondary
                                                                         color={0,0,
             0}));
     connect(Rotor8.torque,turbine_Physical. Fluidtorques[1]) annotation (Line(
-          points={{96.64,16.6},{96.64,30},{-68.4,30},{-68.4,41.925}},
+          points={{96.64,16.6},{96.64,30},{-68.4,30},{-68.4,42.3625}},
                                                                    color={175,175,
             175},
         thickness=1));
@@ -5831,11 +5847,11 @@ package StagebyStageTurbineSecondary
             {76,12}},                   color={28,108,200},
         thickness=1));
     connect(Rotor7.torque,turbine_Physical. Fluidtorques[2]) annotation (Line(
-          points={{66.64,16.6},{66.64,30},{-68.4,30},{-68.4,42.175}},      color={175,175,
+          points={{66.64,16.6},{66.64,30},{-68.4,30},{-68.4,42.4875}},     color={175,175,
             175},
         thickness=1));
     connect(Rotor6.torque,turbine_Physical. Fluidtorques[3]) annotation (Line(
-          points={{40.64,16.6},{40.64,30},{-68.4,30},{-68.4,42.425}},
+          points={{40.64,16.6},{40.64,30},{-68.4,30},{-68.4,42.6125}},
           color={175,175,175},
         thickness=1));
     connect(Rotor6.Outlet, MoistSep2.Turb_In) annotation (Line(points={{45.92,12},
@@ -5845,7 +5861,7 @@ package StagebyStageTurbineSecondary
             12},{28.03,12.08}},                       color={28,108,200},
         thickness=1));
     connect(Rotor4.torque,turbine_Physical. Fluidtorques[5]) annotation (Line(
-          points={{-18.7,16.6},{-18.7,30},{-68.4,30},{-68.4,42.925}},
+          points={{-18.7,16.6},{-18.7,30},{-68.4,30},{-68.4,42.8625}},
                       color={175,175,175},
         thickness=1));
     connect(Rotor2.Outlet, turbine_Tap.Turb_flow) annotation (Line(points={{-70.08,
@@ -5856,15 +5872,15 @@ package StagebyStageTurbineSecondary
             12},{-33.96,12},{-33.96,11.07}},                 color={28,108,200},
         thickness=1));
     connect(Rotor3.torque,turbine_Physical. Fluidtorques[6]) annotation (Line(
-          points={{-44.7,16.6},{-44,16.6},{-44,30},{-68.4,30},{-68.4,43.175}},
+          points={{-44.7,16.6},{-44,16.6},{-44,30},{-68.4,30},{-68.4,42.9875}},
                                  color={175,175,175},
         thickness=1));
     connect(Rotor2.torque,turbine_Physical. Fluidtorques[7]) annotation (Line(
-          points={{-75.36,16.6},{-75.36,30},{-68.4,30},{-68.4,43.425}},
+          points={{-75.36,16.6},{-75.36,30},{-68.4,30},{-68.4,43.1125}},
           color={175,175,175},
         thickness=1));
     connect(Rotor1.torque,turbine_Physical. Fluidtorques[8]) annotation (Line(
-          points={{-87.36,16.6},{-87.36,30},{-68.4,30},{-68.4,43.675}},
+          points={{-87.36,16.6},{-87.36,30},{-68.4,30},{-68.4,43.2375}},
                       color={175,175,175},
         thickness=1));
     connect(LP.Tube_out, IP.Tube_in) annotation (Line(points={{20,-46.2},{8,-46.2}},
@@ -5918,12 +5934,12 @@ package StagebyStageTurbineSecondary
     connect(sensor_p2.port, HP.Tube_out) annotation (Line(points={{-86,-36},{-84,
             -36},{-84,-46.8},{-78,-46.8}},        color={0,127,255},
         thickness=1));
-    connect(volume5.port_b[1], TBV.port_a) annotation (Line(points={{-132,9.5},{
-            -132,12},{-130,12},{-130,28},{-128,28},{-128,30},{-127,30}},
+    connect(volume5.port_b[1], TBV.port_a) annotation (Line(points={{-132,9.75},
+            {-132,12},{-130,12},{-130,28},{-128,28},{-128,30},{-127,30}},
                                                color={102,44,145},
         thickness=1));
-    connect(volume5.port_b[2], TCV.port_a) annotation (Line(points={{-132,10.5},{
-            -132,10},{-122,10}},                      color={0,127,255},
+    connect(volume5.port_b[2], TCV.port_a) annotation (Line(points={{-132,10.25},
+            {-132,10},{-122,10}},                     color={0,127,255},
         thickness=1));
     connect(sensor_m_flow12.port_a, TBV.port_b) annotation (Line(points={{-118,62},
             {-126,62},{-126,48},{-127,48}},
@@ -6113,7 +6129,7 @@ package StagebyStageTurbineSecondary
         color={0,127,255},
         thickness=1));
     connect(Rotor5.torque, turbine_Physical.Fluidtorques[5]) annotation (Line(
-        points={{16.64,16.6},{16.64,30},{-68.4,30},{-68.4,42.925}},
+        points={{16.64,16.6},{16.64,30},{-68.4,30},{-68.4,42.8625}},
         color={175,175,175},
         thickness=1));
     connect(MoistSep1.Liquid, LP.Shell_in) annotation (Line(
@@ -8122,14 +8138,14 @@ Block has one continuous Real input and one continuous Real output signal.
         TRANSFORM.Fluid.Interfaces.FluidPort_Flow Pipe_flow(redeclare package
                     Medium =                                                           medium)
           annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-            Modelica.Blocks.Interfaces.RealOutput v_rout if
-                                                           Vels_out annotation (Placement(transformation(
+            Modelica.Blocks.Interfaces.RealOutput v_rout
+                                                        if Vels_out annotation (Placement(transformation(
                 extent={{-32,32},{8,72}}), iconTransformation(
               extent={{-20,-20},{20,20}},
               rotation=270,
               origin={58,-46})));
-        Modelica.Blocks.Interfaces.RealOutput v_theout if
-                                                         Vels_out annotation (Placement(transformation(
+        Modelica.Blocks.Interfaces.RealOutput v_theout
+                                                      if Vels_out annotation (Placement(transformation(
                 extent={{-32,32},{8,72}}), iconTransformation(
               extent={{20,-20},{-20,20}},
               rotation=270,
@@ -9559,18 +9575,18 @@ features are:
           "Fixed values of trace substances"
           annotation (Evaluate=true,
                       Dialog(enable = (not use_C_in) and Medium.nC > 0));
-        Modelica.Blocks.Interfaces.RealInput m_flow_in if     use_m_flow_in
+        Modelica.Blocks.Interfaces.RealInput m_flow_in     if use_m_flow_in
           "Prescribed mass flow rate"
           annotation (Placement(transformation(extent={{-120,60},{-80,100}})));
-        Modelica.Blocks.Interfaces.RealInput h_in if              use_h_in
+        Modelica.Blocks.Interfaces.RealInput h_in              if use_h_in
           "Prescribed fluid specific enthalpy"
           annotation (Placement(transformation(extent={{-140,20},{-100,60}}), iconTransformation(extent={{-140,20},{-100,60}})));
-        Modelica.Blocks.Interfaces.RealInput X_in[Medium.nX] if
-                                                              use_X_in
+        Modelica.Blocks.Interfaces.RealInput X_in[Medium.nX]
+                                                           if use_X_in
           "Prescribed fluid composition"
           annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
-        Modelica.Blocks.Interfaces.RealInput C_in[Medium.nC] if
-                                                              use_C_in
+        Modelica.Blocks.Interfaces.RealInput C_in[Medium.nC]
+                                                           if use_C_in
           "Prescribed boundary trace substances"
           annotation (Placement(transformation(extent={{-120,-100},{-80,-60}}), iconTransformation(extent={{-120,-100},{-80,-60}})));
       protected

@@ -11,8 +11,9 @@ model LWR_Case_02_DirectCoupling
       p(displayUnit="Pa") = 3398e3,
       T(displayUnit="degC") = 580.05,
       h=2997670),
-    redeclare PrimaryHeatSystem.SMR_Generic.CS_SMR_Tave CS(W_turbine=
+    redeclare PrimaryHeatSystem.SMR_Generic.CS.CS_SMR_Tave CS(W_turbine=
           intermediate_Rankine_Cycle_TESUC.powerSensor.power, W_Setpoint=sine.y),
+
     port_a_nominal(
       m_flow=67.07,
       T(displayUnit="degC") = 422.05,

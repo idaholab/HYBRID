@@ -2,7 +2,8 @@ within NHES.Systems.BalanceOfPlant.BraytonCycle.Examples;
 model Test
   extends Modelica.Icons.Example;
   package Medium = Modelica.Media.IdealGases.SingleGases.He;
-  Brayton_Cycle brayton_Cycle(redeclare replaceable Data.Data_BC_Test data(
+  Components.Brayton_Cycle brayton_Cycle(redeclare replaceable
+      Data.Data_Brayton_One data(
       K_P_Release(unit="1/(m.kg)") = 10000,
       HX_Aux_K_tube(unit="1/m4"),
       HX_Aux_K_shell(unit="1/m4"),
@@ -10,7 +11,14 @@ model Test
       HX_Reheat_Shell_Vol=0.1,
       HX_Reheat_Buffer_Vol=0.1,
       HX_Reheat_K_tube(unit="1/m4"),
-      HX_Reheat_K_shell(unit="1/m4")), redeclare package Medium = Medium)
+      HX_Reheat_K_shell(unit="1/m4"),
+      use_T_Tube=true,
+      Recuperator_h_Tube_Inlet=2900e3,
+      Recuperator_h_Tube_Outlet=1300e3,
+      use_T_shell=true,
+      Recuperator_h_Shell_Inlet=1050e3,
+      Recuperator_h_Shell_Outlet=2750e3),
+                                       redeclare package Medium = Medium)
     annotation (Placement(transformation(extent={{-40,-42},{40,38}})));
 
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT      boundary(

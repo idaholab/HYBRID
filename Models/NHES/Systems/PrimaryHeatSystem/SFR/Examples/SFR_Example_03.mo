@@ -18,8 +18,8 @@ model SFR_Example_03
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=12500000,
     nPorts=1) annotation (Placement(transformation(extent={{152,12},{132,32}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
+      = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{88,14},{108,34}})));
 equation
   connect(sFR_02_NTUHX.port_a, sFR_Intermediate_Loop.port_IHX_b) annotation (

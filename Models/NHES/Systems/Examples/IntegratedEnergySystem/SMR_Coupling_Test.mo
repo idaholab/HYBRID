@@ -12,14 +12,15 @@ model SMR_Coupling_Test
       p=3447380,
       T(displayUnit="degC") = 579.75,
       h=2997670),
-    redeclare PrimaryHeatSystem.SMR_Generic.CS_SMR_Tave CS(W_turbine=BOP.powerSensor.power,
+    redeclare PrimaryHeatSystem.SMR_Generic.CS.CS_SMR_Tave CS(W_turbine=BOP.powerSensor.power,
         W_Setpoint=SC.W_totalSetpoint_BOP),
     port_a_nominal(
       m_flow=70,
       T(displayUnit="degC") = 421.15,
       p=3447380))
     annotation (Placement(transformation(extent={{-86,-26},{-36,30}})));
-  EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(port_a1_nominal(
+  EnergyManifold.SteamManifold.Components.SteamManifold_L1_boundaries EM(
+      port_a1_nominal(
       p=SMR_Taveprogram.port_b_nominal.p,
       h=SMR_Taveprogram.port_b_nominal.h,
       m_flow=-SMR_Taveprogram.port_b_nominal.m_flow), port_b1_nominal(p=

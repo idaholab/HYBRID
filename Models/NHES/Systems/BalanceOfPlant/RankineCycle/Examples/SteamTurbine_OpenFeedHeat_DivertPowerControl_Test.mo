@@ -49,7 +49,8 @@ model SteamTurbine_OpenFeedHeat_DivertPowerControl_Test
   NHES.Fluid.Sensors.stateSensor stateSensor5(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{30,22},{44,38}})));
-  NHES.Systems.EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(
+  NHES.Systems.EnergyManifold.SteamManifold.Components.SteamManifold_L1_boundaries
+    EM(
     port_a1_nominal(
       p(displayUnit="Pa") = 3.398e6,
       h=2.99767e6,

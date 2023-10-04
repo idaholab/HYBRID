@@ -19,6 +19,9 @@ package New_SubSystem
           __Dymola_Algorithm="Esdirk45a"),
         __Dymola_experimentSetupOutput);
     end Test;
+    annotation (Documentation(info="<html>
+<p>Examples should show the primary functionality of the components, meaning that generally a transient example should be included. </p>
+</html>"));
   end Examples;
 
   package Models
@@ -43,11 +46,10 @@ package New_SubSystem
               fillPattern=FillPattern.Solid,
               textString="Change Me")}));
     end SubSystem_Dummy;
+    annotation (Documentation(info="<html>
+<p>The Models folder should contain the drag-and-drop components that are ready to use when pushed into the primary repository. </p>
+</html>"));
   end Models;
-
-  package Components
-
-  end Components;
 
   package CS "Control systems package"
     model CS_Dummy
@@ -65,6 +67,11 @@ package New_SubSystem
               fillPattern=FillPattern.Solid,
               textString="Change Me")}));
     end CS_Dummy;
+    annotation (Documentation(info="<html>
+<p>This package is for control systems. CS folders should always maintain the base model &quot;CS_Dummy&quot;. </p>
+<p>The proper method for using CS_Dummy is to have ALL connections into the sensor bus connect into TRANSFORM.Blcoks.RealExpression blocks and have sample nominal control valves connected into ALL actuator bus connections using Modelica.Blocks.Sources.RealExpression blocks. </p>
+<p>Attaching all connections to the expandable connectors within the package will allow for new control systems to be created out of CS_Dummy and immediately have all connections available to the developer. </p>
+</html>"));
   end CS;
 
   package Data
@@ -83,7 +90,21 @@ package New_SubSystem
         Documentation(info="<html>
 </html>"));
     end Data_Dummy;
+    annotation (Documentation(info="<html>
+<p>The data packages throughout NHES may require some updating to the new format, in which there should be 3 data packages at minimum: </p>
+<p>Data_Component (or something that means this): This data component may contain as many tabs or groups as the developer sees appropriate. All geometric and reference component parameters should be placed in the data file so that users can open this interface and have all of their values accessible. For developers: Please <b>include nominal values in your data components</b>. This will help users make sure that checking works for the models. Initial conditions data should be included in a secondary tab within the data component - use annotation(Dialog(tab = &quot;Initial Conditions&quot;, [optional: group = &quot;group _&quot;])); </p>
+<p>Data_CS is allowed to be a separate data component. This should include potential reference values for the control system. </p>
+<p>There is an assumption of user expertise to not switch in data sets into the wrong areas, but that is a possibility users should be aware of. Bringing in a data set without all the same parameters will fail the simulation.</p>
+</html>"));
   end Data;
+
+  package SupportComponent
+
+    annotation (Documentation(info="<html>
+<p>This package is reserved for custom components that are placed within the Models. Some examples of this could be a coolant-specific component within a different advanced reactor technology (such as the custom gas compressor acting as a mass flow pump within the HTGR package) or a custom valve used specific to a balance of plant model. </p>
+<p>There should be a compelling reason that the component is not placed elsewhere in NHES. One good example of this is if a TRANSFORM component is enhanced or specialized (such as adding a new port into a SimpleVolume or something) in a way that it would fit within the TRANSFORM filetree but has been developed by HYBRID users. </p>
+</html>"));
+  end SupportComponent;
 
   package BaseClasses
     extends TRANSFORM.Icons.BasesPackage;
@@ -201,5 +222,11 @@ package New_SubSystem
       Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
             coordinateSystem(preserveAspectRatio=false)));
     end SignalSubBus_SensorOutput;
+    annotation (Documentation(info="<html>
+<p>Base classes should generally not be adjusted by the users or developers. Functionally, most of these base class items add the functionality and standardized appearances used throughout the package. </p>
+</html>"));
   end BaseClasses;
+  annotation (Documentation(info="<html>
+<p>This package should be copied when a user wants to create a new subsystem (consider a reactor type, industrial process, energy storage, etc.). The folder contains the structure desired throughout HYBRID&apos;s Modelica modeling. </p>
+</html>"));
 end New_SubSystem;

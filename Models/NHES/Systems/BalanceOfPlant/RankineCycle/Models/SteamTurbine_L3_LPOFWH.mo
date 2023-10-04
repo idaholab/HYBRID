@@ -3,12 +3,9 @@ model SteamTurbine_L3_LPOFWH
   "Three Stage Turbine with open feed water heating using low pressure steam"
   extends
     NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_SubSystem(
-    redeclare replaceable
-      ControlSystems.CS_L3_HTGR_extraction_logan                    CS,
-    redeclare replaceable
-      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ED_Dummy ED,
-    redeclare replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3
-      data);
+      redeclare replaceable ControlSystems.CS_L3_HTGR_extraction_logan CS,
+      redeclare replaceable
+      NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3 data);
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_steam(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-110,50},{-90,70}})));
@@ -325,15 +322,11 @@ equation
       extent={{-3,6},{-3,6}},
       horizontalAlignment=TextAlignment.Right));
 
-  connect(sensorBus.W_total, sensorW.W) annotation (Line(
-      points={{-29.9,100.1},{-29.9,144},{118,144},{118,20},{111,20}},
+  connect(sensorBus.Power, sensorW.W) annotation (Line(
+      points={{-30,100},{-30,144},{120,144},{120,20},{111,20}},
       color={239,82,82},
       pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{6,3},{6,3}},
-      horizontalAlignment=TextAlignment.Left));
+      thickness=0.5));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
                   Text(
           extent={{-94,-76},{94,-84}},

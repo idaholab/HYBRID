@@ -141,11 +141,11 @@ model SMR_sizingSG1
     h_a_start_tube=data.h_steam_cold,
     h_b_start_tube=data.h_steam_hot,
     m_flow_a_start_tube=data.m_flow,
-    ps_start_shell=dataInitial.p_start_STHX_shell,
-    Ts_start_shell=dataInitial.T_start_STHX_shell,
-    ps_start_tube=dataInitial.p_start_STHX_tube,
-    hs_start_tube=dataInitial.h_start_STHX_tube,
-    Ts_wall_start=dataInitial.T_start_STHX_tubeWall,
+    ps_start_shell=data.p_start_STHX_shell,
+    Ts_start_shell=data.T_start_STHX_shell,
+    ps_start_tube=data.p_start_STHX_tube,
+    hs_start_tube=data.h_start_STHX_tube,
+    Ts_wall_start=data.T_start_STHX_tubeWall,
     redeclare package Medium_tube = ThermoPower.Water.StandardWater,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.HeatExchanger.ShellAndTubeHX
@@ -171,8 +171,7 @@ model SMR_sizingSG1
   GenericModular_PWR.Data.Data_GenericModule data(
       length_steamGenerator_tube=42)
     annotation (Placement(transformation(extent={{6,102},{22,118}})));
-  GenericModular_PWR.Data.DataInitial dataInitial
-    annotation (Placement(transformation(extent={{-158,58},{-138,78}})));
+
   Modelica.Fluid.Sensors.Temperature temperature2(redeclare package Medium =
         ThermoPower.Water.StandardWater)
     annotation (Placement(transformation(extent={{46,-8},{60,-20}})));
@@ -180,17 +179,17 @@ model SMR_sizingSG1
         ThermoPower.Water.StandardWater)
     annotation (Placement(transformation(extent={{46,72},{62,58}})));
   TRANSFORM.Fluid.Volumes.ExpansionTank_1Port pressurizer(
-    p_start=dataInitial.p_start_pressurizer,
-    h_start=dataInitial.h_start_pressurizer,
+    p_start=data.p_start_pressurizer,
+    h_start=data.h_start_pressurizer,
     A=0.25*Modelica.Constants.pi*data.d_pressurizer^2,
-    level_start=dataInitial.level_start_pressurizer,
+    level_start=data.level_start_pressurizer,
     redeclare package Medium = ThermoPower.Water.StandardWater)
     "pressurizer.Medium.bubbleEnthalpy(Medium.setSat_p(pressurizer.p_start))"
     annotation (Placement(transformation(extent={{-48,98},{-28,118}})));
   TRANSFORM.Fluid.FittingsAndResistances.TeeJunctionVolume pressurizer_tee(
     V=0.001,
-    p_start=dataInitial.p_start_pressurizer_tee,
-    T_start=dataInitial.T_start_pressurizer_tee,
+    p_start=data.p_start_pressurizer_tee,
+    T_start=data.T_start_pressurizer_tee,
     redeclare package Medium = ThermoPower.Water.StandardWater)
     annotation (Placement(transformation(extent={{-44,58},{-32,70}})));
   TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance teeTopressurizer(R=1,

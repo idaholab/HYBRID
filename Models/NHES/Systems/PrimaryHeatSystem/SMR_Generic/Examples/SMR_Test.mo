@@ -3,7 +3,7 @@ model SMR_Test
   extends Modelica.Icons.Example;
 
   Components.SMR_Tave_enthalpy nuScale_Tave_enthalpy(
-    redeclare CS_SMR_Tave_Enthalpy CS(
+    redeclare CS.CS_SMR_Tave_Enthalpy CS(
       T_SG_exit=579.15,
       Q_nom(displayUnit="MW") = 160000000,
       demand=1.0),

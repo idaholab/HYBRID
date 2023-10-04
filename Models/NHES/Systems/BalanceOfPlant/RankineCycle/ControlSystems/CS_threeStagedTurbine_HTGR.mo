@@ -123,10 +123,6 @@ model CS_threeStagedTurbine_HTGR
     annotation (Placement(transformation(extent={{58,-42},{70,-30}})));
   Modelica.Blocks.Sources.Constant constant_0(k=0)
     annotation (Placement(transformation(extent={{-22,46},{-2,66}})));
-  TRANSFORM.Blocks.RealExpression Q_balance
-    annotation (Placement(transformation(extent={{-100,54},{-76,66}})));
-  TRANSFORM.Blocks.RealExpression W_balance
-    annotation (Placement(transformation(extent={{-100,44},{-76,56}})));
   TRANSFORM.Blocks.RealExpression Temp_Feedwater
     "Total electricity generated"
     annotation (Placement(transformation(extent={{-100,4},{-76,16}})));
@@ -251,17 +247,6 @@ equation
           8,34},{16,34}},                      color={0,0,127}));
   connect(PID.y, add.u2) annotation (Line(points={{39,26},{48,26},{48,84},{
           78,84}}, color={0,0,127}));
-  connect(sensorBus.Q_balance, Q_balance.u) annotation (Line(
-      points={{-29.9,-99.9},{-30,-99.9},{-30,-100},{-120,-100},{-120,60},{
-          -102.4,60}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorBus.W_balance, W_balance.u) annotation (Line(
-      points={{-29.9,-99.9},{-120,-99.9},{-120,50},{-102.4,50}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(sensorBus.Feedwater_Temp, Temp_Feedwater.u) annotation (Line(
       points={{-30,-100},{-120,-100},{-120,10},{-102.4,10}},
       color={239,82,82},

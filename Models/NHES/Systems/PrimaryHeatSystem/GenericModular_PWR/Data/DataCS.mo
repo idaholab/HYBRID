@@ -5,6 +5,7 @@ record DataCS
 
 //core.coolantSubchannel
   parameter Real nModules=12;
+    package Medium = Modelica.Media.Water.StandardWater;
 
   //per module
   parameter SI.Power Q_total=160e6 "Total thermal output";

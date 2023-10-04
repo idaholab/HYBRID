@@ -4,9 +4,7 @@ model ReactorBOPIntegrated_Brayton_Complex
   NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.Models.PebbleBed_Brayton_CC
     Pebble_Bed_HTGR(redeclare
       NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.CS_Basic
-      CS, redeclare
-      NHES.Systems.PrimaryHeatSystem.HTGR.BraytonCycle.ControlSystems.ED_Simple
-      ED) annotation (Placement(transformation(extent={{-48,-44},{22,24}})));
+      CS) annotation (Placement(transformation(extent={{-48,-44},{22,24}})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_T Intercooler_Source(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow=20,

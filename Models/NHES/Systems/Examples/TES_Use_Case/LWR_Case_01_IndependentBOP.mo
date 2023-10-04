@@ -13,24 +13,27 @@ model LWR_Case_01_IndependentBOP
      + sum(EM.port_b3.m_flow./EM.port_b3_nominal_m_flow)*fracNominal_Other,
      0.5));
   PrimaryHeatSystem.SMR_Generic.Components.SMR_Taveprogram_No_Pump
-                                                           SMR_Taveprogram(
+    SMR_Taveprogram(
     port_b_nominal(
       p(displayUnit="Pa") = 3398e3,
       T(displayUnit="degC") = 580.05,
       h=2997670),
-    redeclare PrimaryHeatSystem.SMR_Generic.CS_SMR_Tave CS(W_turbine=
+    redeclare PrimaryHeatSystem.SMR_Generic.CS.CS_SMR_Tave CS(W_turbine=
           intermediate_Rankine_Cycle_TESUC.powerSensor.power, W_Setpoint=sine.y),
+
     port_a_nominal(
       m_flow=67.07,
       T(displayUnit="degC") = 422.05,
       p=3447380))
     annotation (Placement(transformation(extent={{-102,-26},{-52,30}})));
 
-  EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(port_a1_nominal(
+  EnergyManifold.SteamManifold.Components.SteamManifold_L1_boundaries EM(
+    port_a1_nominal(
       p=SMR_Taveprogram.port_b_nominal.p,
       h=SMR_Taveprogram.port_b_nominal.h,
-      m_flow=-SMR_Taveprogram.port_b_nominal.m_flow), port_b1_nominal(p=
-          SMR_Taveprogram.port_a_nominal.p, h=SMR_Taveprogram.port_a_nominal.h),
+      m_flow=-SMR_Taveprogram.port_b_nominal.m_flow),
+    port_b1_nominal(p=SMR_Taveprogram.port_a_nominal.p, h=SMR_Taveprogram.port_a_nominal.h),
+
     port_b3_nominal_m_flow={-0.67},
     nPorts_b3=1)
     annotation (Placement(transformation(extent={{-10,-18},{30,22}})));

@@ -3,11 +3,8 @@ model SteamTurbine_L3_HPCFWH_HTGR
   "Three Stage Turbine with open feed water heating using high pressure steam"
   extends
     NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_SubSystem(
-    redeclare replaceable
-      ControlSystems.CS_L3_HTGR_extraction_logan                    CS,
-    redeclare replaceable
-      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ED_Dummy ED,
-    redeclare replaceable Data.Data_L3 data(FH_type=NHES.Systems.BalanceOfPlant.RankineCycle.Data.BOP_Type.CFWH));
+      redeclare replaceable ControlSystems.CS_L3_HTGR_extraction_logan CS,
+      redeclare replaceable Data.Data_L3 data(FH_type=NHES.Systems.BalanceOfPlant.RankineCycle.Data.BOP_Type.CFWH));
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_steam(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-110,50},{-90,70}})));
@@ -115,13 +112,13 @@ model SteamTurbine_L3_HPCFWH_HTGR
         origin={100,44})));
   TRANSFORM.Electrical.Interfaces.ElectricalPowerPort_Flow port_a_elec
     annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-  Fluid.Machines.Pump_Pressure                  pump(redeclare package Medium
-      = Modelica.Media.Water.StandardWater,
+  Fluid.Machines.Pump_Pressure                  pump(redeclare package Medium =
+        Modelica.Media.Water.StandardWater,
     p_nominal=data.p_i2,
     eta=data.eta_p)
     annotation (Placement(transformation(extent={{66,-70},{46,-50}})));
-  Fluid.Machines.Pump_Pressure                  pump1(redeclare package Medium
-      = Modelica.Media.Water.StandardWater,
+  Fluid.Machines.Pump_Pressure                  pump1(redeclare package Medium =
+        Modelica.Media.Water.StandardWater,
     use_input=false,
     p_nominal=data.HPT_p_in - 0.5e5,
     eta=data.eta_p)
@@ -172,8 +169,8 @@ model SteamTurbine_L3_HPCFWH_HTGR
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_cond(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{90,-50},{110,-30}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-70,-10},{-90,10}})));
   Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase BypassFeedwaterHeater(
     NTU=data.BypassFeedHeater_NTU,
@@ -322,16 +319,6 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(sensor_p.port, Steam_T.port)
     annotation (Line(points={{-94,32},{-92,32}}, color={0,127,255}));
-  connect(sensorBus.W_total, sensorW.W) annotation (Line(
-      points={{-29.9,100.1},{-29.9,122},{-30,122},{-30,144},{120,144},{120,
-          20},{111,20}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
   connect(sensorBus.Steam_Pressure, sensor_p.p) annotation (Line(
       points={{-30,100},{-30,144},{-120,144},{-120,42},{-100,42}},
       color={239,82,82},
@@ -393,6 +380,11 @@ equation
     annotation (Line(points={{-52,-60},{-58,-60}}, color={0,127,255}));
   connect(BypassFeedwaterHeater.Tube_in, pump1.port_b)
     annotation (Line(points={{-18,-60},{-2,-60}}, color={0,127,255}));
+  connect(sensorBus.Power, sensorW.W) annotation (Line(
+      points={{-30,100},{-30,144},{120,144},{120,20},{111,20}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-2.09756,2},{83.9024,-2}},

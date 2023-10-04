@@ -65,6 +65,46 @@ model CS_OTSG_TCV_Pressure_TBV_Power_Control
     annotation (Placement(transformation(extent={{-180,-22},{-160,-2}})));
   Modelica.Blocks.Sources.Constant p_Nominal1(k=p_nominal)
     annotation (Placement(transformation(extent={{-138,220},{-118,240}})));
+  Modelica.Blocks.Sources.Constant TDV_openingNominal(k=0.5)
+    annotation (Placement(transformation(extent={{-24,-258},{-4,-238}})));
+  Modelica.Blocks.Sources.Constant BV_TCV_openingNominal(k=0.001)
+    annotation (Placement(transformation(extent={{-24,-288},{-4,-268}})));
+  Modelica.Blocks.Sources.Constant Feed_Pump_Mass_Flow(k=85.0)
+    annotation (Placement(transformation(extent={{-22,-138},{-2,-118}})));
+  Modelica.Blocks.Sources.Constant Diverter_Valve_Position(k=0.5)
+    annotation (Placement(transformation(extent={{-22,-198},{-2,-178}})));
+  Modelica.Blocks.Sources.Constant Feed_Pump_Speed(k=3000)
+    annotation (Placement(transformation(extent={{-22,-168},{-2,-148}})));
+  Modelica.Blocks.Sources.Constant Discharge_Throttle_On_Off(k=0.5)
+    annotation (Placement(transformation(extent={{-24,-228},{-4,-208}})));
+  Modelica.Blocks.Sources.Constant LPT_Valve_Opening(k=0.1)
+    annotation (Placement(transformation(extent={{84,-138},{64,-118}})));
+  Modelica.Blocks.Sources.Constant TBV_Opening(k=0.1)
+    annotation (Placement(transformation(extent={{84,-198},{64,-178}})));
+  Modelica.Blocks.Sources.Constant TCV_SHS_Opening(k=0.1)
+    annotation (Placement(transformation(extent={{84,-168},{64,-148}})));
+  Modelica.Blocks.Sources.Constant SHS_Throttle(k=0.1)
+    annotation (Placement(transformation(extent={{84,-228},{64,-208}})));
+  Modelica.Blocks.Sources.Constant LPT2_BV(k=0.1)
+    annotation (Placement(transformation(extent={{84,-258},{64,-238}})));
+  Modelica.Blocks.Sources.Constant LPT1_BV(k=0.1)
+    annotation (Placement(transformation(extent={{84,-288},{64,-268}})));
+  TRANSFORM.Blocks.RealExpression Condensor_Outflow
+    annotation (Placement(transformation(extent={{-74,-252},{-54,-232}})));
+  TRANSFORM.Blocks.RealExpression Extraction_Flow
+    annotation (Placement(transformation(extent={{-74,-238},{-54,-218}})));
+  TRANSFORM.Blocks.RealExpression Feedwater_Temperature
+    annotation (Placement(transformation(extent={{-74,-224},{-54,-204}})));
+  TRANSFORM.Blocks.RealExpression Power
+    annotation (Placement(transformation(extent={{-74,-208},{-54,-188}})));
+  TRANSFORM.Blocks.RealExpression SHS_Return_T
+    annotation (Placement(transformation(extent={{-74,-192},{-54,-172}})));
+  TRANSFORM.Blocks.RealExpression Steam_Pressure
+    annotation (Placement(transformation(extent={{-74,-176},{-54,-156}})));
+  TRANSFORM.Blocks.RealExpression Steam_Temperature
+    annotation (Placement(transformation(extent={{-74,-158},{-54,-138}})));
+  TRANSFORM.Blocks.RealExpression W_total_setpoint
+    annotation (Placement(transformation(extent={{-74,-140},{-54,-120}})));
 equation
 
   connect(clock.y, greater5.u1) annotation (Line(points={{-159,70},{-150,70},{-150,
@@ -125,14 +165,14 @@ equation
           -12},{-112,-12},{-112,2},{-102,2}}, color={0,0,127}));
   connect(p_Nominal1.y, switch_P_setpoint_TCV.u3) annotation (Line(points={{-117,
           230},{-114,230},{-114,192},{-102,192}}, color={0,0,127}));
-  connect(sensorBus.W_total, switch_P_setpoint.u1) annotation (Line(
-      points={{-29.9,-99.9},{-110,-99.9},{-110,18},{-102,18}},
+  connect(sensorBus.Power, switch_P_setpoint.u1) annotation (Line(
+      points={{-30,-100},{-110,-100},{-110,18},{-102,18}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.p_inlet_steamTurbine, switch_P_setpoint_TCV.u1) annotation (
      Line(
-      points={{-29.9,-99.9},{-110,-99.9},{-110,208},{-102,208}},
+      points={{-30,-100},{-110,-100},{-110,208},{-102,208}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -140,6 +180,112 @@ equation
           {-84,230},{-84,248},{-50,248},{-50,242}}, color={0,0,127}));
   connect(switch_P_setpoint_TCV.y, PID_TCV_opening.u_s) annotation (Line(points=
          {{-79,200},{-72,200},{-72,230},{-62,230}}, color={0,0,127}));
+  connect(actuatorBus.opening_TDV,TDV_openingNominal. y)
+    annotation (Line(
+      points={{30.1,-99.9},{30.1,-248},{-3,-248}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.opening_BV_TCV,BV_TCV_openingNominal. y)
+    annotation (Line(
+      points={{30.1,-99.9},{30.1,-278},{-3,-278}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.Discharge_OnOff_Throttle,Discharge_Throttle_On_Off. y)
+    annotation (Line(
+      points={{30,-100},{30,-218},{-3,-218}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.Divert_Valve_Position,Diverter_Valve_Position. y)
+    annotation (Line(
+      points={{30,-100},{30,-188},{-1,-188}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.Feed_Pump_Speed,Feed_Pump_Speed. y) annotation (Line(
+      points={{30,-100},{30,-158},{-1,-158}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.Feed_Pump_mFlow,Feed_Pump_Mass_Flow. y) annotation (
+      Line(
+      points={{30,-100},{30,-128},{-1,-128}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.LPT1_BV,LPT1_BV. y) annotation (Line(
+      points={{30,-100},{30,-278},{63,-278}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.LPT2_BV,LPT2_BV. y) annotation (Line(
+      points={{30,-100},{30,-248},{63,-248}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.SHS_throttle,SHS_Throttle. y) annotation (Line(
+      points={{30,-100},{30,-218},{63,-218}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.TBV,TBV_Opening. y) annotation (Line(
+      points={{30,-100},{30,-188},{63,-188}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.TCV_SHS,TCV_SHS_Opening. y) annotation (Line(
+      points={{30,-100},{30,-158},{63,-158}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.openingLPTv,LPT_Valve_Opening. y) annotation (Line(
+      points={{30,-100},{30,-128},{63,-128}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Condensor_Output_mflow,Condensor_Outflow. u) annotation (
+      Line(
+      points={{-30,-100},{-116,-100},{-116,-242},{-76,-242}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Extract_flow,Extraction_Flow. u) annotation (Line(
+      points={{-30,-100},{-116,-100},{-116,-228},{-76,-228}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Feedwater_Temp,Feedwater_Temperature. u) annotation (Line(
+      points={{-30,-100},{-116,-100},{-116,-214},{-76,-214}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Power,Power. u) annotation (Line(
+      points={{-30,-100},{-116,-100},{-116,-198},{-76,-198}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.SHS_Return_T,SHS_Return_T. u) annotation (Line(
+      points={{-30,-100},{-116,-100},{-116,-182},{-76,-182}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Steam_Pressure,Steam_Pressure. u) annotation (Line(
+      points={{-30,-100},{-116,-100},{-116,-166},{-76,-166}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Steam_Temperature,Steam_Temperature. u) annotation (Line(
+      points={{-30,-100},{-116,-100},{-116,-148},{-76,-148}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.W_totalSetpoint, W_total_setpoint.u) annotation (Line(
+      points={{-30,-100},{-116,-100},{-116,-130},{-76,-130}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
 annotation (defaultComponentName="EM_CS",
 Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
                                                    Diagram(

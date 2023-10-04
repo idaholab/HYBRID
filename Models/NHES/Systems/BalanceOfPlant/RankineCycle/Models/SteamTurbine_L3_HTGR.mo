@@ -1,16 +1,12 @@
 within NHES.Systems.BalanceOfPlant.RankineCycle.Models;
 model SteamTurbine_L3_HTGR
-  extends BaseClasses.Partial_SubSystem(
-    redeclare replaceable
-      ControlSystems.CS_threeStagedTurbine_HTGR
-      CS(trap_LTV1bypass_power(
+  extends BaseClasses.Partial_SubSystem(redeclare replaceable
+      ControlSystems.CS_threeStagedTurbine_HTGR CS(trap_LTV1bypass_power(
         rising=Time_For_Demand_Increase,
         width=Time_For_Max_Demand,
         falling=Time_For_Demand_Decrease,
         period=Cycle_Time_Period,
-        offset=Maximum_Electricity_Demand)),
-    redeclare replaceable ControlSystems.ED_Dummy ED,
-    redeclare Data.IdealTurbine data);
+        offset=Maximum_Electricity_Demand)), redeclare Data.IdealTurbine data);
   Real time_altered;
   Real time_initialization = 7e4;
   Real electricity_generation_Norm;

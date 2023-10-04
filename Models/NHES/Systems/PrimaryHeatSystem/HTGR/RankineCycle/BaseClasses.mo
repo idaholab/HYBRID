@@ -9,9 +9,7 @@ package BaseClasses
     extends Record_SubSystem;
 
     replaceable Partial_ControlSystem CS annotation (choicesAllMatching=true,
-        Placement(transformation(extent={{-18,122},{-2,138}})));
-    replaceable Partial_EventDriver ED annotation (choicesAllMatching=true,
-        Placement(transformation(extent={{2,122},{18,138}})));
+        Placement(transformation(extent={{-8,122},{8,138}})));
     replaceable Record_Data data
       annotation (Placement(transformation(extent={{42,122},{58,138}})));
 
@@ -23,23 +21,13 @@ package BaseClasses
           iconTransformation(extent={{-50,80},{-10,120}})));
 
   equation
-    connect(sensorBus, ED.sensorBus) annotation (Line(
-        points={{-30,100},{-16,100},{7.6,100},{7.6,122}},
-        color={239,82,82},
-        pattern=LinePattern.Dash,
-        thickness=0.5));
     connect(sensorBus, CS.sensorBus) annotation (Line(
-        points={{-30,100},{-12.4,100},{-12.4,122}},
+        points={{-30,100},{-2.4,100},{-2.4,122}},
         color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorBus, CS.actuatorBus) annotation (Line(
-        points={{30,100},{12,100},{-7.6,100},{-7.6,122}},
-        color={111,216,99},
-        pattern=LinePattern.Dash,
-        thickness=0.5));
-    connect(actuatorBus, ED.actuatorBus) annotation (Line(
-        points={{30,100},{20,100},{12.4,100},{12.4,122}},
+        points={{30,100},{2.4,100},{2.4,122}},
         color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
@@ -109,25 +97,6 @@ package BaseClasses
               100,100}})));
 
   end Partial_ControlSystem;
-
-  partial model Partial_EventDriver
-
-    extends NHES.Systems.BaseClasses.Partial_EventDriver;
-
-    SignalSubBus_ActuatorInput actuatorBus
-      annotation (Placement(transformation(extent={{10,-120},{50,-80}}),
-          iconTransformation(extent={{10,-120},{50,-80}})));
-    SignalSubBus_SensorOutput sensorBus
-      annotation (Placement(transformation(extent={{-50,-120},{-10,-80}}),
-          iconTransformation(extent={{-50,-120},{-10,-80}})));
-
-    annotation (
-      defaultComponentName="ED",
-      Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})),
-      Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-              100}})));
-
-  end Partial_EventDriver;
 
   expandable connector SignalSubBus_ActuatorInput
 

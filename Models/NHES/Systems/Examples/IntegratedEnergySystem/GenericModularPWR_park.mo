@@ -4,7 +4,7 @@ model GenericModularPWR_park
 //  parameter Real fracNominal_BOP = abs(EM.port_b2_nominal.m_flow)/EM.port_a1_nominal.m_flow;
 //  parameter Real fracNominal_Other = sum(abs(EM.port_b3_nominal_m_flow))/EM.port_a1_nominal.m_flow;
 
-  PrimaryHeatSystem.GenericModular_PWR.GenericModule PHS[3]
+  PrimaryHeatSystem.GenericModular_PWR.Components.GenericModule PHS[3]
     annotation (Placement(transformation(extent={{-198,82},{-142,138}})));
      SupervisoryControl.InputSetpointData SC(
                                 W_nominal_IP(displayUnit="MW") = 53303300,
@@ -17,13 +17,13 @@ model GenericModularPWR_park
      annotation (Placement(transformation(extent={{-220,160},{-200,180}})));
    Modelica.Blocks.Sources.Constant delayStart(k=7200)
      annotation (Placement(transformation(extent={{-200,160},{-180,180}})));
-    EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(port_a1_nominal(
+  EnergyManifold.SteamManifold.Components.SteamManifold_L1_boundaries EM(
+      port_a1_nominal(
       p=PHS[1].port_b_nominal.p,
       h=PHS[1].port_b_nominal.h,
       m_flow=sum(-PHS.port_b_nominal.m_flow)), port_b1_nominal(p=PHS[1].port_a_nominal.p,
-        h=PHS[1].port_a_nominal.h))
-    "{-IP.port_a_nominal.m_flow}"                                                                              annotation (Placement(transformation(extent={{-98,82},
-            {-42,138}})));
+        h=PHS[1].port_a_nominal.h)) "{-IP.port_a_nominal.m_flow}"
+    annotation (Placement(transformation(extent={{-98,82},{-42,138}})));
   BalanceOfPlant.RankineCycle.Models.SteamTurbine_L1_boundaries BOP(
     redeclare
       BalanceOfPlant.RankineCycle.ControlSystems.CS_PressureAndPowerControl CS(

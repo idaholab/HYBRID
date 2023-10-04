@@ -18,14 +18,15 @@ model SMR_highfidelity
       T(displayUnit="degC") = 579.75,
       h=2997670,
       p=3447380),
-    redeclare PrimaryHeatSystem.SMR_Generic.CS_SMR_highfidelity CS(
+    redeclare PrimaryHeatSystem.SMR_Generic.CS.CS_SMR_highfidelity CS(
       SG_exit_enthalpy=3e6,
       m_setpoint=90.0,
       Q_nom(displayUnit="MW") = 200000000,
       demand=1.0),
     redeclare package Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-92,-24},{-38,34}})));
-  EnergyManifold.SteamManifold.SteamManifold_L1_boundaries EM(port_a1_nominal(
+  EnergyManifold.SteamManifold.Components.SteamManifold_L1_boundaries EM(
+      port_a1_nominal(
       p=nuScale_Tave_enthalpy_Pressurizer_CR.port_b_nominal.p,
       h=nuScale_Tave_enthalpy_Pressurizer_CR.port_b_nominal.h,
       m_flow=-nuScale_Tave_enthalpy_Pressurizer_CR.port_b_nominal.m_flow),

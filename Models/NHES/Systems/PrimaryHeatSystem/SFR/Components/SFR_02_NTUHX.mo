@@ -1,17 +1,16 @@
 within NHES.Systems.PrimaryHeatSystem.SFR.Components;
 model SFR_02_NTUHX
-    extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable CS_01 CS,
-    redeclare replaceable ED_Dummy ED,
-    redeclare Data.Data_Dummy data);
+  extends BaseClasses.Partial_SubSystem_A(redeclare replaceable
+      NHES.Systems.PrimaryHeatSystem.SFR.CS.CS_01 CS, redeclare Data.Data_Dummy
+      data);
     replaceable package Coolant = TRANSFORM.Media.Fluids.Sodium.LinearSodium_pT
     constrainedby Modelica.Media.Interfaces.PartialMedium              annotation(choicesAllMatching=true);
     replaceable package Medium_IHX_Loop =
       TRANSFORM.Media.Fluids.Sodium.LinearSodium_pT constrainedby
     Modelica.Media.Interfaces.PartialMedium                                                                                                  annotation(choicesAllMatching=true);
 
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium =
-        Coolant)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T(redeclare package Medium
+      = Coolant)
     annotation (Placement(transformation(extent={{-6,46},{14,66}})));
   TRANSFORM.Blocks.RealExpression CR
     annotation (Placement(transformation(extent={{88,92},{102,108}})));
@@ -188,8 +187,8 @@ model SFR_02_NTUHX
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={-62,-40})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium =
-        Coolant)
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T1(redeclare package Medium
+      = Coolant)
     annotation (Placement(transformation(extent={{18,-84},{38,-104}})));
   TRANSFORM.Fluid.Sensors.MassFlowRate       sensor_m_flow(redeclare package
       Medium = Coolant)

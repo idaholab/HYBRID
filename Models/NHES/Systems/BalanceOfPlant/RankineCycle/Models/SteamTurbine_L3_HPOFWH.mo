@@ -3,12 +3,9 @@ model SteamTurbine_L3_HPOFWH
   "Three Stage Turbine with open feed water heating using high pressure steam"
   extends
     NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_SubSystem(
-    redeclare replaceable
-      ControlSystems.CS_L3_HTGR_extraction_logan                    CS,
-    redeclare replaceable
-      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ED_Dummy ED,
-    redeclare replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3
-      data);
+      redeclare replaceable ControlSystems.CS_L3_HTGR_extraction_logan CS,
+      redeclare replaceable
+      NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3 data);
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_steam(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-110,50},{-90,70}})));
@@ -284,16 +281,6 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(sensor_p.port, Steam_T.port)
     annotation (Line(points={{-94,32},{-92,32}}, color={0,127,255}));
-  connect(sensorBus.W_total, sensorW.W) annotation (Line(
-      points={{-29.9,100.1},{-29.9,122},{-30,122},{-30,144},{120,144},{120,
-          20},{111,20}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
   connect(sensorBus.Steam_Pressure, sensor_p.p) annotation (Line(
       points={{-30,100},{-30,144},{-120,144},{-120,42},{-100,42}},
       color={239,82,82},
@@ -343,6 +330,11 @@ equation
     annotation (Line(points={{-90,0},{-100,0}}, color={0,127,255}));
   connect(port_a_cond, pump.port_a) annotation (Line(points={{100,-40},{72,-40},
           {72,-60},{66,-60}}, color={0,127,255}));
+  connect(sensorBus.Power, sensorW.W) annotation (Line(
+      points={{-30,100},{-30,144},{120,144},{120,20},{111,20}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-2.09756,2},{83.9024,-2}},

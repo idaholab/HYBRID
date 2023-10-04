@@ -144,14 +144,14 @@ equation
           -12},{-112,-12},{-112,2},{-102,2}}, color={0,0,127}));
   connect(p_Nominal1.y, switch_P_setpoint_TCV.u3) annotation (Line(points={{-117,
           230},{-114,230},{-114,192},{-102,192}}, color={0,0,127}));
-  connect(sensorBus.W_total, switch_P_setpoint.u1) annotation (Line(
-      points={{-29.9,-99.9},{-110,-99.9},{-110,18},{-102,18}},
+  connect(sensorBus.Power, switch_P_setpoint.u1) annotation (Line(
+      points={{-30,-100},{-110,-100},{-110,18},{-102,18}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.p_inlet_steamTurbine, switch_P_setpoint_TCV.u1) annotation (
      Line(
-      points={{-29.9,-99.9},{-110,-99.9},{-110,208},{-102,208}},
+      points={{-30,-100},{-110,-100},{-110,208},{-102,208}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));

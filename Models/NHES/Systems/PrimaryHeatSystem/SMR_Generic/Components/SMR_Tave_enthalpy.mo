@@ -4,9 +4,11 @@ model SMR_Tave_enthalpy
   extends BaseClasses.Partial_SubSystem_A(
     replaceable package Medium = Modelica.Media.Water.StandardWater,
     allowFlowReversal=system.allowFlowReversal,
-    redeclare replaceable CS_Dummy CS,
-    redeclare replaceable ED_Dummy ED,
-    redeclare Data.Data_GenericModule_SMR data,
+    redeclare replaceable
+      NHES.Systems.PrimaryHeatSystem.SMR_Generic.CS.CS_Dummy CS,
+    redeclare
+      NHES.Systems.PrimaryHeatSystem.SMR_Generic.Data.Data_GenericModule_SMR
+      data,
     port_b(redeclare package Medium = Modelica.Media.Water.StandardWater),
     port_a(redeclare package Medium = Modelica.Media.Water.StandardWater));
 
@@ -142,7 +144,8 @@ Real Tave=(Tcore_inlet.T+Tcore_exit.T)/2.0;
         rotation=90,
         origin={27,0})));
 
-  Components.Data.DataInitial dataInitial(p_start_pressurizer=12755300)
+  NHES.Systems.PrimaryHeatSystem.SMR_Generic.Data.DataInitial dataInitial(
+      p_start_pressurizer=12755300)
     annotation (Placement(transformation(extent={{80,120},{100,140}})));
   Modelica.Fluid.Sensors.Temperature temperature2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
@@ -336,8 +339,8 @@ equation
       thickness=0.5));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-120,
             -120},{100,140}}),
-                         graphics={Bitmap(extent={{-114,-90},{110,90}},fileName=
-             "modelica://NHES/Resources/Images/Systems/PHS/Schematic-of-a-NuScale-power-module.png")}),
+                         graphics={Bitmap(extent={{-114,-90},{110,90}},fileName
+            ="modelica://NHES/Resources/Images/Systems/PHS/Schematic-of-a-NuScale-power-module.png")}),
                                                                  Diagram(
         coordinateSystem(preserveAspectRatio=false, extent={{-120,-120},{100,
             140}})));

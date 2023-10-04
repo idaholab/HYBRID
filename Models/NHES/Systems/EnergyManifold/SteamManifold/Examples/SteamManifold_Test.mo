@@ -43,7 +43,7 @@ model SteamManifold_Test
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-30,-60})));
-  SteamManifold EM
+  Components.SteamManifold EM(W_totalSetpoint=0, W_total=0)
     annotation (Placement(transformation(extent={{-30,-30},{30,30}})));
 equation
 

@@ -3,11 +3,8 @@ model SteamTurbine_L3_HPCFWH
   "Three Stage Turbine with open feed water heating using high pressure steam"
   extends
     NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_SubSystem(
-    redeclare replaceable ControlSystems.CS_L3_HTGR_extraction_logan
-                                                    CS,
-    redeclare replaceable
-      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ED_Dummy ED,
-    redeclare replaceable Data.Data_L3_CFWH     data(BypassFeedHeater_NTU=25));
+      redeclare replaceable ControlSystems.CS_L3_HTGR_extraction_logan CS,
+      redeclare replaceable Data.Data_L3_CFWH data(BypassFeedHeater_NTU=25));
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_steam_in(redeclare package
       Medium =         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-110,50},{-90,70}})));
@@ -324,16 +321,6 @@ equation
   connect(sensor_p.port, Steam_T.port)
     annotation (Line(points={{-110,52},{-92,52},{-92,32}},
                                                  color={0,127,255}));
-  connect(sensorBus.W_total, sensorW.W) annotation (Line(
-      points={{-29.9,100.1},{-29.9,122},{-30,122},{-30,144},{120,144},{120,22},
-          {106.6,22}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
   connect(sensorBus.Steam_Pressure, sensor_p.p) annotation (Line(
       points={{-30,100},{-30,144},{-120,144},{-120,42},{-116,42}},
       color={239,82,82},
@@ -375,10 +362,10 @@ equation
     annotation (Line(points={{83,-22},{83,-27.5}}, color={0,127,255}));
   connect(R_mixer.port_a, condenser.port_a) annotation (Line(points={{83,-34.5},
           {83,-42},{82.2,-42},{82.2,-47.8}}, color={0,127,255}));
-  connect(Mixer.port_b[1], LPT2.portLP) annotation (Line(points={{83.25,-16},{
-          83.25,60},{80,60}},  color={0,127,255}));
+  connect(Mixer.port_b[1], LPT2.portLP) annotation (Line(points={{83.125,-16},{
+          83.125,60},{80,60}}, color={0,127,255}));
   connect(resistance1.port_a, Mixer.port_b[2]) annotation (Line(points={{60.2,
-          -11},{60.2,-12},{84,-12},{84,-14},{82.75,-14},{82.75,-16}},   color={
+          -11},{60.2,-12},{84,-12},{84,-14},{82.875,-14},{82.875,-16}}, color={
           0,127,255}));
   connect(BypassFeedwaterHeater.Shell_out, resistance1.port_b) annotation (Line(
         points={{-18,-54},{44,-54},{44,-11},{51.8,-11}},
@@ -401,6 +388,11 @@ equation
     annotation (Line(points={{-72,62},{-72,60},{-66,60}}, color={0,127,255}));
   connect(nonLinear_Break1.port_b, TBV.port_a)
     annotation (Line(points={{-72,70},{-72,72},{-71,72}}, color={0,127,255}));
+  connect(sensorBus.Power, sensorW.W) annotation (Line(
+      points={{-30,100},{-30,144},{124,144},{124,24},{106.6,24},{106.6,22}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-2.09756,2},{83.9024,-2}},
