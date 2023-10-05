@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.RankineCycle.Examples;
-model HTGR_ThreeStageTurbine_OFWHextractionPA_JY
+model SteamTurbine_L3_OpenFeedHeat_Test_a
   extends Modelica.Icons.Example;
 //  parameter Real P_ext=3;
 //  parameter Real P_demand=2.5;
@@ -29,7 +29,7 @@ model HTGR_ThreeStageTurbine_OFWHextractionPA_JY
     annotation (Placement(transformation(extent={{-48,34},{-8,64}})));
   NHES.Fluid.Sensors.stateDisplay stateDisplay1
     annotation (Placement(transformation(extent={{-48,-16},{-8,-46}})));
-  Models.SteamTurbine_L3_HPOFWH5_JY BOP(
+  Models.HTGR_RankineCycles.SteamTurbine_L3_HPOFWH_TurbineControl BOP(
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_L3_HTGR_extraction_JY
       CS(
@@ -271,4 +271,4 @@ equation
             tolerance=0.0001,
             fixedStepSize=0)))),
     __Dymola_experimentSetupOutput(events=false));
-end HTGR_ThreeStageTurbine_OFWHextractionPA_JY;
+end SteamTurbine_L3_OpenFeedHeat_Test_a;

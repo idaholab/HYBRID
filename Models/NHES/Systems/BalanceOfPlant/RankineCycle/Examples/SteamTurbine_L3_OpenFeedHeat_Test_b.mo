@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.RankineCycle.Examples;
-model HTGR_ThreeStageTurbine_OFWHextractionPA_JY
+model SteamTurbine_L3_OpenFeedHeat_Test_b
   extends Modelica.Icons.Example;
 //  parameter Real P_ext=3;
 //  parameter Real P_demand=2.5;
@@ -10,7 +10,7 @@ model HTGR_ThreeStageTurbine_OFWHextractionPA_JY
   parameter Real P_demand=1;
   parameter Modelica.Units.SI.Density d_ext=1.004547784   "kg/m3";
 
-  parameter Modelica.Units.SI.MassFlowRate m_ext=0.200;
+  parameter Modelica.Units.SI.MassFlowRate m_ext=31.500;
 
   Real breaker;
   parameter Real Boo=1;
@@ -21,17 +21,19 @@ model HTGR_ThreeStageTurbine_OFWHextractionPA_JY
 
   NHES.Fluid.Sensors.stateSensor stateSensor1(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{-40,16},{-18,36}})));
+    annotation (Placement(transformation(extent={{-30,16},{-14,36}})));
   NHES.Fluid.Sensors.stateSensor stateSensor2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{-18,-2},{-38,-18}})));
+    annotation (Placement(transformation(extent={{-14,2},{-30,-18}})));
   NHES.Fluid.Sensors.stateDisplay stateDisplay2
-    annotation (Placement(transformation(extent={{-48,34},{-8,64}})));
+    annotation (Placement(transformation(extent={{-42,28},{-2,58}})));
   NHES.Fluid.Sensors.stateDisplay stateDisplay1
-    annotation (Placement(transformation(extent={{-48,-16},{-8,-46}})));
-  Models.SteamTurbine_L3_HPOFWH5_JY BOP(
+    annotation (Placement(transformation(extent={{-42,-8},{-2,-38}})));
+  Models.HTGR_RankineCycles.SteamTurbine_L3_HPOFWH_BypassValveControl BOP(
+    LPT1_bypass_valve1(dp_nominal(displayUnit="Pa") = 1, m_flow_nominal=10*
+          m_ext),
     redeclare replaceable
-      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_L3_HTGR_extraction_JY
+      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_L3_HTGR_extraction_valve_JY
       CS(
       data(
         Power_nom=data.Power_nom,
@@ -57,7 +59,7 @@ model HTGR_ThreeStageTurbine_OFWHextractionPA_JY
         eta_p=data.eta_p),
       Steam_Extraction(y=data.m_ext),
       booleanStep2(startTime=2000),
-      LPT1_BV_PID(k=5e-9, Ti=300),
+      LPT1_BV_PID(k=5e-8, Ti=300),
       booleanStep(startTime=1500),
       FeedPump_PID(k=-1e-4, Ti=360),
       T_in_set2(y=0.0),
@@ -92,31 +94,28 @@ model HTGR_ThreeStageTurbine_OFWHextractionPA_JY
       eta_p=data.eta_p),
     OFWH_1(T_start=333.15),
     OFWH_2(T_start=353.15),
-    LPT1_bypass_valve(dp_nominal(displayUnit="Pa") = 1, m_flow_nominal=10*m_ext),
-
     HPT_bypass_valve(m_flow_nominal=20),
     FWCP(use_input=false, m_flow_nominal=data.mdot_total),
     moistureSeperator(p_start=150000, T_start=384.15))
-    annotation (Placement(transformation(extent={{10,-22},{70,38}})));
-
+    annotation (Placement(transformation(extent={{14,-20},{74,40}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT bypassdump(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_p_in=true,
     nPorts=1)
-    annotation (Placement(transformation(extent={{-42,-86},{-20,-66}})));
+    annotation (Placement(transformation(extent={{-36,-72},{-16,-52}})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT steamdump(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p=1000000,
     nPorts=1)
-    annotation (Placement(transformation(extent={{-18,76},{2,96}})));
+    annotation (Placement(transformation(extent={{-12,76},{8,96}})));
   TRANSFORM.Electrical.Sources.FrequencySource boundary
-    annotation (Placement(transformation(extent={{-5.5,-7.5},{5.5,7.5}},
+    annotation (Placement(transformation(extent={{-6,-7},{6,7}},
         rotation=90,
-        origin={88.5,11.5})));
-  NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3_master data(
+        origin={90,15})));
+  Systems.BalanceOfPlant.RankineCycle.Data.Data_L3_master data(
     Power_nom=100e6,
     HPT_p_in=14000000,
-    p_dump=15500000,
+    p_dump=15000000,
     p_i1=P_ext*100000,
     Tin=788.15,
     Tfeed=481.15,
@@ -144,22 +143,22 @@ model HTGR_ThreeStageTurbine_OFWHextractionPA_JY
     nPorts=1)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={86,-38})));
+        origin={90,-30})));
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
       = Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
-        origin={2,-62})));
+        origin={6,-52})));
 
   Modelica.Blocks.Sources.RealExpression realExpression(y=P_demand*100000)
-    annotation (Placement(transformation(extent={{-98,-78},{-78,-58}})));
+    annotation (Placement(transformation(extent={{-98,-64},{-78,-44}})));
   Modelica.Blocks.Continuous.Integrator integrator
-    annotation (Placement(transformation(extent={{-8,-8},{8,8}},
+    annotation (Placement(transformation(extent={{-7,-7},{7,7}},
         rotation=90,
-        origin={88,76})));
+        origin={89,79})));
   NHES.Electrical.PowerSensor sensorW
-    annotation (Placement(transformation(extent={{80,42},{96,26}})));
+    annotation (Placement(transformation(extent={{82,48},{96,34}})));
   TRANSFORM.Fluid.Volumes.SimpleVolume volume(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p_start=12000000,
@@ -175,14 +174,14 @@ model HTGR_ThreeStageTurbine_OFWHextractionPA_JY
         origin={-56,14})));
   TRANSFORM.Fluid.FittingsAndResistances.PressureLoss resistance(dp0=310)
     annotation (Placement(transformation(
-        extent={{-5,-8},{5,8}},
+        extent={{-7,-6},{7,6}},
         rotation=90,
         origin={-56,-1})));
   Modelica.Blocks.Sources.Constant T_steam(k=data.Tin)
-    annotation (Placement(transformation(extent={{-98,8},{-86,20}})));
+    annotation (Placement(transformation(extent={{-100,8},{-88,20}})));
   Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature
     prescribedTemperature
-    annotation (Placement(transformation(extent={{-80,8},{-68,20}})));
+    annotation (Placement(transformation(extent={{-78,8},{-66,20}})));
 initial equation
 
 equation
@@ -191,51 +190,49 @@ equation
 
   eta_th=(-BOP.port_a_elec.W-BOP.pump.W-BOP.pump1.W-BOP.FWCP.W)/volume.heatPort.Q_flow;
   eta_CHP=(-BOP.port_a_elec.W-BOP.pump.W-BOP.pump1.W-BOP.FWCP.W+Q_util)/volume.heatPort.Q_flow;
-  Q_util = sensor_m_flow.m_flow * ( BOP.LPT1_bypass_valve.port_b.h_outflow-bypassdump1.h);
+  Q_util =sensor_m_flow.m_flow*(BOP.LPT1_bypass_valve1.port_b.h_outflow -
+    bypassdump1.h);
 
   connect(stateSensor1.statePort, stateDisplay2.statePort) annotation (Line(
-        points={{-28.945,26.05},{-28,26.05},{-28,45.1}},color={0,0,0}));
+        points={{-21.96,26.05},{-22,26.05},{-22,39.1}}, color={0,0,0}));
   connect(stateSensor2.statePort, stateDisplay1.statePort)
-    annotation (Line(points={{-28.05,-10.04},{-28,-27.1}},
-                                                         color={0,0,0}));
+    annotation (Line(points={{-22.04,-8.05},{-22,-19.1}},color={0,0,0}));
   connect(steamdump.ports[1],BOP. prt_b_steamdump)
-    annotation (Line(points={{2,86},{6,86},{6,38},{10,38}},
+    annotation (Line(points={{8,86},{12,86},{12,48},{14,48},{14,40}},
                                                color={0,127,255}));
-  connect(BOP.port_a_steam, stateSensor1.port_b) annotation (Line(points={{10,26},
-          {-18,26}},                   color={0,127,255}));
-  connect(stateSensor2.port_a, BOP.port_b_feed) annotation (Line(points={{-18,-10},
-          {10,-10}},                 color={0,127,255}));
+  connect(BOP.port_a_steam, stateSensor1.port_b) annotation (Line(points={{14,28},
+          {12,28},{12,26},{-14,26}},   color={0,127,255}));
+  connect(stateSensor2.port_a, BOP.port_b_feed) annotation (Line(points={{-14,-8},
+          {14,-8}},                  color={0,127,255}));
   connect(sensor_m_flow.port_a, BOP.port_b_bypass)
-    annotation (Line(points={{2,-52},{2,8},{10,8}},     color={0,127,255}));
+    annotation (Line(points={{6,-42},{6,10},{14,10}},   color={0,127,255}));
   connect(sensor_m_flow.port_b, bypassdump.ports[1])
-    annotation (Line(points={{2,-72},{2,-76},{-20,-76}},
-                                                 color={0,127,255}));
+    annotation (Line(points={{6,-62},{-16,-62}}, color={0,127,255}));
   connect(bypassdump1.ports[1], BOP.port_a_cond)
-    annotation (Line(points={{86,-28},{86,-4},{70,-4}},
+    annotation (Line(points={{90,-20},{90,-2},{74,-2}},
                                                  color={0,127,255}));
-  connect(sensor_m_flow.m_flow, bypassdump1.m_flow_in) annotation (Line(points={{5.6,-62},
-          {78,-62},{78,-48}},                     color={0,0,127}));
+  connect(sensor_m_flow.m_flow, bypassdump1.m_flow_in) annotation (Line(points={{9.6,-52},
+          {82,-52},{82,-40}},                     color={0,0,127}));
   connect(realExpression.y, bypassdump.p_in)
-    annotation (Line(points={{-77,-68},{-44.2,-68}},
-                                                   color={0,0,127}));
-  connect(BOP.port_a_elec, sensorW.port_a) annotation (Line(points={{70,8},{76,
-          8},{76,34},{80,34}},                      color={255,0,0}));
-  connect(boundary.port, sensorW.port_b) annotation (Line(points={{88.5,17},{88,
-          17},{88,22},{100,22},{100,34.16},{96,34.16}},
+    annotation (Line(points={{-77,-54},{-38,-54}}, color={0,0,127}));
+  connect(BOP.port_a_elec, sensorW.port_a) annotation (Line(points={{74,10},{78,
+          10},{78,41},{82,41}},                     color={255,0,0}));
+  connect(boundary.port, sensorW.port_b) annotation (Line(points={{90,21},{90,
+          30},{98,30},{98,41.14},{96,41.14}},
                              color={255,0,0}));
-  connect(sensorW.W, integrator.u) annotation (Line(points={{88,41.52},{88,66.4}},
+  connect(sensorW.W, integrator.u) annotation (Line(points={{89,47.58},{89,70.6}},
                                        color={0,0,127}));
-  connect(stateSensor2.port_b, resistance.port_a) annotation (Line(points={{-38,-10},
-          {-56,-10},{-56,-4.5}},                     color={0,127,255}));
+  connect(stateSensor2.port_b, resistance.port_a) annotation (Line(points={{-30,-8},
+          {-56,-8},{-56,-5.9}},                      color={0,127,255}));
   connect(resistance.port_b, volume.port_a)
-    annotation (Line(points={{-56,2.5},{-56,8}},color={0,127,255}));
+    annotation (Line(points={{-56,3.9},{-56,8}},color={0,127,255}));
   connect(volume.port_b, stateSensor1.port_a)
-    annotation (Line(points={{-56,20},{-56,26},{-40,26}}, color={0,127,255}));
+    annotation (Line(points={{-56,20},{-56,26},{-30,26}}, color={0,127,255}));
   connect(T_steam.y, prescribedTemperature.T)
-    annotation (Line(points={{-85.4,14},{-81.2,14}},
+    annotation (Line(points={{-87.4,14},{-79.2,14}},
                                                  color={0,0,127}));
   connect(prescribedTemperature.port, volume.heatPort)
-    annotation (Line(points={{-68,14},{-62,14}},color={191,0,0}));
+    annotation (Line(points={{-66,14},{-62,14}},color={191,0,0}));
   annotation (experiment(
       StopTime=30000000,
       Interval=100,
@@ -271,4 +268,4 @@ equation
             tolerance=0.0001,
             fixedStepSize=0)))),
     __Dymola_experimentSetupOutput(events=false));
-end HTGR_ThreeStageTurbine_OFWHextractionPA_JY;
+end SteamTurbine_L3_OpenFeedHeat_Test_b;

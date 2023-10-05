@@ -3,7 +3,7 @@ model HTGR_BOP_L3_Transient
   extends Modelica.Icons.Example;
 
   Real Thermal_Power_Norm;
-  BalanceOfPlant.RankineCycle.Models.HTGR_RankineCycles.SteamTurbine_L3_HTGR
+  BalanceOfPlant.RankineCycle.Models.HTGR_RankineCycles.SteamTurbine_L3_ProtoType_HTGR
     BOP annotation (Placement(transformation(extent={{-6,-10},{62,38}})));
   TRANSFORM.Electrical.Sources.FrequencySource
                                      sinkElec(f=60)
