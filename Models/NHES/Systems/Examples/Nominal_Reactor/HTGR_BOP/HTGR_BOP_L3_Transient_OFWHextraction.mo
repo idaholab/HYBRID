@@ -24,7 +24,8 @@ model HTGR_BOP_L3_Transient_OFWHextraction
     annotation (Placement(transformation(extent={{-42,34},{-2,64}})));
   NHES.Fluid.Sensors.stateDisplay stateDisplay1
     annotation (Placement(transformation(extent={{-42,-10},{-2,-40}})));
-  NHES.Systems.BalanceOfPlant.RankineCycle.Models.SteamTurbine_L3_HPOFWH BOP(
+  NHES.Systems.BalanceOfPlant.RankineCycle.Models.HTGR_RankineCycles.SteamTurbine_L3_HPOFWH
+    BOP(
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_L3_HTGR_extraction_logan
       CS(

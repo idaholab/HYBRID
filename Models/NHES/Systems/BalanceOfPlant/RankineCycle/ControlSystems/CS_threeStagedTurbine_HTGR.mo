@@ -65,7 +65,7 @@ model CS_threeStagedTurbine_HTGR
     annotation (Placement(transformation(extent={{-278,24},{-258,44}})));
   Modelica.Blocks.Sources.Constant const10(k=5000)
     annotation (Placement(transformation(extent={{-278,-12},{-260,6}})));
-  SupportComponent.VarLimVarK_PID PID(
+  SupportComponents.VarLimVarK_PID PID(
     use_k_in=true,
     use_lowlim_in=true,
     use_uplim_in=true,

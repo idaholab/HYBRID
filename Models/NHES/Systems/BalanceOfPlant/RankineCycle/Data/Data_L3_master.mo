@@ -20,15 +20,15 @@ model Data_L3_master
   parameter Modelica.Units.SI.Density d_LPT2_in = 0.86254   "LPT2 inlet density"  annotation(Dialog(group="Density Sets"));
 
   parameter Modelica.Units.SI.MassFlowRate mdot_total=5.5 "Nominal Total Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
-  parameter Modelica.Units.SI.MassFlowRate mdot_fh= 0.1
+  parameter Modelica.Units.SI.MassFlowRate mdot_fh =0.1
                                                        "Nominal Controlled Feed Heating Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
   parameter Modelica.Units.SI.MassFlowRate mdpt_HPFH=0.002 "Set High pressure feedwater heating flow (Used in models with both LP and HP feed heating)" annotation(Dialog(group="Flow Rate Sets"));
   parameter Modelica.Units.SI.MassFlowRate mdot_hpt= 5.5 "Nominal Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
   parameter Modelica.Units.SI.MassFlowRate mdot_lpt1= 5.5 "Nominal Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
   parameter Modelica.Units.SI.MassFlowRate mdot_lpt2= 4.794 "Nominal Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
 
-  parameter Modelica.Units.SI.MassFlowRate m_ext= 1 annotation(Dialog(group="Extraction"));
-  parameter Modelica.Units.SI.AbsolutePressure p_use= 1e5 annotation(Dialog(group="Extraction"));
+  parameter Modelica.Units.SI.MassFlowRate m_ext =1 annotation(Dialog(group="Extraction"));
+  parameter Modelica.Units.SI.AbsolutePressure p_use =1e5 annotation(Dialog(group="Extraction"));
   parameter Real eta_t=0.93 "Isentropic Efficiency of the Turbines" annotation(Dialog(group="Efficiency Sets"));
   parameter Real eta_mech=1 "Mechincal Effieiency of the Turbines"  annotation(Dialog(group="Efficiency Sets"));
   parameter Real eta_p=0.9 "Isentropic Efficiency of the Pumps" annotation(Dialog(group="Efficiency Sets"));
