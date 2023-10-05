@@ -1,11 +1,9 @@
 within NHES.Systems.BalanceOfPlant.RankineCycle.Models;
-model SteamTurbine_L3_HPOFWH6_JY
+model SteamTurbine_L3_HPOFWH_ValveOpeningControled
   "Three Stage Turbine with open feed water heating using high pressure steam"
   extends
     NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_SubSystem(
-    redeclare replaceable
-      Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_L3_HTGR_extraction_valve_JY
-      CS,
+    redeclare replaceable ControlSystems.CS_L3_HTGR_extraction_Valve CS,
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ED_Dummy ED,
     redeclare replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3
@@ -340,7 +338,7 @@ equation
         points={{-80,60},{-74,60},{-74,16},{-50,16},{-50,-6},{-38,-6}},
         color={0,127,255}));
   connect(sensorBus.Extract_flow, sensor_m_flow.m_flow) annotation (Line(
-      points={{-30,100},{-30,144},{-118,144},{-118,16},{-80,16},{-80,3.6}},
+      points={{-30,100},{-30,144},{-120,144},{-120,16},{-80,16},{-80,3.6}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -521,4 +519,4 @@ equation
           fillPattern=FillPattern.HorizontalCylinder,
           fillColor={255,255,255})}),                            Diagram(
         coordinateSystem(preserveAspectRatio=false)));
-end SteamTurbine_L3_HPOFWH6_JY;
+end SteamTurbine_L3_HPOFWH_ValveOpeningControled;

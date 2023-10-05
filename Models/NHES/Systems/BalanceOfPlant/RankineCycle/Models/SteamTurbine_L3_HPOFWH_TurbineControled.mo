@@ -1,11 +1,9 @@
 within NHES.Systems.BalanceOfPlant.RankineCycle.Models;
-model SteamTurbine_L3_HPOFWH5_JY
+model SteamTurbine_L3_HPOFWH_TurbineControled
   "Three Stage Turbine with open feed water heating using high pressure steam"
   extends
     NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_SubSystem(
-    redeclare replaceable
-      Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_L3_HTGR_extraction_JY
-      CS,
+    redeclare replaceable ControlSystems.CS_L3_HTGR_extraction_Turbine CS,
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ED_Dummy ED,
     redeclare replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3
@@ -511,4 +509,4 @@ equation
           fillPattern=FillPattern.HorizontalCylinder,
           fillColor={255,255,255})}),                            Diagram(
         coordinateSystem(preserveAspectRatio=false)));
-end SteamTurbine_L3_HPOFWH5_JY;
+end SteamTurbine_L3_HPOFWH_TurbineControled;

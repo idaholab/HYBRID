@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems;
-model CS_L3_HTGR_extraction_valve_JY
+model CS_L3_HTGR_extraction_Valve
 
   extends
     NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_ControlSystem;
@@ -265,4 +265,4 @@ annotation(defaultComponentName="changeMe_CS", Icon(graphics),
       StopTime=1000,
       Interval=5,
       __Dymola_Algorithm="Esdirk45a"));
-end CS_L3_HTGR_extraction_valve_JY;
+end CS_L3_HTGR_extraction_Valve;
