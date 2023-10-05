@@ -5,6 +5,7 @@ PrimaryHeatSystem
 EnergyManifold
 BalanceOfPlant
 EnergyStorage
+Experiment
 IndustrialProcess
 SecondaryEnergySupply
 SwitchYard
