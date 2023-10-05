@@ -6,7 +6,7 @@ model SteamTurbine_L3_HPOFWH_TurbineControled
     redeclare replaceable ControlSystems.CS_L3_HTGR_extraction_Turbine CS,
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ED_Dummy ED,
-    redeclare replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3
+    redeclare replaceable Data.Data_L3_OFWH_control
       data);
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_steam(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
@@ -132,7 +132,7 @@ model SteamTurbine_L3_HPOFWH_TurbineControled
     T_start=333.15,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=2)) annotation (Placement(transformation(extent={{16,-72},{36,-52}})));
+        (V=2)) annotation (Placement(transformation(extent={{16,-70},{36,-50}})));
   TRANSFORM.Fluid.Valves.ValveLinear HPT_bypass_valve(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     dp_nominal=50000,
@@ -205,11 +205,9 @@ equation
   connect(condenser.port_b, pump.port_a)
     annotation (Line(points={{86,-58},{86,-60},{66,-60}}, color={0,127,255}));
   connect(pump.port_b, OFWH_1.port_b)
-    annotation (Line(points={{46,-60},{40,-60},{40,-62},{32,-62}},
-                                                 color={0,127,255}));
+    annotation (Line(points={{46,-60},{32,-60}}, color={0,127,255}));
   connect(pump1.port_a, OFWH_1.port_a)
-    annotation (Line(points={{10,-60},{16,-60},{16,-62},{20,-62}},
-                                                color={0,127,255}));
+    annotation (Line(points={{10,-60},{20,-60}},color={0,127,255}));
   connect(pump1.port_b, OFWH_2.port_b)
     annotation (Line(points={{-10,-60},{-22,-60}}, color={0,127,255}));
   connect(FWCP.port_a, OFWH_2.port_a)
@@ -269,7 +267,7 @@ equation
   connect(SteamHeader.port_a, Steam_T.port)
     annotation (Line(points={{-92,60},{-92,32}}, color={0,127,255}));
   connect(sensorBus.Steam_Temperature, Steam_T.T) annotation (Line(
-      points={{-30,100},{-30,168},{-120,168},{-120,22},{-98,22}},
+      points={{-30,100},{-30,150},{-120,150},{-120,22},{-98,22}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -278,7 +276,7 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(sensorBus.Feedwater_Temp, Feed_T.T) annotation (Line(
-      points={{-30,100},{-30,168},{-120,168},{-120,-70},{-86,-70}},
+      points={{-30,100},{-30,150},{-120,150},{-120,-70},{-86,-70}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -289,7 +287,7 @@ equation
   connect(sensor_p.port, Steam_T.port)
     annotation (Line(points={{-94,32},{-92,32}}, color={0,127,255}));
   connect(sensorBus.W_total, sensorW.W) annotation (Line(
-      points={{-29.9,100.1},{-29.9,122},{-30,122},{-30,168},{120,168},{120,20},
+      points={{-29.9,100.1},{-29.9,122},{-30,122},{-30,150},{120,150},{120,20},
           {111,20}},
       color={239,82,82},
       pattern=LinePattern.Dash,
@@ -299,7 +297,7 @@ equation
       extent={{-6,3},{-6,3}},
       horizontalAlignment=TextAlignment.Right));
   connect(sensorBus.Steam_Pressure, sensor_p.p) annotation (Line(
-      points={{-30,100},{-30,168},{-120,168},{-120,42},{-100,42}},
+      points={{-30,100},{-30,150},{-120,150},{-120,42},{-100,42}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -322,7 +320,7 @@ equation
       horizontalAlignment=TextAlignment.Right));
 
   connect(moistureSeperator.port_Liquid, OFWH_1.port_b) annotation (Line(
-        points={{40,56},{40,-46},{42,-46},{42,-62},{32,-62}}, color={0,127,
+        points={{40,56},{40,-60},{32,-60}},                   color={0,127,
           255}));
   connect(moistureSeperator.port_b[1], LPT2.portHP) annotation (Line(points={{50,60},
           {74,60}},                         color={0,127,255}));
@@ -333,7 +331,7 @@ equation
         points={{-80,60},{-74,60},{-74,16},{-50,16},{-50,-6},{-38,-6}},
         color={0,127,255}));
   connect(sensorBus.Extract_flow, sensor_m_flow.m_flow) annotation (Line(
-      points={{-30,100},{-30,168},{-120,168},{-120,16},{-80,16},{-80,3.6}},
+      points={{-30,100},{-30,150},{-120,150},{-120,16},{-80,16},{-80,3.6}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(

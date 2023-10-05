@@ -24,7 +24,7 @@ model SteamTurbine_L3_OpenFeedHeat_Test_b
     annotation (Placement(transformation(extent={{-40,16},{-18,36}})));
   NHES.Fluid.Sensors.stateSensor stateSensor2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
-    annotation (Placement(transformation(extent={{-18,-2},{-38,-18}})));
+    annotation (Placement(transformation(extent={{-20,0},{-38,-20}})));
   NHES.Fluid.Sensors.stateDisplay stateDisplay2
     annotation (Placement(transformation(extent={{-48,34},{-8,64}})));
   NHES.Fluid.Sensors.stateDisplay stateDisplay1
@@ -93,7 +93,6 @@ model SteamTurbine_L3_OpenFeedHeat_Test_b
     OFWH_1(T_start=333.15),
     OFWH_2(T_start=353.15),
     LPT1_bypass_valve(dp_nominal(displayUnit="Pa") = 1, m_flow_nominal=10*m_ext),
-
     HPT_bypass_valve(m_flow_nominal=20),
     FWCP(use_input=false, m_flow_nominal=data.mdot_total),
     moistureSeperator(p_start=150000, T_start=384.15))
@@ -195,15 +194,12 @@ equation
 
   connect(stateSensor1.statePort, stateDisplay2.statePort) annotation (Line(
         points={{-28.945,26.05},{-28,26.05},{-28,45.1}},color={0,0,0}));
-  connect(stateSensor2.statePort, stateDisplay1.statePort)
-    annotation (Line(points={{-28.05,-10.04},{-28,-27.1}},
-                                                         color={0,0,0}));
   connect(steamdump.ports[1],BOP. prt_b_steamdump)
     annotation (Line(points={{2,86},{6,86},{6,38},{10,38}},
                                                color={0,127,255}));
   connect(BOP.port_a_steam, stateSensor1.port_b) annotation (Line(points={{10,26},
           {-18,26}},                   color={0,127,255}));
-  connect(stateSensor2.port_a, BOP.port_b_feed) annotation (Line(points={{-18,-10},
+  connect(stateSensor2.port_a, BOP.port_b_feed) annotation (Line(points={{-20,-10},
           {10,-10}},                 color={0,127,255}));
   connect(sensor_m_flow.port_a, BOP.port_b_bypass)
     annotation (Line(points={{2,-52},{2,8},{10,8}},     color={0,127,255}));
@@ -236,6 +232,8 @@ equation
                                                  color={0,0,127}));
   connect(prescribedTemperature.port, volume.heatPort)
     annotation (Line(points={{-68,14},{-62,14}},color={191,0,0}));
+  connect(stateDisplay1.statePort, stateSensor2.statePort) annotation (Line(
+        points={{-28,-27.1},{-29.045,-27.1},{-29.045,-10.05}}, color={0,0,0}));
   annotation (experiment(
       StopTime=30000000,
       Interval=100,
