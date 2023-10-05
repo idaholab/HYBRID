@@ -26,3 +26,5 @@ CS_DivertPowerControl_ANL_v2
 CS_NoFeedHeat_mFlow_Control
 CS_threeStagedTurbine_HTGR_JY
 CS_L3_HTGR_extraction_logan
+CS_L3_HTGR_extraction_JY
+CS_L3_HTGR_extraction_valve_JY
