@@ -847,8 +847,7 @@ public
     T_start=data.T_hot_side,
     precision=3)
           annotation (Placement(transformation(extent={{362,-64},{386,-40}})));
-  Systems.Experiments.TEDS.ThermoclineModels.Thermocline_Insulation_An
-    thermocline_Insulation_An(
+  TEDS.ThermoclineModels_2.Thermocline_Insulation_An thermocline_Insulation_An(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
     redeclare package InsulationMaterial = Media.Solids.FoamGlass,

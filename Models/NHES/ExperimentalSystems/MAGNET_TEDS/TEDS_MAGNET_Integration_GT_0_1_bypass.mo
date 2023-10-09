@@ -610,8 +610,8 @@ public
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={418,-84})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
@@ -697,26 +697,26 @@ public
         extent={{10,-10},{-10,10}},
         rotation=-90,
         origin={488,-84})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Chg_Out(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Chg_Out(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
       =3) annotation (Placement(transformation(
         extent={{-9,10},{9,-10}},
         rotation=90,
         origin={488,-219})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Chg_In(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Chg_In(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
       =3) annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=-90,
         origin={418,-110})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Dch_Out(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Dch_Out(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
       =3) annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=90,
         origin={488,-110})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Dch_In(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Dch_In(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
       =3) annotation (Placement(transformation(
         extent={{-9.5,-8.5},{9.5,8.5}},
         rotation=90,
@@ -748,8 +748,7 @@ public
     T_start=data.T_hot_side,
     precision=3)
     annotation (Placement(transformation(extent={{362,-64},{386,-40}})));
-  Systems.Experiments.TEDS.ThermoclineModels.Thermocline_Insulation_An
-    thermocline_Insulation_An(
+  TEDS.ThermoclineModels_2.Thermocline_Insulation_An thermocline_Insulation_An(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
     redeclare package InsulationMaterial = Media.Solids.FoamGlass,
@@ -1132,10 +1131,10 @@ equation
 
   connect(sensorSubBus.T_discharge_inlet, T_Dch_In.T) annotation (Line(
       points={{303,-22},{360,-22},{360,-220},{388,-220},{388,-219.5},{415.94,-219.5}},
-
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
+
   connect(sensorSubBus.T_charge_outlet, T_Chg_Out.T) annotation (Line(
       points={{303,-22},{536,-22},{536,-219},{491.6,-219}},
       color={111,216,99},
@@ -1401,7 +1400,6 @@ equation
           -276},{314,-276},{314,-290},{328,-290}}, color={0,127,255}));
   connect(sensorSubBus.Discharge_FlowRate, FM_201.m_flow) annotation (Line(
       points={{303,-22},{360,-22},{360,-240},{388,-240},{388,-239},{415.76,-239}},
-
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -1409,6 +1407,7 @@ equation
       index=-1,
       extent={{-6,3},{-6,3}},
       horizontalAlignment=TextAlignment.Right));
+
   annotation (experiment(
       StopTime=50400,
       Interval=10,

@@ -24,7 +24,8 @@ model Thermocline_Cycling_Test_TEDS
   Modelica.Blocks.Sources.TimeTable timeTable(table=[0.0,-100; 3600,-100; 7200,
         50; 10800,100; 14400,0; 18000,0])
     annotation (Placement(transformation(extent={{-96,70},{-76,90}})));
-  NHES.Systems.Experiments.TEDS.ThermoclineModels.Thermocline_Insulation testerofwall_extender(
+  NHES.ExperimentalSystems.TEDS.ThermoclineModels_2.Thermocline_Insulation
+    testerofwall_extender(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
     redeclare package InsulationMaterial =

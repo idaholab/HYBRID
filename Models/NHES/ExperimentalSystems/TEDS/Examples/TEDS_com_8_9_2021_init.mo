@@ -147,7 +147,7 @@ model TEDS_com_8_9_2021_init
         extent={{10,-10},{-10,10}},
         rotation=-90,
         origin={154,40})));
-  ThermoclineModels.Thermocline_Insulation thermocline_Insulation(redeclare
+  ThermoclineModels_1.Thermocline_Insulation thermocline_Insulation(redeclare
       package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, geometry(
       Radius_Tank=0.438,

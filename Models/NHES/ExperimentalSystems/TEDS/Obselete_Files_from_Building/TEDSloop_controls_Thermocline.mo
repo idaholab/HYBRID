@@ -268,10 +268,10 @@ model TEDSloop_controls_Thermocline
     offset=0.5,
     startTime=0)
     annotation (Placement(transformation(extent={{80,92},{100,112}})));
-  ThermoclineModels.Thermocline_Insulation thermocline_Insulation(redeclare
+  ThermoclineModels_1.Thermocline_Insulation thermocline_Insulation(redeclare
       package Medium =
-        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
-      geometry(Radius_Tank=0.5, Height_Tank=3.55))
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, geometry(
+        Radius_Tank=0.5, Height_Tank=3.55))
     annotation (Placement(transformation(extent={{86,-10},{120,22}})));
 equation
   connect(pump1.port_b, pipe5.port_a)

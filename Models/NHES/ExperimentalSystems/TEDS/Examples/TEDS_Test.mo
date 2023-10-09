@@ -2,7 +2,7 @@ within NHES.ExperimentalSystems.TEDS.Examples;
 model TEDS_Test "Ensuring the system operates properly and with the right time constants."
   extends Modelica.Icons.Example;
 
-  ThermoclineModels.Thermocline_fluidprops thermocline_fluidprops(redeclare
+  ThermoclineModels_1.Thermocline_fluidprops thermocline_fluidprops(redeclare
       package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C)
     annotation (Placement(transformation(extent={{-20,-18},{24,26}})));

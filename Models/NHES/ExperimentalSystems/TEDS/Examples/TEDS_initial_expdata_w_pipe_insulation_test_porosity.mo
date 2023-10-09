@@ -147,10 +147,8 @@ model TEDS_initial_expdata_w_pipe_insulation_test_porosity
         extent={{10,-10},{-10,10}},
         rotation=-90,
         origin={154,40})));
-  ThermoclineModels.Thermocline_Insulation_test_porosity
-                                           thermocline_Insulation_test_porosity(
-                                                                  redeclare
-      package Medium =
+  ThermoclineModels_1.Thermocline_Insulation_test_porosity
+    thermocline_Insulation_test_porosity(redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, geometry(
       Radius_Tank=0.438,
       Porosity=0.9,

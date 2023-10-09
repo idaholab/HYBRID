@@ -743,8 +743,7 @@ public
     T_hot_design=598.15,
     T_cold_design=498.15)
     annotation (Placement(transformation(extent={{378,-22},{400,0}})));
-  Systems.Experiments.TEDS.ThermoclineModels.Thermocline_Insulation_An
-    thermocline_Insulation_An(
+  TEDS.ThermoclineModels_2.Thermocline_Insulation_An thermocline_Insulation_An(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
     redeclare package InsulationMaterial = Media.Solids.FoamGlass,
