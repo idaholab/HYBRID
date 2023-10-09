@@ -1,4 +1,4 @@
-within NHES.Systems.ExperimentalSystems.MAGNET_TEDS;
+within NHES.Systems.ExperimentalSystems.MAGNET_TEDS.Models;
 model TEDS_MAGNET_Q_vc_2
   "Test designed to ensure the TEDS loop can operate in all modes."
 
@@ -191,7 +191,7 @@ package Medium_TEDS =
         extent={{10,-10},{-10,10}},
         rotation=-90,
         origin={154,40})));
-  Systems.Experiments.TEDS.ThermoclineModels.Thermocline_Insulation thermocline_Insulation(
+  NHES.ExperimentalSystems.TEDS.ThermoclineModels_2.Thermocline_Insulation thermocline_Insulation(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
     redeclare package InsulationMaterial = NHES.Media.Solids.FoamGlass,

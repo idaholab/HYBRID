@@ -1,4 +1,4 @@
-within NHES.Systems.ExperimentalSystems.MAGNET_TEDS;
+within NHES.Systems.ExperimentalSystems.MAGNET_TEDS.Models;
 model MAGNET_TEDS_valve_GT_3
   extends TRANSFORM.Icons.Example;
 
@@ -581,7 +581,7 @@ public
         extent={{10,10},{-10,-10}},
         rotation=90,
         origin={-88,18})));
-  Magnet_TEDS.MAGNET_TEDS_ControlSystem.MAGNET_ControlSystem_GT
+  Models.Magnet_TEDS.MAGNET_TEDS_ControlSystem.MAGNET_ControlSystem_GT
     mAGNET_ControlSystem_GT(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,

@@ -1,5 +1,6 @@
-within NHES.Systems.ExperimentalSystems.MAGNET_TEDS;
-model TEDS_MAGNET_Integration_GT_0 "Steady state simulation integrating MAGNET, TEDS, and Gas Turbine"
+within NHES.Systems.ExperimentalSystems.MAGNET_TEDS.Models;
+model TEDS_MAGNET_Integration_GT_0_1
+  "Dynamic simulation of the integrated system of MAGNET, TEDS, and Gas turbine with a central control system"
   extends TRANSFORM.Icons.Example;
 
 protected
@@ -7,17 +8,17 @@ protected
     showColors=true,
     val_min=data.T_hx_co,
     val_max=data.T_vc_rp)
-    annotation (Placement(transformation(extent={{-176,-322},{-156,-302}})));
+    annotation (Placement(transformation(extent={{-256,-326},{-236,-306}})));
 
 protected
   inner TRANSFORM.Fluid.System system(
     p_ambient=18000,
     T_ambient=498.15,
     m_flow_start=0.84)
-    annotation (Placement(transformation(extent={{-176,-356},{-156,-336}})));
+    annotation (Placement(transformation(extent={{-256,-356},{-236,-336}})));
 protected
   NHES.Systems.ExperimentalSystems.MAGNET.Data.Data_base_An data
-    annotation (Placement(transformation(extent={{-176,-288},{-156,-268}})));
+    annotation (Placement(transformation(extent={{-256,-290},{-236,-270}})));
 protected
   package Medium = Modelica.Media.IdealGases.SingleGases.N2;//TRANSFORM.Media.ExternalMedia.CoolProp.Nitrogen;
   package Medium_cw = Modelica.Media.Water.StandardWater;
@@ -128,7 +129,7 @@ protected
     m_flow_start_2=data.m_flow,
     R_1=-data.dp_rp_hot/data.m_flow,
     R_2=-data.dp_rp_cold/data.m_flow)
-    annotation (Placement(transformation(extent={{62,-194},{82,-174}})));
+    annotation (Placement(transformation(extent={{64,-192},{84,-172}})));
 public
   TRANSFORM.Fluid.Sensors.PressureTemperatureTwoPort pT_co_rp_1(
     redeclare package Medium = Medium,
@@ -140,7 +141,7 @@ public
     precision2=1,
     redeclare function iconUnit2 =
         TRANSFORM.Units.Conversions.Functions.Temperature_K.to_degC)
-    annotation (Placement(transformation(extent={{142,-210},{122,-190}})));
+    annotation (Placement(transformation(extent={{124,-210},{104,-190}})));
   TRANSFORM.Fluid.Sensors.PressureTemperatureTwoPort pT_rp_hx_1(
     redeclare package Medium = Medium,
     p_start=data.p_rp_hx,
@@ -149,7 +150,7 @@ public
         TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_bar,
     redeclare function iconUnit2 =
         TRANSFORM.Units.Conversions.Functions.Temperature_K.to_degC)
-    annotation (Placement(transformation(extent={{120,-174},{140,-154}})));
+    annotation (Placement(transformation(extent={{104,-172},{124,-152}})));
   TRANSFORM.Fluid.Sensors.PressureTemperatureTwoPort pT_vc_pipe_rp(
     redeclare package Medium = Medium,
     p_start=data.p_vc_rp,
@@ -159,7 +160,7 @@ public
         TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_bar,
     redeclare function iconUnit2 =
         TRANSFORM.Units.Conversions.Functions.Temperature_K.to_degC)
-    annotation (Placement(transformation(extent={{34,-172},{54,-152}})));
+    annotation (Placement(transformation(extent={{32,-172},{52,-152}})));
   TRANSFORM.Fluid.Sensors.PressureTemperatureTwoPort pT_rp_pipe_vc(
     redeclare package Medium = Medium,
     p_start=data.p_rp_vc,
@@ -169,7 +170,7 @@ public
         TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_bar,
     redeclare function iconUnit2 =
         TRANSFORM.Units.Conversions.Functions.Temperature_K.to_degC)
-    annotation (Placement(transformation(extent={{26,-212},{6,-192}})));
+    annotation (Placement(transformation(extent={{54,-210},{34,-190}})));
   TRANSFORM.Fluid.Sensors.PressureTemperatureTwoPort pT_vc_pipe(
     redeclare package Medium = Medium,
     p_start=data.p_vc_rp,
@@ -188,7 +189,7 @@ public
         TRANSFORM.Units.Conversions.Functions.Pressure_Pa.to_bar,
     redeclare function iconUnit2 =
         TRANSFORM.Units.Conversions.Functions.Temperature_K.to_degC)
-    annotation (Placement(transformation(extent={{-48,-212},{-68,-192}})));
+    annotation (Placement(transformation(extent={{-48,-210},{-68,-190}})));
 protected
   TRANSFORM.Fluid.Volumes.SimpleVolume vc(
     redeclare package Medium = Medium,
@@ -251,7 +252,7 @@ protected
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.StraightPipe
         (dimension=data.d_co_rp, length=data.length_co_rp))
-    annotation (Placement(transformation(extent={{164,-352},{184,-332}})));
+    annotation (Placement(transformation(extent={{152,-210},{132,-190}})));
   TRANSFORM.Fluid.Machines.Pump_Controlled co(
     redeclare package Medium = Medium,
     p_a_start=data.p_hx_co,
@@ -287,7 +288,7 @@ protected
     p_a_start=data.p_rp_vc,
     T_a_start=data.T_rp_vc,
     m_flow_a_start=data.m_flow)
-    annotation (Placement(transformation(extent={{-12,-212},{-32,-192}})));
+    annotation (Placement(transformation(extent={{-12,-210},{-32,-190}})));
   TRANSFORM.Fluid.Pipes.GenericPipe_withWallAndInsulation pipe_ins_rp_hx(
     ths_wall=fill(data.th_4in_sch40, pipe_vc_TEDS.geometry.nV),
     ths_insulation=fill(data.th_4in_sch40, pipe_vc_TEDS.geometry.nV),
@@ -312,7 +313,7 @@ public
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={-64,-122})));
+        origin={-64,-118})));
 public
   TRANSFORM.Fluid.Sensors.PressureTemperatureTwoPort pT_TEDS_rp(
     redeclare package Medium = Medium,
@@ -349,7 +350,7 @@ protected
     m_flow_a_start=data.m_flow,
     redeclare package Material_wall = TRANSFORM.Media.Solids.SS316,
     pipe(flowModel(dps_fg(start={-128.03918155874314}))))
-    annotation (Placement(transformation(extent={{6,-172},{26,-152}})));
+    annotation (Placement(transformation(extent={{2,-172},{22,-152}})));
   TRANSFORM.Fluid.Volumes.SimpleVolume volume_MT(
     redeclare package Medium = Medium,
     p_start=data.p_vc_rp,
@@ -360,7 +361,7 @@ protected
     Q_gen=0) "12022.6" annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
-        origin={0,-138})));
+        origin={0,-142})));
 protected
   Modelica.Blocks.Sources.RealExpression Tout_vc(y=pT_vc_pipe.T)
     annotation (Placement(transformation(extent={{204,-4},{222,14}})));
@@ -373,7 +374,7 @@ public
     m_flow_nominal=1) annotation (Placement(transformation(
         extent={{-6,-6},{6,6}},
         rotation=90,
-        origin={-64,-148})));
+        origin={-64,-142})));
   TRANSFORM.Fluid.Valves.ValveLinear valve_TEDS_rp(
     redeclare package Medium = Medium,
     dp_nominal=3000,
@@ -399,14 +400,14 @@ public
               annotation (Placement(transformation(
         extent={{-22,-17},{22,17}},
         rotation=90,
-        origin={-201,-16})));
+        origin={-201,-48})));
   TRANSFORM.Fluid.Valves.ValveLinear valve_vc_GT(
     redeclare package Medium = Medium,
     dp_nominal=3000,
     m_flow_nominal=1) annotation (Placement(transformation(
         extent={{-6,6},{6,-6}},
         rotation=90,
-        origin={-214,-126})));
+        origin={-214,-124})));
   TRANSFORM.Fluid.Sensors.MassFlowRate mflow_vc_GT(
     redeclare package Medium = Medium,
     p_start=data.p_co_rp,
@@ -414,7 +415,7 @@ public
     precision=3)
     annotation (Placement(transformation(extent={{-10,10},{10,-10}},
         rotation=90,
-        origin={-214,-64})));
+        origin={-214,-76})));
   Modelica.Blocks.Sources.RealExpression GT_Power(y=data.eta_mech*(turbine.Wt
          - compressor.Wc))
     annotation (Placement(transformation(extent={{204,18},{222,34}})));
@@ -431,7 +432,7 @@ public
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={-214,18})));
+        origin={-214,-12})));
 public
   TRANSFORM.Fluid.Sensors.PressureTemperatureTwoPort pT_co_rp(
     redeclare package Medium = Medium,
@@ -445,7 +446,7 @@ public
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
-        origin={-108,38})));
+        origin={-114,12})));
 public
   TRANSFORM.Fluid.Sensors.PressureTemperatureTwoPort pT_vc_GT(
     redeclare package Medium = Medium,
@@ -459,12 +460,12 @@ public
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={-214,-98})));
+        origin={-214,-102})));
   TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Temperature    boundary3(use_port=
         false, T=306.15)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
         rotation=180,
-        origin={-236,80})));
+        origin={-238,26})));
   GasTurbine.Compressor.Compressor compressor(
     redeclare package Medium = Medium,
     pstart_in=data.p_atm,
@@ -472,7 +473,7 @@ public
     Tstart_out=723.15,
     PR0=2.975,
     w0=data.m_flow/2)
-    annotation (Placement(transformation(extent={{-160,16},{-124,40}})));
+    annotation (Placement(transformation(extent={{-160,-10},{-124,14}})));
 public
   TRANSFORM.Fluid.Sensors.PressureTemperatureTwoPort pT_co_rp1(
     redeclare package Medium = Medium,
@@ -486,23 +487,23 @@ public
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
-        origin={-174,38})));
+        origin={-174,12})));
   Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.SpringBallValve
     springBallValve(
     redeclare package Medium = Medium,
     p_spring=data.P_Release,
     K=1,
     opening_init=0.)
-    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+    annotation (Placement(transformation(extent={{-6,-6},{6,6}},
         rotation=90,
-        origin={-198,98})));
+        origin={-192,28})));
   TRANSFORM.Fluid.BoundaryConditions.Boundary_ph boundary5(
     redeclare package Medium = Medium,
     p=data.P_Release,
     nPorts=1)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
-        rotation=90,
-        origin={-198,126})));
+        rotation=0,
+        origin={-142,40})));
   TRANSFORM.Fluid.Sensors.MassFlowRate mflow_GT_rp(
     redeclare package Medium = Medium,
     p_start=data.p_co_rp,
@@ -510,7 +511,7 @@ public
     precision=3) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
-        origin={-88,18})));
+        origin={-88,-6})));
   TRANSFORM.Fluid.Volumes.SimpleVolume Cooler(
     redeclare package Medium = Medium,
     p_start=data.p_vc_rp/2.975,
@@ -521,7 +522,7 @@ public
     use_HeatPort=true) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=180,
-        origin={-206,38})));
+        origin={-206,12})));
 public
   TRANSFORM.HeatExchangers.Simple_HX MAGNET_TEDS_simpleHX1(
     redeclare package Medium_1 = Medium,
@@ -540,7 +541,7 @@ public
     p_b_start_2=data.p_TEDS_out,
     T_a_start_2=data.T_cold_side,
     T_b_start_2=data.T_hot_side,
-    m_flow_start_2=data.TEDS_nominal_flow_rate)
+    m_flow_start_2=data.m_flow_TEDS)
     annotation (Placement(transformation(extent={{266,-92},{246,-72}})));
   Modelica.Fluid.Pipes.DynamicPipe pipe2(
     redeclare package Medium =
@@ -846,8 +847,7 @@ public
     T_start=data.T_hot_side,
     precision=3)
           annotation (Placement(transformation(extent={{362,-64},{386,-40}})));
-  Systems.Experiments.TEDS.ThermoclineModels.Thermocline_Insulation_An
-    thermocline_Insulation_An(
+  NHES.ExperimentalSystems.TEDS.ThermoclineModels_2.Thermocline_Insulation_An thermocline_Insulation_An(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
     redeclare package InsulationMaterial = Media.Solids.FoamGlass,
@@ -864,20 +864,9 @@ public
     annotation (Placement(transformation(extent={{292,-34},{314,-10}})));
   Systems.Experiments.TEDS.BaseClasses.SignalSubBus_SensorOutput sensorSubBus1
     annotation (Placement(transformation(extent={{324,-34},{346,-10}})));
-  Modelica.Blocks.Sources.CombiTimeTable P_GT_demand(table=[0.0,1; 1800,1; 3600,
-        1; 4800,1; 7200,1; 9000,1; 9600,1; 10800,0; 12000,0; 14400,1; 18000,1],
-      startTime=0)
-    annotation (Placement(transformation(extent={{-228,-204},{-214,-190}})));
   Modelica.Blocks.Sources.RealExpression MAGNET_heater_input(y=
         MAGNET_TEDS_simpleHX1.Q_flow)
     annotation (Placement(transformation(extent={{204,28},{222,44}})));
-  Magnet_TEDS.MAGNET_TEDS_ControlSystem.Control_System_Therminol_4_element_all_modes_MAGNET_GT_SS
-    control_System_Therminol_4_element_all_modes_MAGNET_GT_SS(
-    redeclare package Medium =
-        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
-    T_hot_design=598.15,
-    T_cold_design=498.15)
-    annotation (Placement(transformation(extent={{350,12},{374,36}})));
   TRANSFORM.Fluid.Machines.Pump_PressureBooster pump(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
@@ -887,6 +876,13 @@ public
   Modelica.Blocks.Sources.RealExpression Heater_BOP_Demand(y=pump.port_a.p +
         5.0e3)
     annotation (Placement(transformation(extent={{276,-304},{298,-282}})));
+  Models.Magnet_TEDS.MAGNET_TEDS_ControlSystem.Control_System_Therminol_4_element_all_modes_MAGNET_GT_dyn_0_1
+    control_System_Therminol_4_element_all_modes_MAGNET_GT_dyn_0_1_1(
+    redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
+    T_hot_design=598.15,
+    T_cold_design=498.15)
+    annotation (Placement(transformation(extent={{362,2},{396,36}})));
 equation
   connect(sensor_hx_cw.port_b,boundary. ports[1])
     annotation (Line(points={{112,-240},{152,-240}},
@@ -905,16 +901,16 @@ equation
     annotation (Line(points={{30,-278},{-32,-278}}, color={0,127,255}));
   connect(opening_valve_tank.y,valve_ps. opening) annotation (Line(points={{-65,
           -258},{-42,-258},{-42,-270}},color={0,0,127}));
-  connect(pT_co_rp_1.port_b, rp.port_a2) annotation (Line(points={{122,-200},
-          {90,-200},{90,-188},{82,-188}}, color={0,127,255}));
-  connect(pT_vc_pipe_rp.port_b, rp.port_a1) annotation (Line(points={{54,-162},{
-          56,-162},{56,-180},{62,-180}},        color={0,127,255}));
-  connect(rp.port_b1, pT_rp_hx_1.port_a) annotation (Line(points={{82,-180},
-          {112,-180},{112,-164},{120,-164}}, color={0,127,255}));
-  connect(rp.port_b2, pT_rp_pipe_vc.port_a) annotation (Line(points={{62,
-          -188},{32,-188},{32,-202},{26,-202}}, color={0,127,255}));
-  connect(pT_pipe_vc.port_b, vc.port_a) annotation (Line(points={{-68,-202},{-146,
-          -202},{-146,-198}},       color={0,127,255}));
+  connect(pT_co_rp_1.port_b, rp.port_a2) annotation (Line(points={{104,-200},{
+          92,-200},{92,-186},{84,-186}},  color={0,127,255}));
+  connect(pT_vc_pipe_rp.port_b, rp.port_a1) annotation (Line(points={{52,-162},
+          {56,-162},{56,-178},{64,-178}},       color={0,127,255}));
+  connect(rp.port_b1, pT_rp_hx_1.port_a) annotation (Line(points={{84,-178},{92,
+          -178},{92,-162},{104,-162}},       color={0,127,255}));
+  connect(rp.port_b2, pT_rp_pipe_vc.port_a) annotation (Line(points={{64,-186},
+          {54,-186},{54,-200}},                 color={0,127,255}));
+  connect(pT_pipe_vc.port_b, vc.port_a) annotation (Line(points={{-68,-200},{
+          -146,-200},{-146,-198}},  color={0,127,255}));
   connect(vc.port_b,resistance. port_a)
     annotation (Line(points={{-146,-186},{-146,-181}},
                                                    color={0,127,255}));
@@ -927,9 +923,10 @@ equation
   connect(pipe_hx_co.port_a,valve_ps. port_b) annotation (Line(points={{-2,-342},
           {-20,-342},{-20,-278},{-32,-278}},      color={0,127,255}));
   connect(mflow_MAGNET.port_b, pipe_co_rp.port_a)
-    annotation (Line(points={{136,-342},{164,-342}}, color={0,127,255}));
-  connect(pipe_co_rp.port_b, pT_co_rp_1.port_a) annotation (Line(points={{
-          184,-342},{198,-342},{198,-200},{142,-200}}, color={0,127,255}));
+    annotation (Line(points={{136,-342},{182,-342},{182,-200},{152,-200}},
+                                                     color={0,127,255}));
+  connect(pipe_co_rp.port_b, pT_co_rp_1.port_a) annotation (Line(points={{132,
+          -200},{124,-200}},                           color={0,127,255}));
   connect(volume_co.port_b,co. port_a)
     annotation (Line(points={{58,-342},{76,-342}}, color={0,127,255}));
   connect(co.port_b, mflow_MAGNET.port_a)
@@ -937,69 +934,70 @@ equation
   connect(pipe_vc_TEDS.port_a, pT_vc_pipe.port_b)
     annotation (Line(points={{-100,-162},{-108,-162}}, color={0,127,255}));
   connect(pT_pipe_vc.port_a, pipe_ins_rp_vc.port_b)
-    annotation (Line(points={{-48,-202},{-32,-202}}, color={0,127,255}));
+    annotation (Line(points={{-48,-200},{-32,-200}}, color={0,127,255}));
   connect(pT_rp_pipe_vc.port_b, pipe_ins_rp_vc.port_a)
-    annotation (Line(points={{6,-202},{-12,-202}}, color={0,127,255}));
+    annotation (Line(points={{34,-200},{-12,-200}},color={0,127,255}));
   connect(sensor_rp_hx_2.port_a,pipe_ins_rp_hx. port_b)
     annotation (Line(points={{116,-278},{142,-278}},
                                                 color={0,127,255}));
-  connect(pipe_ins_rp_hx.port_a, pT_rp_hx_1.port_b) annotation (Line(points=
-         {{162,-278},{184,-278},{184,-164},{140,-164}}, color={0,127,255}));
+  connect(pipe_ins_rp_hx.port_a, pT_rp_hx_1.port_b) annotation (Line(points={{162,
+          -278},{204,-278},{204,-162},{124,-162}},      color={0,127,255}));
   connect(T_vc_TEDS.port_b, m_flow_vc_TEDS.port_a)
-    annotation (Line(points={{-64,-112},{-64,-100}},
+    annotation (Line(points={{-64,-108},{-64,-100}},
                                                    color={0,127,255}));
   connect(T_vc_TEDS.port_a, valve_vc_TEDS.port_b) annotation (Line(points={{-64,
-          -132},{-64,-142}},                           color={0,127,255}));
+          -128},{-64,-136}},                           color={0,127,255}));
   connect(valve_vc_TEDS.port_a, pipe_vc_TEDS.port_b) annotation (Line(points={{-64,
-          -154},{-72,-154},{-72,-162},{-80,-162}},
-                                        color={0,127,255}));
+          -148},{-64,-162},{-80,-162}}, color={0,127,255}));
   connect(valve_TEDS_rp.port_b, pT_TEDS_rp.port_a) annotation (Line(points={{
           -3.88578e-16,-96},{-3.88578e-16,-101},{1.77636e-15,-101},{1.77636e-15,
           -102}},                                   color={0,127,255}));
   connect(pipe_vc_rp.port_b, pT_vc_pipe_rp.port_a)
-    annotation (Line(points={{26,-162},{34,-162}}, color={0,127,255}));
+    annotation (Line(points={{22,-162},{32,-162}}, color={0,127,255}));
   connect(mflow_cw.port_a, boundary1.ports[1])
     annotation (Line(points={{-10,-238},{-34,-238}}, color={0,127,255}));
   connect(mflow_cw.port_b, sensor_cw_hx.port_a)
     annotation (Line(points={{10,-238},{28,-238}}, color={0,127,255}));
   connect(volume_MT.port_a, pT_TEDS_rp.port_b) annotation (Line(points={{
-          1.11022e-15,-132},{1.11022e-15,-129},{-1.83187e-15,-129},{
+          1.11022e-15,-136},{1.11022e-15,-129},{-1.83187e-15,-129},{
           -1.83187e-15,-122}},
         color={0,127,255}));
-  connect(mflow_vc_GT.port_b, turbine.inlet) annotation (Line(points={{-214,-54},
-          {-214,-29.2},{-214.6,-29.2}}, color={0,127,255}));
-  connect(valve_vc_GT.port_a, pipe_vc_TEDS.port_b) annotation (Line(points={{
-          -214,-132},{-74,-132},{-74,-162},{-80,-162}}, color={0,127,255}));
+  connect(mflow_vc_GT.port_b, turbine.inlet) annotation (Line(points={{-214,-66},
+          {-214.6,-66},{-214.6,-61.2}}, color={0,127,255}));
+  connect(valve_vc_GT.port_a, pipe_vc_TEDS.port_b) annotation (Line(points={{-214,
+          -130},{-214,-152},{-64,-152},{-64,-162},{-80,-162}},
+                                                        color={0,127,255}));
   connect(volume_MT.port_b, pipe_vc_rp.port_a) annotation (Line(points={{
-          -1.11022e-15,-144},{-1.11022e-15,-162},{6,-162}}, color={0,127,255}));
+          -1.11022e-15,-148},{-1.11022e-15,-162},{2,-162}}, color={0,127,255}));
   connect(turbine.outlet, pT_GT_co.port_a) annotation (Line(points={{-214.6,
-          -2.8},{-214.6,2.6},{-214,2.6},{-214,8}},
+          -34.8},{-214.6,-26},{-214,-26},{-214,-22}},
                                         color={0,127,255}));
   connect(valve_vc_GT.port_b, pT_vc_GT.port_a)
-    annotation (Line(points={{-214,-120},{-214,-108}}, color={0,127,255}));
+    annotation (Line(points={{-214,-118},{-214,-112}}, color={0,127,255}));
   connect(pT_vc_GT.port_b, mflow_vc_GT.port_a)
-    annotation (Line(points={{-214,-88},{-214,-74}}, color={0,127,255}));
+    annotation (Line(points={{-214,-92},{-214,-86}}, color={0,127,255}));
   connect(compressor.outlet, pT_co_rp.port_a) annotation (Line(points={{-131.2,
-          37.6},{-124.6,37.6},{-124.6,38},{-118,38}},
+          11.6},{-124.6,11.6},{-124.6,12},{-124,12}},
                                                   color={0,127,255}));
-  connect(pT_co_rp1.port_b, compressor.inlet) annotation (Line(points={{-164,38},
-          {-158.4,38},{-158.4,37.6},{-152.8,37.6}},
+  connect(pT_co_rp1.port_b, compressor.inlet) annotation (Line(points={{-164,12},
+          {-158.4,12},{-158.4,11.6},{-152.8,11.6}},
                                       color={0,127,255}));
   connect(springBallValve.port_b,boundary5. ports[1])
-    annotation (Line(points={{-198,108},{-198,116}},      color={0,127,255}));
+    annotation (Line(points={{-192,34},{-192,40},{-152,40}},
+                                                          color={0,127,255}));
   connect(pT_co_rp.port_b, mflow_GT_rp.port_a)
-    annotation (Line(points={{-98,38},{-88,38},{-88,28}}, color={0,127,255}));
-  connect(mflow_GT_rp.port_b, pT_TEDS_rp.port_b) annotation (Line(points={{-88,
-          8},{-88,-128},{-1.77636e-15,-128},{-1.77636e-15,-122}}, color={0,127,
+    annotation (Line(points={{-104,12},{-88,12},{-88,4}}, color={0,127,255}));
+  connect(mflow_GT_rp.port_b, pT_TEDS_rp.port_b) annotation (Line(points={{-88,-16},
+          {-88,-130},{-1.77636e-15,-130},{-1.77636e-15,-122}},    color={0,127,
           255}));
-  connect(pT_GT_co.port_b, Cooler.port_a) annotation (Line(points={{-214,28},{
-          -214,38},{-212,38}}, color={0,127,255}));
+  connect(pT_GT_co.port_b, Cooler.port_a) annotation (Line(points={{-214,-2},{
+          -214,12},{-212,12}}, color={0,127,255}));
   connect(Cooler.port_b, pT_co_rp1.port_a)
-    annotation (Line(points={{-200,38},{-184,38}}, color={0,127,255}));
-  connect(springBallValve.port_a, pT_co_rp1.port_a) annotation (Line(points={{
-          -198,88},{-198,38},{-184,38}}, color={0,127,255}));
+    annotation (Line(points={{-200,12},{-184,12}}, color={0,127,255}));
+  connect(springBallValve.port_a, pT_co_rp1.port_a) annotation (Line(points={{-192,22},
+          {-192,12},{-184,12}},          color={0,127,255}));
   connect(boundary3.port, Cooler.heatPort)
-    annotation (Line(points={{-226,80},{-206,80},{-206,44}}, color={191,0,0}));
+    annotation (Line(points={{-228,26},{-206,26},{-206,18}}, color={191,0,0}));
   connect(m_flow_vc_TEDS.port_b, MAGNET_TEDS_simpleHX1.port_a1) annotation (
       Line(points={{-64,-80},{-64,-64},{266,-64},{266,-78}}, color={0,127,255}));
   connect(pipe4.port_b,sensor_T. port_a)
@@ -1253,7 +1251,7 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorSubBus1.MAGNET_TEDS_HX_Tin, T_vc_TEDS.T) annotation (Line(
-      points={{303,-22},{-62,-22},{-62,-116}},
+      points={{303,-22},{-62,-22},{-62,-112}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -1270,7 +1268,7 @@ equation
       thickness=0.5));
   connect(sensorSubBus1.MAGNET_valve_opening, valve_vc_TEDS.opening)
     annotation (Line(
-      points={{335,-22},{-90,-22},{-90,-148},{-68.8,-148}},
+      points={{335,-22},{-90,-22},{-90,-142},{-68.8,-142}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -1285,7 +1283,7 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorSubBus1.mf_vc_GT, mflow_vc_GT.m_flow) annotation (Line(
-      points={{303,-22},{-174,-22},{-174,-64},{-210.4,-64}},
+      points={{303,-22},{-174,-22},{-174,-76},{-210.4,-76}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -1296,7 +1294,7 @@ equation
       thickness=0.5));
   connect(sensorSubBus1.MAGNET_valve2_opening, valve_vc_GT.opening) annotation (
      Line(
-      points={{335,-22},{-174,-22},{-174,-126},{-209.2,-126}},
+      points={{335,-22},{-174,-22},{-174,-124},{-209.2,-124}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -1311,20 +1309,6 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(actuatorSubBus1,
-    control_System_Therminol_4_element_all_modes_MAGNET_GT_SS.actuatorSubBus)
-    annotation (Line(
-      points={{303,-22},{360.533,-22},{360.533,12.2222}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorSubBus1,
-    control_System_Therminol_4_element_all_modes_MAGNET_GT_SS.sensorSubBus)
-    annotation (Line(
-      points={{335,-22},{364.667,-22},{364.667,12.2222}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(Valve6.port_b,pump. port_b)
     annotation (Line(points={{302,-274},{328,-274}},color={0,127,255}));
   connect(pump.port_a, HX_exit_temperature_T66.port_a)
@@ -1334,10 +1318,24 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(actuatorSubBus1,
+    control_System_Therminol_4_element_all_modes_MAGNET_GT_dyn_0_1_1.actuatorSubBus)
+    annotation (Line(
+      points={{303,-22},{372.956,-22},{372.956,2.47222}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorSubBus1,
+    control_System_Therminol_4_element_all_modes_MAGNET_GT_dyn_0_1_1.sensorSubBus)
+    annotation (Line(
+      points={{335,-22},{385.611,-22},{385.611,2.47222}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   annotation (experiment(
-      StopTime=40000,
+      StopTime=50400,
       Interval=10,
       __Dymola_Algorithm="Esdirk45a"),
-    Diagram(coordinateSystem(extent={{-260,-360},{660,140}})),
-    Icon(coordinateSystem(extent={{-260,-360},{660,140}})));
-end TEDS_MAGNET_Integration_GT_0;
+    Diagram(coordinateSystem(extent={{-260,-360},{580,60}})),
+    Icon(coordinateSystem(extent={{-260,-360},{580,60}})));
+end TEDS_MAGNET_Integration_GT_0_1;

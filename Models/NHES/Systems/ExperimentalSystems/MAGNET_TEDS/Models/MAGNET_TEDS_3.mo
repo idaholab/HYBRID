@@ -1,5 +1,5 @@
-within NHES.Systems.ExperimentalSystems.MAGNET_TEDS;
-model MAGNET_TEDS_2
+within NHES.Systems.ExperimentalSystems.MAGNET_TEDS.Models;
+model MAGNET_TEDS_3
   extends TRANSFORM.Icons.Example;
 
 protected
@@ -164,7 +164,7 @@ protected
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
         (V=0.1),
-    Q_gen=step.y)
+    Q_gen=data.Q_vc)
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
@@ -204,7 +204,7 @@ protected
     showColors=true,
     val_min=data.T_hx_co,
     val_max=data.T_vc_rp)
-    annotation (Placement(transformation(extent={{60,186},{80,206}})));
+    annotation (Placement(transformation(extent={{74,184},{94,204}})));
 public
   NHES.Systems.ExperimentalSystems.MAGNET.Data.Summary summary(
     Ts={sensor_cw_hx.T,sensor_rp_hx_2.T,sensor_hx_co.T,pT_co_rp_1.T,pT_rp_hx_1.T,
@@ -214,7 +214,7 @@ public
     m_flows={sensor_co_rp_2.m_flow,TEDS_flow_rate.m_flow,m_flow_vc_TEDS.m_flow},
 
     Q_flows={vc.Q_gen/1e3})
-    annotation (Placement(transformation(extent={{60,160},{80,180}})));
+    annotation (Placement(transformation(extent={{74,160},{94,180}})));
 
 protected
   TRANSFORM.Fluid.Valves.ValveLinear valve_vc_TEDS(
@@ -270,6 +270,11 @@ public
     offset=250e3,
     startTime=5000)
     annotation (Placement(transformation(extent={{-280,120},{-260,140}})));
+  Modelica.Blocks.Sources.Step step1(
+    height=0,
+    offset=data.m_flow,
+    startTime=5000)
+    annotation (Placement(transformation(extent={{-120,-66},{-100,-46}})));
 protected
   TRANSFORM.HeatExchangers.Simple_HX MAGNET_TEDS_simpleHX(
     redeclare package Medium_1 = Medium,
@@ -295,10 +300,10 @@ protected
     p_ambient=18000,
     T_ambient=498.15,
     m_flow_start=0.84)
-    annotation (Placement(transformation(extent={{60,248},{80,268}})));
+    annotation (Placement(transformation(extent={{74,246},{94,266}})));
 protected
   NHES.Systems.ExperimentalSystems.MAGNET.Data.Data_base_An data
-    annotation (Placement(transformation(extent={{60,220},{80,240}})));
+    annotation (Placement(transformation(extent={{74,220},{94,240}})));
 protected
   package Medium = Modelica.Media.IdealGases.SingleGases.N2;//TRANSFORM.Media.ExternalMedia.CoolProp.Nitrogen;
   package Medium_cw = Modelica.Media.Water.StandardWater;
@@ -321,9 +326,6 @@ protected
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.StraightPipe
         (dimension=data.d_co_rp, length=data.length_co_rp))
     annotation (Placement(transformation(extent={{48,-100},{68,-80}})));
-protected
-  Modelica.Blocks.Math.Gain gain(k=1/3600)
-    annotation (Placement(transformation(extent={{-74,-66},{-54,-46}})));
   TRANSFORM.Fluid.Machines.Pump_Controlled co(
     redeclare package Medium = Medium,
     p_a_start=data.p_hx_co,
@@ -438,8 +440,6 @@ protected
     annotation (Placement(transformation(extent={{8,-8},{-8,8}},
         rotation=90,
         origin={-126,144})));
-  Modelica.Blocks.Sources.Constant MassFlowRate_MAGNET(k=0.938*3600)
-    annotation (Placement(transformation(extent={{-120,-66},{-100,-46}})));
 protected
   Modelica.Blocks.Sources.CombiTimeTable combiTimeTable1(table=[0,0; 60.037,
         4.6; 120.102,15.5; 180.084,12.5; 240.044,11.2; 300.005,12.3; 360.053,
@@ -556,8 +556,6 @@ equation
     annotation (Line(points={{20,-90},{48,-90}}, color={0,127,255}));
   connect(pipe_co_rp.port_b, pT_co_rp_1.port_a) annotation (Line(points={{68,
           -90},{82,-90},{82,52},{26,52}}, color={0,127,255}));
-  connect(gain.y, co.inputSignal)
-    annotation (Line(points={{-53,-56},{-30,-56},{-30,-83}}, color={0,0,127}));
   connect(volume_co.port_b, co.port_a)
     annotation (Line(points={{-58,-90},{-40,-90}}, color={0,127,255}));
   connect(co.port_b, sensor_co_rp_2.port_a)
@@ -615,14 +613,14 @@ equation
           -100,104},{-100,90},{-88,90}}, color={0,127,255}));
   connect(opening_valve_tank3.y, valve_vc_rp.opening) annotation (Line(points={{-126,
           135.2},{-126,118},{-125,118},{-125,94.6}},       color={0,0,127}));
-  connect(MassFlowRate_MAGNET.y, gain.u)
-    annotation (Line(points={{-99,-56},{-76,-56}}, color={0,0,127}));
   connect(realExpression2.y, TEDS_MassFlowControl.u_ff) annotation (Line(
         points={{-71,266},{-68,266},{-68,264},{-42,264}}, color={0,0,127}));
+  connect(step1.y, co.inputSignal) annotation (Line(points={{-99,-56},{-30,
+          -56},{-30,-83}}, color={0,0,127}));
   annotation (experiment(
       StopTime=600,
       Interval=10,
       __Dymola_Algorithm="Esdirk45a"),
     Diagram(coordinateSystem(extent={{-300,-120},{100,280}})),
     Icon(coordinateSystem(extent={{-300,-120},{100,280}})));
-end MAGNET_TEDS_2;
+end MAGNET_TEDS_3;
