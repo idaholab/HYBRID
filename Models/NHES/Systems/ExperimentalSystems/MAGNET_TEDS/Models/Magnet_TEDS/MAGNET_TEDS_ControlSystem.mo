@@ -11,9 +11,9 @@ package MAGNET_TEDS_ControlSystem
         choicesAllMatching=true);
 
   package Medium_MAGNET = Modelica.Media.IdealGases.SingleGases.N2;
-    Systems.Experiments.TEDS.BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus
+    TEDS.BaseClasses.SignalSubBus_SensorOutput                      actuatorSubBus
       annotation (Placement(transformation(extent={{-48,-242},{0,-196}})));
-    Systems.Experiments.TEDS.BaseClasses.SignalSubBus_SensorOutput sensorSubBus
+    TEDS.BaseClasses.SignalSubBus_ActuatorInput                    sensorSubBus
       annotation (Placement(transformation(extent={{16,-242},{64,-196}})));
 
   Real Error1_MAGNET "Valve 1, MAGNET to TEDS ";
@@ -397,9 +397,9 @@ package MAGNET_TEDS_ControlSystem
         choicesAllMatching=true);
 
   package Medium_MAGNET = Modelica.Media.IdealGases.SingleGases.N2;
-    Systems.Experiments.TEDS.BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus
+    TEDS.BaseClasses.SignalSubBus_SensorOutput                      actuatorSubBus
       annotation (Placement(transformation(extent={{-48,-242},{0,-196}})));
-    Systems.Experiments.TEDS.BaseClasses.SignalSubBus_SensorOutput sensorSubBus
+    TEDS.BaseClasses.SignalSubBus_ActuatorInput                    sensorSubBus
       annotation (Placement(transformation(extent={{16,-242},{64,-196}})));
 
   Real Error1_MAGNET "Valve 1, MAGNET to TEDS ";
@@ -758,9 +758,9 @@ package MAGNET_TEDS_ControlSystem
         choicesAllMatching=true);
 
   package Medium_MAGNET = Modelica.Media.IdealGases.SingleGases.N2;
-    Systems.Experiments.TEDS.BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus
+    TEDS.BaseClasses.SignalSubBus_SensorOutput                      actuatorSubBus
       annotation (Placement(transformation(extent={{-48,-242},{0,-196}})));
-    Systems.Experiments.TEDS.BaseClasses.SignalSubBus_SensorOutput sensorSubBus
+    TEDS.BaseClasses.SignalSubBus_ActuatorInput                    sensorSubBus
       annotation (Placement(transformation(extent={{16,-242},{64,-196}})));
 
   Real Error1_MAGNET "Valve 1, MAGNET to TEDS ";
@@ -1119,9 +1119,9 @@ package MAGNET_TEDS_ControlSystem
         choicesAllMatching=true);
 
   package Medium_MAGNET = Modelica.Media.IdealGases.SingleGases.N2;
-    Systems.Experiments.TEDS.BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus
+    TEDS.BaseClasses.SignalSubBus_SensorOutput                      actuatorSubBus
       annotation (Placement(transformation(extent={{-46,-418},{2,-372}})));
-    Systems.Experiments.TEDS.BaseClasses.SignalSubBus_SensorOutput sensorSubBus
+    TEDS.BaseClasses.SignalSubBus_ActuatorInput                    sensorSubBus
       annotation (Placement(transformation(extent={{16,-418},{64,-372}})));
     Modelica.Blocks.Continuous.LimPID PIDV1(
       yMax=1,
@@ -1780,9 +1780,9 @@ package MAGNET_TEDS_ControlSystem
         choicesAllMatching=true);
 
   package Medium_MAGNET = Modelica.Media.IdealGases.SingleGases.N2;
-    Systems.Experiments.TEDS.BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus
+    TEDS.BaseClasses.SignalSubBus_SensorOutput                      actuatorSubBus
       annotation (Placement(transformation(extent={{-46,-418},{2,-372}})));
-    Systems.Experiments.TEDS.BaseClasses.SignalSubBus_SensorOutput sensorSubBus
+    TEDS.BaseClasses.SignalSubBus_ActuatorInput                    sensorSubBus
       annotation (Placement(transformation(extent={{16,-418},{64,-372}})));
     Modelica.Blocks.Continuous.LimPID PIDV1(
       yMax=1,
@@ -2451,9 +2451,9 @@ package MAGNET_TEDS_ControlSystem
         choicesAllMatching=true);
 
   package Medium_MAGNET = Modelica.Media.IdealGases.SingleGases.N2;
-    Systems.Experiments.TEDS.BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus
+    TEDS.BaseClasses.SignalSubBus_SensorOutput                      actuatorSubBus
       annotation (Placement(transformation(extent={{-46,-418},{2,-372}})));
-    Systems.Experiments.TEDS.BaseClasses.SignalSubBus_SensorOutput sensorSubBus
+    TEDS.BaseClasses.SignalSubBus_ActuatorInput                    sensorSubBus
       annotation (Placement(transformation(extent={{16,-418},{64,-372}})));
     Modelica.Blocks.Continuous.LimPID PIDV1(
       yMax=1,
@@ -3120,9 +3120,9 @@ package MAGNET_TEDS_ControlSystem
         choicesAllMatching=true);
 
   package Medium_MAGNET = Modelica.Media.IdealGases.SingleGases.N2;
-    Systems.Experiments.TEDS.BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus
+    TEDS.BaseClasses.SignalSubBus_SensorOutput                      actuatorSubBus
       annotation (Placement(transformation(extent={{-88,-238},{-40,-192}})));
-    Systems.Experiments.TEDS.BaseClasses.SignalSubBus_SensorOutput sensorSubBus
+    TEDS.BaseClasses.SignalSubBus_ActuatorInput                    sensorSubBus
       annotation (Placement(transformation(extent={{46,-238},{94,-192}})));
     Modelica.Blocks.Continuous.LimPID PIDV1(
       yMax=1,
@@ -3801,9 +3801,9 @@ package MAGNET_TEDS_ControlSystem
      annotation(Dialog(tab="General"));
      input Real Delay_Start = 1e4
      annotation(Dialog(tab="General"));
-    Systems.Experiments.TEDS.BaseClasses.SignalSubBus_ActuatorInput sensorBus
+    TEDS.BaseClasses.SignalSubBus_SensorOutput                      sensorBus
       annotation (Placement(transformation(extent={{-88,-238},{-40,-192}})));
-    Systems.Experiments.TEDS.BaseClasses.SignalSubBus_SensorOutput actuatorBus
+    TEDS.BaseClasses.SignalSubBus_ActuatorInput                    actuatorBus
       annotation (Placement(transformation(extent={{46,-238},{94,-192}})));
     Modelica.Blocks.Continuous.LimPID PIDV1(
       yMax=1,

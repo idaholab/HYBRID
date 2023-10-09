@@ -488,7 +488,7 @@ public
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-174,12})));
-  Systems.BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.SpringBallValve
+  BalanceOfPlant.RankineCycle.Models.StagebyStageTurbineSecondary.Control_and_Distribution.SpringBallValve
     springBallValve(
     redeclare package Medium = Medium,
     p_spring=data.P_Release,
@@ -616,14 +616,14 @@ public
         extent={{6,6},{-6,-6}},
         rotation=0,
         origin={504,-270})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={418,-90})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
@@ -679,14 +679,14 @@ public
         extent={{-6,-6},{6,6}},
         rotation=0,
         origin={466,-52})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow4(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow4(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-12,-10},{12,10}},
         rotation=-90,
         origin={414,-226})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow6(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow6(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-11,-10},{11,10}},
         rotation=-90,
@@ -707,8 +707,8 @@ public
     T_start=data.T_cold_side,
     precision=3)
           annotation (Placement(transformation(extent={{272,-282},{254,-266}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=-90,
@@ -860,9 +860,9 @@ public
       Wall_Thickness=0.019,
       Height_Tank=4.435))
     annotation (Placement(transformation(extent={{440,-170},{468,-138}})));
-  Systems.Experiments.TEDS.BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus1
+  TEDS.BaseClasses.SignalSubBus_SensorOutput                      actuatorSubBus1
     annotation (Placement(transformation(extent={{292,-34},{314,-10}})));
-  Systems.Experiments.TEDS.BaseClasses.SignalSubBus_SensorOutput sensorSubBus1
+  TEDS.BaseClasses.SignalSubBus_ActuatorInput                    sensorSubBus1
     annotation (Placement(transformation(extent={{324,-34},{346,-10}})));
   Modelica.Blocks.Sources.RealExpression MAGNET_heater_input(y=
         MAGNET_TEDS_simpleHX1.Q_flow)
