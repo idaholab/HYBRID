@@ -1,18 +1,18 @@
+ObsoleteCS
 CS_Dummy
+ED_Dummy
 CS_UserDefined
 CS_PressureAndPowerControl
 CS_InputSetpoint
 CS_OTSG_Pressure
 CS_OTSG_Power_Control
 CS_OTSG_TCV_Pressure_TBV_Power_Control
-ED_Dummy
 CS_Rankine_Xe100_Based_Secondary
 CS_SteamTurbine_L2_PressurePowerFeedtemp
 CS_PowerBoostLoop_DivertPowerControl
 CS_DivertPowerControl
 CS_SmallCycle_NoFeedHeat
 CS_OTSG_TCV_Pressure_TBV_Power_Control_Intermediate
-ObsoleteCS
 CS_DivertPowerControl_Argonne
 CS_SmallCycle_NoFeedHeat_Argonne
 CS_DivertPowerControl_HTGR
@@ -26,3 +26,5 @@ CS_DivertPowerControl_ANL_v2
 CS_NoFeedHeat_mFlow_Control
 CS_threeStagedTurbine_HTGR_JY
 CS_L3_HTGR_extraction_logan
+CS_L3_HTGR_extraction_Turbine
+CS_L3_HTGR_extraction_Valve
