@@ -96,8 +96,8 @@ model TEDS_ExpTestInputs
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={50,46})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
@@ -193,8 +193,8 @@ model TEDS_ExpTestInputs
     annotation (Placement(transformation(extent={{-72,130},{-50,154}})));
   BaseClasses.SignalSubBus_SensorOutput ActuatorSubBus
     annotation (Placement(transformation(extent={{-30,130},{-8,154}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{11,-11},{-11,11}},
         rotation=180,
@@ -307,8 +307,8 @@ model TEDS_ExpTestInputs
         extent={{-12,-13},{12,13}},
         rotation=90,
         origin={38,-69})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate BOP_Mass_flow(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate BOP_Mass_flow(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
@@ -333,8 +333,8 @@ model TEDS_ExpTestInputs
         extent={{-13,13},{13,-13}},
         rotation=270,
         origin={215,-65})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TC_003a(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TC_003a(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(extent={{18,64},{42,88}})));
   TRANSFORM.Fluid.Machines.Pump_PressureBooster pump(
     redeclare package Medium =
