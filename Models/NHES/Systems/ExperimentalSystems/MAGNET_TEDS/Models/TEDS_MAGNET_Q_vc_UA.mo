@@ -174,9 +174,9 @@ package Medium_TEDS =
       = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
     T_start=data.T_cold_side,                                         precision=
        3) annotation (Placement(transformation(extent={{-62,-154},{-80,-138}})));
-  Systems.Experiments.TEDS.BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus
+  TEDS.BaseClasses.SignalSubBus_SensorOutput sensorSubBus
     annotation (Placement(transformation(extent={{-42,94},{-20,118}})));
-  Systems.Experiments.TEDS.BaseClasses.SignalSubBus_SensorOutput sensorSubBus
+  TEDS.BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus_
     annotation (Placement(transformation(extent={{-10,94},{12,118}})));
   TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package Medium
       = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
@@ -780,7 +780,7 @@ equation
   connect(sensor_m_flow5.port_b, pipe4.port_a) annotation (Line(points={{-80,-146},
           {-123,-146},{-123,-84}},
                                color={0,127,255}));
-  connect(sensorSubBus.Valve_1_Opening, Valve1.opening) annotation (Line(
+  connect(actuatorSubBus_.Valve_1_Opening, Valve1.opening) annotation (Line(
       points={{1,106},{26,106},{26,56},{79.2,56}},
       color={239,82,82},
       pattern=LinePattern.Dash,
@@ -789,19 +789,19 @@ equation
       index=-1,
       extent={{-6,3},{-6,3}},
       horizontalAlignment=TextAlignment.Right));
-  connect(control_System_Therminol_4_element_SS.actuatorSubBus,
-    actuatorSubBus) annotation (Line(
+  connect(control_System_Therminol_4_element_SS.actuatorSubBus, sensorSubBus)
+    annotation (Line(
       points={{90.7067,118.092},{90.7067,106},{-31,106}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(control_System_Therminol_4_element_SS.sensorSubBus,
-    sensorSubBus) annotation (Line(
+  connect(control_System_Therminol_4_element_SS.sensorSubBus, actuatorSubBus_)
+    annotation (Line(
       points={{96.1333,118.092},{96.1333,106},{1,106}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorSubBus.Valve_2_Opening, Valve2.opening) annotation (Line(
+  connect(actuatorSubBus_.Valve_2_Opening, Valve2.opening) annotation (Line(
       points={{1,106},{132,106},{132,80.8}},
       color={239,82,82},
       pattern=LinePattern.Dash,
@@ -810,7 +810,7 @@ equation
       index=-1,
       extent={{-3,6},{-3,6}},
       horizontalAlignment=TextAlignment.Right));
-  connect(sensorSubBus.Valve_3_Opening, Valve3.opening) annotation (Line(
+  connect(actuatorSubBus_.Valve_3_Opening, Valve3.opening) annotation (Line(
       points={{1,106},{170,106},{170,66},{158.8,66}},
       color={239,82,82},
       pattern=LinePattern.Dash,
@@ -819,7 +819,7 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(sensorSubBus.Valve_4_Opening, valve4.opening) annotation (Line(
+  connect(actuatorSubBus_.Valve_4_Opening, valve4.opening) annotation (Line(
       points={{1,106},{202,106},{202,-128},{186.8,-128}},
       color={239,82,82},
       pattern=LinePattern.Dash,
@@ -828,7 +828,7 @@ equation
       index=-1,
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
-  connect(sensorSubBus.Valve_5_Opening, Valve5.opening) annotation (Line(
+  connect(actuatorSubBus_.Valve_5_Opening, Valve5.opening) annotation (Line(
       points={{1,106},{26,106},{26,-116},{75.2,-116}},
       color={239,82,82},
       pattern=LinePattern.Dash,
@@ -837,7 +837,7 @@ equation
       index=-1,
       extent={{-6,3},{-6,3}},
       horizontalAlignment=TextAlignment.Right));
-  connect(sensorSubBus.Valve_6_Opening, Valve6.opening) annotation (Line(
+  connect(actuatorSubBus_.Valve_6_Opening, Valve6.opening) annotation (Line(
       points={{1,106},{26,106},{26,-116},{-38,-116},{-38,-141.2}},
       color={239,82,82},
       pattern=LinePattern.Dash,
@@ -882,48 +882,46 @@ equation
     annotation (Line(points={{80,-86},{80,-75}}, color={0,127,255}));
   connect(T_discharge_Inlet.port_b, thermocline_Insulation.port_b)
     annotation (Line(points={{80,-51},{80,-50},{118,-50}}, color={0,127,255}));
-  connect(actuatorSubBus.T_discharge_outlet, T_discharge_outlet.T) annotation (
+  connect(sensorSubBus.T_discharge_outlet, T_discharge_outlet.T) annotation (
       Line(
       points={{-31,106},{202,106},{202,9},{158.68,9}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(actuatorSubBus.T_discharge_inlet, T_discharge_Inlet.T) annotation (
-      Line(
+  connect(sensorSubBus.T_discharge_inlet, T_discharge_Inlet.T) annotation (Line(
       points={{-31,106},{26,106},{26,-63},{75.32,-63}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(actuatorSubBus.T_charge_outlet, T_charge_outlet.T) annotation (Line(
+  connect(sensorSubBus.T_charge_outlet, T_charge_outlet.T) annotation (Line(
       points={{-31,106},{202,106},{202,-63},{158.68,-63}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(actuatorSubBus.T_charge_inlet, T_Charge_Inlet.T) annotation (Line(
+  connect(sensorSubBus.T_charge_inlet, T_Charge_Inlet.T) annotation (Line(
       points={{-31,106},{26,106},{26,7},{79.32,7}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(actuatorSubBus.Charging_flowrate, sensor_m_flow6.m_flow) annotation (
+  connect(sensorSubBus.Charging_flowrate, sensor_m_flow6.m_flow) annotation (
       Line(
       points={{-31,106},{202,106},{202,-101},{157.6,-101}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(actuatorSubBus.Discharge_FlowRate, sensor_m_flow3.m_flow) annotation (
-     Line(
+  connect(sensorSubBus.Discharge_FlowRate, sensor_m_flow3.m_flow) annotation (
+      Line(
       points={{-31,106},{202,106},{202,40},{157.6,40}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(actuatorSubBus.Total_Mass_Flow_System, Chiller_Mass_flow_T66.m_flow)
+  connect(sensorSubBus.Total_Mass_Flow_System, Chiller_Mass_flow_T66.m_flow)
     annotation (Line(
       points={{-31,106},{240,106},{240,-160},{119,-160},{119,-145.6}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(actuatorSubBus.Heater_flowrate, sensor_m_flow5.m_flow) annotation (
-      Line(
+  connect(sensorSubBus.Heater_flowrate, sensor_m_flow5.m_flow) annotation (Line(
       points={{-31,106},{26,106},{26,-116},{-71,-116},{-71,-143.12}},
       color={111,216,99},
       pattern=LinePattern.Dash,
@@ -932,8 +930,8 @@ equation
     annotation (Line(points={{62,76},{96,76}}, color={0,127,255}));
   connect(BOP_Mass_flow.port_b, Valve2.port_a)
     annotation (Line(points={{116,76},{126,76}}, color={0,127,255}));
-  connect(actuatorSubBus.heater_BOP_massflow, BOP_Mass_flow.m_flow) annotation (
-     Line(
+  connect(sensorSubBus.heater_BOP_massflow, BOP_Mass_flow.m_flow) annotation (
+      Line(
       points={{-31,106},{106,106},{106,79.6}},
       color={111,216,99},
       pattern=LinePattern.Dash,
@@ -962,7 +960,7 @@ equation
           {6,-169},{6,-151.84}}, color={0,0,127}));
   connect(MAGNET_TEDS_simpleHX.port_b2, sensor_T.port_b) annotation (Line(
         points={{-90,46},{-122,46},{-122,-27}}, color={0,127,255}));
-  connect(actuatorSubBus.Heater_Input, Heat_from_MAGNET.y) annotation (Line(
+  connect(sensorSubBus.Heater_Input, Heat_from_MAGNET.y) annotation (Line(
       points={{-31,106},{-73,106}},
       color={111,216,99},
       pattern=LinePattern.Dash,

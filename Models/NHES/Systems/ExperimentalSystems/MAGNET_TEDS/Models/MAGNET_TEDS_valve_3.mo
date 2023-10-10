@@ -455,10 +455,10 @@ public
     annotation (Placement(transformation(extent={{38,18},{60,40}})));
   Modelica.Blocks.Sources.RealExpression mflow_inside_MAGNET(y=mflow_MAGNET.m_flow)
     annotation (Placement(transformation(extent={{-80,24},{-62,40}})));
-  Systems.Experiments.TEDS.BaseClasses.SignalSubBus_ActuatorInput
+  TEDS.BaseClasses.SignalSubBus_SensorOutput
     actuatorSubBus
     annotation (Placement(transformation(extent={{-14,-8},{6,12}})));
-  Systems.Experiments.TEDS.BaseClasses.SignalSubBus_SensorOutput sensorSubBus
+  TEDS.BaseClasses.SignalSubBus_ActuatorInput                    sensorSubBus
     annotation (Placement(transformation(extent={{22,-8},{42,12}})));
   TRANSFORM.Fluid.Sensors.MassFlowRate mflow_vc_rp(
     redeclare package Medium = Medium,

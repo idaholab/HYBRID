@@ -67,7 +67,8 @@ model Thermocline_Insulation_test_porosity
     TRANSFORM.Media.Interfaces.Solids.PartialAlloy
                                                   "Tank Wall Material"
                                                    annotation (__Dymola_choicesAllMatching=true);
-  Systems.Experiments.TEDS.Data.Geometry geometry(Porosity=0.9) annotation (
+  Systems.ExperimentalSystems.TEDS.Data.Geometry
+                                         geometry(Porosity=0.9) annotation (
       Dialog(group="Geometry"), Placement(transformation(extent={{-98,78},{-78,
             98}})));
 

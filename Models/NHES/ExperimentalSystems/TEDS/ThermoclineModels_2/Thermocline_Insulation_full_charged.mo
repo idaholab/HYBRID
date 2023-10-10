@@ -53,7 +53,8 @@ model Thermocline_Insulation_full_charged
     TRANSFORM.Media.Interfaces.Solids.PartialAlloy
                                                   "Tank Wall Material"
                                                    annotation (__Dymola_choicesAllMatching=true);
-  Systems.Experiments.TEDS.Data.Geometry geometry(nodes=200) annotation (Dialog(
+  Systems.ExperimentalSystems.TEDS.Data.Geometry
+                                         geometry(nodes=200) annotation (Dialog(
         group="Geometry"), Placement(transformation(extent={{-98,78},{-78,98}})));
 
   Thermocline_fluidprops_heaters_newHC_full_charged
