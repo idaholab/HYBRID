@@ -46,8 +46,8 @@ model Single_Effect_pool
   Modelica.Blocks.Sources.RealExpression Level_Set(y=0.5) annotation (Placement(transformation(extent={{-4,54},{-24,74}})));
   MEE.Components.Evaporator_Brine_SHP Evaporator(
     redeclare package MediumB = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-    p_start=100000,
 
+    p_start=100000,
     T_st=Tsys,
     V=V,
     A=A) annotation (Placement(transformation(extent={{20,-20},{-20,20}})));
