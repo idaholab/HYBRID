@@ -494,14 +494,14 @@ public
         extent={{6,6},{-6,-6}},
         rotation=0,
         origin={528,-284})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={442,-104})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
@@ -557,14 +557,14 @@ public
         extent={{-6,-6},{6,6}},
         rotation=0,
         origin={490,-66})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow4(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow4(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-12,-10},{12,10}},
         rotation=-90,
         origin={438,-240})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow6(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow6(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-11,-10},{11,10}},
         rotation=-90,
@@ -585,8 +585,8 @@ public
     T_start=data.T_cold_side,
     precision=3)
           annotation (Placement(transformation(extent={{296,-296},{278,-280}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow3(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=-90,
@@ -743,7 +743,8 @@ public
   Modelica.Blocks.Sources.RealExpression Heater_BOP_Demand(y=pump.port_a.p +
         2.0e4)
     annotation (Placement(transformation(extent={{282,-320},{304,-298}})));
-  NHES.ExperimentalSystems.TEDS.ThermoclineModels_2.Thermocline_Insulation_An thermocline_Insulation_An(
+  NHES.Systems.ExperimentalSystems.TEDS.Models.ThermoclineTank.Thermocline_Insulation_An
+    thermocline_Insulation_An(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
     redeclare package InsulationMaterial = Media.Solids.FoamGlass,
@@ -756,9 +757,9 @@ public
       Wall_Thickness=0.019,
       Height_Tank=4.435))
     annotation (Placement(transformation(extent={{464,-184},{492,-152}})));
-  TEDS.BaseClasses.SignalSubBus_SensorOutput sensorSubBus
+  TEDS.BaseClasses_1.SignalSubBus_SensorOutput sensorSubBus
     annotation (Placement(transformation(extent={{316,-48},{338,-24}})));
-  TEDS.BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus
+  TEDS.BaseClasses_1.SignalSubBus_ActuatorInput actuatorSubBus
     annotation (Placement(transformation(extent={{348,-48},{370,-24}})));
   Modelica.Blocks.Sources.CombiTimeTable Heater_Demand(table=[0.0,1; 1800,1;
         3600,1; 4800,1; 7200,1; 9000,1; 9600,1; 10800,0; 12000,0; 14400,1;

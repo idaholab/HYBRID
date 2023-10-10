@@ -6,9 +6,9 @@ model Control_System_Therminol_4_element_summer_day_real
       TRANSFORM.Media.Fluids.DOWTHERM.LinearDOWTHERM_A_95C constrainedby
     TRANSFORM.Media.Interfaces.Fluids.PartialMedium "Fluid Medium" annotation (
       choicesAllMatching=true);
-  BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus
+  BaseClasses_2.SignalSubBus_ActuatorInput actuatorSubBus
     annotation (Placement(transformation(extent={{-58,-122},{-10,-76}})));
-  BaseClasses.SignalSubBus_SensorOutput sensorSubBus
+  BaseClasses_2.SignalSubBus_SensorOutput sensorSubBus
     annotation (Placement(transformation(extent={{16,-122},{64,-76}})));
   Modelica.Blocks.Continuous.LimPID PIDV1(
     yMax=1,

@@ -610,8 +610,8 @@ public
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={418,-84})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow2(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
@@ -697,26 +697,26 @@ public
         extent={{10,-10},{-10,10}},
         rotation=-90,
         origin={488,-84})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Chg_Out(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Chg_Out(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
       =3) annotation (Placement(transformation(
         extent={{-9,10},{9,-10}},
         rotation=90,
         origin={488,-219})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Chg_In(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Chg_In(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
       =3) annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=-90,
         origin={418,-110})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Dch_Out(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Dch_Out(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
       =3) annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=90,
         origin={488,-110})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Dch_In(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort T_Dch_In(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision
       =3) annotation (Placement(transformation(
         extent={{-9.5,-8.5},{9.5,8.5}},
         rotation=90,
@@ -748,7 +748,8 @@ public
     T_start=data.T_hot_side,
     precision=3)
     annotation (Placement(transformation(extent={{362,-64},{386,-40}})));
-  NHES.ExperimentalSystems.TEDS.ThermoclineModels_2.Thermocline_Insulation_An thermocline_Insulation_An(
+  NHES.Systems.ExperimentalSystems.TEDS.Models.ThermoclineTank.Thermocline_Insulation_An
+    thermocline_Insulation_An(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
     redeclare package InsulationMaterial = Media.Solids.FoamGlass,
@@ -761,9 +762,9 @@ public
       Wall_Thickness=0.019,
       Height_Tank=4.435))
     annotation (Placement(transformation(extent={{440,-180},{468,-148}})));
-  TEDS.BaseClasses.SignalSubBus_SensorOutput                      sensorSubBus
+  TEDS.BaseClasses_1.SignalSubBus_SensorOutput sensorSubBus
     annotation (Placement(transformation(extent={{292,-34},{314,-10}})));
-  TEDS.BaseClasses.SignalSubBus_ActuatorInput                    actuatorSubBus
+  TEDS.BaseClasses_1.SignalSubBus_ActuatorInput actuatorSubBus
     annotation (Placement(transformation(extent={{324,-34},{346,-10}})));
   Modelica.Blocks.Sources.RealExpression MAGNET_heater_input(y=
         MAGNET_TEDS_simpleHX1.Q_flow)
@@ -774,7 +775,7 @@ public
     use_input=true,
     p_nominal=system.p_ambient + 1e4)
     annotation (Placement(transformation(extent={{344,-298},{328,-282}})));
-  Models.Magnet_TEDS.MAGNET_TEDS_ControlSystem.Control_System_Therminol_4_element_all_modes_MAGNET_GT_dyn_0_1_bypass
+  MAGNET.ControlSystems.Control_System_Therminol_4_element_all_modes_MAGNET_GT_dyn_0_1_bypass
     control_System_Therminol_4_element_all_modes_MAGNET_GT_dyn_0_1_HW(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,

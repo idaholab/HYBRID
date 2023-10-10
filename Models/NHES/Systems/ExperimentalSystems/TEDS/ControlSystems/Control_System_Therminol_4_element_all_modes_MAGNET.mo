@@ -1,4 +1,4 @@
-within NHES.Systems.Experiments.TEDS.Control_Systems;
+within NHES.Systems.ExperimentalSystems.TEDS.ControlSystems;
 model Control_System_Therminol_4_element_all_modes_MAGNET
   "Runs all Modes of the TEDS system with Milestone controllers (Manual inputs for load, hence why there are two controllers)"
 
@@ -8,9 +8,9 @@ model Control_System_Therminol_4_element_all_modes_MAGNET
       choicesAllMatching=true);
 
 package Medium_MAGNET = Modelica.Media.IdealGases.SingleGases.N2;
-  BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus
+  BaseClasses_1.SignalSubBus_ActuatorInput actuatorSubBus
     annotation (Placement(transformation(extent={{-46,-418},{2,-372}})));
-  BaseClasses.SignalSubBus_SensorOutput sensorSubBus
+  BaseClasses_1.SignalSubBus_SensorOutput sensorSubBus
     annotation (Placement(transformation(extent={{16,-418},{64,-372}})));
   Modelica.Blocks.Continuous.LimPID PIDV1(
     yMax=1,

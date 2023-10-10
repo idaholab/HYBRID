@@ -71,8 +71,8 @@ model MEE_FC_ss_UTextnode "Multi-Effect Evaporator"
     use_h_in=true,
     nPorts=1)
     annotation (Placement(transformation(extent={{-40,-70},{-60,-50}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Medium)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Medium)
     annotation (Placement(transformation(extent={{-80,50},{-60,70}})));
   TRANSFORM.Fluid.Sensors.SpecificEnthalpy sensor_h(redeclare package Medium =
         Medium)

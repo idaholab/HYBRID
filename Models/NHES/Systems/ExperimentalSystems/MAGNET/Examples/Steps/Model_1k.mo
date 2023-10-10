@@ -260,8 +260,8 @@ model Model_1k
         origin={-150,-40})));
   Modelica.Blocks.Sources.Constant opening_valve_tank(k=1)
     annotation (Placement(transformation(extent={{-220,-30},{-200,-10}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Medium, precision=2)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Medium, precision=2)
     annotation (Placement(transformation(extent={{50,-100},{70,-80}})));
   Modelica.Blocks.Sources.Sine sine(
     amplitude=0.1*data.Q_vc,

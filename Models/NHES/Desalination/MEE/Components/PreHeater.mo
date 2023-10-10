@@ -28,16 +28,16 @@ model PreHeater
                Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-110,50},{-90,70}}),
         iconTransformation(extent={{-10,90},{10,110}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_State port_b1(redeclare package Medium
-      =        Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Interfaces.FluidPort_State port_b1(redeclare package Medium =
+               Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{90,50},{110,70}}),
         iconTransformation(extent={{-10,-110},{11,-88}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a2(redeclare package Medium =
                NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
     annotation (Placement(transformation(extent={{90,-70},{110,-50}}),
         iconTransformation(extent={{91,-10},{111,10}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_State port_b2(redeclare package Medium
-      =        NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
+  TRANSFORM.Fluid.Interfaces.FluidPort_State port_b2(redeclare package Medium =
+               NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX))
     annotation (Placement(transformation(extent={{-110,-70},{-90,-50}}),
         iconTransformation(extent={{-110,-10},{-90,10}})));
   PreheaterTube    preheaterTube(   redeclare package Medium =

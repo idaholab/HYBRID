@@ -212,7 +212,6 @@ public
     ps={sensor_cw_hx.p,sensor_rp_hx_2.p,sensor_hx_co.p,pT_co_rp_1.p,pT_rp_hx_1.p,
         pT_vc_pipe_rp.p,pT_rp_pipe_vc.p,pT_vc_pipe.p},
     m_flows={sensor_co_rp_2.m_flow,TEDS_flow_rate.m_flow,m_flow_vc_TEDS.m_flow},
-
     Q_flows={vc.Q_gen/1e3})
     annotation (Placement(transformation(extent={{60,160},{80,180}})));
 

@@ -275,10 +275,8 @@ public
   NHES.Systems.ExperimentalSystems.MAGNET.Data.Summary summary(
     Ts={sensor_cw_hx.T,sensor_rp_hx_2.T,sensor_hx_co.T,sensor_co_rp_1.T,
         sensor_rp_hx_1.T,sensor_vc_pipe_rp.T,sensor_rp_pipe_vc.T,sensor_vc_pipe.T},
-
     ps={sensor_cw_hx.p,sensor_rp_hx_2.p,sensor_hx_co.p,sensor_co_rp_1.p,
         sensor_rp_hx_1.p,sensor_vc_pipe_rp.p,sensor_rp_pipe_vc.p,sensor_vc_pipe.p},
-
     m_flows={sensor_co_rp_2.m_flow},
     Q_flows={vc.Q_gen})
     annotation (Placement(transformation(extent={{-290,28},{-270,48}})));

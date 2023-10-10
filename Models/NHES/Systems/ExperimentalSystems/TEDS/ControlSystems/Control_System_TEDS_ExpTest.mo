@@ -4,9 +4,9 @@ model Control_System_TEDS_ExpTest
 
   parameter Real FV_opening=0.00250;
 
-  BaseClasses.SignalSubBus_ActuatorInput ActuatorSubBus
+  BaseClasses_1.SignalSubBus_ActuatorInput ActuatorSubBus
     annotation (Placement(transformation(extent={{-58,-122},{-10,-76}})));
-  BaseClasses.SignalSubBus_SensorOutput SensorSubBus
+  BaseClasses_1.SignalSubBus_SensorOutput SensorSubBus
     annotation (Placement(transformation(extent={{16,-122},{64,-76}})));
   Modelica.Blocks.Sources.RealExpression PV004(y=1)
     annotation (Placement(transformation(extent={{174,56},{120,90}})));

@@ -1,7 +1,7 @@
 within NHES.Systems.ExperimentalSystems.TEDS.ControlSystems;
 model CS_Setpoint
 
-  extends BaseClasses.Partial_ControlSystem;
+  extends BaseClasses_1.Partial_ControlSystem;
 
   parameter SI.Power Q_nominal "Nominal power for BOP for zero flow to energy storage";
 

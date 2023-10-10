@@ -436,8 +436,8 @@ public
     T_start=data.T_co_rp,
     precision=3)
     annotation (Placement(transformation(extent={{-10,-248},{10,-228}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TM_HX_Tin(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TM_HX_Tin(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(extent={{6,-30},{26,-10}})));
   Modelica.Blocks.Sources.RealExpression mflow_inside_MAGNET(y=mflow_MAGNET.m_flow)
     annotation (Placement(transformation(extent={{-80,84},{-62,100}})));
@@ -581,16 +581,15 @@ public
         extent={{10,10},{-10,-10}},
         rotation=90,
         origin={-88,18})));
-  Models.Magnet_TEDS.MAGNET_TEDS_ControlSystem.MAGNET_ControlSystem_GT
-    mAGNET_ControlSystem_GT(
+  MAGNET.ControlSystems.MAGNET_ControlSystem_GT mAGNET_ControlSystem_GT(
     redeclare package Medium =
         TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C,
     T_hot_design=598.15,
     T_cold_design=498.15)
     annotation (Placement(transformation(extent={{36,72},{58,94}})));
-  TEDS.BaseClasses.SignalSubBus_SensorOutput sensorSubBus
+  TEDS.BaseClasses_1.SignalSubBus_SensorOutput sensorSubBus
     annotation (Placement(transformation(extent={{-16,46},{4,66}})));
-  TEDS.BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus_
+  TEDS.BaseClasses_1.SignalSubBus_ActuatorInput actuatorSubBus_
     annotation (Placement(transformation(extent={{20,46},{40,66}})));
   TRANSFORM.Fluid.Volumes.SimpleVolume Cooler(
     redeclare package Medium = Medium,

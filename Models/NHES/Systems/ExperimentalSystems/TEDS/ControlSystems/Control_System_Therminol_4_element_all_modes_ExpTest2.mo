@@ -12,9 +12,9 @@ model Control_System_Therminol_4_element_all_modes_ExpTest2
     TRANSFORM.Media.Interfaces.Fluids.PartialMedium "Fluid Medium" annotation (
       choicesAllMatching=true);
 
-  BaseClasses.SignalSubBus_ActuatorInput actuatorSubBus
+  BaseClasses_1.SignalSubBus_ActuatorInput actuatorSubBus
     annotation (Placement(transformation(extent={{-58,-122},{-10,-76}})));
-  BaseClasses.SignalSubBus_SensorOutput sensorSubBus
+  BaseClasses_1.SignalSubBus_SensorOutput sensorSubBus
     annotation (Placement(transformation(extent={{16,-122},{64,-76}})));
   Modelica.Blocks.Sources.RealExpression Valve1(y=Error1)
     annotation (Placement(transformation(extent={{26,118},{48,140}})));

@@ -296,8 +296,8 @@ protected
         origin={-150,-40})));
   Modelica.Blocks.Sources.Constant opening_valve_tank(k=1)
     annotation (Placement(transformation(extent={{-220,-30},{-200,-10}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Medium, precision=2)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Medium, precision=2)
     annotation (Placement(transformation(extent={{50,-100},{70,-80}})));
 
   TRANSFORM.Controls.LimPID PID(

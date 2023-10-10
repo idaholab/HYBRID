@@ -1,8 +1,8 @@
 within NHES.Desalination.MEE.Examples;
 model MEE_Test_SS "Test of a single effect with constant UA"
 
-  MEE.Multiple_Effect.MEE_FC_ss_UTextnode mEE_FC_ss_UTextnode(redeclare
-      replaceable MEE.Data.MEE_Data data(nE=12, p_h=150000), Cs_in=0.03)
+  MEE.Multiple_Effect.MEE_FC_ss_UTextnode mEE_FC_ss_UTextnode(redeclare replaceable
+                  MEE.Data.MEE_Data data(nE=12, p_h=150000), Cs_in=0.03)
     annotation (Placement(transformation(extent={{-40,-40},{40,40}})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h boundary(
     redeclare package Medium = Modelica.Media.Water.StandardWater,

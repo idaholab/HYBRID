@@ -1,7 +1,7 @@
 within NHES.Systems.ExperimentalSystems.TEDS.Data;
 record Data_TEDS
 
-  extends BaseClasses.Record_Data;
+  extends BaseClasses_2.Record_Data;
 
 parameter SI.Temperature T_hot_side = 325;
 parameter SI.Temperature T_cold_side = 225;

@@ -46,14 +46,13 @@ model Single_Effect
   Modelica.Blocks.Sources.RealExpression Level_Set(y=0.5) annotation (Placement(transformation(extent={{-4,54},{-24,74}})));
   MEE.Components.Evaporator_Brine_SHP Evaporator(
     redeclare package MediumB = NHES.Media.SeaWater (ThermoStates=Modelica.Media.Interfaces.Choices.IndependentVariables.pTX),
-
     p_start=100000,
     T_st=Tsys,
     V=V,
     A=A) annotation (Placement(transformation(extent={{20,-20},{-20,20}})));
 
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow Tube_Inlet(redeclare package Medium
-      = Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow Tube_Inlet(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-108,-50},{-88,-30}}), iconTransformation(extent={{-108,
             -50},{-88,-30}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_State Tube_Outlet(redeclare package

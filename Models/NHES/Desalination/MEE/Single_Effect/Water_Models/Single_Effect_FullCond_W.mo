@@ -66,8 +66,8 @@ model Single_Effect_FullCond_W
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     use_input=true,
     m_flow_nominal=0.1) annotation (Placement(transformation(extent={{-60,-10},{-80,10}})));
-  TRANSFORM.Fluid.Interfaces.FluidPort_Flow Tube_Inlet(redeclare package Medium
-      = Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Interfaces.FluidPort_Flow Tube_Inlet(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-108,-50},{-88,-30}}), iconTransformation(extent={{-108,
             -50},{-88,-30}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_State Tube_Outlet(redeclare package

@@ -9,8 +9,8 @@ model NonLinear_Break "Oneway non linear break for fuild systems"
     annotation (Placement(transformation(extent={{90,-10},{110,10}})));
   TRANSFORM.Fluid.Sensors.Pressure sensor_p(redeclare package Medium = Medium)
     annotation (Placement(transformation(extent={{76,0},{56,20}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Medium)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Medium)
     annotation (Placement(transformation(extent={{-70,10},{-50,-10}})));
   TRANSFORM.Fluid.Sensors.SpecificEnthalpy sensor_h(redeclare package Medium =
         Medium)

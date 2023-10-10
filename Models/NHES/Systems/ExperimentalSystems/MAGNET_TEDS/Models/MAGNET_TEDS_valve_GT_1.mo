@@ -438,15 +438,14 @@ public
     T_start=data.T_co_rp,
     precision=3)
     annotation (Placement(transformation(extent={{-10,-248},{10,-228}})));
-  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TM_HX_Tin(redeclare package Medium
-      = TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort TM_HX_Tin(redeclare package Medium =
+        TRANSFORM.Media.Fluids.Therminol_66.LinearTherminol66_A_250C, precision=
        3) annotation (Placement(transformation(extent={{6,-30},{26,-10}})));
   Modelica.Blocks.Sources.RealExpression mflow_inside_MAGNET(y=mflow_MAGNET.m_flow)
     annotation (Placement(transformation(extent={{-80,84},{-62,100}})));
-  TEDS.BaseClasses.SignalSubBus_SensorOutput
-    sensorSubBus1
+  TEDS.BaseClasses_1.SignalSubBus_SensorOutput sensorSubBus1
     annotation (Placement(transformation(extent={{-14,52},{6,72}})));
-  TEDS.BaseClasses.SignalSubBus_ActuatorInput                    actuatorSubBus
+  TEDS.BaseClasses_1.SignalSubBus_ActuatorInput actuatorSubBus
     annotation (Placement(transformation(extent={{22,52},{42,72}})));
   Modelica.Blocks.Sources.Ramp ramp(
     height=-0.688888,
@@ -493,8 +492,7 @@ public
         origin={-214,-64})));
   Modelica.Blocks.Sources.RealExpression GT_Power(y=turbine.Wt)
     annotation (Placement(transformation(extent={{-158,84},{-140,100}})));
-  Models.Magnet_TEDS.MAGNET_TEDS_ControlSystem.MAGNET_ControlSystem_GT
-    mAGNET_ControlSystem_GT
+  MAGNET.ControlSystems.MAGNET_ControlSystem_GT mAGNET_ControlSystem_GT
     annotation (Placement(transformation(extent={{38,78},{60,100}})));
 public
   TRANSFORM.Fluid.Sensors.PressureTemperatureTwoPort pT_GT_co(
@@ -626,8 +624,8 @@ equation
     annotation (Line(points={{58,0},{26,0},{26,-20}}, color={0,127,255}));
   connect(TM_HX_Tin.port_a, MAGNET_TEDS_simpleHX.port_a2)
     annotation (Line(points={{6,-20},{-10,-20}}, color={0,127,255}));
-  connect(sensorSubBus1.mflow_inside_MAGNET, mflow_inside_MAGNET.y) annotation
-    (Line(
+  connect(sensorSubBus1.mflow_inside_MAGNET, mflow_inside_MAGNET.y) annotation (
+     Line(
       points={{-4,62},{-4,92},{-61.1,92}},
       color={111,216,99},
       pattern=LinePattern.Dash,
