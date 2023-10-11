@@ -3,6 +3,7 @@ Examples
 SupervisoryControl
 PrimaryHeatSystem
 EnergyManifold
+ExperimentalSystems
 BalanceOfPlant
 EnergyStorage
 IndustrialProcess
