@@ -14,7 +14,7 @@ model CS_Dummy
   Modelica.Blocks.Sources.Constant BV_TCV_openingNominal(k=0.001)
     annotation (Placement(transformation(extent={{-10,-80},{10,-60}})));
   Modelica.Blocks.Sources.Constant Feed_Pump_Mass_Flow(k=85.0)
-    annotation (Placement(transformation(extent={{-8,130},{12,150}})));
+    annotation (Placement(transformation(extent={{94,102},{74,122}})));
   Modelica.Blocks.Sources.Constant Diverter_Valve_Position(k=0.5)
     annotation (Placement(transformation(extent={{-8,70},{12,90}})));
   Modelica.Blocks.Sources.Constant Feed_Pump_Speed(k=3000)
@@ -97,7 +97,7 @@ equation
       thickness=0.5));
   connect(actuatorBus.Feed_Pump_mFlow, Feed_Pump_Mass_Flow.y) annotation (
       Line(
-      points={{30,-100},{30,140},{13,140}},
+      points={{30,-100},{30,112},{73,112}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));

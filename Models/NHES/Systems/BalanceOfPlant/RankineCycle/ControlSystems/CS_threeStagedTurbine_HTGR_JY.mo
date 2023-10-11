@@ -95,26 +95,6 @@ model CS_threeStagedTurbine_HTGR_JY
     initType=Modelica.Blocks.Types.Init.InitialState,
     xi_start=0.2)
     annotation (Placement(transformation(extent={{-56,112},{-40,128}})));
-  Modelica.Blocks.Sources.Constant const_LTV1bypass_power(k=44e6)
-    annotation (Placement(transformation(extent={{-148,86},{-132,102}})));
-  Modelica.Blocks.Sources.Trapezoid trap_LTV1bypass_massflow(
-    amplitude=30,
-    rising=5e4,
-    width=5e4,
-    falling=5e4,
-    period=20e4,
-    nperiod=-1,
-    offset=15,
-    startTime=1e5 + 900)
-    annotation (Placement(transformation(extent={{-202,112},{-186,128}})));
-  Modelica.Blocks.Sources.Ramp ramp_LTV1bypass_massflow(
-    height=-15,
-    duration=5e4,
-    offset=15,
-    startTime=1e5 + 900)
-    annotation (Placement(transformation(extent={{-202,62},{-186,78}})));
-  Modelica.Blocks.Sources.Constant const_LTV1bypass_massflow(k=30)
-    annotation (Placement(transformation(extent={{-202,86},{-186,102}})));
   Modelica.Blocks.Sources.Trapezoid trap_LTV1bypass_power(
     amplitude=-16e6,
     rising=7200,
@@ -125,8 +105,6 @@ model CS_threeStagedTurbine_HTGR_JY
     offset=44e6,
     startTime=1e4)
     annotation (Placement(transformation(extent={{-150,112},{-134,128}})));
-  Modelica.Blocks.Sources.Constant RPM_TEST(k=1000)
-    annotation (Placement(transformation(extent={{42,90},{50,98}})));
   Modelica.Blocks.Sources.Constant const12(k=data.p_steam_vent)
     annotation (Placement(transformation(extent={{-196,-72},{-178,-54}})));
   Modelica.Blocks.Sources.Constant valvedelay3(k=1e5)
@@ -145,6 +123,36 @@ model CS_threeStagedTurbine_HTGR_JY
     annotation (Placement(transformation(extent={{-28,-44},{-20,-36}})));
   Modelica.Blocks.Sources.Constant constant_0(k=0)
     annotation (Placement(transformation(extent={{-144,24},{-128,40}})));
+  Modelica.Blocks.Sources.Constant BV_openingNominal(k=0.001)
+    annotation (Placement(transformation(extent={{-18,-224},{2,-204}})));
+  Modelica.Blocks.Sources.Constant TDV_openingNominal(k=0.5)
+    annotation (Placement(transformation(extent={{-18,-194},{2,-174}})));
+  Modelica.Blocks.Sources.Constant BV_TCV_openingNominal(k=0.001)
+    annotation (Placement(transformation(extent={{-18,-254},{2,-234}})));
+  Modelica.Blocks.Sources.Constant Feed_Pump_Mass_Flow(k=85.0)
+    annotation (Placement(transformation(extent={{86,-128},{66,-108}})));
+  Modelica.Blocks.Sources.Constant Discharge_Throttle_On_Off(k=0.5)
+    annotation (Placement(transformation(extent={{-18,-162},{2,-142}})));
+  Modelica.Blocks.Sources.Constant TCV_SHS_Opening(k=0.1)
+    annotation (Placement(transformation(extent={{88,-160},{68,-140}})));
+  Modelica.Blocks.Sources.Constant SHS_Throttle(k=0.1)
+    annotation (Placement(transformation(extent={{88,-192},{68,-172}})));
+  Modelica.Blocks.Sources.Constant LPT2_BV(k=0.1)
+    annotation (Placement(transformation(extent={{88,-222},{68,-202}})));
+  Modelica.Blocks.Sources.Constant LPT1_BV(k=0.1)
+    annotation (Placement(transformation(extent={{88,-252},{68,-232}})));
+  TRANSFORM.Blocks.RealExpression Condensor_Outflow
+    annotation (Placement(transformation(extent={{-74,-218},{-54,-198}})));
+  TRANSFORM.Blocks.RealExpression Extraction_Flow
+    annotation (Placement(transformation(extent={{-74,-204},{-54,-184}})));
+  TRANSFORM.Blocks.RealExpression SHS_Return_T
+    annotation (Placement(transformation(extent={{-74,-188},{-54,-168}})));
+  TRANSFORM.Blocks.RealExpression W_total_setpoint
+    annotation (Placement(transformation(extent={{-74,-172},{-54,-152}})));
+  TRANSFORM.Blocks.RealExpression Steam_turbine_inlet_pressure
+    annotation (Placement(transformation(extent={{-74,-138},{-54,-118}})));
+  TRANSFORM.Blocks.RealExpression massflow_LPTv
+    annotation (Placement(transformation(extent={{-74,-156},{-54,-136}})));
 equation
 
   connect(const5.y,LTV2_Divert_Valve. u_s)
@@ -288,5 +296,86 @@ equation
       horizontalAlignment=TextAlignment.Left));
   connect(constant_0.y, PID.u_ff) annotation (Line(points={{-127.2,32},{-76,32},
           {-76,40},{-14,40},{-14,34},{-6,34}}, color={0,0,127}));
+  connect(actuatorBus.opening_BV,BV_openingNominal. y)
+    annotation (Line(
+      points={{30.1,-99.9},{30.1,-214},{3,-214}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.opening_TDV,TDV_openingNominal. y)
+    annotation (Line(
+      points={{30.1,-99.9},{30.1,-184},{3,-184}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.Discharge_OnOff_Throttle,Discharge_Throttle_On_Off. y)
+    annotation (Line(
+      points={{30,-100},{30,-152},{3,-152}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.Feed_Pump_mFlow,Feed_Pump_Mass_Flow. y) annotation (
+      Line(
+      points={{30,-100},{30,-118},{65,-118}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.LPT1_BV,LPT1_BV. y) annotation (Line(
+      points={{30,-100},{30,-242},{67,-242}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.LPT2_BV,LPT2_BV. y) annotation (Line(
+      points={{30,-100},{30,-212},{67,-212}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.SHS_throttle,SHS_Throttle. y) annotation (Line(
+      points={{30,-100},{30,-182},{67,-182}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.TCV_SHS,TCV_SHS_Opening. y) annotation (Line(
+      points={{30,-100},{30,-150},{67,-150}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Condensor_Output_mflow,Condensor_Outflow. u) annotation (
+      Line(
+      points={{-30,-100},{-110,-100},{-110,-208},{-76,-208}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Extract_flow,Extraction_Flow. u) annotation (Line(
+      points={{-30,-100},{-110,-100},{-110,-194},{-76,-194}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.SHS_Return_T,SHS_Return_T. u) annotation (Line(
+      points={{-30,-100},{-110,-100},{-110,-178},{-76,-178}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.W_totalSetpoint,W_total_setpoint. u) annotation (Line(
+      points={{-30,-100},{-110,-100},{-110,-162},{-76,-162}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.massflow_LPTv,massflow_LPTv. u) annotation (Line(
+      points={{-30,-100},{-110,-100},{-110,-146},{-76,-146}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.p_inlet_steamTurbine,Steam_turbine_inlet_pressure. u)
+    annotation (Line(
+      points={{-30,-100},{-110,-100},{-110,-128},{-76,-128}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.opening_BV_TCV, BV_TCV_openingNominal.y) annotation (Line(
+      points={{30.1,-99.9},{30.1,-244},{3,-244}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics));
 end CS_threeStagedTurbine_HTGR_JY;

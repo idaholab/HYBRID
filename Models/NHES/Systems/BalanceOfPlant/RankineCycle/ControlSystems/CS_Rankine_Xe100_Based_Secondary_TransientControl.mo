@@ -121,6 +121,38 @@ model CS_Rankine_Xe100_Based_Secondary_TransientControl
     offset=0,
     startTime=1e6 + 900)
     annotation (Placement(transformation(extent={{-150,20},{-130,40}})));
+  Modelica.Blocks.Sources.Constant BV_openingNominal(k=0.001)
+    annotation (Placement(transformation(extent={{-12,-196},{8,-176}})));
+  Modelica.Blocks.Sources.Constant TDV_openingNominal(k=0.5)
+    annotation (Placement(transformation(extent={{-12,-166},{8,-146}})));
+  Modelica.Blocks.Sources.Constant BV_TCV_openingNominal(k=0.001)
+    annotation (Placement(transformation(extent={{-12,-226},{8,-206}})));
+  Modelica.Blocks.Sources.Constant Feed_Pump_Mass_Flow(k=85.0)
+    annotation (Placement(transformation(extent={{92,-130},{72,-110}})));
+  Modelica.Blocks.Sources.Constant Discharge_Throttle_On_Off(k=0.5)
+    annotation (Placement(transformation(extent={{-12,-138},{8,-118}})));
+  Modelica.Blocks.Sources.Constant LPT_Valve_Opening(k=0.1)
+    annotation (Placement(transformation(extent={{94,-160},{74,-140}})));
+  Modelica.Blocks.Sources.Constant TCV_SHS_Opening(k=0.1)
+    annotation (Placement(transformation(extent={{94,-188},{74,-168}})));
+  Modelica.Blocks.Sources.Constant SHS_Throttle(k=0.1)
+    annotation (Placement(transformation(extent={{94,-218},{74,-198}})));
+  Modelica.Blocks.Sources.Constant LPT2_BV(k=0.1)
+    annotation (Placement(transformation(extent={{94,-248},{74,-228}})));
+  Modelica.Blocks.Sources.Constant LPT1_BV(k=0.1)
+    annotation (Placement(transformation(extent={{94,-278},{74,-258}})));
+  TRANSFORM.Blocks.RealExpression Condensor_Outflow
+    annotation (Placement(transformation(extent={{-68,-214},{-48,-194}})));
+  TRANSFORM.Blocks.RealExpression Extraction_Flow
+    annotation (Placement(transformation(extent={{-68,-200},{-48,-180}})));
+  TRANSFORM.Blocks.RealExpression SHS_Return_T
+    annotation (Placement(transformation(extent={{-68,-184},{-48,-164}})));
+  TRANSFORM.Blocks.RealExpression W_total_setpoint
+    annotation (Placement(transformation(extent={{-68,-170},{-48,-150}})));
+  TRANSFORM.Blocks.RealExpression Steam_turbine_inlet_pressure
+    annotation (Placement(transformation(extent={{-68,-136},{-48,-116}})));
+  TRANSFORM.Blocks.RealExpression massflow_LPTv
+    annotation (Placement(transformation(extent={{-68,-154},{-48,-134}})));
 equation
 
   connect(const4.y, add.u1) annotation (Line(points={{50.4,76},{62,76}},
@@ -240,5 +272,92 @@ equation
           {-96,254},{-96,222},{-88,222}}, color={0,0,127}));
   connect(trapezoid1.y, PID.u_ff) annotation (Line(points={{-129,30},{-78,30},{
           -78,40},{-12,40},{-12,34},{-6,34}}, color={0,0,127}));
+  connect(actuatorBus.opening_BV,BV_openingNominal. y)
+    annotation (Line(
+      points={{30.1,-99.9},{30.1,-186},{9,-186}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.opening_TDV,TDV_openingNominal. y)
+    annotation (Line(
+      points={{30.1,-99.9},{30.1,-156},{9,-156}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.opening_BV_TCV,BV_TCV_openingNominal. y)
+    annotation (Line(
+      points={{30.1,-99.9},{30.1,-216},{9,-216}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.Discharge_OnOff_Throttle,Discharge_Throttle_On_Off. y)
+    annotation (Line(
+      points={{30,-100},{30,-128},{9,-128}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.Feed_Pump_mFlow,Feed_Pump_Mass_Flow. y) annotation (
+      Line(
+      points={{30,-100},{30,-120},{71,-120}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.LPT1_BV,LPT1_BV. y) annotation (Line(
+      points={{30,-100},{30,-268},{73,-268}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.LPT2_BV,LPT2_BV. y) annotation (Line(
+      points={{30,-100},{30,-238},{73,-238}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.SHS_throttle,SHS_Throttle. y) annotation (Line(
+      points={{30,-100},{30,-208},{73,-208}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.TCV_SHS,TCV_SHS_Opening. y) annotation (Line(
+      points={{30,-100},{30,-178},{73,-178}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(actuatorBus.openingLPTv,LPT_Valve_Opening. y) annotation (Line(
+      points={{30,-100},{30,-150},{73,-150}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Condensor_Output_mflow,Condensor_Outflow. u) annotation (
+      Line(
+      points={{-30,-100},{-104,-100},{-104,-204},{-70,-204}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Extract_flow,Extraction_Flow. u) annotation (Line(
+      points={{-30,-100},{-104,-100},{-104,-190},{-70,-190}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.SHS_Return_T,SHS_Return_T. u) annotation (Line(
+      points={{-30,-100},{-104,-100},{-104,-174},{-70,-174}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.W_totalSetpoint,W_total_setpoint. u) annotation (Line(
+      points={{-30,-100},{-104,-100},{-104,-160},{-70,-160}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.massflow_LPTv,massflow_LPTv. u) annotation (Line(
+      points={{-30,-100},{-104,-100},{-104,-144},{-70,-144}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.p_inlet_steamTurbine,Steam_turbine_inlet_pressure. u)
+    annotation (Line(
+      points={{-30,-100},{-104,-100},{-104,-126},{-70,-126}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics));
 end CS_Rankine_Xe100_Based_Secondary_TransientControl;
