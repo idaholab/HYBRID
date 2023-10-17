@@ -8,10 +8,9 @@ package Examples
     parameter Modelica.Units.SI.Density d_ext= 42.55456924 "kg/m3";
     parameter Modelica.Units.SI.MassFlowRate m_ext=0;
 
-    NHES.Systems.BalanceOfPlant.RankineCycle.Models.SteamTurbine_L3_HPOFWH
-      BOP(
-      redeclare replaceable
-        BalanceOfPlant.RankineCycle.ControlSystems.CS_L3_MSR CS(data(
+    NHES.Systems.BalanceOfPlant.RankineCycle.Models.SteamTurbine_L3_HPOFWH BOP(
+      redeclare replaceable BalanceOfPlant.RankineCycle.ControlSystems.CS_MSR
+        CS(data(
           HPT_p_in=data.HPT_p_in,
           p_dump=data.p_dump,
           p_i1=data.p_i1,
@@ -106,7 +105,6 @@ package Examples
     NHES.Systems.PrimaryHeatSystem.MSR.Models.PrimaryFuelLoop
       pFL_AddControlSystem_Portsfix(
       redeclare NHES.Systems.PrimaryHeatSystem.MSR.ControlSystems.CS_MSR_PFL CS,
-
       Feed_Temp_input=pCL_PortsBothSides_NoPHX.pipeFromPHX_PCL.mediums[1].T,
       mCs_start_ISO=
           NHES.Systems.PrimaryHeatSystem.MSR.SupportComponents.InitializeArray(
@@ -115,6 +113,7 @@ package Examples
             pFL_AddControlSystem_Portsfix.i_mCs_start_salt,
             pFL_AddControlSystem_Portsfix.mCs_start_salt))
       annotation (Placement(transformation(extent={{-134,20},{-106,46}})));
+
   initial equation
 
   equation
@@ -147,11 +146,11 @@ package Examples
         StopTime=1000000,
         Interval=50,
         __Dymola_Algorithm="Esdirk45a"), Documentation(info="<html>
-<p>Molten Salt Reactor (MSR) primary loop, intermediate loop, and balance of plant.</p>
+<p>fMolten Salt Reactor (MSR) primary loop, intermediate loop, and balance of plant.</p>
 <p>This model combines a Primary Fuel Loop (PFL) for a MSR, Primary Coolant Loop (PCL), and a Balance of Plant (BOP). The design and several parameters are based off the paper design of the Molten Salt Demonstration Reactor from the 1970s [1].</p>
 <p>The control system (CS) used for the PFL is named CS_MSR_PFL. Another input specific to this model is the location of the Feed_Temp_input to the PCL from the PFL; this input location is PrimaryCoolantLoop.pipeFromPHX_PCL.mediums[1].T</p>
 <p>The CS for the PCL is named CS_MSR_PCL. The PCL Control system consists of 1 PID and an add block. The PID takes the pressure of the steam generator as the input. The output from this needed the starting value of 4400 kg/s added to it to determine the pump speed needed to maintain a steam generator pressure of 120 bar. </p>
-<p>For the BOP, the CS used is Data_L3. The custom parameters used here are </p>
+<p>For the BOP, the CS used CS_MSR with the data package Data_L3. The custom parameters used here are </p>
 <ul>
 <li>moistureSeperator(T_start=373.15)</li>
 <li>LPT1_bypass_valve(dp_nominal(displayUnit=&quot;Pa&quot;) = 1, m_flow_nominal=10*m_ext)</li>
@@ -256,7 +255,7 @@ package Examples
 <td><p>Pump isentropic efficiency</p></td>
 </tr>
 </table>
-<p><br><br><br><br><br><br><span style=\"font-family: Arial; font-size: 10pt; color: #222222; background-color: #ffffff;\">[1] Bettis, E. S., L. G. Alexander, and H. L. Watts.&nbsp;&ldquo;Design Studies of a Molten-Salt Reactor Demonstration Plant.&rdquo; Tech Report No. ORNL-TM-3832. Oak Ridge National Laboratory (ORNL), Oak Ridge, TN (United States), June 1972. https://www.osti.gov/servlets/purl/4668569</span> </p>
+<p><br><br><span style=\"font-family: Arial; font-size: 10pt; color: #222222; background-color: #ffffff;\">[1] Bettis, E. S., L. G. Alexander, and H. L. Watts.&nbsp;&ldquo;Design Studies of a Molten-Salt Reactor Demonstration Plant.&rdquo; Tech Report No. ORNL-TM-3832. Oak Ridge National Laboratory (ORNL), Oak Ridge, TN (United States), June 1972. https://www.osti.gov/servlets/purl/4668569</span> </p>
 <p><br>More information can also be found in the below paper</p>
 <p><span style=\"font-family: Arial; color: #222222; background-color: #ffffff;\">Greenwood, M. Scott, Benjamin R. Betzler, A. Lou Qualls, Junsoo Yoo, and Cristian Rabiti. &quot;Demonstration of the advanced dynamic system modeling tool TRANSFORM in a molten salt reactor application via a model of the molten salt demonstration reactor.&quot;&nbsp;<i>Nuclear Technology</i>&nbsp;206, no. 3 (2020): 478-504.</span></p>
 <p><span style=\"font-family: Arial; color: #222222; background-color: #ffffff;\">Contact: Sarah Creasman <a href=\"mailto:sarah.creasman@inl.gov\">sarah.creasman@inl.gov</a></span></p>

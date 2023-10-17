@@ -1,7 +1,8 @@
 within NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems;
-model CS_L3_MSR
+model CS_MSR
 
-  extends NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_ControlSystem;
+  extends
+    NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_ControlSystem;
 
   replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3 data(
     Tin=813.15,
@@ -187,4 +188,4 @@ annotation(defaultComponentName="changeMe_CS", Icon(graphics),
 <p><br><span style=\"font-family: Arial; color: #222222; background-color: #ffffff;\">Contact: Sarah Creasman&nbsp;<a href=\"mailto:sarah.creasman@inl.gov\">sarah.creasman@inl.gov</a></span> </p>
 <p><span style=\"font-family: Arial;\">Documentation updated September 2023</span> </p>
 </html>"));
-end CS_L3_MSR;
+end CS_MSR;

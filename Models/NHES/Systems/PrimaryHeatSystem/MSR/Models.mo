@@ -874,7 +874,7 @@ package Models
           Medium_PFL)
       annotation (Placement(transformation(extent={{26,-106},{46,-86}})));
     Modelica.Blocks.Sources.RealExpression Feed_Temp(y=Feed_Temp_input)
-      annotation (Placement(transformation(extent={{-104,132},{-84,152}})));
+      annotation (Placement(transformation(extent={{-154,158},{-134,178}})));
     TRANSFORM.Blocks.RealExpression realExpression4
       annotation (Placement(transformation(extent={{248,44},{268,64}})));
   protected
@@ -1155,7 +1155,7 @@ package Models
     connect(temperature.port, tee_inlet.port_b[2]) annotation (Line(points={{36,
             -106},{36,-124},{-0.25,-124}}, color={0,127,255}));
     connect(sensorBus.temp_outlet, outlet_temp.T) annotation (Line(
-        points={{-30,100},{64,100},{64,52},{37,52},{37,70}},
+        points={{-30,166},{72,166},{72,54},{37,54},{37,70}},
         color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
@@ -1164,7 +1164,7 @@ package Models
         extent={{-6,3},{-6,3}},
         horizontalAlignment=TextAlignment.Right));
     connect(sensorBus.temp_inlet, temperature.T) annotation (Line(
-        points={{-30,100},{10,100},{10,-82},{43,-82},{43,-96}},
+        points={{-30,166},{10,166},{10,-80},{43,-80},{43,-96}},
         color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
@@ -1173,7 +1173,7 @@ package Models
         extent={{-3,6},{-3,6}},
         horizontalAlignment=TextAlignment.Right));
     connect(actuatorBus.pump_speed, pump_PFL.in_m_flow) annotation (Line(
-        points={{30,100},{30,152},{50,152},{50,135.3}},
+        points={{30,166},{30,154},{50,154},{50,135.3}},
         color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
@@ -1182,7 +1182,7 @@ package Models
         extent={{-3,-6},{-3,-6}},
         horizontalAlignment=TextAlignment.Right));
     connect(sensorBus.Feed_Temp_input, Feed_Temp.y) annotation (Line(
-        points={{-30,100},{-32,100},{-32,142},{-83,142}},
+        points={{-30,166},{-81.5,166},{-81.5,168},{-133,168}},
         color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
@@ -1191,7 +1191,7 @@ package Models
         extent={{6,3},{6,3}},
         horizontalAlignment=TextAlignment.Left));
     connect(actuatorBus.CR_reactivity, realExpression4.u) annotation (Line(
-        points={{30,100},{88,100},{88,54},{246,54}},
+        points={{30,166},{88,166},{88,54},{246,54}},
         color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
@@ -1209,6 +1209,7 @@ package Models
       Documentation(info="<html>
 <p><br>More information can also be found in the below paper</p>
 <p>Greenwood, M. Scott, Benjamin R. Betzler, A. Lou Qualls, Junsoo Yoo, and Cristian Rabiti. &quot;Demonstration of the advanced dynamic system modeling tool TRANSFORM in a molten salt reactor application via a model of the molten salt demonstration reactor.&quot; Nuclear Technology 206, no. 3 (2020): 478-504.</p>
+<p>To obtain the correct power, the heat exchangers were scaled to have 24 heat exchangers for the PHX.</p>
 <p><br><span style=\"font-family: Arial; color: #222222; background-color: #ffffff;\">Contact: Sarah Creasman&nbsp;<a href=\"mailto:sarah.creasman@inl.gov\">sarah.creasman@inl.gov</a></span></p>
 <p><span style=\"font-family: Arial;\">Documentation updated September 2023</span></p>
 </html>"));
@@ -1255,12 +1256,12 @@ package Models
     TRANSFORM.Fluid.Sensors.Pressure sensor_p(redeclare package Medium =
           Medium_BOP)
       annotation (Placement(transformation(extent={{88,48},{108,68}})));
-    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a1(redeclare package Medium
-        = Medium_PCL)
+    TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a1(redeclare package Medium =
+          Medium_PCL)
       annotation (Placement(transformation(extent={{-108,36},{-88,56}}),
           iconTransformation(extent={{-108,36},{-88,56}})));
-    TRANSFORM.Fluid.Interfaces.FluidPort_State port_b1(redeclare package Medium
-        = Medium_PCL)
+    TRANSFORM.Fluid.Interfaces.FluidPort_State port_b1(redeclare package Medium =
+          Medium_PCL)
       annotation (Placement(transformation(extent={{-108,-36},{-88,-16}}),
           iconTransformation(extent={{-108,-36},{-88,-16}})));
 
@@ -1511,7 +1512,7 @@ package Models
     connect(port_a, SHX.port_a_tube) annotation (Line(points={{98,-24},{98,-10},{
             80,-10},{80,-4}},  color={0,127,255}));
     connect(actuatorBus.pump_speed, pump_PCL.in_m_flow) annotation (Line(
-        points={{30,100},{30,53.3}},
+        points={{30,166},{30,53.3}},
         color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
@@ -1524,7 +1525,7 @@ package Models
     connect(sensor_p.port, port_b) annotation (Line(points={{98,48},{98,48}},
                                         color={0,127,255}));
     connect(sensorBus.SG_pressure, sensor_p.p) annotation (Line(
-        points={{-30,100},{114,100},{114,58},{104,58}},
+        points={{-30,166},{114,166},{114,58},{104,58}},
         color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5), Text(
@@ -1551,6 +1552,7 @@ package Models
       Documentation(info="<html>
 <p><br>More information can also be found in the below paper</p>
 <p>Greenwood, M. Scott, Benjamin R. Betzler, A. Lou Qualls, Junsoo Yoo, and Cristian Rabiti. &quot;Demonstration of the advanced dynamic system modeling tool TRANSFORM in a molten salt reactor application via a model of the molten salt demonstration reactor.&quot; Nuclear Technology 206, no. 3 (2020): 478-504.</p>
+<p>To obtain the correct power, the heat exchangers were scaled to have 24 heat exchangers for the SHX.</p>
 <p><br><span style=\"font-family: Arial; color: #222222; background-color: #ffffff;\">Contact: Sarah Creasman&nbsp;<a href=\"mailto:sarah.creasman@inl.gov\">sarah.creasman@inl.gov</a></span></p>
 <p><span style=\"font-family: Arial;\">Documentation updated September 2023</span></p>
 </html>"));

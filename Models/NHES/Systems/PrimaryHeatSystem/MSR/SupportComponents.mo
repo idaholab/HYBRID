@@ -9,7 +9,7 @@ package SupportComponents
           TRANSFORM.Fluid.ClosureRelations.InternalTraceGeneration.Models.DistributedVolume_Trace_1D.GenericTraceGeneration
           (mC_gens=mC_gens));
 
-    extends Datasets;
+    extends Data.Datasets;
 
     TRANSFORM.Units.ExtraPropertyFlowRate mC_gens[nV,data_PG.nC + data_ISO.nC]=cat(
         2,
@@ -33,7 +33,12 @@ package SupportComponents
     end for;
 
     annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(coordinateSystem(
-            preserveAspectRatio=false)));
+            preserveAspectRatio=false)),
+      Documentation(info="<html>
+<p><span style=\"font-family: Segoe UI;\">Adds fission product tracking to the GenericPipe_MultiTransferSurface model in TRANSFORM</span></p>
+<p>Contact: Sarah Creasman sarah.creasman@inl.gov</p>
+<p>Documentation updated September 2023</p>
+</html>"));
   end GenericPipe_forMSRs;
 
   model MixingVolume_forMSRs
@@ -44,7 +49,7 @@ package SupportComponents
           mC_gen_PG,
           mC_gen_ISO));
 
-    extends Datasets;
+    extends Data.Datasets;
 
     TRANSFORM.Units.ExtraPropertyFlowRate mC_gen_PG[data_PG.nC];
     TRANSFORM.Units.ExtraPropertyFlowRate mC_gen_ISO[data_ISO.nC];
@@ -60,6 +65,11 @@ package SupportComponents
             1:data_ISO.l_lambdas_count[j]}) - data_ISO.lambdas[j]*mC[j + data_PG.nC];
     end for;
 
+    annotation (Documentation(info="<html>
+<p><span style=\"font-family: Segoe UI;\">Adds fission product tracking to the MixingVolume model in TRANSFORM</span></p>
+<p><span style=\"font-family: Segoe UI;\">Contact: Sarah Creasman sarah.creasman@inl.gov</span></p>
+<p><span style=\"font-family: Segoe UI;\">Documentation updated September 2023</span></p>
+</html>"));
   end MixingVolume_forMSRs;
 
   model GenericDistributed_HX_withMass_forMSRs
@@ -71,7 +81,7 @@ package SupportComponents
           TRANSFORM.Fluid.ClosureRelations.InternalTraceGeneration.Models.DistributedVolume_Trace_1D.GenericTraceGeneration
           (mC_gens=mC_gens));
 
-    extends Datasets;
+    extends Data.Datasets;
 
     TRANSFORM.Units.ExtraPropertyFlowRate mC_gens[geometry.nV,data_PG.nC + data_ISO.nC]=cat(
         2,
@@ -94,6 +104,11 @@ package SupportComponents
       end for;
     end for;
 
+    annotation (Documentation(info="<html>
+<p><span style=\"font-family: Segoe UI;\">Adds fission product tracking to the GenericDistributed_HX_withMass model in TRANSFORM</span></p>
+<p><span style=\"font-family: Segoe UI;\">Contact: Sarah Creasman sarah.creasman@inl.gov</span></p>
+<p><span style=\"font-family: Segoe UI;\">Documentation updated September 2023</span></p>
+</html>"));
   end GenericDistributed_HX_withMass_forMSRs;
 
   model ExpansionTank
@@ -107,7 +122,7 @@ package SupportComponents
           mC_gen_PG,
           mC_gen_ISO)+mC_gen_add);
 
-        extends Datasets;
+        extends Data.Datasets;
 
     TRANSFORM.Units.ExtraPropertyFlowRate mC_gen_PG[data_PG.nC];
     TRANSFORM.Units.ExtraPropertyFlowRate mC_gen_ISO[data_ISO.nC];
@@ -126,35 +141,12 @@ package SupportComponents
             1:data_ISO.l_lambdas_count[j]}) - data_ISO.lambdas[j]*mC[j + data_PG.nC];
     end for;
 
+    annotation (Documentation(info="<html>
+<p><span style=\"font-family: Segoe UI;\">Adds fission product tracking to the ExpansionTank model in TRANSFORM</span></p>
+<p><span style=\"font-family: Segoe UI;\">Contact: Sarah Creasman sarah.creasman@inl.gov</span></p>
+<p><span style=\"font-family: Segoe UI;\">Documentation updated September 2023</span></p>
+</html>"));
   end ExpansionTank;
-
-  model Datasets
-
-    constant String[:] extraPropertiesNames=cat(
-        1,
-        data_PG.extraPropertiesNames,
-        data_ISO.extraPropertiesNames) "Names of groups";
-    constant Real C_nominal[data_PG.nC + data_ISO.nC]=cat(
-        1,
-        data_PG.C_nominal,
-        data_ISO.C_nominal)
-      "Default for the nominal values for the extra properties";
-    replaceable record Data_PG =
-        TRANSFORM.Nuclear.ReactorKinetics.Data.PrecursorGroups.precursorGroups_6_TRACEdefault
-      constrainedby
-      TRANSFORM.Nuclear.ReactorKinetics.Data.PrecursorGroups.PartialPrecursorGroup
-      "Neutron Precursor Data" annotation (choicesAllMatching=true);
-    Data_PG data_PG;
-
-    replaceable record Data_ISO =
-        TRANSFORM.Nuclear.ReactorKinetics.SparseMatrix.Data.Isotopes.Isotopes_null
-      constrainedby
-      TRANSFORM.Nuclear.ReactorKinetics.SparseMatrix.Data.Isotopes.PartialIsotopes
-      "Data" annotation (choicesAllMatching=true);
-    Data_ISO data_ISO;
-
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(coordinateSystem(preserveAspectRatio=false)));
-  end Datasets;
 
   model DRACS
     extends TRANSFORM.Fluid.Interfaces.Records.Visualization_showName;

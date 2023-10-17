@@ -9,37 +9,37 @@ package BaseClasses
     extends Record_SubSystem;
 
     replaceable Partial_ControlSystem CS annotation (choicesAllMatching=true,
-        Placement(transformation(extent={{-18,122},{-2,138}})));
+        Placement(transformation(extent={{-18,188},{-2,204}})));
     replaceable Partial_EventDriver ED annotation (choicesAllMatching=true,
-        Placement(transformation(extent={{2,122},{18,138}})));
+        Placement(transformation(extent={{2,188},{18,204}})));
     replaceable Record_Data data
-      annotation (Placement(transformation(extent={{42,122},{58,138}})));
+      annotation (Placement(transformation(extent={{42,188},{58,204}})));
 
     SignalSubBus_ActuatorInput actuatorBus
-      annotation (Placement(transformation(extent={{10,80},{50,120}}),
-          iconTransformation(extent={{10,80},{50,120}})));
+      annotation (Placement(transformation(extent={{10,146},{50,186}}),
+          iconTransformation(extent={{10,146},{50,186}})));
     SignalSubBus_SensorOutput sensorBus
-      annotation (Placement(transformation(extent={{-50,80},{-10,120}}),
-          iconTransformation(extent={{-50,80},{-10,120}})));
+      annotation (Placement(transformation(extent={{-50,146},{-10,186}}),
+          iconTransformation(extent={{-50,146},{-10,186}})));
 
   equation
     connect(sensorBus, ED.sensorBus) annotation (Line(
-        points={{-30,100},{-16,100},{7.6,100},{7.6,122}},
+        points={{-30,166},{7.6,166},{7.6,188}},
         color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(sensorBus, CS.sensorBus) annotation (Line(
-        points={{-30,100},{-12.4,100},{-12.4,122}},
+        points={{-30,166},{-12.4,166},{-12.4,188}},
         color={239,82,82},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorBus, CS.actuatorBus) annotation (Line(
-        points={{30,100},{12,100},{-7.6,100},{-7.6,122}},
+        points={{30,166},{-7.6,166},{-7.6,188}},
         color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
     connect(actuatorBus, ED.actuatorBus) annotation (Line(
-        points={{30,100},{20,100},{12.4,100},{12.4,122}},
+        points={{30,166},{12.4,166},{12.4,188}},
         color={111,216,99},
         pattern=LinePattern.Dash,
         thickness=0.5));
@@ -147,12 +147,4 @@ package BaseClasses
           coordinateSystem(preserveAspectRatio=false)));
   end SignalSubBus_SensorOutput;
 
-  model SubSystem_PlaceHolder
-
-    extends NHES.Icons.PlaceHolder;
-
-    annotation (defaultComponentName="SES",
-    Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-          coordinateSystem(preserveAspectRatio=false)));
-  end SubSystem_PlaceHolder;
 end BaseClasses;
