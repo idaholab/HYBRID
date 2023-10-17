@@ -181,6 +181,10 @@ annotation(defaultComponentName="changeMe_CS", Icon(graphics),
       Interval=5,
       __Dymola_Algorithm="Esdirk45a"),
     Documentation(info="<html>
-<p>This control system is for a molten salt reactor (MSR) and is specfically used in the NHES.Systems.PrimaryHeatSystem.MSR.Examples.PFL_PCL_BOP_ControlSystemsForAll model.</p>
+<p>This control system is for a molten salt reactor (MSR) and is specfically used in the NHES.Systems.PrimaryHeatSystem.MSR.Examples.MSR_Full model.</p>
+<p>Used as the control system in NHES.Systems.BalanceOfPlant.RankineCycle.Models.SteamTurbine_L3_HPOFWH for the model NHES.Systems.PrimaryHeatSystem.MSR.Examples.MSR_Example. </p>
+<p>The NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3 data package is used. There is a PID for the feed pump, LPT1, and LPT2. The FeedPump_PID takes the Steam_Temperature as an input and after an addition block ahs the Feed_Pump_Speed as the output. The LPT1_BV_PID takes Extract_flow as the input and has LPT1_BV as the output. The LPT2_BV_PID has the Feedwater_Temp as an input and the LPT2_BV&nbsp;as the output. There is a hysteresis block where Steam_Pressure is the input that controls the opening and closing of the TCV valve. </p>
+<p><br><span style=\"font-family: Arial; color: #222222; background-color: #ffffff;\">Contact: Sarah Creasman&nbsp;<a href=\"mailto:sarah.creasman@inl.gov\">sarah.creasman@inl.gov</a></span> </p>
+<p><span style=\"font-family: Arial;\">Documentation updated September 2023</span> </p>
 </html>"));
 end CS_L3_MSR;

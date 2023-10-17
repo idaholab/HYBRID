@@ -16,7 +16,7 @@ package ControlSystems
             textString="Change Me")}));
   end ED_Dummy;
 
-  model CS_1
+  model CS_MSR_PCL
 
     extends MSR.BaseClasses.Partial_ControlSystem;
 
@@ -64,8 +64,14 @@ package ControlSystems
             lineThickness=1,
             fillColor={255,255,237},
             fillPattern=FillPattern.Solid,
-            textString="Change Me")}));
-  end CS_1;
+            textString="Change Me")}),
+      Documentation(info="<html>
+<p>Used in NHES.Systems.PrimaryHeatSystem.MSR.Models.PrimaryCoolantLoop </p>
+<p>The PCL Control system consists of 1 PID and an add block. The PID takes the pressure of the steam generator as the input. The output from this needed the starting value of 4400 kg/s added to it so that the pump speed is not equal to zero. This PID and add block are used to determine the pump speed needed to maintain a steam generator pressure of 120 bar. </p>
+<p><br><span style=\"font-family: Arial; color: #222222; background-color: #ffffff;\">Contact: Sarah Creasman&nbsp;<a href=\"mailto:sarah.creasman@inl.gov\">sarah.creasman@inl.gov</a></span> </p>
+<p><span style=\"font-family: Arial;\">Documentation updated September 2023</span> </p>
+</html>"));
+  end CS_MSR_PCL;
 
   model CS_MSR_PFL
 
@@ -148,6 +154,12 @@ package ControlSystems
             lineThickness=1,
             fillColor={255,255,237},
             fillPattern=FillPattern.Solid,
-            textString="Change Me")}));
+            textString="Change Me")}),
+      Documentation(info="<html>
+<p>Used in NHES.Systems.PrimaryHeatSystem.MSR.Models.PrimaryFuelLoop </p>
+<p>The control system for the PFL includes 2 PIDs. One of these takes an input for the temperature from the PCL. This is specifically the parameter PrimaryCoolantLoop.pipeToSHX_PCL.medium[1].T. This input takes the PCL temperature and determines what the pump speed for the PFL should be to maintain a temperature set point of 593C. The other PID takes the temperature outlet of the core and tries to match it to a setpoint of 700C. This determines the reactivity needed to keep that same outlet temperature. This value must be added to the realExpression representing the reactivity from the fuel salt (0.003370) and the reactivity correction for circulation of the salt (0.00133511). The output from this is CR_reactivity and is incorporated into the model by setting it as the value for rho_input for the kinetic package. </p>
+<p><br><span style=\"font-family: Arial; color: #222222; background-color: #ffffff;\">Contact: Sarah Creasman&nbsp;<a href=\"mailto:sarah.creasman@inl.gov\">sarah.creasman@inl.gov</a></span> </p>
+<p><span style=\"font-family: Arial;\">Documentation updated September 2023</span> </p>
+</html>"));
   end CS_MSR_PFL;
 end ControlSystems;
