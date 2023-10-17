@@ -5,6 +5,7 @@ model Data_L3 "Density inputs have large effects on nominal turbine pressures"
   parameter BOP_Type FH_type= BOP_Type.OFWH "Type of Feed Heating";
   parameter Modelica.Units.SI.Pressure HPT_p_in=36e5 "High Pressure Turbine Inlet Pressure" annotation(Dialog(group="Pressure Sets"));
   parameter Modelica.Units.SI.Pressure p_dump=45e5 "Overpressure Set Pressure  " annotation(Dialog(group="Pressure Sets"));
+  parameter Modelica.Units.SI.Power Power_nom=5e6 "Electrical Power Nominal";
 
   parameter Modelica.Units.SI.Pressure p_i1=3e5 "Set Pressure Between High Pressure Turbine and Low Pressure Turbine 1" annotation(Dialog(group="Pressure Sets"));
   parameter Modelica.Units.SI.Pressure p_i2=1.5e5 "Set Pressure Between Low Pressure Turbine 1 and Low Pressure Turbine 2" annotation(Dialog(group="Pressure Sets"));
@@ -25,8 +26,8 @@ model Data_L3 "Density inputs have large effects on nominal turbine pressures"
   parameter Modelica.Units.SI.Pressure LPT2_p_out=cond_p annotation(Dialog(tab="Initialization"));
 
   parameter Modelica.Units.SI.MassFlowRate mdot_total=5.5 "Nominal Total Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
-  parameter Modelica.Units.SI.MassFlowRate mdot_fh= 0.1
-                                                       "Nominal Controlled Feed Heating Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
+  parameter Modelica.Units.SI.MassFlowRate mdot_fh= 0.1 "Nominal Controlled Feed Heating Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
+  parameter Modelica.Units.SI.MassFlowRate mdpt_HPFH= 0.002 "Set High pressure feedwater heating flow (used in models with both LP and HP feed heating" annotation(Dialog(group="Flow Rate Sets"));
   parameter Modelica.Units.SI.MassFlowRate mdot_hpt= 5.5 "Nominal Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
   parameter Modelica.Units.SI.MassFlowRate mdot_lpt1= 5.5 "Nominal Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
   parameter Modelica.Units.SI.MassFlowRate mdot_lpt2= 4.794 "Nominal Mass Flow Rate" annotation(Dialog(group="Flow Rate Sets"));
