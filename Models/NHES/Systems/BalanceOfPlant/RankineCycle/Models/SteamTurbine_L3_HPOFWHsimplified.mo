@@ -313,8 +313,8 @@ equation
   connect(delay2_1.port_a, TCV.port_b) annotation (Line(points={{-34,74},{-50,
           74},{-50,60},{-58,60}}, color={0,127,255}));
   connect(HPT.portHP, delay2_1.port_b) annotation (Line(points={{-42,60},{-46,
-          60},{-46,42},{-36,42},{-36,40},{-22,40},{-22,42},{0,42},{0,48},{2,48},
-          {2,68},{4,68},{4,74},{-26,74}}, color={0,127,255}));
+          60},{-46,42},{-36,42},{-36,40},{-22,40},{-22,42},{0,42},{0,48},{-4,48},
+          {-4,68},{4,68},{4,74},{-26,74}},color={0,127,255}));
   connect(port_a_steam, sensor_p.port) annotation (Line(points={{-100,60},{-100,
           32},{-94,32}}, color={0,127,255}));
   connect(port_a_steam, TCV.port_a)
