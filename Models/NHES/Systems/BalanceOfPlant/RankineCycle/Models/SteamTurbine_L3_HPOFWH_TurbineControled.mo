@@ -180,8 +180,8 @@ model SteamTurbine_L3_HPOFWH_TurbineControled
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_cond(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{90,-50},{110,-30}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-70,-10},{-90,10}})));
   Modelica.Blocks.Sources.RealExpression Actual_dp(y=LPT1_bypass_valve.dp)
     "Heat loss/gain not accounted for in connections (e.g., energy vented to atmosphere) [W]"

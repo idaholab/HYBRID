@@ -151,7 +151,7 @@ model SteamTurbine_L3_HPOFWHsimplified
     annotation (Placement(transformation(extent={{-46,-70},{-66,-50}})));
   TRANSFORM.Fluid.Valves.ValveLinear TCV(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
-    m_flow_start=data.mdot_hpt,
+    m_flow_start=data.mdot_total,
     dp_nominal=1000,
     m_flow_nominal=data.mdot_total)
                               annotation (Placement(transformation(
@@ -184,8 +184,8 @@ model SteamTurbine_L3_HPOFWHsimplified
   Fluid.Utilities.NonLinear_Break  delay2_2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-88,80},{-96,100}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
+      = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-72,-10},{-92,10}})));
 equation
   connect(LPT1_bypass.port_3, LPT1_bypass_valve.port_a)

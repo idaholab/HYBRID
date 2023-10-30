@@ -29,9 +29,9 @@ model SteamTurbine_L3_OpenFeedHeat_Test_b
     annotation (Placement(transformation(extent={{-48,34},{-8,64}})));
   NHES.Fluid.Sensors.stateDisplay stateDisplay1
     annotation (Placement(transformation(extent={{-48,-16},{-8,-46}})));
-  Models.SteamTurbine_L3_HPOFWHsimplified BOP(
+  Models.SteamTurbine_L3_HPOFWHsimplified_sec BOP(
     redeclare replaceable
-      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_L3_HTGR_extraction_logan
+      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_L3_HTGR_extraction_logan_newDataPackage4Turbines
       CS(
       data(
         Power_nom=data.Power_nom,
@@ -67,7 +67,7 @@ model SteamTurbine_L3_OpenFeedHeat_Test_b
         k=-5e-7,
         Ti=250,
         xi_start=0.8)),
-    redeclare replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3
+    redeclare replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_4Turbines
       data(
       Power_nom=data.Power_nom,
       HPT_p_in=data.HPT_p_in,
@@ -112,13 +112,12 @@ model SteamTurbine_L3_OpenFeedHeat_Test_b
     annotation (Placement(transformation(extent={{-5.5,-7.5},{5.5,7.5}},
         rotation=90,
         origin={88.5,11.5})));
-  NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3_master data(
+  NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_4Turbines data(
     Power_nom=3.1e9,
     HPT_p_in=7340000,
     p_dump=15500000,
-    p_i1=P_ext*100000,
-    p_i2=990000,
-    cond_p=390000,
+    p_i1=990000,
+    p_i2=390000,
     Tin=565.15,
     Tfeed=429.85,
     d_HPT_in(displayUnit="kg/m3") = 37.8451727,
@@ -234,8 +233,8 @@ equation
   connect(stateDisplay1.statePort, stateSensor2.statePort) annotation (Line(
         points={{-28,-27.1},{-29.045,-27.1},{-29.045,-10.05}}, color={0,0,0}));
   annotation (experiment(
-      StopTime=2,
-      Interval=0.01,
+      StopTime=10000000,
+      __Dymola_NumberOfIntervals=1000,
       __Dymola_Algorithm="Esdirk45a"), Documentation(info="<html>
 <p>Test of Pebble_Bed_Three-Stage_Rankine. The simulation should experience transient where external electricity demand is oscilating and control valves are opening and closing corresponding to the required power demand. </p>
 <p>The ThreeStaged Turbine BOP model contains four control elements: </p>
