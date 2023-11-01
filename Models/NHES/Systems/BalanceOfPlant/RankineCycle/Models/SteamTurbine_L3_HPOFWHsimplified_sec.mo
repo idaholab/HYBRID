@@ -4,7 +4,7 @@ model SteamTurbine_L3_HPOFWHsimplified_sec
   extends
     NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_SubSystem(
     redeclare replaceable
-      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_L3_HTGR_extraction_logan_newDataPackage4Turbines
+      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_L3_HTGR_extraction_logan_new
       CS,
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ED_Dummy ED,
@@ -134,7 +134,7 @@ model SteamTurbine_L3_HPOFWHsimplified_sec
                         annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
-        origin={-38,-16})));
+        origin={-32,-16})));
   TRANSFORM.Fluid.Volumes.SimpleVolume OFWH_2(redeclare package Medium =
         Modelica.Media.Water.StandardWater,
     p_start=data.HPT_p_in - 0.5e5,
@@ -145,19 +145,19 @@ model SteamTurbine_L3_HPOFWHsimplified_sec
     annotation (Placement(transformation(extent={{-38,-70},{-18,-50}})));
   NHES.Fluid.Machines.Pump_MassFlow FWCP(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
-    use_input=true,
+    use_input=false,
     m_flow_nominal=data.mdot_hpt,
     eta=data.eta_p)
     annotation (Placement(transformation(extent={{-46,-70},{-66,-50}})));
   TRANSFORM.Fluid.Valves.ValveLinear TCV(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_start=data.mdot_total,
-    dp_nominal=1000,
+    dp_nominal=1,
     m_flow_nominal=data.mdot_total)
                               annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=180,
-        origin={-68,60})));
+        origin={-60,58})));
   TRANSFORM.Fluid.Sensors.Temperature Feed_T(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-80,-60},{-100,-80}})));
@@ -184,9 +184,12 @@ model SteamTurbine_L3_HPOFWHsimplified_sec
   Fluid.Utilities.NonLinear_Break  delay2_2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-88,80},{-96,100}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-72,-10},{-92,10}})));
+  TRANSFORM.Fluid.Sensors.Pressure sensor_p1(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)
+    annotation (Placement(transformation(extent={{26,70},{6,90}})));
 equation
   connect(LPT1_bypass.port_3, LPT1_bypass_valve.port_a)
     annotation (Line(points={{-10,50},{-10,0},{-42,0}}, color={0,127,255}));
@@ -223,7 +226,7 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(actuatorBus.opening_TCV, TCV.opening) annotation (Line(
-      points={{30.1,100.1},{30.1,82},{-68,82},{-68,68}},
+      points={{30.1,100.1},{30.1,82},{-60,82},{-60,66}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -232,7 +235,7 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(actuatorBus.LPT2_BV, HPT_bypass_valve.opening) annotation (Line(
-      points={{30,100},{30,-4},{-30,-4},{-30,-16}},
+      points={{30,100},{30,-16},{-24,-16}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -309,20 +312,12 @@ equation
   connect(delay2.port_b, OFWH_2.port_b) annotation (Line(points={{-26,-46},{-30,
           -46},{-30,-60},{-22,-60}}, color={0,127,255}));
   connect(delay2.port_a, HPT_bypass_valve.port_b) annotation (Line(points={{-18,-46},
-          {-10,-46},{-10,-34},{-38,-34},{-38,-26}},      color={0,127,255}));
-  connect(delay2_1.port_a, TCV.port_b) annotation (Line(points={{-34,74},{-50,
-          74},{-50,60},{-58,60}}, color={0,127,255}));
-  connect(HPT.portHP, delay2_1.port_b) annotation (Line(points={{-42,60},{-46,
-          60},{-46,42},{-36,42},{-36,40},{-22,40},{-22,42},{0,42},{0,48},{-4,48},
-          {-4,68},{4,68},{4,74},{-26,74}},color={0,127,255}));
+          {-14,-46},{-14,-30},{-32,-30},{-32,-26}},      color={0,127,255}));
   connect(port_a_steam, sensor_p.port) annotation (Line(points={{-100,60},{-100,
           32},{-94,32}}, color={0,127,255}));
-  connect(port_a_steam, TCV.port_a)
-    annotation (Line(points={{-100,60},{-78,60}}, color={0,127,255}));
-  connect(port_a_steam, TBV.port_a)
-    annotation (Line(points={{-100,60},{-74,60},{-74,72}}, color={0,127,255}));
-  connect(port_a_steam, HPT_bypass_valve.port_a) annotation (Line(points={{-100,
-          60},{-80,60},{-80,46},{-50,46},{-50,-6},{-38,-6}}, color={0,127,255}));
+  connect(port_a_steam, HPT_bypass_valve.port_a) annotation (Line(points={{-100,60},
+          {-100,30},{-104,30},{-104,16},{-116,16},{-116,-12},{-40,-12},{-40,-6},
+          {-32,-6}},                                         color={0,127,255}));
   connect(FWCP.port_b, Feed_T.port)
     annotation (Line(points={{-66,-60},{-90,-60}}, color={0,127,255}));
   connect(moistureSeperator.port_Liquid, OFWH_1.port_b) annotation (Line(points=
@@ -348,6 +343,17 @@ equation
       horizontalAlignment=TextAlignment.Right));
   connect(pump.port_a, port_a_cond) annotation (Line(points={{66,-60},{72,-60},
           {72,-64},{106,-64},{106,-24}}, color={0,127,255}));
+  connect(TBV.port_a, port_a_steam) annotation (Line(points={{-74,72},{-74,60},{
+          -86,60},{-86,58},{-90,58},{-90,60},{-100,60}}, color={0,127,255}));
+  connect(TCV.port_a, port_a_steam) annotation (Line(points={{-70,58},{-90,58},{
+          -90,60},{-100,60}}, color={0,127,255}));
+  connect(TCV.port_b, delay2_1.port_a)
+    annotation (Line(points={{-50,58},{-50,74},{-34,74}}, color={0,127,255}));
+  connect(HPT.portHP, delay2_1.port_b) annotation (Line(points={{-42,60},{-46,60},
+          {-46,40},{-22,40},{-22,42},{0,42},{0,48},{2,48},{2,68},{4,68},{4,74},{
+          -26,74}}, color={0,127,255}));
+  connect(sensor_p1.port, delay2_1.port_b) annotation (Line(points={{16,70},{10,
+          70},{10,72},{4,72},{4,74},{-26,74}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
         Rectangle(
           extent={{-2.09756,2},{83.9024,-2}},

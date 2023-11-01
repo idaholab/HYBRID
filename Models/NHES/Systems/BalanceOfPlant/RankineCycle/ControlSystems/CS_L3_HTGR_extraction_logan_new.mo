@@ -1,10 +1,11 @@
 within NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems;
-model CS_L3_HTGR_extraction_logan_newDataPackage4Turbines
+model CS_L3_HTGR_extraction_logan_new
 
   extends
     NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_ControlSystem;
 
-  replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_4Turbines data
+  replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3 data(Tin=
+        562.15, mdot_total=1463.311565)
     annotation (Placement(transformation(extent={{-100,-100},{-80,-80}})));
   Modelica.Blocks.Sources.RealExpression T_in_set(y=data.Tin)
     annotation (Placement(transformation(extent={{-100,80},{-80,100}})));
@@ -54,7 +55,7 @@ model CS_L3_HTGR_extraction_logan_newDataPackage4Turbines
     annotation (Placement(transformation(extent={{-20,-146},{0,-126}})));
   Modelica.Blocks.Sources.Ramp ramp(
     height=-1,
-    duration=3000,
+    duration=4000,
     offset=1,
     startTime=8000)
     annotation (Placement(transformation(extent={{-66,-210},{-46,-190}})));
@@ -244,4 +245,4 @@ annotation(defaultComponentName="changeMe_CS", Icon(graphics),
       StopTime=1000,
       Interval=5,
       __Dymola_Algorithm="Esdirk45a"));
-end CS_L3_HTGR_extraction_logan_newDataPackage4Turbines;
+end CS_L3_HTGR_extraction_logan_new;

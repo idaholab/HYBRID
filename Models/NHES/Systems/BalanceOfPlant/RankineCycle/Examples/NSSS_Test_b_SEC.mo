@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.RankineCycle.Examples;
-model SteamTurbine_L3_OpenFeedHeat_Test_b
+model NSSS_Test_b_SEC
   extends Modelica.Icons.Example;
 //  parameter Real P_ext=3;
 //  parameter Real P_demand=2.5;
@@ -15,8 +15,8 @@ model SteamTurbine_L3_OpenFeedHeat_Test_b
   Real breaker;
   parameter Real Boo=1;
 
-  Real eta_th "Thermal Cycle Efficiency";
-  Real eta_CHP "Thermal Cycle Efficiency";
+//  Real eta_th "Thermal Cycle Efficiency";
+//  Real eta_CHP "Thermal Cycle Efficiency";
   Real Q_util "Thermal Cycle Efficiency";
 
   NHES.Fluid.Sensors.stateSensor stateSensor1(redeclare package Medium =
@@ -96,7 +96,7 @@ model SteamTurbine_L3_OpenFeedHeat_Test_b
     HPT_bypass_valve(m_flow_nominal=20),
     FWCP(use_input=false, m_flow_nominal=data.mdot_total),
     moistureSeperator(p_start=150000, T_start=384.15))
-    annotation (Placement(transformation(extent={{10,-22},{70,38}})));
+    annotation (Placement(transformation(extent={{10,-24},{70,36}})));
 
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT bypassdump(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -130,7 +130,6 @@ model SteamTurbine_L3_OpenFeedHeat_Test_b
     mdot_lpt1=1238.226665,
     mdot_lpt2=995.6849312,
     m_ext=m_ext,
-    p_use=P_demand*100000,
     eta_t=0.93,
     eta_mech=1,
     eta_p=0.9)
@@ -160,81 +159,57 @@ model SteamTurbine_L3_OpenFeedHeat_Test_b
         origin={88,76})));
   NHES.Electrical.PowerSensor sensorW
     annotation (Placement(transformation(extent={{80,42},{96,26}})));
-  TRANSFORM.Fluid.Volumes.SimpleVolume volume(
-    redeclare package Medium = Modelica.Media.Water.StandardWater,
-    p_start=7340000,
-    T_start=565.15,
-    redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=10),
-    use_HeatPort=true,
-    Q_gen(displayUnit="MW"))
-    annotation (Placement(transformation(
-        extent={{-10,10},{10,-10}},
-        rotation=90,
-        origin={-56,14})));
-  TRANSFORM.Fluid.FittingsAndResistances.PressureLoss resistance(dp0=310)
-    annotation (Placement(transformation(
-        extent={{-5,-8},{5,8}},
-        rotation=90,
-        origin={-56,-1})));
-  Modelica.Blocks.Sources.Constant T_steam(k=data.Tin)
-    annotation (Placement(transformation(extent={{-98,8},{-86,20}})));
-  TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.HeatFlow
-    boundary1(Q_flow=3.1e9)
-    annotation (Placement(transformation(extent={{-80,8},{-68,20}})));
+  PrimaryHeatSystem.FourLoopPWR.Components.NSSS_SEC_LoadFollow PHS
+    annotation (Placement(transformation(extent={{-144,-10},{-100,34}})));
 initial equation
 
 equation
   breaker=1/Boo;
  assert(P_ext>bypassdump.medium.p_bar, "Extraction Pressure is below usage pressure",level = AssertionLevel.error);
 
-  eta_th=(-BOP.port_a_elec.W-BOP.pump.W-BOP.pump1.W-BOP.FWCP.W)/volume.heatPort.Q_flow;
-  eta_CHP=(-BOP.port_a_elec.W-BOP.pump.W-BOP.pump1.W-BOP.FWCP.W+Q_util)/volume.heatPort.Q_flow;
+//  eta_th=(-BOP.port_a_elec.W-BOP.pump.W-BOP.pump1.W-BOP.FWCP.W)/volume.heatPort.Q_flow;
+//  eta_CHP=(-BOP.port_a_elec.W-BOP.pump.W-BOP.pump1.W-BOP.FWCP.W+Q_util)/volume.heatPort.Q_flow;
   Q_util = sensor_m_flow.m_flow * ( BOP.LPT1_bypass_valve.port_b.h_outflow-bypassdump1.h);
 
   connect(stateSensor1.statePort, stateDisplay2.statePort) annotation (Line(
         points={{-28.945,26.05},{-28,26.05},{-28,45.1}},color={0,0,0}));
   connect(steamdump.ports[1],BOP. prt_b_steamdump)
-    annotation (Line(points={{2,86},{6,86},{6,38},{10,38}},
+    annotation (Line(points={{2,86},{6,86},{6,36},{10,36}},
                                                color={0,127,255}));
-  connect(BOP.port_a_steam, stateSensor1.port_b) annotation (Line(points={{10,26},
-          {-18,26}},                   color={0,127,255}));
+  connect(BOP.port_a_steam, stateSensor1.port_b) annotation (Line(points={{10,24},
+          {-4,24},{-4,26},{-18,26}},   color={0,127,255}));
   connect(stateSensor2.port_a, BOP.port_b_feed) annotation (Line(points={{-20,-10},
-          {10,-10}},                 color={0,127,255}));
+          {-6,-10},{-6,-12},{10,-12}},
+                                     color={0,127,255}));
   connect(sensor_m_flow.port_a, BOP.port_b_bypass)
-    annotation (Line(points={{2,-52},{2,8},{10,8}},     color={0,127,255}));
+    annotation (Line(points={{2,-52},{2,6},{10,6}},     color={0,127,255}));
   connect(sensor_m_flow.port_b, bypassdump.ports[1])
     annotation (Line(points={{2,-72},{2,-76},{-20,-76}},
                                                  color={0,127,255}));
   connect(bypassdump1.ports[1], BOP.port_a_cond)
-    annotation (Line(points={{86,-28},{86,0.8},{71.8,0.8}},
+    annotation (Line(points={{86,-28},{86,-1.2},{71.8,-1.2}},
                                                  color={0,127,255}));
   connect(sensor_m_flow.m_flow, bypassdump1.m_flow_in) annotation (Line(points={{5.6,-62},
           {78,-62},{78,-48}},                     color={0,0,127}));
   connect(realExpression.y, bypassdump.p_in)
     annotation (Line(points={{-77,-68},{-44.2,-68}},
                                                    color={0,0,127}));
-  connect(BOP.port_a_elec, sensorW.port_a) annotation (Line(points={{70,8},{76,
-          8},{76,34},{80,34}},                      color={255,0,0}));
+  connect(BOP.port_a_elec, sensorW.port_a) annotation (Line(points={{70,6},{76,
+          6},{76,34},{80,34}},                      color={255,0,0}));
   connect(boundary.port, sensorW.port_b) annotation (Line(points={{88.5,17},{88,
           17},{88,22},{100,22},{100,34.16},{96,34.16}},
                              color={255,0,0}));
   connect(sensorW.W, integrator.u) annotation (Line(points={{88,41.52},{88,66.4}},
                                        color={0,0,127}));
-  connect(stateSensor2.port_b, resistance.port_a) annotation (Line(points={{-38,-10},
-          {-56,-10},{-56,-4.5}},                     color={0,127,255}));
-  connect(resistance.port_b, volume.port_a)
-    annotation (Line(points={{-56,2.5},{-56,8}},color={0,127,255}));
-  connect(volume.port_b, stateSensor1.port_a)
-    annotation (Line(points={{-56,20},{-56,26},{-40,26}}, color={0,127,255}));
-  connect(boundary1.port, volume.heatPort)
-    annotation (Line(points={{-68,14},{-62,14}}, color={191,0,0}));
   connect(stateDisplay1.statePort, stateSensor2.statePort) annotation (Line(
         points={{-28,-27.1},{-29.045,-27.1},{-29.045,-10.05}}, color={0,0,0}));
+  connect(PHS.port_b, stateSensor1.port_a) annotation (Line(points={{-100,20.8},
+          {-46,20.8},{-46,26},{-40,26}}, color={0,127,255}));
+  connect(PHS.port_a, stateSensor2.port_b) annotation (Line(points={{-100,3.2},
+          {-44,3.2},{-44,-10},{-38,-10}}, color={0,127,255}));
   annotation (experiment(
-      StopTime=10000000,
-      __Dymola_NumberOfIntervals=1000,
+      StopTime=2,
+      Interval=0.1,
       __Dymola_Algorithm="Esdirk45a"), Documentation(info="<html>
 <p>Test of Pebble_Bed_Three-Stage_Rankine. The simulation should experience transient where external electricity demand is oscilating and control valves are opening and closing corresponding to the required power demand. </p>
 <p>The ThreeStaged Turbine BOP model contains four control elements: </p>
@@ -267,4 +242,4 @@ equation
             tolerance=0.0001,
             fixedStepSize=0)))),
     __Dymola_experimentSetupOutput(events=false));
-end SteamTurbine_L3_OpenFeedHeat_Test_b;
+end NSSS_Test_b_SEC;
