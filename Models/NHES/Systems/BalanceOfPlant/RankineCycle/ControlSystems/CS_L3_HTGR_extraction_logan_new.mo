@@ -4,8 +4,21 @@ model CS_L3_HTGR_extraction_logan_new
   extends
     NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_ControlSystem;
 
-  replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3 data(Tin=
-        562.15, mdot_total=1463.311565)
+  replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3 data(
+    HPT_p_in=7340000,
+    p_dump=10000000,
+    p_i1=990000,
+    p_i2=390000,
+    Tin=562.15,
+    Tfeed=429.85,
+    d_HPT_in=37845,
+    d_LPT1_in=6064.24,
+    d_LPT2_in=2111.864,
+                mdot_total=1463.311565,
+    mdot_fh=225.08489,
+    mdot_hpt=1238.22666,
+    mdot_lpt1=1238.22666,
+    mdot_lpt2=995.6849)
     annotation (Placement(transformation(extent={{-100,-100},{-80,-80}})));
   Modelica.Blocks.Sources.RealExpression T_in_set(y=data.Tin)
     annotation (Placement(transformation(extent={{-100,80},{-80,100}})));
@@ -23,14 +36,14 @@ model CS_L3_HTGR_extraction_logan_new
   TRANSFORM.Controls.LimPID FeedPump_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=-5e-4,
     Ti=10,
-    yMax=2*data.mdot_total,
+    yMax=data.mdot_total*2,
     yMin=data.mdot_total*0.5)
     annotation (Placement(transformation(extent={{-10,80},{10,100}})));
   TRANSFORM.Controls.LimPID TCV_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=-5e-10,
     Ti=360,
     yMax=1,
-    yMin=0)
+    yMin=0.00001)
     annotation (Placement(transformation(extent={{-12,0},{8,20}})));
   TRANSFORM.Controls.LimPID LPT1_BV_PID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
     k=1e-3,
@@ -44,24 +57,14 @@ model CS_L3_HTGR_extraction_logan_new
     yMax=1,
     yMin=0)
     annotation (Placement(transformation(extent={{-10,40},{10,60}})));
-  Modelica.Blocks.Logical.Hysteresis hysteresis(uLow=data.HPT_p_in, uHigh=
-        data.p_dump)
+  Modelica.Blocks.Logical.Hysteresis hysteresis(uLow=70, uHigh=100)
     annotation (Placement(transformation(extent={{-20,-140},{0,-160}})));
   Modelica.Blocks.Logical.Switch switch1
     annotation (Placement(transformation(extent={{20,-160},{40,-140}})));
   Modelica.Blocks.Sources.RealExpression P_dump_open0(y=0)
     annotation (Placement(transformation(extent={{-20,-184},{0,-164}})));
-  Modelica.Blocks.Sources.RealExpression P_dump_open1(y=1)
+  Modelica.Blocks.Sources.RealExpression P_dump_open1(y=0)
     annotation (Placement(transformation(extent={{-20,-146},{0,-126}})));
-  Modelica.Blocks.Sources.Ramp ramp(
-    height=-1,
-    duration=4000,
-    offset=1,
-    startTime=8000)
-    annotation (Placement(transformation(extent={{-66,-210},{-46,-190}})));
-  Modelica.Blocks.Math.Product
-                           product1
-    annotation (Placement(transformation(extent={{96,-172},{116,-152}})));
   Modelica.Blocks.Sources.RealExpression T_in_set1(y=data.mdot_total)
     annotation (Placement(transformation(extent={{2,64},{22,84}})));
   Modelica.Blocks.Logical.Switch switch2
@@ -130,19 +133,6 @@ equation
           -174},{10,-158},{18,-158}}, color={0,0,127}));
   connect(switch1.u1, P_dump_open1.y) annotation (Line(points={{18,-142},{6,
           -142},{6,-136},{1,-136}}, color={0,0,127}));
-  connect(ramp.y, product1.u2) annotation (Line(points={{-45,-200},{86,-200},{
-          86,-168},{94,-168}}, color={0,0,127}));
-  connect(actuatorBus.TBV, product1.y) annotation (Line(
-      points={{30,-100},{30,-136},{117,-136},{117,-162}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5), Text(
-      string="%first",
-      index=-1,
-      extent={{-6,3},{-6,3}},
-      horizontalAlignment=TextAlignment.Right));
-  connect(switch1.y, product1.u1) annotation (Line(points={{41,-150},{84,-150},
-          {84,-156},{94,-156}}, color={0,0,127}));
   connect(FeedPump_PID.y, switch2.u1)
     annotation (Line(points={{11,90},{36,90}}, color={0,0,127}));
   connect(switch2.u3, T_in_set1.y)
@@ -240,6 +230,15 @@ equation
           {66,-46},{76,-46}}, color={0,0,127}));
   connect(ext_pos_start.y, switch7.u3) annotation (Line(points={{-131,-58},{-22,
           -58},{-22,-52},{66,-52},{66,-62},{76,-62}}, color={0,0,127}));
+  connect(actuatorBus.TBV, switch1.y) annotation (Line(
+      points={{30,-100},{30,-136},{41,-136},{41,-150}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5), Text(
+      string="%first",
+      index=-1,
+      extent={{-6,3},{-6,3}},
+      horizontalAlignment=TextAlignment.Right));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics),
     experiment(
       StopTime=1000,

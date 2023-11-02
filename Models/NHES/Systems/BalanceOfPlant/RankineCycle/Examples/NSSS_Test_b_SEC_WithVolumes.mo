@@ -29,12 +29,12 @@ model NSSS_Test_b_SEC_WithVolumes
     annotation (Placement(transformation(extent={{-48,34},{-8,64}})));
   NHES.Fluid.Sensors.stateDisplay stateDisplay1
     annotation (Placement(transformation(extent={{-48,-16},{-8,-46}})));
-  Models.SteamTurbine_L3_HPOFWHsimplified_sec BOP(
+  Models.SteamTurbine_L3_HPOFWHsimplified_sec_2 BOP(
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_L3_HTGR_extraction_logan_new
       CS,
-    redeclare replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_4Turbines
-      data(
+    redeclare replaceable
+      NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_4Turbines data(
       Power_nom=data.Power_nom,
       HPT_p_in=data.HPT_p_in,
       p_dump=data.p_dump,
@@ -59,9 +59,8 @@ model NSSS_Test_b_SEC_WithVolumes
     OFWH_1(T_start=333.15),
     OFWH_2(T_start=353.15),
     LPT1_bypass_valve(dp_nominal(displayUnit="Pa") = 1, m_flow_nominal=10*m_ext),
-    HPT_bypass_valve(m_flow_nominal=20),
-    FWCP(use_input=false, m_flow_nominal=data.mdot_total),
-    moistureSeperator(p_start=150000, T_start=384.15))
+    moistureSeperator(p_start=150000, T_start=384.15),
+    pump(use_input=false))
     annotation (Placement(transformation(extent={{10,-22},{70,38}})));
 
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT bypassdump(
@@ -140,19 +139,6 @@ model NSSS_Test_b_SEC_WithVolumes
         extent={{-10,10},{10,-10}},
         rotation=90,
         origin={-80,40})));
-  TRANSFORM.Fluid.Volumes.SimpleVolume volume1(
-    redeclare package Medium = Modelica.Media.Water.StandardWater,
-    p_start=99999.99999999999*(73.4 - 1),
-    T_start=505.15,
-    redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
-        (V=10),
-    use_HeatPort=true,
-    Q_gen(displayUnit="MW"))
-    annotation (Placement(transformation(
-        extent={{-10,10},{10,-10}},
-        rotation=90,
-        origin={-82,-24})));
 initial equation
 
 equation
@@ -194,18 +180,15 @@ equation
                                        color={0,0,127}));
   connect(stateDisplay1.statePort, stateSensor2.statePort) annotation (Line(
         points={{-28,-27.1},{-29.045,-27.1},{-29.045,-10.05}}, color={0,0,0}));
-  connect(stateSensor2.port_b, volume1.port_b) annotation (Line(points={{-38,
-          -10},{-82,-10},{-82,-18}}, color={0,127,255}));
-  connect(volume1.port_a, PHS.port_a) annotation (Line(points={{-82,-30},{-82,
-          -38},{-98,-38},{-98,-14},{-96,-14},{-96,-4},{-92,-4},{-92,3.2},{-100,
-          3.2}}, color={0,127,255}));
   connect(PHS.port_b, volume.port_a) annotation (Line(points={{-100,20.8},{-80,
           20.8},{-80,34}}, color={0,127,255}));
   connect(volume.port_b, stateSensor1.port_a) annotation (Line(points={{-80,46},
           {-80,54},{-54,54},{-54,26},{-40,26}}, color={0,127,255}));
+  connect(stateSensor2.port_b, PHS.port_a) annotation (Line(points={{-38,-10},{
+          -90,-10},{-90,3.2},{-100,3.2}}, color={0,127,255}));
   annotation (experiment(
-      StopTime=3,
-      Interval=0.1,
+      StopTime=1000,
+      __Dymola_NumberOfIntervals=50,
       __Dymola_Algorithm="Esdirk45a"), Documentation(info="<html>
 <p>Test of Pebble_Bed_Three-Stage_Rankine. The simulation should experience transient where external electricity demand is oscilating and control valves are opening and closing corresponding to the required power demand. </p>
 <p>The ThreeStaged Turbine BOP model contains four control elements: </p>

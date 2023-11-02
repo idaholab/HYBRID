@@ -17,8 +17,6 @@ model NSSS_SEC_LoadFollow
     redeclare NHES.Systems.PrimaryHeatSystem.FourLoopPWR.Data.Data_SEC data(
       Q_total_th=3100e6,
       m_flow_nominal=14267,
-      T_core_inlet_nominal=563.25,
-      T_core_outlet_nominal=589.25,
       p_shellSide=7340000,
       m_flow_shellSide_per=1650/4,
       m_flow_shellSide_total=1650),

@@ -67,8 +67,8 @@ model NSSS_Test_b_SEC
         k=-5e-7,
         Ti=250,
         xi_start=0.8)),
-    redeclare replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_4Turbines
-      data(
+    redeclare replaceable
+      NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_4Turbines data(
       Power_nom=data.Power_nom,
       HPT_p_in=data.HPT_p_in,
       p_dump=data.p_dump,
@@ -93,7 +93,7 @@ model NSSS_Test_b_SEC
     OFWH_1(T_start=333.15),
     OFWH_2(T_start=353.15),
     LPT1_bypass_valve(dp_nominal(displayUnit="Pa") = 1, m_flow_nominal=10*m_ext),
-    HPT_bypass_valve(m_flow_nominal=20),
+
     FWCP(use_input=false, m_flow_nominal=data.mdot_total),
     moistureSeperator(p_start=150000, T_start=384.15))
     annotation (Placement(transformation(extent={{10,-24},{70,36}})));

@@ -134,7 +134,7 @@ model SteamTurbine_L3_HPOFWHsimplified_sec
                         annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
-        origin={-32,-16})));
+        origin={-20,-16})));
   TRANSFORM.Fluid.Volumes.SimpleVolume OFWH_2(redeclare package Medium =
         Modelica.Media.Water.StandardWater,
     p_start=data.HPT_p_in - 0.5e5,
@@ -157,7 +157,7 @@ model SteamTurbine_L3_HPOFWHsimplified_sec
                               annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
         rotation=180,
-        origin={-60,58})));
+        origin={-68,54})));
   TRANSFORM.Fluid.Sensors.Temperature Feed_T(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-80,-60},{-100,-80}})));
@@ -184,8 +184,8 @@ model SteamTurbine_L3_HPOFWHsimplified_sec
   Fluid.Utilities.NonLinear_Break  delay2_2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-88,80},{-96,100}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
+      = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-72,-10},{-92,10}})));
   TRANSFORM.Fluid.Sensors.Pressure sensor_p1(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
@@ -226,7 +226,7 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(actuatorBus.opening_TCV, TCV.opening) annotation (Line(
-      points={{30.1,100.1},{30.1,82},{-60,82},{-60,66}},
+      points={{30.1,100.1},{-56,100.1},{-56,68},{-54,68},{-54,62},{-68,62}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -235,7 +235,7 @@ equation
       extent={{6,3},{6,3}},
       horizontalAlignment=TextAlignment.Left));
   connect(actuatorBus.LPT2_BV, HPT_bypass_valve.opening) annotation (Line(
-      points={{30,100},{30,-16},{-24,-16}},
+      points={{30,100},{30,-16},{-12,-16}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
@@ -312,12 +312,12 @@ equation
   connect(delay2.port_b, OFWH_2.port_b) annotation (Line(points={{-26,-46},{-30,
           -46},{-30,-60},{-22,-60}}, color={0,127,255}));
   connect(delay2.port_a, HPT_bypass_valve.port_b) annotation (Line(points={{-18,-46},
-          {-14,-46},{-14,-30},{-32,-30},{-32,-26}},      color={0,127,255}));
+          {-16,-46},{-16,-26},{-20,-26}},                color={0,127,255}));
   connect(port_a_steam, sensor_p.port) annotation (Line(points={{-100,60},{-100,
           32},{-94,32}}, color={0,127,255}));
   connect(port_a_steam, HPT_bypass_valve.port_a) annotation (Line(points={{-100,60},
-          {-100,30},{-104,30},{-104,16},{-116,16},{-116,-12},{-40,-12},{-40,-6},
-          {-32,-6}},                                         color={0,127,255}));
+          {-100,28},{-102,28},{-102,14},{-114,14},{-114,-14},{-36,-14},{-36,-6},
+          {-20,-6}},                                         color={0,127,255}));
   connect(FWCP.port_b, Feed_T.port)
     annotation (Line(points={{-66,-60},{-90,-60}}, color={0,127,255}));
   connect(moistureSeperator.port_Liquid, OFWH_1.port_b) annotation (Line(points=
@@ -345,10 +345,11 @@ equation
           {72,-64},{106,-64},{106,-24}}, color={0,127,255}));
   connect(TBV.port_a, port_a_steam) annotation (Line(points={{-74,72},{-74,60},{
           -86,60},{-86,58},{-90,58},{-90,60},{-100,60}}, color={0,127,255}));
-  connect(TCV.port_a, port_a_steam) annotation (Line(points={{-70,58},{-90,58},{
-          -90,60},{-100,60}}, color={0,127,255}));
+  connect(TCV.port_a, port_a_steam) annotation (Line(points={{-78,54},{-78,60},
+          {-100,60}},         color={0,127,255}));
   connect(TCV.port_b, delay2_1.port_a)
-    annotation (Line(points={{-50,58},{-50,74},{-34,74}}, color={0,127,255}));
+    annotation (Line(points={{-58,54},{-50,54},{-50,74},{-34,74}},
+                                                          color={0,127,255}));
   connect(HPT.portHP, delay2_1.port_b) annotation (Line(points={{-42,60},{-46,60},
           {-46,40},{-22,40},{-22,42},{0,42},{0,48},{2,48},{2,68},{4,68},{4,74},{
           -26,74}}, color={0,127,255}));
