@@ -1,0 +1,133 @@
+<Simulation verbosity="debug">
+    <TestInfo>
+        <author>mgarrou</author>
+        <created>2021-07-20</created>
+        <description>
+            Load and use a ROM of the Dymola model to perform the comparison against experimental data
+            for calibration of the model the ROM was built upon
+        </description>
+    </TestInfo>
+
+    <RunInfo>
+        <WorkingDir>val4calROMRunDir</WorkingDir>
+        <Sequence>loadExp, loadROM, runROM, fixTimeExp, fixTimeMod, compare</Sequence>
+        <batchSize>1</batchSize>
+    </RunInfo>
+
+    <Files>
+        <Input name="syntheticHistoryPk" type="">syntheticHistoryPk</Input>
+        <Input name="expInput">..\..\TEDS_dymola\exp_principal.csv</Input>
+    </Files>
+
+    <Steps>
+        <IOStep name="loadExp">
+            <Input class="Files" type="">expInput</Input>
+            <Output class="DataObjects" type="HistorySet">expData</Output>
+        </IOStep>
+        <IOStep name="loadROM">
+            <Input class="Files" type="">syntheticHistoryPk</Input>
+            <Output class="Models" type="ROM">pickledROM</Output>
+        </IOStep>
+        <MultiRun clearRunDir="False" name="runROM">
+            <Input class="DataObjects" type="PointSet">dummyIn</Input>
+            <Model class="Models" type="ROM">pickledROM</Model>
+            <Sampler class="Samplers" type="MonteCarlo">MCSampler</Sampler>
+            <Output class="DataObjects" type="HistorySet">modelROMResults</Output>
+        </MultiRun>
+        <PostProcess name="compare">
+            <Model class="Models" type="PostProcessor">pp</Model>
+            <Output class="DataObjects" type="PointSet">ppOut</Output>
+            <Output class="OutStreams" type="Print">valOut</Output>
+            <Input class="DataObjects" type="HistorySet">modelROMResultsSync</Input>
+            <Input class="DataObjects" type="HistorySet">expDataSync</Input>
+        </PostProcess>
+        <PostProcess name="fixTimeExp">
+            <Input class="DataObjects" type="HistorySet">expData</Input>
+            <Model class="Models" type="PostProcessor">sync</Model>
+            <Output class="DataObjects" type="HistorySet">expDataSync</Output>
+        </PostProcess>
+        <PostProcess name="fixTimeMod">
+            <Input class="DataObjects" type="HistorySet">modelROMResults</Input>
+            <Model class="Models" type="PostProcessor">sync</Model>
+            <Output class="DataObjects" type="HistorySet">modelROMResultsSync</Output>
+        </PostProcess>
+    </Steps>
+
+    <Samplers>
+        <MonteCarlo name="MCSampler">
+        <samplerInit>
+            <limit>1</limit>
+        </samplerInit>
+        <constant name="thermocline_Insulation.geometry.Porosity">42</constant>
+        </MonteCarlo>
+    </Samplers>
+
+    <Models>
+        <PostProcessor name="pp" subType="Metric">
+            <Features type="variable">expDataSync|Output|TC-1</Features>
+            <Targets type="variable">Thermocline_TC-1</Targets>
+            <pivotParameter>Time</pivotParameter>
+            <Metric class="Metrics" type="Metric">mean_squared_error</Metric>
+        </PostProcessor>
+        <PostProcessor name="sync" subType="HistorySetSync">
+            <numberOfSamples>10000</numberOfSamples>
+            <pivotParameter>Time</pivotParameter>
+            <extension>zeroed</extension>
+            <syncMethod>grid</syncMethod>
+        </PostProcessor>
+        <ROM name="pickledROM" subType="pickledROM">
+        </ROM>
+    </Models>
+
+    <Metrics>
+        <Metric name="mean_squared_error" subType="SKL">
+            <metricType>regression|mean_squared_error</metricType>
+        </Metric>
+    </Metrics>
+
+    <DataObjects>
+        <PointSet name="dummyIn">
+            <Input>thermocline_Insulation.geometry.Porosity</Input>
+            <Output>OutputPlaceHolder</Output>
+        </PointSet>
+        <HistorySet name="expData">
+            <Input>labels</Input>
+            <Output>TC-1</Output>
+            <options>
+                <pivotParameter>Time</pivotParameter>
+            </options>
+        </HistorySet>
+        <HistorySet name="modelROMResults">
+            <Input>InputPlaceHolder</Input>
+            <Output>Thermocline_TC-1</Output>
+            <options>
+                <pivotParameter>Time</pivotParameter>
+            </options>
+        </HistorySet>
+        <PointSet name="ppOut">
+            <Input>InputPlaceHolder</Input>
+            <Output>mean_squared_error_Thermocline_TC-1_expDataSync_Output_TC-1</Output>
+        </PointSet>
+        <HistorySet name="expDataSync">
+            <Input>InputPlaceHolder</Input>
+            <Output>TC-1</Output>
+            <options>
+                <pivotParameter>Time</pivotParameter>
+            </options>
+        </HistorySet>
+        <HistorySet name="modelROMResultsSync">
+            <Input>InputPlaceHolder</Input>
+            <Output>Thermocline_TC-1</Output>
+            <options>
+                <pivotParameter>Time</pivotParameter>
+            </options>
+        </HistorySet>
+    </DataObjects>
+
+    <OutStreams>
+        <Print name="valOut">
+            <type>csv</type>
+            <source>ppOut</source>
+            </Print>
+    </OutStreams>
+</Simulation>

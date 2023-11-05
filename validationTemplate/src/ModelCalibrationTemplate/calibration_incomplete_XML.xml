@@ -1,0 +1,96 @@
+<Simulation verbosity="debug">
+  <TestInfo>
+    <name>DymolaOptimize</name>
+    <author>garrm</author>
+    <created>2021-11-24</created>
+    <description>
+      Use Raven-runs-raven interface to optimize parameters of a Dymola model.
+      Finite difference optimizer using a distance between experimental and model data as target. 
+      This distance is computed by another RAVEN instance running a 'validation' file
+    </description>
+  </TestInfo>
+
+  <RunInfo>
+    <WorkingDir></WorkingDir>
+    <Sequence>optimize,print</Sequence>
+    <batchSize>2</batchSize>
+  </RunInfo>
+
+  <Steps>
+    <MultiRun name="optimize">
+      <Input class="Files" type="raven">valInput</Input>
+      <Model class="Models" type="Code">raven</Model>
+      <Optimizer class="Optimizers" type="SPSA">opter</Optimizer>
+      <SolutionExport class="DataObjects" type="PointSet">optExport</SolutionExport>
+      <Output class="DataObjects" type="PointSet">optOut</Output>
+    </MultiRun>
+    <IOStep name="print">
+      <Input class="DataObjects" type="PointSet">optExport</Input>
+      <Input class="DataObjects" type="PointSet">optOut</Input>
+      <Output class="OutStreams" type="Print">optExport</Output>
+      <Output class="OutStreams" type="Print">optOut</Output>
+    </IOStep>
+  </Steps>
+
+  <Files>
+    <Input name="valInput" type="raven"></Input>
+  </Files>
+
+  <Models>
+    <Code name="raven" subType="RAVEN">
+        <executable>%FRAMEWORK_DIR%/../raven_framework</executable>
+        <outputExportOutStreams>valOut</outputExportOutStreams>
+    </Code>
+  </Models>
+
+  <Distributions>
+  </Distributions>
+
+  <Optimizers>
+    <GradientDescent name="opter">
+      <objective></objective>
+      <TargetEvaluation class="DataObjects" type="PointSet">optOut</TargetEvaluation>
+      <samplerInit>
+        <limit></limit>
+        <initialSeed>42</initialSeed>
+        <writeSteps>every</writeSteps>
+      </samplerInit>
+      <gradient>
+        <FiniteDifference/>
+      </gradient>
+      <stepSize>
+        <GradientHistory>
+          <growthFactor>1.25</growthFactor>
+          <shrinkFactor>1.1</shrinkFactor>
+        </GradientHistory>
+      </stepSize>
+      <acceptance>
+        <Strict/>
+      </acceptance>
+    </GradientDescent>
+  </Optimizers>
+  
+  <OutStreams>
+    <Print name="optOut">
+      <type>csv</type>
+      <source>optOut</source>
+    </Print>
+	<Print name="optExport">
+      <type>csv</type>
+      <source>optExport</source>
+	  <clusterLabel>trajID</clusterLabel>
+    </Print>
+  </OutStreams>
+
+  <DataObjects>
+    <PointSet name="optOut">
+      <Input></Input>
+      <Output></Output>
+    </PointSet>
+	<PointSet name="optExport">
+      <Input>trajID</Input>
+      <Output>stepSize,iteration,accepted,conv_gradient</Output>
+    </PointSet>
+  </DataObjects>
+
+</Simulation>

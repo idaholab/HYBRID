@@ -1,0 +1,113 @@
+<Simulation verbosity="debug">
+  <TestInfo>
+    <author>mgarrou</author>
+    <created>2021-11-29</created>
+    <description>
+            Run Dymola model and train a ROM from the resulting data (time-dependent)
+        </description>
+  </TestInfo>
+
+  <RunInfo>
+    <WorkingDir>trainROMWorkDir</WorkingDir>
+    <Sequence>runDymola, trainROM, printAccuracy, dumpPickledROM</Sequence>
+    <batchSize>1</batchSize>
+  </RunInfo>
+
+  <Files>
+    <Input name="dsin.txt" type="DymolaInitialisation">C:\Users\mgarrou\Documents\Validation\tests\pendulumDymola\dsin.txt</Input>
+    <Input name="romPk" type="">romPk</Input>
+  </Files>
+
+  <Steps>
+    <MultiRun clearRunDir="False" name="runDymola">
+      <Input class="Files" type="DymolaInitialisation">dsin.txt</Input>
+      <Model class="Models" type="Code">dymolaModel</Model>
+      <Sampler class="Samplers" type="Stratified">stratifiedSampler</Sampler>
+      <Output class="DataObjects" type="HistorySet">modelResults</Output>
+    </MultiRun>
+    <RomTrainer name="trainROM">
+      <Input class="DataObjects" type="HistorySet">modelResults</Input>
+      <Output class="Models" type="ROM">DMD</Output>
+    </RomTrainer>
+    <IOStep name="printAccuracy">
+      <Input class="Models" type="ROM">DMD</Input>
+      <Output class="DataObjects" type="DataSet">romMeta</Output>
+      <Output class="OutStreams" type="Print">romMeta</Output>
+    </IOStep>
+    <IOStep name="dumpPickledROM">
+      <Input class="Models" type="ROM">DMD</Input>
+      <Output class="Files" type="">romPk</Output>
+    </IOStep>
+  </Steps>
+
+  <Distributions>
+    <Uniform name="mass_dist">
+      <lowerBound>0.1</lowerBound>
+      <upperBound>10.0</upperBound>
+    </Uniform>
+    <Uniform name="length_dist">
+      <lowerBound>0.1</lowerBound>
+      <upperBound>2.0</upperBound>
+    </Uniform>
+    <Uniform name="gravity_dist">
+      <lowerBound>9.0</lowerBound>
+      <upperBound>11.0</upperBound>
+    </Uniform>
+  </Distributions>
+
+  <Samplers>
+    <Stratified name="stratifiedSampler">
+      <variable name="m">
+        <distribution>mass_dist</distribution>
+        <grid construction="equal" steps="50" type="CDF">0.05 0.95</grid>
+      </variable>
+      <variable name="L">
+        <distribution>length_dist</distribution>
+        <grid construction="equal" steps="50" type="CDF">0.05 0.95</grid>
+      </variable>
+      <variable name="g">
+        <distribution>gravity_dist</distribution>
+        <grid construction="equal" steps="50" type="CDF">0.05 0.95</grid>
+      </variable>
+    </Stratified>
+  </Samplers>
+
+  <Models>
+    <Code name="dymolaModel" subType="Dymola">
+      <executable>C:\Users\mgarrou\Documents\Validation\tests\pendulumDymola\dymosim.exe</executable>
+      <outputVariablesToLoad>Time, m, L, g, phi, w</outputVariablesToLoad>
+      <alias type="input" variable="m">m</alias>
+      <alias type="input" variable="L">L</alias>
+      <alias type="input" variable="g">g</alias>
+      <alias type="output" variable="Angle">phi</alias>
+      <alias type="output" variable="Angular_velocity">w</alias>
+    </Code>
+    <ROM name="DMD" subType="DMD">
+      <Target>Time, Angle, Angular_velocity</Target>
+      <Features>m, L, g</Features>
+      <pivotParameter>Time</pivotParameter>
+      <dmdType>dmd</dmdType>
+      <rankSVD>0</rankSVD>
+      <rankTLSQ>7</rankTLSQ>
+      <exactModes>True</exactModes>
+    </ROM>
+  </Models>
+
+  <DataObjects>
+    <HistorySet name="modelResults">
+      <Input>m, L, g</Input>
+      <Output>Angle, Angular_velocity</Output>
+      <options>
+        <pivotParameter>Time</pivotParameter>
+      </options>
+    </HistorySet>
+    <DataSet name="romMeta" />
+  </DataObjects>
+
+  <OutStreams>
+    <Print name="romMeta">
+      <type>csv</type>
+      <source>romMeta</source>
+    </Print>
+  </OutStreams>
+</Simulation>

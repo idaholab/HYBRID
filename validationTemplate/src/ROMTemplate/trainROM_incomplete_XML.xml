@@ -1,0 +1,82 @@
+<Simulation verbosity="debug">
+    <TestInfo>
+        <author>mgarrou</author>
+        <created>2021-11-29</created>
+        <description>
+            Run Dymola model and train a ROM from the resulting data (time-dependent)
+        </description>
+    </TestInfo>
+
+    <RunInfo>
+        <WorkingDir>trainROMWorkDir</WorkingDir>
+        <Sequence>runDymola, trainROM, printAccuracy, dumpPickledROM</Sequence>
+        <batchSize>1</batchSize>
+    </RunInfo>
+
+    <Files>
+        <!--<Input name="dsin.txt" type="DymolaInitialisation">C:\Users\garrm\Documents\SimTEDS\initial_exp_data\update_pipe_length\dsin.txt</Input>
+        <Input name="syntheticHistoryPk" type="">C:\..\ROMDir\syntheticHistoryPk</Input>-->
+    </Files>
+
+
+    <Steps>
+        <MultiRun clearRunDir="False" name="runDymola">
+            <Input class="Files" type="DymolaInitialisation">dsin.txt</Input>
+            <Model class="Models" type="Code">dymolaModel</Model>
+            <Sampler class="Samplers" type=""></Sampler>
+            <Output class="DataObjects" type="HistorySet">modelResults</Output>
+        </MultiRun>
+        <RomTrainer name='trainROM'>
+            <Input class='DataObjects' type='HistorySet'>modelResults</Input>
+            <Output class='Models' type='ROM'></Output>
+        </RomTrainer>
+        <IOStep name='printAccuracy'>
+            <Input class='Models' type='ROM'></Input>
+            <Output class='DataObjects' type='DataSet'>romMeta</Output>
+            <Output class='OutStreams' type='Print'>romMeta</Output>
+        </IOStep>
+        <IOStep name="dumpPickledROM">
+            <Input class="Models" type="ROM"></Input>
+            <Output class="Files" type=""></Output>
+        </IOStep>
+    </Steps>
+
+    <Distributions>
+    </Distributions>
+
+    <Samplers>
+    </Samplers>
+
+    <Models>
+        <Code name="dymolaModel" subType="Dymola">
+            <executable></executable>
+            <outputVariablesToLoad></outputVariablesToLoad>
+            <!--<alias type="output" variable="Thermocline_TC-1"> thermocline_Insulation.thermocline_fluidprops_heaters_newHC_70C.Tf[1]</alias>-->
+        </Code>
+        <ROM name='' subType=''>
+            <Target></Target>
+            <Features></Features>
+            <pivotParameter>Time</pivotParameter>
+        </ROM>
+    </Models>
+
+    <DataObjects>
+        <HistorySet name="modelResults">
+            <Input></Input>
+            <Output></Output>
+            <options>
+                <pivotParameter>Time</pivotParameter>
+            </options>
+        </HistorySet>
+        <DataSet name="romMeta"/>
+    </DataObjects>
+
+    <OutStreams>
+        <Print name='romMeta'>
+            <type>csv</type>
+            <source>romMeta</source>
+        </Print>
+    </OutStreams>
+
+
+</Simulation>

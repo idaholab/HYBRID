@@ -1,0 +1,153 @@
+<Simulation verbosity="debug">
+    <TestInfo>
+        <author>mgarrou</author>
+        <created>2021-11-29</created>
+        <description>
+            Run Dymola model and train a ROM from the resulting data (time-dependent)
+        </description>
+    </TestInfo>
+
+    <RunInfo>
+        <WorkingDir>trainROMWorkDir</WorkingDir>
+        <Sequence>runDymolaTEDS, trainROM, printAccuracy, dumpPickledROM</Sequence>
+        <batchSize>1</batchSize>
+    </RunInfo>
+
+    <Files>
+        <Input name="dsin.txt" type="DymolaInitialisation">..\..\TEDS_dymola\dsin.txt</Input>
+        <Input name="syntheticHistoryPk" type="">C:\..\ROMDir\syntheticHistoryPk</Input>
+    </Files>
+
+
+    <Steps>
+        <MultiRun clearRunDir="False" name="runDymola">
+            <Input class="Files" type="DymolaInitialisation">dsin.txt</Input>
+            <Model class="Models" type="Code">dymolaModel</Model>
+            <Sampler class="Samplers" type="Stratified">stratifiedSampler</Sampler>
+            <Output class="DataObjects" type="HistorySet">modelResults</Output>
+        </MultiRun>
+        <RomTrainer name='trainROM'>
+            <Input class='DataObjects' type='HistorySet'>modelResults</Input>
+            <Output class='Models' type='ROM'>syntheticHistory</Output>
+        </RomTrainer>
+        <IOStep name='printAccuracy'>
+            <Input class='Models' type='ROM'>syntheticHistory</Input>
+            <Output class='DataObjects' type='DataSet'>romMeta</Output>
+            <Output class='OutStreams' type='Print'>romMeta</Output>
+        </IOStep>
+        <IOStep name="dumpPickledROM">
+            <Input class="Models" type="ROM">syntheticHistory</Input>
+            <Output class="Files" type="">syntheticHistoryPk</Output>
+        </IOStep>
+    </Steps>
+
+    <Samplers>
+        <Stratified name="stratifiedSampler">
+            <variable name="porosity">
+                <distribution>porosity_dist</distribution>
+                <grid construction="equal" steps="42" type="CDF">0.05 0.95</grid>
+            </variable>
+        </Stratified>
+        <MonteCarlo name="monteCarloSampler">
+            <samplerInit>
+                <limit>42</limit>
+            </samplerInit>
+            <variable name="porosity">
+                    <distribution>porosity_dist</distribution>
+                    <grid construction="equal" steps="42" type="CDF">0.05 0.95</grid>
+            </variable>
+        </MonteCarlo>
+        <FactorialDesign name="factorialDesignSampler">
+            <FactorialSettings>
+                <algorithmType>full<!--pb--></algorithmType>
+            <FactorialSettings>
+            <variable name="porosity">
+                    <distribution>porosity_dist</distribution>
+                    <grid construction="equal" steps="42" type="CDF">0.05 0.95</grid>
+            </variable>
+        </FactorialDesign>
+        <EnsembleForward name="ensembleForwardSampler">
+            <MonteCarlo name="mcSampler">
+            <samplerInit>
+                <limit>42</limit>
+            </samplerInit>
+            <variable name="porosity">
+                    <distribution>porosity_dist</distribution>
+                    <grid construction="equal" steps="42" type="CDF">0.05 0.95</grid>
+            </variable>
+            </MonteCarlo>
+            <Stratified name="stratifiedSampler">
+            <variable name="porosity">
+                <distribution>porosity_dist</distribution>
+                <grid construction="equal" steps="42" type="CDF">0.05 0.95</grid>
+            </variable>
+            </Stratified>
+        </EnsembleForward>
+    </Samplers>
+
+    <Distributions>
+        <Uniform name="porosity_dist">
+            <lowerBound>0.1</lowerBound>
+            <upperBound>0.9</upperBound>
+        </Uniform>
+    </Distributions>
+
+    <Models>
+        <Code name="dymolaModel" subType="Dymola">
+            <executable>..\..\TEDS_dymola\dymosim.exe</executable>
+            <outputVariablesToLoad>thermocline_Insulation.geometry.Porosity, Time,  thermocline_Insulation.thermocline_fluidprops_heaters_newHC_70C.Tf[1]</outputVariablesToLoad>
+            <alias type="output" variable="Thermocline_TC-1"> thermocline_Insulation.thermocline_fluidprops_heaters_newHC_70C.Tf[1]</alias>
+        </Code>
+        <ROM name='syntheticHistory' subType='SyntheticHistory'>
+            <Target>Thermocline_TC-1</Target>
+            <Features>thermocline_Insulation.geometry.Porosity</Features>
+            <pivotParameter>Time</pivotParameter>
+            <wavelet target="Thermocline_TC-1">
+                <family>db2</family>
+            </wavelet>
+        </ROM>
+        <ROM name="arma" subType="ARMA">
+            <Target>Thermocline_TC-1</Target>
+            <Features>thermocline_Insulation.geometry.Porosity</Features>
+            <pivotParameter>Time</pivotParameter>
+            <P>5</P>
+            <Q>4</Q>
+            <preserveInputCDF>True</preserveInputCDF>
+        </ROM>
+        <ROM name="polyExponential" subType="PolyExponential">
+            <Target>Thermocline_TC-1</Target>
+            <Features>thermocline_Insulation.geometry.Porosity</Features>
+            <pivotParameter>Time</pivotParameter>
+            <numberExpTerms>5</numberExpTerms>
+            <max_iter>1000</max_iter>
+            <tol>0.0001</tol>
+        </ROM>
+        <ROM name="dmd" subType="DMD">
+            <Target>Thermocline_TC-1</Target>
+            <Features>thermocline_Insulation.geometry.Porosity</Features>
+            <pivotParameter>Time</pivotParameter>
+            <dmdType>dmd</dmdType>
+            <rankSVD>0</rankSVD>
+        </ROM>
+    </Models>
+
+    <DataObjects>
+        <HistorySet name="modelResults">
+            <Input>InputPlaceHolder</Input>
+            <Output>Thermocline_TC-1</Output>
+            <options>
+                <pivotParameter>Time</pivotParameter>
+            </options>
+        </HistorySet>
+        <DataSet name="romMeta"/>
+    </DataObjects>
+
+    <OutStreams>
+        <Print name='romMeta'>
+            <type>csv</type>
+            <source>romMeta</source>
+        </Print>
+    </OutStreams>
+
+
+</Simulation>
