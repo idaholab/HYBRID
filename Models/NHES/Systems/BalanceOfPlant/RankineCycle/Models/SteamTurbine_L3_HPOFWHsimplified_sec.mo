@@ -184,8 +184,8 @@ model SteamTurbine_L3_HPOFWHsimplified_sec
   Fluid.Utilities.NonLinear_Break  delay2_2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-88,80},{-96,100}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-72,-10},{-92,10}})));
   TRANSFORM.Fluid.Sensors.Pressure sensor_p1(redeclare package Medium =
         Modelica.Media.Water.StandardWater)

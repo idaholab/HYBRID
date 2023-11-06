@@ -109,8 +109,8 @@ model NSSS_Test_b_SEC_WithVolumes
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=90,
         origin={86,-38})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,

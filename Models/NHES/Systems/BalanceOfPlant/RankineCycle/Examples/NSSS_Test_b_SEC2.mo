@@ -93,7 +93,6 @@ model NSSS_Test_b_SEC2
     OFWH_1(T_start=333.15),
     OFWH_2(T_start=353.15),
     LPT1_bypass_valve(dp_nominal(displayUnit="Pa") = 1, m_flow_nominal=10*m_ext),
-
     FWCP(use_input=false, m_flow_nominal=data.mdot_total),
     moistureSeperator(p_start=150000, T_start=384.15))
     annotation (Placement(transformation(extent={{10,-22},{70,38}})));

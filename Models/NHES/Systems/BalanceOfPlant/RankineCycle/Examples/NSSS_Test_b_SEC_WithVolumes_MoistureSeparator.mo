@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.RankineCycle.Examples;
-model SteamTurbine_L3_OpenFeedHeat_Test_b
+model NSSS_Test_b_SEC_WithVolumes_MoistureSeparator
   extends Modelica.Icons.Example;
 //  parameter Real P_ext=3;
 //  parameter Real P_demand=2.5;
@@ -15,8 +15,8 @@ model SteamTurbine_L3_OpenFeedHeat_Test_b
   Real breaker;
   parameter Real Boo=1;
 
-  Real eta_th "Thermal Cycle Efficiency";
-  Real eta_CHP "Thermal Cycle Efficiency";
+//  Real eta_th "Thermal Cycle Efficiency";
+//  Real eta_CHP "Thermal Cycle Efficiency";
   Real Q_util "Thermal Cycle Efficiency";
 
   NHES.Fluid.Sensors.stateSensor stateSensor1(redeclare package Medium =
@@ -29,44 +29,10 @@ model SteamTurbine_L3_OpenFeedHeat_Test_b
     annotation (Placement(transformation(extent={{-48,34},{-8,64}})));
   NHES.Fluid.Sensors.stateDisplay stateDisplay1
     annotation (Placement(transformation(extent={{-48,-16},{-8,-46}})));
-  Models.SteamTurbine_L3_HPOFWHsimplified_sec BOP(
+  Models.SteamTurbine_L3_HPOFWHsimplified_sec_MovingMoistureSeparator BOP(
     redeclare replaceable
-      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_L3_HTGR_extraction_logan_newDataPackage4Turbines
-      CS(
-      data(
-        Power_nom=data.Power_nom,
-        HPT_p_in=data.HPT_p_in,
-        p_dump=data.p_dump,
-        p_i1=data.p_i1,
-        p_i2=data.p_i2,
-        cond_p=data.cond_p,
-        Tin=data.Tin,
-        Tfeed=data.Tfeed,
-        d_HPT_in(displayUnit="kg/m3") = data.d_HPT_in,
-        d_LPT1_in(displayUnit="g/cm3") = data.d_LPT1_in,
-        d_LPT2_in(displayUnit="kg/m3") = data.d_LPT2_in,
-        mdot_total=data.mdot_total,
-        mdot_fh=data.mdot_fh,
-        mdpt_HPFH=data.mdpt_HPFH,
-        mdot_hpt=data.mdot_hpt,
-        mdot_lpt1=data.mdot_lpt1,
-        mdot_lpt2=data.mdot_lpt2,
-        m_ext=data.m_ext,
-        eta_t=data.eta_t,
-        eta_mech=data.eta_mech,
-        eta_p=data.eta_p),
-      Steam_Extraction(y=data.m_ext),
-      booleanStep2(startTime=2000),
-      LPT1_BV_PID(k=5e-9, Ti=300),
-      booleanStep(startTime=1500),
-      FeedPump_PID(k=-1e-4, Ti=360),
-      T_in_set2(y=0.0),
-      LPT2_BV_PID(k=1),
-      booleanStep1(startTime=1200),
-      TCV_PID(
-        k=-5e-7,
-        Ti=250,
-        xi_start=0.8)),
+      NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.CS_L3_HTGR_extraction_logan_new
+      CS,
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_4Turbines data(
       Power_nom=data.Power_nom,
@@ -93,8 +59,8 @@ model SteamTurbine_L3_OpenFeedHeat_Test_b
     OFWH_1(T_start=333.15),
     OFWH_2(T_start=353.15),
     LPT1_bypass_valve(dp_nominal(displayUnit="Pa") = 1, m_flow_nominal=10*m_ext),
-    FWCP(use_input=false, m_flow_nominal=data.mdot_total),
-    moistureSeperator(p_start=150000, T_start=384.15))
+    moistureSeperator(p_start=150000, T_start=384.15),
+    pump(use_input=false))
     annotation (Placement(transformation(extent={{10,-22},{70,38}})));
 
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT bypassdump(
@@ -117,7 +83,7 @@ model SteamTurbine_L3_OpenFeedHeat_Test_b
     p_dump=15500000,
     p_i1=990000,
     p_i2=390000,
-    Tin=565.15,
+    Tin=562.15,
     Tfeed=429.85,
     d_HPT_in(displayUnit="kg/m3") = 37.8451727,
     d_LPT1_in(displayUnit="kg/m3") = 6.064249238,
@@ -129,7 +95,6 @@ model SteamTurbine_L3_OpenFeedHeat_Test_b
     mdot_lpt1=1238.226665,
     mdot_lpt2=995.6849312,
     m_ext=m_ext,
-    p_use=P_demand*100000,
     eta_t=0.93,
     eta_mech=1,
     eta_p=0.9)
@@ -159,10 +124,12 @@ model SteamTurbine_L3_OpenFeedHeat_Test_b
         origin={88,76})));
   NHES.Electrical.PowerSensor sensorW
     annotation (Placement(transformation(extent={{80,42},{96,26}})));
+  PrimaryHeatSystem.FourLoopPWR.Components.NSSS_SEC_LoadFollow PHS
+    annotation (Placement(transformation(extent={{-144,-10},{-100,34}})));
   TRANSFORM.Fluid.Volumes.SimpleVolume volume(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     p_start=7340000,
-    T_start=565.15,
+    T_start=562.15,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
         (V=10),
@@ -171,25 +138,15 @@ model SteamTurbine_L3_OpenFeedHeat_Test_b
     annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=90,
-        origin={-56,14})));
-  TRANSFORM.Fluid.FittingsAndResistances.PressureLoss resistance(dp0=310)
-    annotation (Placement(transformation(
-        extent={{-5,-8},{5,8}},
-        rotation=90,
-        origin={-56,-1})));
-  Modelica.Blocks.Sources.Constant T_steam(k=data.Tin)
-    annotation (Placement(transformation(extent={{-98,8},{-86,20}})));
-  TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.HeatFlow
-    boundary1(Q_flow=3.1e9)
-    annotation (Placement(transformation(extent={{-80,8},{-68,20}})));
+        origin={-80,40})));
 initial equation
 
 equation
   breaker=1/Boo;
  assert(P_ext>bypassdump.medium.p_bar, "Extraction Pressure is below usage pressure",level = AssertionLevel.error);
 
-  eta_th=(-BOP.port_a_elec.W-BOP.pump.W-BOP.pump1.W-BOP.FWCP.W)/volume.heatPort.Q_flow;
-  eta_CHP=(-BOP.port_a_elec.W-BOP.pump.W-BOP.pump1.W-BOP.FWCP.W+Q_util)/volume.heatPort.Q_flow;
+//  eta_th=(-BOP.port_a_elec.W-BOP.pump.W-BOP.pump1.W-BOP.FWCP.W)/volume.heatPort.Q_flow;
+//  eta_CHP=(-BOP.port_a_elec.W-BOP.pump.W-BOP.pump1.W-BOP.FWCP.W+Q_util)/volume.heatPort.Q_flow;
   Q_util = sensor_m_flow.m_flow * ( BOP.LPT1_bypass_valve.port_b.h_outflow-bypassdump1.h);
 
   connect(stateSensor1.statePort, stateDisplay2.statePort) annotation (Line(
@@ -221,19 +178,17 @@ equation
                              color={255,0,0}));
   connect(sensorW.W, integrator.u) annotation (Line(points={{88,41.52},{88,66.4}},
                                        color={0,0,127}));
-  connect(stateSensor2.port_b, resistance.port_a) annotation (Line(points={{-38,-10},
-          {-56,-10},{-56,-4.5}},                     color={0,127,255}));
-  connect(resistance.port_b, volume.port_a)
-    annotation (Line(points={{-56,2.5},{-56,8}},color={0,127,255}));
-  connect(volume.port_b, stateSensor1.port_a)
-    annotation (Line(points={{-56,20},{-56,26},{-40,26}}, color={0,127,255}));
-  connect(boundary1.port, volume.heatPort)
-    annotation (Line(points={{-68,14},{-62,14}}, color={191,0,0}));
   connect(stateDisplay1.statePort, stateSensor2.statePort) annotation (Line(
         points={{-28,-27.1},{-29.045,-27.1},{-29.045,-10.05}}, color={0,0,0}));
+  connect(PHS.port_b, volume.port_a) annotation (Line(points={{-100,20.8},{-80,
+          20.8},{-80,34}}, color={0,127,255}));
+  connect(volume.port_b, stateSensor1.port_a) annotation (Line(points={{-80,46},
+          {-80,54},{-54,54},{-54,26},{-40,26}}, color={0,127,255}));
+  connect(stateSensor2.port_b, PHS.port_a) annotation (Line(points={{-38,-10},{
+          -90,-10},{-90,3.2},{-100,3.2}}, color={0,127,255}));
   annotation (experiment(
-      StopTime=10000000,
-      __Dymola_NumberOfIntervals=1000,
+      StopTime=1000000,
+      Interval=100,
       __Dymola_Algorithm="Esdirk45a"), Documentation(info="<html>
 <p>Test of Pebble_Bed_Three-Stage_Rankine. The simulation should experience transient where external electricity demand is oscilating and control valves are opening and closing corresponding to the required power demand. </p>
 <p>The ThreeStaged Turbine BOP model contains four control elements: </p>
@@ -266,4 +221,4 @@ equation
             tolerance=0.0001,
             fixedStepSize=0)))),
     __Dymola_experimentSetupOutput(events=false));
-end SteamTurbine_L3_OpenFeedHeat_Test_b;
+end NSSS_Test_b_SEC_WithVolumes_MoistureSeparator;
