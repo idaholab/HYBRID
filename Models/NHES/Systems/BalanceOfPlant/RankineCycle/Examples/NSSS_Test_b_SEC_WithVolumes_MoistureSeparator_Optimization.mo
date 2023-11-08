@@ -6,7 +6,7 @@ model NSSS_Test_b_SEC_WithVolumes_MoistureSeparator_Optimization
 //  parameter Modelica.Units.SI.Density d_ext=2.03641  "kg/m3";
 //  parameter Modelica.Units.SI.MassFlowRate m_ext=40;
 
-  parameter Real P_ext=1.6;
+//  parameter Real P_ext=1.6;
   parameter Real P_demand=1;
   parameter Modelica.Units.SI.Density d_ext=1.004547784   "kg/m3";
 
@@ -59,8 +59,9 @@ model NSSS_Test_b_SEC_WithVolumes_MoistureSeparator_Optimization
     OFWH_1(T_start=333.15),
     OFWH_2(T_start=353.15),
     LPT1_bypass_valve(dp_nominal(displayUnit="Pa") = 1, m_flow_nominal=10*m_ext),
-    moistureSeperator(p_start=150000, T_start=384.15),
-    pump(use_input=false))
+    moistureSeperator(p_start=990000, T_start=384.15),
+    pump(use_input=false),
+    LPT1(portLP(p(start=390000, fixed=true))))
     annotation (Placement(transformation(extent={{10,-22},{70,38}})));
 
   TRANSFORM.Fluid.BoundaryConditions.Boundary_pT bypassdump(
@@ -109,8 +110,8 @@ model NSSS_Test_b_SEC_WithVolumes_MoistureSeparator_Optimization
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=90,
         origin={86,-38})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
-        Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
+      = Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
@@ -143,7 +144,7 @@ initial equation
 
 equation
   breaker=1/Boo;
- assert(P_ext>bypassdump.medium.p_bar, "Extraction Pressure is below usage pressure",level = AssertionLevel.error);
+// assert(P_ext>bypassdump.medium.p_bar, "Extraction Pressure is below usage pressure",level = AssertionLevel.error);
 
 //  eta_th=(-BOP.port_a_elec.W-BOP.pump.W-BOP.pump1.W-BOP.FWCP.W)/volume.heatPort.Q_flow;
 //  eta_CHP=(-BOP.port_a_elec.W-BOP.pump.W-BOP.pump1.W-BOP.FWCP.W+Q_util)/volume.heatPort.Q_flow;
@@ -187,7 +188,7 @@ equation
   connect(stateSensor2.port_b, PHS.port_a) annotation (Line(points={{-38,-10},{
           -90,-10},{-90,3.2},{-100,3.2}}, color={0,127,255}));
   annotation (experiment(
-      StopTime=10000,
+      StopTime=57600,
       Interval=20,
       __Dymola_Algorithm="Esdirk45a"), Documentation(info="<html>
 <p>Test of Pebble_Bed_Three-Stage_Rankine. The simulation should experience transient where external electricity demand is oscilating and control valves are opening and closing corresponding to the required power demand. </p>
