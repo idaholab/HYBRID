@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.RankineCycle.Models;
-model SteamTurbine_L3_HPOFWHsimplified_sec_MovingMoistureSeparator
+model SteamTurbine_L3_HPOFWHsimplified_sec_Reheater
   "Three Stage Turbine with open feed water heating using high pressure steam"
   extends
     NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_SubSystem(
@@ -71,12 +71,12 @@ model SteamTurbine_L3_HPOFWHsimplified_sec_MovingMoistureSeparator
     annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
   TRANSFORM.Fluid.FittingsAndResistances.TeeJunctionVolume LPT1_bypass(
       redeclare package Medium = Modelica.Media.Water.StandardWater, V=5,
-    p_start=data.HPT_p_out,
+    p_start=990000,
     T_start=452.55)
     annotation (Placement(transformation(extent={{-20,70},{0,50}})));
   TRANSFORM.Fluid.Valves.ValveLinear LPT1_bypass_valve(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
-    dp_nominal=100000,
+    dp_nominal=990000,
     m_flow_nominal=10)
     annotation (Placement(transformation(extent={{-42,-10},{-62,10}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_State prt_b_steamdump(redeclare package
@@ -119,7 +119,7 @@ model SteamTurbine_L3_HPOFWHsimplified_sec_MovingMoistureSeparator
   TRANSFORM.Fluid.Valves.ValveLinear HPT_bypass_valve(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
     m_flow_start=data.mdot_fh,
-    dp_nominal=50000,
+    dp_nominal=9.9e5,
     m_flow_nominal=data.mdot_fh*1.5)
                         annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
@@ -168,15 +168,15 @@ model SteamTurbine_L3_HPOFWHsimplified_sec_MovingMoistureSeparator
   Fluid.Utilities.NonLinear_Break  delay2_2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-88,80},{-96,100}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-72,-10},{-92,10}})));
   TRANSFORM.Fluid.Sensors.Pressure sensor_p1(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{26,70},{6,90}})));
   TRANSFORM.Fluid.Volumes.Separator moistureSeperator(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
-    p_start=data.LPT1_p_out,
+    p_start=data.LPT1_p_in,
     T_start=452.55,
     redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
@@ -572,4 +572,4 @@ equation
 <p>Documented September 2023</p>
 <p>More imformation on this model can be found at <a href=\"https://doi.org/10.2172/1988132\">https://doi.org/10.2172/1988132</a></p>
 </html>"));
-end SteamTurbine_L3_HPOFWHsimplified_sec_MovingMoistureSeparator;
+end SteamTurbine_L3_HPOFWHsimplified_sec_Reheater;
