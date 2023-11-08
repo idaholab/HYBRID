@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.RankineCycle.Models;
-model SteamTurbine_L3_HPOFWHsimplified_sec_MovingMoistureSeparator
+model SteamTurbine_L3_HPOFWHsimplified_sec_MovedMoistureSeparator_Optimization
   "Three Stage Turbine with open feed water heating using high pressure steam"
   extends
     NHES.Systems.BalanceOfPlant.RankineCycle.BaseClasses.Partial_SubSystem(
@@ -8,8 +8,7 @@ model SteamTurbine_L3_HPOFWHsimplified_sec_MovingMoistureSeparator
       CS,
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ED_Dummy ED,
-    redeclare replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_4Turbines data(Tfeed=
-          509.35));
+    redeclare replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_4Turbines data);
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_steam(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-110,50},{-90,70}})));
@@ -49,7 +48,7 @@ model SteamTurbine_L3_HPOFWHsimplified_sec_MovingMoistureSeparator
     p_outlet_nominal=data.LPT1_p_out,
     use_T_nominal=false,
     d_nominal=data.d_LPT1_in)
-    annotation (Placement(transformation(extent={{38,44},{58,64}})));
+    annotation (Placement(transformation(extent={{38,42},{58,62}})));
   TRANSFORM.Fluid.Machines.SteamTurbine LPT2(
     eta_mech=data.eta_mech,
     redeclare model Eta_wetSteam =
@@ -77,7 +76,7 @@ model SteamTurbine_L3_HPOFWHsimplified_sec_MovingMoistureSeparator
     annotation (Placement(transformation(extent={{-20,70},{0,50}})));
   TRANSFORM.Fluid.Valves.ValveLinear LPT1_bypass_valve(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
-    dp_nominal=100000,
+    dp_nominal=data.LPT1_p_in,
     m_flow_nominal=10)
     annotation (Placement(transformation(extent={{-42,-10},{-62,10}})));
   TRANSFORM.Fluid.Interfaces.FluidPort_State prt_b_steamdump(redeclare package
@@ -169,8 +168,8 @@ model SteamTurbine_L3_HPOFWHsimplified_sec_MovingMoistureSeparator
   Fluid.Utilities.NonLinear_Break  delay2_2(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-88,80},{-96,100}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-72,-10},{-92,10}})));
   TRANSFORM.Fluid.Sensors.Pressure sensor_p1(redeclare package Medium =
         Modelica.Media.Water.StandardWater)
@@ -189,10 +188,10 @@ equation
   connect(LPT1_bypass.port_3, LPT1_bypass_valve.port_a)
     annotation (Line(points={{-10,50},{-10,0},{-42,0}}, color={0,127,255}));
   connect(HPT.shaft_b, LPT1.shaft_a) annotation (Line(points={{-22,54},{-22,40},
-          {32,40},{32,54},{38,54}},
+          {32,40},{32,52},{38,52}},
                               color={0,0,0}));
   connect(LPT1.shaft_b, LPT2.shaft_a)
-    annotation (Line(points={{58,54},{74,54}},                 color={0,0,0}));
+    annotation (Line(points={{58,52},{66,52},{66,54},{74,54}}, color={0,0,0}));
   connect(LPT2.shaft_b, generator.shaft)
     annotation (Line(points={{94,54},{100,54}}, color={0,0,0}));
   connect(condenser.port_b, pump.port_a)
@@ -332,11 +331,13 @@ equation
   connect(Feed_T.port, OFWH_2.port_a)
     annotation (Line(points={{-90,-60},{-34,-60}}, color={0,127,255}));
   connect(LPT1.portLP, LPT2.portHP)
-    annotation (Line(points={{58,60},{74,60}}, color={0,127,255}));
+    annotation (Line(points={{58,58},{66,58},{66,60},{74,60}},
+                                               color={0,127,255}));
   connect(LPT1_bypass.port_2, moistureSeperator.port_a[1])
     annotation (Line(points={{0,60},{12,60}}, color={0,127,255}));
   connect(moistureSeperator.port_b[1], LPT1.portHP)
-    annotation (Line(points={{24,60},{38,60}}, color={0,127,255}));
+    annotation (Line(points={{24,60},{32,60},{32,58},{38,58}},
+                                               color={0,127,255}));
   connect(moistureSeperator.port_Liquid, pump1.port_a) annotation (Line(points=
           {{14,56},{14,-46},{6,-46},{6,-60}}, color={0,127,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
@@ -573,4 +574,4 @@ equation
 <p>Documented September 2023</p>
 <p>More imformation on this model can be found at <a href=\"https://doi.org/10.2172/1988132\">https://doi.org/10.2172/1988132</a></p>
 </html>"));
-end SteamTurbine_L3_HPOFWHsimplified_sec_MovingMoistureSeparator;
+end SteamTurbine_L3_HPOFWHsimplified_sec_MovedMoistureSeparator_Optimization;

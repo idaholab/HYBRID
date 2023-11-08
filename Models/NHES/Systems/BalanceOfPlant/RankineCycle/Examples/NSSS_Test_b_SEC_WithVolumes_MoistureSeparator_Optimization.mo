@@ -1,5 +1,5 @@
 within NHES.Systems.BalanceOfPlant.RankineCycle.Examples;
-model NSSS_Test_b_SEC_WithVolumes_MoistureSeparator
+model NSSS_Test_b_SEC_WithVolumes_MoistureSeparator_Optimization
   extends Modelica.Icons.Example;
 //  parameter Real P_ext=3;
 //  parameter Real P_demand=2.5;
@@ -84,7 +84,7 @@ model NSSS_Test_b_SEC_WithVolumes_MoistureSeparator
     p_i1=990000,
     p_i2=390000,
     Tin=562.15,
-    Tfeed=429.85,
+    Tfeed=509.35,
     d_HPT_in(displayUnit="kg/m3") = 37.8451727,
     d_LPT1_in(displayUnit="kg/m3") = 6.064249238,
     d_LPT2_in(displayUnit="kg/m3") = 2.111864686,
@@ -98,7 +98,7 @@ model NSSS_Test_b_SEC_WithVolumes_MoistureSeparator
     eta_t=0.93,
     eta_mech=1,
     eta_p=0.9)
-    annotation (Placement(transformation(extent={{-100,80},{-80,100}})));
+    annotation (Placement(transformation(extent={{-100,78},{-80,98}})));
   TRANSFORM.Fluid.BoundaryConditions.MassFlowSource_h
                                                  bypassdump1(
     redeclare package Medium = Modelica.Media.Water.StandardWater,
@@ -187,7 +187,7 @@ equation
   connect(stateSensor2.port_b, PHS.port_a) annotation (Line(points={{-38,-10},{
           -90,-10},{-90,3.2},{-100,3.2}}, color={0,127,255}));
   annotation (experiment(
-      StopTime=5000,
+      StopTime=10000,
       Interval=20,
       __Dymola_Algorithm="Esdirk45a"), Documentation(info="<html>
 <p>Test of Pebble_Bed_Three-Stage_Rankine. The simulation should experience transient where external electricity demand is oscilating and control valves are opening and closing corresponding to the required power demand. </p>
@@ -221,4 +221,4 @@ equation
             tolerance=0.0001,
             fixedStepSize=0)))),
     __Dymola_experimentSetupOutput(events=false));
-end NSSS_Test_b_SEC_WithVolumes_MoistureSeparator;
+end NSSS_Test_b_SEC_WithVolumes_MoistureSeparator_Optimization;
