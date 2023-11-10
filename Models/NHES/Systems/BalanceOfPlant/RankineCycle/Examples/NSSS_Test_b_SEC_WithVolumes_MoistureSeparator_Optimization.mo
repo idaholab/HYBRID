@@ -110,8 +110,8 @@ model NSSS_Test_b_SEC_WithVolumes_MoistureSeparator_Optimization
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=90,
         origin={86,-38})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
-      = Modelica.Media.Water.StandardWater) annotation (Placement(
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
+        Modelica.Media.Water.StandardWater) annotation (Placement(
         transformation(
         extent={{10,10},{-10,-10}},
         rotation=90,
@@ -189,7 +189,7 @@ equation
           -90,-10},{-90,3.2},{-100,3.2}}, color={0,127,255}));
   annotation (experiment(
       StopTime=57600,
-      Interval=20,
+      Interval=100,
       __Dymola_Algorithm="Esdirk45a"), Documentation(info="<html>
 <p>Test of Pebble_Bed_Three-Stage_Rankine. The simulation should experience transient where external electricity demand is oscilating and control valves are opening and closing corresponding to the required power demand. </p>
 <p>The ThreeStaged Turbine BOP model contains four control elements: </p>
