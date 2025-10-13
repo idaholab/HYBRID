@@ -8,7 +8,21 @@ model SteamTurbine_L3_HPOFWH
     redeclare replaceable
       NHES.Systems.BalanceOfPlant.RankineCycle.ControlSystems.ED_Dummy ED,
     redeclare replaceable NHES.Systems.BalanceOfPlant.RankineCycle.Data.Data_L3
-      data);
+      data(
+      HPT_p_in=12000000,
+      p_dump=20000000,
+      p_i1=2000000,
+      p_i2=150000,
+      cond_p=10000,
+      Tin=846.3,
+      Tfeed=604.8,
+      d_HPT_in=288573.3428,
+      d_LPT1_in=56430,
+      mdot_total=288.5733428,
+      mdot_fh=56.43116714,
+      mdot_hpt=232.1421757,
+      mdot_lpt1=232.1421757,
+      mdot_lpt2=217.023541));
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_steam(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-110,50},{-90,70}})));
@@ -116,13 +130,13 @@ model SteamTurbine_L3_HPOFWH
         origin={100,44})));
   TRANSFORM.Electrical.Interfaces.ElectricalPowerPort_Flow port_a_elec
     annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-  Fluid.Machines.Pump_Pressure                  pump(redeclare package Medium =
-        Modelica.Media.Water.StandardWater,
+  Fluid.Machines.Pump_Pressure                  pump(redeclare package Medium
+      = Modelica.Media.Water.StandardWater,
     p_nominal=data.p_i2,
     eta=data.eta_p)
     annotation (Placement(transformation(extent={{66,-70},{46,-50}})));
-  Fluid.Machines.Pump_Pressure                  pump1(redeclare package Medium =
-        Modelica.Media.Water.StandardWater,
+  Fluid.Machines.Pump_Pressure                  pump1(redeclare package Medium
+      = Modelica.Media.Water.StandardWater,
     use_input=false,
     p_nominal=data.HPT_p_in - 0.5e5,
     eta=data.eta_p)
@@ -181,8 +195,8 @@ model SteamTurbine_L3_HPOFWH
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_a_cond(redeclare package
       Medium = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{90,-50},{110,-30}})));
-  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium =
-        Modelica.Media.Water.StandardWater)
+  TRANSFORM.Fluid.Sensors.MassFlowRate sensor_m_flow(redeclare package Medium
+      = Modelica.Media.Water.StandardWater)
     annotation (Placement(transformation(extent={{-70,-10},{-90,10}})));
 equation
   connect(TBV.port_a, SteamHeader.port_b)
@@ -234,7 +248,7 @@ equation
   connect(TCV.port_a, SteamHeader.port_b)
     annotation (Line(points={{-72,60},{-80,60}}, color={0,127,255}));
   connect(actuatorBus.opening_TCV, TCV.opening) annotation (Line(
-      points={{30.1,100.1},{30.1,82},{-62,82},{-62,68}},
+      points={{30.1,100.1},{30.1,76},{-60,76},{-60,72},{-62,72},{-62,68}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5), Text(
