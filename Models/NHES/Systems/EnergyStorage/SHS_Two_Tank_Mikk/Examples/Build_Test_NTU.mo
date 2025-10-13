@@ -2,10 +2,9 @@ within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Examples;
 model Build_Test_NTU
   "Initial build test of two tank system. No reference documents were used, the test is simply to evaluate overall system behavior."
   extends Modelica.Icons.Example;
-  Two_Tank_SHS_System_NTU
-    two_Tank_SHS_System_NTU(
-                        redeclare
-      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03 CS,
+  Two_Tank_SHS_System_NTU two_Tank_SHS_System_NTU(
+    redeclare
+      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Controls.CS_Boiler_03 CS,
     redeclare replaceable Data.Data_SHS data(
       ht_area=100,
       cold_tank_area=100,
@@ -13,7 +12,7 @@ model Build_Test_NTU
       DHX_K_shell(unit="1/m4")),
     m_flow_min=0.1,
     tank_height=15,
-      Produced_steam_flow=valveLinear.port_a.m_flow)
+    Produced_steam_flow=valveLinear.port_a.m_flow)
     annotation (Placement(transformation(extent={{-50,-48},{46,54}})));
 
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort CHX_Inlet_T(redeclare package

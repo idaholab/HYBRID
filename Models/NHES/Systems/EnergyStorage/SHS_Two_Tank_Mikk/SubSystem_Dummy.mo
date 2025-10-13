@@ -2,8 +2,8 @@ within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
 model SubSystem_Dummy
 
   extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable CS_Dummy CS,
-    redeclare replaceable ED_Dummy ED,
+    redeclare replaceable Controls.CS_Dummy CS,
+    redeclare replaceable Controls.ED_Dummy ED,
     redeclare Data.Data_Dummy data);
 
 equation

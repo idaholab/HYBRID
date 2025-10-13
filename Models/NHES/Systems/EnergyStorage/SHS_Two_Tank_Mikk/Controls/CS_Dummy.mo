@@ -1,7 +1,7 @@
-within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
-model ED_Dummy
+within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Controls;
+model CS_Dummy
 
-  extends BaseClasses.Partial_EventDriver;
+  extends BaseClasses.Partial_ControlSystem;
 
 equation
 
@@ -13,4 +13,4 @@ annotation(defaultComponentName="changeMe_CS", Icon(graphics={
           fillColor={255,255,237},
           fillPattern=FillPattern.Solid,
           textString="Change Me")}));
-end ED_Dummy;
+end CS_Dummy;

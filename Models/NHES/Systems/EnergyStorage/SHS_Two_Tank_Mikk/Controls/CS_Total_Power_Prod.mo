@@ -1,10 +1,11 @@
-within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
-model CS_Boiler_03
+within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Controls;
+model CS_Total_Power_Prod
+  "Control system in place to produce entirety of a reactor-storage system via storage dispatch."
 
   extends BaseClasses.Partial_ControlSystem;
 
   Data.Data_Default data
-    annotation (Placement(transformation(extent={{-50,136},{-30,156}})));
+    annotation (Placement(transformation(extent={{-86,12},{-66,32}})));
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
     Charging_Valve_Position_MinMax(min=1e-4)
     annotation (Placement(transformation(extent={{2,-32},{22,-12}})));
@@ -12,8 +13,8 @@ model CS_Boiler_03
     annotation (Placement(transformation(extent={{-18,-18},{-12,-24}})));
   TRANSFORM.Controls.LimPID PID5(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=-7.5e-4,
-    Ti=30,
+    k=-2.5e-3,
+    Ti=3,
     yMin=0.0,
     initType=Modelica.Blocks.Types.Init.InitialOutput,
     y_start=0.0)
@@ -28,20 +29,13 @@ model CS_Boiler_03
     annotation (Placement(transformation(extent={{-68,-24},{-62,-18}})));
   TRANSFORM.Controls.LimPID PID3(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2e-2,
+    k=1e-4,
     Ti=10,
     yMax=1.0,
     yMin=0.0,
     y_start=0.0)
     annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
-  Modelica.Blocks.Sources.Trapezoid trapezoid(
-    amplitude=2.0,
-    rising=500,
-    width=8500,
-    falling=500,
-    period=18000,
-    offset=0.0,
-    startTime=0)
+  Modelica.Blocks.Sources.Constant  const(k=375 + 273.15)
     annotation (Placement(transformation(extent={{-58,48},{-46,60}})));
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
     Discharging_Valve_Position(min=1e-4) annotation (Placement(transformation(
@@ -97,13 +91,12 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.cold_tank_level, min2.u1) annotation (Line(
-      points={{-30,-100},{-30,-108},{-102,-108},{-102,-25.6},{-80.8,-25.6}},
+      points={{-30,-100},{-102,-100},{-102,-25.6},{-80.8,-25.6}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(trapezoid.y,PID3. u_s)
-    annotation (Line(points={{-45.4,54},{-40,54},{-40,58},{-36.8,58}},
-                                                     color={0,0,127}));
+  connect(const.y, PID3.u_s) annotation (Line(points={{-45.4,54},{-40,54},{-40,
+          58},{-36.8,58}}, color={0,0,127}));
   connect(product1.y, Discharging_Valve_Position.u)
     annotation (Line(points={{-11.6,64},{0,64}}, color={0,0,127}));
   connect(PID3.y,product1. u2) annotation (Line(points={{-27.6,58},{-26,58},{
@@ -125,14 +118,14 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.hot_tank_level, min1.u1) annotation (Line(
-      points={{-30,-100},{-30,-70},{-102,-70},{-102,68.4},{-56.8,68.4}},
+      points={{-30,-100},{-102,-100},{-102,68.4},{-56.8,68.4}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(one1.y, PID5.u_s) annotation (Line(points={{-51.7,-13},{-44.6,-13},{
           -44.6,-17}},color={0,0,127}));
   connect(sensorBus.Charge_Temp, PID5.u_m) annotation (Line(
-      points={{-30,-100},{-30,-64},{-102,-64},{-102,-4},{-41,-4},{-41,-13.4}},
+      points={{-30,-100},{-102,-100},{-102,-10},{-41,-10},{-41,-13.4}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -151,18 +144,17 @@ equation
   connect(add3.u1, PID2.y) annotation (Line(points={{-30.6,-9.2},{-33.7,-9.2},{
           -33.7,-3}}, color={0,0,127}));
   connect(sensorBus.charge_m_flow, PID2.u_m) annotation (Line(
-      points={{-30,-100},{-30,-28},{-8,-28},{-8,-24},{-6,-24},{-6,6},{-37,6},{
-          -37,0.6}},
+      points={{-30,-100},{-102,-100},{-102,6},{-37,6},{-37,0.6}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.Charging_Logical, switch1.u2) annotation (Line(
-      points={{-30,-100},{-30,-70},{-102,-70},{-102,-4},{-50.4,-4}},
+      points={{-30,-100},{-102,-100},{-102,-4},{-50.4,-4}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.Discharge_Steam, PID3.u_m) annotation (Line(
-      points={{-30,-100},{-30,-70},{-102,-70},{-102,42},{-32,42},{-32,53.2}},
+  connect(sensorBus.Discharge_Temp, PID3.u_m) annotation (Line(
+      points={{-30,-100},{-102,-100},{-102,42},{-32,42},{-32,53.2}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -174,4 +166,4 @@ annotation(defaultComponentName="changeMe_CS", Icon(graphics={
           fillColor={255,255,237},
           fillPattern=FillPattern.Solid,
           textString="Change Me")}));
-end CS_Boiler_03;
+end CS_Total_Power_Prod;

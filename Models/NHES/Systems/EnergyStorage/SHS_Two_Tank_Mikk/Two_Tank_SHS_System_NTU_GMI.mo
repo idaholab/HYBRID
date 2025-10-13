@@ -1,7 +1,8 @@
 within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
 model Two_Tank_SHS_System_NTU_GMI
-    extends BaseClasses.Partial_SubSystem_A(    redeclare replaceable CS_Boiler_04 CS,
-    redeclare replaceable ED_Dummy ED,
+  extends BaseClasses.Partial_SubSystem_A(
+    redeclare replaceable Controls.CS_Boiler_04 CS,
+    redeclare replaceable Controls.ED_Dummy ED,
     redeclare replaceable Data.Data_SHS data(DHX_v_shell=1.0));
     replaceable package Storage_Medium =
       TRANSFORM.Media.Fluids.Therminol_66.TableBasedTherminol66 constrainedby
@@ -33,19 +34,35 @@ model Two_Tank_SHS_System_NTU_GMI
     V_Tube=data.DHX_v_tube,
     V_Shell=data.DHX_v_shell,
     p_start_tube=data.DHX_p_start_tube,
+    use_T_start_tube=data.DHX_use_T_start_tube,
+    T_start_tube_inlet=data.DHX_T_start_tube_inlet,
+    T_start_tube_outlet=data.DHX_T_start_tube_outlet,
     h_start_tube_inlet=data.DHX_h_start_tube_inlet,
     h_start_tube_outlet=data.DHX_h_start_tube_outlet,
     p_start_shell=data.DHX_p_start_shell,
+    use_T_start_shell=data.DHX_use_T_start_shell,
+    T_start_shell_inlet=data.DHX_T_start_tube_inlet,
+    T_start_shell_outlet=data.DHX_h_start_shell_outlet,
     h_start_shell_inlet=data.DHX_h_start_shell_inlet,
     h_start_shell_outlet=data.DHX_h_start_shell_outlet,
     dp_init_tube=data.DHX_dp_init_tube,
     dp_init_shell = data.DHX_dp_init_shell,
-    Q_init=data.DHX_Q_init)          annotation (Placement(transformation(
+    dp_general=data.DHX_dp_general,
+    Q_init=data.DHX_Q_init,
+    Cr_init=data.DHX_Cr_init,
+    m_start_tube=data.DHX_m_flow_start_tube,
+    m_start_shell=data.DHX_m_flow_start_shell)
+                                     annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=270,
         origin={72,20})));
   TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium =
-        Storage_Medium, redeclare model Geometry =
+        Storage_Medium,
+    p_start=data.DHX_p_start_tube,
+    use_T_start=data.DHX_use_T_start_tube,
+    T_start=data.DHX_T_start_tube_inlet,
+    h_start=data.DHX_h_start_tube_inlet,
+                        redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
         (V=data.ctvolume_volume))
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
@@ -76,7 +93,7 @@ model Two_Tank_SHS_System_NTU_GMI
     diameter=data.discharge_pump_diameter,
     redeclare model FlowChar =
         TRANSFORM.Fluid.ClosureRelations.PumpCharacteristics.Models.Head.PerformanceCurve
-        (V_flow_curve={0,1,2}, head_curve={20,8,0}),
+        (V_flow_curve=data.dis_pump_V_flow_nom, head_curve=data.dis_pump_head_curve),
     N_nominal=data.discharge_pump_rpm_nominal,
     diameter_nominal=data.discharge_pump_diameter_nominal,
     dp_nominal=data.discharge_pump_dp_nominal,
@@ -116,7 +133,7 @@ model Two_Tank_SHS_System_NTU_GMI
     diameter=data.charge_pump_diamter,
     redeclare model FlowChar =
         TRANSFORM.Fluid.ClosureRelations.PumpCharacteristics.Models.Head.PerformanceCurve
-        (V_flow_curve={0,1,2}, head_curve={20,8,0}),
+        (V_flow_curve=data.charge_pump_V_flow_nom, head_curve=data.charge_pump_head_curve),
     N_nominal=data.charge_pump_rpm_nominal,
     diameter_nominal=data.charge_pump_diameter_nominal,
     dp_nominal=data.charge_pump_dp_nominal,
@@ -160,9 +177,11 @@ model Two_Tank_SHS_System_NTU_GMI
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
     delay1(Ti=0.5)
     annotation (Placement(transformation(extent={{-102,-90},{-94,-86}})));
-  Modelica.Blocks.Logical.Hysteresis hysteresis(uLow=3, uHigh=12)
+  Modelica.Blocks.Logical.Hysteresis hysteresis(uLow=data.ht_level_max*0.2,
+      uHigh=data.ht_level_max*0.8)
     annotation (Placement(transformation(extent={{-98,80},{-86,68}})));
-  Modelica.Blocks.Sources.RealExpression Level_Hot_Tank2(y=15 - hot_tank.level)
+  Modelica.Blocks.Sources.RealExpression Level_Hot_Tank2(y=data.ht_level_max -
+        hot_tank.level)
     annotation (Placement(transformation(extent={{-134,64},{-114,84}})));
   Modelica.Blocks.Sources.RealExpression Charging_Temperature(y=sensor_T.T)
     annotation (Placement(transformation(extent={{-104,132},{-84,152}})));
@@ -172,15 +191,34 @@ model Two_Tank_SHS_System_NTU_GMI
   Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase CHX(
     shell_av_b=true,
     use_derQ=true,
-    tau=1,
-    NTU=0.9,
-    K_tube=1000,
-    K_shell=1000,
+    tau=data.CHX_tau,
+    NTU=data.CHX_NTU,
+    K_tube=data.CHX_K_tube,
+    K_shell=data.CHX_K_shell,
     redeclare package Tube_medium = Storage_Medium,
     redeclare package Shell_medium = Charging_Medium,
-    V_Tube=10,
-    V_Shell=25,
-    Q_init=1)          annotation (Placement(transformation(
+    V_Tube=data.CHX_v_tube,
+    V_Shell=data.CHX_v_shell,
+    p_start_tube=data.CHX_p_start_tube,
+    use_T_start_tube=data.CHX_use_T_start_tube,
+    T_start_tube_inlet=data.CHX_T_start_tube_inlet,
+    T_start_tube_outlet=data.CHX_T_start_tube_outlet,
+    h_start_tube_inlet=data.CHX_h_start_tube_inlet,
+    h_start_tube_outlet=data.CHX_h_start_tube_outlet,
+    p_start_shell=data.CHX_p_start_shell,
+    use_T_start_shell=data.CHX_use_T_start_shell,
+    T_start_shell_inlet=data.CHX_T_start_shell_inlet,
+    T_start_shell_outlet=data.CHX_T_start_shell_outlet,
+    h_start_shell_inlet=data.CHX_h_start_shell_inlet,
+    h_start_shell_outlet=data.CHX_h_start_shell_outlet,
+    dp_init_tube=data.CHX_dp_init_tube,
+    dp_init_shell=data.CHX_dp_init_shell,
+    dp_general=data.CHX_dp_general,
+    Q_init=data.CHX_Q_init,
+    Cr_init=data.CHX_Cr_init,
+    m_start_tube=data.CHX_m_flow_start_tube,
+    m_start_shell=data.CHX_m_flow_start_shell)
+                       annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=270,
         origin={-46,-54})));

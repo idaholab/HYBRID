@@ -1,4 +1,4 @@
-within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
+within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Controls;
 model CS_Boiler_03_GMI
 
   extends BaseClasses.Partial_ControlSystem;

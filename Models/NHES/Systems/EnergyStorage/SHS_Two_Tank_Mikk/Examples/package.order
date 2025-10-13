@@ -2,3 +2,9 @@ Test_2
 Build_Test
 Build_Test_NTU
 Build_Test_NTU_GMI
+Skid_Size_Two_Tank
+Skid_Size_With_Boiler
+Build_Test_NTU_SkidSizeShift
+Build_Test_NTU_OnceThru
+Build_Test_NTU_SkidSizeShift_Bypass
+Build_Test_NTU_SkidSizeShift_Bypass_Uncertainty

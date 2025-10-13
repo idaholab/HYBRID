@@ -1,5 +1,5 @@
-within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
-model CS_Boiler
+within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Controls;
+model CS_Boiler_02
 
   extends BaseClasses.Partial_ControlSystem;
 
@@ -28,21 +28,12 @@ model CS_Boiler
     annotation (Placement(transformation(extent={{-18,20},{-12,14}})));
   TRANSFORM.Controls.LimPID PID5(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2.5e-4,
-    Ti=10,
+    k=-7.5e-4,
+    Ti=30,
     yMin=0.0,
     initType=Modelica.Blocks.Types.Init.InitialOutput,
     y_start=0.0)
-    annotation (Placement(transformation(extent={{-44,26},{-38,20}})));
-  Modelica.Blocks.Sources.Trapezoid trapezoid1(
-    amplitude=20,
-    rising=500,
-    width=8500,
-    falling=500,
-    period=18000,
-    offset=0,
-    startTime=9000)
-    annotation (Placement(transformation(extent={{-62,20},{-56,26}})));
+    annotation (Placement(transformation(extent={{-44,24},{-38,18}})));
   Modelica.Blocks.Math.Add add2
     annotation (Placement(transformation(extent={{-56,12},{-50,18}})));
   Modelica.Blocks.Math.Min min2
@@ -53,21 +44,21 @@ model CS_Boiler
     annotation (Placement(transformation(extent={{-68,14},{-62,20}})));
   TRANSFORM.Controls.LimPID PID3(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2.5e-4,
+    k=2e-2,
     Ti=10,
     yMax=1.0,
     yMin=0.0,
     y_start=0.0)
     annotation (Placement(transformation(extent={{-36,54},{-28,62}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
-    amplitude=20,
+    amplitude=2.0,
     rising=500,
     width=8500,
     falling=500,
     period=18000,
     offset=0.0,
     startTime=0)
-    annotation (Placement(transformation(extent={{-74,42},{-62,54}})));
+    annotation (Placement(transformation(extent={{-58,48},{-46,60}})));
   BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.MinMaxFilter
     Discharging_Valve_Position(min=1e-4) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
@@ -83,6 +74,25 @@ model CS_Boiler
     annotation (Placement(transformation(extent={{-52,76},{-46,82}})));
   Modelica.Blocks.Sources.Constant one2(k=1.25)
     annotation (Placement(transformation(extent={{-74,60},{-68,66}})));
+  Modelica.Blocks.Sources.Constant one1(k=273.15 + 245)
+    annotation (Placement(transformation(extent={{-58,22},{-52,28}})));
+  Modelica.Blocks.Math.Add add3(k1=0.1)
+    annotation (Placement(transformation(extent={{-30,24},{-24,30}})));
+  Modelica.Blocks.Logical.Switch switch1
+    annotation (Placement(transformation(extent={{-50,32},{-46,36}})));
+  Modelica.Blocks.Sources.Constant one6(k=0.0)
+    annotation (Placement(transformation(extent={{-56,30},{-54,32}})));
+  Modelica.Blocks.Sources.Constant one7(k=22.0)
+    annotation (Placement(transformation(extent={{-56,38},{-54,40}})));
+  TRANSFORM.Controls.LimPID PID2(
+    controllerType=Modelica.Blocks.Types.SimpleController.PI,
+    k=2.5e-2,
+    Ti=10,
+    yMax=1.0,
+    yMin=0.0,
+    initType=Modelica.Blocks.Types.Init.InitialOutput,
+    y_start=0.0)
+    annotation (Placement(transformation(extent={{-40,38},{-34,32}})));
 equation
 
   connect(PID1.u_s, const1.y)
@@ -101,7 +111,7 @@ equation
     annotation (Line(points={{-24,-10},{-39,-10}},
                                                 color={0,0,127}));
   connect(sensorBus.Boiler_Level, PID.u_m) annotation (Line(
-      points={{-30,-100},{-30,-60},{-52,-60},{-52,-28},{-12,-28},{-12,-22}},
+      points={{-30,-100},{-30,-70},{-52,-70},{-52,-28},{-12,-28},{-12,-22}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -114,10 +124,6 @@ equation
          {{-11.7,17},{-8,17},{-8,16},{0,16}}, color={0,0,127}));
   connect(add2.y,product2. u1) annotation (Line(points={{-49.7,15},{-22,15},{
           -22,16},{-18.6,16},{-18.6,15.2}},                 color={0,0,127}));
-  connect(PID5.y,product2. u2) annotation (Line(points={{-37.7,23},{-24,23},{
-          -24,18.8},{-18.6,18.8}},                          color={0,0,127}));
-  connect(trapezoid1.y,PID5. u_s)
-    annotation (Line(points={{-55.7,23},{-44.6,23}},     color={0,0,127}));
   connect(min2.y,add2. u2) annotation (Line(points={{-71.6,10},{-60,10},{-60,
           13.2},{-56.6,13.2}},                                         color={0,
           0,127}));
@@ -131,18 +137,13 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.charge_m_flow, PID5.u_m) annotation (Line(
-      points={{-30,-100},{-30,-70},{-102,-70},{-102,30},{-41,30},{-41,26.6}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(sensorBus.cold_tank_level, min2.u1) annotation (Line(
       points={{-30,-100},{-30,-70},{-102,-70},{-102,12.4},{-80.8,12.4}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(trapezoid.y,PID3. u_s)
-    annotation (Line(points={{-61.4,48},{-42,48},{-42,58},{-36.8,58}},
+    annotation (Line(points={{-45.4,54},{-40,54},{-40,58},{-36.8,58}},
                                                      color={0,0,127}));
   connect(product1.y, Discharging_Valve_Position.u)
     annotation (Line(points={{-11.6,64},{0,64}}, color={0,0,127}));
@@ -169,9 +170,37 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.discharge_m_flow, PID3.u_m) annotation (Line(
-      points={{-30,-100},{-30,-70},{-102,-70},{-102,30},{-36,30},{-36,38},{-32,
-          38},{-32,53.2}},
+  connect(one1.y, PID5.u_s) annotation (Line(points={{-51.7,25},{-44.6,25},{
+          -44.6,21}}, color={0,0,127}));
+  connect(sensorBus.Charge_Temp, PID5.u_m) annotation (Line(
+      points={{-30,-100},{-30,-70},{-102,-70},{-102,30},{-41,30},{-41,24.6}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(PID5.y, add3.u2) annotation (Line(points={{-37.7,21},{-34,21},{-34,
+          25.2},{-30.6,25.2}}, color={0,0,127}));
+  connect(product2.u2, add3.y) annotation (Line(points={{-18.6,18.8},{-22,18.8},
+          {-22,27},{-23.7,27}}, color={0,0,127}));
+  connect(switch1.u1, one7.y) annotation (Line(points={{-50.4,35.6},{-52,35.6},
+          {-52,39},{-53.9,39}}, color={0,0,127}));
+  connect(switch1.u3, one6.y) annotation (Line(points={{-50.4,32.4},{-50.4,31},
+          {-53.9,31}}, color={0,0,127}));
+  connect(switch1.y, PID2.u_s) annotation (Line(points={{-45.8,34},{-45.8,35},{
+          -40.6,35}}, color={0,0,127}));
+  connect(add3.u1, PID2.y) annotation (Line(points={{-30.6,28.8},{-33.7,28.8},{
+          -33.7,35}}, color={0,0,127}));
+  connect(sensorBus.charge_m_flow, PID2.u_m) annotation (Line(
+      points={{-30,-100},{-30,-70},{-102,-70},{-102,42},{-37,42},{-37,38.6}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Charging_Logical, switch1.u2) annotation (Line(
+      points={{-30,-100},{-30,-70},{-102,-70},{-102,34},{-50.4,34}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Discharge_Steam, PID3.u_m) annotation (Line(
+      points={{-30,-100},{-30,-70},{-102,-70},{-102,42},{-32,42},{-32,53.2}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -183,4 +212,4 @@ annotation(defaultComponentName="changeMe_CS", Icon(graphics={
           fillColor={255,255,237},
           fillPattern=FillPattern.Solid,
           textString="Change Me")}));
-end CS_Boiler;
+end CS_Boiler_02;

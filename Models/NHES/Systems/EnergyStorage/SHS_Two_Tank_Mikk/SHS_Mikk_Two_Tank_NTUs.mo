@@ -1,7 +1,8 @@
 within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
 model SHS_Mikk_Two_Tank_NTUs
-    extends BaseClasses.Partial_SubSystem_A(    redeclare replaceable CS_Boiler CS,
-    redeclare replaceable ED_Dummy ED,
+  extends BaseClasses.Partial_SubSystem_A(
+    redeclare replaceable Controls.CS_Boiler CS,
+    redeclare replaceable Controls.ED_Dummy ED,
     redeclare replaceable Data.Data_Dummy data);
     replaceable package Storage_Medium =
       TRANSFORM.Media.Fluids.Therminol_66.TableBasedTherminol66;

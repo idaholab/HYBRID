@@ -1,9 +1,10 @@
 within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
-model Two_Tank_SHS_System
+model Two_Tank_SHS_System_NewUpdate_Bypasses
+  "This version removes the minimum flow enforcer from the two tank system model."
   extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable Controls.CS_Boiler_02 CS,
+    redeclare replaceable Controls.CS_Experimental CS,
     redeclare replaceable Controls.ED_Dummy ED,
-    redeclare replaceable Data.Data_SHS data);
+    redeclare replaceable Data.Data_SHS data(DHX_v_shell=1.0));
     replaceable package Storage_Medium =
       TRANSFORM.Media.Fluids.Therminol_66.TableBasedTherminol66 constrainedby
     Modelica.Media.Interfaces.PartialMedium                                                                           annotation(Dialog(tab="General", group="Mediums"), choicesAllMatching=true);
@@ -14,17 +15,16 @@ model Two_Tank_SHS_System
       Modelica.Media.Water.StandardWater                                          constrainedby
     Modelica.Media.Interfaces.PartialMedium annotation (Dialog(tab="General",
         group="Mediums"), choicesAllMatching=true);
-    parameter Modelica.Units.SI.MassFlowRate m_flow_min = 2.0;
+    parameter Modelica.Units.SI.MassFlowRate m_flow_min = 2.50;
     parameter Integer CHXnV = 5;
     parameter Modelica.Units.SI.Length tank_height = 15;
 
     input Modelica.Units.SI.MassFlowRate Produced_steam_flow annotation(Dialog(tab = "General"));
-    output Boolean Charging_Trigger = hysteresis.y;
-
+  output Boolean Charging_Trigger=booleanConstant.y;
 
   Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase DHX(
     tube_av_b=false,
-    shell_av_b=false,
+    shell_av_b=true,
     use_derQ=data.DHX_Use_derQ,
     tau=data.DHX_tau,
     NTU=data.DHX_NTU,
@@ -35,31 +35,47 @@ model Two_Tank_SHS_System
     V_Tube=data.DHX_v_tube,
     V_Shell=data.DHX_v_shell,
     p_start_tube=data.DHX_p_start_tube,
+    use_T_start_tube=data.DHX_use_T_start_tube,
+    T_start_tube_inlet=data.DHX_T_start_tube_inlet,
+    T_start_tube_outlet=data.DHX_T_start_tube_outlet,
     h_start_tube_inlet=data.DHX_h_start_tube_inlet,
     h_start_tube_outlet=data.DHX_h_start_tube_outlet,
     p_start_shell=data.DHX_p_start_shell,
+    use_T_start_shell=data.DHX_use_T_start_shell,
+    T_start_shell_inlet=data.DHX_T_start_shell_inlet,
+    T_start_shell_outlet=data.DHX_T_start_shell_outlet,
     h_start_shell_inlet=data.DHX_h_start_shell_inlet,
     h_start_shell_outlet=data.DHX_h_start_shell_outlet,
     dp_init_tube=data.DHX_dp_init_tube,
     dp_init_shell = data.DHX_dp_init_shell,
-    Q_init=data.DHX_Q_init)          annotation (Placement(transformation(
-        extent={{10,-10},{-10,10}},
-        rotation=180,
-        origin={8,14})));
+    dp_general=data.DHX_dp_general,
+    Q_init=data.DHX_Q_init,
+    Cr_init=data.DHX_Cr_init,
+    m_start_tube=data.DHX_m_flow_start_tube,
+    m_start_shell=data.DHX_m_flow_start_shell)
+                                     annotation (Placement(transformation(
+        extent={{-10,10},{10,-10}},
+        rotation=270,
+        origin={72,20})));
   TRANSFORM.Fluid.Volumes.SimpleVolume     volume(redeclare package Medium =
-        Storage_Medium, redeclare model Geometry =
+        Storage_Medium,
+    p_start=data.DHX_p_start_tube,
+    use_T_start=true,
+    T_start=data.hot_tank_init_temp,
+    h_start=data.DHX_h_start_tube_inlet,
+    redeclare model Geometry =
         TRANSFORM.Fluid.ClosureRelations.Geometry.Models.LumpedVolume.GenericVolume
         (V=data.ctvolume_volume))
-    annotation (Placement(transformation(extent={{10,-10},{-10,10}},
-        rotation=0,
-        origin={50,-10})));
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={68,-10})));
   Fluid.Valves.ValveLinear Discharging_Valve(
     redeclare package Medium = Storage_Medium,
     dp_nominal=data.disvalve_dp_nominal,
     m_flow_nominal=data.disvalve_m_flow_nom)
     annotation (Placement(transformation(extent={{-10,10},{10,-10}},
         rotation=90,
-        origin={82,-28})));
+        origin={68,-58})));
   BaseClasses.DumpTank_Init_T      hot_tank(
     redeclare package Medium = Storage_Medium,
     A=data.ht_area,
@@ -70,22 +86,15 @@ model Two_Tank_SHS_System
     level_start=data.ht_init_level,
     h_start=747e3,
     T_start=data.hot_tank_init_temp)
-    annotation (Placement(transformation(extent={{38,-94},{58,-74}})));
-  TRANSFORM.Fluid.Pipes.TransportDelayPipe hot_tank_dump_pipe(
-    redeclare package Medium = Storage_Medium,
-    crossArea=data.htdp_area,
-    length=data.htdp_length,
-    dheight=data.htdp_d_height) annotation (Placement(transformation(
-        extent={{10,10},{-10,-10}},
-        rotation=180,
-        origin={20,-70})));
+    annotation (Placement(transformation(extent={{30,-110},{50,-90}})));
+
   TRANSFORM.Fluid.Machines.Pump discharge_pump(
     redeclare package Medium = Storage_Medium,
     V=data.discharge_pump_volume,
     diameter=data.discharge_pump_diameter,
     redeclare model FlowChar =
         TRANSFORM.Fluid.ClosureRelations.PumpCharacteristics.Models.Head.PerformanceCurve
-        (V_flow_curve={0,1,2}, head_curve={20,8,0}),
+        (V_flow_curve=data.dis_pump_V_flow_nom, head_curve=data.dis_pump_head_curve),
     N_nominal=data.discharge_pump_rpm_nominal,
     diameter_nominal=data.discharge_pump_diameter_nominal,
     dp_nominal=data.discharge_pump_dp_nominal,
@@ -95,18 +104,18 @@ model Two_Tank_SHS_System
                   annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={82,-66})));
+        origin={68,-92})));
   Modelica.Blocks.Sources.RealExpression Discharge_Mass_Flow(y=
         Discharging_Valve.m_flow)
-    annotation (Placement(transformation(extent={{-102,104},{-82,124}})));
+    annotation (Placement(transformation(extent={{-104,104},{-84,124}})));
   TRANSFORM.Fluid.Pipes.TransportDelayPipe cold_tank_dump_pipe(
     redeclare package Medium = Storage_Medium,
     crossArea=data.ctdp_area,
     length=data.ctdp_length,
     dheight=data.ctdp_d_height) annotation (Placement(transformation(
         extent={{10,10},{-10,-10}},
-        rotation=270,
-        origin={-22,26})));
+        rotation=0,
+        origin={-20,46})));
   BaseClasses.DumpTank_Init_T      cold_tank(
     redeclare package Medium = Storage_Medium,
     A=data.cold_tank_area,
@@ -118,14 +127,14 @@ model Two_Tank_SHS_System
     Use_T_Start=true,
     h_start=133e3,
     T_start=data.cold_tank_init_temp)
-    annotation (Placement(transformation(extent={{-58,18},{-38,38}})));
+    annotation (Placement(transformation(extent={{-52,22},{-32,42}})));
   TRANSFORM.Fluid.Machines.Pump charge_pump(
     redeclare package Medium = Storage_Medium,
     V=data.charge_pump_volume,
     diameter=data.charge_pump_diamter,
     redeclare model FlowChar =
         TRANSFORM.Fluid.ClosureRelations.PumpCharacteristics.Models.Head.PerformanceCurve
-        (V_flow_curve={0,1,2}, head_curve={20,8,0}),
+        (V_flow_curve=data.charge_pump_V_flow_nom, head_curve=data.charge_pump_head_curve),
     N_nominal=data.charge_pump_rpm_nominal,
     diameter_nominal=data.charge_pump_diameter_nominal,
     dp_nominal=data.charge_pump_dp_nominal,
@@ -135,7 +144,7 @@ model Two_Tank_SHS_System
                   annotation (Placement(transformation(
         extent={{-10,10},{10,-10}},
         rotation=270,
-        origin={-48,-2})));
+        origin={-42,8})));
   Fluid.Valves.ValveLinear Charging_Valve(
     redeclare package Medium = Storage_Medium,
     allowFlowReversal=true,
@@ -143,82 +152,61 @@ model Two_Tank_SHS_System
     m_flow_nominal=data.chvalve_m_flow_nom)
     annotation (Placement(transformation(extent={{10,-10},{-10,10}},
         rotation=90,
-        origin={-26,-26})));
+        origin={-42,-20})));
   Modelica.Blocks.Sources.RealExpression Charging_Mass_Flow(y=Charging_Valve.m_flow)
-    annotation (Placement(transformation(extent={{-102,76},{-82,96}})));
+    annotation (Placement(transformation(extent={{-104,76},{-84,96}})));
 
   Modelica.Blocks.Sources.RealExpression Level_Cold_Tank(y=cold_tank.level)
-    annotation (Placement(transformation(extent={{-102,90},{-82,110}})));
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+        rotation=0,
+        origin={-94,100})));
   Modelica.Blocks.Sources.RealExpression Level_Hot_Tank(y=hot_tank.level)
     annotation (Placement(transformation(extent={{-104,118},{-84,138}})));
-  Modelica.Fluid.Sources.MassFlowSource_h boundary2(
-    redeclare package Medium = Charging_Medium,
-    use_m_flow_in=false,
-    use_h_in=true,
-    m_flow=m_flow_min,
-    nPorts=1) annotation (Placement(transformation(extent={{-44,-104},{-24,-84}})));
-  Modelica.Fluid.Sources.MassFlowSource_T boundary4(
-    redeclare package Medium = Charging_Medium,
-    use_m_flow_in=false,
-    use_T_in=false,
-    m_flow=-m_flow_min,
-    T=598.15,
-    nPorts=1) annotation (Placement(transformation(extent={{-98,-2},{-78,18}})));
-  Modelica.Blocks.Sources.RealExpression Level_Hot_Tank1(y=0.5*CHX.shell.mediums[
-        1].h + 0.5*CHX.shell.mediums[CHXnV].h)
-    annotation (Placement(transformation(extent={{-88,-100},{-68,-80}})));
-  BalanceOfPlant.StagebyStageTurbineSecondary.Control_and_Distribution.Delay
-    delay1(Ti=0.5)
-    annotation (Placement(transformation(extent={{-62,-92},{-54,-88}})));
-  Modelica.Blocks.Logical.Hysteresis hysteresis(uLow=3, uHigh=12)
-    annotation (Placement(transformation(extent={{-66,68},{-46,88}})));
-  Modelica.Blocks.Sources.RealExpression Level_Hot_Tank2(y=15 - hot_tank.level)
-    annotation (Placement(transformation(extent={{-100,64},{-80,84}})));
+  Modelica.Blocks.Sources.BooleanConstant
+                                     booleanConstant
+    annotation (Placement(transformation(extent={{-98,80},{-86,68}})));
+  Modelica.Blocks.Sources.RealExpression Level_Hot_Tank2(y=data.ht_level_max -
+        hot_tank.level)
+    annotation (Placement(transformation(extent={{-134,64},{-114,84}})));
   Modelica.Blocks.Sources.RealExpression Charging_Temperature(y=
-        hot_tank_dump_pipe.state.T)
+        sensor_T_hottank.T)
     annotation (Placement(transformation(extent={{-104,132},{-84,152}})));
-  Modelica.Blocks.Sources.RealExpression Charging_Temperature1(y=
-        Produced_steam_flow)
+  Modelica.Blocks.Sources.RealExpression Steam_Flow_Rate(y=Produced_steam_flow)
     annotation (Placement(transformation(extent={{-30,130},{-50,150}})));
-  TRANSFORM.HeatExchangers.GenericDistributed_HX      CHX(
-    nParallel=6,
-    redeclare model Geometry =
-        TRANSFORM.Fluid.ClosureRelations.Geometry.Models.DistributedVolume_1D.HeatExchanger.ShellAndTubeHX
-        (
-        D_o_shell=0.1,
-        crossAreaEmpty_shell=1,
-        nV=CHXnV,
-        nTubes=500,
-        nR=2,
-        length_shell=25,
-        dimension_tube=0.04,
-        length_tube=25,
-        th_wall=0.003),
-    redeclare package Medium_shell = Charging_Medium,
-    redeclare package Medium_tube = Storage_Medium,
-    redeclare package Material_tubeWall = TRANSFORM.Media.Solids.SS316,
-    redeclare model FlowModel_shell =
-        TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.TwoPhase_Developed_2Region_NumStable,
-    redeclare model HeatTransfer_shell =
-        TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Alphas_TwoPhase_5Region,
-    redeclare model FlowModel_tube =
-        TRANSFORM.Fluid.ClosureRelations.PressureLoss.Models.DistributedPipe_1D.SinglePhase_Developed_2Region_Simple,
-    redeclare model HeatTransfer_tube =
-        TRANSFORM.Fluid.ClosureRelations.HeatTransfer.Models.DistributedPipe_1D_MultiTransferSurface.Nus_DittusBoelter_Simple,
-    p_a_start_tube=1500000,
-    p_b_start_tube=800000,
-    exposeState_b_shell=false,
-    useLumpedPressure_shell=false,
-    exposeState_a_tube=false,
-    exposeState_b_tube=true,
-    redeclare model InternalTraceGen_tube =
-        TRANSFORM.Fluid.ClosureRelations.InternalTraceGeneration.Models.DistributedVolume_Trace_1D.GenericTraceGeneration,
-    redeclare model InternalHeatGen_tube =
-        TRANSFORM.Fluid.ClosureRelations.InternalVolumeHeatGeneration.Models.DistributedVolume_1D.GenericHeatGeneration)
+  Fluid.HeatExchangers.Generic_HXs.NTU_HX_SinglePhase CHX(
+    shell_av_b=true,
+    use_derQ=true,
+    tau=data.CHX_tau,
+    NTU=data.CHX_NTU,
+    K_tube=data.CHX_K_tube,
+    K_shell=data.CHX_K_shell,
+    redeclare package Tube_medium = Storage_Medium,
+    redeclare package Shell_medium = Charging_Medium,
+    V_Tube=data.CHX_v_tube,
+    V_Shell=data.CHX_v_shell,
+    p_start_tube=data.CHX_p_start_tube,
+    use_T_start_tube=data.CHX_use_T_start_tube,
+    T_start_tube_inlet=data.CHX_T_start_tube_inlet,
+    T_start_tube_outlet=data.CHX_T_start_tube_outlet,
+    h_start_tube_inlet=data.CHX_h_start_tube_inlet,
+    h_start_tube_outlet=data.CHX_h_start_tube_outlet,
+    p_start_shell=data.CHX_p_start_shell,
+    use_T_start_shell=data.CHX_use_T_start_shell,
+    T_start_shell_inlet=data.CHX_T_start_shell_inlet,
+    T_start_shell_outlet=data.CHX_T_start_shell_outlet,
+    h_start_shell_inlet=data.CHX_h_start_shell_inlet,
+    h_start_shell_outlet=data.CHX_h_start_shell_outlet,
+    dp_init_tube=data.CHX_dp_init_tube,
+    dp_init_shell=data.CHX_dp_init_shell,
+    dp_general=data.CHX_dp_general,
+    Q_init=data.CHX_Q_init,
+    Cr_init=data.CHX_Cr_init,
+    m_start_tube=data.CHX_m_flow_start_tube,
+    m_start_shell=data.CHX_m_flow_start_shell)
                        annotation (Placement(transformation(
-        extent={{-10,10},{10,-10}},
+        extent={{10,-10},{-10,10}},
         rotation=270,
-        origin={-8,-60})));
+        origin={-80,-40})));
 
   TRANSFORM.Fluid.Interfaces.FluidPort_Flow port_ch_a(redeclare package Medium =
         Charging_Medium)                                                                           annotation (Placement(
@@ -237,43 +225,105 @@ model Two_Tank_SHS_System
         Discharging_Medium)                                                                             annotation (Placement(
         transformation(extent={{90,-72},{110,-52}}), iconTransformation(extent={
             {90,-72},{110,-52}})));
+  TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance(
+      redeclare package Medium =
+        Storage_Medium, R=100)
+    annotation (Placement(transformation(extent={{-82,-102},{-62,-82}})));
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T_hottank(redeclare package
+      Medium = Storage_Medium)
+    annotation (Placement(transformation(extent={{20,-88},{40,-68}})));
+  Modelica.Blocks.Sources.RealExpression Charging_HTF_Temp(y=CHX.Shell.medium.T)
+    annotation (Placement(transformation(extent={{-104,148},{-84,168}})));
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T_discharge(redeclare
+      package Medium = Discharging_Medium) annotation (Placement(transformation(
+        extent={{10,10},{-10,-10}},
+        rotation=90,
+        origin={94,-28})));
+  TRANSFORM.Fluid.Sensors.TemperatureTwoPort sensor_T_coldtank(redeclare
+      package Medium = Storage_Medium)
+    annotation (Placement(transformation(extent={{18,36},{-2,56}})));
+  TRANSFORM.Fluid.FittingsAndResistances.TeeJunctionVolume tee(redeclare
+      package Medium = Storage_Medium, V=0.1) annotation (Placement(
+        transformation(
+        extent={{-10,10},{10,-10}},
+        rotation=90,
+        origin={-44,-52})));
+  Fluid.Valves.ValveLinear CHX_BypassValve(
+    redeclare package Medium = Storage_Medium,
+    allowFlowReversal=true,
+    dp_nominal=0.1*data.chvalve_dp_nominal,
+    m_flow_nominal=10*data.chvalve_m_flow_nom)
+    annotation (Placement(transformation(extent={{10,-10},{-10,10}},
+        rotation=90,
+        origin={-12,-72})));
+  TRANSFORM.Fluid.FittingsAndResistances.TeeJunctionVolume tee1(redeclare
+      package Medium = Storage_Medium, V=0.1) annotation (Placement(
+        transformation(
+        extent={{-10,10},{10,-10}},
+        rotation=180,
+        origin={-38,-106})));
+  TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance1(
+      redeclare package Medium = Storage_Medium, R=100)
+    annotation (Placement(transformation(extent={{-14,-116},{6,-96}})));
+  TRANSFORM.Fluid.FittingsAndResistances.TeeJunctionVolume tee2(
+    redeclare package Medium = Storage_Medium,
+    V=0.1,
+    T_start=data.hot_tank_init_temp)          annotation (Placement(
+        transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={40,-28})));
+  TRANSFORM.Fluid.FittingsAndResistances.TeeJunctionVolume tee3(redeclare
+      package Medium = Storage_Medium, V=0.1) annotation (Placement(
+        transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=180,
+        origin={40,46})));
+  TRANSFORM.Fluid.FittingsAndResistances.SpecifiedResistance resistance2(
+      redeclare package Medium = Storage_Medium, R=100)
+    annotation (Placement(transformation(extent={{70,36},{50,56}})));
+  Fluid.Valves.ValveLinear DHX_BypassValve(
+    redeclare package Medium = Storage_Medium,
+    allowFlowReversal=true,
+    dp_nominal=0.1*data.disvalve_dp_nominal,
+    m_flow_nominal=10*data.disvalve_m_flow_nom) annotation (Placement(
+        transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=90,
+        origin={16,-6})));
+  Modelica.Blocks.Logical.GreaterThreshold
+                                     greaterThreshold
+    annotation (Placement(transformation(extent={{-64,178},{-52,166}})));
 equation
-  connect(volume.port_a, Discharging_Valve.port_b)
-    annotation (Line(points={{56,-10},{82,-10},{82,-18}},
-                                                   color={0,127,255}));
-  connect(hot_tank.port_b, discharge_pump.port_a) annotation (Line(points={{48,-92.4},
-          {48,-96},{82,-96},{82,-76}}, color={0,127,255}));
-  connect(volume.port_b, DHX.Tube_in) annotation (Line(points={{44,-10},{24,-10},
-          {24,10},{18,10}},
+  connect(hot_tank.port_b, discharge_pump.port_a) annotation (Line(points={{40,
+          -108.4},{40,-114},{68,-114},{68,-102}},
+                                       color={0,127,255}));
+  connect(volume.port_b, DHX.Tube_in) annotation (Line(points={{68,-4},{68,10}},
                           color={0,127,255}));
   connect(cold_tank.port_b, charge_pump.port_a)
-    annotation (Line(points={{-48,19.6},{-48,8}}, color={0,127,255}));
-  connect(DHX.Tube_out, cold_tank_dump_pipe.port_a)
-    annotation (Line(points={{-2,10},{-22,10},{-22,16}}, color={0,127,255}));
-  connect(charge_pump.port_b, Charging_Valve.port_a) annotation (Line(points={{-48,
-          -12},{-48,-16},{-40,-16},{-40,-14},{-34,-14},{-34,-8},{-26,-8},{-26,-16}},
+    annotation (Line(points={{-42,23.6},{-42,18}},color={0,127,255}));
+  connect(charge_pump.port_b, Charging_Valve.port_a) annotation (Line(points={{-42,-2},
+          {-42,-10}},
         color={0,127,255}));
-  connect(cold_tank_dump_pipe.port_b, cold_tank.port_a) annotation (Line(points=
-         {{-22,36},{-22,40},{-34,40},{-34,42},{-48,42},{-48,36.4}}, color={0,
+  connect(cold_tank_dump_pipe.port_b, cold_tank.port_a) annotation (Line(points={{-30,46},
+          {-42,46},{-42,40.4}},                                     color={0,
           127,255}));
-  connect(hot_tank_dump_pipe.port_b, hot_tank.port_a) annotation (Line(points={
-          {30,-70},{48,-70},{48,-75.6}}, color={0,127,255}));
   connect(discharge_pump.port_b, Discharging_Valve.port_a)
-    annotation (Line(points={{82,-56},{82,-38}}, color={0,127,255}));
+    annotation (Line(points={{68,-82},{68,-68}}, color={0,127,255}));
   connect(actuatorBus.Charge_Valve_Position, Charging_Valve.opening)
     annotation (Line(
-      points={{30,100},{30,60},{-64,60},{-64,-26},{-34,-26}},
+      points={{30,100},{30,60},{-72,60},{-72,-20},{-50,-20}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.Discharge_Valve_Position, Discharging_Valve.opening)
     annotation (Line(
-      points={{30,100},{96,100},{96,-28},{90,-28}},
+      points={{30,100},{130,100},{130,-78},{86,-78},{86,-58},{76,-58}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.discharge_m_flow, Discharge_Mass_Flow.y) annotation (Line(
-      points={{-30,100},{-76,100},{-76,114},{-81,114}},
+      points={{-30,100},{-76,100},{-76,114},{-83,114}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -283,54 +333,113 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.cold_tank_level,Level_Cold_Tank. y) annotation (Line(
-      points={{-30,100},{-81,100}},
+      points={{-30,100},{-83,100}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.charge_m_flow, Charging_Mass_Flow.y) annotation (Line(
-      points={{-30,100},{-76,100},{-76,86},{-81,86}},
+      points={{-30,100},{-76,100},{-76,86},{-83,86}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(Level_Hot_Tank1.y, delay1.u)
-    annotation (Line(points={{-67,-90},{-62.8,-90}}, color={0,0,127}));
-  connect(hysteresis.u, Level_Hot_Tank2.y)
-    annotation (Line(points={{-68,78},{-74,78},{-74,74},{-79,74}},
-                                                     color={0,0,127}));
   connect(sensorBus.Charge_Temp, Charging_Temperature.y) annotation (Line(
       points={{-30,100},{-76,100},{-76,142},{-83,142}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.Charging_Logical, hysteresis.y) annotation (Line(
-      points={{-30,100},{-30,72},{-45,72},{-45,78}},
+  connect(sensorBus.Charging_Logical, booleanConstant.y) annotation (Line(
+      points={{-30,100},{-30,74},{-85.4,74}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(sensorBus.Discharge_Steam, Charging_Temperature1.y) annotation (Line(
+  connect(sensorBus.Discharge_Steam, Steam_Flow_Rate.y) annotation (Line(
       points={{-30,100},{-30,114},{-58,114},{-58,140},{-51,140}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(Charging_Valve.port_b, CHX.port_a_tube) annotation (Line(points={{-26,-36},
-          {-26,-46},{-8,-46},{-8,-50}},        color={0,127,255}));
-  connect(hot_tank_dump_pipe.port_a, CHX.port_b_tube) annotation (Line(points={
-          {10,-70},{8,-70},{8,-74},{2,-74},{2,-82},{-8,-82},{-8,-70}}, color={0,
+  connect(port_dch_a, DHX.Shell_in) annotation (Line(points={{98,58},{74,58},{
+          74,30}},                      color={0,127,255}));
+  connect(CHX.Shell_in, port_ch_a) annotation (Line(points={{-82,-50},{-82,-62},
+          {-98,-62}},                     color={0,127,255}));
+  connect(CHX.Shell_out, port_ch_b) annotation (Line(points={{-82,-30},{-82,54},
+          {-98,54}},                              color={0,127,255}));
+  connect(DHX.Shell_out, sensor_T_discharge.port_a) annotation (Line(points={{
+          74,10},{74,-4},{94,-4},{94,-18}}, color={0,127,255}));
+  connect(sensor_T_discharge.port_b, port_dch_b)
+    annotation (Line(points={{94,-38},{94,-62},{100,-62}}, color={0,127,255}));
+  connect(sensorBus.Discharge_Temp, sensor_T_discharge.T) annotation (Line(
+      points={{-30,100},{-30,82},{128,82},{128,-28},{97.6,-28}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensor_T_coldtank.port_b, cold_tank_dump_pipe.port_a)
+    annotation (Line(points={{-2,46},{-10,46}},color={0,127,255}));
+  connect(CHX_BypassValve.port_a, tee.port_3) annotation (Line(points={{-12,-62},
+          {-12,-52},{-34,-52}},               color={0,127,255}));
+  connect(Charging_Valve.port_b, tee.port_2) annotation (Line(points={{-42,-30},
+          {-42,-36},{-44,-36},{-44,-42}},                             color={0,127,
+          255}));
+  connect(tee.port_1, CHX.Tube_in) annotation (Line(points={{-44,-62},{-44,-66},
+          {-66,-66},{-66,-26},{-76,-26},{-76,-30}}, color={0,127,255}));
+  connect(resistance.port_a, CHX.Tube_out) annotation (Line(points={{-79,-92},{
+          -86,-92},{-86,-76},{-76,-76},{-76,-50}},
+                           color={0,127,255}));
+  connect(sensor_T_hottank.port_b, hot_tank.port_a)
+    annotation (Line(points={{40,-78},{40,-91.6}}, color={0,127,255}));
+  connect(tee1.port_3, CHX_BypassValve.port_b) annotation (Line(points={{-38,-96},
+          {-38,-88},{-12,-88},{-12,-82}},                color={0,127,255}));
+  connect(tee1.port_2, resistance.port_b) annotation (Line(points={{-48,-106},{
+          -56,-106},{-56,-92},{-65,-92}},              color={0,127,255}));
+  connect(resistance1.port_b, sensor_T_hottank.port_a) annotation (Line(points={{3,-106},
+          {14,-106},{14,-78},{20,-78}},                              color={0,
           127,255}));
-  connect(boundary2.ports[1], CHX.port_a_shell) annotation (Line(points={{-24,-94},
-          {-12.6,-94},{-12.6,-70}},            color={0,127,255}));
-  connect(boundary4.ports[1], CHX.port_b_shell) annotation (Line(points={{-78,8},
-          {-68,8},{-68,-50},{-24,-50},{-24,-50},{-12.6,-50}}, color={0,127,255}));
-  connect(port_dch_a, DHX.Shell_in) annotation (Line(points={{98,58},{56,58},{56,
-          38},{-6,38},{-6,16},{-2,16}}, color={0,127,255}));
-  connect(DHX.Shell_out, port_dch_b) annotation (Line(points={{18,16},{48,16},{48,
-          18},{72,18},{72,16},{92,16},{92,-62},{100,-62}}, color={0,127,255}));
-  connect(port_ch_a, CHX.port_a_shell) annotation (Line(points={{-98,-62},{-74,-62},
-          {-74,-64},{-44,-64},{-44,-70},{-12.6,-70}}, color={0,127,255}));
-  connect(CHX.port_b_shell, port_ch_b) annotation (Line(points={{-12.6,-50},{-50,
-          -50},{-50,-32},{-76,-32},{-76,54},{-98,54}}, color={0,127,255}));
-  connect(boundary2.h_in, delay1.y)
-    annotation (Line(points={{-46,-90},{-53.44,-90}}, color={0,0,127}));
+  connect(resistance1.port_a, tee1.port_1)
+    annotation (Line(points={{-11,-106},{-28,-106}},
+                                                  color={0,127,255}));
+  connect(actuatorBus.hot_tank_bypass_position, CHX_BypassValve.opening)
+    annotation (Line(
+      points={{30,100},{30,76},{26,76},{26,58},{-10,58},{-10,-60},{-14,-60},{
+          -14,-58},{-30,-58},{-30,-72},{-20,-72}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(Discharging_Valve.port_b, tee2.port_1) annotation (Line(points={{68,
+          -48},{68,-44},{40,-44},{40,-38}}, color={0,127,255}));
+  connect(tee2.port_2, volume.port_a) annotation (Line(points={{40,-18},{40,-10},
+          {52,-10},{52,-30},{68,-30},{68,-16}}, color={0,127,255}));
+  connect(tee3.port_2, sensor_T_coldtank.port_a)
+    annotation (Line(points={{30,46},{18,46}}, color={0,127,255}));
+  connect(resistance2.port_b, tee3.port_1)
+    annotation (Line(points={{53,46},{50,46}}, color={0,127,255}));
+  connect(resistance2.port_a, DHX.Tube_out)
+    annotation (Line(points={{67,46},{68,46},{68,30}}, color={0,127,255}));
+  connect(tee2.port_3, DHX_BypassValve.port_a) annotation (Line(points={{30,-28},
+          {22,-28},{22,-30},{16,-30},{16,-16}}, color={0,127,255}));
+  connect(DHX_BypassValve.port_b, tee3.port_3) annotation (Line(points={{16,4},
+          {16,16},{40,16},{40,36}}, color={0,127,255}));
+  connect(actuatorBus.cold_tank_bypass_position, DHX_BypassValve.opening)
+    annotation (Line(
+      points={{30,100},{30,58},{26,58},{26,20},{-2,20},{-2,-6},{8,-6}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.cold_tank_inlet_temp, sensor_T_coldtank.T) annotation (Line(
+      points={{-30,100},{-30,72},{8,72},{8,49.6}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(greaterThreshold.u, Steam_Flow_Rate.y) annotation (Line(points={{
+          -65.2,172},{-70,172},{-70,140},{-51,140}}, color={0,0,127}));
+  connect(sensorBus.discharging_logical, greaterThreshold.y) annotation (Line(
+      points={{-30,100},{-28,100},{-28,172},{-51.4,172}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(sensorBus.Charging_HTF_Temp, Charging_HTF_Temp.y) annotation (Line(
+      points={{-30,100},{-76,100},{-76,158},{-83,158}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   annotation (experiment(
       StopTime=432000,
       Interval=37,
@@ -599,4 +708,4 @@ equation
           fillColor={85,85,255},
           fillPattern=FillPattern.HorizontalCylinder,
           lineThickness=1)}));
-end Two_Tank_SHS_System;
+end Two_Tank_SHS_System_NewUpdate_Bypasses;

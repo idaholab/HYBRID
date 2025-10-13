@@ -1,11 +1,13 @@
 within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
 model Two_Tank_SHS_Total_Power_Prod_RealHX
   "Copy of same SHS model but without the charging heat exchanger, which is now assumed to exist within a reactor model."
-    extends BaseClasses.Partial_SubSystem_A(    redeclare replaceable CS_Total_Power_Prod CS,
-    redeclare replaceable ED_Dummy ED,
+  extends BaseClasses.Partial_SubSystem_A(
+    redeclare replaceable Controls.CS_Total_Power_Prod CS,
+    redeclare replaceable Controls.ED_Dummy ED,
     redeclare replaceable Data.Data_SHS data(
       hot_tank_init_temp=773.15,
-      cold_tank_init_temp=598.15,            DHX_NTU=0.84));
+      cold_tank_init_temp=598.15,
+      DHX_NTU=0.84));
     replaceable package Storage_Medium = NHES.Media.SolarSalt.SolarSalt
        constrainedby Modelica.Media.Interfaces.PartialMedium                                                          annotation(Dialog(tab="General", group="Mediums"), choicesAllMatching=true);
 

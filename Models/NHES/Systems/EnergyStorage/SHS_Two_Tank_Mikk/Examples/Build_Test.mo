@@ -3,12 +3,13 @@ model Build_Test
   "Initial build test of two tank system. No reference documents were used, the test is simply to evaluate overall system behavior."
   extends Modelica.Icons.Example;
   NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Two_Tank_SHS_System
-    two_Tank_SHS_System(redeclare
-      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.CS_Boiler_03 CS,
+    two_Tank_SHS_System(
+    redeclare
+      NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Controls.CS_Boiler_03 CS,
     redeclare replaceable
       NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Data.Data_SHS data(
         DHX_K_tube(unit="1/m4"), DHX_K_shell(unit="1/m4")),
-      Produced_steam_flow=valveLinear.port_a.m_flow)
+    Produced_steam_flow=valveLinear.port_a.m_flow)
     annotation (Placement(transformation(extent={{-50,-50},{46,52}})));
   TRANSFORM.Fluid.Sensors.TemperatureTwoPort CHX_Inlet_T(redeclare package
       Medium = Modelica.Media.Water.StandardWater)

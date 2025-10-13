@@ -6,8 +6,7 @@ model SMR_IES_CTES
       NHES.Systems.EnergyStorage.Concrete_Solid_Media.CS_DFV CS)
     annotation (Placement(transformation(extent={{110,-42},{204,26}})));
   PrimaryHeatSystem.SMR_Generic.Components.SMR_High_fidelity_no_pump            Reactor(
-    Q_total_th=160e6,
-    Q_total_el=52e6,
+
     redeclare PrimaryHeatSystem.SMR_Generic.CS_SMR_highfidelity CS(
       SG_exit_enthalpy=3000e3,
       m_setpoint=675,
@@ -28,7 +27,7 @@ model SMR_IES_CTES
     annotation (Placement(transformation(extent={{12,-46},{84,24}})));
   BalanceOfPlant.StagebyStageTurbineSecondary.Components.Economic_Sim_IPCO_July
                             ES
-    annotation (Placement(transformation(extent={{-4,44},{42,90}})));
+    annotation (Placement(transformation(extent={{-2,44},{44,90}})));
 equation
   dual_Pipe_CTES_Controlled.External_Demand = SecSide.Demand_Internal;
   dual_Pipe_CTES_Controlled.External_Power = SecSide.generator.power;

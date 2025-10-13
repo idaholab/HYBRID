@@ -1,28 +1,28 @@
-within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk;
-model CS_Default_New_02
+within NHES.Systems.EnergyStorage.SHS_Two_Tank_Mikk.Controls;
+model CS_Default
 
   extends BaseClasses.Partial_ControlSystem;
 
   Data.Data_Default data
     annotation (Placement(transformation(extent={{-96,86},{-76,106}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid(
-    amplitude=10,
+    amplitude=25,
     rising=500,
-    width=6200,
+    width=2600,
     falling=500,
-    period=18000,
+    period=10800,
     offset=0.0,
-    startTime=1800)
+    startTime=7200)
     annotation (Placement(transformation(extent={{-54,-56},{-42,-44}})));
   Modelica.Blocks.Sources.Trapezoid trapezoid1(
-    amplitude=10,
+    amplitude=25,
     rising=500,
-    width=6200,
+    width=2600,
     falling=500,
-    period=18000,
+    period=10800,
     offset=0.0,
-    startTime=10800)
-    annotation (Placement(transformation(extent={{-40,32},{-26,46}})));
+    startTime=1800)
+    annotation (Placement(transformation(extent={{-38,34},{-24,48}})));
   Modelica.Blocks.Math.MultiProduct multiProduct(nu=3)
     annotation (Placement(transformation(extent={{-16,-62},{-4,-50}})));
   Modelica.Blocks.Sources.Constant cold_tank_level_max(k=data.cold_tank_level_max)
@@ -67,18 +67,6 @@ model CS_Default_New_02
     annotation (Placement(transformation(extent={{-70,-68},{-62,-60}})));
   Modelica.Blocks.Sources.Constant one3(k=1)
     annotation (Placement(transformation(extent={{-84,-76},{-78,-70}})));
-  TRANSFORM.Controls.LimPID PID(
-    controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2.5e-2,
-    Ti=10,
-    y_start=0.0)
-    annotation (Placement(transformation(extent={{40,-8},{60,12}})));
-  TRANSFORM.Controls.LimPID PID1(
-    controllerType=Modelica.Blocks.Types.SimpleController.PI,
-    k=2.5e-2,
-    Ti=10,
-    y_start=0.0)
-    annotation (Placement(transformation(extent={{18,-66},{38,-46}})));
 equation
 
   connect(add.u1, hot_tank_max_level.y) annotation (Line(points={{-80.8,-29.6},
@@ -101,7 +89,8 @@ equation
   connect(one1.y, min2.u1) annotation (Line(points={{-85.7,27},{-85.7,26.8},{
           -72.6,26.8}}, color={0,0,127}));
   connect(sensorBus.hot_tank_level, min2.u2) annotation (Line(
-      points={{-30,-100},{-100,-100},{-100,18},{-78,18},{-78,23.2},{-72.6,23.2}},
+      points={{-30,-100},{-86,-100},{-86,-38},{-102,-38},{-102,18},{-78,18},{
+          -78,23.2},{-72.6,23.2}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -110,6 +99,11 @@ equation
                                           color={0,0,127}));
   connect(max1.y, multiProduct.u[2]) annotation (Line(points={{-29.7,-25},{-22,
           -25},{-22,-56},{-16,-56}}, color={0,0,127}));
+  connect(actuatorBus.m_flow_charge, multiProduct.y) annotation (Line(
+      points={{30,-100},{28,-100},{28,-56},{-2.98,-56}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   connect(min2.y, max2.u2) annotation (Line(points={{-65.7,25},{-62,25},{-62,
           25.6},{-56.8,25.6}}, color={0,0,127}));
   connect(max3.u2, min3.y) annotation (Line(points={{-30.6,5.2},{-42,5.2},{-42,
@@ -127,8 +121,8 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(trapezoid1.y, multiProduct1.u[1]) annotation (Line(points={{-25.3,39},
-          {-16,39},{-16,10.8},{-14,10.8}}, color={0,0,127}));
+  connect(trapezoid1.y, multiProduct1.u[1]) annotation (Line(points={{-23.3,41},
+          {-16,41},{-16,10.8},{-14,10.8}}, color={0,0,127}));
   connect(min4.y, max4.u2) annotation (Line(points={{-57.7,-75},{-50,-75},{-50,
           -70.4},{-48.8,-70.4}}, color={0,0,127}));
   connect(zero3.y, max4.u1) annotation (Line(points={{-61.6,-64},{-48.8,-64},{
@@ -142,37 +136,16 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(actuatorBus.m_flow_discharge, multiProduct1.y) annotation (Line(
+      points={{30,-100},{28,-100},{28,8},{-0.98,8}},
+      color={111,216,99},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
   connect(max2.y, multiProduct1.u[3]) annotation (Line(points={{-47.6,28},{-40,
           28},{-40,26},{-34,26},{-34,5.2},{-14,5.2}}, color={0,0,127}));
   connect(max4.y, multiProduct.u[3]) annotation (Line(points={{-39.6,-68},{-22,
           -68},{-22,-58.8},{-16,-58.8}},
                                      color={0,0,127}));
-
-  connect(multiProduct1.y, PID.u_s) annotation (Line(points={{-0.98,8},{24,8},{
-          24,2},{38,2}}, color={0,0,127}));
-  connect(actuatorBus.m_flow_discharge, PID.y) annotation (Line(
-      points={{30,-100},{96,-100},{96,8},{61,8},{61,2}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(actuatorBus.m_flow_charge, PID1.y) annotation (Line(
-      points={{30,-100},{30,-74},{44,-74},{44,-56},{39,-56}},
-      color={111,216,99},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(sensorBus.charge_m_flow, PID1.u_m) annotation (Line(
-      points={{-30,-100},{-30,-80},{16,-80},{16,-68},{28,-68}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
-  connect(multiProduct.y, PID1.u_s) annotation (Line(points={{-2.98,-56},{8,-56},
-          {8,-58},{16,-58},{16,-56}}, color={0,0,127}));
-  connect(sensorBus.discharge_m_flow, PID.u_m) annotation (Line(
-      points={{-30,-100},{8,-100},{8,-24},{12,-24},{12,-18},{48,-18},{48,-10},{
-          50,-10}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics={
         Text(
           extent={{-94,82},{94,74}},
@@ -181,4 +154,4 @@ annotation(defaultComponentName="changeMe_CS", Icon(graphics={
           fillColor={255,255,237},
           fillPattern=FillPattern.Solid,
           textString="Change Me")}));
-end CS_Default_New_02;
+end CS_Default;
