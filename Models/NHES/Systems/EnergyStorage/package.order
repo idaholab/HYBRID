@@ -5,4 +5,5 @@ ThermoclineHeatStorage
 Concrete_Solid_Media
 SHS_Two_Tank
 Latent_Heat_TES
+PCM_HITB
 BaseClasses
