@@ -58,7 +58,8 @@ extends Modelica.Icons.Example;
   parameter Modelica.Units.SI.Temperature T_air = 273.15+250 "Air inside the shipping container estimate";
   parameter Modelica.Units.SI.Length t_insulation = 0.022 "Insulation thickness value";
 
-  Components.PCM_Volume.PCM_StorageVessel_2DModel PCM_Core(
+  Components.PCM_Volume.PCM_Chamber_vertsym_2DRTheta
+                                                  PCM_Core(
     nZ=nV_Z,
     n_HPs=2,
     HPFrac={0.5,1},
@@ -68,7 +69,7 @@ extends Modelica.Icons.Example;
         NHES.Systems.EnergyStorage.PCM_HITB.PCM_Materials.Insulator_aerogel,
     redeclare package PCM_Material =
         PCM_HITB.PCM_Materials.PCM_HITB_DensityFactor)
-    annotation (Placement(transformation(extent={{142,-60},{44,42}})));
+    annotation (Placement(transformation(extent={{158,-64},{60,38}})));
 
   PCM_HITB.Guide_Tube_New_Air_Inputs Lower_Guide_Tube(
     nV_Z=nV_Z,
@@ -157,6 +158,12 @@ extends Modelica.Icons.Example;
     annotation (Placement(transformation(extent={{86,92},{100,106}})));
   Modelica.Blocks.Sources.RealExpression T_Vessel_Measure(y=PCM_Core.T_TCs[4])
     annotation (Placement(transformation(extent={{-90,90},{-70,110}})));
+  TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Collector collector(n=
+        Upper_Guide_Tube.nV_Z)
+    annotation (Placement(transformation(extent={{-54,10},{-34,30}})));
+  TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Collector collector1(n=
+        Lower_Guide_Tube.nV_Z)
+    annotation (Placement(transformation(extent={{-54,-50},{-34,-30}})));
 protected
 
 equation
@@ -178,12 +185,6 @@ equation
   
   */
 
-  connect(Upper_Guide_Tube.port_battery, PCM_Core.port_b[:, 1]) annotation (
-      Line(points={{47.9429,25.6},{71.44,25.6},{71.44,-0.84},{86.14,-0.84}},
-        color={191,0,0}));
-  connect(Lower_Guide_Tube.port_battery, PCM_Core.port_b[:, 2]) annotation (
-      Line(points={{45,-48.22},{72,-48.22},{72,-0.84},{86.14,-0.84}},
-        color={191,0,0}));
   connect(heat_Pipe_New1.heat_pipe_port, Upper_Guide_Tube.port_HP) annotation (
       Line(points={{34.98,21.42},{27.0571,21.42},{27.0571,22.4}},
                                                           color={191,0,0}));
@@ -217,8 +218,7 @@ equation
       thickness=0.5));
   connect(actuatorBus.Vessel_Heat_Tape_Power, PCM_Core.Heat_Tape_Input)
     annotation (Line(
-      points={{30,100},{66,100},{66,110},{152,110},{152,4},{60,4},{60,-9},{53.8,
-          -9}},
+      points={{30,100},{30,42},{4,42},{4,-13},{69.8,-13}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -240,6 +240,18 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(PCM_Core.port_b[2], collector1.port_b) annotation (Line(points={{
+          102.14,-3.565},{102.14,42},{32,42},{32,44},{-28,44},{-28,-40},{-34,
+          -40}}, color={191,0,0}));
+  connect(Lower_Guide_Tube.port_battery, collector1.port_a) annotation (Line(
+        points={{45,-48.22},{45,-68},{-60,-68},{-60,-40},{-54,-40}}, color={191,
+          0,0}));
+  connect(collector.port_b, PCM_Core.port_b[1]) annotation (Line(points={{-34,
+          20},{-28,20},{-28,44},{32,44},{32,42},{102.14,42},{102.14,-6.115}},
+        color={191,0,0}));
+  connect(Upper_Guide_Tube.port_battery, collector.port_a) annotation (Line(
+        points={{47.9429,25.6},{47.9429,48},{-60,48},{-60,20},{-54,20}}, color=
+          {191,0,0}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-120,-100},
             {200,120}}),                                        graphics={
         Rectangle(
@@ -372,5 +384,8 @@ equation
     experiment(
       StopTime=90000,
       __Dymola_NumberOfIntervals=100,
-      __Dymola_Algorithm="Dassl"));
+      __Dymola_Algorithm="Dassl"),
+    Documentation(info="<html>
+<p>CHANGE THIS TO AN R-THETA MODEL</p>
+</html>"));
 end HITB_2D_Test;

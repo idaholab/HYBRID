@@ -7,8 +7,11 @@ package PCM_HITB_2_Sin "PCM_HITB_using_sin_and_cos with literature values"
     T_min=273.15,
     T_max=1100);
   constant Modelica.Units.SI.Temperature T_melt = 450+273.15;
-  constant Modelica.Units.SI.Temperature T_meltmin = T_melt - 4;
-  constant Modelica.Units.SI.Temperature T_meltplus = T_melt + 4;
+  constant Modelica.Units.SI.Temperature T_meltmin = T_melt - 4.0;
+  constant Modelica.Units.SI.Temperature T_meltplus = T_melt + 4.0;
+ // constant Modelica.Units.SI.Temperature T_meltmin = T_melt - 1.5;
+ // constant Modelica.Units.SI.Temperature T_meltplus = T_melt + 1.5;
+
   constant Real m1(unit = "J/(kg.K.K)") = 0.194;
                                                  //Linear slope for Cp function at T<T_melt (solid)
   constant Real b1(unit = "J/(kg.K)") = 652.128;
@@ -77,8 +80,12 @@ package PCM_HITB_2_Sin "PCM_HITB_using_sin_and_cos with literature values"
     Modelica.Units.SI.ThermalConductivity solid;
     Modelica.Units.SI.ThermalConductivity liquid;
   algorithm
-    solid := -0.00536*state.T + 112; //20?
-    liquid :=-0.00536*state.T + 111.7;
+    //solid := -0.00536*state.T + 112; //20?
+   // solid := -0.08823529*state.T + 142.925;
+   // liquid := -0.04*state.T+78.926;
+    solid := -0.08823529*state.T + 112.925;
+    liquid := -0.04*state.T+53.926;
+    //liquid :=-0.00536*state.T + 111.7;
     lambda := 0.5*(Modelica.Math.tanh(2*Modelica.Constants.pi*(state.T-T_melt)/(T_meltplus-T_meltmin))+1)*liquid + 0.5*(Modelica.Math.tanh(-2*Modelica.Constants.pi*(state.T-T_melt)/(T_meltplus-T_meltmin))+1)*solid;
   end thermalConductivity;
 
