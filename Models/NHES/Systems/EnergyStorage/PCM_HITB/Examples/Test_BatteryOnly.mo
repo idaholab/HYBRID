@@ -13,20 +13,19 @@ model Test_BatteryOnly
 //  parameter Integer HPs[nTheta] = {1,0,0,0,0,0,0,2,0,0,0}; //11
  // parameter Integer HPs[nTheta] = {1, 0, 0, 0, 2, 0, 0}; //7
   parameter Integer HPs[nTheta] = {1, 0, 2, 0}; //4
-  //     parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{73, 73, 78.6337, 74.8938}; //4
-          // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //5
-     parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{62.26,80,39.619,39.619,39.619,38.4105}; //6
-    // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //7
-      // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //8
-  // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{34.33,34.33,73.6,26.2112,26.2112,26.2112,26.2112,26.2112,26.2115}; //9
-//  parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //10
- // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25.0000,25.0000,23.6600,68.6000,22.4668,22.4668,22.4668,22.4668,22.4668,22.4668,22.4667}; //11
-// parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{18.4150,18.4150,18.4150,18.4150,68.6000,22.4668,22.4668,22.4668,22.4668,22.4668,22.4668,22.4667}; //12
-  //parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //13
- // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //14
-//  parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{14.7320,14.7320,14.7320,14.7320,14.7320,68.6000,17.4742,17.4742,17.4742,17.4742,17.4742,17.4742,17.4742,17.4742,17.4739}; //15
-  //parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //16
-  //parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //17
+  //     parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{73, 73, 78.6337, 74.8938}; //4 nR_HP = 2
+          // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{73, 73, 52.4225, 52.4225, 48.6825}; //5 nR_HP = 2
+     parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{62.26,80,39.619,39.619,39.619,38.4105}; //6 nR_HP = 2
+    // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{34.33, 34.33, 73.6, 39.317, 39.317, 39.317, 39.3165}; //7 nR_HP = 3
+      // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{34.33, 34.33, 73.6, 31.453, 31.453, 31.453, 31.453, 31.4555}; //8 nR_HP = 3
+  // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{34.33,34.33,73.6,26.2112,26.2112,26.2112,26.2112,26.2112,26.2115}; //9 nR_HP = 3
+  //  parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //10 nR_HP = 4
+ // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25.0000,25.0000,23.6600,68.6000,22.4668,22.4668,22.4668,22.4668,22.4668,22.4668,22.4667}; //11 nR_HP = 4
+ // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{18.4150,18.4150,18.4150,18.4150,68.6000,22.4668,22.4668,22.4668,22.4668,22.4668,22.4668,22.4667}; //12 nR_HP = 5
+  //parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{18.415, 18.415, 18.415, 18.415, 68.6, 19.6584, 19.6584, 19.6584, 19.6584, 19.6584, 19.6584, 19.6584, 19.6587}; //13 nR_HP = 5
+ // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{14.732, 14.732, 14.732, 14.732, 14.732, 68.6, 19.6584, 19.6584, 19.6584, 19.6584, 19.6584, 19.6584, 19.6584, 19.6587}; //14 nR_HP = 6
+ //  parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{14.7320,14.7320,14.7320,14.7320,14.7320,68.6000,17.4742,17.4742,17.4742,17.4742,17.4742,17.4742,17.4742,17.4742,17.4739}; //15 nR_HP = 6
+
 
   //    parameter Modelica.Units.SI.Angle dthetas_one[nTheta] = Modelica.Constants.pi/180*{20, 15, 20, 12.5, 12.5, 10, 10, 40, 10, 15, 15}; //11
   //  parameter Modelica.Units.SI.Angle dthetas_one[nTheta] = Modelica.Constants.pi/180*{25, 25, 25, 25,  40, 20, 20}; //7
