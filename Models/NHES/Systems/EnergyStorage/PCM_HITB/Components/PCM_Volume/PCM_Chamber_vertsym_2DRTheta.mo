@@ -24,8 +24,9 @@ model PCM_Chamber_vertsym_2DRTheta "Contained PCM chamber generalizable interact
   parameter Integer nTheta_HP[n_HPs] = {1,8};
   parameter Integer HPs[nTheta] = {1,0,0,0,0,0,0,2,0,0,0}; //This should be thought of as an index. This is used to point to HPFrac.
   parameter Integer TCs[n_Thermocouples, 2] = {{1,1},{4,3},{4,6},{4,11},{7,1},{7,3},{7,6},{7,9},{7,11}};
-  parameter Modelica.Units.SI.Length t_insulation = 2*0.0254;
-  input Modelica.Units.SI.Length t_insulation_end = min(t_insulation,0.15);
+  parameter Modelica.Units.SI.Length t_insulation_inner = 2*0.0254;
+  parameter Modelica.Units.SI.Length t_insulation_outer = 2*0.0254;
+  input Modelica.Units.SI.Length t_insulation_end = min(t_insulation_outer,0.15);
   parameter Modelica.Units.SI.CoefficientOfHeatTransfer hc_air = 2.5;
   parameter Modelica.Units.SI.Temperature T_Init = 443+273.15-5;
 //  Real dAs_2[nR,nTheta,nZ];
@@ -61,7 +62,8 @@ model PCM_Chamber_vertsym_2DRTheta "Contained PCM chamber generalizable interact
   Modelica.Units.SI.Temperature T_TCs[n_Thermocouples];
  // input Modelica.Units.SI.Power Q_heat_trace[nTheta, nZ] annotation(Dialog(tab = "General"));
   Modelica.Units.SI.Power actual_total_heat_trace;
-  replaceable package Insulation_Material = NHES.Media.Solids.FoamGlass constrainedby TRANSFORM.Media.Interfaces.Solids.PartialAlloy annotation(Dialog(tab = "General"), choicesAllMatching = true);
+  replaceable package Insulation_Material_Inner = NHES.Media.Solids.FoamGlass constrainedby TRANSFORM.Media.Interfaces.Solids.PartialAlloy annotation(Dialog(tab = "General"), choicesAllMatching = true);
+    replaceable package Insulation_Material_Outer = NHES.Media.Solids.FoamGlass constrainedby TRANSFORM.Media.Interfaces.Solids.PartialAlloy annotation(Dialog(tab = "General"), choicesAllMatching = true);
   replaceable package PCM_Material = PCM_Materials.PCM_HITB_2_Sin
     constrainedby TRANSFORM.Media.Interfaces.Solids.PartialAlloy                                                                    annotation(Dialog(tab = "General"), choicesAllMatching = true);
 
@@ -111,10 +113,10 @@ model PCM_Chamber_vertsym_2DRTheta "Contained PCM chamber generalizable interact
     r_outer=R_PCM + t_PCM_wall)
     annotation (Placement(transformation(extent={{78,-8},{98,12}})));
   TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Temperature Air_PCM_Axial[nTheta](T=293.15)
-               annotation (Placement(transformation(extent={{220,-8},{200,12}})));
+               annotation (Placement(transformation(extent={{246,-8},{226,12}})));
   TRANSFORM.HeatAndMassTransfer.Resistances.Heat.Convection convection2[nTheta](
       surfaceArea=SA_shell, alpha=hc_air)
-    annotation (Placement(transformation(extent={{192,-8},{172,12}})));
+    annotation (Placement(transformation(extent={{218,-8},{198,12}})));
   TRANSFORM.HeatAndMassTransfer.Volumes.SimpleWall simpleWall[nR,nTheta](
     redeclare package Material = TRANSFORM.Media.Solids.SS316,
     T_start=723.15,
@@ -129,31 +131,31 @@ model PCM_Chamber_vertsym_2DRTheta "Contained PCM chamber generalizable interact
                                       annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={-42,-116})));
+        origin={-42,-154})));
   TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Temperature Air_PCM_Axial2[nR,nTheta](T=293.15)
                annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={-42,-144})));
+        origin={-42,-182})));
 
   TRANSFORM.HeatAndMassTransfer.Interfaces.HeatPort_State port_b[n_HPs]
     annotation (Placement(transformation(extent={{4,6},{24,26}}),
         iconTransformation(extent={{4,6},{24,26}})));
   TRANSFORM.HeatAndMassTransfer.Volumes.SimpleWall End_Insulation_2[nR,nTheta](
-    redeclare package Material = Insulation_Material,
-    T_start=293.15,
+    redeclare package Material = Insulation_Material_Inner,
+    T_start=703.15,
     th=t_insulation_end,
     surfaceArea=2*SA_End)
                         annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=90,
         origin={-42,-84})));
-  TRANSFORM.HeatAndMassTransfer.Volumes.SimpleWall_Cylinder Radial_Insulation[nTheta](
-    redeclare package Material = Insulation_Material,
-    T_start=293.15,
+  TRANSFORM.HeatAndMassTransfer.Volumes.SimpleWall_Cylinder Radial_Insulation_Inner[nTheta](
+    redeclare package Material = Insulation_Material_Inner,
+    T_start=703.15,
     length=l_shell,
     r_inner=R_PCM + t_PCM_wall,
-    r_outer=R_PCM + t_PCM_wall + t_insulation)
+    r_outer=R_PCM + t_PCM_wall + t_insulation_inner)
     annotation (Placement(transformation(extent={{140,-8},{160,12}})));
   TRANSFORM.HeatAndMassTransfer.Volumes.SimpleWall_Cylinder Heat_Trace
                                                                      [nTheta](
@@ -167,6 +169,23 @@ model PCM_Chamber_vertsym_2DRTheta "Contained PCM chamber generalizable interact
   Modelica.Blocks.Interfaces.RealInput Heat_Tape_Input annotation (Placement(
         transformation(extent={{-56,-46},{-96,-6}}),iconTransformation(extent={{
             100,-20},{60,20}})));
+  TRANSFORM.HeatAndMassTransfer.Volumes.SimpleWall_Cylinder Radial_Insulation_Outer
+                                                                             [nTheta](
+    redeclare package Material = Insulation_Material_Outer,
+    T_start=703.15,
+    length=l_shell,
+    r_inner=R_PCM + t_PCM_wall + t_insulation_inner,
+    r_outer=R_PCM + t_PCM_wall + t_insulation_inner + t_insulation_outer)
+    annotation (Placement(transformation(extent={{168,-8},{188,12}})));
+  TRANSFORM.HeatAndMassTransfer.Volumes.SimpleWall End_Insulation_1[nR,nTheta](
+    redeclare package Material = Insulation_Material_Outer,
+    T_start=703.15,
+    th=t_insulation_end,
+    surfaceArea=2*SA_End)
+                        annotation (Placement(transformation(
+        extent={{10,-10},{-10,10}},
+        rotation=90,
+        origin={-40,-124})));
 initial equation
   Gr_r = zeros(nR, nTheta);
 
@@ -240,7 +259,7 @@ equation
 
   for j in 1:nTheta loop
     T_ave_theta[j] = sum(conduction.materials[:,j].T)/(nR*nZ);
-      SA_shell[j] = dthetas_one[j]/(2*Modelica.Constants.pi)*(R_PCM+t_PCM_wall+t_insulation+t_heat_trace)*l_PCM;
+      SA_shell[j] = dthetas_one[j]/(2*Modelica.Constants.pi)*(R_PCM+t_PCM_wall+t_insulation_inner+t_insulation_outer+t_heat_trace)*l_PCM;
       l_shell[j] = dthetas_one[j]/(2*Modelica.Constants.pi)*l_PCM/(2*Modelica.Constants.pi);
     //l_shell[j,k] = dzs_one[k];
   end for;
@@ -251,7 +270,7 @@ equation
        // Q_conv_r[i,j,k] = Nu_r[i,j,k]*conduction.conductionModel.Q_flows_1[i,j,k];
         if i < nR then
       der(Gr_r[i,j]) = -Gr_r[i,j] + (Modelica.Constants.g_n*cos(conduction.geometry.thetas[i,j])*beta[i,j]*(conduction.materials[i+1,j].T-conduction.materials[i,j].T)*(conduction.geometry.rs[i+1,j]-conduction.geometry.rs[i,j])^3)/(0.5*(mu/conduction.materials[i+1,j].d+mu/conduction.materials[i,j].d)^2);
-      Nu_r[i,j] = 0.75*(2*Pr[i,j]/(5*(1+2*Pr[i,j]^0.5+2*Pr[i,j])))^0.25*(abs(Gr_r[i,j]*Pr[i,j]))^0.25;
+      Nu_r[i,j] = 0.75*((2*Pr[i,j]/(5*(1+2*Pr[i,j]^0.5+2*Pr[i,j])))^0.25*(abs(Gr_r[i,j]*Pr[i,j])))^0.25;
 
      // Q_conv_r[i,j,k] = Nu_r[i,j,k]*conduction.Material.thermalConductivity(conduction.materials[i,j,k].state)/(conduction.geometry.rs[i+1,j,k]-conduction.geometry.rs[i,j,k])*conduction.geometry.crossAreas_1[i,j,k]*(conduction.materials[i+1,j,k].T-conduction.materials[i,j,k].T);
 
@@ -311,24 +330,28 @@ equation
           22,58},{22,48},{23,48},{23,44}},
                                        color={191,0,0}));
   connect(convection2.port_a,Air_PCM_Axial. port)
-    annotation (Line(points={{189,2},{200,2}},   color={191,0,0}));
+    annotation (Line(points={{215,2},{226,2}},   color={191,0,0}));
   connect(convection3.port_a,Air_PCM_Axial2. port)
-    annotation (Line(points={{-42,-123},{-42,-134}},
+    annotation (Line(points={{-42,-161},{-42,-172}},
                                                    color={191,0,0}));
   connect(PCM_Outer.port_a, conduction.port_b1) annotation (Line(points={{78,2},{
           64,2}},                   color={191,0,0}));
   connect(simpleWall.port_b, End_Insulation_2.port_a)
     annotation (Line(points={{-42,-64},{-42,-74}}, color={191,0,0}));
-  connect(convection3.port_b, End_Insulation_2.port_b)
-    annotation (Line(points={{-42,-109},{-42,-94}}, color={191,0,0}));
-  connect(Radial_Insulation.port_b, convection2.port_b)
-    annotation (Line(points={{160,2},{175,2}}, color={191,0,0}));
   connect(PCM_Outer.port_b, Heat_Trace.port_a)
     annotation (Line(points={{98,2},{112,2}}, color={191,0,0}));
-  connect(Heat_Trace.port_b, Radial_Insulation.port_a)
+  connect(Heat_Trace.port_b, Radial_Insulation_Inner.port_a)
     annotation (Line(points={{132,2},{140,2}}, color={191,0,0}));
   connect(conduction.port_external, simpleWall.port_a) annotation (Line(points=
           {{-9.8,-31.6},{-42,-31.6},{-42,-44}}, color={191,0,0}));
+  connect(Radial_Insulation_Outer.port_a, Radial_Insulation_Inner.port_b)
+    annotation (Line(points={{168,2},{160,2}}, color={191,0,0}));
+  connect(Radial_Insulation_Outer.port_b, convection2.port_b)
+    annotation (Line(points={{188,2},{201,2}}, color={191,0,0}));
+  connect(End_Insulation_2.port_b, End_Insulation_1.port_a) annotation (Line(
+        points={{-42,-94},{-42,-114},{-40,-114}}, color={191,0,0}));
+  connect(convection3.port_b, End_Insulation_1.port_b) annotation (Line(points=
+          {{-42,-147},{-42,-134},{-40,-134}}, color={191,0,0}));
   annotation (Icon(coordinateSystem(PreserveAspectRatio=false), graphics={
         Bitmap(extent={{-70,76},{62,-74}}, fileName=
               "modelica://NHES/Image_PCM.png"),

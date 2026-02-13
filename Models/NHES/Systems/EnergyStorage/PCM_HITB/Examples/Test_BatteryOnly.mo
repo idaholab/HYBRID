@@ -2,28 +2,36 @@ within NHES.Systems.EnergyStorage.PCM_HITB.Examples;
 model Test_BatteryOnly
   "A model to run various tests on the battery model only."
   extends Modelica.Icons.Example;
-  parameter Integer nR = 15;
-  parameter Integer nR_HP = 6;
+  parameter Integer nR = 6;
+  parameter Integer nR_HP = 2;
   parameter Integer nZ = 6;
-  parameter Integer nTheta = 11;
+  parameter Integer nTheta = 4;
   parameter Real[2] HPFrac = {0.5,1};
-  parameter Integer nTheta_HP[2] = {1,8};
-  parameter Integer HPs[nTheta] = {1,0,0,0,0,0,0,2,0,0,0};
+ // parameter Integer nTheta_HP[2] = {1,8};//11
+//  parameter Integer nTheta_HP[2] = {1, 5}; //7
+  parameter Integer nTheta_HP[2] = {1, 3}; //4
+//  parameter Integer HPs[nTheta] = {1,0,0,0,0,0,0,2,0,0,0}; //11
+ // parameter Integer HPs[nTheta] = {1, 0, 0, 0, 2, 0, 0}; //7
+  parameter Integer HPs[nTheta] = {1, 0, 2, 0}; //4
   //     parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{73, 73, 78.6337, 74.8938}; //4
           // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //5
-  //   parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{62.26,80,39.619,39.619,39.619,38.4105}; //6
+     parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{62.26,80,39.619,39.619,39.619,38.4105}; //6
     // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //7
       // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //8
   // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{34.33,34.33,73.6,26.2112,26.2112,26.2112,26.2112,26.2112,26.2115}; //9
- // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //10
+//  parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //10
  // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25.0000,25.0000,23.6600,68.6000,22.4668,22.4668,22.4668,22.4668,22.4668,22.4668,22.4667}; //11
- // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{18.4150,18.4150,18.4150,18.4150,68.6000,22.4668,22.4668,22.4668,22.4668,22.4668,22.4668,22.4667}; //12
+// parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{18.4150,18.4150,18.4150,18.4150,68.6000,22.4668,22.4668,22.4668,22.4668,22.4668,22.4668,22.4667}; //12
   //parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //13
  // parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //14
-  parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{14.7320,14.7320,14.7320,14.7320,14.7320,68.6000,17.4742,17.4742,17.4742,17.4742,17.4742,17.4742,17.4742,17.4742,17.4739}; //15
+//  parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{14.7320,14.7320,14.7320,14.7320,14.7320,68.6000,17.4742,17.4742,17.4742,17.4742,17.4742,17.4742,17.4742,17.4742,17.4739}; //15
   //parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //16
   //parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26 - 73.66,27.74,25,25,25,25,29.5275}; //17
-    parameter Modelica.Units.SI.Angle dthetas_one[nTheta] = Modelica.Constants.pi/180*{20, 15, 20, 12.5, 12.5, 10, 10, 40, 10, 15, 15};
+
+  //    parameter Modelica.Units.SI.Angle dthetas_one[nTheta] = Modelica.Constants.pi/180*{20, 15, 20, 12.5, 12.5, 10, 10, 40, 10, 15, 15}; //11
+  //  parameter Modelica.Units.SI.Angle dthetas_one[nTheta] = Modelica.Constants.pi/180*{25, 25, 25, 25,  40, 20, 20}; //7
+    parameter Modelica.Units.SI.Angle dthetas_one[nTheta] = Modelica.Constants.pi/180*{35,45,70,30}; //4
+
 
   PCM_Chamber_Connected
                   pCM_Chamber_Connected(nR=nR,
@@ -31,7 +39,10 @@ model Test_BatteryOnly
     nZ=nZ,
     n_Thermocouples=1,
     drs_one=drs_one,
+    dthetas_one=dthetas_one,
     nR_HP=nR_HP,
+    nTheta_HP=nTheta_HP,
+    HPs=HPs,
     TCs={{1,1}},
     t_insulation_inner(displayUnit="mm") = 0.003,
     t_insulation_outer(displayUnit="mm") = 0.003,
@@ -43,7 +54,7 @@ model Test_BatteryOnly
     T_Init_HT=703.15,
     redeclare package Insulation_Material_Outer =
         TRANSFORM.Media.Solids.FiberGlassGeneric)
-    annotation (Placement(transformation(extent={{-40,-42},{40,38}})));
+    annotation (Placement(transformation(extent={{-42,-40},{38,40}})));
 
   Modelica.Blocks.Sources.Trapezoid trapezoid[nZ](
     amplitude=1750/nZ,
@@ -80,17 +91,17 @@ model Test_BatteryOnly
     annotation (Placement(transformation(extent={{-66,-42},{-46,-22}})));
 equation
   connect(Q_Vessel_HT.y, pCM_Chamber_Connected.Heat_Tape_Input) annotation (
-      Line(points={{51,-4},{44,-4},{44,-4.35294},{10.5263,-4.35294}}, color={0,0,
+      Line(points={{51,-4},{44,-4},{44,-2.35294},{8.52632,-2.35294}}, color={0,0,
           127}));
   connect(T_Vessel_Measure1.y, Q_Vessel_HT.u_s)
     annotation (Line(points={{105,-4},{74,-4}}, color={0,0,127}));
   connect(T_Vessel_Measure2.y, Q_Vessel_HT.u_m)
     annotation (Line(points={{93,-34},{62,-34},{62,-16}}, color={0,0,127}));
   connect(boundary.port, pCM_Chamber_Connected.port_b[:, 1]) annotation (Line(
-        points={{-78,40},{-42,40},{-42,-0.588235},{-3.36842,-0.588235}}, color={
+        points={{-78,40},{-42,40},{-42,1.41176},{-5.36842,1.41176}},     color={
           191,0,0}));
   connect(boundary1.port, pCM_Chamber_Connected.port_b[:, 2]) annotation (Line(
-        points={{-46,-32},{-26,-32},{-26,-0.588235},{-3.36842,-0.588235}},
+        points={{-46,-32},{-26,-32},{-26,1.41176},{-5.36842,1.41176}},
         color={191,0,0}));
   connect(trapezoid.y, boundary.Q_flow_ext) annotation (Line(points={{-91,0},{-88,
           0},{-88,26},{-102,26},{-102,40},{-92,40}}, color={0,0,127}));

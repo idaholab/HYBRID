@@ -308,9 +308,13 @@ extends Modelica.Icons.Example;
     timeScale=3600,
     offset=0,
     shiftTime=-8700)
-    annotation (Placement(transformation(extent={{-94,4},{-74,24}})));
+    annotation (Placement(transformation(extent={{-116,10},{-96,30}})));
   Modelica.Blocks.Sources.RealExpression T_Vessel_Measure(y=PCM_Core.T_TCs[4])
     annotation (Placement(transformation(extent={{-86,90},{-66,110}})));
+  Modelica.Blocks.Sources.RealExpression T_Vessel_Measure1(y=PCM_Core.T_TCs[9])
+    annotation (Placement(transformation(extent={{-106,-54},{-86,-34}})));
+  Components.RMSE_Calculator rMSE_Calculator
+    annotation (Placement(transformation(extent={{-68,-36},{-48,-16}})));
 protected
 
 equation
@@ -394,6 +398,10 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(Experiment_Measure_TC13.y, rMSE_Calculator.u1) annotation (Line(
+        points={{-95,20},{-78,20},{-78,-20},{-70,-20}}, color={0,0,127}));
+  connect(T_Vessel_Measure1.y, rMSE_Calculator.u2) annotation (Line(points={{
+          -85,-44},{-78,-44},{-78,-32},{-70,-32}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-120,-100},
             {200,120}}),                                        graphics={
         Rectangle(

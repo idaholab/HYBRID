@@ -33,13 +33,15 @@ model Test_BatteryOnly_1D
     n_Thermocouples=1,
     drs_one=drs_one,
     nR_HP=nR_HP,
-    TCs={{1,1}},
+    HPFrac={0.5,1.0},
+    //HPs={0,0,0,0,0,3,0,0,0,0,0,0,0,0,0},
+    TCs={1},
     hc_air=20,
     T_Init=703.15)
     annotation (Placement(transformation(extent={{-40,-42},{40,38}})));
 
   Modelica.Blocks.Sources.Trapezoid trapezoid(
-    amplitude=1750/nZ,
+    amplitude=1750,
     rising=90,
     width=50310,
     falling=90,
@@ -84,14 +86,14 @@ equation
   connect(boundary.port, pCM_StorageVessel_1D.port_b[1]) annotation (Line(
         points={{-78,40},{-44,40},{-44,42},{5.6,42},{5.6,3.4}}, color={191,0,0}));
   connect(boundary1.port, pCM_StorageVessel_1D.port_b[2]) annotation (Line(
-        points={{-46,-32},{-46,-46},{-74,-46},{-74,40},{-44,40},{-44,42},{5.6,
-          42},{5.6,5.4}}, color={191,0,0}));
+        points={{-46,-32},{-46,-46},{-74,-46},{-74,40},{-44,40},{-44,42},{5.6,42},
+          {5.6,5.4}},     color={191,0,0}));
   annotation (
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
             100,100}})),
     experiment(
-      StopTime=100,
-      __Dymola_NumberOfIntervals=100,
+      StopTime=172800,
+      Interval=60,
       __Dymola_Algorithm="Esdirk45a"),
     __Dymola_experimentSetupOutput);
 end Test_BatteryOnly_1D;

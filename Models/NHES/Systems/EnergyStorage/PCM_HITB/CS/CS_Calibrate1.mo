@@ -24,13 +24,13 @@ model CS_Calibrate1
     annotation (Placement(transformation(extent={{-106,20},{-86,40}})));
   TRANSFORM.Controls.LimPID Q_Vessel_HT(
     controllerType=Modelica.Blocks.Types.SimpleController.PID,
-    Ti=300,
+    Ti=30,
     Td=0.5,
     yMax=data.Q_PCM_HT_Max/2,
     yMin=0,
     wp=50,
     wd=5,
-    Ni=1,
+    Ni=300,
     initType=Modelica.Blocks.Types.Init.InitialOutput,
     xi_start=0,
     xd_start=0,

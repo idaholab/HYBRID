@@ -153,7 +153,7 @@ extends Modelica.Icons.Example;
     annotation (Placement(transformation(extent={{86,92},{100,106}})));
   Modelica.Blocks.Sources.RealExpression T_Vessel_Measure(y=PCM_Core.T_TCs[4])
     annotation (Placement(transformation(extent={{-86,90},{-66,110}})));
-  Modelica.Blocks.Sources.TimeTable      Temperature_Reference(table=[0,89.7;
+  Modelica.Blocks.Sources.TimeTable Temperature_Reference_TC11(table=[0,89.7;
         300,89.6; 600,89.5; 900,90.3; 1200,90.3; 1500,93; 1800,97.1; 2100,98.9;
         2400,103; 2700,105; 3000,110; 3300,114; 3600,118; 3900,120; 4200,126;
         4500,130; 4800,133; 5100,140; 5400,144; 5700,147; 6000,151; 6110,155;
@@ -288,8 +288,13 @@ extends Modelica.Icons.Example;
         274; 249020,274; 249320,273; 249620,272; 249920,271; 250220,271; 250520,
         270; 250820,270; 251120,269; 251420,268; 251720,268; 252020,267; 252320,
         267; 252620,266; 252920,265; 253220,265; 253520,264; 253820,263; 254120,
-        263; 254420,262], shiftTime=-1200)
+        263; 254420,262],
+    offset=273.15,        shiftTime=-1200)
     annotation (Placement(transformation(extent={{-116,0},{-96,20}})));
+  Modelica.Blocks.Sources.RealExpression T_Vessel_Measure1(y=PCM_Core.T_TCs[9])
+    annotation (Placement(transformation(extent={{-102,-30},{-82,-10}})));
+  Components.RMSE_Calculator rMSE_Calculator
+    annotation (Placement(transformation(extent={{-64,-12},{-44,8}})));
 protected
 
 equation
@@ -373,6 +378,10 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(T_Vessel_Measure1.y, rMSE_Calculator.u2) annotation (Line(points={{
+          -81,-20},{-74,-20},{-74,-8},{-66,-8}}, color={0,0,127}));
+  connect(Temperature_Reference_TC11.y, rMSE_Calculator.u1) annotation (Line(
+        points={{-95,10},{-76,10},{-76,4},{-66,4}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-120,-100},
             {200,120}}),                                        graphics={
         Rectangle(

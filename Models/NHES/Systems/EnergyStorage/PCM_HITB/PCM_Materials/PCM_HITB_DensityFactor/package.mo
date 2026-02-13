@@ -81,8 +81,10 @@ package PCM_HITB_DensityFactor "PCM_HITB_using_sin_and_cos"
     Modelica.Units.SI.ThermalConductivity solid;
     Modelica.Units.SI.ThermalConductivity liquid;
   algorithm
-    solid := -0.00536*state.T + 112; //20?
-    liquid :=-0.00536*state.T + 111.7;
+    //   solid := -0.00536*state.T + 112; //20?
+    //   liquid :=-0.00536*state.T + 111.7;
+    solid := 22.5;
+    liquid := 22.5*0.7;
     lambda := 0.5*(Modelica.Math.tanh(2*Modelica.Constants.pi*(state.T-T_melt)/(T_meltplus-T_meltmin))+1)*liquid + 0.5*(Modelica.Math.tanh(-2*Modelica.Constants.pi*(state.T-T_melt)/(T_meltplus-T_meltmin))+1)*solid;
   end thermalConductivity;
 

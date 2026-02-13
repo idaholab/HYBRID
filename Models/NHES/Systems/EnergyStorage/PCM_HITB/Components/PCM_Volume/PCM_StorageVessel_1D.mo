@@ -3,7 +3,7 @@ model PCM_StorageVessel_1D "Reducing model to radial vector only."
   parameter Integer nR = 10;
   parameter Integer nTheta = 11;
   parameter Integer nZ = 6;
-  parameter Integer n_HPs = 1;
+  parameter Integer n_HPs = 2 "Modeled number of heat pipe locations";
   parameter Integer n_Thermocouples = 9;
   parameter Real k_multparam = 1.0;
 
@@ -18,10 +18,10 @@ model PCM_StorageVessel_1D "Reducing model to radial vector only."
   parameter Modelica.Units.SI.Length t_heat_trace = 0.0025;
   parameter Modelica.Units.SI.Length l_PCM = 0.145794985/Modelica.Constants.pi/R_PCM/R_PCM;
   parameter Integer nR_HP = 4;
-  parameter Real[n_HPs] HPFrac = {3};
+  parameter Real[n_HPs] HPFrac = {1, 2};
  // parameter Integer nTheta_HP[n_HPs] = {1,8};
   //parameter Integer HPs[nTheta] = {1,0,0,0,0,0,0,2,0,0,0}; //This should be thought of as an index. This is used to point to HPFrac.
-  parameter Integer HPs[nR] = {0,0,0,1,0,0,0,0,0,0};
+//  parameter Integer HPs[nR] = {0,0,0,1,0,0,0,0,0,0};
   //parameter Integer TCs[n_Thermocouples, 2] = {{1,1},{4,3},{4,6},{4,11},{7,1},{7,3},{7,6},{7,9},{7,11}};
   parameter Integer TCs[n_Thermocouples] = {1,4,4,4,7,7,7,7,7};
   parameter Modelica.Units.SI.Length t_insulation = 2*0.0254;
@@ -107,7 +107,8 @@ model PCM_StorageVessel_1D "Reducing model to radial vector only."
     redeclare model ConductionModel =
         TRANSFORM.HeatAndMassTransfer.DiscritizedModels.BaseClasses.Dimensions_1.ForwardDifference_1O,
     redeclare model InternalHeatModel =
-        TRANSFORM.HeatAndMassTransfer.DiscritizedModels.BaseClasses.Dimensions_1.GenericHeatGeneration)
+        TRANSFORM.HeatAndMassTransfer.DiscritizedModels.BaseClasses.Dimensions_1.GenericHeatGeneration
+        (Q_gens=Q_gens))
     annotation (Placement(transformation(extent={{-20,-40},{62,44}})));
 
      //   dAs_2=dAs_2,
@@ -148,7 +149,7 @@ model PCM_StorageVessel_1D "Reducing model to radial vector only."
         transformation(extent={{124,-30},{84,10}}), iconTransformation(extent={{
             100,-20},{60,20}})));
 initial equation
-  Gr_r = zeros(nR);
+ // Gr_r = zeros(nR);
 
 algorithm
   dVs_TCs := zeros(nR);
@@ -172,12 +173,15 @@ equation
       //  dzs[i] = l_PCM;
         beta[i] = conduction.Material.linearExpansionCoefficient(conduction.materials[i].state);
         Pr[i] = conduction.Material.specificHeatCapacityCp(conduction.materials[i].state)*mu/conduction.Material.thermalConductivity(conduction.materials[i].state);
-          if i == nR_HP and HPs[i]>0 then
-            dVs_HP[i] = -Modelica.Constants.pi*R_HP*R_HP*l_PCM;
-            Q_gens[i] = Q_heat[HPs[i]]+Q_conv_net[i];
+          if i == nR_HP then
+            dVs_HP[i] = -Modelica.Constants.pi*R_HP*R_HP*l_PCM*sum(HPFrac);
+          //  for p in 1:n_HPs loop
+          //    Q_gens[i] =  Q_gens[i]+Q_heat[p]*HPFrac[p] + Q_conv_net[i]/n_HPs;
+         //   end for;
+            Q_gens[i] = sum(Q_heat.*HPFrac)+Q_conv_net[i];
             else
-            dVs_HP[i] = 0;
             Q_gens[i] = Q_conv_net[i];
+            dVs_HP[i] = 0;
           end if;
     end for;
 
@@ -201,9 +205,9 @@ equation
      // for k in 1:nZ loop
        // Q_conv_r[i,j,k] = Nu_r[i,j,k]*conduction.conductionModel.Q_flows_1[i,j,k];
         if i < nR then
-      der(Gr_r[i]) = -Gr_r[i] + (Modelica.Constants.g_n*2/Modelica.Constants.pi)*(beta[i]*(conduction.materials[i+1].T-conduction.materials[i].T)*(conduction.geometry.rs[i+1]-conduction.geometry.rs[i])^3)/(0.5*(mu/conduction.materials[i+1].d+mu/conduction.materials[i].d)^2);
+      Gr_r[i]=(Modelica.Constants.g_n*2/Modelica.Constants.pi)*(beta[i]*(conduction.materials[i+1].T-conduction.materials[i].T)*(conduction.geometry.rs[i+1]-conduction.geometry.rs[i])^3)/((0.5*mu/conduction.materials[i+1].d+0.5*mu/conduction.materials[i].d)^2);
       //der(Gr_r[i,k]) = -Gr_r[i,k];
-      Nu_r[i] = 0.75*(2*Pr[i]/(5*(1+2*Pr[i]^0.5+2*Pr[i])))^0.25*(abs(Gr_r[i]*Pr[i]))^0.25;
+      Nu_r[i] = 0.75*((2*Pr[i]/(5*(1+2*Pr[i]^0.5+2*Pr[i])))^0.25*(abs(Gr_r[i]*Pr[i])))^0.25;
      // Q_conv_r[i,j,k] = Nu_r[i,j,k]*conduction.Material.thermalConductivity(conduction.materials[i,j,k].state)/(conduction.geometry.rs[i+1,j,k]-conduction.geometry.rs[i,j,k])*conduction.geometry.crossAreas_1[i,j,k]*(conduction.materials[i+1,j,k].T-conduction.materials[i,j,k].T);
         else
           der(Gr_r[i]) = 0;

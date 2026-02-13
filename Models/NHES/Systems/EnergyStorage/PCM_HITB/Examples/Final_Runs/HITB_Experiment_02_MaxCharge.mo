@@ -220,8 +220,13 @@ extends Modelica.Icons.Example;
         88500,453.323; 88800,453.344; 89100,453.348; 89400,453.416; 89700,
         453.478; 90000,453.485; 90300,453.491; 90600,453.533; 90900,453.521],
     timeScale=1,
+    offset=273.15,
     shiftTime=0)
-    annotation (Placement(transformation(extent={{-82,-34},{-62,-14}})));
+    annotation (Placement(transformation(extent={{-120,42},{-100,62}})));
+  Modelica.Blocks.Sources.RealExpression T_Vessel_Measure1(y=PCM_Core.T_TCs[3])
+    annotation (Placement(transformation(extent={{-116,4},{-96,24}})));
+  Components.RMSE_Calculator rMSE_Calculator
+    annotation (Placement(transformation(extent={{-78,22},{-58,42}})));
 protected
 
 equation
@@ -305,6 +310,10 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(T_Vessel_Measure1.y, rMSE_Calculator.u2) annotation (Line(points={{
+          -95,14},{-88,14},{-88,26},{-80,26}}, color={0,0,127}));
+  connect(Temperature_Reference_TC1.y, rMSE_Calculator.u1) annotation (Line(
+        points={{-99,52},{-88,52},{-88,38},{-80,38}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-120,-100},
             {200,120}}),                                        graphics={
         Rectangle(
