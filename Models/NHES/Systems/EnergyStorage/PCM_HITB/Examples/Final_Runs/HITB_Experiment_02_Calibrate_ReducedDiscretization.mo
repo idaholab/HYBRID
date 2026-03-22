@@ -22,7 +22,7 @@ extends Modelica.Icons.Example;
  // Modelica.Units.SI.Area A_Cyl_HITB[nV_Rh];
   parameter Integer nV_Z = 6;
   parameter Integer nV_Zh = 6;
-  parameter Integer nV_R = 10;
+
   parameter Integer nV_Rh = 5;
   Modelica.Units.SI.SpecificHeatCapacity cp_out;
   Modelica.Units.SI.Energy E_store;
@@ -58,16 +58,38 @@ extends Modelica.Icons.Example;
   parameter Modelica.Units.SI.Temperature T_air = 273.15+250 "Air inside the shipping container estimate";
   parameter Modelica.Units.SI.Length t_insulation = 0.016 "Insulation thickness value";
 
+  ////// Set of variables that would be great to look at in sensitivity analyses
+/*
+  parameter Integer nV_R = 6;
+  parameter Integer nR_HP = 2;
+  parameter Modelica.Units.SI.Length drs_one[nV_R] = 1/1000*{62.26, 80, 39.619, 36.619, 39.619, 38.4105};
+  parameter Integer nTheta = 7;
+  parameter Modelica.Units.SI.Angle dthetas_one[nTheta] = Modelica.Constants.pi/180*{25,25,25,25,40,20,20}; //Make sure that the node with the heat pipe centered at 120 degrees 
+  parameter Integer nTheta_HP = {1, 5};
+  parameter Integer HP_Angle_Locations[nTheta] = {1, 0, 0, 0, 2, 0, 0}; //7
+  parameter Integer TC_Locs[9,2] = [1,1; 2,2; 2,4; 2,7; 5,1; 5,2; 5,4; 5,5; 5,7];
+  */
+
+   parameter Integer nV_R = 4;
+   parameter Integer nR_HP = 2;
+  parameter Modelica.Units.SI.Length drs_one[nV_R] =  1/1000*{73, 73, 78.6337, 74.8938};
+  parameter Integer nTheta = 4;
+  parameter Modelica.Units.SI.Angle dthetas_one[nTheta] =  Modelica.Constants.pi/180*{35,45,70,30}; //Make sure that the node with the heat pipe centered at 120 degrees
+  parameter Integer nTheta_HP[2] = {1,3};
+  parameter Integer HP_Angle_Locations[nTheta] ={1, 0, 2, 0}; //4
+   parameter Integer TC_Locs[9,2] = [1,1; 2,2; 2,3; 2,4; 4,1; 4,2; 4,3; 4,4; 3,4]; //Verify where these should be in a small 4x4 grid
+
+
   PCM_Chamber_Connected PCM_Core(
-    nR=6,
-    nTheta=7,
+    nR=nV_R,
+    nTheta=nTheta,
     nZ=nV_Z,
-    drs_one=1/1000*{62.26,80,39.619,39.619,39.619,38.4105},
-    dthetas_one=Modelica.Constants.pi/180*{25,25,25,25,40,20,20},
-    nR_HP=2,
-    nTheta_HP={1,5},
-    HPs={1,0,0,0,2,0,0},
-    TCs=[1,1; 2,2; 2,4; 2,7; 5,1; 5,2; 5,4; 5,5; 5,7],
+    drs_one=drs_one,
+    dthetas_one=dthetas_one,
+    nR_HP=nR_HP,
+    nTheta_HP=nTheta_HP,
+    HPs=HP_Angle_Locations,
+    TCs=TC_Locs,
     t_insulation_inner=t_insulation,
     t_insulation_outer=t_insulation,
     hc_air=hc_air,

@@ -18,9 +18,9 @@ model CS_Calibrate2
     yMax=data.Q_HT_HP,
     yMin=0.0)
     annotation (Placement(transformation(extent={{-2,-46},{18,-66}})));
-  Modelica.Blocks.Sources.CombiTimeTable HT_Control_Set_Lower(table=[0,733.15;
-        105500,733.15; 105600,733.15; 125000,733.15; 125500,733.15; 432000,
-        73315])
+  Modelica.Blocks.Sources.CombiTimeTable HT_Control_Set_Lower(table=[0,373.15;
+        11300,373.15; 105600,373.15; 125000,373.15; 125500,373.15; 432000,
+        373.15])
     annotation (Placement(transformation(extent={{-100,-98},{-80,-78}})));
   Modelica.Blocks.Sources.CombiTimeTable signal_position_upper(table=[0,0;
         120000,0; 121000,0; 125000,0; 432000,0])
@@ -34,9 +34,9 @@ model CS_Calibrate2
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     yMax=data.Q_HT_HP,
     yMin=0.0) annotation (Placement(transformation(extent={{-12,96},{8,76}})));
-  Modelica.Blocks.Sources.CombiTimeTable HT_Control_Set_Upper(table=[0,733.15;
-        105500,733.15; 105600,733.15; 125000,733.15; 125500,733.15; 432000,
-        733.15])
+  Modelica.Blocks.Sources.CombiTimeTable HT_Control_Set_Upper(table=[0,273.15;
+        105500,273.15; 105600,273.15; 125000,373.15; 125500,373.15; 432000,
+        373.15])
     annotation (Placement(transformation(extent={{-88,36},{-68,56}})));
   TRANSFORM.Controls.LimPID Q_Vessel_HT(
     controllerType=Modelica.Blocks.Types.SimpleController.PID,
@@ -50,9 +50,9 @@ model CS_Calibrate2
     initType=Modelica.Blocks.Types.Init.InitialOutput,
     xi_start=0,
     xd_start=0,
-    y_start=400)
+    y_start=0)
     annotation (Placement(transformation(extent={{-40,2},{-20,22}})));
-  Modelica.Blocks.Sources.RealExpression T_Vessel_Measure1(y=679.15)
+  Modelica.Blocks.Sources.RealExpression T_Vessel_Measure1(y=273.15)
     annotation (Placement(transformation(extent={{-76,-2},{-56,18}})));
 equation
 

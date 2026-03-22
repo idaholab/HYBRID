@@ -8,17 +8,17 @@ extends Modelica.Icons.Example;
       CS,
     redeclare Data.Data_System data,
     data_Initialization(
-      T_PCM=361.65,
-      T_Wall=358.15,
-      T_HT=358.15,
-      T_Insulation_Inner=353.15,
-      T_Insulation_Outer=303.15,
-      T_Tube_UGT=373.15,
-      T_Insulation_UGT=373.15,
-      T_UHP=373.15,
-      T_Tube_LGT=373.15,
-      T_Insulation_LGT=373.15,
-      T_LHP=373.15));
+      T_PCM=777.15,
+      T_Wall=773.15,
+      T_HT=763.15,
+      T_Insulation_Inner=613.15,
+      T_Insulation_Outer=398.15,
+      T_Tube_UGT=613.15,
+      T_Insulation_UGT=398.15,
+      T_UHP=398.15,
+      T_Tube_LGT=613.15,
+      T_Insulation_LGT=398.15,
+      T_LHP=398.15));
  // Modelica.Units.SI.Area A_Cyl_HITB[nV_Rh];
   parameter Integer nV_Z = 6;
   parameter Integer nV_Zh = 6;
@@ -56,7 +56,7 @@ extends Modelica.Icons.Example;
   Modelica.Units.SI.Time time_plot;
   parameter Modelica.Units.SI.CoefficientOfHeatTransfer hc_air = 35;
   parameter Modelica.Units.SI.Temperature T_air = 273.15+250 "Air inside the shipping container estimate";
-  parameter Modelica.Units.SI.Length t_insulation = 0.022 "Insulation thickness value";
+  parameter Modelica.Units.SI.Length t_insulation = 0.016 "Insulation thickness value";
 
   PCM_Chamber_Connected PCM_Core(
     nZ=nV_Z,
@@ -307,7 +307,7 @@ extends Modelica.Icons.Example;
         98.3; 72.45555556,98.1],
     timeScale=3600,
     offset=273.15,
-    shiftTime=-8700)
+    shiftTime=-8900)
     annotation (Placement(transformation(extent={{-94,4},{-74,24}})));
   Modelica.Blocks.Sources.RealExpression T_Vessel_Measure(y=PCM_Core.T_TCs[4])
     annotation (Placement(transformation(extent={{-86,90},{-66,110}})));

@@ -25,6 +25,7 @@ model PCM_Chamber_Connected "Contained PCM chamber generalizable interact with a
   parameter Integer nTheta_HP[n_HPs] = {1,8};
   parameter Integer HPs[nTheta] = {1,0,0,0,0,0,0,2,0,0,0}; //This should be thought of as an index. This is used to point to HPFrac.
   parameter Integer TCs[n_Thermocouples, 2] = {{1,1},{4,3},{4,6},{4,11},{7,1},{7,3},{7,6},{7,9},{7,11}};
+  parameter Integer HP_Locs[n_HPs, 2] = {{4,1},{4,8}};
   parameter Modelica.Units.SI.Length t_insulation_inner = 2*0.0254;
   parameter Modelica.Units.SI.Length t_insulation_outer = 2*0.0254;
   parameter Modelica.Units.SI.CoefficientOfHeatTransfer hc_air = 2.5;
