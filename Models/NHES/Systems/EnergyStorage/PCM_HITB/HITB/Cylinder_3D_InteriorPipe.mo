@@ -17,9 +17,9 @@ model Cylinder_3D_InteriorPipe
   SI.Angle thetas[nR,nTheta,nZ] "Position in theta-dimension";
   SI.Length zs[nR,nTheta,nZ] "Position in z-dimension";
   input SI.Volume dVs_int[nR,nTheta,nZ] = zeros(nR,nTheta,nZ) "Internal reduction in cell volume due to existence of a material hole for any reason, should be <0" annotation(Dialog(group="Inputs"));
-  input Real dAs_1[nR,nTheta,nZ]=ones(nR,nTheta,nZ) "Area adjustment factor [0,1] at cell boundaries, direction 1" annotation(Dialog(group="Inputs"));
-  input Real dAs_2[nR,nTheta,nZ]=ones(nR,nTheta,nZ) "Area adjustment factor [0,1] at cell boundaries, direction 2" annotation(Dialog(group="Inputs"));
-  input Real dAs_3[nR,nTheta,nZ]=ones(nR,nTheta,nZ) "Area adjustment factor [0,1] at cell boundaries, direction 3" annotation(Dialog(group="Inputs"));
+  input Real dAs_1[nR,nTheta,nZ]=ones(nR,nTheta,nZ) "Area adjustment factor [0,1] at cell boundaries, direction 1 (r)" annotation(Dialog(group="Inputs"));
+  input Real dAs_2[nR,nTheta,nZ]=ones(nR,nTheta,nZ) "Area adjustment factor [0,1] at cell boundaries, direction 2 (theta)" annotation(Dialog(group="Inputs"));
+  input Real dAs_3[nR,nTheta,nZ]=ones(nR,nTheta,nZ) "Area adjustment factor [0,1] at cell boundaries, direction 3 (z)" annotation(Dialog(group="Inputs"));
 initial equation
   closedDim_1 = fill(false,nTheta,nZ);
   for i in 1:nR loop
