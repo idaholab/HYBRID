@@ -17,9 +17,9 @@ model Cylinder_3D_InteriorPipe
   SI.Angle thetas[nR,nTheta,nZ] "Position in theta-dimension";
   SI.Length zs[nR,nTheta,nZ] "Position in z-dimension";
   input SI.Volume dVs_int[nR,nTheta,nZ] = zeros(nR,nTheta,nZ) "Internal reduction in cell volume due to existence of a material hole for any reason, should be <0" annotation(Dialog(group="Inputs"));
-  input Real dAs_1[nR,nTheta,nZ]=ones(nR,nTheta,nZ) "Area adjustment factor [0,1] at cell boundaries, direction 1 (r)" annotation(Dialog(group="Inputs"));
-  input Real dAs_2[nR,nTheta,nZ]=ones(nR,nTheta,nZ) "Area adjustment factor [0,1] at cell boundaries, direction 2 (theta)" annotation(Dialog(group="Inputs"));
-  input Real dAs_3[nR,nTheta,nZ]=ones(nR,nTheta,nZ) "Area adjustment factor [0,1] at cell boundaries, direction 3 (z)" annotation(Dialog(group="Inputs"));
+  input Real dAs_1[nR,nTheta,nZ]=ones(nR+1,nTheta,nZ) "Area adjustment factor [0,1] at cell boundaries, direction 1 (r)" annotation(Dialog(group="Inputs"));
+  input Real dAs_2[nR,nTheta,nZ]=ones(nR,nTheta+1,nZ) "Area adjustment factor [0,1] at cell boundaries, direction 2 (theta)" annotation(Dialog(group="Inputs"));
+  input Real dAs_3[nR,nTheta,nZ]=ones(nR,nTheta,nZ+1) "Area adjustment factor [0,1] at cell boundaries, direction 3 (z)" annotation(Dialog(group="Inputs"));
 initial equation
   closedDim_1 = fill(false,nTheta,nZ);
   for i in 1:nR loop
@@ -78,7 +78,7 @@ algorithm
       crossAreas_1[nR + 1,j,k] :=
           (rs[nR,j,k]+0.5*drs[nR,j,k])
           *dthetas[nR, j, k]
-          *dzs[nR, j, k]*dAs_1[nR,j,k];
+          *dzs[nR, j, k]*dAs_1[nR+1,j,k];
     end for;
   end for;
   for i in 1:nR loop
@@ -86,7 +86,7 @@ algorithm
       for j in 1:nTheta loop
         crossAreas_2[i,j,k] :=drs[i, j, k]*dzs[i, j, k]*dAs_2[i,j,k];
       end for;
-      crossAreas_2[i,nTheta+1,k] :=drs[i, nTheta, k]*dzs[i, nTheta, k]*dAs_2[i,nTheta,k];
+      crossAreas_2[i,nTheta+1,k] :=drs[i, nTheta, k]*dzs[i, nTheta, k]*dAs_2[i,nTheta+1,k];
     end for;
   end for;
   for i in 1:nR loop
@@ -98,7 +98,7 @@ algorithm
       end for;
       crossAreas_3[i,j,nZ+1] :=
         0.5*((rs[i,j,nZ]+0.5*drs[i,j,nZ])^2 - (rs[i,j,nZ]-0.5*drs[i,j,nZ])^2)
-        *dthetas[i, j, nZ]*dAs_3[i,j,nZ];
+        *dthetas[i, j, nZ]*dAs_3[i,j,nZ+1];
     end for;
   end for;
   for i in 1:nR loop
