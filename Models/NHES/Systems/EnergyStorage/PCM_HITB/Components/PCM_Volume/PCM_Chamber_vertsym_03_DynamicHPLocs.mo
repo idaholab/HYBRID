@@ -19,9 +19,9 @@ model PCM_Chamber_vertsym_03_DynamicHPLocs "Contained PCM chamber generalizable 
   //parameter Modelica.Units.SI.Angle dthetas_one[nTheta] = {0.3472,0.2,0.2,0.6,0.20.2,2*pi/3-1.7472,0.3472,0.2,0.2,0.5*0.6};
   parameter Modelica.Units.SI.Angle dthetas_one[nTheta] = Modelica.Constants.pi/180*{20, 15, 20, 12.5, 12.5, 10, 10, 40, 10, 15, 15};
   parameter Modelica.Units.SI.Length dzs_one[nZ] = 0.595/nZ*ones(nZ);
-  parameter Real dAs_1[nR, nTheta, nZ] = ones(nR+1, nTheta, nZ) "Radial direction area reduction factors (range of 0-1) for each cell interface";
-  parameter Real dAs_2[nR, nTheta, nZ] = ones(nR, nTheta+1, nZ) "Azimuthal direction area reduction factors (range of 0-1) for each cell interface";
-  parameter Real dAs_3[nR, nTheta, nZ] = ones(nR, nTheta, nZ+1) "Axial direction area reduction factors (range of 0-1) for each cell interface";
+  parameter Real dAs_1[nR+1, nTheta, nZ] = ones(nR+1, nTheta, nZ) "Radial direction area reduction factors (range of 0-1) for each cell interface";
+  parameter Real dAs_2[nR, nTheta+1, nZ] = ones(nR, nTheta+1, nZ) "Azimuthal direction area reduction factors (range of 0-1) for each cell interface";
+  parameter Real dAs_3[nR, nTheta, nZ+1] = ones(nR, nTheta, nZ+1) "Axial direction area reduction factors (range of 0-1) for each cell interface";
 
   parameter Modelica.Units.SI.Length t_PCM_wall = 0.0025;
   parameter Modelica.Units.SI.Length t_heat_trace = 0.0025;
