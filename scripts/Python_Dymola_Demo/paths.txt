@@ -1,0 +1,7 @@
+# Path configuration for the Modelica_Python_Demo scripts.
+# Edit these values to match your local installation.
+# Use forward slashes (/) even on Windows. No quotes around the value.
+# Lines starting with # are comments.
+
+HYBRID_PACKAGE=C:/Users/RIGBAC/OneDrive - Idaho National Laboratory/Coding/Modelica/HYBRID/Models/NHES/package.mo
+TRANSFORM_PACKAGE=C:/Users/RIGBAC/OneDrive - Idaho National Laboratory/Coding/Modelica/TRANSFORM-Library/TRANSFORM/package.mo
