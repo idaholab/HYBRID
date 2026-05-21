@@ -1,0 +1,20 @@
+@startuml Calibration
+(*) --> "Load and pre-process
+experimental dataset"
+-->"Start optimization"
+--> "Sample model parameters 
+following user defined distributions" as sample
+
+if "Model accurate enough ?" as q then
+    --->[yes] "Calibration completed" as complete
+else 
+  -->[no] "Modify Dymola initialization 
+  file with new parameters' values" 
+  -->Run Dymola model
+  -->"Compute distance model to 
+  experimental data " as compute
+endif
+compute ---> q
+complete-->(*)
+
+@enduml

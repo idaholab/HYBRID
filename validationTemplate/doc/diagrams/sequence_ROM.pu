@@ -1,0 +1,55 @@
+@startuml
+    
+
+	actor "RAVEN user" as Bob
+    participant "RAVEN script: trainROM" as train
+    
+
+    Bob->train:launch()
+	activate train 
+
+	participant "Dymola model" as model 
+	train->model: runDymolaModel()
+	model-->train: trainingData
+
+	participant ROM as rom 
+	train->rom: trainROM(trainingData)
+	activate rom
+	rom-->train:metaData
+	train->rom:pickleROM()
+	participant pickledROM as pkrom 
+	rom->pkrom:createPkROM()
+	activate pkrom
+	rom-->Bob:ROMAccuracy
+	deactivate rom 
+	deactivate train 
+
+	participant "RAVEN script: ROM Calibration" as cal
+	Bob->cal:launch()
+	activate cal 
+	cal->cal:launchOptimization(target)
+	cal->cal:sampleVariables()
+	participant "RAVEN script: ROM Validation" as val
+	cal->val:evaluateModel(variables)
+
+	activate val
+	participant "Experimental Data" as expdata
+	val->expdata:loadExpData()
+	activate expdata
+	expdata-->val:expHistorySet
+	deactivate expdata
+	val->pkrom:loadROM()
+	pkrom-->val:activeROM
+	val->pkrom:runROM(variables)
+	pkrom-->val:ROMModelHistorySet
+	deactivate pkrom
+	val->val:compareHistorySets(metric)
+
+	val-->cal:metricValue
+	deactivate val 
+
+	cal-->Bob:optimizationResults
+	deactivate cal
+    
+    
+    @enduml

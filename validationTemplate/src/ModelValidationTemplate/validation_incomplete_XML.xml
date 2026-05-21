@@ -1,0 +1,94 @@
+<?xml version="1.0" ?>
+<Simulation verbosity="debug">
+	<TestInfo>
+		<author>mgarrou</author>
+		<created>2021-07-20</created>
+		<description>
+			Validation XML file for RAVEN-Validation-Template
+		</description>
+	</TestInfo>
+
+	<RunInfo>
+		<WorkingDir>validationWorkDir</WorkingDir>
+		<Sequence>loadExp,runDymola,compare</Sequence>
+		<batchSize>1</batchSize>
+	</RunInfo>
+	
+	<Files>
+	</Files>
+
+	<Steps>
+		<IOStep name="loadExp">
+			<Input class="Files" type="">expInput</Input>
+			<Output class="DataObjects" type="HistorySet">expData</Output>
+		</IOStep>
+		<MultiRun name="runDymola" clearRunDir="False">
+			<Input class="Files" type="DymolaInitialisation">dsin.txt</Input>
+			<Model class="Models" type="Code">dymolaModel</Model>
+			<Sampler class="Samplers" type="MonteCarlo">MC</Sampler>
+			<Output class="DataObjects" type="HistorySet">modelResults</Output>
+		</MultiRun>
+		<PostProcess name="compare">
+			<Input class="DataObjects" type="HistorySet">expData</Input>
+			<Input class="DataObjects" type="HistorySet">modelResults</Input>
+			<Model class="Models" type="PostProcessor">pp</Model>
+			<Output class="DataObjects" type="PointSet">ppOut</Output>
+			<Output class="OutStreams" type="Print">valOut</Output>
+		</PostProcess>
+	</Steps>
+  
+	<Samplers>
+		<MonteCarlo name="MC">
+		<samplerInit>
+			<limit>1</limit>
+		</samplerInit>
+		</MonteCarlo>
+	</Samplers>
+  
+	<Models>
+		<Code name="dymolaModel" subType="Dymola">
+			<executable>
+			</executable>
+			<outputVariablesToLoad></outputVariablesToLoad>
+		</Code>
+		<PostProcessor name="pp" subType="Metric">
+			<Features type="variable"></Features>
+			<Targets type="variable"></Targets>
+			<pivotParameter>Time</pivotParameter>
+			<Metric class="Metrics" type=""></Metric>
+		</PostProcessor>
+	</Models>
+  
+	<Metrics>
+	</Metrics>
+
+  
+	<DataObjects>
+		<HistorySet name="expData">
+			<Input>labels</Input>
+			<Output></Output>
+			<options>
+				<pivotParameter>Time</pivotParameter>
+			</options>
+		</HistorySet>
+		<HistorySet name="modelResults">
+			<Input>InputPlaceHolder</Input>
+			<Output></Output>
+			<options>
+				<pivotParameter>Time</pivotParameter>
+			</options>
+		</HistorySet>
+		<PointSet name="ppOut">
+			<Input>InputPlaceHolder</Input>
+			<Output></Output>
+		</PointSet>
+	</DataObjects>
+
+	<OutStreams>
+		<Print name="valOut">
+			<type>csv</type>
+			<source>ppOut</source>
+		</Print>
+	</OutStreams>
+
+</Simulation>

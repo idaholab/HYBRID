@@ -1,0 +1,72 @@
+@startuml RAVEN Validation template factory 
+
+
+together {
+class "RAVEN user" as client
+
+interface "RAVEN Validation Template \n validationWorkflowGenerator.py" as template{
+    {field} Model (Simulation model executable)
+    Experimental data
+    {field} Validation target = SRQ
+    {field} Variables (distribution) 
+    Comparison metric
+    Syncing method
+    {field} Optimization (Algorithm, Sampling scheme)
+}
+
+note top of template
+        - SRQ: System Response Quantity
+        - Optimization : if the user wants to calibrate its model
+        - Syncing: Redefine common sampling rate, 
+        eliminate articificial offsets
+end note
+}
+
+together {
+    class ModelValidationTemplate {
+        Model 
+        Experimental data
+        SRQ
+        Variables
+        Comparison metric 
+
+        Syncing method
+
+        {field} Simulation dataset (generated)
+        {field} Postprocessor (plot)
+        
+        + createWorkflow()
+    }
+
+    class ModelCalibrationTemplate {
+        Model 
+        Experimental data
+        SRQ
+        Variables
+        Comparison metric 
+
+        Optimizer 
+        + createWorkflow()
+    }
+
+}
+
+together {
+class "RAVEN validation XML input file" as val 
+class "RAVEN calibration (optimization) XML input file" as cal 
+}
+hide empty members
+
+
+template <|-- ModelValidationTemplate : extends
+template <|-- ModelCalibrationTemplate : extends
+
+client --> template : uses
+client --> val : uses
+client --> cal: uses
+ModelValidationTemplate --> val : creates
+ModelCalibrationTemplate --> cal : creates
+cal --> val: includes
+
+
+@enduml
