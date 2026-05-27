@@ -1,5 +1,5 @@
 within NHES.Systems.EnergyStorage.PCM_HITB.Components.PCM_Volume;
-model PCM_Chamber_vertsym_03_DynamicHPLocs "Contained PCM chamber generalizable interact with a heat pipe 
+model PCM_Chamber_vertsym_03_FullDynamicHPLocs "Contained PCM chamber generalizable interact with a heat pipe 
   at location specified by user as node Nr and Ntheta. 
   It is on implementation that any Z-dependencies should be enforced. 
   Convection BCs on the outside surfaces are allowed, adiabatic internal conditions imposed."
@@ -8,36 +8,29 @@ model PCM_Chamber_vertsym_03_DynamicHPLocs "Contained PCM chamber generalizable 
   parameter Integer nZ = 6;
   parameter Integer n_HPs = 2;
   parameter Integer n_Thermocouples = 9;
-  parameter Integer len_HPMatrix = 3; //This is the number of cells in the geometry that will have heat pipes in them
-  parameter Integer HPMatrix[len_HPMatrix, 3] = {{4, 1, 1},{4, 7, 2},{4, 8, 2}}; //r-theta coordinate and heat pipe # of each heat pipe
-  parameter Real HPMatrixLocs[n_HPs, 2] = {{0.0254*3.75,0},{0.0254*4.25,120*Modelica.Constants.pi/180}};
-  parameter Real HPFracs[len_HPMatrix] = {0.5, 0.7, 0.3}; //Heat transfer fraction of heat pipe that is within the node associated with the nth term of HPMatrix
-  parameter Real HPVolFracs[len_HPMatrix] = {0.5, 0.7, 0.3}; //Volume raction of heat pipe that is within the node associated with the nth term of HPMatrix
+  parameter Real HPMatrixLocs[n_HPs, 2] = {{0.0254*4.5,0},{0.0254*6.75,120*Modelica.Constants.pi/180}};
   parameter Modelica.Units.SI.Length R_HP = 1.325*25.4/1000;
   parameter Modelica.Units.SI.Length R_PCM = 0.295275;
   parameter Modelica.Units.SI.Length D_TC = 0.25*25.4/1000;
   parameter Modelica.Units.SI.Length drs_one[nR] = 1/1000*{25,25,23.66,142.26-73.66,27.74,25,25,25,25,29.5275};
-  //parameter Modelica.Units.SI.Angle dthetas_one[nTheta] = {0.3472,0.2,0.2,0.6,0.20.2,2*pi/3-1.7472,0.3472,0.2,0.2,0.5*0.6};
   parameter Modelica.Units.SI.Angle dthetas_one[nTheta] = Modelica.Constants.pi/180*{20, 15, 20, 12.5, 12.5, 10, 10, 40, 10, 15, 15};
   parameter Modelica.Units.SI.Length dzs_one[nZ] = 0.595/nZ*ones(nZ);
-  parameter Real dAs_1[nR+1, nTheta, nZ] = ones(nR+1, nTheta, nZ) "Radial direction area reduction factors (range of 0-1) for each cell interface";
-  parameter Real dAs_2[nR, nTheta+1, nZ] = ones(nR, nTheta+1, nZ) "Azimuthal direction area reduction factors (range of 0-1) for each cell interface";
-  parameter Real dAs_3[nR, nTheta, nZ+1] = ones(nR, nTheta, nZ+1) "Axial direction area reduction factors (range of 0-1) for each cell interface";
-
+  Real dAs_1_int_hp[nR+1, nTheta, nZ, n_HPs]  "Radial direction area reduction factors (range of 0-1) for each cell interface";
+  Real dAs_2_int_hp[nR, nTheta+1, nZ, n_HPs]  "Azimuthal direction area reduction factors (range of 0-1) for each cell interface";
+  Real dAs_3_int_hp[nR, nTheta, nZ+1, n_HPs]  "Axial direction area reduction factors (range of 0-1) for each cell interface";
+  Real dAs_1[nR+1, nTheta, nZ]  "Radial direction area reduction factors (range of 0-1) for each cell interface";
+  Real dAs_2[nR, nTheta+1, nZ]  "Azimuthal direction area reduction factors (range of 0-1) for each cell interface";
+  Real dAs_3[nR, nTheta, nZ+1]  "Axial direction area reduction factors (range of 0-1) for each cell interface";
   parameter Modelica.Units.SI.Length t_PCM_wall = 0.0025;
   parameter Modelica.Units.SI.Length t_heat_trace = 0.0025;
   parameter Modelica.Units.SI.Length l_PCM = 0.595;
-  parameter Integer nR_HP = 4;
-  parameter Real[n_HPs] HPFrac = {0.5,1};
-  parameter Integer nTheta_HP[n_HPs] = {1,8};
-  parameter Integer HPs[nTheta] = {1,0,0,0,0,0,0,2,0,0,0}; //This should be thought of as an index. This is used to point to HPFrac.
+
   parameter Integer TCs[n_Thermocouples, 2] = {{1,1},{4,3},{4,6},{4,11},{7,1},{7,3},{7,6},{7,9},{7,11}};
   parameter Modelica.Units.SI.Length t_insulation = 2*0.0254;
   input Modelica.Units.SI.Length t_insulation_end = min(t_insulation,0.15);
   parameter Modelica.Units.SI.CoefficientOfHeatTransfer hc_air = 2.5;
   parameter Modelica.Units.SI.Temperature T_Init = 443+273.15-5;
-//  parameter Modelica.Units.SI.Density d_mult = 0.55;
-//  Real dAs_2[nR,nTheta,nZ];
+
 
   Modelica.Units.SI.Length drs[nR, nTheta, nZ];
   Modelica.Units.SI.Angle dthetas[nR, nTheta, nZ];
@@ -45,7 +38,7 @@ model PCM_Chamber_vertsym_03_DynamicHPLocs "Contained PCM chamber generalizable 
   Modelica.Units.SI.Volume dVs_HP[nR, nTheta, nZ];
   Modelica.Units.SI.Volume dVs_TCs[nR, nTheta, nZ];
   Modelica.Units.SI.Power Q_heat[nZ,n_HPs]; //amount of heat that the model sees from the heat pipes, it is currently heat port * HPFrac
-  Modelica.Units.SI.Power Q_thru[nZ, len_HPMatrix]; //amount of heat that gets put into the battery from the heat pipes, distributed by fractions.
+//  Modelica.Units.SI.Power Q_thru[nZ, len_HPMatrix]; //amount of heat that gets put into the battery from the heat pipes, distributed by fractions.
   Modelica.Units.SI.Power Q_gens[nR, nTheta, nZ];
   Modelica.Units.SI.Length l_shell[nTheta, nZ];
   Modelica.Units.SI.Area SA_End[nR, nTheta];
@@ -73,6 +66,8 @@ model PCM_Chamber_vertsym_03_DynamicHPLocs "Contained PCM chamber generalizable 
  // input Modelica.Units.SI.Power Q_heat_trace[nTheta, nZ] annotation(Dialog(tab = "General"));
   Modelica.Units.SI.Power actual_total_heat_trace;
   Real dVFracs[nR, nTheta, nZ, n_HPs];
+
+
   replaceable package Insulation_Material = NHES.Media.Solids.FoamGlass constrainedby TRANSFORM.Media.Interfaces.Solids.PartialAlloy annotation(Dialog(tab = "General"), choicesAllMatching = true);
   replaceable package PCM_Material = PCM_Materials.PCM_HITB_2_Sin
     constrainedby TRANSFORM.Media.Interfaces.Solids.PartialAlloy                                                                    annotation(Dialog(tab = "General"), choicesAllMatching = true);
@@ -110,7 +105,7 @@ model PCM_Chamber_vertsym_03_DynamicHPLocs "Contained PCM chamber generalizable 
     redeclare model InternalHeatModel =
         TRANSFORM.HeatAndMassTransfer.DiscritizedModels.BaseClasses.Dimensions_3.GenericHeatGeneration
         (Q_gens=Q_gens))
-    annotation (Placement(transformation(extent={{-18,-42},{64,42}})));
+    annotation (Placement(transformation(extent={{-18,-40},{64,44}})));
 
      //   dAs_2=dAs_2,
   TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.Adiabatic adiabatic_r[
@@ -212,10 +207,13 @@ model PCM_Chamber_vertsym_03_DynamicHPLocs "Contained PCM chamber generalizable 
         transformation(extent={{-56,-46},{-96,-6}}),iconTransformation(extent={{
             100,-20},{60,20}})));
 
-
   Real f_node   [nR, nTheta, n_HPs];
   Real f_circle [nR, nTheta, n_HPs];
   Modelica.Units.SI.Area A_overlap[nR, nTheta, n_HPs];
+  Real heatfracs[nR, nTheta, n_HPs];
+  Real heatfracs3D[nR, nTheta, nZ, n_HPs];
+  Modelica.Units.SI.Length heatlength[nR, nTheta, n_HPs];
+  Modelica.Units.SI.Length heatlength_3D[nR, nTheta, nZ, n_HPs];
 //  Real circle_fraction_sum "Conservation check — should be ≈ 1.0";
 //equation
  /* (f_node, f_circle, A_overlap) =
@@ -224,7 +222,6 @@ model PCM_Chamber_vertsym_03_DynamicHPLocs "Contained PCM chamber generalizable 
           drs, dphis, R_inner,
           N_r  = 60,
           N_phi = 120);*/
-
 
 initial equation
   Gr_r = zeros(nR, nTheta, nZ);
@@ -238,16 +235,84 @@ algorithm
    drs_one, dthetas_one, 0, nR*10, nTheta*10);
    for i in 1:nR loop
      for j in 1:nTheta loop
-     //  dVs_HP[i,j,:] := dVs_HP[i,j,:]+A_overlap[i,j,p]*dzs_one;
+       dVs_HP[i,j,:] := dVs_HP[i,j,:]+A_overlap[i,j,p]*dzs_one;
+       dAs_3_int_hp[i,j,:,p] := (1 - A_overlap[i,j,p]/(drs_one[i]*dthetas_one[j]))*ones(nZ+1);
      end for;
    end for;
   end for;
   for i in 1:n_Thermocouples loop
     dVs_TCs[TCs[i,1],TCs[i,2],:] := -D_TC*D_TC/4*Modelica.Constants.pi*dzs_one;
   end for;
-  for r in 1:len_HPMatrix loop
-    dVs_HP[HPMatrix[r,1], HPMatrix[r,2],:] := -Modelica.Constants.pi*R_HP*R_HP*dzs_one*HPVolFracs[r];
+//  for r in 1:len_HPMatrix loop
+    //dVs_HP[HPMatrix[r,1], HPMatrix[r,2],:] := -Modelica.Constants.pi*R_HP*R_HP*dzs_one*HPVolFracs[r];
+//  end for;
+ /* for k in 1:nZ loop
+    for p in 1:n_HPs loop
+    (dAs_1_int_hp[:,:,k, p],dAs_2_int_hp[:,:,k, p]) :=
+        CylindricalNodeOverlapEstimated.dAs_function(
+        R_HP,
+        HPMatrixLocs[p, 1],
+        HPMatrixLocs[p, 2],
+        nR,
+        nTheta,
+        drs_one,
+        dthetas_one);
+    end for;
+  end for;*/
+   //   dAs_3_int_hp :=ones(
+ //   nR,
+  //  nTheta,
+ //   nZ + 1,
+  //  n_HPs);
+  dAs_1 := ones(nR+1, nTheta, nZ);
+  dAs_2 := ones(nR, nTheta+1, nZ);
+  dAs_3 := ones(nR, nTheta, nZ+1);
+  for k in 1:nZ loop
+
+  for p in 1:n_HPs loop
+  (dAs_1_int_hp[:,:,k,p], dAs_2_int_hp[:,:,k,p]) := CylindricalNodeOverlapEstimated.dAs_function(R_HP,HPMatrixLocs[p,1], HPMatrixLocs[p,2], nR, nTheta, drs_one, dthetas_one, 50);
+  //dAs_3_int_hp[:,:,k,p] :=A_overlap[:, :, p];
   end for;
+  end for;
+
+  for i in 1:nR+1 loop
+    for j in 1:nTheta loop
+      for k in 1:nZ loop
+        for p in 1:n_HPs loop
+          dAs_1[i,j,k] := dAs_1[i,j,k] - (1-dAs_1_int_hp[i,j,k,p]);
+        end for;
+      end for;
+    end for;
+  end for;
+    for i in 1:nR loop
+    for j in 1:nTheta+1 loop
+      for k in 1:nZ loop
+        for p in 1:n_HPs loop
+        dAs_2[i,j,k] := dAs_2[i,j,k] - (1-dAs_2_int_hp[i,j,k,p]);
+        end for;
+      end for;
+    end for;
+    end for;
+        for i in 1:nR loop
+    for j in 1:nTheta loop
+      for k in 1:nZ+1 loop
+        for p in 1:n_HPs loop
+        dAs_3[i,j,k] := dAs_3[i,j,k] - (1-dAs_3_int_hp[i,j,k,p]);
+        end for;
+      end for;
+    end for;
+    end for;
+
+  for p in 1: n_HPs loop
+    (heatfracs[:, :, p],heatlength[:,:,p]) := CylindricalNodeOverlapEstimated.circleArcInNode(R_HP, HPMatrixLocs[p,1], HPMatrixLocs[p,2], nR, nTheta,drs_one, dthetas_one, 360);
+  end for;
+  for k in 1:nZ loop
+    heatfracs3D[:, :, k, :] :=heatfracs[:, :, :];
+    heatlength_3D[:, :, k, :] :=heatlength[:, :, :];
+  end for;
+
+
+
 
 equation
   m_total = sum(conduction.geometry.Vs.*conduction.materials.d);
@@ -307,22 +372,19 @@ equation
     end for;
   end for;
 
-
-
-  for r in 1:len_HPMatrix loop
-    Q_thru[:,r] = Q_heat[:,HPMatrix[r,3]]*HPFracs[r];
+//  for r in 1:len_HPMatrix loop
+//   Q_thru[:,r] = Q_heat[:,HPMatrix[r,3]]*HPFracs[r];
 
    //       Q_gens[HPMatrix[r,1],HPMatrix[r,2],:] :=  Q_gens[HPMatrix[r,1],HPMatrix[r,2],:] + Q_thru[:, r];
 
+//  end for;
+  for i in 1:nR loop
+    for j in 1:nTheta loop
+      for k in 1:nZ loop
+        Q_through_3d[i,j,k] = heatfracs3D[i,j,k,:]*Q_heat[k,:];
+      end for;
+    end for;
   end for;
-algorithm
-  Q_through_3d[:,:,:] :=zeros(nR, nTheta, nZ);
-  for r in 1:len_HPMatrix loop
-  //  Q_through_3d[HPMatrix[r,1],HPMatrix[r,2],:] := Q_through_3d[HPMatrix[r,1],HPMatrix[r,2],:]+Q_thru[:,r];
-  Q_through_3d[HPMatrix[r,1],HPMatrix[r,2],:] := Q_through_3d[HPMatrix[r,1],HPMatrix[r,2],:]+Q_thru[:,r];
-  end for;
-equation
-
 
   for k in 1:nZ loop
     T_ave_z[k] = sum(conduction.materials[:,:,k].T)/(nR*nTheta);
@@ -330,7 +392,8 @@ equation
    // Q_heat[k,2] = port_b[k,2].Q_flow*HPFrac[2];
       for l in 1:n_HPs loop
     Q_heat[k,l] = port_b[k,l].Q_flow;
-    port_b[k,l].T = conduction.materials[nR_HP,nTheta_HP[l],k].T;
+    port_b[k,l].T = sum(heatfracs3D[:,:,k,l].*conduction.materials[:,:,k].T)/sum(heatfracs3D[:,:,:,l]);
+  //  port_b[k,l].T = conduction.materials[nR_HP,nTheta_HP[l],k].T;
     end for;
   end for;
 
@@ -402,12 +465,12 @@ equation
   Q_loss = 2*Modelica.Constants.pi/sum(dthetas_one)*(sum(End_Insulation_1.port_b.Q_flow)+sum(End_Insulation_2.port_b.Q_flow)+sum(Radial_Insulation.port_b.Q_flow));
   Q_net_trace_and_loss = 2*Modelica.Constants.pi/sum(dthetas_one)*(sum(conduction.port_a1.Q_flow)+sum(conduction.port_a2.Q_flow)+sum(conduction.port_a3.Q_flow)+sum(conduction.port_b1.Q_flow)+sum(conduction.port_b2.Q_flow)+sum(conduction.port_b3.Q_flow));
   actual_total_heat_trace = Heat_Tape_Input;
-  connect(conduction.port_a1, adiabatic_r.port) annotation (Line(points={{-18,0},
-          {-34,0},{-34,2},{-50,2}},       color={191,0,0}));
+  connect(conduction.port_a1, adiabatic_r.port) annotation (Line(points={{-18,2},
+          {-50,2}},                       color={191,0,0}));
   connect(adiabatic_theta.port, conduction.port_a2) annotation (Line(points={{6,-78},
-          {22,-78},{22,-44},{23,-44},{23,-42}},          color={191,0,0}));
+          {22,-78},{22,-44},{23,-44},{23,-40}},          color={191,0,0}));
   connect(adiabatic_theta1.port, conduction.port_b2) annotation (Line(points={{6,58},{
-          22,58},{22,48},{23,48},{23,42}},
+          22,58},{22,48},{23,48},{23,44}},
                                        color={191,0,0}));
   connect(convection2.port_a,Air_PCM_Axial. port)
     annotation (Line(points={{189,2},{200,2}},   color={191,0,0}));
@@ -417,11 +480,11 @@ equation
   connect(Air_PCM_Axial1.port,convection4. port_a)
     annotation (Line(points={{70,148},{70,133}}, color={191,0,0}));
   connect(PCM_Outer.port_a, conduction.port_b1) annotation (Line(points={{78,2},{
-          72,2},{72,0},{64,0}},     color={191,0,0}));
+          64,2}},                   color={191,0,0}));
   connect(simpleWall1.port_a, conduction.port_b3) annotation (Line(points={{70,56},
-          {70,33.6},{55.8,33.6}},             color={191,0,0}));
+          {70,35.6},{55.8,35.6}},             color={191,0,0}));
   connect(simpleWall.port_a, conduction.port_a3) annotation (Line(points={{-42,-44},
-          {-42,-33.6},{-9.8,-33.6}},color={191,0,0}));
+          {-42,-31.6},{-9.8,-31.6}},color={191,0,0}));
   connect(simpleWall.port_b, End_Insulation_2.port_a)
     annotation (Line(points={{-42,-64},{-42,-74}}, color={191,0,0}));
   connect(convection3.port_b, End_Insulation_2.port_b)
@@ -454,4 +517,4 @@ equation
           origin={94,123},
           rotation=90,
           textString="<--- Z direction")}));
-end PCM_Chamber_vertsym_03_DynamicHPLocs;
+end PCM_Chamber_vertsym_03_FullDynamicHPLocs;

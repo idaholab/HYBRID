@@ -1,0 +1,6 @@
+getNodeBounds
+isPointInAnnularSector
+circleNodeOverlapArea
+coincidentAreaFraction
+allNodesCoincidentFraction
+Example
