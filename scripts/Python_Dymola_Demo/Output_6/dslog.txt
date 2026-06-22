@@ -1,0 +1,23 @@
+Model: NewDrumBoiler2
+Integration started at 0 using integration method:
+RK-method: esdirk45a
+Local extrapolation
+FSAL
+Continuous extension
+
+
+Integration terminated successfully at T = 300
+   CPU-time for integration                  : 0.019 seconds
+   CPU-time for initialization               : 0 seconds
+   Number of result points                   : 301
+   Number of grid points                     : 301
+   Number of accepted steps                  : 20
+   Number of rejected steps                  : 0
+   Number of f-evaluations (dynamics)        : 183
+   Number of crossing function evaluations   : 61
+   Number of Jacobian-evaluations            : 3
+   Number of model time events               : 0
+   Number of state events                    : 0
+   Number of step events                     : 0
+
+SUCCESSFUL simulation of NewDrumBoiler2

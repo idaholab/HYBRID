@@ -1,0 +1,1631 @@
+Model: NHES.Systems.BalanceOfPlant.RankineCycle.Examples.SteamTurbine_L1_boundaries_Test_a
+Integration started at 0 using integration method:
+RK-method: esdirk45a
+Local extrapolation
+FSAL
+Continuous extension
+
+Warning: The following error was detected at time: 11.44527684741675
+  Error in region computation of IF97 steam tables(p = 6.03327e+11, h = 2.55319e+10)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 10.72263842370837
+  Error in region computation of IF97 steam tables(p = 3.01666e+11, h = 1.27674e+10)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 10.36131921185419
+  Error in region computation of IF97 steam tables(p = 1.50836e+11, h = 6.3852e+09)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 10.18065960592709
+  Error in region computation of IF97 steam tables(p = 7.54207e+10, h = 3.19408e+09)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 10.09032980296355
+  Error in region computation of IF97 steam tables(p = 3.77131e+10, h = 1.59852e+09)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 10.04516490148177
+  Error in region computation of IF97 steam tables(p = 1.88593e+10, h = 8.00742e+08)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 10.02258245074089
+  Error in region computation of IF97 steam tables(p = 9.43244e+09, h = 4.01852e+08)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 10.01129122537044
+  Error in region computation of IF97 steam tables(p = 4.719e+09, h = 2.02407e+08)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 10.00564561268522
+  Error in region computation of IF97 steam tables(p = 2.36227e+09, h = 1.02684e+08)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 10.00282280634261
+  Error in region computation of IF97 steam tables(p = 1.18391e+09, h = 5.28232e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 10.00141140317131
+  Error in region computation of IF97 steam tables(p = 5.9473e+08, h = 2.78926e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 10.00070570158565
+  Error in region computation of IF97 steam tables(p = 3.0014e+08, h = 1.54273e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 10.00035285079283
+  Error in region computation of IF97 steam tables(p = 1.52845e+08, h = 9.19461e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 10.00017642539641
+  Error in region computation of IF97 steam tables(p = 7.91971e+07, h = 6.07829e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 10.00008821269821
+  Error in region computation of IF97 steam tables(p = 4.23733e+07, h = 4.52012e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 10.0000441063491
+  IF97 medium function g5: input temperature (= 2308.88 K) is higher than limit of 2273.15K in region 5
+  Failed condition: T <= 2273.15
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.g5
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Inverses.tofph5
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_b.p, BOP.steamTurbine.portHP.h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_b.p, BOP.steamTurbine.portHP.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_b.p, BOP.steamTurbine.portHP.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Uniqu...
+
+First evaluation failed for non-linear solver.
+
+Warning: The following error was detected at time: 10.0000441063491
+  IF97 medium function g5: input temperature (= 2308.88 K) is higher than limit of 2273.15K in region 5
+  Failed condition: T <= 2273.15
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.g5
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Inverses.tofph5
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_b.p, BOP.steamTurbine.portHP.h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_b.p, BOP.steamTurbine.portHP.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_b.p, BOP.steamTurbine.portHP.h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Uniqu...
+
+Non-linear solver will silently attempt to handle this problem.
+Non-linear solver gave up after attempt: 2
+
+Warning: The following error was detected at time: 79.46709848072602
+  IF97 medium function tsat called with too low pressure
+p = -8.05812e+12 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 69.733549240363
+  IF97 medium function tsat called with too low pressure
+p = -4.02905e+12 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 64.8667746201815
+  IF97 medium function tsat called with too low pressure
+p = -2.01452e+12 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 62.43338731009075
+  IF97 medium function tsat called with too low pressure
+p = -1.00726e+12 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 61.21669365504538
+  IF97 medium function tsat called with too low pressure
+p = -5.03625e+11 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 60.60834682752269
+  IF97 medium function tsat called with too low pressure
+p = -2.51808e+11 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 60.30417341376135
+  IF97 medium function tsat called with too low pressure
+p = -1.259e+11 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 60.15208670688067
+  IF97 medium function tsat called with too low pressure
+p = -6.29458e+10 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 60.07604335344033
+  IF97 medium function tsat called with too low pressure
+p = -3.14687e+10 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 60.03802167672017
+  IF97 medium function tsat called with too low pressure
+p = -1.57302e+10 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 60.01901083836008
+  IF97 medium function tsat called with too low pressure
+p = -7.86094e+09 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 60.00950541918004
+  IF97 medium function tsat called with too low pressure
+p = -3.92631e+09 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 60.00475270959002
+  IF97 medium function tsat called with too low pressure
+p = -1.95899e+09 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 60.00237635479501
+  IF97 medium function tsat called with too low pressure
+p = -9.75334e+08 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 60.0011881773975
+  IF97 medium function tsat called with too low pressure
+p = -4.83505e+08 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 60.00059408869875
+  IF97 medium function tsat called with too low pressure
+p = -2.3759e+08 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 60.00029704434937
+  IF97 medium function tsat called with too low pressure
+p = -1.14633e+08 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 60.00014852217469
+  IF97 medium function tsat called with too low pressure
+p = -5.31544e+07 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 60.00007426108734
+  IF97 medium function tsat called with too low pressure
+p = -2.24151e+07 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 60.00003713054367
+  IF97 medium function tsat called with too low pressure
+p = -7.0454e+06 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 60.00001856527184
+  IF97 medium function tsat called with too low pressure
+p = -176744 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.steamTurbine.state_a.p, BOP.steamTurbine.state_a.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.s_ph(BOP.steamTurbine.state_a.p, BOP.steamTurbine.state_a.h, BOP.steamTurbine.state_a.phase, 0)
+Modelica.Media.Water.WaterIF97_ph.specificEntropy_Unique13(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = BOP.steamTurbine.state_a.p...
+
+Non-linear solver will silently attempt to handle this problem.
+Non-linear solver recovered after failed attempt number: 2
+
+Warning: The following error was detected at time: 60.00001856527184
+  IF97 medium function tsat called with too low pressure
+p = -6.43297e+06 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 131.5162188873561
+  Error in region computation of IF97 steam tables(p = 8.98181e+12, h = 3.80059e+11)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 120.7581094436781
+  Error in region computation of IF97 steam tables(p = 4.49091e+12, h = 1.90031e+11)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 115.379054721839
+  Error in region computation of IF97 steam tables(p = 2.24546e+12, h = 9.50171e+10)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 112.6895273609195
+  Error in region computation of IF97 steam tables(p = 1.12273e+12, h = 4.751e+10)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 111.3447636804598
+  Error in region computation of IF97 steam tables(p = 5.61368e+11, h = 2.37565e+10)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 110.6723818402299
+  Error in region computation of IF97 steam tables(p = 2.80687e+11, h = 1.18797e+10)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 110.3361909201149
+  Error in region computation of IF97 steam tables(p = 1.40346e+11, h = 5.94134e+09)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 110.1680954600575
+  Error in region computation of IF97 steam tables(p = 7.01759e+10, h = 2.97215e+09)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 110.0840477300287
+  Error in region computation of IF97 steam tables(p = 3.50907e+10, h = 1.48756e+09)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 110.0420238650144
+  Error in region computation of IF97 steam tables(p = 1.75481e+10, h = 7.4526e+08)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 110.0210119325072
+  Error in region computation of IF97 steam tables(p = 8.77684e+09, h = 3.74111e+08)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 110.0105059662536
+  Error in region computation of IF97 steam tables(p = 4.39119e+09, h = 1.88536e+08)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 110.0052529831268
+  Error in region computation of IF97 steam tables(p = 2.19837e+09, h = 9.57492e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 110.0026264915634
+  Error in region computation of IF97 steam tables(p = 1.10196e+09, h = 4.93556e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 110.0013132457817
+  Error in region computation of IF97 steam tables(p = 5.53755e+08, h = 2.61588e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 110.0006566228908
+  Error in region computation of IF97 steam tables(p = 2.79652e+08, h = 1.45604e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 110.0003283114454
+  Error in region computation of IF97 steam tables(p = 1.42601e+08, h = 8.76116e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 110.0001641557227
+  Error in region computation of IF97 steam tables(p = 7.40752e+07, h = 5.86156e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 110.0000820778614
+  Error in region computation of IF97 steam tables(p = 3.98124e+07, h = 4.41176e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 110.0000410389307
+  IF97 medium function tsat called with too low pressure
+p = -72112.2 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.steamTurbine.state_a.p, BOP.steamTurbine.state_a.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.s_ph(BOP.steamTurbine.state_a.p, BOP.steamTurbine.state_a.h, BOP.steamTurbine.state_a.phase, 0)
+Modelica.Media.Water.WaterIF97_ph.specificEntropy_Unique13(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = BOP.steamTurbine.state_a.p...
+
+Non-linear solver will silently attempt to handle this problem.
+Non-linear solver recovered after failed attempt number: 1
+
+Warning: The following error was detected at time: 110.0000410389307
+  Error in region computation of IF97 steam tables(p = 7.37438e+06, h = -3.74878e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 173.0019010978949
+  IF97 medium function tsat called with too low pressure
+p = -5.38194e+12 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 166.5009505489475
+  IF97 medium function tsat called with too low pressure
+p = -2.69097e+12 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 163.2504752744737
+  IF97 medium function tsat called with too low pressure
+p = -1.34548e+12 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 161.6252376372369
+  IF97 medium function tsat called with too low pressure
+p = -6.72735e+11 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 160.8126188186184
+  IF97 medium function tsat called with too low pressure
+p = -3.36364e+11 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 160.4063094093092
+  IF97 medium function tsat called with too low pressure
+p = -1.68178e+11 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 160.2031547046546
+  IF97 medium function tsat called with too low pressure
+p = -8.40846e+10 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 160.1015773523273
+  IF97 medium function tsat called with too low pressure
+p = -4.20382e+10 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 160.0507886761636
+  IF97 medium function tsat called with too low pressure
+p = -2.10149e+10 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 160.0253943380818
+  IF97 medium function tsat called with too low pressure
+p = -1.05033e+10 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 160.0126971690409
+  IF97 medium function tsat called with too low pressure
+p = -5.24749e+09 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 160.0063485845205
+  IF97 medium function tsat called with too low pressure
+p = -2.61958e+09 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 160.0031742922602
+  IF97 medium function tsat called with too low pressure
+p = -1.30563e+09 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 160.0015871461301
+  IF97 medium function tsat called with too low pressure
+p = -6.48652e+08 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 160.0007935730651
+  IF97 medium function tsat called with too low pressure
+p = -3.20164e+08 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 160.0003967865325
+  IF97 medium function tsat called with too low pressure
+p = -1.5592e+08 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 160.0001983932663
+  IF97 medium function tsat called with too low pressure
+p = -7.37978e+07 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 160.0000991966331
+  IF97 medium function tsat called with too low pressure
+p = -3.27368e+07 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 160.0000495983166
+  IF97 medium function tsat called with too low pressure
+p = -1.22063e+07 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 160.0000247991583
+  IF97 medium function tsat called with too low pressure
+p = -1.941e+06 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 160.0000123995791
+  IF97 medium function tsat called with too low pressure
+p = -256261 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.steamTurbine.state_a.p, BOP.steamTurbine.state_a.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.s_ph(BOP.steamTurbine.state_a.p, BOP.steamTurbine.state_a.h, BOP.steamTurbine.state_a.phase, 0)
+Modelica.Media.Water.WaterIF97_ph.specificEntropy_Unique13(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = BOP.steamTurbine.state_a.p...
+
+Non-linear solver will silently attempt to handle this problem.
+Non-linear solver recovered after failed attempt number: 1
+
+Warning: The following error was detected at time: 160.0000123995791
+  IF97 medium function tsat called with too low pressure
+p = -125908 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.steamTurbine.state_a.p, BOP.steamTurbine.state_a.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.s_ph(BOP.steamTurbine.state_a.p, BOP.steamTurbine.state_a.h, BOP.steamTurbine.state_a.phase, 0)
+Modelica.Media.Water.WaterIF97_ph.specificEntropy_Unique13(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = BOP.steamTurbine.state_a.p...
+
+Non-linear solver will silently attempt to handle this problem.
+Non-linear solver recovered after failed attempt number: 1
+
+Warning: The following error was detected at time: 228.8253666715416
+  Error in region computation of IF97 steam tables(p = 7.85853e+12, h = 3.32529e+11)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 219.4126833357708
+  Error in region computation of IF97 steam tables(p = 3.92927e+12, h = 1.66266e+11)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 214.7063416678854
+  Error in region computation of IF97 steam tables(p = 1.96464e+12, h = 8.31345e+10)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 212.3531708339427
+  Error in region computation of IF97 steam tables(p = 9.82321e+11, h = 4.15687e+10)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 211.1765854169714
+  Error in region computation of IF97 steam tables(p = 4.91163e+11, h = 2.07858e+10)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 210.5882927084857
+  Error in region computation of IF97 steam tables(p = 2.45584e+11, h = 1.03944e+10)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 210.2941463542428
+  Error in region computation of IF97 steam tables(p = 1.22795e+11, h = 5.19868e+09)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 210.1470731771214
+  Error in region computation of IF97 steam tables(p = 6.14003e+10, h = 2.60082e+09)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 210.0735365885607
+  Error in region computation of IF97 steam tables(p = 3.07029e+10, h = 1.30189e+09)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 210.0367682942804
+  Error in region computation of IF97 steam tables(p = 1.53542e+10, h = 6.52427e+08)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 210.0183841471402
+  Error in region computation of IF97 steam tables(p = 7.67989e+09, h = 3.27694e+08)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 210.0091920735701
+  Error in region computation of IF97 steam tables(p = 3.84272e+09, h = 1.65328e+08)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 210.004596036785
+  Error in region computation of IF97 steam tables(p = 1.92413e+09, h = 8.41451e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 210.0022980183925
+  Error in region computation of IF97 steam tables(p = 9.64842e+08, h = 4.35535e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 210.0011490091963
+  Error in region computation of IF97 steam tables(p = 4.85196e+08, h = 2.32577e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 210.0005745045981
+  Error in region computation of IF97 steam tables(p = 2.45373e+08, h = 1.31098e+07)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 210.0002872522991
+  Error in region computation of IF97 steam tables(p = 1.25461e+08, h = 8.0359e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 210.0001436261495
+  Error in region computation of IF97 steam tables(p = 6.55053e+07, h = 5.49893e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 210.0000718130748
+  Error in region computation of IF97 steam tables(p = 3.55274e+07, h = 4.23044e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 210.0000359065374
+  Error in region computation of IF97 steam tables(p = 9.8496e+06, h = -4.5972e+06)
+  Failed condition: false
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 273.0269523973634
+  IF97 medium function tsat called with too low pressure
+p = -5.39231e+12 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 266.5134761986817
+  IF97 medium function tsat called with too low pressure
+p = -2.69615e+12 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 263.2567380993409
+  IF97 medium function tsat called with too low pressure
+p = -1.34807e+12 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 261.6283690496704
+  IF97 medium function tsat called with too low pressure
+p = -6.74032e+11 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 260.8141845248352
+  IF97 medium function tsat called with too low pressure
+p = -3.37012e+11 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 260.4070922624176
+  IF97 medium function tsat called with too low pressure
+p = -1.68502e+11 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 260.2035461312088
+  IF97 medium function tsat called with too low pressure
+p = -8.42467e+10 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 260.1017730656044
+  IF97 medium function tsat called with too low pressure
+p = -4.21192e+10 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 260.0508865328022
+  IF97 medium function tsat called with too low pressure
+p = -2.10554e+10 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 260.0254432664011
+  IF97 medium function tsat called with too low pressure
+p = -1.05235e+10 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 260.0127216332006
+  IF97 medium function tsat called with too low pressure
+p = -5.25761e+09 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 260.0063608166002
+  IF97 medium function tsat called with too low pressure
+p = -2.62464e+09 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 260.0031804083001
+  IF97 medium function tsat called with too low pressure
+p = -1.30816e+09 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 260.0015902041501
+  IF97 medium function tsat called with too low pressure
+p = -6.49918e+08 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 260.000795102075
+  IF97 medium function tsat called with too low pressure
+p = -3.20797e+08 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 260.0003975510375
+  IF97 medium function tsat called with too low pressure
+p = -1.56236e+08 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 260.0001987755188
+  IF97 medium function tsat called with too low pressure
+p = -7.3956e+07 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 260.0000993877594
+  IF97 medium function tsat called with too low pressure
+p = -3.28159e+07 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 260.0000496938797
+  IF97 medium function tsat called with too low pressure
+p = -1.22458e+07 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 260.0000248469398
+  IF97 medium function tsat called with too low pressure
+p = -1.96078e+06 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.IF97_Utilities.rho_ph(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.density_ph_Unique16(BOP.valve_TCV.port_a.p, BOP.header.port_b[2].h_outflow, 0, 0)
+Modelica.Media.Water.WaterIF97_ph.setState_phX_Unique14(BOP.v...
+
+Warning: The following error was detected at time: 260.0000124234699
+  IF97 medium function tsat called with too low pressure
+p = -256203 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.steamTurbine.state_a.p, BOP.steamTurbine.state_a.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.s_ph(BOP.steamTurbine.state_a.p, BOP.steamTurbine.state_a.h, BOP.steamTurbine.state_a.phase, 0)
+Modelica.Media.Water.WaterIF97_ph.specificEntropy_Unique13(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = BOP.steamTurbine.state_a.p...
+
+Non-linear solver will silently attempt to handle this problem.
+Non-linear solver recovered after failed attempt number: 1
+
+Warning: The following error was detected at time: 260.0000124234699
+  IF97 medium function tsat called with too low pressure
+p = -136021 Pa <= 611.657 Pa (triple point pressure)
+  Failed condition: p > 611.657
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Basic.tsat
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.boilingcurve_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p
+Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.region_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(BOP.steamTurbine.state_a.p, BOP.steamTurbine.state_a.h, 0, 0)
+Modelica.Media.Water.IF97_Utilities.s_ph(BOP.steamTurbine.state_a.p, BOP.steamTurbine.state_a.h, BOP.steamTurbine.state_a.phase, 0)
+Modelica.Media.Water.WaterIF97_ph.specificEntropy_Unique13(
+Modelica.Media.Water.WaterIF97_base.ThermodynamicState(
+phase = BOP.steamTurbine.state_a.p...
+
+Non-linear solver will silently attempt to handle this problem.
+Non-linear solver recovered after failed attempt number: 1
+
+
+Integration terminated successfully at T = 300
+   CPU-time for integration                  : 0.968 seconds
+   CPU-time for initialization               : 0.001 seconds
+   Number of result points                   : 309
+   Number of grid points                     : 301
+   Number of accepted steps                  : 206
+   Number of rejected steps                  : 140
+   Number of f-evaluations (dynamics)        : 3204
+   Number of crossing function evaluations   : 628
+   Number of Jacobian-evaluations            : 62
+   Number of model time events               : 6
+   Number of state events                    : 1
+   Number of step events                     : 0
+
+SUCCESSFUL simulation of NHES.Systems.BalanceOfPlant.RankineCycle.Examples.SteamTurbine_L1_boundaries_Test_a

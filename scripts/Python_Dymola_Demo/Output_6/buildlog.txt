@@ -1,0 +1,9 @@
+ 
+Compiling and linking the model (Visual C++). 
+ 
+Guessed compiler version: 1950  
+dsmodel.c
+   Creating library dymosim.lib and object dymosim.exp
+ 
+Successful generation of Dymosim. 
+ 

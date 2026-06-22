@@ -1,0 +1,32 @@
+Log-file of program ./dymosim
+(generated: Mon Jun  8 21:39:56 2026)
+
+dymosim started
+... "Modelica.Mechanics.Rotational.Examples.CoupledClutches" simulating
+... "dsin.txt" loading (dymosim input file)
+... "dsres.mat" creating (simulation result file)
+
+Integration started at T = 0 using integration method DASSL
+(DAE multi-step solver (dassl/dasslrt of Petzold modified by Dassault Systemes))
+
+Integration terminated successfully at T = 1
+   CPU-time for integration                : 0.004 seconds
+   CPU-time for one grid interval          : 0.008 milliseconds
+   CPU-time for initialization             : 0 seconds
+   Number of result points                 : 514
+   Number of grid points                   : 501
+   Number of accepted steps                : 221
+   Number of f-evaluations (dynamics)      : 371
+   Number of crossing function evaluations : 767
+   Number of Jacobian-evaluations          : 107
+   Number of model time events             : 2
+   Number of input time events             : 0
+   Number of state events                  : 5
+   Number of step events                   : 0
+   Minimum integration stepsize            : 1.41e-09
+   Maximum integration stepsize            : 0.0126
+   Maximum integration order               : 5
+Calling terminal section
+... "dsfinal.txt" creating (final states)
+
+SUCCESSFUL simulation of Modelica.Mechanics.Rotational.Examples.CoupledClutches

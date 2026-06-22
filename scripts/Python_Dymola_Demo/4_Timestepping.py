@@ -58,7 +58,8 @@ for t_end in range(0,300,timeinterval):
     #change an input variable - ensure it can be changed by running a test command in the dymola command line
     var = "BOP.p_condenser ="+ str(p_condensor)
     print(var)
-    dymola.ExecuteCommand(var)
+    if p_condensor != 1e4:
+        dymola.ExecuteCommand(var)
     
     #define start and end of simulation
     start = t_end

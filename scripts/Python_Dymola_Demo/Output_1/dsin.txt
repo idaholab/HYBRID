@@ -1,0 +1,635 @@
+#1
+char Aclass(3,24)
+Adymosim
+1.4
+Modelica experiment file
+
+
+#    Experiment parameters
+double experiment(7,1)
+       0                   # StartTime    Time at which integration starts
+                           #              (and linearization and trimming time)
+       1                   # StopTime     Time at which integration stops
+       0                   # Increment    Communication step size, if > 0
+     500                   # nInterval    Number of communication intervals, if > 0
+  1.0000000000000000E-04   # Tolerance    Relative precision of signals for
+                           #              simulation, linearization and trimming
+       0                   # MaxFixedStep Maximum step size of fixed step size
+                           #              integrators, if > 0.0
+       8                   # Algorithm    Integration algorithm as integer (1...28)
+                           #
+                           #             | model|       |        | dense | state |
+                           # Algorithm   | typ  | stiff | order  | output| event |
+                           # ------------+------+-------+--------+-------+-------+
+                           #  1 | deabm  |  ode |   no  |  1-12  |  yes  |   no  |
+                           #  2 | lsode1 |  ode |   no  |  1-12  |  yes  |   no  |
+                           #  3 | lsode2 |  ode |  yes  |  1-5   |  yes  |   no  |
+                           #  4 | lsodar |  ode |  both |1-12,1-5|  yes  |  yes  |
+                           #  5 | dopri5 |  ode |   no  |   5    |   no  |   no  |
+                           #  6 | dopri8 |  ode |   no  |   8    |   no  |   no  |
+                           #  7 | grk4t  |  ode |  yes  |   4    |   no  |   no  |
+                           #  8 | dassl  |  dae |  yes  |  1-5   |  yes  |  yes  |
+                           #  9 | odassl | hdae |  yes  |  1-5   |  yes  |  yes  |
+                           # 10 | mexx   | hdae |   no  |  2-24  |   no  |   no  |
+                           # 11 | euler  |  ode |   no  |   1    |   no  |  yes  |
+                           # 12 | rkfix2 |  ode |   no  |   2    |   no  |  yes  |
+                           # 13 | rkfix3 |  ode |   no  |   3    |   no  |  yes  |
+                           # 14 | rkfix4 |  ode |   no  |   4    |   no  |  yes  |
+                           #>=14| others |  ode |yes/no |  2-5   |   yes |  yes  |
+                           # ---+--------+------+-------+--------+-------+-------+
+                           # euler and rkfix have fixed stepsize.
+
+
+#    Method tuning parameters
+double method(27,1)
+       1                   # grid     type of communication time grid, defined by
+                           #          = 1: equidistant points ("Increment/nInterval")
+                           #          = 2: vector of grid points ("tgrid")
+                           #          = 3: variable step integrator (automatically)
+                           #          = 4: model (call of "increment" in Dymola, e.g.
+                           #                      incr=Time > 2 then 0 else 0.1
+                           #                      dummy=increment(incr))
+                           #          grid = 1,3 is stopped by "StopTime"
+                           #          grid = 2   is stopped by "tgrid(last)"
+                           #          grid = 4   runs forever (stopped by model)
+       1                   # nt       Use every NT time instant, if grid = 3
+       3                   # dense    1/2/3 restart/step/interpolate GRID points
+       1                   # evgrid   0/1 do not/save event points in comm. time grid
+       1                   # evu      0/1 U-discontinuity does not/trigger events
+       0                   # evuord       U-discontinuity order to consider (0,1,...)
+       0                   # error    0/1/2 One message/warning/error messages
+       0                   # jac      0/1 Compute jacobian numerically/by BLOCKJ
+       0                   # xd0c     0/1 Compute/set XD0
+       0                   # f3       0/1 Ignore/use F3 of HDAE (= index 1)
+       0                   # f4       0/1 Ignore/use F4 of HDAE (= index 2)
+       0                   # f5       0/1 Ignore/use F5 of HDAE (= invar.)
+       0                   # debug    flags for debug information (1<<0 uses pdebug) 
+     100                   # pdebug       priority of debug information (1...100)
+       0                   # fmax     Maximum number of evaluations of BLOCKF, if > 0
+       0                   # ordmax   Maximum allowed integration order, if > 0
+       0                   # hmax     Maximum absolute stepsize, if > 0
+       0                   # hmin     Minimum absolute stepsize, if > 0 (use with care!)
+       0                   # h0       Stepsize to be attempted on first step, if > 0
+  2.0000000000000000E-14   # teps     Bound to check, if 2 equal time instants
+  1.0000000000000000E-10   # eveps    Hysteresis epsilon at event points
+      20                   # eviter   Maximum number of event iterations
+  9.9999999999999995E-07   # delaym   Minimum time increment in delay buffers
+       1                   # fexcep   0/1 floating exception crashes/stops dymosim
+       1                   # tscale   clock-time = tscale*simulation-time, if grid = 5
+                           #          > 1: simulation too slow
+                           #          = 1: simulation-time = real-time
+                           #          < 1: simulation too fast
+       1                   # shared   (not used)
+    2473                   # memkey   (not used)
+
+
+#    Output parameters
+int settings(13,1)
+ 0                         # lprec    0/1 do not/store result data in double
+ 1                         # lx       0/1 do not/store x  (state variables)
+ 1                         # lxd      0/1 do not/store xd (derivative of states)
+ 1                         # lu       0/1 do not/store u  (input     signals)
+ 1                         # ly       0/1 do not/store y  (output    signals)
+ 0                         # lz       0/1 do not/store z  (indicator signals)
+ 1                         # lw       0/1 do not/store w  (auxiliary signals)
+ 1                         # la       0/1 do not/store a  (alias     signals)
+ 0                         # lperf    0/1 do not/store performance indicators
+ 0                         # levent   0/1 do not/store event point
+ 1                         # lres     0/1 do not/store results on result file
+ 0                         # lshare   0/1 do not/store info data for shared memory on dsshare.txt
+ 1                         # lform    0/1 ASCII/Matlab-binary storage format of results
+                           #              (for simulation/linearization; not for trimming)
+
+
+#    Names of initial variables
+char initialName(160,31)
+f
+T2
+T3
+J1.flange_a.tau
+J1.flange_b.tau
+J1.J
+J1.stateSelect
+J1.phi
+J1.der(phi)
+J1.w
+J1.der(w)
+torque.useSupport
+clutch1.phi_rel
+clutch1.der(phi_rel)
+clutch1.w_rel
+clutch1.der(w_rel)
+clutch1.phi_nominal
+clutch1.stateSelect
+clutch1.mu_pos[1, 1]
+clutch1.mu_pos[1, 2]
+clutch1.smoothness
+clutch1.peak
+clutch1.cgeo
+clutch1.fn_max
+clutch1.w_small
+clutch1.tau0
+clutch1.tau0_max
+clutch1.free
+clutch1.sa
+clutch1.startForward
+clutch1.startBackward
+clutch1.locked
+clutch1.Unknown
+clutch1.Free
+clutch1.Forward
+clutch1.Stuck
+clutch1.Backward
+clutch1.mode
+clutch1.unitAngularAcceleration
+clutch1.unitTorque
+clutch1.useHeatPort
+clutch1.lossPower
+clutch1.mu
+clutch1.fn
+clutch1.f_normalized
+clutch1.tableID.id
+clutch1.mu0
+clutch1.table_signs[1]
+clutch1.table_signs[2]
+sin1.amplitude
+sin1.f
+sin1.phase
+sin1.continuous
+sin1.offset
+sin1.startTime
+step1.height
+step1.y
+step1.offset
+step1.startTime
+J2.flange_b.tau
+J2.J
+J2.stateSelect
+J2.phi
+J2.w
+J2.der(w)
+clutch2.phi_rel
+clutch2.der(phi_rel)
+clutch2.w_rel
+clutch2.der(w_rel)
+clutch2.phi_nominal
+clutch2.stateSelect
+clutch2.mu_pos[1, 1]
+clutch2.mu_pos[1, 2]
+clutch2.smoothness
+clutch2.peak
+clutch2.cgeo
+clutch2.fn_max
+clutch2.w_small
+clutch2.tau0
+clutch2.tau0_max
+clutch2.free
+clutch2.sa
+clutch2.startForward
+clutch2.startBackward
+clutch2.locked
+clutch2.Unknown
+clutch2.Free
+clutch2.Forward
+clutch2.Stuck
+clutch2.Backward
+clutch2.mode
+clutch2.unitAngularAcceleration
+clutch2.unitTorque
+clutch2.useHeatPort
+clutch2.lossPower
+clutch2.mu
+clutch2.fn
+clutch2.tableID.id
+clutch2.mu0
+clutch2.table_signs[1]
+clutch2.table_signs[2]
+J3.flange_b.tau
+J3.J
+J3.stateSelect
+J3.phi
+J3.w
+J3.der(w)
+clutch3.phi_rel
+clutch3.der(phi_rel)
+clutch3.w_rel
+clutch3.der(w_rel)
+clutch3.phi_nominal
+clutch3.stateSelect
+clutch3.mu_pos[1, 1]
+clutch3.mu_pos[1, 2]
+clutch3.smoothness
+clutch3.peak
+clutch3.cgeo
+clutch3.fn_max
+clutch3.w_small
+clutch3.tau0
+clutch3.tau0_max
+clutch3.free
+clutch3.sa
+clutch3.startForward
+clutch3.startBackward
+clutch3.locked
+clutch3.Unknown
+clutch3.Free
+clutch3.Forward
+clutch3.Stuck
+clutch3.Backward
+clutch3.mode
+clutch3.unitAngularAcceleration
+clutch3.unitTorque
+clutch3.useHeatPort
+clutch3.lossPower
+clutch3.mu
+clutch3.fn
+clutch3.f_normalized
+clutch3.tableID.id
+clutch3.mu0
+clutch3.table_signs[1]
+clutch3.table_signs[2]
+J4.flange_b.tau
+J4.J
+J4.stateSelect
+J4.phi
+J4.w
+J4.der(w)
+sin2.amplitude
+sin2.f
+sin2.phase
+sin2.continuous
+sin2.offset
+sin2.startTime
+step2.height
+step2.offset
+step2.startTime
+fixed.phi0
+
+double initialValue(160,6)
+ -1  2.0000000000000001E-01  0       0                  1   280   # f
+ -1  4.0000000000000002E-01  0       0                  1   280   # T2
+ -1  9.0000000000000002E-01  0       0                  1   280   # T3
+  0       0                  0       0                  6   388   # J1.flange_a.tau
+  0       0                  0       0                  6   388   # J1.flange_b.tau
+ -1       1                  0 1.7976931348623157E+308  1   280   # J1.J
+  0       3                  1       5                  6   770   # J1.stateSelect
+ -1       0                  0       0                  2   280   # J1.phi
+  0       0                  0       0                  3  4352   # J1.der(phi)
+ -1      10                  0       0                  2   280   # J1.w
+  0       0                  0       0                  3   256   # J1.der(w)
+  0       1                  0       0                  6   769   # torque.useSupport
+ -1       0                  0       0                  2   272   # clutch1.phi_rel
+  0       0                  0       0                  3  4352   # clutch1.der(phi_rel)
+ -1       0                  0       0                  2   272   # clutch1.w_rel
+  0       0                  0       0                  3   256   # clutch1.der(w_rel)
+  0  1.0000000000000000E-04  0 1.7976931348623157E+308  6   256   # clutch1.phi_nominal
+  0       4                  1       5                  6   770   # clutch1.stateSelect
+ -1       0                  0       0                  1   280   # clutch1.mu_pos[1, 1]
+ -1  5.0000000000000000E-01  0       0                  1   280   # clutch1.mu_pos[1, 2]
+ -1       1                  1       6                  1   282   # clutch1.smoothness
+ -1  1.1000000000000001E+00  1 1.7976931348623157E+308  1   280   # clutch1.peak
+ -1       1                  0 1.7976931348623157E+308  1   280   # clutch1.cgeo
+ -1      20                  0 1.7976931348623157E+308  1   280   # clutch1.fn_max
+ -1  1.0000000000000000E+10  0       0                  1   280   # clutch1.w_small
+  0       0                  0       0                  6   256   # clutch1.tau0
+  0       0                  0       0                  6   256   # clutch1.tau0_max
+  0       0                  0       0                  6   321   # clutch1.free
+  0       0                  0       0                  6   256   # clutch1.sa
+  0       0                  0       0                  6   361   # clutch1.startForward
+  0       0                  0       0                  6   361   # clutch1.startBackward
+  0       0                  0       0                  6   353   # clutch1.locked
+  0       3                  0       0                  6   258   # clutch1.Unknown
+  0       2                  0       0                  6   258   # clutch1.Free
+  0       1                  0       0                  6   258   # clutch1.Forward
+  0       0                  0       0                  6   258   # clutch1.Stuck
+  0      -1                  0       0                  6   258   # clutch1.Backward
+  0       3                 -1       3                  6   330   # clutch1.mode
+  0       1                  0       0                  6   768   # clutch1.unitAngularAcceleration
+  0       1                  0       0                  6   768   # clutch1.unitTorque
+  0       0                  0       0                  6   769   # clutch1.useHeatPort
+  0       0                  0       0                  6   256   # clutch1.lossPower
+  0       0                  0       0                  6   256   # clutch1.mu
+  0       0                  0       0                  6   256   # clutch1.fn
+  0       0                  0       0                  6   256   # clutch1.f_normalized
+  0       0                  0       0                  6  1282   # clutch1.tableID.id
+  0       0                  0       0                  6  1280   # clutch1.mu0
+  0       0                  0       0                  6  1280   # clutch1.table_signs[1]
+  0       0                  0       0                  6  1280   # clutch1.table_signs[2]
+ -1      10                  0       0                  1   280   # sin1.amplitude
+ -1       5                  0       0                  1   280   # sin1.f
+ -1       0                  0       0                  1   280   # sin1.phase
+  0       0                  0       0                  6   257   # sin1.continuous
+ -1       0                  0       0                  1   280   # sin1.offset
+ -1       0                  0       0                  1   280   # sin1.startTime
+ -1       1                  0       0                  1   280   # step1.height
+  0       0                  0       0                  6   320   # step1.y
+ -1       0                  0       0                  1   280   # step1.offset
+  0       0                  0       0                  6   256   # step1.startTime
+  0       0                  0       0                  6   388   # J2.flange_b.tau
+ -1       1                  0 1.7976931348623157E+308  1   280   # J2.J
+  0       3                  1       5                  6   770   # J2.stateSelect
+  0       0                  0       0                  6   264   # J2.phi
+  0       0                  0       0                  6   264   # J2.w
+  0       0                  0       0                  6   256   # J2.der(w)
+ -1       0                  0       0                  2   272   # clutch2.phi_rel
+  0       0                  0       0                  3  4352   # clutch2.der(phi_rel)
+ -1       0                  0       0                  2   272   # clutch2.w_rel
+  0       0                  0       0                  3   256   # clutch2.der(w_rel)
+  0  1.0000000000000000E-04  0 1.7976931348623157E+308  6   256   # clutch2.phi_nominal
+  0       4                  1       5                  6   770   # clutch2.stateSelect
+ -1       0                  0       0                  1   280   # clutch2.mu_pos[1, 1]
+ -1  5.0000000000000000E-01  0       0                  1   280   # clutch2.mu_pos[1, 2]
+ -1       1                  1       6                  1   282   # clutch2.smoothness
+ -1  1.1000000000000001E+00  1 1.7976931348623157E+308  1   280   # clutch2.peak
+ -1       1                  0 1.7976931348623157E+308  1   280   # clutch2.cgeo
+ -1      20                  0 1.7976931348623157E+308  1   280   # clutch2.fn_max
+ -1  1.0000000000000000E+10  0       0                  1   280   # clutch2.w_small
+  0       0                  0       0                  6   320   # clutch2.tau0
+  0       0                  0       0                  6   320   # clutch2.tau0_max
+  0       0                  0       0                  6   321   # clutch2.free
+  0       0                  0       0                  6   256   # clutch2.sa
+  0       0                  0       0                  6   361   # clutch2.startForward
+  0       0                  0       0                  6   361   # clutch2.startBackward
+  0       0                  0       0                  6   353   # clutch2.locked
+  0       3                  0       0                  6   258   # clutch2.Unknown
+  0       2                  0       0                  6   258   # clutch2.Free
+  0       1                  0       0                  6   258   # clutch2.Forward
+  0       0                  0       0                  6   258   # clutch2.Stuck
+  0      -1                  0       0                  6   258   # clutch2.Backward
+  0       3                 -1       3                  6   330   # clutch2.mode
+  0       1                  0       0                  6   768   # clutch2.unitAngularAcceleration
+  0       1                  0       0                  6   768   # clutch2.unitTorque
+  0       0                  0       0                  6   769   # clutch2.useHeatPort
+  0       0                  0       0                  6   256   # clutch2.lossPower
+  0       0                  0       0                  6   256   # clutch2.mu
+  0       0                  0       0                  6   320   # clutch2.fn
+  0       0                  0       0                  6  1282   # clutch2.tableID.id
+  0       0                  0       0                  6  1280   # clutch2.mu0
+  0       0                  0       0                  6  1280   # clutch2.table_signs[1]
+  0       0                  0       0                  6  1280   # clutch2.table_signs[2]
+  0       0                  0       0                  6   388   # J3.flange_b.tau
+ -1       1                  0 1.7976931348623157E+308  1   280   # J3.J
+  0       3                  1       5                  6   770   # J3.stateSelect
+  0       0                  0       0                  6   264   # J3.phi
+  0       0                  0       0                  6   264   # J3.w
+  0       0                  0       0                  6   256   # J3.der(w)
+ -1       0                  0       0                  2   272   # clutch3.phi_rel
+  0       0                  0       0                  3  4352   # clutch3.der(phi_rel)
+ -1       0                  0       0                  2   272   # clutch3.w_rel
+  0       0                  0       0                  3   256   # clutch3.der(w_rel)
+  0  1.0000000000000000E-04  0 1.7976931348623157E+308  6   256   # clutch3.phi_nominal
+  0       4                  1       5                  6   770   # clutch3.stateSelect
+ -1       0                  0       0                  1   280   # clutch3.mu_pos[1, 1]
+ -1  5.0000000000000000E-01  0       0                  1   280   # clutch3.mu_pos[1, 2]
+ -1       1                  1       6                  1   282   # clutch3.smoothness
+ -1  1.1000000000000001E+00  1 1.7976931348623157E+308  1   280   # clutch3.peak
+ -1       1                  0 1.7976931348623157E+308  1   280   # clutch3.cgeo
+ -1      20                  0 1.7976931348623157E+308  1   280   # clutch3.fn_max
+ -1  1.0000000000000000E+10  0       0                  1   280   # clutch3.w_small
+  0       0                  0       0                  6   320   # clutch3.tau0
+  0       0                  0       0                  6   320   # clutch3.tau0_max
+  0       0                  0       0                  6   321   # clutch3.free
+  0       0                  0       0                  6   256   # clutch3.sa
+  0       0                  0       0                  6   361   # clutch3.startForward
+  0       0                  0       0                  6   361   # clutch3.startBackward
+  0       0                  0       0                  6   353   # clutch3.locked
+  0       3                  0       0                  6   258   # clutch3.Unknown
+  0       2                  0       0                  6   258   # clutch3.Free
+  0       1                  0       0                  6   258   # clutch3.Forward
+  0       0                  0       0                  6   258   # clutch3.Stuck
+  0      -1                  0       0                  6   258   # clutch3.Backward
+  0       3                 -1       3                  6   330   # clutch3.mode
+  0       1                  0       0                  6   768   # clutch3.unitAngularAcceleration
+  0       1                  0       0                  6   768   # clutch3.unitTorque
+  0       0                  0       0                  6   769   # clutch3.useHeatPort
+  0       0                  0       0                  6   256   # clutch3.lossPower
+  0       0                  0       0                  6   256   # clutch3.mu
+  0       0                  0       0                  6   320   # clutch3.fn
+  0       0                  0       0                  6   320   # clutch3.f_normalized
+  0       0                  0       0                  6  1282   # clutch3.tableID.id
+  0       0                  0       0                  6  1280   # clutch3.mu0
+  0       0                  0       0                  6  1280   # clutch3.table_signs[1]
+  0       0                  0       0                  6  1280   # clutch3.table_signs[2]
+  0       0                  0       0                  6   388   # J4.flange_b.tau
+ -1       1                  0 1.7976931348623157E+308  1   280   # J4.J
+  0       3                  1       5                  6   770   # J4.stateSelect
+  0       0                  0       0                  6   264   # J4.phi
+  0       0                  0       0                  6   264   # J4.w
+  0       0                  0       0                  6   256   # J4.der(w)
+ -1       1                  0       0                  1   280   # sin2.amplitude
+  0       1                  0       0                  6   256   # sin2.f
+ -1  1.5707963267948970E+00  0       0                  1   280   # sin2.phase
+  0       0                  0       0                  6   257   # sin2.continuous
+ -1       0                  0       0                  1   280   # sin2.offset
+ -1       0                  0       0                  1   280   # sin2.startTime
+ -1       1                  0       0                  1   280   # step2.height
+ -1       0                  0       0                  1   280   # step2.offset
+  0       0                  0       0                  6   256   # step2.startTime
+ -1       0                  0       0                  1   280   # fixed.phi0
+
+
+# Matrix with 6 columns defining the initial value calculation
+# (columns 5 and 6 are not utilized for the calculation but are
+#  reported by dymosim via dymosim -i for user convenience):
+#
+# column 1: Type of initial value
+#           = -2: special case: for continuing simulation (column 2 = value)
+#           = -1: fixed value (column 2 = fixed value)
+#           =  0: free value, i.e., no restriction (column 2 = initial value)
+#           >  0: desired value (column 1 = weight for optimization
+#                                column 2 = desired value)
+#                 use weight=1, since automatic scaling usually
+#                 leads to equally weighted terms
+# column 2: fixed, free or desired value according to column 1.
+# column 3: Minimum value (ignored, if Minimum >= Maximum).
+# column 4: Maximum value (ignored, if Minimum >= Maximum).
+#           Minimum and maximum restrict the search range in initial
+#           value calculation. They might also be used for scaling.
+# column 5: Category of variable.
+#           = 1: parameter.
+#           = 2: state.
+#           = 3: state derivative.
+#           = 4: output.
+#           = 5: input.
+#           = 6: auxiliary variable.
+# column 6: Data type of variable and flags according to dsBaseType
+#  <value>&3= 0: real.
+#  <value>&3= 1: boolean.
+#  <value>&3= 2: integer.
+#
+# Initial values are calculated according to the following procedure:
+#
+# Initial values are calculated according to the following procedure:
+#
+# - If parameters, states and inputs are FIXED, and other variables
+#   are FREE, the initialization is performed in the normal way.
+#
+# - If parameters and inputs are FIXED, and all other variables
+#   have special case for continue (-2 in 1st column), or FREE
+#   the initialization is ignored and variables are set to these values.
+#   This is intended to continue the simulation.
+#
+#   Which variables will be important for initialization and continue
+#   is indicated by value in column 6 & dsStartMasks.
+#
+char initialDescription(160,152)
+Frequency of sine function to invoke clutch1 [Hz]
+Time when clutch2 is invoked [s]
+Time when clutch3 is invoked [s]
+Cut torque in the flange [N.m]
+Cut torque in the flange [N.m]
+Moment of inertia [kg.m2]
+Priority to use phi and w as states [:#(type=StateSelect)]
+Absolute rotation angle of component [rad|deg]
+der(Absolute rotation angle of component) [rad/s]
+Absolute angular velocity of component (= der(phi)) [rad/s]
+der(Absolute angular velocity of component (= der(phi))) [rad/s2]
+= true, if support flange enabled, otherwise implicitly grounded [:#(type=Boolean)]
+Relative rotation angle (= flange_b.phi - flange_a.phi) [rad|deg]
+der(Relative rotation angle (= flange_b.phi - flange_a.phi)) [rad/s]
+Relative angular velocity (= der(phi_rel)) [rad/s]
+der(Relative angular velocity (= der(phi_rel))) [rad/s2]
+Nominal value of phi_rel (used for scaling) [rad|rad]
+Priority to use phi_rel and w_rel as states [:#(type=StateSelect)]
+Positive sliding friction coefficient [-] as function of w_rel [rad/s] (w_rel>=0)
+Positive sliding friction coefficient [-] as function of w_rel [rad/s] (w_rel>=0)
+Smoothness of table interpolation in mu_pos [:#(type=Modelica.Blocks.Types.Smoothness)]
+Peak for maximum value of mu at w==0 (mu0_max = peak*mu_pos[1,2]) [1]
+Geometry constant containing friction distribution assumption
+Maximum normal force [N]
+Relative angular velocity near to zero if jumps due to a reinit(..) of the velocity can occur (set to low value only if such impulses can occur) [rad/s]
+Friction torque for w_relfric=0 and forward sliding [N.m]
+Maximum friction torque for w_relfric=0 and locked [N.m]
+= true, if frictional element is not active [:#(type=Boolean)]
+Path parameter of friction characteristic tau = f(a_relfric) [1]
+= true, if w_relfric=0 and start of forward sliding [:#(type=Boolean)]
+= true, if w_relfric=0 and start of backward sliding [:#(type=Boolean)]
+= true, if w_rel=0 and not sliding [:#(type=Boolean)]
+Value of mode is not known [:#(type=Integer)]
+Element is not active [:#(type=Integer)]
+w_relfric > 0 (forward sliding) [:#(type=Integer)]
+w_relfric = 0 (forward sliding, locked or backward sliding) [:#(type=Integer)]
+w_relfric < 0 (backward sliding) [:#(type=Integer)]
+Mode of friction (-1: backward sliding, 0: stuck, 1: forward sliding, 2: inactive, 3: unknown) [:#(type=Integer)]
+[rad/s2]
+[N.m]
+= true, if heatPort is enabled [:#(type=Boolean)]
+Loss power leaving component via heatPort (> 0, if heat is flowing out of component) [W]
+Friction coefficient
+Normal force (fn=fn_max*f_normalized) [N]
+Normalized force signal 0..1 (normal force = fn_max*f_normalized; clutch is engaged if > 0) [1]
+[:#(type=Integer)]
+Friction coefficient for w=0 and forward sliding
+Signs for sliding friction coefficient table interpolation: [sign for w_rel, sign for mu] []
+Signs for sliding friction coefficient table interpolation: [sign for w_rel, sign for mu] []
+Amplitude of sine wave
+Frequency of sine wave [Hz]
+Phase of sine wave [rad|deg]
+Make output continuous by starting at offset + amplitude*sin(phase) [:#(type=Boolean)]
+Offset of output signal y [N.m]
+Output y = offset for time < startTime [s]
+Height of step [1]
+Connector of Real output signal [1]
+Offset of output signal y [1]
+Output y = offset for time < startTime [s]
+Cut torque in the flange [N.m]
+Moment of inertia [kg.m2]
+Priority to use phi and w as states [:#(type=StateSelect)]
+Absolute rotation angle of component [rad|deg]
+Absolute angular velocity of component (= der(phi)) [rad/s]
+der(Absolute angular velocity of component (= der(phi))) [rad/s2]
+Relative rotation angle (= flange_b.phi - flange_a.phi) [rad|deg]
+der(Relative rotation angle (= flange_b.phi - flange_a.phi)) [rad/s]
+Relative angular velocity (= der(phi_rel)) [rad/s]
+der(Relative angular velocity (= der(phi_rel))) [rad/s2]
+Nominal value of phi_rel (used for scaling) [rad|rad]
+Priority to use phi_rel and w_rel as states [:#(type=StateSelect)]
+Positive sliding friction coefficient [-] as function of w_rel [rad/s] (w_rel>=0)
+Positive sliding friction coefficient [-] as function of w_rel [rad/s] (w_rel>=0)
+Smoothness of table interpolation in mu_pos [:#(type=Modelica.Blocks.Types.Smoothness)]
+Peak for maximum value of mu at w==0 (mu0_max = peak*mu_pos[1,2]) [1]
+Geometry constant containing friction distribution assumption
+Maximum normal force [N]
+Relative angular velocity near to zero if jumps due to a reinit(..) of the velocity can occur (set to low value only if such impulses can occur) [rad/s]
+Friction torque for w_relfric=0 and forward sliding [N.m]
+Maximum friction torque for w_relfric=0 and locked [N.m]
+= true, if frictional element is not active [:#(type=Boolean)]
+Path parameter of friction characteristic tau = f(a_relfric) [1]
+= true, if w_relfric=0 and start of forward sliding [:#(type=Boolean)]
+= true, if w_relfric=0 and start of backward sliding [:#(type=Boolean)]
+= true, if w_rel=0 and not sliding [:#(type=Boolean)]
+Value of mode is not known [:#(type=Integer)]
+Element is not active [:#(type=Integer)]
+w_relfric > 0 (forward sliding) [:#(type=Integer)]
+w_relfric = 0 (forward sliding, locked or backward sliding) [:#(type=Integer)]
+w_relfric < 0 (backward sliding) [:#(type=Integer)]
+Mode of friction (-1: backward sliding, 0: stuck, 1: forward sliding, 2: inactive, 3: unknown) [:#(type=Integer)]
+[rad/s2]
+[N.m]
+= true, if heatPort is enabled [:#(type=Boolean)]
+Loss power leaving component via heatPort (> 0, if heat is flowing out of component) [W]
+Friction coefficient
+Normal force (fn=fn_max*f_normalized) [N]
+[:#(type=Integer)]
+Friction coefficient for w=0 and forward sliding
+Signs for sliding friction coefficient table interpolation: [sign for w_rel, sign for mu] []
+Signs for sliding friction coefficient table interpolation: [sign for w_rel, sign for mu] []
+Cut torque in the flange [N.m]
+Moment of inertia [kg.m2]
+Priority to use phi and w as states [:#(type=StateSelect)]
+Absolute rotation angle of component [rad|deg]
+Absolute angular velocity of component (= der(phi)) [rad/s]
+der(Absolute angular velocity of component (= der(phi))) [rad/s2]
+Relative rotation angle (= flange_b.phi - flange_a.phi) [rad|deg]
+der(Relative rotation angle (= flange_b.phi - flange_a.phi)) [rad/s]
+Relative angular velocity (= der(phi_rel)) [rad/s]
+der(Relative angular velocity (= der(phi_rel))) [rad/s2]
+Nominal value of phi_rel (used for scaling) [rad|rad]
+Priority to use phi_rel and w_rel as states [:#(type=StateSelect)]
+Positive sliding friction coefficient [-] as function of w_rel [rad/s] (w_rel>=0)
+Positive sliding friction coefficient [-] as function of w_rel [rad/s] (w_rel>=0)
+Smoothness of table interpolation in mu_pos [:#(type=Modelica.Blocks.Types.Smoothness)]
+Peak for maximum value of mu at w==0 (mu0_max = peak*mu_pos[1,2]) [1]
+Geometry constant containing friction distribution assumption
+Maximum normal force [N]
+Relative angular velocity near to zero if jumps due to a reinit(..) of the velocity can occur (set to low value only if such impulses can occur) [rad/s]
+Friction torque for w_relfric=0 and forward sliding [N.m]
+Maximum friction torque for w_relfric=0 and locked [N.m]
+= true, if frictional element is not active [:#(type=Boolean)]
+Path parameter of friction characteristic tau = f(a_relfric) [1]
+= true, if w_relfric=0 and start of forward sliding [:#(type=Boolean)]
+= true, if w_relfric=0 and start of backward sliding [:#(type=Boolean)]
+= true, if w_rel=0 and not sliding [:#(type=Boolean)]
+Value of mode is not known [:#(type=Integer)]
+Element is not active [:#(type=Integer)]
+w_relfric > 0 (forward sliding) [:#(type=Integer)]
+w_relfric = 0 (forward sliding, locked or backward sliding) [:#(type=Integer)]
+w_relfric < 0 (backward sliding) [:#(type=Integer)]
+Mode of friction (-1: backward sliding, 0: stuck, 1: forward sliding, 2: inactive, 3: unknown) [:#(type=Integer)]
+[rad/s2]
+[N.m]
+= true, if heatPort is enabled [:#(type=Boolean)]
+Loss power leaving component via heatPort (> 0, if heat is flowing out of component) [W]
+Friction coefficient
+Normal force (fn=fn_max*f_normalized) [N]
+Normalized force signal 0..1 (normal force = fn_max*f_normalized; clutch is engaged if > 0) [1]
+[:#(type=Integer)]
+Friction coefficient for w=0 and forward sliding
+Signs for sliding friction coefficient table interpolation: [sign for w_rel, sign for mu] []
+Signs for sliding friction coefficient table interpolation: [sign for w_rel, sign for mu] []
+Cut torque in the flange [N.m]
+Moment of inertia [kg.m2]
+Priority to use phi and w as states [:#(type=StateSelect)]
+Absolute rotation angle of component [rad|deg]
+Absolute angular velocity of component (= der(phi)) [rad/s]
+der(Absolute angular velocity of component (= der(phi))) [rad/s2]
+Amplitude of sine wave
+Frequency of sine wave [Hz]
+Phase of sine wave [rad|deg]
+Make output continuous by starting at offset + amplitude*sin(phase) [:#(type=Boolean)]
+Offset of output signal y [1]
+Output y = offset for time < startTime [s]
+Height of step [1]
+Offset of output signal y [1]
+Output y = offset for time < startTime [s]
+Fixed offset angle of housing [rad|deg]
+

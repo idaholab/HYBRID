@@ -1,0 +1,23 @@
+Model: NHES.Systems.BalanceOfPlant.RankineCycle.Examples.SteamTurbine_L1_boundaries_Test_a
+Integration started at 295 using integration method:
+RK-method: esdirk45a
+Local extrapolation
+FSAL
+Continuous extension
+
+
+Integration terminated successfully at T = 300
+   CPU-time for integration                  : 0.095 seconds
+   CPU-time for initialization               : 0.001 seconds
+   Number of result points                   : 51
+   Number of grid points                     : 51
+   Number of accepted steps                  : 41
+   Number of rejected steps                  : 0
+   Number of f-evaluations (dynamics)        : 448
+   Number of crossing function evaluations   : 124
+   Number of Jacobian-evaluations            : 4
+   Number of model time events               : 0
+   Number of state events                    : 0
+   Number of step events                     : 0
+
+SUCCESSFUL simulation of NHES.Systems.BalanceOfPlant.RankineCycle.Examples.SteamTurbine_L1_boundaries_Test_a
