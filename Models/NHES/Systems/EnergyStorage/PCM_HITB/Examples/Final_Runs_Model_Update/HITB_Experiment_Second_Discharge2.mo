@@ -1,4 +1,4 @@
-within NHES.Systems.EnergyStorage.PCM_HITB.Examples.Final_Runs;
+within NHES.Systems.EnergyStorage.PCM_HITB.Examples.Final_Runs_Model_Update;
 model HITB_Experiment_Second_Discharge2
   "First discharge run with data read in the system."
 extends Modelica.Icons.Example;
@@ -58,16 +58,15 @@ extends Modelica.Icons.Example;
   parameter Modelica.Units.SI.Temperature T_air = 273.15+250 "Air inside the shipping container estimate";
   parameter Modelica.Units.SI.Length t_insulation = 0.022 "Insulation thickness value";
 
-  PCM_Chamber_Connected PCM_Core(
+  Components.PCM_Volume.PCM_Chamber_vertsym_03_FullDynamicHPLocs_doubleinsulated
+                        PCM_Core(
     nZ=nV_Z,
     t_insulation_inner=t_insulation,
     t_insulation_outer=t_insulation,
     hc_air=hc_air,
     T_Init=data_Initialization.T_PCM,
-    T_Init_Wall=data_Initialization.T_Wall,
     T_Init_Insulation_Inner=data_Initialization.T_Insulation_Inner,
     T_Init_Insulation_Outer=data_Initialization.T_Insulation_Outer,
-    T_Init_HT=data_Initialization.T_HT,
     redeclare package Insulation_Material_Inner = PCM_Materials.Insulator,
     redeclare package Insulation_Material_Outer =
         PCM_Materials.Insulator_aerogel,

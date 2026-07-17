@@ -2,7 +2,7 @@ within NHES.Systems.EnergyStorage.PCM_HITB.Examples;
 model Test_BatteryOnly_FullDynamicLocs
   "A model to run various tests on the battery model only."
   extends Modelica.Icons.Example;
-  parameter Integer nR = 15;
+  parameter Integer nR = 6;
   parameter Integer nR_HP = 2;
   parameter Integer nZ = 6;
   parameter Integer nTheta = 4;
@@ -25,17 +25,18 @@ model Test_BatteryOnly_FullDynamicLocs
   //  parameter Modelica.Units.SI.Angle dthetas_one[nTheta] = Modelica.Constants.pi/180*{25, 25, 25, 25,  40, 20, 20}; //7
     parameter Modelica.Units.SI.Angle dthetas_one[nTheta] = Modelica.Constants.pi/180*{35,45,70,30}; //4
 
-  Components.PCM_Volume.PCM_Chamber_vertsym_03_FullDynamicHPLocs
-                  pCM_Chamber_vertsym_03_FullDynamicHPLocs(
+  Components.PCM_Volume.PCM_Chamber_vertsym_03_FullDynamicHPLocs_doubleinsulated
+                  pCM_Chamber_vertsym_03_FullDynamicHPLocs_doubleinsulated(
                                         nR=nR,
     nTheta=nTheta,
     nZ=nZ,
-    n_Thermocouples=1,
+    n_Thermocouples=9,
     drs_one=drs_one,
     dthetas_one=dthetas_one,
-    TCs={{1,1}},
+    TCs={{1,1},{4,2},{4,3},{4,4},{7,1},{7,2},{7,3},{7,4},{7,4}},
     hc_air=20,
-    T_Init=703.15)
+    T_Init=703.15,
+    Read_T_Init=false)
     annotation (Placement(transformation(extent={{-42,-40},{38,40}})));
 
   Modelica.Blocks.Sources.Trapezoid trapezoid[nZ](
@@ -45,7 +46,7 @@ model Test_BatteryOnly_FullDynamicLocs
     falling=90,
     period=97200,
     startTime=0)
-    annotation (Placement(transformation(extent={{-112,-10},{-92,10}})));
+    annotation (Placement(transformation(extent={{-164,-16},{-144,4}})));
   TRANSFORM.Controls.LimPID Q_Vessel_HT(
     controllerType=Modelica.Blocks.Types.SimpleController.PI,
     Ti=300,
@@ -63,31 +64,35 @@ model Test_BatteryOnly_FullDynamicLocs
   Modelica.Blocks.Sources.RealExpression T_Vessel_Measure1(y=400 + 273.15)
     annotation (Placement(transformation(extent={{126,-14},{106,6}})));
   Modelica.Blocks.Sources.RealExpression T_Vessel_Measure2(y=
-        pCM_Chamber_vertsym_03_FullDynamicHPLocs.T_TCs[1, 3])
+        pCM_Chamber_vertsym_03_FullDynamicHPLocs_doubleinsulated.T_TCs[1, 3])
     annotation (Placement(transformation(extent={{114,-44},{94,-24}})));
   TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.HeatFlow boundary[nZ](
       use_port=true)
-    annotation (Placement(transformation(extent={{-98,30},{-78,50}})));
+    annotation (Placement(transformation(extent={{-70,-4},{-50,16}})));
   TRANSFORM.HeatAndMassTransfer.BoundaryConditions.Heat.HeatFlow boundary1[nZ](
       use_port=true)
     annotation (Placement(transformation(extent={{-66,-42},{-46,-22}})));
 equation
-  connect(Q_Vessel_HT.y, pCM_Chamber_vertsym_03_FullDynamicHPLocs.Heat_Tape_Input)
+  connect(Q_Vessel_HT.y,
+    pCM_Chamber_vertsym_03_FullDynamicHPLocs_doubleinsulated.Heat_Tape_Input)
     annotation (Line(points={{51,-4},{44,-4},{44,0},{30,0}}, color={0,0,127}));
   connect(T_Vessel_Measure1.y, Q_Vessel_HT.u_s)
     annotation (Line(points={{105,-4},{74,-4}}, color={0,0,127}));
   connect(T_Vessel_Measure2.y, Q_Vessel_HT.u_m)
     annotation (Line(points={{93,-34},{62,-34},{62,-16}}, color={0,0,127}));
-  connect(boundary.port, pCM_Chamber_vertsym_03_FullDynamicHPLocs.port_b[:, 1])
-    annotation (Line(points={{-78,40},{-42,40},{-42,6.4},{3.6,6.4}}, color={191,
-          0,0}));
-  connect(boundary1.port, pCM_Chamber_vertsym_03_FullDynamicHPLocs.port_b[:, 2])
+  connect(boundary.port,
+    pCM_Chamber_vertsym_03_FullDynamicHPLocs_doubleinsulated.port_b[:, 1])
+    annotation (Line(points={{-50,6},{-46,6},{-46,44},{3.6,44},{3.6,6.4}},
+        color={191,0,0}));
+  connect(boundary1.port,
+    pCM_Chamber_vertsym_03_FullDynamicHPLocs_doubleinsulated.port_b[:, 2])
     annotation (Line(points={{-46,-32},{-26,-32},{-26,6.4},{3.6,6.4}}, color={191,
           0,0}));
-  connect(trapezoid.y, boundary.Q_flow_ext) annotation (Line(points={{-91,0},{-88,
-          0},{-88,26},{-102,26},{-102,40},{-92,40}}, color={0,0,127}));
-  connect(trapezoid.y, boundary1.Q_flow_ext) annotation (Line(points={{-91,0},{-70,
-          0},{-70,-32},{-60,-32}}, color={0,0,127}));
+  connect(trapezoid.y, boundary.Q_flow_ext) annotation (Line(points={{-143,-6},
+          {-76,-6},{-76,6},{-64,6}},                 color={0,0,127}));
+  connect(trapezoid.y, boundary1.Q_flow_ext) annotation (Line(points={{-143,-6},
+          {-74,-6},{-74,-32},{-60,-32}},
+                                   color={0,0,127}));
   annotation (
     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
             100,100}})),

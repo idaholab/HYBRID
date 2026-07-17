@@ -1,28 +1,28 @@
-within NHES.Systems.EnergyStorage.PCM_HITB.Examples.Final_Runs;
-model HITB_Experiment_Second_Discharge2
+within NHES.Systems.EnergyStorage.PCM_HITB.Examples.Final_Runs_Model_Update;
+model HITB_Experiment_02_Calibrate_ReducedDiscretization
   "First discharge run with data read in the system."
 extends Modelica.Icons.Example;
   Real Position "Location of heat pipe where 0 is fully charging and 1 is fully discharging";
   extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable NHES.Systems.EnergyStorage.PCM_HITB.CS.CS_Discharge2
+    redeclare replaceable NHES.Systems.EnergyStorage.PCM_HITB.CS.CS_Calibrate2
       CS,
     redeclare Data.Data_System data,
     data_Initialization(
-      T_PCM=785.15,
-      T_Wall=783.15,
-      T_HT=630.15,
-      T_Insulation_Inner=663.15,
-      T_Insulation_Outer=463.15,
-      T_Tube_UGT=698.15,
-      T_Insulation_UGT=463.15,
-      T_UHP=573.15,
-      T_Tube_LGT=698.15,
-      T_Insulation_LGT=463.15,
-      T_LHP=573.15));
+      T_PCM=777.15,
+      T_Wall=773.15,
+      T_HT=763.15,
+      T_Insulation_Inner=613.15,
+      T_Insulation_Outer=398.15,
+      T_Tube_UGT=613.15,
+      T_Insulation_UGT=398.15,
+      T_UHP=398.15,
+      T_Tube_LGT=613.15,
+      T_Insulation_LGT=398.15,
+      T_LHP=398.15));
  // Modelica.Units.SI.Area A_Cyl_HITB[nV_Rh];
   parameter Integer nV_Z = 6;
   parameter Integer nV_Zh = 6;
-  parameter Integer nV_R = 10;
+
   parameter Integer nV_Rh = 5;
   Modelica.Units.SI.SpecificHeatCapacity cp_out;
   Modelica.Units.SI.Energy E_store;
@@ -56,23 +56,48 @@ extends Modelica.Icons.Example;
   Modelica.Units.SI.Time time_plot;
   parameter Modelica.Units.SI.CoefficientOfHeatTransfer hc_air = 35;
   parameter Modelica.Units.SI.Temperature T_air = 273.15+250 "Air inside the shipping container estimate";
-  parameter Modelica.Units.SI.Length t_insulation = 0.022 "Insulation thickness value";
+  parameter Modelica.Units.SI.Length t_insulation = 0.016 "Insulation thickness value";
 
-  PCM_Chamber_Connected PCM_Core(
+  ////// Set of variables that would be great to look at in sensitivity analyses
+/*
+  parameter Integer nV_R = 6;
+  parameter Integer nR_HP = 2;
+  parameter Modelica.Units.SI.Length drs_one[nV_R] = 1/1000*{62.26, 80, 39.619, 36.619, 39.619, 38.4105};
+  parameter Integer nTheta = 7;
+  parameter Modelica.Units.SI.Angle dthetas_one[nTheta] = Modelica.Constants.pi/180*{25,25,25,25,40,20,20}; //Make sure that the node with the heat pipe centered at 120 degrees 
+  parameter Integer nTheta_HP = {1, 5};
+  parameter Integer HP_Angle_Locations[nTheta] = {1, 0, 0, 0, 2, 0, 0}; //7
+  parameter Integer TC_Locs[9,2] = [1,1; 2,2; 2,4; 2,7; 5,1; 5,2; 5,4; 5,5; 5,7];
+  */
+
+   parameter Integer nV_R = 4;
+   parameter Integer nR_HP = 2;
+  parameter Modelica.Units.SI.Length drs_one[nV_R] =  1/1000*{73, 73, 78.6337, 74.8938};
+  parameter Integer nTheta = 4;
+  parameter Modelica.Units.SI.Angle dthetas_one[nTheta] =  Modelica.Constants.pi/180*{35,45,70,30}; //Make sure that the node with the heat pipe centered at 120 degrees
+  parameter Integer nTheta_HP[2] = {1,3};
+  parameter Integer HP_Angle_Locations[nTheta] ={1, 0, 2, 0}; //4
+   parameter Integer TC_Locs[9,2] = [1,1; 2,2; 2,3; 2,4; 4,1; 4,2; 4,3; 4,4; 3,4]; //Verify where these should be in a small 4x4 grid
+
+  Components.PCM_Volume.PCM_Chamber_vertsym_03_FullDynamicHPLocs_doubleinsulated
+                        PCM_Core(
+    nR=nV_R,
+    nTheta=nTheta,
     nZ=nV_Z,
+    drs_one=drs_one,
+    dthetas_one=dthetas_one,
+    TCs=TC_Locs,
     t_insulation_inner=t_insulation,
     t_insulation_outer=t_insulation,
     hc_air=hc_air,
     T_Init=data_Initialization.T_PCM,
-    T_Init_Wall=data_Initialization.T_Wall,
     T_Init_Insulation_Inner=data_Initialization.T_Insulation_Inner,
     T_Init_Insulation_Outer=data_Initialization.T_Insulation_Outer,
-    T_Init_HT=data_Initialization.T_HT,
     redeclare package Insulation_Material_Inner = PCM_Materials.Insulator,
     redeclare package Insulation_Material_Outer =
         PCM_Materials.Insulator_aerogel,
     redeclare package PCM_Material = PCM_Materials.PCM_HITB_DensityFactor)
-    annotation (Placement(transformation(extent={{142,-60},{44,42}})));
+    annotation (Placement(transformation(extent={{144,-60},{46,42}})));
 
   Guide_Tube_New_Air_Inputs Lower_Guide_Tube(
     nV_Z=nV_Z,
@@ -307,14 +332,14 @@ extends Modelica.Icons.Example;
         98.3; 72.45555556,98.1],
     timeScale=3600,
     offset=273.15,
-    shiftTime=-5100)
-    annotation (Placement(transformation(extent={{-130,-18},{-110,2}})));
+    shiftTime=-8900)
+    annotation (Placement(transformation(extent={{-94,4},{-74,24}})));
   Modelica.Blocks.Sources.RealExpression T_Vessel_Measure(y=PCM_Core.T_TCs[4])
     annotation (Placement(transformation(extent={{-86,90},{-66,110}})));
   Modelica.Blocks.Sources.RealExpression T_Vessel_Measure1(y=PCM_Core.T_TCs[9])
-    annotation (Placement(transformation(extent={{-130,-54},{-110,-34}})));
+    annotation (Placement(transformation(extent={{-106,-46},{-86,-26}})));
   Components.RMSE_Calculator rMSE_Calculator
-    annotation (Placement(transformation(extent={{-68,-36},{-48,-16}})));
+    annotation (Placement(transformation(extent={{-68,-28},{-48,-8}})));
 protected
 
 equation
@@ -337,10 +362,10 @@ equation
   */
 
   connect(Upper_Guide_Tube.port_battery, PCM_Core.port_b[:, 1]) annotation (
-      Line(points={{47.9429,25.6},{71.44,25.6},{71.44,-7.2},{97.1263,-7.2}},
+      Line(points={{47.9429,25.6},{71.44,25.6},{71.44,-7.2},{99.1263,-7.2}},
         color={191,0,0}));
   connect(Lower_Guide_Tube.port_battery, PCM_Core.port_b[:, 2]) annotation (
-      Line(points={{45,-48.22},{72,-48.22},{72,-7.2},{97.1263,-7.2}},
+      Line(points={{45,-48.22},{72,-48.22},{72,-7.2},{99.1263,-7.2}},
         color={191,0,0}));
   connect(heat_Pipe_New1.heat_pipe_port, Upper_Guide_Tube.port_HP) annotation (
       Line(points={{34.98,21.42},{27.0571,21.42},{27.0571,22.4}},
@@ -376,7 +401,7 @@ equation
   connect(actuatorBus.Vessel_Heat_Tape_Power, PCM_Core.Heat_Tape_Input)
     annotation (Line(
       points={{30,100},{66,100},{66,110},{152,110},{152,4},{60,4},{60,-12},{
-          80.1053,-12}},
+          82.1053,-12}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -398,10 +423,10 @@ equation
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(Experiment_Measure_TC13.y, rMSE_Calculator.u1) annotation (Line(
-        points={{-109,-8},{-78,-8},{-78,-20},{-70,-20}},color={0,0,127}));
-  connect(T_Vessel_Measure1.y, rMSE_Calculator.u2) annotation (Line(points={{-109,
-          -44},{-78,-44},{-78,-32},{-70,-32}},     color={0,0,127}));
+  connect(rMSE_Calculator.u1, Experiment_Measure_TC13.y)
+    annotation (Line(points={{-70,-12},{-70,14},{-73,14}}, color={0,0,127}));
+  connect(rMSE_Calculator.u2, T_Vessel_Measure1.y) annotation (Line(points={{
+          -70,-24},{-80,-24},{-80,-36},{-85,-36}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-120,-100},
             {200,120}}),                                        graphics={
         Rectangle(
@@ -535,4 +560,4 @@ equation
       StopTime=90000,
       __Dymola_NumberOfIntervals=100,
       __Dymola_Algorithm="Dassl"));
-end HITB_Experiment_Second_Discharge2;
+end HITB_Experiment_02_Calibrate_ReducedDiscretization;

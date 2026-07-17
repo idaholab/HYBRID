@@ -58,7 +58,7 @@ model Guide_Tube_New_Air_Inputs
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={66,-16})));
-  TRANSFORM.HeatAndMassTransfer.Volumes.SimpleWall_Cylinder DHX_Side_Exteriot_insulation[nV_ZGTe](
+  TRANSFORM.HeatAndMassTransfer.Volumes.SimpleWall_Cylinder DHX_Side_Exterior_insulation[nV_ZGTe](
     length=(l_DHX_gap + l_DHX)/nV_ZGTe,
     r_inner=r_outer,
     r_outer=r_outer + t_insulation_DHX,
@@ -68,7 +68,7 @@ model Guide_Tube_New_Air_Inputs
         extent={{10,-10},{-10,10}},
         rotation=180,
         origin={44,-16})));
-  TRANSFORM.HeatAndMassTransfer.Volumes.SimpleWall_Cylinder CHX_Side_Exteriot_insulation_Inner[nV_ZGTe](
+  TRANSFORM.HeatAndMassTransfer.Volumes.SimpleWall_Cylinder CHX_Side_Exterior_insulation_Inner[nV_ZGTe](
     length=(l_CHX_gap + l_CHX)/nV_ZGTe,
     r_inner=r_outer,
     r_outer=r_outer + t_insulation_CHX_Inner,
@@ -163,7 +163,7 @@ model Guide_Tube_New_Air_Inputs
     annotation (Placement(transformation(extent={{-40,12},{-60,32}})));
   Modelica.Units.SI.Length z_vec_HP[nV_Zh+1];
   Modelica.Units.SI.Length z_vec_GT[nV_ZGT_Total+1];
-  TRANSFORM.HeatAndMassTransfer.Volumes.SimpleWall_Cylinder CHX_Side_Exteriot_insulation_Outer[nV_ZGTe](
+  TRANSFORM.HeatAndMassTransfer.Volumes.SimpleWall_Cylinder CHX_Side_Exterior_insulation_Outer[nV_ZGTe](
     length=(l_CHX_gap + l_CHX)/nV_ZGTe,
     r_inner=r_outer + t_insulation_CHX_Inner,
     r_outer=r_outer + t_insulation_CHX_Inner + t_insulation_CHX_Outer,
@@ -171,10 +171,11 @@ model Guide_Tube_New_Air_Inputs
     T_start=T_init_insulation) annotation (Placement(transformation(
         extent={{10,-10},{-10,10}},
         rotation=180,
-        origin={68,10})));
+        origin={66,10})));
   TRANSFORM.HeatAndMassTransfer.DiscritizedModels.Conduction_1D CHX_Air_Side(
     redeclare package Material = PCM_Materials.Solid_Air,
     energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
+    T_a1_start=Air_PCM_Axial3.T,
     T_b1_start=T_init_tube,
     redeclare model Geometry =
         TRANSFORM.HeatAndMassTransfer.ClosureRelations.Geometry.Models.Cylinder_1D_z
@@ -194,6 +195,7 @@ model Guide_Tube_New_Air_Inputs
   TRANSFORM.HeatAndMassTransfer.DiscritizedModels.Conduction_1D DHX_Air_Side1(
     redeclare package Material = PCM_Materials.Solid_Air,
     energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
+    T_a1_start=Air_PCM_Axial3.T,
     T_b1_start=T_init_tube,
     redeclare model Geometry =
         TRANSFORM.HeatAndMassTransfer.ClosureRelations.Geometry.Models.Cylinder_1D_z
@@ -287,13 +289,13 @@ equation
        Line(points={{-108,-16},{-77,-16}},                     color={191,0,0}));
   end for;
   for i in 1:nV_ZGTe loop
-    connect(CHX_Side_Exteriot_insulation_Inner[i].port_a, Guide_Tube.port_b1[i])
+    connect(CHX_Side_Exterior_insulation_Inner[i].port_a, Guide_Tube.port_b1[i])
       annotation (Line(points={{32,10},{24,10},{24,2},{26,2},{26,-4},{20,-4}},
                                                                  color={191,0,0}));
     connect(CHX_Air_Side.port_external[i], radiation1[i].port_b) annotation (
         Line(points={{-94.4,-0.6},{-94.4,-16},{-77,-16}},              color={
             191,0,0}));
-    connect(DHX_Side_Exteriot_insulation[i].port_a, Guide_Tube.port_b1[i + nV_Z +
+    connect(DHX_Side_Exterior_insulation[i].port_a, Guide_Tube.port_b1[i + nV_Z +
       nV_ZGTe]) annotation (Line(points={{34,-16},{26,-16},{26,-4},{20,-4}},
           color={191,0,0}));
     connect(DHX_Air_Side1.port_external[i], radiation1[i + nV_Z + nV_ZGTe].port_b)
@@ -304,7 +306,7 @@ equation
         points={{97,10},{104,10}},                    color={191,0,0}));
   connect(Air_PCM_Axial1.port, convection_DHXSide.port_a)
     annotation (Line(points={{80,-16},{73,-16}},   color={191,0,0}));
-  connect(convection_DHXSide.port_b, DHX_Side_Exteriot_insulation.port_b)
+  connect(convection_DHXSide.port_b,DHX_Side_Exterior_insulation. port_b)
     annotation (Line(points={{59,-16},{54,-16}},  color={191,0,0}));
   connect(convection_CHXSide3.port_b, Guide_Tube.port_a2[1]) annotation (Line(
         points={{-15,-23.3},{-15,-18},{-1,-18}},    color={191,0,0}));
@@ -322,11 +324,11 @@ equation
           {-40,12},{-58,12},{-58,2},{-50.25,2}},             color={191,0,0}));
   connect(port_HP, collector.port_b) annotation (Line(points={{-78,22},{-60,22}},
                             color={191,0,0}));
-  connect(CHX_Side_Exteriot_insulation_Inner.port_b,
-    CHX_Side_Exteriot_insulation_Outer.port_a)
-    annotation (Line(points={{52,10},{58,10}}, color={191,0,0}));
-  connect(CHX_Side_Exteriot_insulation_Outer.port_b, convection_CHXSide.port_b)
-    annotation (Line(points={{78,10},{83,10}},  color={191,0,0}));
+  connect(CHX_Side_Exterior_insulation_Inner.port_b,
+    CHX_Side_Exterior_insulation_Outer.port_a)
+    annotation (Line(points={{52,10},{56,10}}, color={191,0,0}));
+  connect(CHX_Side_Exterior_insulation_Outer.port_b, convection_CHXSide.port_b)
+    annotation (Line(points={{76,10},{83,10}},  color={191,0,0}));
   connect(Air_PCM_Axial3.port, CHX_Air_Side.port_a1) annotation (Line(points={{-106,6},
           {-101,6},{-101,5},{-96,5}},         color={191,0,0}));
   connect(CHX_Air_Side.port_b1, Air_PCM_Axial6.port) annotation (Line(points={{-80,5},

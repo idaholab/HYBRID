@@ -1,24 +1,24 @@
-within NHES.Systems.EnergyStorage.PCM_HITB.Examples.Final_Runs;
-model HITB_Experiment_Second_Discharge2
+within NHES.Systems.EnergyStorage.PCM_HITB.Examples.Final_Runs_Model_Update;
+model HITB_Experiment_02_Calibrate
   "First discharge run with data read in the system."
 extends Modelica.Icons.Example;
   Real Position "Location of heat pipe where 0 is fully charging and 1 is fully discharging";
   extends BaseClasses.Partial_SubSystem_A(
-    redeclare replaceable NHES.Systems.EnergyStorage.PCM_HITB.CS.CS_Discharge2
+    redeclare replaceable NHES.Systems.EnergyStorage.PCM_HITB.CS.CS_Calibrate2
       CS,
     redeclare Data.Data_System data,
     data_Initialization(
-      T_PCM=785.15,
-      T_Wall=783.15,
-      T_HT=630.15,
-      T_Insulation_Inner=663.15,
-      T_Insulation_Outer=463.15,
-      T_Tube_UGT=698.15,
-      T_Insulation_UGT=463.15,
-      T_UHP=573.15,
-      T_Tube_LGT=698.15,
-      T_Insulation_LGT=463.15,
-      T_LHP=573.15));
+      T_PCM=777.15,
+      T_Wall=773.15,
+      T_HT=763.15,
+      T_Insulation_Inner=613.15,
+      T_Insulation_Outer=398.15,
+      T_Tube_UGT=613.15,
+      T_Insulation_UGT=398.15,
+      T_UHP=398.15,
+      T_Tube_LGT=613.15,
+      T_Insulation_LGT=398.15,
+      T_LHP=398.15));
  // Modelica.Units.SI.Area A_Cyl_HITB[nV_Rh];
   parameter Integer nV_Z = 6;
   parameter Integer nV_Zh = 6;
@@ -56,18 +56,17 @@ extends Modelica.Icons.Example;
   Modelica.Units.SI.Time time_plot;
   parameter Modelica.Units.SI.CoefficientOfHeatTransfer hc_air = 35;
   parameter Modelica.Units.SI.Temperature T_air = 273.15+250 "Air inside the shipping container estimate";
-  parameter Modelica.Units.SI.Length t_insulation = 0.022 "Insulation thickness value";
+  parameter Modelica.Units.SI.Length t_insulation = 0.016 "Insulation thickness value";
 
-  PCM_Chamber_Connected PCM_Core(
+  Components.PCM_Volume.PCM_Chamber_vertsym_03_FullDynamicHPLocs_doubleinsulated
+                        PCM_Core(
     nZ=nV_Z,
     t_insulation_inner=t_insulation,
     t_insulation_outer=t_insulation,
     hc_air=hc_air,
     T_Init=data_Initialization.T_PCM,
-    T_Init_Wall=data_Initialization.T_Wall,
     T_Init_Insulation_Inner=data_Initialization.T_Insulation_Inner,
     T_Init_Insulation_Outer=data_Initialization.T_Insulation_Outer,
-    T_Init_HT=data_Initialization.T_HT,
     redeclare package Insulation_Material_Inner = PCM_Materials.Insulator,
     redeclare package Insulation_Material_Outer =
         PCM_Materials.Insulator_aerogel,
@@ -147,10 +146,10 @@ extends Modelica.Icons.Example;
 
   Components.Position_Calculator  Signal_Position_Lower(l_experiment=
         l_experiment, l_HITB=l_HITB)
-    annotation (Placement(transformation(extent={{86,88},{100,74}})));
+    annotation (Placement(transformation(extent={{-20,-36},{-6,-50}})));
   Components.Position_Calculator Signal_Position_Upper(l_experiment=
         l_experiment, l_HITB=l_HITB)
-    annotation (Placement(transformation(extent={{86,92},{100,106}})));
+    annotation (Placement(transformation(extent={{-18,12},{-4,26}})));
   Modelica.Blocks.Sources.TimeTable Experiment_Measure_TC13(
     table=[0.0,504; 0.083333333,504; 0.166666667,504; 0.25,504; 0.333333333,504;
         0.416666667,504; 0.5,504; 0.583333333,504; 0.666666667,504; 0.75,504; 0.833333333,
@@ -307,14 +306,14 @@ extends Modelica.Icons.Example;
         98.3; 72.45555556,98.1],
     timeScale=3600,
     offset=273.15,
-    shiftTime=-5100)
-    annotation (Placement(transformation(extent={{-130,-18},{-110,2}})));
+    shiftTime=-8900)
+    annotation (Placement(transformation(extent={{138,92},{158,112}})));
   Modelica.Blocks.Sources.RealExpression T_Vessel_Measure(y=PCM_Core.T_TCs[4])
     annotation (Placement(transformation(extent={{-86,90},{-66,110}})));
   Modelica.Blocks.Sources.RealExpression T_Vessel_Measure1(y=PCM_Core.T_TCs[9])
-    annotation (Placement(transformation(extent={{-130,-54},{-110,-34}})));
+    annotation (Placement(transformation(extent={{138,92},{158,72}})));
   Components.RMSE_Calculator rMSE_Calculator
-    annotation (Placement(transformation(extent={{-68,-36},{-48,-16}})));
+    annotation (Placement(transformation(extent={{174,86},{194,106}})));
 protected
 
 equation
@@ -337,10 +336,11 @@ equation
   */
 
   connect(Upper_Guide_Tube.port_battery, PCM_Core.port_b[:, 1]) annotation (
-      Line(points={{47.9429,25.6},{71.44,25.6},{71.44,-7.2},{97.1263,-7.2}},
+      Line(points={{47.9429,25.6},{72,25.6},{72,26},{96,26},{96,-7.2},{97.1263,
+          -7.2}},
         color={191,0,0}));
   connect(Lower_Guide_Tube.port_battery, PCM_Core.port_b[:, 2]) annotation (
-      Line(points={{45,-48.22},{72,-48.22},{72,-7.2},{97.1263,-7.2}},
+      Line(points={{45,-48.22},{98,-48.22},{98,-7.2},{97.1263,-7.2}},
         color={191,0,0}));
   connect(heat_Pipe_New1.heat_pipe_port, Upper_Guide_Tube.port_HP) annotation (
       Line(points={{34.98,21.42},{27.0571,21.42},{27.0571,22.4}},
@@ -350,60 +350,59 @@ equation
           -45.18}},                                      color={191,0,0}));
   connect(actuatorBus.Lower_Heat_Tape_Power, Lower_Guide_Tube.Heat_Tape_Input)
     annotation (Line(
-      points={{30,100},{66,100},{66,110},{152,110},{152,-70},{62,-70},{62,-60},{
-          62.5,-60},{62.5,-50.12}},
+      points={{30,100},{30,64},{-34,64},{-34,-68},{62,-68},{62,-58},{62.5,-58},
+          {62.5,-50.12}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.Upper_Heat_Tape_Power, Upper_Guide_Tube.Heat_Tape_Input)
     annotation (Line(
-      points={{30,100},{64.9429,100},{64.9429,27.6}},
+      points={{30,100},{30,64},{64.9429,64},{64.9429,27.6}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.Upper_Heat_Pipe_Position, Signal_Position_Upper.Position)
     annotation (Line(
-      points={{30,100},{74,100},{74,99},{84.6,99}},
+      points={{30,100},{30,64},{-34,64},{-34,19},{-19.4,19}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.Lower_Heat_Pipe_Position, Signal_Position_Lower.Position)
     annotation (Line(
-      points={{30,100},{74,100},{74,81},{84.6,81}},
+      points={{30,100},{30,64},{-34,64},{-34,-43},{-21.4,-43}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.Vessel_Heat_Tape_Power, PCM_Core.Heat_Tape_Input)
     annotation (Line(
-      points={{30,100},{66,100},{66,110},{152,110},{152,4},{60,4},{60,-12},{
-          80.1053,-12}},
+      points={{30,100},{30,64},{-34,64},{-34,-12},{80.1053,-12}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(Signal_Position_Lower.z_min, Lower_Guide_Tube.z_min_heatpipe)
-    annotation (Line(points={{100.7,77.5},{160,77.5},{160,-66},{-8,-66},{-8,-46},
-          {9.25,-46},{9.25,-44.61}}, color={0,0,127}));
+    annotation (Line(points={{-5.3,-46.5},{2,-46.5},{2,-44.61},{9.25,-44.61}},
+                                     color={0,0,127}));
   connect(Lower_Guide_Tube.z_max_heatpipe, Signal_Position_Lower.z_max)
-    annotation (Line(points={{9.25,-38.53},{-8,-38.53},{-8,-66},{160,-66},{160,84},
-          {130,84},{130,84.5},{100.7,84.5}}, color={0,0,127}));
+    annotation (Line(points={{9.25,-38.53},{-2,-38.53},{-2,-39.5},{-5.3,-39.5}},
+                                             color={0,0,127}));
   connect(Signal_Position_Upper.z_max, Upper_Guide_Tube.z_max_heatpipe)
-    annotation (Line(points={{100.7,95.5},{130,95.5},{130,96},{160,96},{160,-66},
-          {-8,-66},{-8,16},{2,16},{2,15.4},{13.2143,15.4}}, color={0,0,127}));
+    annotation (Line(points={{-3.3,15.5},{6,15.5},{6,15.4},{13.2143,15.4}},
+                                                            color={0,0,127}));
   connect(Upper_Guide_Tube.z_min_heatpipe, Signal_Position_Upper.z_min)
-    annotation (Line(points={{13.2143,21.8},{2,21.8},{2,22},{-8,22},{-8,-66},{
-          160,-66},{160,102},{100.7,102},{100.7,102.5}},
+    annotation (Line(points={{13.2143,21.8},{0,21.8},{0,22.5},{-3.3,22.5}},
                                                      color={0,0,127}));
   connect(sensorBus.T_PCM, T_Vessel_Measure.y) annotation (Line(
       points={{-30,100},{-65,100}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(Experiment_Measure_TC13.y, rMSE_Calculator.u1) annotation (Line(
-        points={{-109,-8},{-78,-8},{-78,-20},{-70,-20}},color={0,0,127}));
-  connect(T_Vessel_Measure1.y, rMSE_Calculator.u2) annotation (Line(points={{-109,
-          -44},{-78,-44},{-78,-32},{-70,-32}},     color={0,0,127}));
-  annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-120,-100},
-            {200,120}}),                                        graphics={
+  connect(rMSE_Calculator.u1, Experiment_Measure_TC13.y)
+    annotation (Line(points={{172,102},{159,102}},         color={0,0,127}));
+  connect(rMSE_Calculator.u2, T_Vessel_Measure1.y) annotation (Line(points={{172,90},
+          {162,90},{162,82},{159,82}},             color={0,0,127}));
+  annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-200,
+            -200},{200,200}},
+        grid={2,2}),                                            graphics={
         Rectangle(
           extent={{56,36},{94,-32}},
           lineColor={0,0,0},
@@ -530,9 +529,11 @@ equation
           fillPattern=FillPattern.Solid,
           startAngle=0,
           endAngle=360)}),                                       Diagram(
-        coordinateSystem(preserveAspectRatio=false, extent={{-120,-100},{200,120}})),
+        coordinateSystem(preserveAspectRatio=false, extent={{-200,-200},{200,
+            200}},
+        grid={2,2})),
     experiment(
       StopTime=90000,
       __Dymola_NumberOfIntervals=100,
       __Dymola_Algorithm="Dassl"));
-end HITB_Experiment_Second_Discharge2;
+end HITB_Experiment_02_Calibrate;
