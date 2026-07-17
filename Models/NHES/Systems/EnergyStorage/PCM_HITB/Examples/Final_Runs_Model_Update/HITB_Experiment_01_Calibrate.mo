@@ -150,7 +150,7 @@ extends Modelica.Icons.Example;
   Components.Position_Calculator Signal_Position_Upper(l_experiment=
         l_experiment, l_HITB=l_HITB)
     annotation (Placement(transformation(extent={{86,92},{100,106}})));
-  Modelica.Blocks.Sources.RealExpression T_Vessel_Measure(y=PCM_Core.T_TCs[4])
+  Modelica.Blocks.Sources.RealExpression T_Vessel_Measure(y=PCM_Core.T_TCs[4, 3])
     annotation (Placement(transformation(extent={{-86,90},{-66,110}})));
   Modelica.Blocks.Sources.TimeTable Temperature_Reference_TC11(table=[0,89.7;
         300,89.6; 600,89.5; 900,90.3; 1200,90.3; 1500,93; 1800,97.1; 2100,98.9;
@@ -290,7 +290,8 @@ extends Modelica.Icons.Example;
         263; 254420,262],
     offset=273.15,        shiftTime=-1200)
     annotation (Placement(transformation(extent={{-116,0},{-96,20}})));
-  Modelica.Blocks.Sources.RealExpression T_Vessel_Measure1(y=PCM_Core.T_TCs[9])
+  Modelica.Blocks.Sources.RealExpression T_Vessel_Measure1(y=PCM_Core.T_TCs[9,
+        3])
     annotation (Placement(transformation(extent={{-102,-30},{-82,-10}})));
   Components.RMSE_Calculator rMSE_Calculator
     annotation (Placement(transformation(extent={{-64,-12},{-44,8}})));
@@ -316,10 +317,10 @@ equation
   */
 
   connect(Upper_Guide_Tube.port_battery, PCM_Core.port_b[:, 1]) annotation (
-      Line(points={{47.9429,25.6},{71.44,25.6},{71.44,-7.2},{97.1263,-7.2}},
+      Line(points={{47.9429,25.6},{71.44,25.6},{71.44,-0.84},{86.14,-0.84}},
         color={191,0,0}));
   connect(Lower_Guide_Tube.port_battery, PCM_Core.port_b[:, 2]) annotation (
-      Line(points={{45,-48.22},{72,-48.22},{72,-7.2},{97.1263,-7.2}},
+      Line(points={{45,-48.22},{72,-48.22},{72,-0.84},{86.14,-0.84}},
         color={191,0,0}));
   connect(heat_Pipe_New1.heat_pipe_port, Upper_Guide_Tube.port_HP) annotation (
       Line(points={{34.98,21.42},{27.0571,21.42},{27.0571,22.4}},
@@ -354,8 +355,8 @@ equation
       thickness=0.5));
   connect(actuatorBus.Vessel_Heat_Tape_Power, PCM_Core.Heat_Tape_Input)
     annotation (Line(
-      points={{30,100},{66,100},{66,110},{152,110},{152,4},{60,4},{60,-12},{
-          80.1053,-12}},
+      points={{30,100},{66,100},{66,110},{152,110},{152,4},{60,4},{60,-9},{53.8,
+          -9}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));

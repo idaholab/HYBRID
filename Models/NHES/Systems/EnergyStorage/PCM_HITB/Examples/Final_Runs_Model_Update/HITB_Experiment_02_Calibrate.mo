@@ -308,9 +308,10 @@ extends Modelica.Icons.Example;
     offset=273.15,
     shiftTime=-8900)
     annotation (Placement(transformation(extent={{138,92},{158,112}})));
-  Modelica.Blocks.Sources.RealExpression T_Vessel_Measure(y=PCM_Core.T_TCs[4])
+  Modelica.Blocks.Sources.RealExpression T_Vessel_Measure(y=PCM_Core.T_TCs[4, 3])
     annotation (Placement(transformation(extent={{-86,90},{-66,110}})));
-  Modelica.Blocks.Sources.RealExpression T_Vessel_Measure1(y=PCM_Core.T_TCs[9])
+  Modelica.Blocks.Sources.RealExpression T_Vessel_Measure1(y=PCM_Core.T_TCs[9,
+        3])
     annotation (Placement(transformation(extent={{138,92},{158,72}})));
   Components.RMSE_Calculator rMSE_Calculator
     annotation (Placement(transformation(extent={{174,86},{194,106}})));
@@ -336,11 +337,11 @@ equation
   */
 
   connect(Upper_Guide_Tube.port_battery, PCM_Core.port_b[:, 1]) annotation (
-      Line(points={{47.9429,25.6},{72,25.6},{72,26},{96,26},{96,-7.2},{97.1263,
-          -7.2}},
+      Line(points={{47.9429,25.6},{72,25.6},{72,26},{96,26},{96,-0.84},{86.14,
+          -0.84}},
         color={191,0,0}));
   connect(Lower_Guide_Tube.port_battery, PCM_Core.port_b[:, 2]) annotation (
-      Line(points={{45,-48.22},{98,-48.22},{98,-7.2},{97.1263,-7.2}},
+      Line(points={{45,-48.22},{98,-48.22},{98,-0.84},{86.14,-0.84}},
         color={191,0,0}));
   connect(heat_Pipe_New1.heat_pipe_port, Upper_Guide_Tube.port_HP) annotation (
       Line(points={{34.98,21.42},{27.0571,21.42},{27.0571,22.4}},
@@ -375,7 +376,7 @@ equation
       thickness=0.5));
   connect(actuatorBus.Vessel_Heat_Tape_Power, PCM_Core.Heat_Tape_Input)
     annotation (Line(
-      points={{30,100},{30,64},{-34,64},{-34,-12},{80.1053,-12}},
+      points={{30,100},{30,64},{-34,64},{-34,-9},{53.8,-9}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
