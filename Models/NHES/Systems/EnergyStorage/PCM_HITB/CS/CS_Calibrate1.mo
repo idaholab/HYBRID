@@ -50,7 +50,7 @@ model CS_Calibrate1
     annotation (Placement(transformation(extent={{-16,-68},{4,-48}})));
   Modelica.Blocks.Sources.CombiTimeTable HT_Control_Set_Lower(table=[0,733.15;
         105500,733.15; 105600,733.15; 125000,733.15; 125500,733.15; 432000,
-        73315])
+        733.15])
     annotation (Placement(transformation(extent={{-118,-96},{-98,-76}})));
   Data.Data_CS data
     annotation (Placement(transformation(extent={{62,70},{82,90}})));
