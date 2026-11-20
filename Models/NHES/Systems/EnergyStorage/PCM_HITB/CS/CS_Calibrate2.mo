@@ -38,22 +38,23 @@ model CS_Calibrate2
         105500,273.15; 105600,273.15; 125000,373.15; 125500,373.15; 432000,
         373.15])
     annotation (Placement(transformation(extent={{-88,36},{-68,56}})));
+  Modelica.Blocks.Sources.RealExpression T_Vessel_Measure1(y=273.15)
+    annotation (Placement(transformation(extent={{-76,-2},{-56,18}})));
   TRANSFORM.Controls.LimPID Q_Vessel_HT(
     controllerType=Modelica.Blocks.Types.SimpleController.PID,
-    Ti=300,
-    Td=0.5,
+    k=50,
+    Ti=15000,
+    Td=0.01,
     yMax=data.Q_PCM_HT_Max/2,
     yMin=0,
-    wp=50,
-    wd=5,
-    Ni=1,
+    wp=1,
+    wd=1,
+    Ni=6,
     initType=Modelica.Blocks.Types.Init.InitialOutput,
     xi_start=0,
     xd_start=0,
-    y_start=0)
-    annotation (Placement(transformation(extent={{-40,2},{-20,22}})));
-  Modelica.Blocks.Sources.RealExpression T_Vessel_Measure1(y=273.15)
-    annotation (Placement(transformation(extent={{-76,-2},{-56,18}})));
+    y_start=400)
+    annotation (Placement(transformation(extent={{-20,-2},{0,18}})));
 equation
 
   connect(booleanStep1.y,HP_Switch1. u2)
@@ -70,14 +71,6 @@ equation
           {-58,46},{-58,76},{-50,76}},                    color={0,0,127}));
   connect(HP_Switch.y,HT_Upper. u_s) annotation (Line(points={{-27,84},{-26,86},
           {-14,86}},                       color={0,0,127}));
-  connect(T_Vessel_Measure1.y,Q_Vessel_HT. u_s)
-    annotation (Line(points={{-55,8},{-48,8},{-48,12},{-42,12}},
-                                                 color={0,0,127}));
-  connect(sensorBus.T_PCM, Q_Vessel_HT.u_m) annotation (Line(
-      points={{-30,-100},{-104,-100},{-104,-34},{-30,-34},{-30,0}},
-      color={239,82,82},
-      pattern=LinePattern.Dash,
-      thickness=0.5));
   connect(sensorBus.T_PCM, HT_Lower.u_m) annotation (Line(
       points={{-30,-100},{-136,-100},{-136,-34},{8,-34},{8,-44}},
       color={239,82,82},
@@ -122,11 +115,18 @@ equation
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
-  connect(actuatorBus.Vessel_Heat_Tape_Power, Q_Vessel_HT.y) annotation (Line(
-      points={{30,-100},{30,-6},{-16,-6},{-16,12},{-19,12}},
+  connect(actuatorBus.Vessel_Heat_Tape_Power,Q_Vessel_HT. y) annotation (Line(
+      points={{30,-100},{30,-76},{32,-76},{32,8},{1,8}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
+  connect(sensorBus.T_PCM,Q_Vessel_HT. u_m) annotation (Line(
+      points={{-30,-100},{-104,-100},{-104,-34},{-10,-34},{-10,-4}},
+      color={239,82,82},
+      pattern=LinePattern.Dash,
+      thickness=0.5));
+  connect(T_Vessel_Measure1.y,Q_Vessel_HT. u_s)
+    annotation (Line(points={{-55,8},{-22,8}},   color={0,0,127}));
 annotation(defaultComponentName="changeMe_CS", Icon(graphics={
         Text(
           extent={{-94,82},{94,74}},

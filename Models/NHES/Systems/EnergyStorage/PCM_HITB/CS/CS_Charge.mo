@@ -30,18 +30,19 @@ model CS_Charge
     annotation (Placement(transformation(extent={{-104,96},{-84,116}})));
   TRANSFORM.Controls.LimPID Q_Vessel_HT(
     controllerType=Modelica.Blocks.Types.SimpleController.PID,
-    Ti=300,
-    Td=0.5,
+    k=50,
+    Ti=15000,
+    Td=0.01,
     yMax=data.Q_PCM_HT_Max/2,
     yMin=0,
-    wp=50,
-    wd=5,
-    Ni=1,
+    wp=1,
+    wd=1,
+    Ni=6,
     initType=Modelica.Blocks.Types.Init.InitialOutput,
     xi_start=0,
     xd_start=0,
     y_start=400)
-    annotation (Placement(transformation(extent={{-24,24},{-4,44}})));
+    annotation (Placement(transformation(extent={{-22,26},{-2,46}})));
   Modelica.Blocks.Sources.RealExpression T_Vessel_Measure1(y=673.15)
     annotation (Placement(transformation(extent={{-72,24},{-52,44}})));
   Modelica.Blocks.Sources.CombiTimeTable signal_position_upper(table=[0,0;
@@ -65,7 +66,8 @@ equation
     annotation (Line(points={{-83,132},{-72,132},{-72,114},{-56,114}},
                                               color={255,0,255}));
   connect(T_Vessel_Measure1.y,Q_Vessel_HT. u_s)
-    annotation (Line(points={{-51,34},{-26,34}}, color={0,0,127}));
+    annotation (Line(points={{-51,34},{-38,34},{-38,36},{-24,36}},
+                                                 color={0,0,127}));
   connect(HT_Control_Set_Upper.y[1],HP_Switch. u3) annotation (Line(points={{-83,106},
           {-56,106}},                                     color={0,0,127}));
   connect(HP_Switch.y,HT_Upper. u_s) annotation (Line(points={{-33,114},{-32,
@@ -76,7 +78,7 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(sensorBus.T_PCM, Q_Vessel_HT.u_m) annotation (Line(
-      points={{-30,-100},{-142,-100},{-142,12},{-14,12},{-14,22}},
+      points={{-30,-100},{-142,-100},{-142,12},{-12,12},{-12,24}},
       color={239,82,82},
       pattern=LinePattern.Dash,
       thickness=0.5));
@@ -97,7 +99,7 @@ equation
       pattern=LinePattern.Dash,
       thickness=0.5));
   connect(actuatorBus.Vessel_Heat_Tape_Power, Q_Vessel_HT.y) annotation (Line(
-      points={{30,-100},{28,-100},{28,32},{-3,32},{-3,34}},
+      points={{30,-100},{28,-100},{28,32},{-1,32},{-1,36}},
       color={111,216,99},
       pattern=LinePattern.Dash,
       thickness=0.5));
